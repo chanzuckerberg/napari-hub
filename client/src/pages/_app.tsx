@@ -4,6 +4,8 @@
   @typescript-eslint/no-unsafe-member-access,
 */
 
+import '@/tailwind.scss';
+
 import { AppProps } from 'next/app';
 import { ReactNode, useRef } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
