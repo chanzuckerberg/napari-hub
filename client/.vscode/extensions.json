@@ -1,0 +1,12 @@
+{
+  "recommendations": [
+    "msjsdiag.debugger-for-chrome",
+    "dbaeumer.vscode-eslint",
+    "eamodio.gitlens",
+    "ms-vscode.vscode-typescript-next",
+    "silvenon.mdx",
+    "esbenp.prettier-vscode",
+    "jpoissonnier.vscode-styled-components",
+    "bradlc.vscode-tailwindcss"
+  ]
+}
