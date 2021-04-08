@@ -1,0 +1,12 @@
+extends:
+  - stylelint-config-recommended
+  - stylelint-config-sass-guidelines
+  - stylelint-config-css-modules
+
+rules:
+  # Enforce camel case CSS classes for CSS modules because camel case
+  # properties can be accessed using dot notation. For comparison:
+  #   `styles['some-class']` vs `styles.someClass`
+  selector-class-pattern:
+    - ^[a-z][a-zA-Z0-9]+$
+    - message: 'Classes should be camelCase'
