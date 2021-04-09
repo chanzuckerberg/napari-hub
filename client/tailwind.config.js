@@ -35,7 +35,7 @@ module.exports = {
 
     extend: {
       backgroundColor: {
-        'napari-app-bar': '#80d1ff',
+        'napari-primary': '#80d1ff',
       },
 
       fontSize: {
