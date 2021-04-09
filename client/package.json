@@ -8,14 +8,13 @@
     "dev:next": "next dev -p 8080",
     "dev:tsm": "tsm -w -e default 'src/**/*.module.scss'",
     "e2e": "jest -c jest/e2e.config.js",
-    "e2e:watch": "pnpm e2e -- --watch",
-    "e2e:update": "pnpm e2e -- --updateSnapshot",
-    "plop": "plop",
+    "e2e:watch": "yarn e2e -- --watch",
+    "e2e:update": "yarn e2e -- --updateSnapshot",
     "postinstall": "cd .. && husky install",
     "start": "next start -p 8080",
     "test": "jest -c jest/test.config.js",
-    "test:watch": "pnpm jest -- --watch",
-    "test:update": "pnpm jest -- --updateSnapshot"
+    "test:watch": "yarn jest -- --watch",
+    "test:update": "yarn jest -- --updateSnapshot"
   },
   "dependencies": {
     "axios": "^0.21.1",

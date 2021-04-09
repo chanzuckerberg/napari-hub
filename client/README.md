@@ -8,7 +8,7 @@ cool frontend tech for the website:
 - :art: [SCSS modules](https://github.com/css-modules/css-modules)
 - :nail_care: [Tailwind CSS](https://tailwindcss.com/) for utility styles
 - :racing_car: [Tailwind JIT](https://tailwindcss.com/docs/just-in-time-mode) for on-demand Tailwind styles
-- :package: [pnpm](https://github.com/pnpm/pnpm) for package management
+- :package: [Yarn](https://classic.yarnpkg.com/en/) for package management
 - :camera_flash: [Jest](https://jestjs.io/) + [React Testing Library](https://testing-library.com/docs/react-testing-library/intro) for unit and snapshot tests
 - :performing_arts: [Jest](https://jestjs.io/) + [Playwright](https://github.com/microsoft/playwright) for E2E tests
 - :mag: [ESlint](https://eslint.org/) + [Stylelint](https://stylelint.io/) for TypeScript and SCSS linting
@@ -19,7 +19,7 @@ cool frontend tech for the website:
 ### Node.js
 
 We use Node.js and various packages on NPM for building napari hub. For
-package management, we use [pnpm](https://github.com/pnpm/pnpm).
+package management, we use [yarn](https://classic.yarnpkg.com/en/).
 
 It's recommended you use NVM so you don't have to manage multiple Node.js versions yourself:
 
@@ -36,11 +36,11 @@ nvm install
 # Uses project defined Node.js version
 nvm use
 
-# Install pnpm globally
-npm -g install pnpm
+# Install yarn globally
+npm -g install yarn
 
 # Install project dependencies
-pnpm install
+yarn install
 ```
 
 ## Development Mode
@@ -48,7 +48,7 @@ pnpm install
 To run the app in development mode, run the following command:
 
 ```sh
-pnpm dev
+yarn dev
 ```
 
 This will start the Next.js dev server with [fast refresh](https://nextjs.org/docs/basic-features/fast-refresh). Edit some code and watch it update in the browser without having to refresh :heart_eyes:
@@ -60,7 +60,7 @@ boilerplate in the codebase. You can run Plop without any arguments and get a
 list of generators you can use:
 
 ```sh
-pnpm plop
+yarn plop
 ```
 
 If you want to use a specific generator, you can pass the name as the first
@@ -68,5 +68,5 @@ argument:
 
 ```sh
 # Run component generator
-pnpm plop component
+yarn plop component
 ```
