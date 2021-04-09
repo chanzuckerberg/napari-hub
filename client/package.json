@@ -10,6 +10,7 @@
     "e2e": "jest -c jest/e2e.config.js",
     "e2e:watch": "pnpm e2e -- --watch",
     "e2e:update": "pnpm e2e -- --updateSnapshot",
+    "plop": "plop",
     "postinstall": "cd .. && husky install",
     "start": "next start -p 8080",
     "test": "jest -c jest/test.config.js",
