@@ -6,6 +6,7 @@
     "build": "next build",
     "dev": "nodemon -x 'run-p dev:*' -w tailwind.config.js",
     "dev:next": "next dev -p 8080",
+    "dev:tsm": "tsm -w -e default 'src/**/*.module.scss'",
     "start": "next start -p 8080"
   },
   "dependencies": {
