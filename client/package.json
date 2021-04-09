@@ -2,6 +2,12 @@
   "name": "napari-hub",
   "version": "0.0.0",
   "private": true,
+  "scripts": {
+    "build": "next build",
+    "dev": "nodemon -x 'run-p dev:*' -w tailwind.config.js",
+    "dev:next": "next dev -p 8080",
+    "start": "next start -p 8080"
+  },
   "dependencies": {
     "axios": "^0.21.1",
     "clsx": "^1.1.1",
