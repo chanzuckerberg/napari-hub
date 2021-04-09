@@ -34,6 +34,13 @@ The [CZI Imaging Team](https://chanzuckerberg.com/science/programs-resources/ima
 CZI sees promise in _napari_ and seeks to assist its development by providing resources not always available to the open source community, including dedicated user research, design, and engineering support.
 CZI is proud to collaborate with the science community to accelerate research and enable open science for all.
 
+## Source Code
+
+We're building the napari hub out in the open, so if you want to contribute
+or get a sneak, please take a look at:
+
+- [napari hub client](client/README.md)
+
 ### Team
 
 - Jeremy Asuncion, Engineering ([@codemonkey800](https://github.com/codemonkey800))
