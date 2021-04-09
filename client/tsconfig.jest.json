@@ -14,6 +14,6 @@
       "@/tests/*": ["./tests/*"]
     },
 
-    "types": ["jest"]
+    "types": ["jest-playwright-preset", "expect-playwright", "jest"]
   }
 }
