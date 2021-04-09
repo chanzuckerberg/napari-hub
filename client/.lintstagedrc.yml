@@ -1,0 +1,6 @@
+'*.{js,ts,tsx,scss,md,yml,yaml,json}':
+  - prettier --write
+'*.{js,ts,tsx}':
+  - eslint --fix
+'*.scss':
+  - stylelint --fix
