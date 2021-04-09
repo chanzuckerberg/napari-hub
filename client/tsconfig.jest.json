@@ -14,7 +14,7 @@
       "@/tests/*": ["./tests/*"]
     },
 
-    "types": ["jest"]
+    "types": ["jest-playwright-preset", "expect-playwright", "jest"]
   },
   "include": ["*.d.ts", "**/*.ts", "**/*.tsx"]
 }
