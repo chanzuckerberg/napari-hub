@@ -1,24 +1,7 @@
 const typography = require('@tailwindcss/typography');
 
-/*
-  The VSCode Tailwind Intellisense extension is broken for configs that use
-  `mode: 'jit'`, making the autocomplete for Tailwind useless.
-
-  To get around this, we check for environment variable `TAILWIND_JIT` to
-  determine the mode for the Tailwind config. As a result, VSCode will load
-  the config without a problem and the dev server can take advantage of the
-  JIT performance benefits .
-
-  TODO Remove this code when this issue is resolved:
-  https://github.com/tailwindlabs/tailwindcss-intellisense/issues/293
-*/
-let mode;
-if (process.env.TAILWIND_JIT) {
-  mode = 'jit';
-}
-
 module.exports = {
-  mode,
+  mode: 'jit',
   darkMode: 'media',
   purge: ['./src/**/*.{ts,tsx,scss}'],
   plugins: [typography],

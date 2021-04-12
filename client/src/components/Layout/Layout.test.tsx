@@ -14,7 +14,7 @@ describe('<Layout />', () => {
   });
 
   it('should match snapshot', () => {
-    expect(component).toMatchSnapshot();
+    expect(component.asFragment()).toMatchSnapshot();
   });
 
   it('should render child', () => {

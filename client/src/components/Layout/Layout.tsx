@@ -5,9 +5,5 @@ interface Props {
 }
 
 export function Layout({ children }: Props) {
-  return (
-    <>
-      <main>{children}</main>
-    </>
-  );
+  return <main>{children}</main>;
 }
