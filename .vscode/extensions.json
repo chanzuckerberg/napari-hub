@@ -7,6 +7,7 @@
     "silvenon.mdx",
     "esbenp.prettier-vscode",
     "jpoissonnier.vscode-styled-components",
-    "bradlc.vscode-tailwindcss"
+    "bradlc.vscode-tailwindcss",
+    "streetsidesoftware.code-spell-checker"
   ]
 }
