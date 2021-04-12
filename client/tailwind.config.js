@@ -30,16 +30,23 @@ module.exports = {
         'napari-lg': '50px',
       },
 
+      width: {
+        'napari-center-col': '775px',
+      },
+
       height: {
         'napari-app-bar': '75px',
       },
 
       gridTemplateColumns: {
+        'napari-nav-mobile': 'min-content 1fr',
         'napari-2-col': '225px 775px',
         'napari-3-col': '225px 775px 225px',
       },
 
       gap: (theme) => theme('margin'),
+      maxWidth: (theme) => theme('width'),
+      padding: (theme) => theme('margin'),
     },
   },
 };
