@@ -5,6 +5,7 @@
 */
 
 import '@/tailwind.scss';
+import '@/global.scss';
 
 import { AppProps } from 'next/app';
 import Head from 'next/head';
