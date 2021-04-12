@@ -1,0 +1,20 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    /*
+      Jest will throw an error due to `isolatedModules` if there are no
+      imports / exports, so we need to disable it for tests. When `overrides`
+      is available for TSconfig, we can move this to the root
+      `tsconifg.json`:
+      https://github.com/microsoft/TypeScript/issues/33407
+    */
+    "isolatedModules": false,
+
+    "paths": {
+      "@/tests/*": ["./tests/*"]
+    },
+
+    "types": ["jest-playwright-preset", "expect-playwright", "jest"]
+  },
+  "include": ["*.d.ts", "**/*.ts", "**/*.tsx"]
+}

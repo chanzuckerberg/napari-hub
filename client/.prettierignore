@@ -1,0 +1,11 @@
+# Plop Templates don't have a prettier formatter unfortunately :(
+plop-templates
+
+# Package lock
+pnpm-lock.yaml
+
+# Next build
+.next
+
+# Jest snapshots
+*.snap
