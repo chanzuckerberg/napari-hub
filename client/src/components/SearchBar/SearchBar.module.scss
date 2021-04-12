@@ -1,0 +1,28 @@
+.form {
+  // Flex layout
+  @apply flex flex-auto items-center;
+
+  // Borders
+  @apply border-b-2 border-black;
+}
+
+.input {
+  // Flex layout
+  @apply flex flex-auto;
+
+  // Remove border and focus outline around input
+  @apply border-none outline-none;
+
+  // Remove white colored input background
+  @apply bg-transparent;
+
+  // Font size
+  @apply text-napari-app-bar;
+
+  /*
+    Inputs have a default width defined by the browser, so we have to set
+    this explicitly to make the input flexible:
+    https://stackoverflow.com/a/42421490
+  */
+  @apply w-0;
+}
