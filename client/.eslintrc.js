@@ -31,8 +31,8 @@ module.exports = {
 
     // Unit tests
     {
-      files: ['./src/**/*.test.ts', './jest/**/*.ts'],
-      extends: [configs.typescript, configs.dev, configs.tests],
+      files: ['./src/**/*.test.ts{,x}', './jest/**/*.ts'],
+      extends: [configs.typescript, configs.react, configs.dev, configs.tests],
     },
 
     // E2E tests
@@ -43,7 +43,7 @@ module.exports = {
 
     // TypeScript and React source code.
     {
-      files: ['./src/**/*.ts', './src/**/*.tsx'],
+      files: ['./src/**/*.ts{,x}'],
       extends: [configs.typescript, configs.react],
     },
 
