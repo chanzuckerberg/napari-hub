@@ -48,7 +48,9 @@ export function MenuDrawer({ items, onMenuClose, visible }: Props) {
         <ul>
           {items.map((item) => (
             <li data-testid="drawerItem" key={item.title}>
-              <Link href={item.link}>{item.title}</Link>
+              <Link href={item.link} onClick={onMenuClose}>
+                {item.title}
+              </Link>
             </li>
           ))}
         </ul>

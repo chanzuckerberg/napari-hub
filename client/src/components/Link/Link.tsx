@@ -3,6 +3,7 @@ import { ReactNode } from 'react';
 
 interface Props extends LinkProps {
   children?: ReactNode;
+  onClick?: () => void;
   className?: string;
 }
 
@@ -10,10 +11,10 @@ interface Props extends LinkProps {
  * Component for rendering a Next.js link using an anchor tag. This is mostly
  * to allow Next.js to preload routes and for the anchor tag to pass a11y.
  */
-export function Link({ className, children, ...props }: Props) {
+export function Link({ className, children, onClick, ...props }: Props) {
   return (
     <NextLink {...props}>
-      <a className={className} href={props.href.toString()}>
+      <a className={className} href={props.href.toString()} onClick={onClick}>
         {children}
       </a>
     </NextLink>
