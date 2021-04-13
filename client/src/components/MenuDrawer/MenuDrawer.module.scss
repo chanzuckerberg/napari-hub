@@ -1,0 +1,38 @@
+.menuDrawer {
+  // Fixed positioning to keep entire menu in viewport
+  @apply fixed top-0 right-0;
+
+  // Layout
+  @apply flex flex-row items-start;
+
+  // High z-index so that drawer overlays everything on the website
+  @apply z-40;
+
+  // Dimensions
+  @apply w-9/12 h-screen;
+
+  // Padding
+  @apply p-napari-sm;
+
+  // Color
+  @apply bg-black;
+
+  // Item list
+  ul {
+    @apply flex flex-auto flex-col;
+  }
+
+  // Menu items
+  li {
+    @apply text-white;
+  }
+
+  li:not(:last-child) {
+    margin-bottom: 20px;
+  }
+
+  // Close button
+  button {
+    @apply flex;
+  }
+}
