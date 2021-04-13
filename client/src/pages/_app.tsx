@@ -7,6 +7,7 @@
 import '@/tailwind.scss';
 
 import { AppProps } from 'next/app';
+import Head from 'next/head';
 import { ReactNode, useRef } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
@@ -37,10 +38,16 @@ function ReactQueryProvider({ children, dehydratedState }: QueryProviderProps) {
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <ReactQueryProvider dehydratedState={pageProps.dehydratedState}>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
-    </ReactQueryProvider>
+    <>
+      <Head>
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+      </Head>
+
+      <ReactQueryProvider dehydratedState={pageProps.dehydratedState}>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </ReactQueryProvider>
+    </>
   );
 }
