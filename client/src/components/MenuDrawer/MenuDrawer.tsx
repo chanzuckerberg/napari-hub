@@ -59,7 +59,7 @@ export function MenuDrawer({ items, onMenuClose, visible }: Props) {
         <button data-testid="drawerClose" onClick={onMenuClose} type="button">
           <Image
             src="/icons/close.svg"
-            alt="Icon for napari search bar"
+            alt="Menu close button"
             layout="fixed"
             width={CLOSE_ICON_SIZE}
             height={CLOSE_ICON_SIZE}
