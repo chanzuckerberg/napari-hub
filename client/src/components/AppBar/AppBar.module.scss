@@ -1,56 +1,5 @@
-.appBar {
-  // Color and height
-  @apply bg-napari-primary h-napari-app-bar;
-
-  // Padding
-  @apply px-napari-sm md:px-napari-lg 2xl:p-0;
-
-  // Grid Layout
-  @apply grid grid-cols-napari-nav-mobile;
-  @apply justify-center items-center;
-
-  // Grid gap
-  @apply gap-napari-sm md:gap-napari-lg;
-
-  // Change to 2 column grid layout when 2xl+ screens
-  @apply 2xl:grid 2xl:grid-cols-napari-2-col;
-
-  // Use 3 column layout when 3xl+ screens
-  @apply 3xl:grid-cols-napari-3-col;
-}
-
-.header {
-  @apply flex;
-
-  h1 {
-    @apply text-napari-app-bar;
-    @apply whitespace-nowrap;
-  }
-}
-
-.searchContainer {
-  // Flex layout
-  @apply flex items-center;
-
-  // Take 100% of width, but limit to center column width.
-  @apply w-full max-w-napari-center-col;
-
-  // Align container to the right of the grid cell
-  @apply justify-self-end;
-}
-
 .links {
-  // Hide links on smaller layouts
-  @apply hidden lg:flex;
-  @apply ml-napari-lg;
-
   :not(:first-child) {
     @apply ml-napari-sm;
   }
-}
-
-.menuButton {
-  // Show menu button on smaller layouts
-  @apply flex lg:hidden;
-  @apply ml-napari-sm;
 }

@@ -1,6 +1,5 @@
+import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
-
-import styles from './Overlay.module.scss';
 
 interface Props {
   visible?: boolean;
@@ -15,7 +14,16 @@ export function Overlay({ visible = false }: Props) {
       {visible && (
         <motion.div
           data-testid="overlay"
-          className={styles.overlay}
+          className={clsx(
+            // Colors
+            'bg-black bg-opacity-50',
+
+            // Dimensions
+            'w-screen h-screen',
+
+            // Positioning
+            'fixed top-0 right-0',
+          )}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}

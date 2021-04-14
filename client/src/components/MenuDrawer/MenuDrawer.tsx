@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { useRef } from 'react';
@@ -41,13 +42,35 @@ export function MenuDrawer({ items, onMenuClose, visible }: Props) {
           visible: { x: 0 },
         }}
         transition={{ type: 'tween', duration: 0.3, ease: 'easeInOut' }}
-        className={styles.menuDrawer}
+        className={clsx(
+          // Fixed positioning to keep entire menu in viewport
+          'fixed top-0 right-0',
+
+          // Layout
+          'flex flex-row items-start',
+
+          // High z-index so that drawer overlays everything on the website
+          'z-40',
+
+          // Dimensions
+          'w-9/12 h-screen',
+
+          // Padding
+          'p-napari-sm',
+
+          // Color
+          'bg-black',
+        )}
         ref={menuRef}
       >
         {/* Menu links */}
-        <ul>
+        <ul className="flex flex-auto flex-col">
           {items.map((item) => (
-            <li data-testid="drawerItem" key={item.title}>
+            <li
+              className={clsx('text-white', styles.item)}
+              data-testid="drawerItem"
+              key={item.title}
+            >
               <Link href={item.link} onClick={onMenuClose}>
                 {item.title}
               </Link>
@@ -56,7 +79,12 @@ export function MenuDrawer({ items, onMenuClose, visible }: Props) {
         </ul>
 
         {/* Close button */}
-        <button data-testid="drawerClose" onClick={onMenuClose} type="button">
+        <button
+          className="flex"
+          data-testid="drawerClose"
+          onClick={onMenuClose}
+          type="button"
+        >
           <Image
             src="/icons/close.svg"
             alt="Menu close button"

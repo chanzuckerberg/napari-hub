@@ -1,5 +1,5 @@
 export type Styles = {
-  menuDrawer: string;
+  item: string;
 };
 
 export type ClassNames = keyof Styles;
