@@ -3,12 +3,15 @@
 exports[`<Layout /> should match snapshot 1`] = `
 <DocumentFragment>
   <div
-    class="menuDrawer"
+    class="fixed top-0 right-0 flex flex-row items-start z-40 w-9/12 h-screen p-napari-sm bg-black"
     data-testid="menu"
     style="transform: translateX(100%) translateZ(0);"
   >
-    <ul>
+    <ul
+      class="flex flex-auto flex-col"
+    >
       <li
+        class="text-white item"
         data-testid="drawerItem"
       >
         <a
@@ -18,6 +21,7 @@ exports[`<Layout /> should match snapshot 1`] = `
         </a>
       </li>
       <li
+        class="text-white item"
         data-testid="drawerItem"
       >
         <a
@@ -28,6 +32,7 @@ exports[`<Layout /> should match snapshot 1`] = `
       </li>
     </ul>
     <button
+      class="flex"
       data-testid="drawerClose"
       type="button"
     >
@@ -36,7 +41,7 @@ exports[`<Layout /> should match snapshot 1`] = `
       >
         <noscript />
         <img
-          alt="Icon for napari search bar"
+          alt="Menu close button"
           decoding="async"
           src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
           style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; box-sizing: border-box; padding: 0px; margin: auto; display: block; width: 0px; height: 0px; min-width: 100%; max-width: 100%; min-height: 100%; max-height: 100%;"
@@ -45,12 +50,14 @@ exports[`<Layout /> should match snapshot 1`] = `
     </button>
   </div>
   <nav
-    class="appBar"
+    class="bg-napari-primary h-napari-app-bar px-napari-sm md:px-napari-lg 2xl:p-0 grid grid-cols-napari-nav-mobile justify-center items-center gap-napari-sm md:gap-napari-lg 2xl:grid 2xl:grid-cols-napari-2-col 3xl:grid-cols-napari-3-col"
   >
     <header
-      class="header"
+      class="flex"
     >
-      <h1>
+      <h1
+        class="text-napari-app-bar whitespace-nowrap"
+      >
         <a
           href="/"
         >
@@ -62,13 +69,13 @@ exports[`<Layout /> should match snapshot 1`] = `
       </h1>
     </header>
     <div
-      class="searchContainer"
+      class="flex items-center w-full max-w-napari-center-col justify-self-end"
     >
       <form
-        class="form"
+        class="flex flex-auto items-center border-b-2 border-black"
       >
         <input
-          class="input"
+          class="flex flex-auto border-none outline-none bg-transparent text-napari-app-bar w-0"
         />
         <div
           style="overflow: hidden; box-sizing: border-box; display: inline-block; position: relative; width: 14px; height: 14px;"
@@ -83,7 +90,7 @@ exports[`<Layout /> should match snapshot 1`] = `
         </div>
       </form>
       <div
-        class="links"
+        class="hidden lg:flex ml-napari-lg links"
       >
         <a
           href="/about"
@@ -97,7 +104,7 @@ exports[`<Layout /> should match snapshot 1`] = `
         </a>
       </div>
       <button
-        class="menuButton"
+        class="ml-napari-sm flex lg:hidden"
         type="button"
       >
         <div

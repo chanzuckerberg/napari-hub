@@ -2,12 +2,15 @@
 
 exports[`<MenuDrawer /> should match snapshot 1`] = `
 <div
-  class="menuDrawer"
+  class="fixed top-0 right-0 flex flex-row items-start z-40 w-9/12 h-screen p-napari-sm bg-black"
   data-testid="menu"
   style="transform: translateX(100%) translateZ(0);"
 >
-  <ul>
+  <ul
+    class="flex flex-auto flex-col"
+  >
     <li
+      class="text-white item"
       data-testid="drawerItem"
     >
       <a
@@ -17,6 +20,7 @@ exports[`<MenuDrawer /> should match snapshot 1`] = `
       </a>
     </li>
     <li
+      class="text-white item"
       data-testid="drawerItem"
     >
       <a
@@ -27,6 +31,7 @@ exports[`<MenuDrawer /> should match snapshot 1`] = `
     </li>
   </ul>
   <button
+    class="flex"
     data-testid="drawerClose"
     type="button"
   >
@@ -35,7 +40,7 @@ exports[`<MenuDrawer /> should match snapshot 1`] = `
     >
       <noscript />
       <img
-        alt="Icon for napari search bar"
+        alt="Menu close button"
         decoding="async"
         src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
         style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; box-sizing: border-box; padding: 0px; margin: auto; display: block; width: 0px; height: 0px; min-width: 100%; max-width: 100%; min-height: 100%; max-height: 100%;"

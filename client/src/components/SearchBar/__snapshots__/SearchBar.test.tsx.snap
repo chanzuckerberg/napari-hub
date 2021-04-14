@@ -3,10 +3,10 @@
 exports[`<SearchBar /> should match snapshot 1`] = `
 <DocumentFragment>
   <form
-    class="form"
+    class="flex flex-auto items-center border-b-2 border-black"
   >
     <input
-      class="input"
+      class="flex flex-auto border-none outline-none bg-transparent text-napari-app-bar w-0"
     />
     <div
       style="overflow: hidden; box-sizing: border-box; display: inline-block; position: relative; width: 14px; height: 14px;"
