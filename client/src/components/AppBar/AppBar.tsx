@@ -1,7 +1,8 @@
 import Image from 'next/image';
 import { ReactElement, useState } from 'react';
 
-import { Link, MenuDrawer, SearchBar } from '@/components';
+import { MenuDrawer, SearchBar } from '@/components';
+import { Link } from '@/components/common';
 import { MenuDrawerItem } from '@/components/MenuDrawer/types';
 
 import styles from './AppBar.module.scss';

@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { useRef } from 'react';
 import { useClickAway } from 'react-use';
 
-import { Link, Overlay } from '@/components';
+import { Link, Overlay } from '@/components/common';
 
 import styles from './MenuDrawer.module.scss';
 import { MenuDrawerItem } from './types';
