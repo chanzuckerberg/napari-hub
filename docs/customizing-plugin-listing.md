@@ -60,6 +60,7 @@ Fields that can be defined through the napari config include...
 ## Fields
 
 For each of the fields in a plugin's listing, we outline below how the field is used and where we source the data.
+
 | Metadata            	| Full view 	| Card view 	| Filterable 	| Sortable     	| Searched 	|
 |---------------------	|-----------	|-----------	|-----------	|-------------	|--------	|
 | Name                	|     ✅     	|     ✅     	|     ⛔     	|      ✅      	|    ✅   	|
