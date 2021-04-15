@@ -61,26 +61,26 @@ Fields that can be defined through the napari config include...
 
 For each of the fields in a plugin's listing, we outline below how the field is used and where we source the data.
 
-| Metadata            	| Full view 	| Card view 	| Filterable 	| Sortable     	| Searched 	|
-|---------------------	|-----------	|-----------	|-----------	|-------------	|--------	|
-| Name                	|     ✅     	|     ✅     	|     ⛔     	|      ✅      	|    ✅   	|
-| Summary             	|     ✅     	|     ✅     	|     ⛔     	|      ⛔      	|    ✅   	|
-| Description         	|     ✅     	|     ⛔     	|     ⛔     	|      ⛔      	|    ✅   	|
-| Authors             	|     ✅     	|     ✅     	|     ✅     	|      ⛔      	|    ⛔   	|
-| License             	|     ✅     	|     ✅     	|     ✅     	|      ⛔      	|    ⛔   	|
-| Version             	|     ✅     	|     ✅     	|     ⛔     	|      ⛔      	|    ⛔   	|
-| Development Status  	|     ✅     	|     ⛔     	|     ✅     	|      ⛔      	|    ⛔   	|
-| Python version(s)   	|     ✅     	|     ⛔     	|     ✅     	|      ⛔      	|    ⛔   	|
-| Operating System    	|     ✅     	|     ⛔     	|     ✅     	|      ⛔      	|    ⛔   	|
-| Requirements        	|     ✅     	|     ⛔     	|     ⛔     	|      ⛔      	|    ⛔   	|
-| Project Site        	|     ✅     	|     ⛔     	|     ⛔     	|      ⛔      	|    ⛔   	|
-| Documentation       	|     ✅     	|     ⛔     	|     ⛔     	|      ⛔      	|    ⛔   	|
-| Support             	|     ✅     	|     ⛔     	|     ⛔     	|      ⛔      	|    ⛔   	|
-| Report issues       	|     ✅     	|     ⛔     	|     ⛔     	|      ⛔      	|    ⛔   	|
-| Twitter             	|     ✅     	|     ⛔     	|     ⛔     	|      ⛔      	|    ⛔   	|
-| Code repository     	|     ✅     	|     ⛔     	|     ⛔     	|      ⛔      	|    ⛔   	|
-| Release date        	|     ✅     	|     ✅     	|     ⛔     	|      ✅      	|    ⛔   	|
-| First released      	|     ✅     	|     ⛔     	|     ⛔     	|      ✅      	|    ⛔   	|
+| Metadata             | Full view   |  Card view  | Filterable  | Sortable      | Searched  |
+|----------------------|:-----------:|:-----------:|:-----------:|:-------------:|:---------:|
+| Name                 |     ✅      |     ✅      |     ⛔      |      ✅       |    ✅    |
+| Summary              |     ✅      |     ✅      |     ⛔      |      ⛔       |    ✅    |
+| Description          |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ✅    |
+| Authors              |     ✅      |     ✅      |     ✅      |      ⛔       |    ⛔    |
+| License              |     ✅      |     ✅      |     ✅      |      ⛔       |    ⛔    |
+| Version              |     ✅      |     ✅      |     ⛔      |      ⛔       |    ⛔    |
+| Development Status   |     ✅      |     ⛔      |     ✅      |      ⛔       |    ⛔    |
+| Python version(s)    |     ✅      |     ⛔      |     ✅      |      ⛔       |    ⛔    |
+| Operating System     |     ✅      |     ⛔      |     ✅      |      ⛔       |    ⛔    |
+| Requirements         |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |
+| Project Site         |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |
+| Documentation        |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |
+| Support              |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |
+| Report issues        |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |
+| Twitter              |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |
+| Code repository      |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |
+| Release date         |     ✅      |     ✅      |     ⛔      |      ✅       |    ⛔    |
+| First released       |     ✅      |     ⛔      |     ⛔      |      ✅       |    ⛔    |
 
 ### Name
 
