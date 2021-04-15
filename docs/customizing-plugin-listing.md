@@ -1,6 +1,6 @@
 # Customizing your plugin's listing
 
-napari plugin developers can customize their plugin's listing on the napari hub by updating the metadata associated with their Python package or adding napari-specific configuration files to their Github repository.
+napari plugin developers can customize their plugin's listing on the napari hub by updating the metadata associated with their Python package or adding napari-specific configuration files to their GitHub repository.
 
 
 ## Data sources
