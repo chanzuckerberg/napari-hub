@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SearchBar /> should match snapshot 1`] = `
+<DocumentFragment>
+  <form
+    class="flex flex-auto items-center border-b-2 border-black"
+  >
+    <input
+      class="flex flex-auto border-none outline-none bg-transparent text-napari-app-bar w-0"
+    />
+    <div
+      style="overflow: hidden; box-sizing: border-box; display: inline-block; position: relative; width: 14px; height: 14px;"
+    >
+      <noscript />
+      <img
+        alt="Icon for napari search bar"
+        decoding="async"
+        src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+        style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; box-sizing: border-box; padding: 0px; margin: auto; display: block; width: 0px; height: 0px; min-width: 100%; max-width: 100%; min-height: 100%; max-height: 100%;"
+      />
+    </div>
+  </form>
+</DocumentFragment>
+`;

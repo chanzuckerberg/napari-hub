@@ -1,0 +1,8 @@
+html {
+  /*
+    Enable scrollbar for the entire page by default. This is to prevent
+    layout shift when switching between pages that have content long enough /
+    not long enough for a scrollbar.
+  */
+  overflow-y: scroll;
+}

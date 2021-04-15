@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<Layout /> should match snapshot 1`] = `
+exports[`<AppBar /> should match snapshot 1`] = `
 <DocumentFragment>
   <div
     class="fixed top-0 right-0 flex flex-row items-start z-40 w-9/12 h-screen p-napari-sm bg-black"
@@ -132,10 +132,5 @@ exports[`<Layout /> should match snapshot 1`] = `
       </button>
     </div>
   </nav>
-  <main>
-    <h1>
-      Hello, World!
-    </h1>
-  </main>
 </DocumentFragment>
 `;
