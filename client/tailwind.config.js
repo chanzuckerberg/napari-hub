@@ -3,7 +3,7 @@ const typography = require('@tailwindcss/typography');
 module.exports = {
   mode: 'jit',
   darkMode: 'media',
-  purge: ['./src/**/*.{ts,tsx,scss}'],
+  purge: ['./src/**/*.{mdx,tsx,scss}'],
   plugins: [typography],
   theme: {
     screens: {
