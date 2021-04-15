@@ -43,7 +43,7 @@ This is only supported, however, if the plugin developer has added a link to the
 Plugin developers can modify these fields by adding a `.napari` configuration folder to their repository, along with the relevant configuration files for a given field.
 We currently support two configuration files:
 
-- `.napari/DESCRIPTION.md` for a napari-specific description
+- `.napari/DESCRIPTION.md` for a napari-specific description (see [Description](#description))
 - `.napari/config.yml` for all other fields that can be configured
 
 Fields that can be defined through the napari config include...
