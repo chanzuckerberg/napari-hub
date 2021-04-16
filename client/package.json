@@ -17,6 +17,9 @@
     "test:update": "yarn test --updateSnapshot"
   },
   "dependencies": {
+    "@mdx-js/loader": "^1.6.22",
+    "@mdx-js/react": "^1.6.22",
+    "@next/mdx": "^10.1.3",
     "axios": "^0.21.1",
     "clsx": "^1.1.1",
     "framer-motion": "^4.1.3",
