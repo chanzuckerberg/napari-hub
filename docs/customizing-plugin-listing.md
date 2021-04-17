@@ -44,7 +44,7 @@ Plugin developers can modify these fields by adding a `.napari` configuration fo
 We currently support two configuration files:
 
 - `.napari/DESCRIPTION.md` for a napari-specific description (see [Description](#description))
-- `.napari/config.yml` for all other fields that can be configured
+- `.napari/config.yml` for all other configurable fields
 
 Fields that can be defined through the napari config include...
 
@@ -54,14 +54,14 @@ Fields that can be defined through the napari config include...
 - [Project Site](#project-site)
 - [Documentation](#documentation)
 - [Support](#support)
-- [Report issues](#report-issues)
+- [Report Issues](#report-issues)
 - [Twitter](#twitter)
 
 ## Fields
 
 For each of the fields in a plugin's listing, we outline below how the field is used and where we source the data.
 
-| Metadata             | Full view   |  Card view  | Filterable  | Sortable      | Searched  |
+| Metadata             | Full view   |  List view  | Filterable  | Sortable      | Searched  |
 |----------------------|:-----------:|:-----------:|:-----------:|:-------------:|:---------:|
 | Name                 |     ✅      |     ✅      |     ⛔      |      ✅       |    ✅    |
 | Summary              |     ✅      |     ✅      |     ⛔      |      ⛔       |    ✅    |
@@ -70,17 +70,17 @@ For each of the fields in a plugin's listing, we outline below how the field is 
 | License              |     ✅      |     ✅      |     ✅      |      ⛔       |    ⛔    |
 | Version              |     ✅      |     ✅      |     ⛔      |      ⛔       |    ⛔    |
 | Development Status   |     ✅      |     ⛔      |     ✅      |      ⛔       |    ⛔    |
-| Python version(s)    |     ✅      |     ⛔      |     ✅      |      ⛔       |    ⛔    |
+| Python Version       |     ✅      |     ⛔      |     ✅      |      ⛔       |    ⛔    |
 | Operating System     |     ✅      |     ⛔      |     ✅      |      ⛔       |    ⛔    |
 | Requirements         |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |
 | Project Site         |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |
 | Documentation        |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |
 | Support              |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |
-| Report issues        |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |
+| Report Issues        |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |
 | Twitter              |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |
-| Code repository      |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |
-| Release date         |     ✅      |     ✅      |     ⛔      |      ✅       |    ⛔    |
-| First released       |     ✅      |     ⛔      |     ⛔      |      ✅       |    ⛔    |
+| Code Repository      |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |
+| Release Date         |     ✅      |     ✅      |     ⛔      |      ✅       |    ⛔    |
+| First Released       |     ✅      |     ⛔      |     ⛔      |      ✅       |    ⛔    |
 
 ### Name
 
@@ -127,13 +127,47 @@ This file will take precedence over the `long_description` in your Python packag
 
 ### Authors
 
+This is a list of authors of the plugin.
+
+We display this on the detailed plugin page and the plugin listings.
+
+We source this from the "author" field of the JSON returned by the PyPI API.
+
+You can set this by setting the "author" of your Python package in `setup.py`, `setup.cfg`, or `pypackage.toml`.
+
+If you wish to customize this field with a full list of authors, you can also set this field by adding authors, along with an optional [ORCID ID](https://orcid.org/), to your napari configuration file.
+
+``` YAML
+# .napari/config.yml
+
+authors:
+  - name: Shannon Axelrod
+  - name: Matthew Cai
+    orcid: 0000-0003-4998-6328
+  - name: Ambrose J. Carr
+    orcid: 0000-0002-8457-2836
+  - name: Jeremy Freeman
+    orcid: 0000-0001-7077-7972
+  - name: Deep Ganguli
+  - name: Justin T. Kiggins
+    orcid: 0000-0002-4638-7015
+  - name: Brian Long
+    orcid: 0000-0002-7793-5969
+  - name: Tony Tung
+  - name: Kevin A. Yamauchi
+    orcid: 0000-0002-7818-1388
+
+```
+
+Authors listed in your napari config file will take precedence over the `author` specified in your Python package.
+
 ### License
 
 ### Version
 
 ### Development Status
 
-### Python versions
+### Python Versions
 
 ### Operating System
 
@@ -145,12 +179,12 @@ This file will take precedence over the `long_description` in your Python packag
 
 ### Support
 
-### Report issues
+### Report Issues
 
 ### Twitter
 
-### Code repository
+### Code Repository
 
-### Release date
+### Release Date
 
-### First released
+### First Released
