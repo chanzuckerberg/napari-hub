@@ -9,11 +9,12 @@ We have two sources of plugin information for the napari hub: PyPI and GitHub.
 
 ### PyPI
 
-Much of the information about a napari plugin is specified in the Python package metadata & PyPI is our primary source of plugin metadata.
+napari and the napari hub support discovery of plugins on PyPI that are tagged with the `"Framework :: Napari"` trove classifier (we do not currently support discovery of plugins on Anaconda cloud).
+Most of the information about a napari plugin is specified in the [Python package metadata](https://packaging.python.org/specifications/core-metadata/) & PyPI is our primary source of plugin metadata.
 The [PyPI API](https://warehouse.pypa.io/api-reference/json.html) provides information about Python packages through a simple JSON structure.
 We use PyPI to source information such as the Python versions that a plugin supports, its dependencies, etc.
 
-Plugin developers can modify these fields when they package their plugin by setting values in your package metadata.
+Plugin developers can modify these fields when they package their plugin by setting values in the [Python package metadata](https://packaging.python.org/specifications/core-metadata/).
 
 Fields that can be defined through the Python package configuration include the following:
 
@@ -133,14 +134,14 @@ We index this field for searching.
 We source this from the `["info"]["description"]` field of the JSON returned by the PyPI API.
 If the `["info"]["description_content_type"]` field denotes Markdown, then this field will be rendered as HTML.
 
-You can set this by setting the `description` or `description-file` value in your package metadata.
+You can set this by setting the `long_description` value in your package metadata.
 
 ``` INI
 # setup.cfg
 [metadata]
 # ...
-description-file = README.md
-description-content-type = text/markdown
+long_description = README.md
+long_description_content_type = text/markdown
 # ...
 ```
 
