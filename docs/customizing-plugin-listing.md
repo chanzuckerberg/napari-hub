@@ -97,9 +97,9 @@ You can set this by setting the `name` of your Python package in `setup.py`, `se
 ``` TOML
 # setup.cfg
 [metadata]
-...
+# ...
 name=starfish
-...
+# ...
 ```
 
 ### Summary
@@ -117,9 +117,9 @@ You can set this by setting the `summary` of your Python package in `setup.py`, 
 ``` TOML
 # setup.cfg
 [metadata]
-...
+# ...
 summary = Pipelines and pipeline components for the analysis of image-based transcriptomics data
-...
+# ...
 ```
 
 ### Description
@@ -138,10 +138,10 @@ You can set this by setting the `description` or `description-file` of your Pyth
 ``` TOML
 # setup.cfg
 [metadata]
-...
+# ...
 description-file = README.md
 description-content-type = text/markdown
-...
+# ...
 ```
 
 You can denote sections your plugin description by adding Level 1 Headings (e.g. `# Summary`).
@@ -163,16 +163,16 @@ You can set this by setting the `author` of your Python package in `setup.py`, `
 ``` TOML
 # setup.cfg
 [metadata]
-...
+# ...
 author=Deep Ganguli
-...
+# ...
 ```
 
 If you wish to customize this field with a full list of authors, you can also set this field by adding authors, along with an optional [ORCID ID](https://orcid.org/) for each author, to your napari configuration file.
 
 ``` YAML
 # .napari/config.yml
-...
+# ...
 authors:
   - name: Shannon Axelrod
   - name: Matthew Cai
@@ -189,7 +189,7 @@ authors:
   - name: Tony Tung
   - name: Kevin A. Yamauchi
     orcid: 0000-0002-7818-1388
-...
+# ...
 ```
 
 Authors listed in your napari config file will take precedence over the `author` specified in your Python package.
@@ -212,9 +212,9 @@ You can set this by setting the `license` of your Python package in `setup.py`, 
 ``` TOML
 # setup.cfg
 [metadata]
-...
+# ...
 license = MIT
-...
+# ...
 ```
 
 ### Version
@@ -245,10 +245,10 @@ You can set this by setting a ["Development Status" classifier](https://pypi.org
 ``` TOML
 # setup.cfg
 [metadata]
-...
+# ...
 classifier =
   Development Status :: 5 - Production/Stable
-...
+# ...
 ```
 
 ### Python Versions
@@ -265,9 +265,9 @@ You can set this by [setting the `python_requires` value](https://packaging.pyth
 ``` TOML
 # setup.cfg
 [metadata]
-...
+# ...
 python_requires = '>=3.8'
-...
+# ...
 ```
 
 ### Operating System
@@ -284,21 +284,21 @@ You can set this by setting the relevant ["Operating System" classifiers](https:
 ``` TOML
 # setup.cfg
 [metadata]
-...
+# ...
 classifier =
   Operating System :: MacOS :: MacOS X
   Operating System :: Microsoft :: Windows
   Operating System :: POSIX :: Linux
-...
+# ...
 ```
 
 ``` TOML
 # setup.cfg
 [metadata]
-...
+# ...
 classifier =
   Operating System :: OS Independent
-...
+# ...
 ```
 
 
@@ -316,7 +316,7 @@ You can set this by setting the `install_requires` value for your Python package
 ``` TOML
 # setup.cfg
 [options]
-...
+# ...
 install_requires =
   dataclasses==0.6
   h5py
@@ -334,7 +334,7 @@ install_requires =
   trackpy
   validators
   xarray >= 0.14.1
-...
+# ...
 ```
 
 ### Project Site
@@ -350,13 +350,13 @@ You can set this by setting the `url` value for your Python package in `setup.py
 ``` TOML
 # setup.cfg
 [metadata]
-...
+# ...
 url = https://spacetx-starfish.readthedocs.io/en/latest/
 project_urls =
     Bug Tracker = https://github.com/spacetx/starfish/issues
     Documentation = https://spacetx-starfish.readthedocs.io/en/latest/
     Source Code = https://github.com/spacetx/starfish
-...
+# ...
 ```
 
 ### Documentation
@@ -372,14 +372,14 @@ You can set this by adding a `Documentation` link to the `project_urls` value fo
 ``` TOML
 # setup.cfg
 [metadata]
-...
+# ...
 url = https://spacetx-starfish.readthedocs.io/en/latest/
 project_urls =
     Bug Tracker = https://github.com/spacetx/starfish/issues
     Documentation = https://spacetx-starfish.readthedocs.io/en/latest/
     Source Code = https://github.com/spacetx/starfish
     User Support = https://forum.image.sc/tag/starfish
-...
+# ...
 ```
 
 ### User Support
@@ -395,14 +395,14 @@ You can set this by adding a `User Support` link to the `project_urls` value for
 ``` TOML
 # setup.cfg
 [metadata]
-...
+# ...
 url = https://spacetx-starfish.readthedocs.io/en/latest/
 project_urls =
     Bug Tracker = https://github.com/spacetx/starfish/issues
     Documentation = https://spacetx-starfish.readthedocs.io/en/latest/
     Source Code = https://github.com/spacetx/starfish
     User Support = https://forum.image.sc/tag/starfish
-...
+# ...
 ```
 
 ### Report Issues
@@ -418,14 +418,14 @@ You can set this by adding a `Bug Tracker` link to the `project_urls` value for 
 ``` TOML
 # setup.cfg
 [metadata]
-...
+# ...
 url = https://spacetx-starfish.readthedocs.io/en/latest/
 project_urls =
     Bug Tracker = https://github.com/spacetx/starfish/issues
     Documentation = https://spacetx-starfish.readthedocs.io/en/latest/
     Source Code = https://github.com/spacetx/starfish
     User Support = https://forum.image.sc/tag/starfish
-...
+# ...
 ```
 
 ### Twitter
@@ -441,10 +441,10 @@ You can set this by adding a `Twitter` link to the `project_urls` value for your
 ``` TOML
 # setup.cfg
 [metadata]
-...
+# ...
 project_urls =
   Twitter = https://twitter.com/napari_imaging
-...
+# ...
 ```
 
 ### Code Repository
@@ -460,12 +460,12 @@ You can set this by adding a `Source Code` link to the `project_urls` value for 
 ``` TOML
 # setup.cfg
 [metadata]
-...
+# ...
 url = https://spacetx-starfish.readthedocs.io/en/latest/
 project_urls =
     Bug Tracker = https://github.com/spacetx/starfish/issues
     Documentation = https://spacetx-starfish.readthedocs.io/en/latest/
     Source Code = https://github.com/spacetx/starfish
     User Support = https://forum.image.sc/tag/starfish
-...
+# ...
 ```
