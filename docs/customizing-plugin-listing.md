@@ -13,7 +13,7 @@ Much of the information about a napari plugin is specified in the Python package
 The PyPI API provides information about Python packages through a simple JSON structure.
 We use PyPI to source information such as the Python versions that a plugin supports, its dependencies, etc.
 
-Plugin developers can modify these fields when they package their plugin by setting values in `setup.py`, `setup.cfg`, or `pypackage.toml`.
+Plugin developers can modify these fields when they package their plugin by setting values in `setup.py`, `setup.cfg`, or `pyproject.toml`.
 
 Fields that can be defined through the Python package configuration include the following:
 
@@ -92,7 +92,7 @@ We index this field for searching.
 
 We source this from the `["info"]["name"]` field of the JSON returned by the PyPI API.
 
-You can set this by setting the `name` of your Python package in `setup.py`, `setup.cfg`, or `pypackage.toml`.
+You can set this by setting the `name` of your Python package in `setup.py`, `setup.cfg`, or `pyproject.toml`.
 
 ``` TOML
 # setup.cfg
@@ -112,7 +112,7 @@ We index this field for searching.
 
 We source this from the `["info"]["summary"]` field of the JSON returned by the PyPI API.
 
-You can set this by setting the `summary` of your Python package in `setup.py`, `setup.cfg`, or `pypackage.toml`.
+You can set this by setting the `summary` of your Python package in `setup.py`, `setup.cfg`, or `pyproject.toml`.
 
 ``` TOML
 # setup.cfg
@@ -133,7 +133,7 @@ We index this field for searching.
 We source this from the `["info"]["description"]` field of the JSON returned by the PyPI API.
 If the `["info"]["description_content_type"]` field denotes Markdown, then this field will be rendered as HTML.
 
-You can set this by setting the `description` or `description-file` of your Python package in `setup.py`, `setup.cfg`, or `pypackage.toml`.
+You can set this by setting the `description` or `description-file` of your Python package in `setup.py`, `setup.cfg`, or `pyproject.toml`.
 
 ``` TOML
 # setup.cfg
@@ -158,7 +158,7 @@ We display this on the detailed plugin page and the plugin listings.
 
 We source this from the `["info"]["author"]` field of the JSON returned by the PyPI API.
 
-You can set this by setting the `author` of your Python package in `setup.py`, `setup.cfg`, or `pypackage.toml`.
+You can set this by setting the `author` of your Python package in `setup.py`, `setup.cfg`, or `pyproject.toml`.
 
 ``` TOML
 # setup.cfg
@@ -202,7 +202,7 @@ We display this on the detailed plugin page and the plugin listings. We support 
 
 We source this from the `["info"]["license"]` field of the JSON returned by the PyPI API.
 
-You can set this by setting the `license` of your Python package in `setup.py`, `setup.cfg`, or `pypackage.toml`.
+You can set this by setting the `license` of your Python package in `setup.py`, `setup.cfg`, or `pyproject.toml`.
 
 > **_NOTE:_**  You must use either a valid SPDX Identifier or "Other".
 > If you specify a license here which is not an SPDX Identifier, we will display "Other".
@@ -239,7 +239,7 @@ We display this on the detailed plugin page and the plugin listings. We support 
 We source this from the list of classifiers in the `["info"]["classifiers"]` field of the JSON returned by the PyPI API.
 If multiple "Development Status" classifiers are listed, we source one with the highest value.
 
-You can set this by setting a ["Development Status" classifier](https://pypi.org/classifiers/) for your Python package in `setup.py`, `setup.cfg`, or `pypackage.toml`.
+You can set this by setting a ["Development Status" classifier](https://pypi.org/classifiers/) for your Python package in `setup.py`, `setup.cfg`, or `pyproject.toml`.
 
 
 ``` TOML
@@ -259,7 +259,7 @@ We display this on the detailed plugin page and the plugin listings. We support 
 
 We source this from `["info"]["requires_python"]` field of the JSON returned by the PyPI API.
 
-You can set this by [setting the `python_requires` value](https://packaging.python.org/guides/distributing-packages-using-setuptools/#id54) for your Python package in `setup.py`, `setup.cfg`, or `pypackage.toml`.
+You can set this by [setting the `python_requires` value](https://packaging.python.org/guides/distributing-packages-using-setuptools/#id54) for your Python package in `setup.py`, `setup.cfg`, or `pyproject.toml`.
 
 
 ``` TOML
@@ -278,7 +278,7 @@ We display this on the detailed plugin page and the plugin listings. We support 
 
 We source this from the list of classifiers in the `["info"]["classifiers"]` field of the JSON returned by the PyPI API.
 
-You can set this by setting the relevant ["Operating System" classifiers](https://pypi.org/classifiers/) for your Python package in `setup.py`, `setup.cfg`, or `pypackage.toml`.
+You can set this by setting the relevant ["Operating System" classifiers](https://pypi.org/classifiers/) for your Python package in `setup.py`, `setup.cfg`, or `pyproject.toml`.
 
 
 ``` TOML
@@ -311,7 +311,7 @@ We display this on the detailed plugin page.
 We source this from the list of requirements in the `["info"]["requires_dist"]` field of the JSON returned by the PyPI API.
 We do not display requirements for `napari-plugin-engine` or `napari`.
 
-You can set this by setting the `install_requires` value for your Python package in `setup.py`, `setup.cfg`, or `pypackage.toml`.
+You can set this by setting the `install_requires` value for your Python package in `setup.py`, `setup.cfg`, or `pyproject.toml`.
 
 ``` TOML
 # setup.cfg
@@ -345,7 +345,7 @@ We display this on the detailed plugin page.
 
 We source this from `["info"]["project_url"]` field of the JSON returned by the PyPI API.
 
-You can set this by setting the `url` value for your Python package in `setup.py`, `setup.cfg`, or `pypackage.toml`.
+You can set this by setting the `url` value for your Python package in `setup.py`, `setup.cfg`, or `pyproject.toml`.
 
 ``` TOML
 # setup.cfg
@@ -367,7 +367,7 @@ We display this on the detailed plugin page.
 
 We source this from `["info"]["project_urls"]["Documentation"]` field of the JSON returned by the PyPI API.
 
-You can set this by adding a `Documentation` link to the `project_urls` value for your Python package in `setup.py`, `setup.cfg`, or `pypackage.toml`.
+You can set this by adding a `Documentation` link to the `project_urls` value for your Python package in `setup.py`, `setup.cfg`, or `pyproject.toml`.
 
 ``` TOML
 # setup.cfg
@@ -390,7 +390,7 @@ We display this on the detailed plugin page.
 
 We source this from `["info"]["project_urls"]["User Support"]` field of the JSON returned by the PyPI API.
 
-You can set this by adding a `User Support` link to the `project_urls` value for your Python package in `setup.py`, `setup.cfg`, or `pypackage.toml`.
+You can set this by adding a `User Support` link to the `project_urls` value for your Python package in `setup.py`, `setup.cfg`, or `pyproject.toml`.
 
 ``` TOML
 # setup.cfg
@@ -413,7 +413,7 @@ We display this on the detailed plugin page.
 
 We source this from `["info"]["project_urls"]["Bug Tracker"]` field of the JSON returned by the PyPI API.
 
-You can set this by adding a `Bug Tracker` link to the `project_urls` value for your Python package in `setup.py`, `setup.cfg`, or `pypackage.toml`.
+You can set this by adding a `Bug Tracker` link to the `project_urls` value for your Python package in `setup.py`, `setup.cfg`, or `pyproject.toml`.
 
 ``` TOML
 # setup.cfg
@@ -436,7 +436,7 @@ We display this on the detailed plugin page.
 
 We source this from `["info"]["project_urls"]["Twitter"]` field of the JSON returned by the PyPI API.
 
-You can set this by adding a `Twitter` link to the `project_urls` value for your Python package in `setup.py`, `setup.cfg`, or `pypackage.toml`.
+You can set this by adding a `Twitter` link to the `project_urls` value for your Python package in `setup.py`, `setup.cfg`, or `pyproject.toml`.
 
 ``` TOML
 # setup.cfg
@@ -455,7 +455,7 @@ We display this on the detailed plugin page.
 
 We source this from `["info"]["project_urls"]["Source Code"]` field of the JSON returned by the PyPI API.
 
-You can set this by adding a `Source Code` link to the `project_urls` value for your Python package in `setup.py`, `setup.cfg`, or `pypackage.toml`.
+You can set this by adding a `Source Code` link to the `project_urls` value for your Python package in `setup.py`, `setup.cfg`, or `pyproject.toml`.
 
 ``` TOML
 # setup.cfg
