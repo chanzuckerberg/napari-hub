@@ -139,8 +139,8 @@ You can set this by setting the `description` or `description-file` of your Pyth
 # setup.cfg
 [metadata]
 ...
-description-file = README.rst
-description-content-type = text/x-rst; charset=UTF-8
+description-file = README.md
+description-content-type = text/markdown
 ...
 ```
 
