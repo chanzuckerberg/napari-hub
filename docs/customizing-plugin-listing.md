@@ -10,7 +10,7 @@ We have two sources of plugin information for the napari hub: PyPI and GitHub.
 ### PyPI
 
 Much of the information about a napari plugin is specified in the Python package metadata & PyPI is our primary source of plugin metadata.
-The PyPI API provides information about Python packages through a simple JSON structure.
+The [PyPI API](https://warehouse.pypa.io/api-reference/json.html) provides information about Python packages through a simple JSON structure.
 We use PyPI to source information such as the Python versions that a plugin supports, its dependencies, etc.
 
 Plugin developers can modify these fields when they package their plugin by setting values in `setup.py`, `setup.cfg`, or `pyproject.toml`.
