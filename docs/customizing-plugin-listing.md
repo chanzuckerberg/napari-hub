@@ -94,7 +94,7 @@ We source this from the `["info"]["name"]` field of the JSON returned by the PyP
 
 You can set this by setting the `name` of your Python package in `setup.py`, `setup.cfg`, or `pyproject.toml`.
 
-``` TOML
+``` INI
 # setup.cfg
 [metadata]
 # ...
@@ -114,7 +114,7 @@ We source this from the `["info"]["summary"]` field of the JSON returned by the 
 
 You can set this by setting the `summary` of your Python package in `setup.py`, `setup.cfg`, or `pyproject.toml`.
 
-``` TOML
+``` INI
 # setup.cfg
 [metadata]
 # ...
@@ -135,7 +135,7 @@ If the `["info"]["description_content_type"]` field denotes Markdown, then this 
 
 You can set this by setting the `description` or `description-file` of your Python package in `setup.py`, `setup.cfg`, or `pyproject.toml`.
 
-``` TOML
+``` INI
 # setup.cfg
 [metadata]
 # ...
@@ -160,7 +160,7 @@ We source this from the `["info"]["author"]` field of the JSON returned by the P
 
 You can set this by setting the `author` of your Python package in `setup.py`, `setup.cfg`, or `pyproject.toml`.
 
-``` TOML
+``` INI
 # setup.cfg
 [metadata]
 # ...
@@ -209,7 +209,7 @@ You can set this by setting the `license` of your Python package in `setup.py`, 
 > You can find the full list of SPDX Identifiers at https://spdx.org/licenses/
 
 
-``` TOML
+``` INI
 # setup.cfg
 [metadata]
 # ...
@@ -242,7 +242,7 @@ If multiple "Development Status" classifiers are listed, we source one with the 
 You can set this by setting a ["Development Status" classifier](https://pypi.org/classifiers/) for your Python package in `setup.py`, `setup.cfg`, or `pyproject.toml`.
 
 
-``` TOML
+``` INI
 # setup.cfg
 [metadata]
 # ...
@@ -262,7 +262,7 @@ We source this from `["info"]["requires_python"]` field of the JSON returned by 
 You can set this by [setting the `python_requires` value](https://packaging.python.org/guides/distributing-packages-using-setuptools/#id54) for your Python package in `setup.py`, `setup.cfg`, or `pyproject.toml`.
 
 
-``` TOML
+``` INI
 # setup.cfg
 [metadata]
 # ...
@@ -281,7 +281,7 @@ We source this from the list of classifiers in the `["info"]["classifiers"]` fie
 You can set this by setting the relevant ["Operating System" classifiers](https://pypi.org/classifiers/) for your Python package in `setup.py`, `setup.cfg`, or `pyproject.toml`.
 
 
-``` TOML
+``` INI
 # setup.cfg
 [metadata]
 # ...
@@ -292,7 +292,7 @@ classifier =
 # ...
 ```
 
-``` TOML
+``` INI
 # setup.cfg
 [metadata]
 # ...
@@ -313,7 +313,7 @@ We do not display requirements for `napari-plugin-engine` or `napari`.
 
 You can set this by setting the `install_requires` value for your Python package in `setup.py`, `setup.cfg`, or `pyproject.toml`.
 
-``` TOML
+``` INI
 # setup.cfg
 [options]
 # ...
@@ -347,7 +347,7 @@ We source this from `["info"]["project_url"]` field of the JSON returned by the 
 
 You can set this by setting the `url` value for your Python package in `setup.py`, `setup.cfg`, or `pyproject.toml`.
 
-``` TOML
+``` INI
 # setup.cfg
 [metadata]
 # ...
@@ -369,7 +369,7 @@ We source this from `["info"]["project_urls"]["Documentation"]` field of the JSO
 
 You can set this by adding a `Documentation` link to the `project_urls` value for your Python package in `setup.py`, `setup.cfg`, or `pyproject.toml`.
 
-``` TOML
+``` INI
 # setup.cfg
 [metadata]
 # ...
@@ -392,7 +392,7 @@ We source this from `["info"]["project_urls"]["User Support"]` field of the JSON
 
 You can set this by adding a `User Support` link to the `project_urls` value for your Python package in `setup.py`, `setup.cfg`, or `pyproject.toml`.
 
-``` TOML
+``` INI
 # setup.cfg
 [metadata]
 # ...
@@ -415,7 +415,7 @@ We source this from `["info"]["project_urls"]["Bug Tracker"]` field of the JSON 
 
 You can set this by adding a `Bug Tracker` link to the `project_urls` value for your Python package in `setup.py`, `setup.cfg`, or `pyproject.toml`.
 
-``` TOML
+``` INI
 # setup.cfg
 [metadata]
 # ...
@@ -438,7 +438,7 @@ We source this from `["info"]["project_urls"]["Twitter"]` field of the JSON retu
 
 You can set this by adding a `Twitter` link to the `project_urls` value for your Python package in `setup.py`, `setup.cfg`, or `pyproject.toml`.
 
-``` TOML
+``` INI
 # setup.cfg
 [metadata]
 # ...
@@ -457,7 +457,7 @@ We source this from `["info"]["project_urls"]["Source Code"]` field of the JSON 
 
 You can set this by adding a `Source Code` link to the `project_urls` value for your Python package in `setup.py`, `setup.cfg`, or `pyproject.toml`.
 
-``` TOML
+``` INI
 # setup.cfg
 [metadata]
 # ...
