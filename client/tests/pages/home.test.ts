@@ -4,9 +4,6 @@ describe('/ (Home page)', () => {
   });
 
   it('should render hello world', async () => {
-    await expect(page).toHaveText(
-      '[data-napari-test=homeText]',
-      'Hello, World!',
-    );
+    await expect(page).toHaveText('[data-testid=homeText]', 'Hello, World!');
   });
 });
