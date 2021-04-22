@@ -38,8 +38,7 @@ Fields that can be defined through the Python package configuration include the 
 ### GitHub
 
 For some fields, we look to the plugin developer's GitHub repository instead of (or in addition to) PyPI.
-This is only supported, however, if the plugin developer has added a link to their GitHub repository in their PyPI metadata.
-(TODO: Specify which fields we will look for links to the GitHub repo)
+This is only supported, however, if the plugin developer has added a link to their GitHub repository in their PyPI metadata (see [Code Repository](#code-repository)).
 
 Plugin developers can modify these fields by adding a `.napari` configuration folder to their repository, along with the relevant configuration files for a given field.
 We currently support two configuration files:
