@@ -145,8 +145,9 @@ long_description_content_type = text/markdown
 # ...
 ```
 
-You can denote sections your plugin description by adding Level 1 Headings (e.g. `# Summary`).
-We will automatically generate sidebar navigation for your plugin from the Level 1 Headings present in your plugin description.
+You can denote sections your plugin description by adding Level 2 Headings (e.g. `## Summary`).
+We will automatically generate sidebar navigation for your plugin from the Level 2 Headings present in your plugin description.
+If your `description` begins with a Level 1 Heading, we will assume that this is a title (e.g. for your README) and drop it from the description.
 
 If you wish to customize this field with a napari-specific description which is different from the Python package description shown in PyPI, you can also set this field by adding a Markdown file to your GitHub repository at `.napari/DESCRIPTION.md`.
 This file will take precedence over the `description` in your Python package.
