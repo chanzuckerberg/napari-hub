@@ -29,9 +29,6 @@ export function SearchBar() {
           // Remove white colored input background
           'bg-transparent',
 
-          // Font size
-          'text-napari-app-bar',
-
           /*
             Inputs have a default width defined by the browser, so we have to
             set this explicitly to make the input flexible:

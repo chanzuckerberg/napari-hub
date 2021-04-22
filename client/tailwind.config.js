@@ -21,15 +21,6 @@ module.exports = {
         'napari-primary': '#80d1ff',
       },
 
-      fontSize: {
-        'napari-app-bar': 'clamp(11px, 3.5vw, 17px)',
-      },
-
-      margin: {
-        'napari-sm': '25px',
-        'napari-lg': '50px',
-      },
-
       width: (theme) => ({
         'napari-xs': theme('screens.xs'),
         'napari-center-col': '775px',
@@ -55,10 +46,8 @@ module.exports = {
         ].join(' '),
       }),
 
-      gap: (theme) => theme('margin'),
       maxWidth: (theme) => theme('width'),
       minWidth: (theme) => theme('width'),
-      padding: (theme) => theme('margin'),
     },
   },
 };

@@ -5,6 +5,18 @@ html {
     not long enough for a scrollbar.
   */
   @apply overflow-y-scroll;
+
+  /*
+    Use viewport width for fluid typography. The minimum font size is from
+    the design spec, and the maximum font size is set to the user's preferred
+    font size set by their browser settings.
+
+    Texts, margins, and paddings should use the `text-<size>` Tailwind classes or rem / em units in
+    CSS to ensure the font size is more accessible.
+
+    https://blog.logrocket.com/the-elements-of-responsive-typography
+  */
+  font-size: clamp(11px, 3.25vw, 100%);
 }
 
 body {
@@ -15,6 +27,7 @@ body {
   @apply overflow-x-auto;
 }
 
+/* stylelint-disable selector-max-id */
 #__next {
   /*
     Limit minimum width to 300px so that the the body will begin overflowing
@@ -22,3 +35,4 @@ body {
   */
   @apply min-w-napari-xs;
 }
+/* stylelint-enable */
