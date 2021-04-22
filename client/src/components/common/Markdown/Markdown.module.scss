@@ -1,0 +1,30 @@
+.markdown {
+  pre {
+    // Show scrollbar along x-axis for really long code
+    @apply overflow-x-auto;
+
+    // The Tailwind prose class adds a background around pre elements.
+    background: none;
+  }
+
+  img {
+    /*
+      Make images inline in markdown. By default, Tailwind will set all `img`
+      tags to `display: block`:
+      https://tailwindcss.com/docs/preflight#images-are-block-level.
+
+      We don't want this for markdown because it affects rendering of markdown
+      badges. Usually devs will include a bunch of badges together at the top
+      of the file. If all of the images are `display: block` by default, the
+      badges get rendered as a column instead of as row.
+
+      Also, having images rendered as blocks in markdown is redundant because
+      the markdown renderer will automatically wrap the image in a <p> tag to
+      ensure that the image is displayed as a block.
+    */
+    @apply inline;
+
+    // Remove extra margin added by prose.
+    @apply m-0;
+  }
+}
