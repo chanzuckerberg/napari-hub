@@ -33,17 +33,27 @@ module.exports = {
       width: (theme) => ({
         'napari-xs': theme('screens.xs'),
         'napari-center-col': '775px',
+        'napari-side-col': '225px',
       }),
 
       height: {
         'napari-app-bar': '75px',
       },
 
-      gridTemplateColumns: {
+      gridTemplateColumns: (theme) => ({
         'napari-nav-mobile': 'min-content 1fr',
-        'napari-2-col': '225px 775px',
-        'napari-3-col': '225px 775px 225px',
-      },
+
+        'napari-2-col': [
+          theme('width.napari-side-col'),
+          theme('width.napari-center-col'),
+        ].join(' '),
+
+        'napari-3-col': [
+          theme('width.napari-side-col'),
+          theme('width.napari-center-col'),
+          theme('width.napari-side-col'),
+        ].join(' '),
+      }),
 
       gap: (theme) => theme('margin'),
       maxWidth: (theme) => theme('width'),
