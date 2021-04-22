@@ -3,7 +3,7 @@
 exports[`<AppBar /> should match snapshot 1`] = `
 <DocumentFragment>
   <div
-    class="fixed top-0 right-0 flex flex-row items-start z-40 w-9/12 h-screen p-napari-sm bg-black"
+    class="fixed top-0 right-0 flex flex-row items-start z-40 w-9/12 h-screen p-6 bg-black"
     data-testid="menu"
     style="transform: translateX(100%) translateZ(0);"
   >
@@ -50,13 +50,13 @@ exports[`<AppBar /> should match snapshot 1`] = `
     </button>
   </div>
   <nav
-    class="bg-napari-primary h-napari-app-bar px-napari-sm md:px-napari-lg 2xl:p-0 grid grid-cols-napari-nav-mobile justify-center items-center gap-napari-sm md:gap-napari-lg 2xl:grid 2xl:grid-cols-napari-2-col 3xl:grid-cols-napari-3-col"
+    class="bg-napari-primary h-napari-app-bar px-6 md:px-12 2xl:p-0 grid grid-cols-napari-nav-mobile justify-center items-center gap-6 md:gap-12 2xl:grid 2xl:grid-cols-napari-2-col 3xl:grid-cols-napari-3-col"
   >
     <header
       class="flex"
     >
       <h1
-        class="text-napari-app-bar whitespace-nowrap"
+        class="whitespace-nowrap"
       >
         <a
           href="/"
@@ -75,7 +75,7 @@ exports[`<AppBar /> should match snapshot 1`] = `
         class="flex flex-auto items-center border-b-2 border-black"
       >
         <input
-          class="flex flex-auto border-none outline-none bg-transparent text-napari-app-bar w-0"
+          class="flex flex-auto border-none outline-none bg-transparent w-0"
         />
         <div
           style="overflow: hidden; box-sizing: border-box; display: inline-block; position: relative; width: 14px; height: 14px;"
@@ -89,22 +89,30 @@ exports[`<AppBar /> should match snapshot 1`] = `
           />
         </div>
       </form>
-      <div
-        class="hidden lg:flex ml-napari-lg links"
+      <ul
+        class="hidden lg:flex ml-12 links"
       >
-        <a
-          href="/about"
+        <li
+          class="list-none"
         >
-          About
-        </a>
-        <a
-          href="/help"
+          <a
+            href="/about"
+          >
+            About
+          </a>
+        </li>
+        <li
+          class="list-none"
         >
-          Help
-        </a>
-      </div>
+          <a
+            href="/help"
+          >
+            Help
+          </a>
+        </li>
+      </ul>
       <button
-        class="ml-napari-sm flex lg:hidden"
+        class="ml-6 flex lg:hidden"
         type="button"
       >
         <div

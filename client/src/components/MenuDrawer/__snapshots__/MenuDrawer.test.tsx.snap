@@ -2,7 +2,7 @@
 
 exports[`<MenuDrawer /> should match snapshot 1`] = `
 <div
-  class="fixed top-0 right-0 flex flex-row items-start z-40 w-9/12 h-screen p-napari-sm bg-black"
+  class="fixed top-0 right-0 flex flex-row items-start z-40 w-9/12 h-screen p-6 bg-black"
   data-testid="menu"
   style="transform: translateX(100%) translateZ(0);"
 >
