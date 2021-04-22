@@ -30,9 +30,10 @@ module.exports = {
         'napari-lg': '50px',
       },
 
-      width: {
+      width: (theme) => ({
+        'napari-xs': theme('screens.xs'),
         'napari-center-col': '775px',
-      },
+      }),
 
       height: {
         'napari-app-bar': '75px',
@@ -46,6 +47,7 @@ module.exports = {
 
       gap: (theme) => theme('margin'),
       maxWidth: (theme) => theme('width'),
+      minWidth: (theme) => theme('width'),
       padding: (theme) => theme('margin'),
     },
   },

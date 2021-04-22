@@ -4,5 +4,21 @@ html {
     layout shift when switching between pages that have content long enough /
     not long enough for a scrollbar.
   */
-  overflow-y: scroll;
+  @apply overflow-y-scroll;
+}
+
+body {
+  /*
+    Overflow body along x-axis when contents are too long for the page. This
+    should only happen in rare cases where the viewport is < 300px.
+  */
+  @apply overflow-x-auto;
+}
+
+#__next {
+  /*
+    Limit minimum width to 300px so that the the body will begin overflowing
+    for viewports smaller than 300px.
+  */
+  @apply min-w-napari-xs;
 }
