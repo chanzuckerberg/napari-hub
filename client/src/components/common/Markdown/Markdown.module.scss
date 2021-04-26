@@ -1,4 +1,16 @@
 .markdown {
+  h2 {
+    /*
+      The designs requires a 35px margin between the heading and the top of
+      the viewport when scrolling to a heading.
+
+      TODO There's currently no support for this in Safari yet. We'll need to
+      implement a solution in TypeScript.
+      https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-margin-top
+    */
+    scroll-margin-top: 2.1875rem; // 35px when html font-size is 16px
+  }
+
   pre {
     // Show scrollbar along x-axis for really long code
     @apply overflow-x-auto;

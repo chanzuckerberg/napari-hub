@@ -17,6 +17,15 @@ html {
     https://blog.logrocket.com/the-elements-of-responsive-typography
   */
   font-size: clamp(11px, 3.25vw, 100%);
+
+  /*
+    Use smooth transition when scrolling between different parts of the page.
+
+    TODO This currently has no support in Safari, so we'll probably have to
+    implement a solution in TypeScript.
+    https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-behavior
+  */
+  scroll-behavior: smooth;
 }
 
 body {
