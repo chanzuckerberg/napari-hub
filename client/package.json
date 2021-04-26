@@ -26,9 +26,13 @@
     "@mdx-js/loader": "^1.6.22",
     "@mdx-js/react": "^1.6.22",
     "@next/mdx": "^10.1.3",
+    "@testing-library/react-hooks": "^5.1.2",
+    "@types/lodash-es": "^4.17.4",
+    "@types/unist": "^2.0.3",
     "axios": "^0.21.1",
     "clsx": "^1.1.1",
     "framer-motion": "^4.1.3",
+    "lodash-es": "^4.17.21",
     "next": "10.1.3",
     "next-dynamic-loading-props": "^0.1.1",
     "react": "17.0.2",
@@ -37,8 +41,13 @@
     "react-query": "^3.13.5",
     "react-syntax-highlighter": "^15.4.3",
     "react-use": "^17.2.3",
+    "rehype-slug": "^4.0.1",
+    "rehype-stringify": "^8.0.0",
     "remark-gfm": "^1.0.0",
-    "remark-remove-comments": "^0.2.0"
+    "remark-parse": "^9.0.0",
+    "remark-rehype": "^8.1.0",
+    "remark-remove-comments": "^0.2.0",
+    "unified": "^9.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.13.15",
