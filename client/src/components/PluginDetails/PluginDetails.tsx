@@ -21,8 +21,12 @@ function PluginCenterColumn({ plugin }: Props) {
   );
 }
 
-function PluginRightColumn() {
-  return <div />;
+function PluginRightColumn({ plugin }: Props) {
+  return (
+    <div>
+      <Markdown.TOC className="fixed" markdown={plugin.description} />
+    </div>
+  );
 }
 
 /**
@@ -48,7 +52,7 @@ export function PluginDetails(props: Props) {
     >
       <PluginLeftColumn />
       <PluginCenterColumn {...props} />
-      <PluginRightColumn />
+      <PluginRightColumn {...props} />
     </div>
   );
 }

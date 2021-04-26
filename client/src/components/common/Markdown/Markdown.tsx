@@ -6,6 +6,7 @@ import removeComments from 'remark-remove-comments';
 
 import styles from './Markdown.module.scss';
 import { MarkdownCode } from './MarkdownCode';
+import { MarkdownTOC } from './MarkdownTOC';
 
 interface Props {
   // Markdown code.
@@ -63,3 +64,5 @@ export function Markdown({ children, disableHeader }: Props) {
     </ReactMarkdown>
   );
 }
+
+Markdown.TOC = MarkdownTOC;
