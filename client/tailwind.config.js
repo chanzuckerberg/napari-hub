@@ -17,7 +17,7 @@ module.exports = {
     },
 
     extend: {
-      backgroundColor: {
+      colors: {
         'napari-primary': '#80d1ff',
       },
 
