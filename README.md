@@ -19,9 +19,12 @@ After talking with users about the challenges and needs in finding analysis solu
 
 After our _alpha_ launch, we're very excited to keep iterating and building new features that are of value to the imaging community, supporting current and future _napari_ users and developers.
 
-We have a host of ideas for ways that we can help scientists learn if a plugin is right for them, for imaging scientists to share their knowledge with core facility users and collaborators, and ways to help lower barriers for image analysts in creating, maintaining, and supporting their plugins.
+We have a host of ideas for ways that we can help scientists learn if a plugin is right for them, for imaging scientists to share their knowledge with core facility users and collaborators, and ways to help lower barriers for image analysts in creating, maintaining, and supporting their plugins. 
+Feel free to provide feedback or share your own ideas by submitting a [feature request](https://github.com/chanzuckerberg/napari-hub/issues)!
 
-When we have a clearer idea of our roadmap beyond our June release, we'll share it here. In the meantime, feel free to share your ideas by submitting a [feature request](https://github.com/chanzuckerberg/napari-hub/issues)!
+We’ll be using this feedback from the community, along with User Experience Research, and consultation with the napari project to prioritize which features we decide to build.
+
+When we have a clearer idea of our roadmap beyond our June release, we'll share it here. 
 
 ## About
 
