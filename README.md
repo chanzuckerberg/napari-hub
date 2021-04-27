@@ -20,12 +20,15 @@ After talking with users about the challenges and needs in finding analysis solu
 After our _alpha_ launch, we're very excited to keep iterating and building new features that are of value to the imaging community, supporting current and future _napari_ users and developers.
 
 We have a host of ideas for ways that we can help scientists learn if a plugin is right for them, for imaging scientists to share their knowledge with core facility users and collaborators, and ways to help lower barriers for image analysts in creating, maintaining, and supporting their plugins.
+If you want to share your own ideas on what we should improve or add, we'd love you to submit a [feature request](https://github.com/chanzuckerberg/napari-hub/issues)! This will help us ensure the experience functions as intended for the community.
 
-When we have a clearer idea of our roadmap beyond our June release, we'll share it here. In the meantime, feel free to share your ideas by submitting a [feature request](https://github.com/chanzuckerberg/napari-hub/issues)!
+We’ll be using this feedback from the community, along with [User Experience Research](https://cziscience.medium.com/product-design-user-experience-research-to-accelerate-science-f9fbbb0d0a06), and consultation with the napari project to prioritize which features we decide to build.
+
+When we have a clearer idea of our roadmap beyond our June release, we'll share it here.
 
 ## About
 
-The _napari hub_ is a service of the Chan Zuckerberg Initiative.
+The _napari hub_ is built, maintained, and governed by the [Imaging team at the Chan Zuckerberg Initiative](https://chanzuckerberg.com/science/programs-resources/imaging/) as a free service for the napari community.
 
 [_napari_](https://napari.org) is a consensus-based community project and an open source tool that enables high performance visualization and exploration of a broad range of imaging data, including microscopy, medical imaging, geospatial data, and more, with clearly defined governance model, mission, and values.
 At CZI, we support the development of open source and community run tools like _napari_, as part of our mission to accelerate biomedical research and help every scientist make progress faster.
@@ -33,13 +36,6 @@ At CZI, we support the development of open source and community run tools like _
 The [CZI Imaging Team](https://chanzuckerberg.com/science/programs-resources/imaging/) seeks to remove barriers in the analysis of imaging and microscopy data and make it easier for biologists to access emerging methods for bioimage analysis that leverage machine learning.
 CZI sees promise in _napari_ and seeks to assist its development by providing resources not always available to the open source community, including dedicated user research, design, and engineering support.
 CZI is proud to collaborate with the science community to accelerate research and enable open science for all.
-
-## Source Code
-
-We're building the napari hub out in the open, so if you want to contribute
-or get a sneak, please take a look at:
-
-- [napari hub client](client/README.md)
 
 ### Team
 
@@ -51,3 +47,11 @@ or get a sneak, please take a look at:
 - Lucy Obus, User Experience ([@LCObus](https://github.com/LCObus))
 - Lia Prins, Design ([@liaprins-czi](https://github.com/liaprins-czi))
 - Nicholas Sofroniew, Product ([@sofroniewn](https://github.com/sofroniewn))
+
+
+## Source Code
+
+We're building the napari hub out in the open, so if you want to contribute
+or get a sneak, please take a look at:
+
+- [napari hub client](client/README.md)
