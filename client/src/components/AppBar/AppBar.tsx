@@ -92,10 +92,10 @@ export function AppBar() {
           'gap-6 md:gap-12',
 
           // Change to 2 column grid layout when 2xl+ screens
-          '2xl:grid 2xl:grid-cols-napari-2-col',
+          '2xl:grid 2xl:grid-cols-napari-app-bar-2-col',
 
           // Use 3 column layout when 3xl+ screens
-          '3xl:grid-cols-napari-3-col',
+          '3xl:grid 3xl:grid-cols-napari-3-col',
         )}
       >
         <AppBarHeader />

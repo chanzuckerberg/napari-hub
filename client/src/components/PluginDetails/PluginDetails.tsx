@@ -8,7 +8,7 @@ interface Props {
 }
 
 function PluginLeftColumn() {
-  return <div />;
+  return <div className="hidden 3xl:flex" />;
 }
 
 function PluginCenterColumn({ plugin }: Props) {
@@ -24,7 +24,10 @@ function PluginCenterColumn({ plugin }: Props) {
 function PluginRightColumn({ plugin }: Props) {
   return (
     <div>
-      <Markdown.TOC className="fixed" markdown={plugin.description} />
+      <Markdown.TOC
+        className="fixed hidden 2xl:flex"
+        markdown={plugin.description}
+      />
     </div>
   );
 }
