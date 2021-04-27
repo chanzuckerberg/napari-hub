@@ -22,7 +22,7 @@ After our _alpha_ launch, we're very excited to keep iterating and building new 
 We have a host of ideas for ways that we can help scientists learn if a plugin is right for them, for imaging scientists to share their knowledge with core facility users and collaborators, and ways to help lower barriers for image analysts in creating, maintaining, and supporting their plugins. 
 Feel free to provide feedback or share your own ideas by submitting a [feature request](https://github.com/chanzuckerberg/napari-hub/issues)!
 
-We’ll be using this feedback from the community, along with User Experience Research, and consultation with the napari project to prioritize which features we decide to build.
+We’ll be using this feedback from the community, along with [User Experience Research](https://cziscience.medium.com/helping-biologists-discover-and-distribute-bioimage-analysis-workflows-36b64e8c0ebd), and consultation with the napari project to prioritize which features we decide to build.
 
 When we have a clearer idea of our roadmap beyond our June release, we'll share it here. 
 
