@@ -64,7 +64,7 @@ For each of the fields in a plugin's listing, we outline below how the field is 
 | Metadata             | Full view   |  List view  | Filterable  | Sortable      | Searched  | Source(s)  |
 |----------------------|:-----------:|:-----------:|:-----------:|:-------------:|:---------:|:---------:|
 | Name                 |     ✅      |     ✅      |     ⛔      |      ✅       |    ✅    |    <img src="https://pypi.org/static/images/logo-small.svg" height="24"> |
-| Summary              |     ✅      |     ✅      |     ⛔      |      ⛔       |    ✅    |    <img src="https://pypi.org/static/images/logo-small.svg" height="24"> |
+| Summary              |     ✅      |     ✅      |     ⛔      |      ⛔       |    ✅    |    <img src="https://github.com/favicon.ico" height="24"> > <img src="https://pypi.org/static/images/logo-small.svg" height="24"> |
 | Description          |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ✅    |    <img src="https://github.com/favicon.ico" height="24"> > <img src="https://pypi.org/static/images/logo-small.svg" height="24"> |
 | Authors              |     ✅      |     ✅      |     ✅      |      ⛔       |    ⛔    |    <img src="https://github.com/favicon.ico" height="24"> > <img src="https://pypi.org/static/images/logo-small.svg" height="24"> |
 | License              |     ✅      |     ✅      |     ✅      |      ⛔       |    ⛔    |    <img src="https://pypi.org/static/images/logo-small.svg" height="24"> |
@@ -73,11 +73,11 @@ For each of the fields in a plugin's listing, we outline below how the field is 
 | Python Version       |     ✅      |     ⛔      |     ✅      |      ⛔       |    ⛔    |    <img src="https://pypi.org/static/images/logo-small.svg" height="24"> |
 | Operating System     |     ✅      |     ⛔      |     ✅      |      ⛔       |    ⛔    |    <img src="https://pypi.org/static/images/logo-small.svg" height="24"> |
 | Requirements         |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://pypi.org/static/images/logo-small.svg" height="24"> |
-| Project Site         |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://pypi.org/static/images/logo-small.svg" height="24"> |
-| Documentation        |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://pypi.org/static/images/logo-small.svg" height="24"> |
-| Support              |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://pypi.org/static/images/logo-small.svg" height="24"> |
-| Report Issues        |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://pypi.org/static/images/logo-small.svg" height="24"> |
-| Twitter              |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://pypi.org/static/images/logo-small.svg" height="24"> |
+| Project Site         |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://github.com/favicon.ico" height="24"> > <img src="https://pypi.org/static/images/logo-small.svg" height="24"> |
+| Documentation        |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://github.com/favicon.ico" height="24"> > <img src="https://pypi.org/static/images/logo-small.svg" height="24"> |
+| Support              |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://github.com/favicon.ico" height="24"> > <img src="https://pypi.org/static/images/logo-small.svg" height="24"> |
+| Report Issues        |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://github.com/favicon.ico" height="24"> > <img src="https://pypi.org/static/images/logo-small.svg" height="24"> |
+| Twitter              |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://github.com/favicon.ico" height="24"> > <img src="https://pypi.org/static/images/logo-small.svg" height="24"> |
 | Code Repository      |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://pypi.org/static/images/logo-small.svg" height="24"> |
 | Release Date         |     ✅      |     ✅      |     ⛔      |      ✅       |    ⛔    |    <img src="https://pypi.org/static/images/logo-small.svg" height="24"> |
 | First Released       |     ✅      |     ⛔      |     ⛔      |      ✅       |    ⛔    |    <img src="https://pypi.org/static/images/logo-small.svg" height="24"> |
@@ -119,6 +119,15 @@ You can set this by setting the `summary` value in your package metadata.
 [metadata]
 # ...
 summary = Pipelines and pipeline components for the analysis of image-based transcriptomics data
+# ...
+```
+
+If you wish to customize this field with a napari-specific summary, you can also set this field by setting a `summary` value in your napari configuration file.
+
+``` YAML
+# .napari/config.yml
+# ...
+summary:  Build scalable pipelines that localize and quantify RNA transcripts in image data generated by any FISH method
 # ...
 ```
 
@@ -360,6 +369,20 @@ project_urls =
 # ...
 ```
 
+Alternatively, you can also set this field by setting a value for `Project Site` in the `project_urls` section of your napari configuration file.
+
+``` YAML
+# .napari/config.yml
+# ...
+project_urls:
+    Project Site: https://spacetx-starfish.readthedocs.io/en/latest/
+    Report Issues: https://github.com/spacetx/starfish/issues
+    Documentation: https://spacetx-starfish.readthedocs.io/en/latest/
+    User Support: https://forum.image.sc/tag/starfish
+    Twitter: https://twitter.com/cziscience
+# ...
+```
+
 ### Documentation
 
 This is a link to further documentation for your plugin.
@@ -380,6 +403,20 @@ project_urls =
     Documentation = https://spacetx-starfish.readthedocs.io/en/latest/
     Source Code = https://github.com/spacetx/starfish
     User Support = https://forum.image.sc/tag/starfish
+# ...
+```
+
+Alternatively, you can also set this field by setting a value for `Documentation` in the `project_urls` section of your napari configuration file.
+
+``` YAML
+# .napari/config.yml
+# ...
+project_urls:
+    Project Site: https://spacetx-starfish.readthedocs.io/en/latest/
+    Report Issues: https://github.com/spacetx/starfish/issues
+    Documentation: https://spacetx-starfish.readthedocs.io/en/latest/
+    User Support: https://forum.image.sc/tag/starfish
+    Twitter: https://twitter.com/cziscience
 # ...
 ```
 
@@ -406,6 +443,20 @@ project_urls =
 # ...
 ```
 
+Alternatively, you can also set this field by setting a value for `User Support` in the `project_urls` section of your napari configuration file.
+
+``` YAML
+# .napari/config.yml
+# ...
+project_urls:
+    Project Site: https://spacetx-starfish.readthedocs.io/en/latest/
+    Report Issues: https://github.com/spacetx/starfish/issues
+    Documentation: https://spacetx-starfish.readthedocs.io/en/latest/
+    User Support: https://forum.image.sc/tag/starfish
+    Twitter: https://twitter.com/cziscience
+# ...
+```
+
 ### Report Issues
 
 This is a link to where users can report issues with your plugin.
@@ -429,6 +480,20 @@ project_urls =
 # ...
 ```
 
+Alternatively, you can also set this field by setting a value for `Report Issues` in the `project_urls` section of your napari configuration file.
+
+``` YAML
+# .napari/config.yml
+# ...
+project_urls:
+    Project Site: https://spacetx-starfish.readthedocs.io/en/latest/
+    Report Issues: https://github.com/spacetx/starfish/issues
+    Documentation: https://spacetx-starfish.readthedocs.io/en/latest/
+    User Support: https://forum.image.sc/tag/starfish
+    Twitter: https://twitter.com/cziscience
+# ...
+```
+
 ### Twitter
 
 This is a link to the Twitter feed for your plugin.
@@ -445,6 +510,20 @@ You can set this by adding a `Twitter` link to the `project_urls` value for your
 # ...
 project_urls =
   Twitter = https://twitter.com/napari_imaging
+# ...
+```
+
+Alternatively, you can also set this field by setting a value for `Twitter` in the `project_urls` section of your napari configuration file.
+
+``` YAML
+# .napari/config.yml
+# ...
+project_urls:
+    Project Site: https://spacetx-starfish.readthedocs.io/en/latest/
+    Report Issues: https://github.com/spacetx/starfish/issues
+    Documentation: https://spacetx-starfish.readthedocs.io/en/latest/
+    User Support: https://forum.image.sc/tag/starfish
+    Twitter: https://twitter.com/cziscience
 # ...
 ```
 
