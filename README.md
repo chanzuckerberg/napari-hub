@@ -28,7 +28,7 @@ When we have a clearer idea of our roadmap beyond our June release, we'll share 
 
 ## About
 
-The _napari hub_ is a service of the Chan Zuckerberg Initiative.
+The _napari hub_ is built, maintained, and governed by the [Imaging team at the Chan Zuckerberg Initiative](https://chanzuckerberg.com/science/programs-resources/imaging/) as a free service for the napari community.
 
 [_napari_](https://napari.org) is a consensus-based community project and an open source tool that enables high performance visualization and exploration of a broad range of imaging data, including microscopy, medical imaging, geospatial data, and more, with clearly defined governance model, mission, and values.
 At CZI, we support the development of open source and community run tools like _napari_, as part of our mission to accelerate biomedical research and help every scientist make progress faster.
@@ -36,13 +36,6 @@ At CZI, we support the development of open source and community run tools like _
 The [CZI Imaging Team](https://chanzuckerberg.com/science/programs-resources/imaging/) seeks to remove barriers in the analysis of imaging and microscopy data and make it easier for biologists to access emerging methods for bioimage analysis that leverage machine learning.
 CZI sees promise in _napari_ and seeks to assist its development by providing resources not always available to the open source community, including dedicated user research, design, and engineering support.
 CZI is proud to collaborate with the science community to accelerate research and enable open science for all.
-
-## Source Code
-
-We're building the napari hub out in the open, so if you want to contribute
-or get a sneak, please take a look at:
-
-- [napari hub client](client/README.md)
 
 ### Team
 
@@ -54,3 +47,11 @@ or get a sneak, please take a look at:
 - Lucy Obus, User Experience ([@LCObus](https://github.com/LCObus))
 - Lia Prins, Design ([@liaprins-czi](https://github.com/liaprins-czi))
 - Nicholas Sofroniew, Product ([@sofroniewn](https://github.com/sofroniewn))
+
+
+## Source Code
+
+We're building the napari hub out in the open, so if you want to contribute
+or get a sneak, please take a look at:
+
+- [napari hub client](client/README.md)
