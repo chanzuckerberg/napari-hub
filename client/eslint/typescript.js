@@ -15,6 +15,9 @@ module.exports = {
   plugins: ['simple-import-sort'],
 
   rules: {
+    // Throws errors for exported functions, which is a common pattern with ES modules.
+    '@typescript-eslint/unbound-method': 'off',
+
     // Named exports are nicer to work with for a variety of reasons:
     // https://basarat.gitbook.io/typescript/main-1/defaultisbad
     'import/no-default-export': 'error',

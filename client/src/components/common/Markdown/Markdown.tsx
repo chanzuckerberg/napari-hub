@@ -1,10 +1,12 @@
 import clsx from 'clsx';
 import ReactMarkdown, { TransformOptions } from 'react-markdown';
+import slug from 'rehype-slug';
 import gfm from 'remark-gfm';
 import removeComments from 'remark-remove-comments';
 
 import styles from './Markdown.module.scss';
 import { MarkdownCode } from './MarkdownCode';
+import { MarkdownTOC } from './MarkdownTOC';
 
 interface Props {
   // Markdown code.
@@ -14,12 +16,17 @@ interface Props {
   disableHeader?: boolean;
 }
 
-const PLUGINS = [
+const REMARK_PLUGINS = [
   // Add support for GitHub style markdown like checkboxes.
   gfm,
 
   // Remove HTML comments from markdown.
   removeComments,
+];
+
+const REHYPE_PLUGINS = [
+  // Add slug IDs to every heading.
+  slug,
 ];
 
 /**
@@ -50,9 +57,12 @@ export function Markdown({ children, disableHeader }: Props) {
         'max-w-none',
       )}
       components={components}
-      remarkPlugins={PLUGINS}
+      remarkPlugins={REMARK_PLUGINS}
+      rehypePlugins={REHYPE_PLUGINS}
     >
       {children}
     </ReactMarkdown>
   );
 }
+
+Markdown.TOC = MarkdownTOC;

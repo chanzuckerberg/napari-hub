@@ -17,7 +17,7 @@ module.exports = {
     },
 
     extend: {
-      backgroundColor: {
+      colors: {
         'napari-primary': '#80d1ff',
       },
 
@@ -35,6 +35,15 @@ module.exports = {
         'napari-nav-mobile': 'min-content 1fr',
 
         'napari-2-col': [
+          theme('width.napari-center-col'),
+          theme('width.napari-side-col'),
+        ].join(' '),
+
+        /*
+          App bar 2 column layout is reversed because the logo needs to be
+          smaller than the search container.
+        */
+        'napari-app-bar-2-col': [
           theme('width.napari-side-col'),
           theme('width.napari-center-col'),
         ].join(' '),

@@ -5,7 +5,9 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
   class="flex 2xl:grid 2xl:justify-center p-6 md:p-14 2xl:px-0 2xl:gap-14 2xl:grid-cols-napari-2-col 3xl:grid-cols-napari-3-col"
   data-testid="pluginDetails"
 >
-  <div />
+  <div
+    class="hidden 3xl:flex"
+  />
   <article
     class="w-full"
   >
@@ -76,7 +78,9 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
       </p>
       
 
-      <h2>
+      <h2
+        id="description"
+      >
         Description
       </h2>
       
@@ -86,7 +90,9 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
       </p>
       
 
-      <h2>
+      <h2
+        id="writers"
+      >
         Writers
       </h2>
       
@@ -96,7 +102,9 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
       </p>
       
 
-      <h3>
+      <h3
+        id="labels_to_zarr"
+      >
         <code
           node="[object Object]"
         >
@@ -121,7 +129,9 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
       </p>
       
 
-      <h3>
+      <h3
+        id="label_image_pairs_to_zarr"
+      >
         <code
           node="[object Object]"
         >
@@ -145,7 +155,9 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
       </p>
       
 
-      <h2>
+      <h2
+        id="readers"
+      >
         Readers
       </h2>
       
@@ -155,7 +167,9 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
       </p>
       
 
-      <h3>
+      <h3
+        id="get_zarr_labels"
+      >
         <code
           node="[object Object]"
         >
@@ -181,7 +195,9 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
       </p>
       
 
-      <h3>
+      <h3
+        id="get_label_image_stack"
+      >
         <code
           node="[object Object]"
         >
@@ -207,7 +223,9 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
       </p>
       
 
-      <h2>
+      <h2
+        id="zmeta"
+      >
         .zmeta
       </h2>
       
@@ -217,7 +235,9 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
       </p>
       
 
-      <h3>
+      <h3
+        id="an-example-zmeta-specification"
+      >
         An example .zmeta specification
       </h3>
       
@@ -291,7 +311,9 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
       </p>
       
 
-      <h2>
+      <h2
+        id="installation"
+      >
         Installation
       </h2>
       
@@ -323,7 +345,9 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
       </pre>
       
 
-      <h2>
+      <h2
+        id="contributing"
+      >
         Contributing
       </h2>
       
@@ -340,7 +364,9 @@ the coverage at least stays the same before you submit a pull request.
       </p>
       
 
-      <h2>
+      <h2
+        id="license"
+      >
         License
       </h2>
       
@@ -357,7 +383,9 @@ the coverage at least stays the same before you submit a pull request.
       </p>
       
 
-      <h2>
+      <h2
+        id="issues"
+      >
         Issues
       </h2>
       
@@ -373,6 +401,107 @@ the coverage at least stays the same before you submit a pull request.
       </p>
     </div>
   </article>
-  <div />
+  <div>
+    <ul
+      class="fixed hidden 2xl:flex flex flex-col border-l border-black"
+    >
+      <li
+        class="flex pl-6 h-6 border-l-4 my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
+        data-active="false"
+        data-testid="tocItem"
+      >
+        <a
+          class=""
+          href="#description"
+        >
+          Description
+        </a>
+      </li>
+      <li
+        class="flex pl-6 h-6 border-l-4 my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
+        data-active="false"
+        data-testid="tocItem"
+      >
+        <a
+          class=""
+          href="#writers"
+        >
+          Writers
+        </a>
+      </li>
+      <li
+        class="flex pl-6 h-6 border-l-4 my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
+        data-active="false"
+        data-testid="tocItem"
+      >
+        <a
+          class=""
+          href="#readers"
+        >
+          Readers
+        </a>
+      </li>
+      <li
+        class="flex pl-6 h-6 border-l-4 my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
+        data-active="false"
+        data-testid="tocItem"
+      >
+        <a
+          class=""
+          href="#zmeta"
+        >
+          .zmeta
+        </a>
+      </li>
+      <li
+        class="flex pl-6 h-6 border-l-4 my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
+        data-active="false"
+        data-testid="tocItem"
+      >
+        <a
+          class=""
+          href="#installation"
+        >
+          Installation
+        </a>
+      </li>
+      <li
+        class="flex pl-6 h-6 border-l-4 my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
+        data-active="false"
+        data-testid="tocItem"
+      >
+        <a
+          class=""
+          href="#contributing"
+        >
+          Contributing
+        </a>
+      </li>
+      <li
+        class="flex pl-6 h-6 border-l-4 my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
+        data-active="false"
+        data-testid="tocItem"
+      >
+        <a
+          class=""
+          href="#license"
+        >
+          License
+        </a>
+      </li>
+      <li
+        class="flex pl-6 h-6 border-l-4 my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-black"
+        data-active="true"
+        data-testid="tocItem"
+      >
+        <a
+          class="font-bold"
+          href="#issues"
+        >
+          Issues
+        </a>
+      </li>
+    </ul>
+  </div>
 </div>
 `;

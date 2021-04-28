@@ -5,7 +5,9 @@ exports[`<Markdown /> should match snapshot 1`] = `
   <div
     class="markdown prose max-w-none"
   >
-    <h1>
+    <h1
+      id="hello-world"
+    >
       Hello World
     </h1>
   </div>
