@@ -8,7 +8,7 @@
       implement a solution in TypeScript.
       https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-margin-top
     */
-    scroll-margin-top: 2.1875rem; // 35px when html font-size is 16px
+    scroll-margin-top: #{(35px / 16px)}rem;
   }
 
   pre {
