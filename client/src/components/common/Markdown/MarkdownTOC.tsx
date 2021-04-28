@@ -30,9 +30,13 @@ export function MarkdownTOC({ className, markdown }: Props) {
             className={clsx(
               // Layout
               'flex',
+              // 'flex items-center',
 
               // Box model
-              'pl-6 h-7 border-l-4',
+              'pl-6 h-6 border-l-4',
+
+              // Apply top/bottom margins except for first/last items
+              'my-2 first:mt-0 last:mb-0',
 
               // Smooth transition for border color
               'transition-colors',
