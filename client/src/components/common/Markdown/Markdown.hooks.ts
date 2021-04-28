@@ -62,6 +62,9 @@ export function useActiveHeader(headers: MarkdownHeader[]): string {
     document.addEventListener('scroll', findActiveHeader);
     document.addEventListener('resize', findActiveHeader);
 
+    // Find active header on initial render
+    findActiveHeader();
+
     // Remove event listeners on cleanup.
     return () => {
       document.removeEventListener('scroll', findActiveHeader);
