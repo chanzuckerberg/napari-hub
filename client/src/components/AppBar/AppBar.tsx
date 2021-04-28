@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import Image from 'next/image';
-import { ReactElement, useState } from 'react';
+import { useState } from 'react';
 
 import { MenuDrawer, SearchBar } from '@/components';
 import { Link } from '@/components/common';
@@ -27,7 +27,7 @@ const MENU_ITEMS: MenuDrawerItem[] = [
 function AppBarHeader() {
   return (
     <header className="flex">
-      <h1 className="text-napari-app-bar whitespace-nowrap">
+      <h1 className="whitespace-nowrap">
         <Link href="/">
           napari <strong>hub</strong>
         </Link>
@@ -41,31 +41,31 @@ function AppBarHeader() {
  */
 function AppBarLinks() {
   return (
-    <div
+    <ul
       className={clsx(
         // Hide links on smaller layouts
         'hidden lg:flex',
 
         // Margins
-        'ml-napari-lg',
+        'ml-12',
 
         // Custom link styling
         styles.links,
       )}
     >
       {MENU_ITEMS.map((item) => (
-        <Link key={item.link} href={item.link}>
-          {item.title}
-        </Link>
+        <li className="list-none" key={item.link}>
+          <Link href={item.link}>{item.title}</Link>
+        </li>
       ))}
-    </div>
+    </ul>
   );
 }
 
 /**
  * App bar component that renders the home link, search bar, and menu.
  */
-export function AppBar(): ReactElement {
+export function AppBar() {
   const [visible, setVisible] = useState(false);
 
   return (
@@ -82,14 +82,14 @@ export function AppBar(): ReactElement {
           'bg-napari-primary h-napari-app-bar',
 
           // Padding
-          'px-napari-sm md:px-napari-lg 2xl:p-0',
+          'px-6 md:px-12 2xl:p-0',
 
           // Grid layout
           'grid grid-cols-napari-nav-mobile',
           'justify-center items-center',
 
           // Grid gap
-          'gap-napari-sm md:gap-napari-lg',
+          'gap-6 md:gap-12',
 
           // Change to 2 column grid layout when 2xl+ screens
           '2xl:grid 2xl:grid-cols-napari-2-col',
@@ -118,7 +118,7 @@ export function AppBar(): ReactElement {
           {/* Menu button */}
           <button
             // Show menu button on smaller layouts
-            className="ml-napari-sm flex lg:hidden"
+            className="ml-6 flex lg:hidden"
             onClick={() => setVisible(true)}
             type="button"
           >

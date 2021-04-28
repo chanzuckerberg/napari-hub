@@ -21,32 +21,33 @@ module.exports = {
         'napari-primary': '#80d1ff',
       },
 
-      fontSize: {
-        'napari-app-bar': 'clamp(11px, 3.5vw, 17px)',
-      },
-
-      margin: {
-        'napari-sm': '25px',
-        'napari-lg': '50px',
-      },
-
-      width: {
+      width: (theme) => ({
+        'napari-xs': theme('screens.xs'),
         'napari-center-col': '775px',
-      },
+        'napari-side-col': '225px',
+      }),
 
       height: {
         'napari-app-bar': '75px',
       },
 
-      gridTemplateColumns: {
+      gridTemplateColumns: (theme) => ({
         'napari-nav-mobile': 'min-content 1fr',
-        'napari-2-col': '225px 775px',
-        'napari-3-col': '225px 775px 225px',
-      },
 
-      gap: (theme) => theme('margin'),
+        'napari-2-col': [
+          theme('width.napari-side-col'),
+          theme('width.napari-center-col'),
+        ].join(' '),
+
+        'napari-3-col': [
+          theme('width.napari-side-col'),
+          theme('width.napari-center-col'),
+          theme('width.napari-side-col'),
+        ].join(' '),
+      }),
+
       maxWidth: (theme) => theme('width'),
-      padding: (theme) => theme('margin'),
+      minWidth: (theme) => theme('width'),
     },
   },
 };

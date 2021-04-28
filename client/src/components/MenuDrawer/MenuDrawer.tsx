@@ -56,7 +56,7 @@ export function MenuDrawer({ items, onMenuClose, visible }: Props) {
           'w-9/12 h-screen',
 
           // Padding
-          'p-napari-sm',
+          'p-6',
 
           // Color
           'bg-black',
