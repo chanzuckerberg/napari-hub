@@ -1,5 +1,6 @@
 import clsx from 'clsx';
-import { AnimatePresence, motion } from 'framer-motion';
+
+import { Fade } from '@/components/common/animations';
 
 interface Props {
   visible?: boolean;
@@ -10,25 +11,22 @@ interface Props {
  */
 export function Overlay({ visible = false }: Props) {
   return (
-    <AnimatePresence>
-      {visible && (
-        <motion.div
-          data-testid="overlay"
-          className={clsx(
-            // Colors
-            'bg-black bg-opacity-50',
+    <Fade
+      data-testid="overlay"
+      className={clsx(
+        // Colors
+        'bg-black bg-opacity-50',
 
-            // Dimensions
-            'w-screen h-screen',
+        // Dimensions
+        'w-screen h-screen',
 
-            // Positioning
-            'fixed top-0 right-0',
-          )}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-        />
+        // Positioning
+        'fixed top-0 right-0',
+
+        // Z-index
+        'z-40',
       )}
-    </AnimatePresence>
+      visible={visible}
+    />
   );
 }
