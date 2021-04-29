@@ -4,6 +4,7 @@ import { Markdown } from '@/components/common';
 import { Media } from '@/components/common/media';
 import { PluginData } from '@/types';
 
+import { CallToActionButton } from './CallToActionButton';
 import { PluginMetadata } from './PluginMetadata';
 import { PluginStateProvider, usePluginState } from './PluginStateContext';
 
@@ -27,9 +28,43 @@ function PluginCenterColumn() {
       <h1 className="font-bold text-4xl">{plugin.name}</h1>
       <h2 className="font-semibold my-6 text-lg">{plugin.summary}</h2>
 
-      <Media className="my-6 md:my-12" lessThan="3xl">
+      <Media
+        className={clsx(
+          // Layout
+          'flex flex-col',
+
+          // Align CTA and metadata link horizontally for lg layouts
+          'lg:flex-row lg:items-center',
+
+          // Margins
+          'my-6 md:my-12',
+        )}
+        lessThan="3xl"
+      >
+        <Media lessThan="2xl">
+          {(className, render) =>
+            render && <CallToActionButton className={className} />
+          }
+        </Media>
+
         <a
-          className="underline hover:text-napari-primary"
+          className={clsx(
+            // Text styling
+            'underline hover:text-napari-primary',
+
+            /*
+              Top margins: This is used for smaller layouts because the CTA
+              button is above the metadata link.
+            */
+            'mt-6 md:mt-12 lg:mt-0',
+
+            /*
+              Left margins: This is used when the CTA and metadata link are
+              inline.  The margin is removed when the CTA moves to the right
+              column on 2xl layouts.
+            */
+            'lg:ml-12 2xl:ml-0',
+          )}
           href="#pluginMetadata"
         >
           View project data
@@ -54,7 +89,11 @@ function PluginRightColumn() {
 
   return (
     <Media greaterThanOrEqual="2xl">
-      <Markdown.TOC className="fixed flex" markdown={plugin.description} />
+      <CallToActionButton />
+      <Markdown.TOC
+        className="fixed flex mt-24"
+        markdown={plugin.description}
+      />
     </Media>
   );
 }
