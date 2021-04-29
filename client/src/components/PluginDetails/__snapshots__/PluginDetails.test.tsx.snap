@@ -6,8 +6,241 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
   data-testid="pluginDetails"
 >
   <div
-    class="hidden 3xl:flex"
-  />
+    class="fresnel-container fresnel-greaterThanOrEqual-3xl "
+  >
+    <div
+      class="flex flex-col xl:grid xl:grid-cols-[1fr,1fr,1fr] 3xl:flex"
+      id="pluginMetadata"
+    >
+      <ul
+        class="list-none"
+      >
+        <li
+          class="mb-4 text-sm"
+        >
+          <h4
+            class="inline 3xl:block font-bold whitespace-nowrap mr-2 3xl:m-0"
+          >
+            Version
+            :
+          </h4>
+          <ul
+            class="fresnel-greaterThanOrEqual-3xl list-none"
+          >
+            <li
+              class="my-2 last:mb-0"
+            >
+              0.0.2
+            </li>
+          </ul>
+        </li>
+        <li
+          class="mb-4 text-sm"
+        >
+          <h4
+            class="inline 3xl:block font-bold whitespace-nowrap mr-2 3xl:m-0"
+          >
+            Release date
+            :
+          </h4>
+          <ul
+            class="fresnel-greaterThanOrEqual-3xl list-none"
+          >
+            <li
+              class="my-2 last:mb-0"
+            >
+              03 March 2021
+            </li>
+          </ul>
+        </li>
+        <li
+          class="mb-4 text-sm"
+        >
+          <h4
+            class="inline 3xl:block font-bold whitespace-nowrap mr-2 3xl:m-0"
+          >
+            First released
+            :
+          </h4>
+          <ul
+            class="fresnel-greaterThanOrEqual-3xl list-none"
+          >
+            <li
+              class="my-2 last:mb-0"
+            >
+              22 February 2021
+            </li>
+          </ul>
+        </li>
+        <li
+          class="mb-4 text-sm"
+        >
+          <h4
+            class="inline 3xl:block font-bold whitespace-nowrap mr-2 3xl:m-0"
+          >
+            Development status
+            :
+          </h4>
+          <ul
+            class="fresnel-greaterThanOrEqual-3xl list-none"
+          >
+            <li
+              class="my-2 last:mb-0"
+            >
+              4 - Beta
+            </li>
+          </ul>
+        </li>
+        <li
+          class="mb-4 text-sm"
+        >
+          <h4
+            class="inline 3xl:block font-bold whitespace-nowrap mr-2 3xl:m-0"
+          >
+            License
+            :
+          </h4>
+          <ul
+            class="fresnel-greaterThanOrEqual-3xl list-none"
+          >
+            <li
+              class="my-2 last:mb-0"
+            >
+              MIT
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <div
+        class="fresnel-greaterThanOrEqual-3xl my-6 h-px bg-black border-none"
+      />
+      <div
+        class="flex flex-col items-start xl:items-center 2xl:items-start text-sm"
+      >
+        <h4
+          class="font-bold"
+        >
+          Github Activity
+        </h4>
+        <ul
+          class="list-none"
+        >
+          <li
+            class="my-2"
+          >
+            Stars
+            : 
+            <span
+              class="font-bold"
+            >
+              0
+            </span>
+          </li>
+          <li
+            class="my-2"
+          >
+            Forks
+            : 
+            <span
+              class="font-bold"
+            >
+              0
+            </span>
+          </li>
+          <li
+            class="my-2"
+          >
+            Issues + PRs
+            : 
+            <span
+              class="font-bold"
+            >
+              0
+            </span>
+          </li>
+        </ul>
+      </div>
+      <div
+        class="fresnel-greaterThanOrEqual-3xl my-6 h-px bg-black border-none"
+      />
+      <ul
+        class="list-none"
+      >
+        <li
+          class="mb-4 text-sm"
+        >
+          <h4
+            class="inline 3xl:block font-bold whitespace-nowrap mr-2 3xl:m-0"
+          >
+            Python versions supported
+            :
+          </h4>
+          <ul
+            class="fresnel-greaterThanOrEqual-3xl list-none"
+          >
+            <li
+              class="my-2 last:mb-0"
+            >
+              &gt;=3.6
+            </li>
+          </ul>
+        </li>
+        <li
+          class="mb-4 text-sm"
+        >
+          <h4
+            class="inline 3xl:block font-bold whitespace-nowrap mr-2 3xl:m-0"
+          >
+            Operating system
+            :
+          </h4>
+          <ul
+            class="fresnel-greaterThanOrEqual-3xl list-none"
+          >
+            <li
+              class="my-2 last:mb-0"
+            >
+              OS Independent
+            </li>
+          </ul>
+        </li>
+        <li
+          class="mb-4 text-sm"
+        >
+          <h4
+            class="inline 3xl:block font-bold whitespace-nowrap mr-2 3xl:m-0"
+          >
+            Requirements
+            :
+          </h4>
+          <ul
+            class="fresnel-greaterThanOrEqual-3xl list-none"
+          >
+            <li
+              class="my-2 last:mb-0"
+            >
+              napari-plugin-engine (&gt;=0.1.4)
+            </li>
+            <li
+              class="my-2 last:mb-0"
+            >
+              numpy
+            </li>
+            <li
+              class="my-2 last:mb-0"
+            >
+              zarr
+            </li>
+            <li
+              class="my-2 last:mb-0"
+            >
+              dask[complete]
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
   <article
     class="w-full"
   >
@@ -22,7 +255,17 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
       Plugin exploring different options for reading and writing compressed and portable labels layers in napari.
     </h2>
     <div
-      class="markdown prose max-w-none"
+      class="fresnel-container fresnel-lessThan-3xl my-6 md:my-12"
+    >
+      <a
+        class="underline hover:text-napari-primary"
+        href="#pluginMetadata"
+      >
+        View project data
+      </a>
+    </div>
+    <div
+      class="mb-10 markdown prose max-w-none"
     >
       
 
@@ -400,10 +643,197 @@ the coverage at least stays the same before you submit a pull request.
          along with a detailed description.
       </p>
     </div>
+    <div
+      class="fresnel-lessThan-3xl flex flex-col xl:grid xl:grid-cols-[1fr,1fr,1fr] 3xl:flex"
+      id="pluginMetadata"
+    >
+      <ul
+        class="list-none"
+      >
+        <li
+          class="mb-4 text-sm"
+        >
+          <h4
+            class="inline 3xl:block font-bold whitespace-nowrap mr-2 3xl:m-0"
+          >
+            Version
+            :
+          </h4>
+          <p
+            class="fresnel-lessThan-3xl inline"
+          >
+            0.0.2
+          </p>
+        </li>
+        <li
+          class="mb-4 text-sm"
+        >
+          <h4
+            class="inline 3xl:block font-bold whitespace-nowrap mr-2 3xl:m-0"
+          >
+            Release date
+            :
+          </h4>
+          <p
+            class="fresnel-lessThan-3xl inline"
+          >
+            03 March 2021
+          </p>
+        </li>
+        <li
+          class="mb-4 text-sm"
+        >
+          <h4
+            class="inline 3xl:block font-bold whitespace-nowrap mr-2 3xl:m-0"
+          >
+            First released
+            :
+          </h4>
+          <p
+            class="fresnel-lessThan-3xl inline"
+          >
+            22 February 2021
+          </p>
+        </li>
+        <li
+          class="mb-4 text-sm"
+        >
+          <h4
+            class="inline 3xl:block font-bold whitespace-nowrap mr-2 3xl:m-0"
+          >
+            Development status
+            :
+          </h4>
+          <p
+            class="fresnel-lessThan-3xl inline"
+          >
+            4 - Beta
+          </p>
+        </li>
+        <li
+          class="mb-4 text-sm"
+        >
+          <h4
+            class="inline 3xl:block font-bold whitespace-nowrap mr-2 3xl:m-0"
+          >
+            License
+            :
+          </h4>
+          <p
+            class="fresnel-lessThan-3xl inline"
+          >
+            MIT
+          </p>
+        </li>
+      </ul>
+      <div
+        class="fresnel-lessThan-xl my-6 h-px bg-black border-none"
+      />
+      <div
+        class="flex flex-col items-start xl:items-center 2xl:items-start text-sm"
+      >
+        <h4
+          class="font-bold"
+        >
+          Github Activity
+        </h4>
+        <ul
+          class="list-none"
+        >
+          <li
+            class="my-2"
+          >
+            Stars
+            : 
+            <span
+              class="font-bold"
+            >
+              0
+            </span>
+          </li>
+          <li
+            class="my-2"
+          >
+            Forks
+            : 
+            <span
+              class="font-bold"
+            >
+              0
+            </span>
+          </li>
+          <li
+            class="my-2"
+          >
+            Issues + PRs
+            : 
+            <span
+              class="font-bold"
+            >
+              0
+            </span>
+          </li>
+        </ul>
+      </div>
+      <div
+        class="fresnel-lessThan-xl my-6 h-px bg-black border-none"
+      />
+      <ul
+        class="list-none"
+      >
+        <li
+          class="mb-4 text-sm"
+        >
+          <h4
+            class="inline 3xl:block font-bold whitespace-nowrap mr-2 3xl:m-0"
+          >
+            Python versions supported
+            :
+          </h4>
+          <p
+            class="fresnel-lessThan-3xl inline"
+          >
+            &gt;=3.6
+          </p>
+        </li>
+        <li
+          class="mb-4 text-sm"
+        >
+          <h4
+            class="inline 3xl:block font-bold whitespace-nowrap mr-2 3xl:m-0"
+          >
+            Operating system
+            :
+          </h4>
+          <p
+            class="fresnel-lessThan-3xl inline"
+          >
+            OS Independent
+          </p>
+        </li>
+        <li
+          class="mb-4 text-sm"
+        >
+          <h4
+            class="inline 3xl:block font-bold whitespace-nowrap mr-2 3xl:m-0"
+          >
+            Requirements
+            :
+          </h4>
+          <p
+            class="fresnel-lessThan-3xl inline"
+          >
+            napari-plugin-engine (&gt;=0.1.4), numpy, zarr, dask[complete]
+          </p>
+        </li>
+      </ul>
+    </div>
   </article>
-  <div>
+  <div
+    class="fresnel-container fresnel-greaterThanOrEqual-2xl "
+  >
     <ul
-      class="fixed hidden 2xl:flex flex flex-col border-l border-black"
+      class="fixed flex flex flex-col border-l border-black"
     >
       <li
         class="flex pl-6 h-6 border-l-4 my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
