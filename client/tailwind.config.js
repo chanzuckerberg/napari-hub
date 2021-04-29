@@ -23,6 +23,7 @@ module.exports = {
     extend: {
       colors: {
         'napari-primary': '#80d1ff',
+        'napari-primary-light': 'rgba(128, 215, 255, 0.25)',
       },
 
       width: (theme) => ({

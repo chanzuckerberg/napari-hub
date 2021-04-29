@@ -1,0 +1,6 @@
+// Make SVG stroke color black
+.closeIcon {
+  path {
+    @apply stroke-current text-black;
+  }
+}
