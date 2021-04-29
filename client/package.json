@@ -23,6 +23,7 @@
     "test:update": "yarn test --updateSnapshot"
   },
   "dependencies": {
+    "@artsy/fresnel": "^1.4.0",
     "@mdx-js/loader": "^1.6.22",
     "@mdx-js/react": "^1.6.22",
     "@next/mdx": "^10.1.3",
