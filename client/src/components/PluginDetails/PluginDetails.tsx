@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import { Markdown } from '@/components/common';
 import { PluginData } from '@/types';
 
+import { PluginMetadata } from './PluginMetadata';
 import { PluginStateProvider, usePluginState } from './PluginStateContext';
 
 interface Props {
@@ -10,7 +11,11 @@ interface Props {
 }
 
 function PluginLeftColumn() {
-  return <div className="hidden 3xl:flex" />;
+  return (
+    <div className="hidden 3xl:block">
+      <PluginMetadata />
+    </div>
+  );
 }
 
 function PluginCenterColumn() {
