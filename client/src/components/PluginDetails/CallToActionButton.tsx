@@ -1,26 +1,41 @@
 import clsx from 'clsx';
+import { useState } from 'react';
 
-export function CallToActionButton() {
+import { InstallModal } from './InstallModal';
+
+interface Props {
+  className?: string;
+}
+
+/**
+ * Component that renders the CTA button and installation modal.  Clicking the
+ * install button will render the modal visible.
+ */
+export function CallToActionButton({ className }: Props) {
+  const [visible, setVisible] = useState(false);
+
   return (
-    <button
-      className={clsx(
-        'bg-napari-primary',
+    <>
+      <InstallModal onClose={() => setVisible(false)} visible={visible} />
 
-        // Keep button on screen when scrolling on 2xl.
-        '2xl:fixed',
+      <button
+        className={clsx(
+          className,
 
-        /*
-          3.125rem = 50px when font size is 16px, and 3.125rem ~ 34px when
-          the font size is 11px.  This allows the height to scale between xs
-          and md screens.
+          // Button color
+          'bg-napari-primary',
 
-          For md screens, the height changes to 50px to take on its max size.
-        */
-        'h-[3.125rem] w-full md:h-[50px] lg:max-w-napari-side-col',
-      )}
-      type="button"
-    >
-      Install
-    </button>
+          // Keep button on screen when scrolling on 2xl.
+          '2xl:fixed',
+
+          // Dimensions
+          'h-12 w-full lg:max-w-napari-side-col',
+        )}
+        onClick={() => setVisible(true)}
+        type="button"
+      >
+        Install
+      </button>
+    </>
   );
 }
