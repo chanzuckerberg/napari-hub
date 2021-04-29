@@ -1,9 +1,16 @@
+import clsx from 'clsx';
+
 import { Divider } from '@/components/common';
+import { Media } from '@/components/common/media';
 import { formatDate } from '@/utils/date';
 
 import { MetadataList } from './MetadataList';
 import { MetadataItem } from './PluginDetails.types';
 import { usePluginState } from './PluginStateContext';
+
+function renderDivider(className: string, render: boolean) {
+  return render && <Divider className={clsx(className, 'my-6')} />;
+}
 
 /**
  * Component for rendering plugin GitHub data.
@@ -27,7 +34,18 @@ function PluginGithubData() {
   ];
 
   return (
-    <div className="text-sm">
+    <div
+      className={clsx(
+        // Layout
+        'flex flex-col',
+
+        // Centering only for xl layout
+        'items-start xl:items-center 2xl:items-start',
+
+        // Font
+        'text-sm',
+      )}
+    >
       <h4 className="font-bold">Github Activity</h4>
       <ul className="list-none">
         {items.map((item) => (
@@ -40,12 +58,16 @@ function PluginGithubData() {
   );
 }
 
+interface Props {
+  className?: string;
+}
+
 /**
  * Component for rendering plugin metadata sidebar in the plugin details page.
  *
  * TODO Replace with actual plugin data.
  */
-export function PluginMetadata() {
+export function PluginMetadata({ className }: Props) {
   const { plugin } = usePluginState();
 
   const projectItems: MetadataItem[] = [
@@ -90,13 +112,35 @@ export function PluginMetadata() {
     },
   ];
 
-  return (
+  // Only include divider in the vertical layout.
+  const divider = (
     <>
-      <MetadataList items={projectItems} />
-      <Divider className="my-4" />
-      <PluginGithubData />
-      <Divider className="my-4" />
-      <MetadataList items={requirementItems} />
+      <Media greaterThanOrEqual="3xl">{renderDivider}</Media>
+      <Media lessThan="xl">{renderDivider}</Media>
     </>
+  );
+
+  return (
+    <div
+      id="pluginMetadata"
+      className={clsx(
+        className,
+
+        // Vertical layout for < xl
+        'flex flex-col',
+
+        // Horizontal layout with 3 column grid for xl+
+        'xl:grid xl:grid-cols-[1fr,1fr,1fr]',
+
+        // Back to vertical layout for 3xl+
+        '3xl:flex',
+      )}
+    >
+      <MetadataList items={projectItems} />
+      {divider}
+      <PluginGithubData />
+      {divider}
+      <MetadataList items={requirementItems} />
+    </div>
   );
 }
