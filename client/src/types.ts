@@ -1,8 +1,13 @@
+export interface PluginAuthor {
+  name: string;
+  email?: string;
+}
+
 /**
  * Interface for plugin data response from backend.
  */
 export interface PluginData {
-  authors: string;
+  authors: PluginAuthor[];
   code_repository: string;
   description_content_type: string;
   description: string;
