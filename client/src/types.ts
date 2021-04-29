@@ -1,3 +1,6 @@
+/**
+ * Interface for plugin data response from backend.
+ */
 export interface PluginData {
   authors: string;
   code_repository: string;
