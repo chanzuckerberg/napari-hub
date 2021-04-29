@@ -3,6 +3,12 @@ module.exports = {
 
   rules: {
     /*
+      Prop types aren't necessary since we have TypeScript interfaces for
+      prop types.
+    */
+    'react/prop-types': 'off',
+
+    /*
       React automatically adds the import as part of the new JSX transform:
       https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html#nextjs
      */
