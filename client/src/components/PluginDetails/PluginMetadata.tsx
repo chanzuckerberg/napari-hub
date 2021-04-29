@@ -1,16 +1,12 @@
 import clsx from 'clsx';
 
 import { Divider } from '@/components/common';
-import { Media } from '@/components/common/media';
+import { MediaFragment } from '@/components/common/media';
 import { formatDate } from '@/utils/date';
 
 import { MetadataList } from './MetadataList';
 import { MetadataItem } from './PluginDetails.types';
 import { usePluginState } from './PluginStateContext';
-
-function renderDivider(className: string, render: boolean) {
-  return render && <Divider className={clsx(className, 'my-6')} />;
-}
 
 interface GithubMetadataItem {
   title: string;
@@ -118,10 +114,11 @@ export function PluginMetadata({ className }: Props) {
   ];
 
   // Only include divider in the vertical layout.
-  const divider = (
+  let divider = <Divider className="my-6" />;
+  divider = (
     <>
-      <Media greaterThanOrEqual="3xl">{renderDivider}</Media>
-      <Media lessThan="xl">{renderDivider}</Media>
+      <MediaFragment greaterThanOrEqual="3xl">{divider}</MediaFragment>
+      <MediaFragment lessThan="xl">{divider}</MediaFragment>
     </>
   );
 

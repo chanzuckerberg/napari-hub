@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 
-import { Media } from '@/components/common/media';
+import { MediaFragment } from '@/components/common/media';
 
 import { MetadataItem } from './PluginDetails.types';
 
@@ -42,27 +42,19 @@ function MetadataListItem({ title, values }: MetadataListItemProps) {
         </p>
       )}
 
-      <Media lessThan="3xl">
-        {(className, render) =>
-          render && (
-            <p className={clsx(className, 'inline')}>{values.join(', ')}</p>
-          )
-        }
-      </Media>
+      <MediaFragment lessThan="3xl">
+        <p className="inline">{values.join(', ')}</p>
+      </MediaFragment>
 
-      <Media greaterThanOrEqual="3xl">
-        {(className, render) =>
-          render && (
-            <ul className={clsx(className, 'list-none')}>
-              {values.map((value) => (
-                <li className="my-2 last:mb-0" key={value}>
-                  {value}
-                </li>
-              ))}
-            </ul>
-          )
-        }
-      </Media>
+      <MediaFragment greaterThanOrEqual="3xl">
+        <ul className="list-none">
+          {values.map((value) => (
+            <li className="my-2 last:mb-0" key={value}>
+              {value}
+            </li>
+          ))}
+        </ul>
+      </MediaFragment>
     </li>
   );
 }
