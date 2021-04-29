@@ -3,6 +3,8 @@ import clsx from 'clsx';
 import { Markdown } from '@/components/common';
 import { PluginData } from '@/types';
 
+import { PluginStateProvider, usePluginState } from './PluginStateContext';
+
 interface Props {
   plugin: PluginData;
 }
@@ -11,7 +13,9 @@ function PluginLeftColumn() {
   return <div className="hidden 3xl:flex" />;
 }
 
-function PluginCenterColumn({ plugin }: Props) {
+function PluginCenterColumn() {
+  const { plugin } = usePluginState();
+
   return (
     <article className="w-full">
       <h1 className="font-bold text-4xl">{plugin.name}</h1>
@@ -21,7 +25,9 @@ function PluginCenterColumn({ plugin }: Props) {
   );
 }
 
-function PluginRightColumn({ plugin }: Props) {
+function PluginRightColumn() {
+  const { plugin } = usePluginState();
+
   return (
     <div>
       <Markdown.TOC
@@ -35,7 +41,7 @@ function PluginRightColumn({ plugin }: Props) {
 /**
  * Component for rendering the plugin details page.
  */
-export function PluginDetails(props: Props) {
+export function PluginDetails({ plugin }: Props) {
   return (
     <div
       data-testid="pluginDetails"
@@ -53,9 +59,11 @@ export function PluginDetails(props: Props) {
         '2xl:grid-cols-napari-2-col 3xl:grid-cols-napari-3-col',
       )}
     >
-      <PluginLeftColumn />
-      <PluginCenterColumn {...props} />
-      <PluginRightColumn {...props} />
+      <PluginStateProvider plugin={plugin}>
+        <PluginLeftColumn />
+        <PluginCenterColumn />
+        <PluginRightColumn />
+      </PluginStateProvider>
     </div>
   );
 }
