@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import { ReactNode } from 'react-markdown';
 
 import { Divider } from '@/components/common';
 import { MediaFragment } from '@/components/common/media';
@@ -59,8 +60,23 @@ function PluginGithubData() {
   );
 }
 
-interface Props {
+interface CommonProps {
+  /**
+   * Class name to pass to root element.
+   */
   className?: string;
+}
+
+interface PluginMetadataBaseProps extends CommonProps {
+  /**
+   * Divider to render between metadata lists.
+   */
+  divider?: ReactNode;
+
+  /**
+   * Render metadata lists inline.
+   */
+  inline?: boolean;
 }
 
 /**
@@ -68,7 +84,12 @@ interface Props {
  *
  * TODO Replace with actual plugin data.
  */
-export function PluginMetadata({ className }: Props) {
+
+function PluginMetadataBase({
+  className,
+  divider,
+  inline,
+}: PluginMetadataBaseProps) {
   const { plugin } = usePluginState();
 
   const projectItems: MetadataItem[] = [
@@ -113,15 +134,6 @@ export function PluginMetadata({ className }: Props) {
     },
   ];
 
-  // Only include divider in the vertical layout.
-  let divider = <Divider className="my-6" />;
-  divider = (
-    <>
-      <MediaFragment greaterThanOrEqual="3xl">{divider}</MediaFragment>
-      <MediaFragment lessThan="xl">{divider}</MediaFragment>
-    </>
-  );
-
   return (
     <div
       id="pluginMetadata"
@@ -138,11 +150,38 @@ export function PluginMetadata({ className }: Props) {
         '3xl:flex',
       )}
     >
-      <MetadataList items={projectItems} />
+      <MetadataList inline={inline} items={projectItems} />
       {divider}
       <PluginGithubData />
       {divider}
-      <MetadataList items={requirementItems} />
+      <MetadataList inline={inline} items={requirementItems} />
     </div>
+  );
+}
+
+/**
+ * Component for rendering plugin metadata responsively.  This handles
+ * rendering the divider for vertical layouts and rendering headers / values
+ * inline for smaller screens.
+ */
+export function PluginMetadata(props: CommonProps) {
+  let divider = <Divider className="my-6" />;
+  divider = (
+    <>
+      <MediaFragment greaterThanOrEqual="3xl">{divider}</MediaFragment>
+      <MediaFragment lessThan="xl">{divider}</MediaFragment>
+    </>
+  );
+
+  return (
+    <>
+      <MediaFragment lessThan="3xl">
+        <PluginMetadataBase {...props} divider={divider} inline />
+      </MediaFragment>
+
+      <MediaFragment greaterThanOrEqual="3xl">
+        <PluginMetadataBase {...props} divider={divider} />
+      </MediaFragment>
+    </>
   );
 }
