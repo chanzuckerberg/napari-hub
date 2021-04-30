@@ -146,7 +146,7 @@ export function MetadataList({
       className={clsx(
         'list-none',
         className,
-        horizontal && 'flex justify-between',
+        horizontal && 'grid grid-cols-napari-3-col-fr',
       )}
     >
       {items.map((item) => {

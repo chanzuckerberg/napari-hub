@@ -58,6 +58,8 @@ module.exports = {
           theme('width.napari-center-col'),
           theme('width.napari-side-col'),
         ].join(' '),
+
+        'napari-3-col-fr': 'repeat(3, 1fr)',
       }),
 
       maxWidth: (theme) => theme('width'),

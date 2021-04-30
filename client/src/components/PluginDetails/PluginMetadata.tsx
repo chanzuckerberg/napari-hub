@@ -144,7 +144,7 @@ function PluginMetadataBase({
         'flex flex-col',
 
         // Horizontal layout with 3 column grid for xl+
-        'xl:grid xl:grid-cols-[1fr,1fr,1fr]',
+        'xl:grid xl:grid-cols-napari-3-col-fr',
 
         // Back to vertical layout for 3xl+
         '3xl:flex',
