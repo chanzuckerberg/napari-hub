@@ -7,6 +7,7 @@ import { PluginData } from '@/types';
 import { CallToActionButton } from './CallToActionButton';
 import { PluginMetadata } from './PluginMetadata';
 import { PluginStateProvider, usePluginState } from './PluginStateContext';
+import { SupportInfo } from './SupportInfo';
 
 interface Props {
   plugin: PluginData;
@@ -68,6 +69,8 @@ function PluginCenterColumn() {
           View project data
         </a>
       </Media>
+
+      <SupportInfo className="mb-6 md:mb-12" />
 
       <Markdown className="mb-10" disableHeader>
         {plugin.description}
