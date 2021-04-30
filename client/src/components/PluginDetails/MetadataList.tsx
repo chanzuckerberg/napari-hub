@@ -1,80 +1,161 @@
 import clsx from 'clsx';
+import { ReactNode } from 'react-markdown';
 
-import { MediaFragment } from '@/components/common/media';
+import styles from './MetadataList.module.scss';
+import { MetadataItem, MetadataValueTypes } from './PluginDetails.types';
 
-import { MetadataItem } from './PluginDetails.types';
+interface CommonProps {
+  /**
+   * Renders the metadata list with headings and values inline.
+   */
+  inline?: boolean;
+}
 
-interface MetadataListItemProps {
+interface MetadataListItemProps extends CommonProps {
+  /**
+   * Title of the current metadata.
+   */
   title: string;
-  values: string[];
+
+  /**
+   * List of values for the current metadata.
+   */
+  values: MetadataValueTypes[];
 }
 
 /**
  * Component for rendering a metadata list item.  This renders the title
  * heading and metadata value.
  */
-function MetadataListItem({ title, values }: MetadataListItemProps) {
+function MetadataListItem({ inline, title, values }: MetadataListItemProps) {
   const isEmpty = values.filter(Boolean).length === 0;
 
   return (
     <li className="mb-4 text-sm">
       <h4
         className={clsx(
-          /*
-            Render inline on smaller layouts, then render as block to move
-            list to next line.
-          */
-          'inline 3xl:block',
+          // Inline styles
+          inline ? 'inline mr-2' : 'block',
 
           // Font
           'font-bold whitespace-nowrap',
-
-          // Margins
-          'mr-2 3xl:m-0',
         )}
       >
         {title}:
       </h4>
 
+      {/* Render placeholder for empty data.  */}
       {isEmpty && (
-        <p className="text-gray-400 font-normal inline 3xl:block">
+        <p
+          className={clsx(
+            'text-gray-400 font-normal',
+            inline ? 'inline' : 'block',
+          )}
+        >
           information not submitted
         </p>
       )}
 
-      <MediaFragment lessThan="3xl">
-        <p className="inline">{values.join(', ')}</p>
-      </MediaFragment>
+      {!isEmpty && (
+        // Render metadata values as list
+        <ul className={clsx('list-none', inline ? 'inline' : 'block')}>
+          {values.map((value) => {
+            let node: ReactNode;
+            let key: string;
 
-      <MediaFragment greaterThanOrEqual="3xl">
-        <ul className="list-none">
-          {values.map((value) => (
-            <li className="my-2 last:mb-0" key={value}>
-              {value}
-            </li>
-          ))}
+            if (typeof value === 'string') {
+              key = value;
+              node = value;
+            } else {
+              // If metadata value is link, render icon and anchor tag.
+              key = value.href;
+              node = (
+                <span
+                  className={clsx(
+                    inline ? 'inline-flex' : 'flex',
+                    'items-center',
+                  )}
+                >
+                  {value.icon}
+
+                  <a
+                    className="ml-2 underline hover:text-napari-primary"
+                    href={value.href}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {value.text}
+                  </a>
+                </span>
+              );
+            }
+
+            return (
+              <li
+                className={clsx(
+                  // Margins
+                  'my-2 last:mb-0',
+
+                  // Line height
+                  'leading-8',
+
+                  // Render as comma list if inline
+                  // https://markheath.net/post/css-comma-separated-list
+                  inline && ['inline', styles.commaList],
+                )}
+                key={key}
+              >
+                {node}
+              </li>
+            );
+          })}
         </ul>
-      </MediaFragment>
+      )}
     </li>
   );
 }
 
-interface MetadataListProps {
+interface MetadataListProps extends CommonProps {
+  /**
+   * Class name to pass to root component.
+   */
+  className?: string;
+
+  /**
+   * Renders the metadata list horizontally.
+   */
+  horizontal?: boolean;
+
+  /**
+   * List of values for the current metadata.
+   */
   items: MetadataItem[];
 }
 
 /**
  * Component for rendering a list of plugin metadata titles and values.
  */
-export function MetadataList({ items }: MetadataListProps) {
+export function MetadataList({
+  className,
+  horizontal,
+  inline,
+  items,
+}: MetadataListProps) {
   return (
-    <ul className="list-none">
+    <ul
+      className={clsx(
+        'list-none',
+        className,
+        horizontal && 'flex justify-between',
+      )}
+    >
       {items.map((item) => {
         const values = item.value instanceof Array ? item.value : [item.value];
 
         return (
           <MetadataListItem
             key={`${item.title}-${String(values)}`}
+            inline={inline}
             title={item.title}
             values={values}
           />
