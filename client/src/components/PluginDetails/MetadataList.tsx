@@ -68,7 +68,7 @@ function MetadataListItem({ inline, title, values }: MetadataListItemProps) {
               node = value;
             } else {
               // If metadata value is link, render icon and anchor tag.
-              key = value.href;
+              key = `${value.text}-${value.href}`;
               node = (
                 <span
                   className={clsx(
