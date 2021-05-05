@@ -9,10 +9,10 @@ import {
   Twitter,
 } from '@/components/common/icons';
 import { MediaFragment } from '@/components/common/media';
+import { usePluginState } from '@/context/plugin';
 
 import { MetadataList } from './MetadataList';
 import { MetadataItem } from './PluginDetails.types';
-import { usePluginState } from './PluginStateContext';
 
 /**
  * Extracts a Twitter's username from the given Twitter URL.  Regex copied

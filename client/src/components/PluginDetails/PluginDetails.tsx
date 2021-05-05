@@ -2,11 +2,11 @@ import clsx from 'clsx';
 
 import { Markdown } from '@/components/common';
 import { Media, MediaFragment } from '@/components/common/media';
+import { PluginStateProvider, usePluginState } from '@/context/plugin';
 import { PluginData } from '@/types';
 
 import { CallToActionButton } from './CallToActionButton';
 import { PluginMetadata } from './PluginMetadata';
-import { PluginStateProvider, usePluginState } from './PluginStateContext';
 import { SupportInfo } from './SupportInfo';
 
 interface Props {

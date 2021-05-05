@@ -7,9 +7,9 @@ import { Overlay } from '@/components/common';
 import { Fade } from '@/components/common/animations';
 import { Close, Copy } from '@/components/common/icons';
 import { MediaFragment } from '@/components/common/media';
+import { usePluginState } from '@/context/plugin';
 
 import styles from './InstallModal.module.scss';
-import { usePluginState } from './PluginStateContext';
 
 /**
  * Component that renders an inline button for copying the plugin name to the
