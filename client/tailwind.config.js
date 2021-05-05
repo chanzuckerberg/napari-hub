@@ -1,4 +1,17 @@
+const { reduce } = require('lodash');
 const typography = require('@tailwindcss/typography');
+
+const breakpoints = require('./breakpoints');
+
+// Add px unit to all breakpoint values.
+const screens = reduce(
+  breakpoints,
+  (result, value, key) => {
+    result[key] = `${value}px`;
+    return result;
+  },
+  {},
+);
 
 module.exports = {
   mode: 'jit',
@@ -6,16 +19,7 @@ module.exports = {
   purge: ['./src/**/*.{mdx,tsx,scss}'],
   plugins: [typography],
   theme: {
-    screens: {
-      xs: '300px',
-      sm: '375px',
-      md: '495px',
-      lg: '600px',
-      xl: '875px',
-      '2xl': '1150px',
-      '3xl': '1425px',
-    },
-
+    screens,
     extend: {
       colors: {
         'napari-primary': '#80d1ff',

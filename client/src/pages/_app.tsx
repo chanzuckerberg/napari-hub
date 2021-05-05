@@ -15,6 +15,7 @@ import { ReactQueryDevtools } from 'react-query/devtools';
 import { Hydrate } from 'react-query/hydration';
 
 import { Layout } from '@/components';
+import { MediaContextProvider } from '@/components/common/media';
 
 interface QueryProviderProps {
   children: ReactNode;
@@ -45,9 +46,11 @@ export default function App({ Component, pageProps }: AppProps) {
       </Head>
 
       <ReactQueryProvider dehydratedState={pageProps.dehydratedState}>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
+        <MediaContextProvider>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </MediaContextProvider>
       </ReactQueryProvider>
     </>
   );

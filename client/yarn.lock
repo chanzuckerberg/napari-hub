@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@artsy/fresnel@^1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@artsy/fresnel/-/fresnel-1.4.0.tgz#092c3e11837fb8e1428eb792bef85759181c33a3"
+  integrity sha512-UPOkk5O2CLFlmG2ScrBcd8QWpCZ31xRhHT0hbB+UFQ7FM4VNtRMI+yVxnV1pdFqqAiI1Ko9Id0dh8ohE5stGWA==
+
 "@babel/code-frame@7.12.11":
   version "7.12.11"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.12.11.tgz#f4ad435aa263db935b8f10f2c552d23fb716a63f"
@@ -2688,6 +2693,11 @@ data-urls@^2.0.0:
     abab "^2.0.3"
     whatwg-mimetype "^2.3.0"
     whatwg-url "^8.0.0"
+
+dayjs@^1.10.4:
+  version "1.10.4"
+  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.10.4.tgz#8e544a9b8683f61783f570980a8a80eaf54ab1e2"
+  integrity sha512-RI/Hh4kqRc1UKLOAf/T5zdMMX5DQIlDxwUe3wSyMMnEbGunnpENCdbUgM+dW7kXidZqCttBrmw7BhN4TMddkCw==
 
 debug@2, debug@^2.2.0, debug@^2.3.3, debug@^2.6.9:
   version "2.6.9"
@@ -9699,6 +9709,11 @@ timers-browserify@2.0.12, timers-browserify@^2.0.4:
   integrity sha512-9phl76Cqm6FhSX9Xe1ZUAMLtm1BLkKj2Qd5ApyWkXzsMRaA7dgr81kf4wJmQf/hAvg8EEyJxDo3du/0KlhPiKQ==
   dependencies:
     setimmediate "^1.0.4"
+
+timezone-mock@^1.1.4:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/timezone-mock/-/timezone-mock-1.1.4.tgz#3dfc0c8a864132873e1de8459c4bb7757dd8a96e"
+  integrity sha512-TeDA/tpbgJPC6dFkFpz3+sZmjtma8n+ECQbf7FQK9+TqIa38PUzIx8LBJGv0v3994Z9FFwLU0zJT/ABeb3bZWQ==
 
 tiny-emitter@^2.0.0:
   version "2.1.0"

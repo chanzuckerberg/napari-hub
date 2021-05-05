@@ -13,7 +13,8 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@/breakpoints": ["./breakpoints"]
     },
     "resolveJsonModule": true,
     "skipLibCheck": true,

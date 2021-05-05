@@ -1,41 +1,68 @@
 import clsx from 'clsx';
 
 import { Markdown } from '@/components/common';
+import { Media } from '@/components/common/media';
 import { PluginData } from '@/types';
+
+import { PluginMetadata } from './PluginMetadata';
+import { PluginStateProvider, usePluginState } from './PluginStateContext';
 
 interface Props {
   plugin: PluginData;
 }
 
 function PluginLeftColumn() {
-  return <div className="hidden 3xl:flex" />;
+  return (
+    <Media greaterThanOrEqual="3xl">
+      <PluginMetadata />
+    </Media>
+  );
 }
 
-function PluginCenterColumn({ plugin }: Props) {
+function PluginCenterColumn() {
+  const { plugin } = usePluginState();
+
   return (
     <article className="w-full">
       <h1 className="font-bold text-4xl">{plugin.name}</h1>
       <h2 className="font-semibold my-6 text-lg">{plugin.summary}</h2>
-      <Markdown disableHeader>{plugin.description}</Markdown>
+
+      <Media className="my-6 md:my-12" lessThan="3xl">
+        <a
+          className="underline hover:text-napari-primary"
+          href="#pluginMetadata"
+        >
+          View project data
+        </a>
+      </Media>
+
+      <Markdown className="mb-10" disableHeader>
+        {plugin.description}
+      </Markdown>
+
+      <Media lessThan="3xl">
+        {(className, render) =>
+          render && <PluginMetadata className={className} />
+        }
+      </Media>
     </article>
   );
 }
 
-function PluginRightColumn({ plugin }: Props) {
+function PluginRightColumn() {
+  const { plugin } = usePluginState();
+
   return (
-    <div>
-      <Markdown.TOC
-        className="fixed hidden 2xl:flex"
-        markdown={plugin.description}
-      />
-    </div>
+    <Media greaterThanOrEqual="2xl">
+      <Markdown.TOC className="fixed flex" markdown={plugin.description} />
+    </Media>
   );
 }
 
 /**
  * Component for rendering the plugin details page.
  */
-export function PluginDetails(props: Props) {
+export function PluginDetails({ plugin }: Props) {
   return (
     <div
       data-testid="pluginDetails"
@@ -53,9 +80,11 @@ export function PluginDetails(props: Props) {
         '2xl:grid-cols-napari-2-col 3xl:grid-cols-napari-3-col',
       )}
     >
-      <PluginLeftColumn />
-      <PluginCenterColumn {...props} />
-      <PluginRightColumn {...props} />
+      <PluginStateProvider plugin={plugin}>
+        <PluginLeftColumn />
+        <PluginCenterColumn />
+        <PluginRightColumn />
+      </PluginStateProvider>
     </div>
   );
 }

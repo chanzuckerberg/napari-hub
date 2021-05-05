@@ -9,6 +9,9 @@ import { MarkdownCode } from './MarkdownCode';
 import { MarkdownTOC } from './MarkdownTOC';
 
 interface Props {
+  // Optional CSS class for markdown component.
+  className?: string;
+
   // Markdown code.
   children: string;
 
@@ -32,7 +35,7 @@ const REHYPE_PLUGINS = [
 /**
  * Component for rendering Markdown consistently in napari hub.
  */
-export function Markdown({ children, disableHeader }: Props) {
+export function Markdown({ className, children, disableHeader }: Props) {
   const components: TransformOptions['components'] = {
     code: MarkdownCode,
   };
@@ -44,6 +47,7 @@ export function Markdown({ children, disableHeader }: Props) {
   return (
     <ReactMarkdown
       className={clsx(
+        className,
         styles.markdown,
 
         /*
