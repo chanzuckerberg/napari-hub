@@ -117,6 +117,9 @@ jobs:
       - name: Build for production
         run: yarn build
 
+      - name: Start mock server on port 8081
+        run: yarn start:mock-server &
+
       - name: Start server on port 8080
         run: yarn start &
         env:
