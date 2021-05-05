@@ -12,13 +12,18 @@ function renderDivider(className: string, render: boolean) {
   return render && <Divider className={clsx(className, 'my-6')} />;
 }
 
+interface GithubMetadataItem {
+  title: string;
+  count: number;
+}
+
 /**
  * Component for rendering plugin GitHub data.
  *
  * TODO Replace this with actual GitHub data.
  */
 function PluginGithubData() {
-  const items = [
+  const items: GithubMetadataItem[] = [
     {
       title: 'Stars',
       count: 0,
