@@ -1,0 +1,7 @@
+# Ignore everything
+*
+
+# Allow specific files
+!package.json
+!server.js
+!yarn.lock

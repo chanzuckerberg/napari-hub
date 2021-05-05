@@ -1,0 +1,9 @@
+{
+  "name": "client-proxy",
+  "version": "0.0.0",
+  "description": "Proxy server for hub API behind VPC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "express": "^4.17.1"
+  }
+}
