@@ -1,17 +1,4 @@
-const MONTH_NAMES = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
-];
+import dayjs from 'dayjs';
 
 /**
  * Utility to transform a date into a more readable format.  Useful for ISO and
@@ -21,16 +8,5 @@ const MONTH_NAMES = [
  * @returns The formatted date string
  */
 export function formatDate(dateString: string): string {
-  const date = new Date(dateString);
-
-  const dayValue = date.getDate();
-  let day = String(dayValue);
-  if (dayValue < 10) {
-    day = `0${day}`;
-  }
-
-  const month = MONTH_NAMES[date.getMonth()];
-  const year = date.getFullYear();
-
-  return `${day} ${month} ${year}`;
+  return dayjs(dateString).format('DD MMMM YYYY');
 }
