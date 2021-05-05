@@ -43,6 +43,17 @@ npm -g install yarn
 yarn install
 ```
 
+## Mock Server
+
+The hub communicates with a backend API for plugin data, so you'll need to setup
+a mock server for local development.
+
+To start the mock server, run:
+
+```sh
+yarn start:mock-server
+```
+
 ## Development Mode
 
 To run the app in development mode, run the following command:
