@@ -4,6 +4,7 @@
   @typescript-eslint/no-unsafe-member-access,
 */
 
+import '@/axios';
 import '@/tailwind.scss';
 import '@/global.scss';
 

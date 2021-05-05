@@ -2,8 +2,6 @@ import axios, { AxiosError } from 'axios';
 
 import { ErrorMessage, Link } from '@/components/common';
 
-const API_URL = process.env.API_URL || 'http://localhost:8081';
-
 interface Props {
   plugins?: Record<string, string>;
   error?: string;
@@ -14,7 +12,7 @@ interface Props {
  * names to their latest version.
  */
 export async function getServerSideProps() {
-  const url = `${API_URL}/plugins`;
+  const url = '/plugins';
   const props: Partial<Props> = {};
 
   try {

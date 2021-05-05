@@ -7,8 +7,6 @@ import { ErrorMessage } from '@/components/common';
 import { PluginStateProvider } from '@/context/plugin';
 import { PluginData } from '@/types';
 
-const API_URL = process.env.API_URL || 'http://localhost:8081';
-
 /**
  * Interface for parameters in URL.
  */
@@ -54,7 +52,7 @@ export async function getServerSideProps({
   params,
 }: GetServerSidePropsContext<Params>) {
   const name = String(params?.name);
-  const url = `${API_URL}/plugins/${name}`;
+  const url = `/plugins/${name}`;
   const props: Partial<Props> = {};
 
   try {
