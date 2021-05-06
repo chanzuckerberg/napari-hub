@@ -77,7 +77,7 @@ function InstallModalBody({ onClose }: Closeable) {
         <li>
           <p className="font-normal inline leading-8">
             From the “Plugins” menu within the napari application, select
-            “Install/IUninstall Package(s)...”.
+            “Install/Uninstall Package(s)...”.
           </p>
 
           <div className="my-3">
@@ -113,6 +113,8 @@ function InstallModalBody({ onClose }: Closeable) {
             <a
               className="underline hover:text-napari-primary"
               href="https://napari.org"
+              target="_blank"
+              rel="noreferrer"
             >
               napari.org
             </a>
