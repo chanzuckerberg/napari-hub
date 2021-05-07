@@ -12,6 +12,9 @@ from datetime import datetime, timedelta, timezone
 import tempfile
 import yaml
 
+# Environment variable set through lambda terraform infra config
+from typing import List
+
 bucket = os.environ.get('BUCKET')
 slack_url = os.environ.get('SLACK_URL')
 cache_ttl = int(os.environ.get('TTL', "4"))
@@ -28,7 +31,7 @@ s3_client = boto3.client("s3")
 cache_ttl = timedelta(minutes=cache_ttl)
 
 
-def handler(event, context):
+def handler(event: dict, context) -> dict:
     """
     Entrypoint for lambda handler.
 
@@ -48,9 +51,9 @@ def handler(event, context):
         return get_plugins(context)
 
 
-def get_attribute(obj, path):
+def get_attribute(obj: dict, path: list):
     """
-    get attribute iteratively from a json object.
+    Get attribute iteratively from a json object.
 
     :param obj: object to iterate on
     :param path: list of string to get subpath within json
@@ -67,40 +70,32 @@ def get_attribute(obj, path):
     return part
 
 
-def filter_prefix(str_list, prefix):
+def filter_prefix(str_list: List[str], prefix: str) -> list:
     """
-    filter the list for strings with the given prefix.
+    Filter the list for strings with the given prefix.
 
     :param str_list: list of strings to filter
     :param prefix: prefix to filter on
     :return: list of filtered strings
     """
-    filtered = []
-    for string in str_list:
-        if string.startswith(prefix):
-            filtered.append(string)
-    return filtered
+    return [string for string in str_list if string.startswith(prefix)]
 
 
-def filter_index(plugin, version):
+def filter_index(plugin: str, version: str) -> dict:
     """
-    filter index based to only include specified entries.
+    Filter index based to only include specified entries.
 
     :param plugin: name of the plugin
     :param version: version of the plugin
     :return: filtered json metadata for the plugin
     """
     plugin_info = get_plugin(plugin, version)
-    ret = {}
-    for k, v in plugin_info.items():
-        if k in index_subset:
-            ret[k] = v
-    return ret
+    return {k: plugin_info[k] for k in index_subset}
 
 
-def get_index(context):
+def get_index(context) -> dict:
     """
-    get the index page related metadata for all plugins.
+    Get the index page related metadata for all plugins.
 
     :param context: context for the run to raise alerts for
     :return: json for index page metadata
@@ -116,9 +111,9 @@ def get_index(context):
     return cache(results, index_key)
 
 
-def get_file(download_url, file):
+def get_file(download_url: str, file: str) -> [dict, None]:
     """
-    get file from github.
+    Get file from github.
 
     :param download_url: github url to download from
     :param file: filename to get
@@ -140,9 +135,9 @@ def get_file(download_url, file):
     return None
 
 
-def get_extra_metadata(download_url):
+def get_extra_metadata(download_url: str) -> dict:
     """
-    extract extra metadata from the github download url
+    Extract extra metadata from the github download url
 
     :param download_url: github url to download from
     :return: extra metadata dictionary
@@ -157,15 +152,14 @@ def get_extra_metadata(download_url):
     yaml_file = get_file(download_url, "contents/.napari/config.yml")
     if yaml_file:
         config = yaml.safe_load(yaml_file)
-        for k, v in config.items():
-            extra_metadata[k] = v
+        extra_metadata.update(config)
 
     return extra_metadata
 
 
-def format_plugin(plugin):
+def format_plugin(plugin: dict) -> dict:
     """
-    format the plugin dictionary to extra relevant information.
+    Format the plugin dictionary to extra relevant information.
 
     :param plugin: plugin dictionary from pypi
     :return: formatted plugin dictionary
@@ -219,9 +213,13 @@ def format_plugin(plugin):
     }
 
 
-def get_plugins(context):
+def get_plugins(context) -> dict:
     """
-    get all valid plugins list.
+    Get all valid plugins list. We would first try to see if there is a freshly
+    cached list, and return that if available, then we try to read from pypi,
+    and fail over to google bigquery analysis dump when pypi reading failed
+    as well. If every attempts failed, we return the cached version regardless
+    of freshness.
 
     :param context: context for the run to raise alerts
     :return: json of valid plugins and their version
@@ -256,15 +254,16 @@ def get_plugins(context):
     return get_cache(index_key)
 
 
-def get_plugin(plugin, version=None):
+def get_plugin(plugin: str, version: str = None) -> dict:
     """
-    get plugin metadata for a particular plugin, get latest if version is None.
+    Get plugin metadata for a particular plugin, get latest if version is None.
 
     :param plugin: name of the plugin to get
     :param version: version of the plugin
     :return: plugin metadata dictionary
     """
     if version is None:
+        # TODO when version is None, how do we get a cached file?
         url = f"https://pypi.org/pypi/{plugin}/json"
     else:
         if cache_available(f'cache/{plugin}/{version}.json', None):
@@ -282,9 +281,9 @@ def get_plugin(plugin, version=None):
         return {}
 
 
-def cache_available(key, ttl):
+def cache_available(key: str, ttl: [timedelta, None]) -> bool:
     """
-    check if cache is available for the key.
+    Check if cache is available for the key.
 
     :param key: key to check in s3
     :param ttl: ttl for the cache, if None always consider the cache is valid
@@ -307,25 +306,24 @@ def cache_available(key, ttl):
         return False
 
 
-def filter_excluded_plugin(packages):
+def filter_excluded_plugin(packages: dict) -> dict:
     """
-    filter excluded plugins from the plugins list
+    Filter excluded plugins from the plugins list
     :param packages: all plugins list
     :return: only plugins not in the filtered list
     """
-    filtered = {}
-    excluded = get_exclusion_list()
-    for package in packages:
-        if package not in excluded or \
-            (excluded[package] is not None and
-             packages[package] not in excluded[package]):
-            filtered[package] = packages[package]
+    filtered = packages.copy()
+    exclusions = get_exclusion_list()
+    for exclusion, versions in exclusions.items():
+        if exclusion in packages and \
+                (versions is None or packages[exclusion] in versions):
+            filtered.pop(exclusion)
     return filtered
 
 
-def get_exclusion_list():
+def get_exclusion_list() -> dict:
     """
-    get the exclusion plugin list.
+    Get the exclusion plugin list.
 
     :return: excluded plugin list
     """
@@ -335,9 +333,9 @@ def get_exclusion_list():
         return {}
 
 
-def query_pypi():
+def query_pypi() -> dict:
     """
-    query pypi to get all plugins.
+    Query pypi to get all plugins.
 
     :return: all plugin names and latest version
     """
@@ -365,9 +363,9 @@ def query_pypi():
     return packages
 
 
-def send_alert(message):
+def send_alert(message: str):
     """
-    send alert to slack with a message.
+    Send alert to slack with a message.
 
     :param message: message to send alongside the alert
     """
@@ -383,9 +381,9 @@ def send_alert(message):
             print("Unable to send alert")
 
 
-def query_analysis_dump():
+def query_analysis_dump() -> dict:
     """
-    query google bigquery for all plugins.
+    Query google bigquery for all plugins.
 
     :return: list of plugin name and version
     """
@@ -402,9 +400,9 @@ def query_analysis_dump():
     return {row.name: row.version for row in results}
 
 
-def get_cache(key):
+def get_cache(key: str) -> dict:
     """
-    get cache for a given key.
+    Get cache for a given key.
 
     :param key: key to the cache to get
     :return: file content for the key
@@ -412,9 +410,9 @@ def get_cache(key):
     return json.loads(s3.Object(bucket, key).get()['Body'].read())
 
 
-def cache(content, key):
+def cache(content: [dict, list], key: str) -> dict:
     """
-    cache the given content to the key location.
+    Cache the given content to the key location.
 
     :param content: content to cache
     :param key: key path in s3
