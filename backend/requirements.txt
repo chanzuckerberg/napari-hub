@@ -1,0 +1,7 @@
+apig-wsgi
+boto3
+flask
+google-cloud-bigquery
+gunicorn[gevent]
+pyyaml
+requests

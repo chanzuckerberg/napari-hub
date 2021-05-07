@@ -1,0 +1,16 @@
+{
+    "config_version": "v1",
+    "terraform_version": "0.13.5",
+    "default_env": "dev",
+    "app": "napari-hub",
+    "default_compose_env": ".env.ecr",
+    "environments": {
+        "dev": {
+            "aws_profile": "sci-imaging",
+            "secret_arn": "happy/env-dev-config",
+            "terraform_directory": ".happy/terraform/envs/dev",
+            "log_group_prefix": "/napari-hub/dev"
+        }
+    },
+    "tasks": {}
+}
