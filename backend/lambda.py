@@ -1,20 +1,22 @@
-import concurrent.futures
-import boto3
-from botocore.exceptions import ClientError
-from google.cloud import bigquery
-import requests
-from requests.exceptions import HTTPError
-from requests.utils import requote_uri
-import json
 import os
+import concurrent.futures
 import re
 from datetime import datetime, timedelta, timezone
 import tempfile
-import yaml
-
-# Environment variable set through lambda terraform infra config
 from typing import List
 
+import json
+import yaml
+
+import requests
+from requests.exceptions import HTTPError
+from requests.utils import requote_uri
+
+import boto3
+from botocore.exceptions import ClientError
+from google.cloud import bigquery
+
+# Environment variable set through lambda terraform infra config
 bucket = os.environ.get('BUCKET')
 slack_url = os.environ.get('SLACK_URL')
 cache_ttl = int(os.environ.get('TTL', "4"))
