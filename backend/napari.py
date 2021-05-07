@@ -1,4 +1,5 @@
 import os
+import os.path
 import concurrent.futures
 import re
 from datetime import datetime, timedelta, timezone
@@ -7,6 +8,8 @@ from typing import List
 
 import json
 import yaml
+
+from flask import Flask, jsonify
 
 import requests
 from requests.exceptions import HTTPError
@@ -18,8 +21,10 @@ from google.cloud import bigquery
 
 # Environment variable set through lambda terraform infra config
 bucket = os.environ.get('BUCKET')
+bucket_path = os.environ.get('BUCKET_PATH', '')
 slack_url = os.environ.get('SLACK_URL')
 cache_ttl = int(os.environ.get('TTL', "4"))
+endpoint_url = os.environ.get('BOTO_ENDPOINT_URL', None)
 plugins_key = 'cache/plugins.json'
 index_key = 'cache/index.json'
 exclusion_list = 'excluded_plugins.json'
@@ -28,29 +33,12 @@ index_subset = {'name', 'summary', 'description', 'description_content_type',
                 'release_date', 'version', 'first_released',
                 'development_status'}
 
-s3 = boto3.resource('s3')
-s3_client = boto3.client("s3")
+s3 = boto3.resource('s3', endpoint_url=endpoint_url)
+s3_client = boto3.client("s3", endpoint_url=endpoint_url)
 cache_ttl = timedelta(minutes=cache_ttl)
 
 
-def handler(event: dict, context) -> dict:
-    """
-    Entrypoint for lambda handler.
-
-    :param event: event for the lambda invoke to handle
-    :param context: context about this invoke
-    :return: result for the invoke
-    """
-    if 'index' in event:
-        return get_index(context)
-    elif 'exclusion' in event:
-        return get_exclusion_list()
-    elif 'version' in event and 'plugin' in event:
-        return get_plugin(event['plugin'], event['version'])
-    elif 'plugin' in event:
-        return get_plugin(event['plugin'])
-    else:
-        return get_plugins(context)
+app = Flask(__name__)
 
 
 def get_attribute(obj: dict, path: list):
@@ -95,7 +83,8 @@ def filter_index(plugin: str, version: str) -> dict:
     return {k: plugin_info[k] for k in index_subset}
 
 
-def get_index(context) -> dict:
+@app.route('/plugins/index')
+def get_index() -> dict:
     """
     Get the index page related metadata for all plugins.
 
@@ -103,14 +92,14 @@ def get_index(context) -> dict:
     :return: json for index page metadata
     """
     if cache_available(index_key, cache_ttl):
-        return get_cache(index_key)
+        return jsonify(get_cache(index_key))
     results = []
     with concurrent.futures.ThreadPoolExecutor(max_workers=32) as executor:
         futures = [executor.submit(filter_index, k, v)
-                   for k, v in get_plugins(context).items()]
+                   for k, v in get_plugins().items()]
     for future in concurrent.futures.as_completed(futures):
         results.append(future.result())
-    return cache(results, index_key)
+    return jsonify(cache(results, index_key))
 
 
 def get_file(download_url: str, file: str) -> [dict, None]:
@@ -215,7 +204,8 @@ def format_plugin(plugin: dict) -> dict:
     }
 
 
-def get_plugins(context) -> dict:
+@app.route('/plugins')
+def get_plugins() -> dict:
     """
     Get all valid plugins list. We would first try to see if there is a freshly
     cached list, and return that if available, then we try to read from pypi,
@@ -235,11 +225,7 @@ def get_plugins(context) -> dict:
         return cache(filter_excluded_plugin(packages), plugins_key)
 
     send_alert(f"({datetime.now()})Actions Required! Failed to query pypi for "
-               f"napari plugin packages, switching to backup analysis dump\n"
-               f"Lambda function ARN: {context.invoked_function_arn}\n"
-               f"CloudWatch log stream name: {context.log_stream_name}\n"
-               f"CloudWatch log group name {context.log_group_name}\n"
-               f"Lambda Request ID: {context.aws_request_id}")
+               f"napari plugin packages, switching to backup analysis dump")
 
     packages = query_analysis_dump()
 
@@ -247,15 +233,13 @@ def get_plugins(context) -> dict:
         return cache(filter_excluded_plugin(packages), index_key)
 
     send_alert(f"({datetime.now()}) Actions Required! Back up method also "
-               f"failed! Immediate fix is required to bring the API back!"
-               f"Lambda function ARN: {context.invoked_function_arn}\n"
-               f"CloudWatch log stream name: {context.log_stream_name}\n"
-               f"CloudWatch log group name {context.log_group_name}\n"
-               f"Lambda Request ID: {context.aws_request_id}")
+               f"failed! Immediate fix is required to bring the API back!")
 
     return get_cache(index_key)
 
 
+@app.route('/plugins/<plugin>', defaults={'version': None})
+@app.route('/plugins/<plugin>/versions/<version>')
 def get_plugin(plugin: str, version: str = None) -> dict:
     """
     Get plugin metadata for a particular plugin, get latest if version is None.
@@ -294,7 +278,7 @@ def cache_available(key: str, ttl: [timedelta, None]) -> bool:
     if bucket is None:
         return False
     try:
-        last_modified = s3.Object(bucket, key).last_modified
+        last_modified = s3.Object(bucket, os.path.join(bucket_path, key)).last_modified
         if ttl is None:
             return True
         if last_modified is None or \
@@ -409,7 +393,7 @@ def get_cache(key: str) -> dict:
     :param key: key to the cache to get
     :return: file content for the key
     """
-    return json.loads(s3.Object(bucket, key).get()['Body'].read())
+    return json.loads(s3.Object(bucket, os.path.join(bucket_path, key)).get()['Body'].read())
 
 
 def cache(content: [dict, list], key: str) -> dict:
@@ -429,5 +413,5 @@ def cache(content: [dict, list], key: str) -> dict:
     with tempfile.NamedTemporaryFile(mode="w") as fp:
         fp.write(json.dumps(content))
         fp.flush()
-        s3_client.upload_file(fp.name, bucket, key)
+        s3_client.upload_file(fp.name, bucket, os.path.join(bucket_path, key))
     return content
