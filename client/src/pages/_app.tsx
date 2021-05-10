@@ -18,6 +18,10 @@ import { Hydrate } from 'react-query/hydration';
 import { Layout } from '@/components';
 import { MediaContextProvider } from '@/components/common/media';
 
+interface GetLayoutComponent {
+  getLayout?(page: ReactNode): ReactNode;
+}
+
 interface QueryProviderProps {
   children: ReactNode;
   dehydratedState: unknown;
@@ -40,6 +44,12 @@ function ReactQueryProvider({ children, dehydratedState }: QueryProviderProps) {
 }
 
 export default function App({ Component, pageProps }: AppProps) {
+  // Render using custom layout if component exports one:
+  // https://adamwathan.me/2019/10/17/persistent-layout-patterns-in-nextjs/
+  const { getLayout } = Component as GetLayoutComponent;
+  let page: ReactNode = <Component {...pageProps} />;
+  page = getLayout?.(page) ?? <Layout>{page}</Layout>;
+
   return (
     <>
       <Head>
@@ -47,11 +57,7 @@ export default function App({ Component, pageProps }: AppProps) {
       </Head>
 
       <ReactQueryProvider dehydratedState={pageProps.dehydratedState}>
-        <MediaContextProvider>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-        </MediaContextProvider>
+        <MediaContextProvider>{page}</MediaContextProvider>
       </ReactQueryProvider>
     </>
   );
