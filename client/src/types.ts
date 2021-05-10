@@ -4,26 +4,33 @@ export interface PluginAuthor {
 }
 
 /**
- * Interface for plugin data response from backend.
+ * Plugin data used for indexing. This is a subset of the full plugin data.
  */
-export interface PluginData {
+export interface PluginIndexData {
   authors: PluginAuthor[];
-  code_repository: string;
   description_content_type: string;
   description: string;
   development_status: string[];
-  documentation: string;
   first_released: string;
   license: string;
   name: string;
   operating_system: string[];
-  project_site: string;
   python_version: string;
+  release_date: string;
+  summary: string;
+  version: string;
+}
+
+/**
+ * Interface for plugin data response from backend.
+ */
+export interface PluginData extends PluginIndexData {
+  code_repository: string;
+  documentation: string;
+  project_site: string;
   release_date: string;
   report_issues: string;
   requirements: string[];
-  summary: string;
   support: string;
   twitter: string;
-  version: string;
 }
