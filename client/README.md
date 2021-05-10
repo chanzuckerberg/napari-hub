@@ -43,6 +43,39 @@ npm -g install yarn
 yarn install
 ```
 
+## Backend API
+
+The hub communicates with a backend API for plugin data, so you'll need to setup
+either a mock server or connect to an API directly.
+
+### Mock Server
+
+To start the mock server, run:
+
+```sh
+yarn start:mock-server
+```
+
+This starts the server on port `8081`, and by default, the client will connect
+to `http://localhost:8081` for the backend API.
+
+### Actual API
+
+If you want to work with the actual hub API, you'll need to use the `API_URL`
+environment variable to point to the API:
+
+```sh
+API_URL=https://localhost:8081 yarn dev
+```
+
+If you're locally forwarding the API through SSH and if the API checks the host
+header (e.g. AWS API Gateway), you may need to also set `API_URL_HOST` to pass
+the header check:
+
+```sh
+API_URL=https://localhost:8081 API_HOST=<api-id>.execute-api.us-west-2.amazonaws.com yarn dev
+```
+
 ## Development Mode
 
 To run the app in development mode, run the following command:

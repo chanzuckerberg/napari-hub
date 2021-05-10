@@ -3,11 +3,11 @@ import { ReactNode } from 'react-markdown';
 
 import { Divider } from '@/components/common';
 import { MediaFragment } from '@/components/common/media';
+import { usePluginState } from '@/context/plugin';
 import { formatDate } from '@/utils/date';
 
 import { MetadataList } from './MetadataList';
 import { MetadataItem } from './PluginDetails.types';
-import { usePluginState } from './PluginStateContext';
 
 interface GithubMetadataItem {
   title: string;

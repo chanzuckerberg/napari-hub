@@ -2,16 +2,11 @@ import clsx from 'clsx';
 
 import { Markdown } from '@/components/common';
 import { Media, MediaFragment } from '@/components/common/media';
-import { PluginData } from '@/types';
+import { usePluginState } from '@/context/plugin';
 
 import { CallToActionButton } from './CallToActionButton';
 import { PluginMetadata } from './PluginMetadata';
-import { PluginStateProvider, usePluginState } from './PluginStateContext';
 import { SupportInfo } from './SupportInfo';
-
-interface Props {
-  plugin: PluginData;
-}
 
 function PluginLeftColumn() {
   return (
@@ -100,7 +95,7 @@ function PluginRightColumn() {
 /**
  * Component for rendering the plugin details page.
  */
-export function PluginDetails({ plugin }: Props) {
+export function PluginDetails() {
   return (
     <div
       data-testid="pluginDetails"
@@ -118,11 +113,9 @@ export function PluginDetails({ plugin }: Props) {
         '2xl:grid-cols-napari-2-col 3xl:grid-cols-napari-3-col',
       )}
     >
-      <PluginStateProvider plugin={plugin}>
-        <PluginLeftColumn />
-        <PluginCenterColumn />
-        <PluginRightColumn />
-      </PluginStateProvider>
+      <PluginLeftColumn />
+      <PluginCenterColumn />
+      <PluginRightColumn />
     </div>
   );
 }

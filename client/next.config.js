@@ -12,4 +12,12 @@ module.exports = withMDX({
   future: {
     webpack5: true,
   },
+
+  webpack(config, { isServer }) {
+    if (!isServer) {
+      config.resolve.alias.lodash = require.resolve('lodash-es');
+    }
+
+    return config;
+  },
 });

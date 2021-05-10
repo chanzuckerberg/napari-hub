@@ -18,6 +18,7 @@
     "e2e:update": "yarn e2e --updateSnapshot",
     "postinstall": "cd .. && husky install",
     "start": "next start -p 8080",
+    "start:mock-server": "node mock-server",
     "test": "jest -c jest/test.config.js",
     "test:watch": "yarn test --watch",
     "test:update": "yarn test --updateSnapshot"
@@ -34,6 +35,7 @@
     "clsx": "^1.1.1",
     "dayjs": "^1.10.4",
     "framer-motion": "^4.1.3",
+    "lodash": "^4.17.21",
     "lodash-es": "^4.17.21",
     "next": "10.1.3",
     "next-dynamic-loading-props": "^0.1.1",
@@ -76,6 +78,7 @@
     "eslint-plugin-react-hooks": "^4.2.0",
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "expect-playwright": "^0.3.3",
+    "express": "^4.17.1",
     "husky": "^6.0.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^26.6.3",
