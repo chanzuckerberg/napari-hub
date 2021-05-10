@@ -23,6 +23,7 @@ RUN yarn install
 
 # Copy application build to image
 COPY --from=builder /app/.next /app/.next
+COPY public /app/public
 
 EXPOSE 8080
 ENTRYPOINT [ "yarn", "start" ]
