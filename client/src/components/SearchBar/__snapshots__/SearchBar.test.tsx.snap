@@ -7,6 +7,8 @@ exports[`<SearchBar /> should match snapshot 1`] = `
   >
     <input
       class="flex flex-auto border-none outline-none bg-transparent w-0"
+      data-testid="searchBarInput"
+      value=""
     />
     <div
       style="overflow: hidden; box-sizing: border-box; display: inline-block; position: relative; width: 14px; height: 14px;"
