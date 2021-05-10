@@ -3,11 +3,7 @@
  * making long lists inline.
  */
 .commaList {
-  &::after {
+  &:not(:last-child)::after {
     content: ', ';
-  }
-
-  &:last-child::after {
-    content: '';
   }
 }
