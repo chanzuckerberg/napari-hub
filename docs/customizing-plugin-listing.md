@@ -148,7 +148,7 @@ You can set this by setting the `long_description` value in your package metadat
 # setup.cfg
 [metadata]
 # ...
-long_description = README.md
+long_description = file: README.md
 long_description_content_type = text/markdown
 # ...
 ```
