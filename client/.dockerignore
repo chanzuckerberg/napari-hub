@@ -1,3 +1,5 @@
+.dockerignore
 .next
 .vercel
+Dockerfile
 node_modules
