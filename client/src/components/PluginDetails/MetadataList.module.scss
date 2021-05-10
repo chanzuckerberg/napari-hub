@@ -1,0 +1,9 @@
+/**
+ * Class that adds a comma after every child except the last.  Useful for
+ * making long lists inline.
+ */
+.commaList {
+  &:not(:last-child)::after {
+    content: ', ';
+  }
+}

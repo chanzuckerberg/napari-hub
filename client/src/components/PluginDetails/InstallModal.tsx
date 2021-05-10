@@ -6,7 +6,7 @@ import { useClickAway } from 'react-use';
 import { Overlay } from '@/components/common';
 import { Fade } from '@/components/common/animations';
 import { Close, Copy } from '@/components/common/icons';
-import { Media } from '@/components/common/media';
+import { MediaFragment } from '@/components/common/media';
 
 import styles from './InstallModal.module.scss';
 import { usePluginState } from './PluginStateContext';
@@ -61,15 +61,11 @@ function InstallModalBody({ onClose }: Closeable) {
         <h2 className="font-bold text-2xl">Installing a plugin with napari</h2>
 
         {/* Close button */}
-        <Media greaterThanOrEqual="sm">
-          {(className, render) =>
-            render && (
-              <button className={className} onClick={onClose} type="button">
-                <Close className={styles.closeIcon} />
-              </button>
-            )
-          }
-        </Media>
+        <MediaFragment greaterThanOrEqual="sm">
+          <button onClick={onClose} type="button">
+            <Close className={styles.closeIcon} />
+          </button>
+        </MediaFragment>
       </header>
 
       {/* Numbered list of instructions for installing a plugin */}

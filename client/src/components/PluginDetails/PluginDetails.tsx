@@ -1,12 +1,13 @@
 import clsx from 'clsx';
 
 import { Markdown } from '@/components/common';
-import { Media } from '@/components/common/media';
+import { Media, MediaFragment } from '@/components/common/media';
 import { PluginData } from '@/types';
 
 import { CallToActionButton } from './CallToActionButton';
 import { PluginMetadata } from './PluginMetadata';
 import { PluginStateProvider, usePluginState } from './PluginStateContext';
+import { SupportInfo } from './SupportInfo';
 
 interface Props {
   plugin: PluginData;
@@ -41,11 +42,9 @@ function PluginCenterColumn() {
         )}
         lessThan="3xl"
       >
-        <Media lessThan="2xl">
-          {(className, render) =>
-            render && <CallToActionButton className={className} />
-          }
-        </Media>
+        <MediaFragment lessThan="2xl">
+          <CallToActionButton />
+        </MediaFragment>
 
         <a
           className={clsx(
@@ -71,15 +70,15 @@ function PluginCenterColumn() {
         </a>
       </Media>
 
+      <SupportInfo className="mb-6 md:mb-12" />
+
       <Markdown className="mb-10" disableHeader>
         {plugin.description}
       </Markdown>
 
-      <Media lessThan="3xl">
-        {(className, render) =>
-          render && <PluginMetadata className={className} />
-        }
-      </Media>
+      <MediaFragment lessThan="3xl">
+        <PluginMetadata />
+      </MediaFragment>
     </article>
   );
 }
