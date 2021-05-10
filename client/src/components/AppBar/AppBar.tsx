@@ -29,7 +29,7 @@ function AppBarHeader() {
   const { setQuery } = useSearchState() ?? {};
 
   return (
-    <header className="flex">
+    <header data-testid="appBarHeader" className="flex">
       <h1 className="whitespace-nowrap">
         <Link
           // Redirect to home page
