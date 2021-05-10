@@ -1,10 +1,10 @@
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
-import Image from 'next/image';
 import { useRef } from 'react';
 import { useClickAway } from 'react-use';
 
 import { Link, Overlay } from '@/components/common';
+import { Close } from '@/components/common/icons';
 
 import styles from './MenuDrawer.module.scss';
 import { MenuDrawerItem } from './types';
@@ -14,8 +14,6 @@ interface Props {
   onMenuClose: () => void;
   visible: boolean;
 }
-
-const CLOSE_ICON_SIZE = 16;
 
 /**
  * Navigation drawer that slides out from the right. An overlay is rendered
@@ -85,13 +83,7 @@ export function MenuDrawer({ items, onMenuClose, visible }: Props) {
           onClick={onMenuClose}
           type="button"
         >
-          <Image
-            src="/icons/close.svg"
-            alt="Menu close button"
-            layout="fixed"
-            width={CLOSE_ICON_SIZE}
-            height={CLOSE_ICON_SIZE}
-          />
+          <Close />
         </button>
       </motion.div>
     </>

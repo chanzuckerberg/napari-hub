@@ -36,17 +36,24 @@ exports[`<Layout /> should match snapshot 1`] = `
       data-testid="drawerClose"
       type="button"
     >
-      <div
-        style="overflow: hidden; box-sizing: border-box; display: inline-block; position: relative; width: 16px; height: 16px;"
+      <svg
+        fill="none"
+        height="18"
+        viewBox="0 0 18 18"
+        width="18"
+        xmlns="http://www.w3.org/2000/svg"
       >
-        <noscript />
-        <img
-          alt="Menu close button"
-          decoding="async"
-          src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
-          style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; box-sizing: border-box; padding: 0px; margin: auto; display: block; width: 0px; height: 0px; min-width: 100%; max-width: 100%; min-height: 100%; max-height: 100%;"
+        <path
+          d="M1 1L17 17"
+          stroke="white"
+          stroke-width="2.35294"
         />
-      </div>
+        <path
+          d="M17 1L1 17"
+          stroke="white"
+          stroke-width="2.35294"
+        />
+      </svg>
     </button>
   </div>
   <nav

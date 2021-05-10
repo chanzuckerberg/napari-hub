@@ -255,10 +255,19 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
       Plugin exploring different options for reading and writing compressed and portable labels layers in napari.
     </h2>
     <div
-      class="fresnel-container fresnel-lessThan-3xl my-6 md:my-12"
+      class="fresnel-container fresnel-lessThan-3xl flex flex-col lg:flex-row lg:items-center my-6 md:my-12"
     >
+      <div
+        class="absolute min-w-napari-xs"
+      />
+      <button
+        class="fresnel-lessThan-2xl bg-napari-primary 2xl:fixed h-12 w-full lg:max-w-napari-side-col"
+        type="button"
+      >
+        Install
+      </button>
       <a
-        class="underline hover:text-napari-primary"
+        class="underline hover:text-napari-primary mt-6 md:mt-12 lg:mt-0 lg:ml-12 2xl:ml-0"
         href="#pluginMetadata"
       >
         View project data
@@ -832,8 +841,17 @@ the coverage at least stays the same before you submit a pull request.
   <div
     class="fresnel-container fresnel-greaterThanOrEqual-2xl "
   >
+    <div
+      class="absolute min-w-napari-xs"
+    />
+    <button
+      class="bg-napari-primary 2xl:fixed h-12 w-full lg:max-w-napari-side-col"
+      type="button"
+    >
+      Install
+    </button>
     <ul
-      class="fixed flex flex flex-col border-l border-black"
+      class="fixed flex mt-24 flex flex-col border-l border-black"
     >
       <li
         class="flex pl-6 h-6 border-l-4 my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
