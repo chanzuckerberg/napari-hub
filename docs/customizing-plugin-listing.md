@@ -78,7 +78,7 @@ For each of the fields in a plugin's listing, we outline below how the field is 
 | Support              |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://pypi.org/static/images/logo-small.svg" height="20">) |
 | Report Issues        |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://pypi.org/static/images/logo-small.svg" height="20">) |
 | Twitter              |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://pypi.org/static/images/logo-small.svg" height="20">) |
-| Source Code      |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://pypi.org/static/images/logo-small.svg" height="20"> |
+| Source Code         |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://pypi.org/static/images/logo-small.svg" height="20"> |
 | Release Date         |     ✅      |     ✅      |     ⛔      |      ✅       |    ⛔    |    <img src="https://pypi.org/static/images/logo-small.svg" height="20"> |
 | First Released       |     ✅      |     ⛔      |     ⛔      |      ✅       |    ⛔    |    <img src="https://pypi.org/static/images/logo-small.svg" height="20"> |
 
