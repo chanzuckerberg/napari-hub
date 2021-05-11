@@ -14,7 +14,3 @@ beforeEach(() => {
     ...originalWindowLocation,
   };
 });
-
-afterEach(() => {
-  window.location = originalWindowLocation;
-});
