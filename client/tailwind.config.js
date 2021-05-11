@@ -45,6 +45,10 @@ module.exports = {
         'napari-app-bar': '75px',
       },
 
+      flex: {
+        2: '2 2 0%',
+      },
+
       gridTemplateColumns: (theme) => {
         const width = theme('width.napari-col');
         const columns = [3, 4, 5];

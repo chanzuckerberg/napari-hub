@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-import { AppBar } from '@/components';
+import { AppBar, SignupForm } from '@/components';
 
 interface Props {
   children: ReactNode;
@@ -11,6 +11,7 @@ export function Layout({ children }: Props) {
     <>
       <AppBar />
       <main>{children}</main>
+      <SignupForm />
     </>
   );
 }
