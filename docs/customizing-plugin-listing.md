@@ -261,10 +261,10 @@ We support the 7 levels of ["Development Status"](https://pypi.org/classifiers/)
 We display this on the detailed plugin page and the plugin listings. 
 
 We support filtering plugins that are "stable" based on this value. 
-Plugins that are labelled as "5" (Production/Stable) or "6" (Mature) will be considered "stable".
+Plugins that are labeled as "5" (Production/Stable) or "6" (Mature) will be considered "stable".
 
 We source this from the list of classifiers in the `["info"]["classifiers"]` field of the JSON returned by the PyPI API.
-If multiple "Development Status" classifiers are listed, we will us the one with the highest value.
+If multiple "Development Status" classifiers are listed, we will use the one with the highest value.
 
 You can set this by setting a ["Development Status" classifier](https://pypi.org/classifiers/) for your Python package in your package metadata.
 
