@@ -81,6 +81,7 @@ exports[`<Layout /> should match snapshot 1`] = `
     >
       <form
         class="flex flex-auto items-center border-b-2 border-black"
+        data-testid="searchBarForm"
       >
         <input
           class="flex flex-auto border-none outline-none bg-transparent w-0"

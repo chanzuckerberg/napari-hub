@@ -6,8 +6,10 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
     class="flex 2xl:grid 2xl:justify-center p-6 md:p-14 2xl:px-0 2xl:gap-14 2xl:grid-cols-napari-2-col 3xl:grid-cols-napari-3-col"
   >
     <div
-      class="fresnel-greaterThanOrEqual-3xl"
-    />
+      class="fresnel-container fresnel-greaterThanOrEqual-3xl "
+    >
+      <div />
+    </div>
     <div>
       <h2
         class="font-bold text-2xl mb-6"
