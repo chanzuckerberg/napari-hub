@@ -41,4 +41,14 @@ describe('/ (Home page)', () => {
       'napari_video',
     );
   });
+
+  it('should redirect to search page when searching from another page', async () => {
+    await page.goto('http://localhost:8080/about');
+    await page.fill('[data-testid=searchBarInput]', 'video');
+    await page.press('[data-testid=searchBarInput]', 'Enter');
+    await page.waitForNavigation();
+
+    expect(page.url()).toEqual(getSearchURL('video'));
+    await expect(await getFirstSearchResultName()).toHaveText('napari_video');
+  });
 });

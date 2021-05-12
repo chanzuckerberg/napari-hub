@@ -32,6 +32,7 @@ export function SearchBar() {
 
   return (
     <form
+      data-testid="searchBarForm"
       className={clsx(
         // Flex layout
         'flex flex-auto items-center',
@@ -48,11 +49,13 @@ export function SearchBar() {
         // If searching from another page, redirect to the search page with the
         // search query parameter to initiate a search on load.
         if (!isSearchPage) {
-          await router.push(SEARCH_PAGE, {
-            query: {
-              [SEARCH_QUERY_PARAM]: encodeURIComponent(localQuery),
-            },
-          });
+          const url = new URL(SEARCH_PAGE, window.location.origin);
+          url.searchParams.set(
+            SEARCH_QUERY_PARAM,
+            encodeURIComponent(localQuery),
+          );
+
+          await router.push(url);
         }
       }}
     >
