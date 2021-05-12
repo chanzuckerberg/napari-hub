@@ -5,6 +5,7 @@
   "scripts": {
     "build": "next build",
     "dev": "nodemon -x 'run-p dev:*' -w tailwind.config.js",
+    "dev:api": "node mock-server",
     "dev:next": "next dev -p 8080",
     "dev:tsm": "tsm -w -e default 'src/**/*.module.scss'",
     "lint": "run-p lint:*",
@@ -18,7 +19,6 @@
     "e2e:update": "yarn e2e --updateSnapshot",
     "postinstall": "node postinstall",
     "start": "next start -p 8080",
-    "start:mock-server": "node mock-server",
     "test": "jest -c jest/test.config.js",
     "test:watch": "yarn test --watch",
     "test:update": "yarn test --updateSnapshot"

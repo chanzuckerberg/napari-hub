@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 
-import { Markdown } from '@/components/common';
+import { ColumnLayout, Markdown } from '@/components/common';
 import { Media, MediaFragment } from '@/components/common/media';
 import { usePluginState } from '@/context/plugin';
 
@@ -97,25 +97,10 @@ function PluginRightColumn() {
  */
 export function PluginDetails() {
   return (
-    <div
-      data-testid="pluginDetails"
-      className={clsx(
-        // Layout
-        'flex 2xl:grid 2xl:justify-center',
-
-        // Padding
-        'p-6 md:p-14 2xl:px-0',
-
-        // Grid gap
-        '2xl:gap-14',
-
-        // Grid columns
-        '2xl:grid-cols-napari-2-col 3xl:grid-cols-napari-3-col',
-      )}
-    >
+    <ColumnLayout data-testid="pluginDetails">
       <PluginLeftColumn />
       <PluginCenterColumn />
       <PluginRightColumn />
-    </div>
+    </ColumnLayout>
   );
 }

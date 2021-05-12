@@ -45,6 +45,11 @@ const DEVICES = {
   },
 };
 
+/**
+ * Device specific environment variable. Use if you want to test using a specific device.
+ */
+const { DEVICE } = process.env;
+
 module.exports = {
   rootDir: '..',
   preset: 'jest-playwright-preset',
@@ -63,7 +68,7 @@ module.exports = {
     'jest-playwright': {
       browsers: [BROWSER],
       browserContext: 'incognito',
-      devices: Object.values(DEVICES),
+      devices: DEVICE ? [DEVICES[DEVICE]] : Object.values(DEVICES),
       contextOptions: DEFAULT_CONTEXT_CONFIG,
       launchOptions: DEFAULT_LAUNCH_CONFIG,
     },
