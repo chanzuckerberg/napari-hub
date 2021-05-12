@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { MenuDrawer, SearchBar } from '@/components';
 import { Link } from '@/components/common';
 import { MenuDrawerItem } from '@/components/MenuDrawer/types';
+import { useSearchState } from '@/context/search';
 
 import styles from './AppBar.module.scss';
 
@@ -25,10 +26,20 @@ const MENU_ITEMS: MenuDrawerItem[] = [
  * Header that links back to the home page.
  */
 function AppBarHeader() {
+  const { setQuery } = useSearchState() ?? {};
+
   return (
-    <header className="flex">
+    <header data-testid="appBarHeader" className="flex">
       <h1 className="whitespace-nowrap">
-        <Link href="/">
+        <Link
+          // Redirect to home page
+          href="/"
+          // Clear search related query parameter data if the user is currently
+          // on the search page. Without this, the `useQueryParameter()` hook
+          // will re-set the query parameter with the current query in the
+          // search bar.
+          onClick={() => setQuery?.('')}
+        >
           napari <strong>hub</strong>
         </Link>
       </h1>

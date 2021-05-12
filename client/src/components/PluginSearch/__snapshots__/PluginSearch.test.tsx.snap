@@ -1,0 +1,1289 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PluginSearch /> should match snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="flex 2xl:grid 2xl:justify-center p-6 md:p-14 2xl:px-0 2xl:gap-14 2xl:grid-cols-napari-2-col 3xl:grid-cols-napari-3-col"
+  >
+    <div
+      class="fresnel-container fresnel-greaterThanOrEqual-3xl "
+    >
+      <div />
+    </div>
+    <div>
+      <h2
+        class="font-bold text-2xl mb-6"
+      >
+        Browse plugins
+      </h2>
+      <article
+        class="py-5 border-t-2 border-black"
+      >
+        <h3
+          class="inline font-bold text-lg hover:underline"
+          data-testid="searchResultName"
+        >
+          <a
+            href="/plugins/napari-compressed-labels-io"
+          >
+            napari-compressed-labels-io
+          </a>
+        </h3>
+        <p
+          class="mt-2"
+          data-testid="searchResultSummary"
+        >
+          Plugin exploring different options for reading and writing compressed and portable labels layers in napari.
+        </p>
+        <ul
+          class="mt-5"
+        >
+          <li
+            class="my-2"
+            data-testid="searchResultAuthor"
+          >
+            <span
+              class="font-bold"
+            >
+              Draga Doncila 
+            </span>
+            (ddoncila@gmail.com)
+          </li>
+        </ul>
+      </article>
+      <article
+        class="py-5 border-t-2 border-black"
+      >
+        <h3
+          class="inline font-bold text-lg hover:underline"
+          data-testid="searchResultName"
+        >
+          <a
+            href="/plugins/affinder"
+          >
+            affinder
+          </a>
+        </h3>
+        <p
+          class="mt-2"
+          data-testid="searchResultSummary"
+        >
+          Quickly find the affine matrix mapping one image to another using manual correspondence points annotation
+        </p>
+        <ul
+          class="mt-5"
+        >
+          <li
+            class="my-2"
+            data-testid="searchResultAuthor"
+          >
+            <span
+              class="font-bold"
+            >
+              Juan Nunez-Iglesias 
+            </span>
+            (juan.nunez-iglesias@monash.edu)
+          </li>
+        </ul>
+      </article>
+      <article
+        class="py-5 border-t-2 border-black"
+      >
+        <h3
+          class="inline font-bold text-lg hover:underline"
+          data-testid="searchResultName"
+        >
+          <a
+            href="/plugins/napping"
+          >
+            napping
+          </a>
+        </h3>
+        <p
+          class="mt-2"
+          data-testid="searchResultSummary"
+        >
+          Control point mapping and coordination transformation using napari
+        </p>
+        <ul
+          class="mt-5"
+        >
+          <li
+            class="my-2"
+            data-testid="searchResultAuthor"
+          >
+            <span
+              class="font-bold"
+            >
+              Jonas Windhager 
+            </span>
+            (jonas.windhager@uzh.ch)
+          </li>
+        </ul>
+      </article>
+      <article
+        class="py-5 border-t-2 border-black"
+      >
+        <h3
+          class="inline font-bold text-lg hover:underline"
+          data-testid="searchResultName"
+        >
+          <a
+            href="/plugins/napari-console"
+          >
+            napari-console
+          </a>
+        </h3>
+        <p
+          class="mt-2"
+          data-testid="searchResultSummary"
+        >
+          A plugin that adds a console to napari
+        </p>
+        <ul
+          class="mt-5"
+        >
+          <li
+            class="my-2"
+            data-testid="searchResultAuthor"
+          >
+            <span
+              class="font-bold"
+            >
+              Nicholas Sofroniew 
+            </span>
+            (sofroniewn@gmail.com)
+          </li>
+        </ul>
+      </article>
+      <article
+        class="py-5 border-t-2 border-black"
+      >
+        <h3
+          class="inline font-bold text-lg hover:underline"
+          data-testid="searchResultName"
+        >
+          <a
+            href="/plugins/napari-hdf5-labels-io"
+          >
+            napari-hdf5-labels-io
+          </a>
+        </h3>
+        <p
+          class="mt-2"
+          data-testid="searchResultSummary"
+        >
+          Napari plugin to store set of layers in a .h5 file. Label layer are stored in a sparse representation
+        </p>
+        <ul
+          class="mt-5"
+        >
+          <li
+            class="my-2"
+            data-testid="searchResultAuthor"
+          >
+            <span
+              class="font-bold"
+            >
+              Duway Nicolas Lesmes Leon 
+            </span>
+            (dlesmesleon@hotmail.com)
+          </li>
+        </ul>
+      </article>
+      <article
+        class="py-5 border-t-2 border-black"
+      >
+        <h3
+          class="inline font-bold text-lg hover:underline"
+          data-testid="searchResultName"
+        >
+          <a
+            href="/plugins/PlatyMatch"
+          >
+            PlatyMatch
+          </a>
+        </h3>
+        <p
+          class="mt-2"
+          data-testid="searchResultSummary"
+        >
+          \`PlatyMatch\` allows registration of volumetric images of embryos by establishing correspondences between cells
+        </p>
+        <ul
+          class="mt-5"
+        >
+          <li
+            class="my-2"
+            data-testid="searchResultAuthor"
+          >
+            <span
+              class="font-bold"
+            >
+              Manan Lalit 
+            </span>
+            (lalit@mpi-cbg.de)
+          </li>
+        </ul>
+      </article>
+      <article
+        class="py-5 border-t-2 border-black"
+      >
+        <h3
+          class="inline font-bold text-lg hover:underline"
+          data-testid="searchResultName"
+        >
+          <a
+            href="/plugins/napari_video"
+          >
+            napari_video
+          </a>
+        </h3>
+        <p
+          class="mt-2"
+          data-testid="searchResultSummary"
+        >
+          napari plugin for reading videos.
+        </p>
+        <ul
+          class="mt-5"
+        >
+          <li
+            class="my-2"
+            data-testid="searchResultAuthor"
+          >
+            <span
+              class="font-bold"
+            >
+              Jan Clemens 
+            </span>
+            (clemensjan@googlemail.com)
+          </li>
+        </ul>
+      </article>
+      <article
+        class="py-5 border-t-2 border-black"
+      >
+        <h3
+          class="inline font-bold text-lg hover:underline"
+          data-testid="searchResultName"
+        >
+          <a
+            href="/plugins/cellfinder-napari"
+          >
+            cellfinder-napari
+          </a>
+        </h3>
+        <p
+          class="mt-2"
+          data-testid="searchResultSummary"
+        >
+          Efficient cell detection in large images
+        </p>
+        <ul
+          class="mt-5"
+        >
+          <li
+            class="my-2"
+            data-testid="searchResultAuthor"
+          >
+            <span
+              class="font-bold"
+            >
+              Adam Tyson 
+            </span>
+            (code@adamltyson.com)
+          </li>
+        </ul>
+      </article>
+      <article
+        class="py-5 border-t-2 border-black"
+      >
+        <h3
+          class="inline font-bold text-lg hover:underline"
+          data-testid="searchResultName"
+        >
+          <a
+            href="/plugins/napari-svg"
+          >
+            napari-svg
+          </a>
+        </h3>
+        <p
+          class="mt-2"
+          data-testid="searchResultSummary"
+        >
+          A plugin for reading and writing svg files with napari
+        </p>
+        <ul
+          class="mt-5"
+        >
+          <li
+            class="my-2"
+            data-testid="searchResultAuthor"
+          >
+            <span
+              class="font-bold"
+            >
+              Nicholas Sofroniew 
+            </span>
+            (sofroniewn@gmail.com)
+          </li>
+        </ul>
+      </article>
+      <article
+        class="py-5 border-t-2 border-black"
+      >
+        <h3
+          class="inline font-bold text-lg hover:underline"
+          data-testid="searchResultName"
+        >
+          <a
+            href="/plugins/napari-yapic-prediction"
+          >
+            napari-yapic-prediction
+          </a>
+        </h3>
+        <p
+          class="mt-2"
+          data-testid="searchResultSummary"
+        >
+          Napari widget plugin to perform yapic model segmentation prediction in the napari window
+        </p>
+        <ul
+          class="mt-5"
+        >
+          <li
+            class="my-2"
+            data-testid="searchResultAuthor"
+          >
+            <span
+              class="font-bold"
+            >
+              Duway Nicolas Lesmes Leon 
+            </span>
+            (dlesmesleon@hotmail.com)
+          </li>
+        </ul>
+      </article>
+      <article
+        class="py-5 border-t-2 border-black"
+      >
+        <h3
+          class="inline font-bold text-lg hover:underline"
+          data-testid="searchResultName"
+        >
+          <a
+            href="/plugins/napari-demo"
+          >
+            napari-demo
+          </a>
+        </h3>
+        <p
+          class="mt-2"
+          data-testid="searchResultSummary"
+        >
+          demo plugin
+        </p>
+        <ul
+          class="mt-5"
+        >
+          <li
+            class="my-2"
+            data-testid="searchResultAuthor"
+          >
+            <span
+              class="font-bold"
+            >
+              Ziyang Liu 
+            </span>
+            (zliu@chanzuckerberg.com)
+          </li>
+          <li
+            class="my-2"
+            data-testid="searchResultAuthor"
+          >
+            <span
+              class="font-bold"
+            >
+              Justin T. Kiggins 
+            </span>
+          </li>
+        </ul>
+      </article>
+      <article
+        class="py-5 border-t-2 border-black"
+      >
+        <h3
+          class="inline font-bold text-lg hover:underline"
+          data-testid="searchResultName"
+        >
+          <a
+            href="/plugins/ome-zarr"
+          >
+            ome-zarr
+          </a>
+        </h3>
+        <p
+          class="mt-2"
+          data-testid="searchResultSummary"
+        >
+          Implementation of images in Zarr files.
+        </p>
+        <ul
+          class="mt-5"
+        >
+          <li
+            class="my-2"
+            data-testid="searchResultAuthor"
+          >
+            <span
+              class="font-bold"
+            >
+              The Open Microscopy Team 
+            </span>
+          </li>
+        </ul>
+      </article>
+      <article
+        class="py-5 border-t-2 border-black"
+      >
+        <h3
+          class="inline font-bold text-lg hover:underline"
+          data-testid="searchResultName"
+        >
+          <a
+            href="/plugins/napari-brainreg"
+          >
+            napari-brainreg
+          </a>
+        </h3>
+        <p
+          class="mt-2"
+          data-testid="searchResultSummary"
+        >
+          Visualise brainreg registration output
+        </p>
+        <ul
+          class="mt-5"
+        >
+          <li
+            class="my-2"
+            data-testid="searchResultAuthor"
+          >
+            <span
+              class="font-bold"
+            >
+              Adam Tyson 
+            </span>
+            (adam.tyson@ucl.ac.uk)
+          </li>
+        </ul>
+      </article>
+      <article
+        class="py-5 border-t-2 border-black"
+      >
+        <h3
+          class="inline font-bold text-lg hover:underline"
+          data-testid="searchResultName"
+        >
+          <a
+            href="/plugins/napari-itk-io"
+          >
+            napari-itk-io
+          </a>
+        </h3>
+        <p
+          class="mt-2"
+          data-testid="searchResultSummary"
+        >
+          File IO with itk for napari
+        </p>
+        <ul
+          class="mt-5"
+        >
+          <li
+            class="my-2"
+            data-testid="searchResultAuthor"
+          >
+            <span
+              class="font-bold"
+            >
+              Matt McCormick 
+            </span>
+            (matt.mccormick@kitware.com)
+          </li>
+        </ul>
+      </article>
+      <article
+        class="py-5 border-t-2 border-black"
+      >
+        <h3
+          class="inline font-bold text-lg hover:underline"
+          data-testid="searchResultName"
+        >
+          <a
+            href="/plugins/napari-imc"
+          >
+            napari-imc
+          </a>
+        </h3>
+        <p
+          class="mt-2"
+          data-testid="searchResultSummary"
+        >
+          Imaging Mass Cytometry (IMC) file type support for napari
+        </p>
+        <ul
+          class="mt-5"
+        >
+          <li
+            class="my-2"
+            data-testid="searchResultAuthor"
+          >
+            <span
+              class="font-bold"
+            >
+              Jonas Windhager 
+            </span>
+            (jonas.windhager@uzh.ch)
+          </li>
+        </ul>
+      </article>
+      <article
+        class="py-5 border-t-2 border-black"
+      >
+        <h3
+          class="inline font-bold text-lg hover:underline"
+          data-testid="searchResultName"
+        >
+          <a
+            href="/plugins/napari-mri"
+          >
+            napari-mri
+          </a>
+        </h3>
+        <p
+          class="mt-2"
+          data-testid="searchResultSummary"
+        >
+          A simple plugin to use with napari for 3D-viewing of                  Magnetic Resonance Imaging file formats
+        </p>
+        <ul
+          class="mt-5"
+        >
+          <li
+            class="my-2"
+            data-testid="searchResultAuthor"
+          >
+            <span
+              class="font-bold"
+            >
+              SUSMITA SAHA 
+            </span>
+            (susmi06@yahoo.com)
+          </li>
+        </ul>
+      </article>
+      <article
+        class="py-5 border-t-2 border-black"
+      >
+        <h3
+          class="inline font-bold text-lg hover:underline"
+          data-testid="searchResultName"
+        >
+          <a
+            href="/plugins/napari-properties-viewer"
+          >
+            napari-properties-viewer
+          </a>
+        </h3>
+        <p
+          class="mt-2"
+          data-testid="searchResultSummary"
+        >
+          A viewer for napari layer properties
+        </p>
+        <ul
+          class="mt-5"
+        >
+          <li
+            class="my-2"
+            data-testid="searchResultAuthor"
+          >
+            <span
+              class="font-bold"
+            >
+              Kevin Yamauchi 
+            </span>
+            (kevin.yamauchi@gmail.com)
+          </li>
+        </ul>
+      </article>
+      <article
+        class="py-5 border-t-2 border-black"
+      >
+        <h3
+          class="inline font-bold text-lg hover:underline"
+          data-testid="searchResultName"
+        >
+          <a
+            href="/plugins/napari-medical-image-formats"
+          >
+            napari-medical-image-formats
+          </a>
+        </h3>
+        <p
+          class="mt-2"
+          data-testid="searchResultSummary"
+        >
+          A Plugin in order to read medical image formats such as DICOM and NIfTI
+        </p>
+        <ul
+          class="mt-5"
+        >
+          <li
+            class="my-2"
+            data-testid="searchResultAuthor"
+          >
+            <span
+              class="font-bold"
+            >
+              Marc Boucsein, Marc Buckmakowski 
+            </span>
+          </li>
+        </ul>
+      </article>
+      <article
+        class="py-5 border-t-2 border-black"
+      >
+        <h3
+          class="inline font-bold text-lg hover:underline"
+          data-testid="searchResultName"
+        >
+          <a
+            href="/plugins/misic-napari-plugin"
+          >
+            misic-napari-plugin
+          </a>
+        </h3>
+        <p
+          class="mt-2"
+          data-testid="searchResultSummary"
+        >
+          segmentation of bacteria
+        </p>
+        <ul
+          class="mt-5"
+        >
+          <li
+            class="my-2"
+            data-testid="searchResultAuthor"
+          >
+            <span
+              class="font-bold"
+            >
+              lcb-iam-pswap-le 
+            </span>
+            (spanigrahi@imm.cnrs.fr)
+          </li>
+        </ul>
+      </article>
+      <article
+        class="py-5 border-t-2 border-black"
+      >
+        <h3
+          class="inline font-bold text-lg hover:underline"
+          data-testid="searchResultName"
+        >
+          <a
+            href="/plugins/napari-dv"
+          >
+            napari-dv
+          </a>
+        </h3>
+        <p
+          class="mt-2"
+          data-testid="searchResultSummary"
+        >
+          Deltavision/MRC file reader for napari
+        </p>
+        <ul
+          class="mt-5"
+        >
+          <li
+            class="my-2"
+            data-testid="searchResultAuthor"
+          >
+            <span
+              class="font-bold"
+            >
+              Talley Lambert 
+            </span>
+            (talley.lambert@gmail.com)
+          </li>
+        </ul>
+      </article>
+      <article
+        class="py-5 border-t-2 border-black"
+      >
+        <h3
+          class="inline font-bold text-lg hover:underline"
+          data-testid="searchResultName"
+        >
+          <a
+            href="/plugins/nd2-dask"
+          >
+            nd2-dask
+          </a>
+        </h3>
+        <p
+          class="mt-2"
+          data-testid="searchResultSummary"
+        >
+          Plugin to load nd2 data into napari
+        </p>
+        <ul
+          class="mt-5"
+        >
+          <li
+            class="my-2"
+            data-testid="searchResultAuthor"
+          >
+            <span
+              class="font-bold"
+            >
+              Draga Doncila Pop 
+            </span>
+            (ddon0001@student.monash.edu)
+          </li>
+        </ul>
+      </article>
+      <article
+        class="py-5 border-t-2 border-black"
+      >
+        <h3
+          class="inline font-bold text-lg hover:underline"
+          data-testid="searchResultName"
+        >
+          <a
+            href="/plugins/napari-czifile2"
+          >
+            napari-czifile2
+          </a>
+        </h3>
+        <p
+          class="mt-2"
+          data-testid="searchResultSummary"
+        >
+          Carl Zeiss Image (.czi) file support for napari
+        </p>
+        <ul
+          class="mt-5"
+        >
+          <li
+            class="my-2"
+            data-testid="searchResultAuthor"
+          >
+            <span
+              class="font-bold"
+            >
+              Jonas Windhager 
+            </span>
+            (jonas.windhager@uzh.ch)
+          </li>
+        </ul>
+      </article>
+      <article
+        class="py-5 border-t-2 border-black"
+      >
+        <h3
+          class="inline font-bold text-lg hover:underline"
+          data-testid="searchResultName"
+        >
+          <a
+            href="/plugins/napari-dzi-zarr"
+          >
+            napari-dzi-zarr
+          </a>
+        </h3>
+        <p
+          class="mt-2"
+          data-testid="searchResultSummary"
+        >
+          An experimental plugin for viewing Deep Zoom Images (DZI) with napari and zarr.
+        </p>
+        <ul
+          class="mt-5"
+        >
+          <li
+            class="my-2"
+            data-testid="searchResultAuthor"
+          >
+            <span
+              class="font-bold"
+            >
+              Trevor Manz 
+            </span>
+            (trevor.j.manz@gmail.com)
+          </li>
+        </ul>
+      </article>
+      <article
+        class="py-5 border-t-2 border-black"
+      >
+        <h3
+          class="inline font-bold text-lg hover:underline"
+          data-testid="searchResultName"
+        >
+          <a
+            href="/plugins/napari-animation"
+          >
+            napari-animation
+          </a>
+        </h3>
+        <p
+          class="mt-2"
+          data-testid="searchResultSummary"
+        >
+          A plugin to make animations with napari
+        </p>
+        <ul
+          class="mt-5"
+        >
+          <li
+            class="my-2"
+            data-testid="searchResultAuthor"
+          >
+            <span
+              class="font-bold"
+            >
+              Nicholas Sofroniew, Alister Burt, Guillaume Witz, Faris Abouakil, Talley Lambert 
+            </span>
+          </li>
+        </ul>
+      </article>
+      <article
+        class="py-5 border-t-2 border-black"
+      >
+        <h3
+          class="inline font-bold text-lg hover:underline"
+          data-testid="searchResultName"
+        >
+          <a
+            href="/plugins/napari-minimal-plugin"
+          >
+            napari-minimal-plugin
+          </a>
+        </h3>
+        <p
+          class="mt-2"
+          data-testid="searchResultSummary"
+        >
+          A minimal plugin
+        </p>
+        <ul
+          class="mt-5"
+        >
+          <li
+            class="my-2"
+            data-testid="searchResultAuthor"
+          >
+            <span
+              class="font-bold"
+            >
+              Manan Lalit 
+            </span>
+            (lalit@mpi-cbg.de)
+          </li>
+        </ul>
+      </article>
+      <article
+        class="py-5 border-t-2 border-black"
+      >
+        <h3
+          class="inline font-bold text-lg hover:underline"
+          data-testid="searchResultName"
+        >
+          <a
+            href="/plugins/napari-cellfinder"
+          >
+            napari-cellfinder
+          </a>
+        </h3>
+        <p
+          class="mt-2"
+          data-testid="searchResultSummary"
+        >
+          Visualise cellfinder results with napari
+        </p>
+        <ul
+          class="mt-5"
+        >
+          <li
+            class="my-2"
+            data-testid="searchResultAuthor"
+          >
+            <span
+              class="font-bold"
+            >
+              Adam Tyson 
+            </span>
+            (adam.tyson@ucl.ac.uk)
+          </li>
+        </ul>
+      </article>
+      <article
+        class="py-5 border-t-2 border-black"
+      >
+        <h3
+          class="inline font-bold text-lg hover:underline"
+          data-testid="searchResultName"
+        >
+          <a
+            href="/plugins/napari-nikon-nd2"
+          >
+            napari-nikon-nd2
+          </a>
+        </h3>
+        <p
+          class="mt-2"
+          data-testid="searchResultSummary"
+        >
+          Opens Nikon ND2 files into napari.
+        </p>
+        <ul
+          class="mt-5"
+        >
+          <li
+            class="my-2"
+            data-testid="searchResultAuthor"
+          >
+            <span
+              class="font-bold"
+            >
+              Chris Wood 
+            </span>
+            (cwood1967@gmail.com)
+          </li>
+        </ul>
+      </article>
+      <article
+        class="py-5 border-t-2 border-black"
+      >
+        <h3
+          class="inline font-bold text-lg hover:underline"
+          data-testid="searchResultName"
+        >
+          <a
+            href="/plugins/napari-em-reader"
+          >
+            napari-em-reader
+          </a>
+        </h3>
+        <p
+          class="mt-2"
+          data-testid="searchResultSummary"
+        >
+          A napari plugin to read .em files
+        </p>
+        <ul
+          class="mt-5"
+        >
+          <li
+            class="my-2"
+            data-testid="searchResultAuthor"
+          >
+            <span
+              class="font-bold"
+            >
+              Lorenzo Gaifas 
+            </span>
+            (brisvag@gmail.com)
+          </li>
+        </ul>
+      </article>
+      <article
+        class="py-5 border-t-2 border-black"
+      >
+        <h3
+          class="inline font-bold text-lg hover:underline"
+          data-testid="searchResultName"
+        >
+          <a
+            href="/plugins/elastix-napari"
+          >
+            elastix-napari
+          </a>
+        </h3>
+        <p
+          class="mt-2"
+          data-testid="searchResultSummary"
+        >
+          A toolbox for rigid and nonrigid registration of images.
+        </p>
+        <ul
+          class="mt-5"
+        >
+          <li
+            class="my-2"
+            data-testid="searchResultAuthor"
+          >
+            <span
+              class="font-bold"
+            >
+              Viktor van der Valk 
+            </span>
+            (v.o.van_der_valk@lumc.nl)
+          </li>
+        </ul>
+      </article>
+      <article
+        class="py-5 border-t-2 border-black"
+      >
+        <h3
+          class="inline font-bold text-lg hover:underline"
+          data-testid="searchResultName"
+        >
+          <a
+            href="/plugins/PartSeg"
+          >
+            PartSeg
+          </a>
+        </h3>
+        <p
+          class="mt-2"
+          data-testid="searchResultSummary"
+        >
+          PartSeg is python GUI for bio imaging analysis especially nucleus analysis,
+        </p>
+        <ul
+          class="mt-5"
+        >
+          <li
+            class="my-2"
+            data-testid="searchResultAuthor"
+          >
+            <span
+              class="font-bold"
+            >
+              Grzegorz Bokota 
+            </span>
+            (g.bokota@cent.uw.edu.pl)
+          </li>
+        </ul>
+      </article>
+      <article
+        class="py-5 border-t-2 border-black"
+      >
+        <h3
+          class="inline font-bold text-lg hover:underline"
+          data-testid="searchResultName"
+        >
+          <a
+            href="/plugins/brainglobe-napari-io"
+          >
+            brainglobe-napari-io
+          </a>
+        </h3>
+        <p
+          class="mt-2"
+          data-testid="searchResultSummary"
+        >
+          Read and write files from the BrainGlobe neuroanatomy suite
+        </p>
+        <ul
+          class="mt-5"
+        >
+          <li
+            class="my-2"
+            data-testid="searchResultAuthor"
+          >
+            <span
+              class="font-bold"
+            >
+              Adam Tyson 
+            </span>
+            (adam.tyson@ucl.ac.uk)
+          </li>
+        </ul>
+      </article>
+      <article
+        class="py-5 border-t-2 border-black"
+      >
+        <h3
+          class="inline font-bold text-lg hover:underline"
+          data-testid="searchResultName"
+        >
+          <a
+            href="/plugins/napari-aicsimageio"
+          >
+            napari-aicsimageio
+          </a>
+        </h3>
+        <p
+          class="mt-2"
+          data-testid="searchResultSummary"
+        >
+          AICSImageIO bindings for napari
+        </p>
+        <ul
+          class="mt-5"
+        >
+          <li
+            class="my-2"
+            data-testid="searchResultAuthor"
+          >
+            <span
+              class="font-bold"
+            >
+              Jackson Maxfield Brown 
+            </span>
+            (jmaxfieldbrown@gmail.com)
+          </li>
+        </ul>
+      </article>
+      <article
+        class="py-5 border-t-2 border-black"
+      >
+        <h3
+          class="inline font-bold text-lg hover:underline"
+          data-testid="searchResultName"
+        >
+          <a
+            href="/plugins/napari-lazy-openslide"
+          >
+            napari-lazy-openslide
+          </a>
+        </h3>
+        <p
+          class="mt-2"
+          data-testid="searchResultSummary"
+        >
+          A plugin to lazily load multiscale whole-slide images with openslide and dask.
+        </p>
+        <ul
+          class="mt-5"
+        >
+          <li
+            class="my-2"
+            data-testid="searchResultAuthor"
+          >
+            <span
+              class="font-bold"
+            >
+              Trevor Manz 
+            </span>
+            (trevor.j.manz@gmail.com)
+          </li>
+        </ul>
+      </article>
+      <article
+        class="py-5 border-t-2 border-black"
+      >
+        <h3
+          class="inline font-bold text-lg hover:underline"
+          data-testid="searchResultName"
+        >
+          <a
+            href="/plugins/napari-btrack-reader"
+          >
+            napari-btrack-reader
+          </a>
+        </h3>
+        <p
+          class="mt-2"
+          data-testid="searchResultSummary"
+        >
+          A plugin to load btrack files
+        </p>
+        <ul
+          class="mt-5"
+        >
+          <li
+            class="my-2"
+            data-testid="searchResultAuthor"
+          >
+            <span
+              class="font-bold"
+            >
+              Alan R. Lowe 
+            </span>
+            (code@arlowe.co.uk)
+          </li>
+        </ul>
+      </article>
+      <article
+        class="py-5 border-t-2 border-black"
+      >
+        <h3
+          class="inline font-bold text-lg hover:underline"
+          data-testid="searchResultName"
+        >
+          <a
+            href="/plugins/cellpose-napari"
+          >
+            cellpose-napari
+          </a>
+        </h3>
+        <p
+          class="mt-2"
+          data-testid="searchResultSummary"
+        >
+          a generalist algorithm for anatomical segmentation
+        </p>
+        <ul
+          class="mt-5"
+        >
+          <li
+            class="my-2"
+            data-testid="searchResultAuthor"
+          >
+            <span
+              class="font-bold"
+            >
+              Carsen Stringer 
+            </span>
+            (stringerc@janelia.hhmi.org)
+          </li>
+        </ul>
+      </article>
+      <article
+        class="py-5 border-t-2 border-black"
+      >
+        <h3
+          class="inline font-bold text-lg hover:underline"
+          data-testid="searchResultName"
+        >
+          <a
+            href="/plugins/brainreg-segment"
+          >
+            brainreg-segment
+          </a>
+        </h3>
+        <p
+          class="mt-2"
+          data-testid="searchResultSummary"
+        >
+          Manual segmentation of 3D brain structures in a common anatomical space
+        </p>
+        <ul
+          class="mt-5"
+        >
+          <li
+            class="my-2"
+            data-testid="searchResultAuthor"
+          >
+            <span
+              class="font-bold"
+            >
+              Adam Tyson, Horst Obenhaus 
+            </span>
+            (code@adamltyson.com)
+          </li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</DocumentFragment>
+`;

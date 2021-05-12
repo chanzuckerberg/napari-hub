@@ -61,6 +61,7 @@ exports[`<AppBar /> should match snapshot 1`] = `
   >
     <header
       class="flex"
+      data-testid="appBarHeader"
     >
       <h1
         class="whitespace-nowrap"
@@ -80,9 +81,12 @@ exports[`<AppBar /> should match snapshot 1`] = `
     >
       <form
         class="flex flex-auto items-center border-b-2 border-black"
+        data-testid="searchBarForm"
       >
         <input
           class="flex flex-auto border-none outline-none bg-transparent w-0"
+          data-testid="searchBarInput"
+          value=""
         />
         <div
           style="overflow: hidden; box-sizing: border-box; display: inline-block; position: relative; width: 14px; height: 14px;"
