@@ -15,6 +15,12 @@ function getSearchURL(query = '') {
 }
 
 describe('/ (Home page)', () => {
+  it('should update URL parameter when entering query', async () => {
+    await page.goto(getSearchURL());
+    await page.fill('[data-testid=searchBarInput]', 'video');
+    expect(page.url()).toEqual(getSearchURL('video'));
+  });
+
   it('should render search results for query', async () => {
     await page.goto(getSearchURL());
     await page.fill('[data-testid=searchBarInput]', 'video');
@@ -48,6 +54,18 @@ describe('/ (Home page)', () => {
     await page.press('[data-testid=searchBarInput]', 'Enter');
     await page.waitForNavigation();
 
+    expect(page.url()).toEqual(getSearchURL('video'));
+    await expect(await getFirstSearchResultName()).toHaveText('napari_video');
+  });
+
+  it('should maintain search query when navigating back', async () => {
+    await page.goto(getSearchURL());
+    await page.fill('[data-testid=searchBarInput]', 'video');
+    await page.click('[data-testid=searchResultName]');
+    await page.waitForNavigation();
+
+    await page.goBack();
+    await page.waitForNavigation();
     expect(page.url()).toEqual(getSearchURL('video'));
     await expect(await getFirstSearchResultName()).toHaveText('napari_video');
   });

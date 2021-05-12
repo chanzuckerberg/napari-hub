@@ -84,14 +84,26 @@ export function useSearchResults(
 }
 
 /**
- * Hook that gets the active query parameter from the URL.
+ * Hook that gets the active query parameter from the URL. First it tries
+ * getting the query parameter from the Next.js router. This will be populated
+ * on initial server side rendering.
+ *
+ * If the query object is empty, check the URL for the query parameter. The
+ * query object will only be empty for client side navigation:
+ * https://github.com/vercel/next.js/issues/9473
  *
  * @returns Query parameter or empty string if undefined
  */
 export function useActiveQueryParameter(): string {
   const router = useRouter();
-  const activeQuery = router.query[SEARCH_QUERY_PARAM] as string | undefined;
-  return activeQuery ?? '';
+  let query = router.query[SEARCH_QUERY_PARAM] as string | undefined;
+
+  if (!query && process.browser) {
+    const url = new URL(window.location.href);
+    query = url.searchParams.get(SEARCH_QUERY_PARAM) ?? '';
+  }
+
+  return query ?? '';
 }
 
 /**
@@ -102,14 +114,9 @@ export function useActiveQueryParameter(): string {
  */
 export function useQueryParameter(query: string): void {
   const router = useRouter();
+  const activeQuery = useActiveQueryParameter();
 
   useEffect(() => {
-    // Get the active query parameter from the URL. This is retrieved from
-    // `window.location.href` because `useActiveQueryParameter()` returns an
-    // empty string for some reason.
-    const activeQuery =
-      new URL(window.location.href).searchParams.get(SEARCH_QUERY_PARAM) ?? '';
-
     // Skip routing if queries are equal to prevent infinite rendering
     if (query === activeQuery) {
       return;

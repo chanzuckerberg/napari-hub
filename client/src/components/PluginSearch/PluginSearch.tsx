@@ -1,5 +1,5 @@
 import { ColumnLayout } from '@/components/common';
-import { MediaFragment } from '@/components/common/media';
+import { Media } from '@/components/common/media';
 import { useSearchState } from '@/context/search';
 
 import { SearchResult } from './SearchResult';
@@ -13,9 +13,9 @@ export function PluginSearch() {
   return (
     <ColumnLayout>
       {/* TODO filter column */}
-      <MediaFragment greaterThanOrEqual="3xl">
+      <Media greaterThanOrEqual="3xl">
         <div />
-      </MediaFragment>
+      </Media>
 
       {/* Search results */}
       <div>
