@@ -3,7 +3,11 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import { useSearchState } from '@/context/search/search';
+import {
+  SEARCH_PAGE,
+  SEARCH_QUERY_PARAM,
+  useSearchState,
+} from '@/context/search';
 
 const SEARCH_ICON_SIZE = 14;
 
@@ -15,7 +19,7 @@ const SEARCH_ICON_SIZE = 14;
  * 1. User is on search page, so typing a query re-renders the plugin list.
  *
  * 2. User is not on search page, so submitting a query redirects to the search
- * page with the `query=` URL parameter set.
+ * page with the `search=` URL parameter set.
  *
  * This makes the SearchBar component re-useable for non-search enabled pages.
  */
@@ -42,9 +46,13 @@ export function SearchBar() {
         const isSearchPage = results !== undefined;
 
         // If searching from another page, redirect to the search page with the
-        // query parameter to initiate a search on load.
+        // search query parameter to initiate a search on load.
         if (!isSearchPage) {
-          await router.push(`/?query=${encodeURIComponent(localQuery)}`);
+          await router.push(SEARCH_PAGE, {
+            query: {
+              [SEARCH_QUERY_PARAM]: encodeURIComponent(localQuery),
+            },
+          });
         }
       }}
     >

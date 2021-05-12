@@ -6,9 +6,8 @@ import { Logger } from '@/utils/logger';
 import { measureExecution } from '@/utils/performance';
 
 import { FuseSearchEngine } from './engines';
+import { SEARCH_PAGE, SEARCH_QUERY_PARAM } from './search.constants';
 import { SearchEngine, SearchResult } from './search.types';
-
-export const SEARCH_PAGE = '/';
 
 const logger = new Logger('search.hooks.ts');
 
@@ -91,7 +90,7 @@ export function useSearchResults(
  */
 export function useActiveQueryParameter(): string {
   const router = useRouter();
-  const activeQuery = router.query.query as string | undefined;
+  const activeQuery = router.query[SEARCH_QUERY_PARAM] as string | undefined;
   return activeQuery ?? '';
 }
 
@@ -109,7 +108,7 @@ export function useQueryParameter(query: string): void {
     // `window.location.href` because `useActiveQueryParameter()` returns an
     // empty string for some reason.
     const activeQuery =
-      new URL(window.location.href).searchParams.get('query') ?? '';
+      new URL(window.location.href).searchParams.get(SEARCH_QUERY_PARAM) ?? '';
 
     // Skip routing if queries are equal to prevent infinite rendering
     if (query === activeQuery) {
@@ -123,7 +122,7 @@ export function useQueryParameter(query: string): void {
 
     const queryParams: Record<string, string> = {};
     if (query) {
-      queryParams.query = query;
+      queryParams[SEARCH_QUERY_PARAM] = query;
     }
 
     router

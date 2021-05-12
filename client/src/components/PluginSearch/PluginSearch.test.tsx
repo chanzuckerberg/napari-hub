@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { NextRouter, useRouter } from 'next/router';
 
+import { SEARCH_QUERY_PARAM } from '@/context/search';
 import { PluginSearchProvider } from '@/context/search/search';
 import pluginIndex from '@/fixtures/index.json';
 
@@ -18,7 +19,9 @@ function mockSearch(query = '') {
 
   (useRouter as jest.Mock).mockReturnValue({
     pathname: '/',
-    query: { query },
+    query: {
+      [SEARCH_QUERY_PARAM]: query,
+    },
     replace,
   });
 

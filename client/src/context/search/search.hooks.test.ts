@@ -4,6 +4,7 @@ import { NextRouter, useRouter } from 'next/router';
 import pluginIndex from '@/fixtures/index.json';
 import { PluginIndexData } from '@/types';
 
+import { SEARCH_PAGE, SEARCH_QUERY_PARAM } from './search.constants';
 import {
   useQueryParameter,
   useSearchEngine,
@@ -111,12 +112,18 @@ describe('useQueryParameter()', () => {
     renderHook(() => useQueryParameter(query));
 
     const [args] = replace.mock.calls;
-    expect(args[1]).toEqual({ query: { query } });
+    expect(args[1]).toEqual({
+      query: {
+        [SEARCH_QUERY_PARAM]: query,
+      },
+    });
   });
 
   it('should not set parameter if already set on URL', () => {
     const query = 'query';
-    window.location.href = `http://localhost/?query=${query}`;
+    const url = new URL(SEARCH_PAGE, 'http://localhost');
+    url.searchParams.set(SEARCH_QUERY_PARAM, query);
+    window.location.href = url.toString();
 
     const { replace } = mockRouter();
     renderHook(() => useQueryParameter(query));
