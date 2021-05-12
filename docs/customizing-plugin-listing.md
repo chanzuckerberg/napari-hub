@@ -38,7 +38,7 @@ Fields that can be defined through the Python package configuration include the 
 ### GitHub
 
 For some fields, we look to the plugin developer's GitHub repository instead of (or in addition to) PyPI.
-This is only supported, however, if the plugin developer has added a link to their GitHub repository in their PyPI metadata (see [Code Repository](#code-repository)).
+This is only supported, however, if the plugin developer has added a link to their GitHub repository in their PyPI metadata (see [Source Code](#code-repository)).
 
 Plugin developers can modify these fields by adding a `.napari` configuration folder to their repository, along with the relevant configuration files for a given field.
 We currently support two configuration files:
@@ -66,7 +66,7 @@ For each of the fields in a plugin's listing, we outline below how the field is 
 | Name                 |     ✅      |     ✅      |     ⛔      |      ✅       |    ✅    |    <img src="https://pypi.org/static/images/logo-small.svg" height="20"> |
 | Summary              |     ✅      |     ✅      |     ⛔      |      ⛔       |    ✅    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://pypi.org/static/images/logo-small.svg" height="20">) |
 | Description          |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ✅    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://pypi.org/static/images/logo-small.svg" height="20">) |
-| Authors              |     ✅      |     ✅      |     ✅      |      ⛔       |    ⛔    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://pypi.org/static/images/logo-small.svg" height="20">) |
+| Authors              |     ✅      |     ✅      |     ⛔      |      ⛔       |    ✅    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://pypi.org/static/images/logo-small.svg" height="20">) |
 | License              |     ✅      |     ✅      |     ✅      |      ⛔       |    ⛔    |    <img src="https://pypi.org/static/images/logo-small.svg" height="20"> |
 | Version              |     ✅      |     ✅      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://pypi.org/static/images/logo-small.svg" height="20"> |
 | Development Status   |     ✅      |     ⛔      |     ✅      |      ⛔       |    ⛔    |    <img src="https://pypi.org/static/images/logo-small.svg" height="20"> |
@@ -78,7 +78,7 @@ For each of the fields in a plugin's listing, we outline below how the field is 
 | Support              |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://pypi.org/static/images/logo-small.svg" height="20">) |
 | Report Issues        |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://pypi.org/static/images/logo-small.svg" height="20">) |
 | Twitter              |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://pypi.org/static/images/logo-small.svg" height="20">) |
-| Code Repository      |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://pypi.org/static/images/logo-small.svg" height="20"> |
+| Source Code          |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://pypi.org/static/images/logo-small.svg" height="20"> |
 | Release Date         |     ✅      |     ✅      |     ⛔      |      ✅       |    ⛔    |    <img src="https://pypi.org/static/images/logo-small.svg" height="20"> |
 | First Released       |     ✅      |     ⛔      |     ⛔      |      ✅       |    ⛔    |    <img src="https://pypi.org/static/images/logo-small.svg" height="20"> |
 
@@ -166,6 +166,8 @@ This is a list of authors of the plugin.
 
 We display this on the detailed plugin page and the plugin listings.
 
+We index this field for searching.
+
 We source this from the `["info"]["author"]` field of the JSON returned by the PyPI API.
 
 You can set this by setting the `author` value in your package metadata.
@@ -208,7 +210,9 @@ Authors listed in your napari config file will take precedence over the `author`
 
 This is the [SPDX Identifier](https://spdx.org/licenses/) for the license that the plugin is distributed under.
 
-We display this on the detailed plugin page and the plugin listings. We support filtering plugins based on this value.
+We display this on the detailed plugin page and the plugin listings. 
+
+We support filtering plugins based on whether the plugin is released under an [OSI-approved](https://opensource.org/licenses) open source license.
 
 We source this from the `["info"]["license"]` field of the JSON returned by the PyPI API.
 
@@ -244,10 +248,23 @@ See the [Python Packaging User Guide](https://packaging.python.org/guides/distri
 
 This is the development status of your plugin.
 
-We display this on the detailed plugin page and the plugin listings. We support filtering plugins based on this value.
+We support the 7 levels of ["Development Status"](https://pypi.org/classifiers/) supported by PyPI:
+
+- `1 - Planning`
+- `2 - Pre-Alpha`
+- `3 - Alpha`
+- `4 - Beta`
+- `5 - Production/Stable`
+- `6 - Mature`
+- `7 - Inactive`
+
+We display this on the detailed plugin page and the plugin listings. 
+
+We support filtering plugins that are "stable" based on this value. 
+Plugins that are labelled as "5" (Production/Stable) or "6" (Mature) will be considered "stable".
 
 We source this from the list of classifiers in the `["info"]["classifiers"]` field of the JSON returned by the PyPI API.
-If multiple "Development Status" classifiers are listed, we source one with the highest value.
+If multiple "Development Status" classifiers are listed, we will us the one with the highest value.
 
 You can set this by setting a ["Development Status" classifier](https://pypi.org/classifiers/) for your Python package in your package metadata.
 
@@ -265,7 +282,10 @@ classifier =
 
 These are the Python versions your plugin supports.
 
-We display this on the detailed plugin page and the plugin listings. We support filtering plugins based on this value.
+We display this on the detailed plugin page and the plugin listings. 
+
+We support filtering plugins according to the minor versions of Python they support, based on this field.
+For example, if a plugin developer notes that a plugin supports, Python ">=3.8", then the plugin will be tagged with Python versions `3.8` and `3.9`.
 
 We source this from `["info"]["requires_python"]` field of the JSON returned by the PyPI API.
 
@@ -368,6 +388,8 @@ project_urls =
     Source Code = https://github.com/spacetx/starfish
 # ...
 ```
+
+> **_NOTE:_**  If we detect that a Github repository is the target of the `url` value, we will assign this URL to the "[Source Code](#source-code)" field instead of the Project Site field.
 
 Alternatively, you can also set this field by setting a value for `Project Site` in the `project_urls` section of your napari configuration file.
 
@@ -527,7 +549,7 @@ project_urls:
 # ...
 ```
 
-### Code Repository
+### Source Code
 
 This is a link to the source code repository for your plugin.
 
@@ -535,7 +557,7 @@ We display this on the detailed plugin page.
 
 We source this from `["info"]["project_urls"]["Source Code"]` field of the JSON returned by the PyPI API.
 
-You can set this by adding a `Source Code` link to the `project_urls` value for your Python package in your package metadata.
+You can set this by adding a `Source Code` link to the `project_urls` value for your Python package in your package metadata. We will also source this from the `url` field if the target is a GitHub repository.
 
 ``` INI
 # setup.cfg
