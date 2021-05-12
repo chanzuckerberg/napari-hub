@@ -75,6 +75,9 @@ jobs:
           - name: jest
             run: yarn test
 
+          - name: tsc
+            run: yarn type-check
+
   # Run E2E tests on different browsers.
   e2e:
     needs: tests
