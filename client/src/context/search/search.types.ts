@@ -32,7 +32,7 @@ export interface SearchResult {
   index: number;
 
   /**
-   * The plugin adta.
+   * The plugin data.
    */
   plugin: PluginIndexData;
 }

@@ -20,9 +20,9 @@ export function SearchResult({ plugin }: Props) {
       </h3>
 
       {/* Plugin summary */}
-      <h4 className="mt-2" data-testid="searchResultSummary">
+      <p className="mt-2" data-testid="searchResultSummary">
         {plugin.summary}
-      </h4>
+      </p>
 
       {/* Plugin authors */}
       <ul className="mt-5">

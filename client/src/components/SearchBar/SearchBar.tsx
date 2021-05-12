@@ -24,7 +24,7 @@ export function SearchBar() {
   const { results, query, setQuery } = useSearchState() ?? {};
 
   // Local state for query. This is only used if the context state above isn't available.
-  const [activeQuery, setActiveQuery] = useState('');
+  const [localQuery, setLocalQuery] = useState('');
 
   return (
     <form
@@ -44,7 +44,7 @@ export function SearchBar() {
         // If searching from another page, redirect to the search page with the
         // query parameter to initiate a search on load.
         if (!isSearchPage) {
-          await router.push(`/?query=${encodeURIComponent(activeQuery)}`);
+          await router.push(`/?query=${encodeURIComponent(localQuery)}`);
         }
       }}
     >
@@ -73,10 +73,10 @@ export function SearchBar() {
           if (setQuery) {
             setQuery(value);
           } else {
-            setActiveQuery(value);
+            setLocalQuery(value);
           }
         }}
-        value={query ?? activeQuery}
+        value={query ?? localQuery}
       />
       <Image
         src="/icons/search.svg"
