@@ -27,12 +27,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
             napari-compressed-labels-io
           </a>
         </h3>
-        <h4
+        <p
           class="mt-2"
           data-testid="searchResultSummary"
         >
           Plugin exploring different options for reading and writing compressed and portable labels layers in napari.
-        </h4>
+        </p>
         <ul
           class="mt-5"
         >
@@ -62,12 +62,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
             affinder
           </a>
         </h3>
-        <h4
+        <p
           class="mt-2"
           data-testid="searchResultSummary"
         >
           Quickly find the affine matrix mapping one image to another using manual correspondence points annotation
-        </h4>
+        </p>
         <ul
           class="mt-5"
         >
@@ -97,12 +97,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
             napping
           </a>
         </h3>
-        <h4
+        <p
           class="mt-2"
           data-testid="searchResultSummary"
         >
           Control point mapping and coordination transformation using napari
-        </h4>
+        </p>
         <ul
           class="mt-5"
         >
@@ -132,12 +132,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
             napari-console
           </a>
         </h3>
-        <h4
+        <p
           class="mt-2"
           data-testid="searchResultSummary"
         >
           A plugin that adds a console to napari
-        </h4>
+        </p>
         <ul
           class="mt-5"
         >
@@ -167,12 +167,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
             napari-hdf5-labels-io
           </a>
         </h3>
-        <h4
+        <p
           class="mt-2"
           data-testid="searchResultSummary"
         >
           Napari plugin to store set of layers in a .h5 file. Label layer are stored in a sparse representation
-        </h4>
+        </p>
         <ul
           class="mt-5"
         >
@@ -202,12 +202,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
             PlatyMatch
           </a>
         </h3>
-        <h4
+        <p
           class="mt-2"
           data-testid="searchResultSummary"
         >
           \`PlatyMatch\` allows registration of volumetric images of embryos by establishing correspondences between cells
-        </h4>
+        </p>
         <ul
           class="mt-5"
         >
@@ -237,12 +237,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
             napari_video
           </a>
         </h3>
-        <h4
+        <p
           class="mt-2"
           data-testid="searchResultSummary"
         >
           napari plugin for reading videos.
-        </h4>
+        </p>
         <ul
           class="mt-5"
         >
@@ -272,12 +272,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
             cellfinder-napari
           </a>
         </h3>
-        <h4
+        <p
           class="mt-2"
           data-testid="searchResultSummary"
         >
           Efficient cell detection in large images
-        </h4>
+        </p>
         <ul
           class="mt-5"
         >
@@ -307,12 +307,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
             napari-svg
           </a>
         </h3>
-        <h4
+        <p
           class="mt-2"
           data-testid="searchResultSummary"
         >
           A plugin for reading and writing svg files with napari
-        </h4>
+        </p>
         <ul
           class="mt-5"
         >
@@ -342,12 +342,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
             napari-yapic-prediction
           </a>
         </h3>
-        <h4
+        <p
           class="mt-2"
           data-testid="searchResultSummary"
         >
           Napari widget plugin to perform yapic model segmentation prediction in the napari window
-        </h4>
+        </p>
         <ul
           class="mt-5"
         >
@@ -377,12 +377,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
             napari-demo
           </a>
         </h3>
-        <h4
+        <p
           class="mt-2"
           data-testid="searchResultSummary"
         >
           demo plugin
-        </h4>
+        </p>
         <ul
           class="mt-5"
         >
@@ -422,12 +422,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
             ome-zarr
           </a>
         </h3>
-        <h4
+        <p
           class="mt-2"
           data-testid="searchResultSummary"
         >
           Implementation of images in Zarr files.
-        </h4>
+        </p>
         <ul
           class="mt-5"
         >
@@ -456,12 +456,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
             napari-brainreg
           </a>
         </h3>
-        <h4
+        <p
           class="mt-2"
           data-testid="searchResultSummary"
         >
           Visualise brainreg registration output
-        </h4>
+        </p>
         <ul
           class="mt-5"
         >
@@ -491,12 +491,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
             napari-itk-io
           </a>
         </h3>
-        <h4
+        <p
           class="mt-2"
           data-testid="searchResultSummary"
         >
           File IO with itk for napari
-        </h4>
+        </p>
         <ul
           class="mt-5"
         >
@@ -526,12 +526,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
             napari-imc
           </a>
         </h3>
-        <h4
+        <p
           class="mt-2"
           data-testid="searchResultSummary"
         >
           Imaging Mass Cytometry (IMC) file type support for napari
-        </h4>
+        </p>
         <ul
           class="mt-5"
         >
@@ -561,12 +561,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
             napari-mri
           </a>
         </h3>
-        <h4
+        <p
           class="mt-2"
           data-testid="searchResultSummary"
         >
           A simple plugin to use with napari for 3D-viewing of                  Magnetic Resonance Imaging file formats
-        </h4>
+        </p>
         <ul
           class="mt-5"
         >
@@ -596,12 +596,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
             napari-properties-viewer
           </a>
         </h3>
-        <h4
+        <p
           class="mt-2"
           data-testid="searchResultSummary"
         >
           A viewer for napari layer properties
-        </h4>
+        </p>
         <ul
           class="mt-5"
         >
@@ -631,12 +631,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
             napari-medical-image-formats
           </a>
         </h3>
-        <h4
+        <p
           class="mt-2"
           data-testid="searchResultSummary"
         >
           A Plugin in order to read medical image formats such as DICOM and NIfTI
-        </h4>
+        </p>
         <ul
           class="mt-5"
         >
@@ -665,12 +665,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
             misic-napari-plugin
           </a>
         </h3>
-        <h4
+        <p
           class="mt-2"
           data-testid="searchResultSummary"
         >
           segmentation of bacteria
-        </h4>
+        </p>
         <ul
           class="mt-5"
         >
@@ -700,12 +700,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
             napari-dv
           </a>
         </h3>
-        <h4
+        <p
           class="mt-2"
           data-testid="searchResultSummary"
         >
           Deltavision/MRC file reader for napari
-        </h4>
+        </p>
         <ul
           class="mt-5"
         >
@@ -735,12 +735,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
             nd2-dask
           </a>
         </h3>
-        <h4
+        <p
           class="mt-2"
           data-testid="searchResultSummary"
         >
           Plugin to load nd2 data into napari
-        </h4>
+        </p>
         <ul
           class="mt-5"
         >
@@ -770,12 +770,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
             napari-czifile2
           </a>
         </h3>
-        <h4
+        <p
           class="mt-2"
           data-testid="searchResultSummary"
         >
           Carl Zeiss Image (.czi) file support for napari
-        </h4>
+        </p>
         <ul
           class="mt-5"
         >
@@ -805,12 +805,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
             napari-dzi-zarr
           </a>
         </h3>
-        <h4
+        <p
           class="mt-2"
           data-testid="searchResultSummary"
         >
           An experimental plugin for viewing Deep Zoom Images (DZI) with napari and zarr.
-        </h4>
+        </p>
         <ul
           class="mt-5"
         >
@@ -840,12 +840,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
             napari-animation
           </a>
         </h3>
-        <h4
+        <p
           class="mt-2"
           data-testid="searchResultSummary"
         >
           A plugin to make animations with napari
-        </h4>
+        </p>
         <ul
           class="mt-5"
         >
@@ -874,12 +874,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
             napari-minimal-plugin
           </a>
         </h3>
-        <h4
+        <p
           class="mt-2"
           data-testid="searchResultSummary"
         >
           A minimal plugin
-        </h4>
+        </p>
         <ul
           class="mt-5"
         >
@@ -909,12 +909,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
             napari-cellfinder
           </a>
         </h3>
-        <h4
+        <p
           class="mt-2"
           data-testid="searchResultSummary"
         >
           Visualise cellfinder results with napari
-        </h4>
+        </p>
         <ul
           class="mt-5"
         >
@@ -944,12 +944,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
             napari-nikon-nd2
           </a>
         </h3>
-        <h4
+        <p
           class="mt-2"
           data-testid="searchResultSummary"
         >
           Opens Nikon ND2 files into napari.
-        </h4>
+        </p>
         <ul
           class="mt-5"
         >
@@ -979,12 +979,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
             napari-em-reader
           </a>
         </h3>
-        <h4
+        <p
           class="mt-2"
           data-testid="searchResultSummary"
         >
           A napari plugin to read .em files
-        </h4>
+        </p>
         <ul
           class="mt-5"
         >
@@ -1014,12 +1014,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
             elastix-napari
           </a>
         </h3>
-        <h4
+        <p
           class="mt-2"
           data-testid="searchResultSummary"
         >
           A toolbox for rigid and nonrigid registration of images.
-        </h4>
+        </p>
         <ul
           class="mt-5"
         >
@@ -1049,12 +1049,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
             PartSeg
           </a>
         </h3>
-        <h4
+        <p
           class="mt-2"
           data-testid="searchResultSummary"
         >
           PartSeg is python GUI for bio imaging analysis especially nucleus analysis,
-        </h4>
+        </p>
         <ul
           class="mt-5"
         >
@@ -1084,12 +1084,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
             brainglobe-napari-io
           </a>
         </h3>
-        <h4
+        <p
           class="mt-2"
           data-testid="searchResultSummary"
         >
           Read and write files from the BrainGlobe neuroanatomy suite
-        </h4>
+        </p>
         <ul
           class="mt-5"
         >
@@ -1119,12 +1119,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
             napari-aicsimageio
           </a>
         </h3>
-        <h4
+        <p
           class="mt-2"
           data-testid="searchResultSummary"
         >
           AICSImageIO bindings for napari
-        </h4>
+        </p>
         <ul
           class="mt-5"
         >
@@ -1154,12 +1154,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
             napari-lazy-openslide
           </a>
         </h3>
-        <h4
+        <p
           class="mt-2"
           data-testid="searchResultSummary"
         >
           A plugin to lazily load multiscale whole-slide images with openslide and dask.
-        </h4>
+        </p>
         <ul
           class="mt-5"
         >
@@ -1189,12 +1189,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
             napari-btrack-reader
           </a>
         </h3>
-        <h4
+        <p
           class="mt-2"
           data-testid="searchResultSummary"
         >
           A plugin to load btrack files
-        </h4>
+        </p>
         <ul
           class="mt-5"
         >
@@ -1224,12 +1224,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
             cellpose-napari
           </a>
         </h3>
-        <h4
+        <p
           class="mt-2"
           data-testid="searchResultSummary"
         >
           a generalist algorithm for anatomical segmentation
-        </h4>
+        </p>
         <ul
           class="mt-5"
         >
@@ -1259,12 +1259,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
             brainreg-segment
           </a>
         </h3>
-        <h4
+        <p
           class="mt-2"
           data-testid="searchResultSummary"
         >
           Manual segmentation of 3D brain structures in a common anatomical space
-        </h4>
+        </p>
         <ul
           class="mt-5"
         >
