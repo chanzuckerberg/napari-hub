@@ -34,3 +34,10 @@ export interface PluginData extends PluginIndexData {
   support: string;
   twitter: string;
 }
+
+/**
+ * Helper type to remove the readonly modifier from the properties of a type.
+ */
+export type Mutable<T> = {
+  -readonly [K in keyof T]: T[K];
+};

@@ -2,7 +2,7 @@ import { renderHook } from '@testing-library/react-hooks';
 import { NextRouter, useRouter } from 'next/router';
 
 import pluginIndex from '@/fixtures/index.json';
-import { PluginIndexData } from '@/types';
+import { Mutable, PluginIndexData } from '@/types';
 
 import { SEARCH_PAGE, SEARCH_QUERY_PARAM } from './search.constants';
 import {
@@ -16,14 +16,17 @@ jest.mock('next/router', () => ({
   useRouter: jest.fn(),
 }));
 
-function mockRouter() {
+function mockRouter(query = '') {
   type Replace = NextRouter['replace'];
   const replace = jest
     .fn<ReturnType<Replace>, Parameters<Replace>>()
     .mockReturnValue(Promise.resolve(true));
 
-  (useRouter as jest.Mock).mockReturnValueOnce({
+  (useRouter as jest.Mock).mockReturnValue({
     replace,
+    query: {
+      [SEARCH_QUERY_PARAM]: query,
+    },
   });
 
   return { replace };
@@ -106,7 +109,7 @@ describe('useSearchResults()', () => {
 });
 
 describe('useQueryParameter()', () => {
-  it('should set parameter for a query', () => {
+  it('should set parameter for a query on the server', () => {
     const { replace } = mockRouter();
     const query = 'query';
     renderHook(() => useQueryParameter(query));
@@ -119,11 +122,35 @@ describe('useQueryParameter()', () => {
     });
   });
 
-  it('should not set parameter if already set on URL', () => {
+  it('should set parameter for a query on the client', () => {
+    const { replace } = mockRouter();
+    const query = 'query';
+    renderHook(() => useQueryParameter(query));
+
+    const [args] = replace.mock.calls;
+    expect(args[1]).toEqual({
+      query: {
+        [SEARCH_QUERY_PARAM]: query,
+      },
+    });
+  });
+
+  it('should not set parameter if already set on URL on server', () => {
+    const query = 'query';
+    const { replace } = mockRouter(query);
+    renderHook(() => useQueryParameter(query));
+
+    expect(replace).not.toHaveBeenCalled();
+  });
+
+  it('should not set parameter if already set on URL on client', () => {
     const query = 'query';
     const url = new URL(SEARCH_PAGE, 'http://localhost');
     url.searchParams.set(SEARCH_QUERY_PARAM, query);
     window.location.href = url.toString();
+
+    // Next.js sets this on the client side.
+    (process as Mutable<NodeJS.Process>).browser = true;
 
     const { replace } = mockRouter();
     renderHook(() => useQueryParameter(query));
