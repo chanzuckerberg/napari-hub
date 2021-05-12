@@ -1,11 +1,10 @@
-import { act, renderHook } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react-hooks';
 import { NextRouter, useRouter } from 'next/router';
 
 import pluginIndex from '@/fixtures/index.json';
 import { PluginIndexData } from '@/types';
 
 import {
-  SEARCH_PAGE,
   useQueryParameter,
   useSearchEngine,
   useSearchResults,
