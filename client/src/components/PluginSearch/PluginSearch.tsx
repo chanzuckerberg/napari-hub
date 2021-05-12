@@ -1,7 +1,7 @@
+import { ColumnLayout } from '@/components/common';
+import { MediaFragment } from '@/components/common/media';
 import { useSearchState } from '@/context/search';
 
-import { ColumnLayout } from '../common';
-import { MediaFragment } from '../common/media';
 import { SearchResult } from './SearchResult';
 
 /**
