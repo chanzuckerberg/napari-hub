@@ -139,5 +139,5 @@ export function useQueryParameter(query: string): void {
       .catch((err) =>
         logger.error('Unable to set search query parameter', err),
       );
-  }, [query, router]);
+  }, [activeQuery, query, router]);
 }
