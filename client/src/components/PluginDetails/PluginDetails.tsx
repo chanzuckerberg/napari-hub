@@ -97,7 +97,12 @@ function PluginRightColumn() {
  */
 export function PluginDetails() {
   return (
-    <ColumnLayout data-testid="pluginDetails">
+    <ColumnLayout
+      className="p-6 md:p-12 2xl:px-0"
+      data-testid="pluginDetails"
+      // Use reverse 2-column layout to render 225px TOC on the right side.
+      reverseTwoColumn
+    >
       <PluginLeftColumn />
       <PluginCenterColumn />
       <PluginRightColumn />
