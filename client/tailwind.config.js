@@ -40,17 +40,13 @@ module.exports = {
         'napari-nav-mobile': 'min-content 1fr',
 
         'napari-2-col': [
-          theme('width.napari-center-col'),
           theme('width.napari-side-col'),
+          theme('width.napari-center-col'),
         ].join(' '),
 
-        /*
-          App bar 2 column layout is reversed because the logo needs to be
-          smaller than the search container.
-        */
-        'napari-app-bar-2-col': [
-          theme('width.napari-side-col'),
+        'napari-2-col-reverse': [
           theme('width.napari-center-col'),
+          theme('width.napari-side-col'),
         ].join(' '),
 
         'napari-3-col': [
@@ -58,8 +54,6 @@ module.exports = {
           theme('width.napari-center-col'),
           theme('width.napari-side-col'),
         ].join(' '),
-
-        'napari-3-col-fr': 'repeat(3, 1fr)',
       }),
 
       maxWidth: (theme) => theme('width'),
