@@ -71,6 +71,8 @@ function PluginCenterColumn() {
         {plugin.description}
       </Markdown>
 
+      <CallToActionButton className="mb-6 md:mb-12 2xl:mb-20" />
+
       <MediaFragment lessThan="3xl">
         <PluginMetadata />
       </MediaFragment>
@@ -83,7 +85,9 @@ function PluginRightColumn() {
 
   return (
     <Media greaterThanOrEqual="2xl">
-      <CallToActionButton />
+      {/*  Keep button on screen when scrolling on 2xl. */}
+      <CallToActionButton className="fixed" />
+
       <Markdown.TOC
         className="fixed flex mt-24"
         markdown={plugin.description}

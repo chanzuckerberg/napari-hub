@@ -25,9 +25,6 @@ export function CallToActionButton({ className }: Props) {
           // Button color
           'bg-napari-primary',
 
-          // Keep button on screen when scrolling on 2xl.
-          '2xl:fixed',
-
           // Dimensions
           'h-12 w-full lg:max-w-napari-side-col',
         )}
