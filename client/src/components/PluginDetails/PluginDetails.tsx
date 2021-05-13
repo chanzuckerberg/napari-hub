@@ -65,9 +65,9 @@ function PluginCenterColumn() {
         </a>
       </Media>
 
-      <SupportInfo className="mb-6 md:mb-12 col-span-2" />
+      <SupportInfo className="mb-6 md:mb-12" />
 
-      <Markdown className="mb-10 col-span-3" disableHeader>
+      <Markdown className="mb-10" disableHeader>
         {plugin.description}
       </Markdown>
 
