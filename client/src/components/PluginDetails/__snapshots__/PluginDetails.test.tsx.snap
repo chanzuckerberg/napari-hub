@@ -274,7 +274,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
       </a>
     </div>
     <ul
-      class="text-black bg-gray-100 p-5 fresnel-greaterThanOrEqual-xl mb-6 md:mb-12 col-span-2 list-none grid grid-cols-3"
+      class="text-black bg-gray-100 p-5 fresnel-greaterThanOrEqual-xl mb-6 md:mb-12 list-none grid grid-cols-3"
     >
       <li
         class="mb-4 text-sm"
@@ -558,7 +558,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
       </li>
     </ul>
     <ul
-      class="text-black bg-gray-100 p-5 fresnel-lessThan-xl mb-6 md:mb-12 col-span-2 list-none"
+      class="text-black bg-gray-100 p-5 fresnel-lessThan-xl mb-6 md:mb-12 list-none"
     >
       <li
         class="mb-4 text-sm"
@@ -842,7 +842,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
       </li>
     </ul>
     <div
-      class="mb-10 col-span-3 markdown prose max-w-none"
+      class="mb-10 markdown prose max-w-none"
     >
       
 
