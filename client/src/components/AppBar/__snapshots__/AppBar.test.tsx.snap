@@ -57,7 +57,7 @@ exports[`<AppBar /> should match snapshot 1`] = `
     </button>
   </div>
   <nav
-    class="bg-napari-primary h-napari-app-bar justify-center items-center px-6 md:px-12 2xl:p-0 zero:grid-cols-[min-content,1fr] grid grid-cols-napari-2 justify-center gap-6 md:gap-12 xl:grid-cols-napari-3 2xl:grid-cols-napari-4 3xl:grid-cols-napari-5"
+    class="bg-napari-primary h-napari-app-bar justify-center items-center px-6 md:px-12 2xl:p-0 zero:grid-cols-[min-content,1fr] grid grid-cols-2 justify-center gap-6 md:gap-12 xl:grid-cols-napari-3 2xl:grid-cols-napari-4 3xl:grid-cols-napari-5"
   >
     <header
       class="flex"
