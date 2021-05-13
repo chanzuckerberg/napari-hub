@@ -158,7 +158,7 @@ export function InstallModal({ onClose, visible }: InstallModalProps) {
             'p-6 md:p-12',
 
             // Dimensions
-            'w-5/6 max-w-napari-center-col max-h-[706px]',
+            'w-5/6 max-w-[775px] max-h-[706px]',
 
             // Positioning: This centers the modal in the middle of the viewport
             'top-1/2 left-1/2',
