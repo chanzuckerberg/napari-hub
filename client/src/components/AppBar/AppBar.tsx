@@ -16,8 +16,8 @@ const MENU_ITEMS: MenuDrawerItem[] = [
     link: '/about',
   },
   {
-    title: 'Help',
-    link: '/help',
+    title: 'FAQ',
+    link: '/faq',
   },
 ];
 
