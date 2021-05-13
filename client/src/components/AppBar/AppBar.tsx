@@ -3,11 +3,10 @@ import Image from 'next/image';
 import { useState } from 'react';
 
 import { MenuDrawer, SearchBar } from '@/components';
-import { Link } from '@/components/common';
+import { ColumnLayout, Link } from '@/components/common';
+import { MediaFragment } from '@/components/common/media';
 import { MenuDrawerItem } from '@/components/MenuDrawer/types';
 import { useSearchState } from '@/context/search';
-
-import styles from './AppBar.module.scss';
 
 const IMAGE_SIZE = 16;
 
@@ -17,10 +16,25 @@ const MENU_ITEMS: MenuDrawerItem[] = [
     link: '/about',
   },
   {
-    title: 'Help',
-    link: '/help',
+    title: 'FAQ',
+    link: '/faq',
   },
 ];
+
+/**
+ * Link bar for rendering menu links. This only shows up on lg+ screens.
+ */
+function AppBarLinks() {
+  return (
+    <>
+      {MENU_ITEMS.map((item) => (
+        <Link className="ml-6" key={item.link} href={item.link}>
+          {item.title}
+        </Link>
+      ))}
+    </>
+  );
+}
 
 /**
  * Header that links back to the home page.
@@ -43,33 +57,11 @@ function AppBarHeader() {
           napari <strong>hub</strong>
         </Link>
       </h1>
+
+      <MediaFragment greaterThanOrEqual="lg">
+        <AppBarLinks />
+      </MediaFragment>
     </header>
-  );
-}
-
-/**
- * Link bar for rendering menu links. This only shows up on lg+ screens.
- */
-function AppBarLinks() {
-  return (
-    <ul
-      className={clsx(
-        // Hide links on smaller layouts
-        'hidden lg:flex',
-
-        // Margins
-        'ml-12',
-
-        // Custom link styling
-        styles.links,
-      )}
-    >
-      {MENU_ITEMS.map((item) => (
-        <li className="list-none" key={item.link}>
-          <Link href={item.link}>{item.title}</Link>
-        </li>
-      ))}
-    </ul>
   );
 }
 
@@ -87,27 +79,21 @@ export function AppBar() {
         visible={visible}
       />
 
-      <nav
+      <ColumnLayout
         className={clsx(
           // Color and height
           'bg-napari-primary h-napari-app-bar',
 
+          // Centering
+          'justify-center items-center',
+
           // Padding
           'px-6 md:px-12 2xl:p-0',
 
-          // Grid layout
-          'grid grid-cols-napari-nav-mobile',
-          'justify-center items-center',
-
-          // Grid gap
-          'gap-6 md:gap-12',
-
-          // Change to 2 column grid layout when 2xl+ screens
-          '2xl:grid 2xl:grid-cols-napari-app-bar-2-col',
-
-          // Use 3 column layout when 3xl+ screens
-          '3xl:grid 3xl:grid-cols-napari-3-col',
+          // Grid layout for smaller screens
+          'grid-cols-[min-content,1fr]',
         )}
+        component="nav"
       >
         <AppBarHeader />
 
@@ -124,7 +110,6 @@ export function AppBar() {
           )}
         >
           <SearchBar />
-          <AppBarLinks />
 
           {/* Menu button */}
           <button
@@ -141,7 +126,7 @@ export function AppBar() {
             />
           </button>
         </div>
-      </nav>
+      </ColumnLayout>
     </>
   );
 }
