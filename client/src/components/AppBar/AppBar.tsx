@@ -4,10 +4,9 @@ import { useState } from 'react';
 
 import { MenuDrawer, SearchBar } from '@/components';
 import { ColumnLayout, Link } from '@/components/common';
+import { MediaFragment } from '@/components/common/media';
 import { MenuDrawerItem } from '@/components/MenuDrawer/types';
 import { useSearchState } from '@/context/search';
-
-import styles from './AppBar.module.scss';
 
 const IMAGE_SIZE = 16;
 
@@ -21,6 +20,21 @@ const MENU_ITEMS: MenuDrawerItem[] = [
     link: '/help',
   },
 ];
+
+/**
+ * Link bar for rendering menu links. This only shows up on lg+ screens.
+ */
+function AppBarLinks() {
+  return (
+    <>
+      {MENU_ITEMS.map((item) => (
+        <Link className="ml-6" key={item.link} href={item.link}>
+          {item.title}
+        </Link>
+      ))}
+    </>
+  );
+}
 
 /**
  * Header that links back to the home page.
@@ -43,33 +57,11 @@ function AppBarHeader() {
           napari <strong>hub</strong>
         </Link>
       </h1>
+
+      <MediaFragment greaterThanOrEqual="lg">
+        <AppBarLinks />
+      </MediaFragment>
     </header>
-  );
-}
-
-/**
- * Link bar for rendering menu links. This only shows up on lg+ screens.
- */
-function AppBarLinks() {
-  return (
-    <ul
-      className={clsx(
-        // Hide links on smaller layouts
-        'hidden lg:flex',
-
-        // Margins
-        'ml-12',
-
-        // Custom link styling
-        styles.links,
-      )}
-    >
-      {MENU_ITEMS.map((item) => (
-        <li className="list-none" key={item.link}>
-          <Link href={item.link}>{item.title}</Link>
-        </li>
-      ))}
-    </ul>
   );
 }
 
@@ -118,7 +110,6 @@ export function AppBar() {
           )}
         >
           <SearchBar />
-          <AppBarLinks />
 
           {/* Menu button */}
           <button
