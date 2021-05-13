@@ -143,11 +143,7 @@ export function MetadataList({
 }: MetadataListProps) {
   return (
     <ul
-      className={clsx(
-        'list-none',
-        className,
-        horizontal && 'grid grid-cols-napari-3-col-fr',
-      )}
+      className={clsx(className, 'list-none', horizontal && 'grid grid-cols-3')}
     >
       {items.map((item) => {
         const values = item.value instanceof Array ? item.value : [item.value];

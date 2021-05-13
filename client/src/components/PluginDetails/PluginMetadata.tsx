@@ -136,18 +136,19 @@ function PluginMetadataBase({
 
   return (
     <div
+      // ID is used to navigate to metadata using `View project data` link
       id="pluginMetadata"
       className={clsx(
         className,
 
-        // Vertical layout for < xl
-        'flex flex-col',
+        // Vertical 1-column grid layout for < xl
+        'grid',
 
-        // Horizontal layout with 3 column grid for xl+
-        'xl:grid xl:grid-cols-napari-3-col-fr',
+        // Horizontal layout with 3-column grid for xl+
+        'xl:grid-cols-3',
 
-        // Back to vertical layout for 3xl+
-        '3xl:flex',
+        // Back to 1-column vertical layout for 3xl+
+        '3xl:grid-cols-1',
       )}
     >
       <MetadataList inline={inline} items={projectItems} />
