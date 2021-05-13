@@ -121,7 +121,7 @@ jobs:
         run: yarn build
 
       - name: Start mock server on port 8081
-        run: yarn start:mock-server &
+        run: yarn dev:api &
 
       - name: Start server on port 8080
         run: yarn start &
