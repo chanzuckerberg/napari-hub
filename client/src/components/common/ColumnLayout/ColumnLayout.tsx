@@ -31,7 +31,7 @@ export function ColumnLayout({
         className,
 
         // Layout
-        'grid grid-cols-napari-2 justify-center',
+        'grid grid-cols-2 justify-center',
 
         // Grid gap
         'gap-6 md:gap-12',

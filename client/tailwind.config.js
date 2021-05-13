@@ -13,7 +13,7 @@ const screens = reduce(
   {},
 );
 
-function remToPixels(value) {
+function pixelsToRem(value) {
   return `${value / 16}rem`;
 }
 
@@ -27,8 +27,8 @@ module.exports = {
     extend: {
       spacing: {
         // Use 25px and 50px for margins, paddings, gaps, etc.
-        6: remToPixels(25),
-        12: remToPixels(50),
+        6: pixelsToRem(25),
+        12: pixelsToRem(50),
       },
 
       colors: {
@@ -56,11 +56,7 @@ module.exports = {
             return result;
           },
 
-          {
-            // Use fractional width for 2-column layout
-            // https://css-tricks.com/introduction-fr-css-unit/
-            'napari-2': 'repeat(2, 1fr)',
-          },
+          {},
         );
       },
 
