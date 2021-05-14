@@ -26,7 +26,7 @@ export function CallToActionButton({ className }: Props) {
           'bg-napari-primary',
 
           // Dimensions
-          'h-12 w-full lg:max-w-napari-side-col',
+          'h-12 w-full lg:max-w-napari-col',
         )}
         onClick={() => setVisible(true)}
         type="button"

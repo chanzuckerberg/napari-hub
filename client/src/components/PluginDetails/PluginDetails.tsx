@@ -20,7 +20,7 @@ function PluginCenterColumn() {
   const { plugin } = usePluginState();
 
   return (
-    <article className="w-full">
+    <article className="w-full col-span-2 xl:col-span-3">
       <h1 className="font-bold text-4xl">{plugin.name}</h1>
       <h2 className="font-semibold my-6 text-lg">{plugin.summary}</h2>
 
@@ -101,12 +101,7 @@ function PluginRightColumn() {
  */
 export function PluginDetails() {
   return (
-    <ColumnLayout
-      className="p-6 md:p-12 2xl:px-0"
-      data-testid="pluginDetails"
-      // Use reverse 2-column layout to render 225px TOC on the right side.
-      reverseTwoColumn
-    >
+    <ColumnLayout className="p-6 md:p-12 2xl:px-0" data-testid="pluginDetails">
       <PluginLeftColumn />
       <PluginCenterColumn />
       <PluginRightColumn />

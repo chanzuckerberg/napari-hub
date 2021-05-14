@@ -2,7 +2,7 @@
 
 exports[`<PluginDetails /> should match snapshot 1`] = `
 <div
-  class="p-6 md:p-12 2xl:px-0 grid grid-cols-1 justify-center gap-6 md:gap-12 2xl:grid-cols-napari-2-col-reverse 3xl:grid-cols-napari-3-col"
+  class="p-6 md:p-12 2xl:px-0 grid grid-cols-2 justify-center gap-6 md:gap-12 xl:grid-cols-napari-3 2xl:grid-cols-napari-4 3xl:grid-cols-napari-5"
   data-testid="pluginDetails"
 >
   <div
@@ -242,7 +242,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
     </div>
   </div>
   <article
-    class="w-full"
+    class="w-full col-span-2 xl:col-span-3"
   >
     <h1
       class="font-bold text-4xl"
@@ -261,7 +261,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
         class="absolute min-w-napari-xs"
       />
       <button
-        class="fresnel-lessThan-2xl bg-napari-primary h-12 w-full lg:max-w-napari-side-col"
+        class="fresnel-lessThan-2xl bg-napari-primary h-12 w-full lg:max-w-napari-col"
         type="button"
       >
         Install
@@ -1224,7 +1224,7 @@ the coverage at least stays the same before you submit a pull request.
       class="absolute min-w-napari-xs"
     />
     <button
-      class="mb-6 md:mb-12 2xl:mb-20 bg-napari-primary h-12 w-full lg:max-w-napari-side-col"
+      class="mb-6 md:mb-12 2xl:mb-20 bg-napari-primary h-12 w-full lg:max-w-napari-col"
       type="button"
     >
       Install
@@ -1469,7 +1469,7 @@ the coverage at least stays the same before you submit a pull request.
       class="absolute min-w-napari-xs"
     />
     <button
-      class="fixed bg-napari-primary h-12 w-full lg:max-w-napari-side-col"
+      class="fixed bg-napari-primary h-12 w-full lg:max-w-napari-col"
       type="button"
     >
       Install

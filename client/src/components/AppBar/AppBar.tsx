@@ -90,8 +90,10 @@ export function AppBar() {
           // Padding
           'px-6 md:px-12 2xl:p-0',
 
-          // Grid layout for smaller screens
-          'grid-cols-[min-content,1fr]',
+          // Grid layout for smaller screens. This allows the search bar to
+          // extend to its max width to the left. The `zero:` modifier is used
+          // to increase specificity over ColumnLayout.
+          'zero:grid-cols-[min-content,1fr]',
         )}
         component="nav"
       >
@@ -102,11 +104,14 @@ export function AppBar() {
             // Flex layout
             'flex items-center',
 
-            // Take 100% of width, but limit to center column width.
-            'w-full max-w-napari-center-col',
+            // Take 100% of width.
+            'w-full',
 
             // Align container to the right of the grid cell
             'justify-self-end',
+
+            // Use more columns on larger screens
+            'xl:col-span-2 2xl:col-span-3',
           )}
         >
           <SearchBar />
