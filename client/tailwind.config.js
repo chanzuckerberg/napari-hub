@@ -34,6 +34,7 @@ module.exports = {
       colors: {
         'napari-primary': '#80d1ff',
         'napari-primary-light': 'rgba(128, 215, 255, 0.25)',
+        'napari-error': '#EB1000',
       },
 
       width: (theme) => ({

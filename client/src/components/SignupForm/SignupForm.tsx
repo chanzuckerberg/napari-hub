@@ -1,6 +1,8 @@
 import clsx from 'clsx';
 import React, { useState } from 'react';
 
+import { ColumnLayout } from '@/components/common';
+
 import styles from './SignupForm.module.scss';
 
 /**
@@ -8,40 +10,22 @@ import styles from './SignupForm.module.scss';
  */
 export function SignupForm() {
   const [email, setEmail] = useState('');
+  const [isValid, setIsValid] = useState(true);
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault(); // override default submission behavior
   };
 
   return (
-    <div
-      className={clsx(
-        // Color and height
-        'bg-napari-primary-light',
-
-        // Padding
-        'p-8',
-
-        // Grid layout
-        'justify-center items-center',
-
-        // Grid gap
-        'gap-6 md:gap-12',
-
-        // Change to 2 column grid layout when 2xl+ screens
-        '2xl:grid 2xl:grid-cols-napari-app-bar-2-col',
-
-        // Use 3 column layout when 3xl+ screens
-        '3xl:grid 3xl:grid-cols-napari-3-col',
-      )}
-    >
-      <div />
-      <div>
+    <ColumnLayout className="bg-napari-primary-light p-6 xl:px-0 xl:py-12">
+      <div className="hidden 3xl:block 3xl:col-span-1" />
+      <div className="col-span-2 md:col-span-3">
         <h3 className="prose-lg font-semibold mb-4">
           Sign up to receive updates
         </h3>
         <form
           onSubmit={handleSubmit}
+          noValidate
           className="flex flex-col md:flex-row gap-6 md:gap-12"
         >
           <input
@@ -51,7 +35,15 @@ export function SignupForm() {
             placeholder="email"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
-            className="h-[24px] md:h-[35px] md:flex-2 bg-transparent border-b border-black prose-sm"
+            className={clsx(
+              // font & colors
+              'prose-sm bg-transparent focus:outline-none',
+              // sizing
+              'h-[24px] md:h-[35px] md:flex-2',
+              // underline
+              'border-b',
+              isValid ? 'border-black' : 'border-napari-error',
+            )}
           />
           <input
             type="submit"
@@ -61,6 +53,6 @@ export function SignupForm() {
           />
         </form>
       </div>
-    </div>
+    </ColumnLayout>
   );
 }
