@@ -22,7 +22,7 @@ function CopyPluginNameButton() {
     <button
       className={clsx(
         // Button colors
-        'bg-napari-primary-light hover:bg-napari-primary',
+        'bg-napari-light hover:bg-napari-primary',
 
         // Show button inline with text.
         'inline',
