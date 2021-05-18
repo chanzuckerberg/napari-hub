@@ -2,6 +2,7 @@ export * from './Close';
 export * from './Copy';
 export * from './CZI';
 export * from './GitHub';
+export * from './icons.type';
 export * from './NapariLogo';
 export * from './ProjectDocumentation';
 export * from './ProjectIssues';

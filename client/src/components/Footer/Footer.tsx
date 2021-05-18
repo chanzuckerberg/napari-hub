@@ -1,15 +1,12 @@
-import clsx from 'clsx';
-import { ReactNode } from 'react';
+import { ComponentType } from 'react';
 
 import { Link } from '@/components/common';
-import { CZI, GitHub, NapariLogo } from '@/components/common/icons';
-
-import styles from './Footer.module.scss';
+import { CZI, GitHub, IconProps, NapariLogo } from '@/components/common/icons';
 
 interface FooterLink {
   title: string;
   link: string;
-  icon?: ReactNode;
+  icon?: ComponentType<IconProps>;
 }
 
 const FOOTER_LINKS: FooterLink[] = [
@@ -43,9 +40,13 @@ function FooterLinks() {
   return (
     <>
       {FOOTER_LINKS.map((item) => (
-        <Link className="whitespace-nowrap" key={item.link} href={item.link}>
+        <Link
+          className="whitespace-nowrap flex flex-row items-center"
+          key={item.link}
+          href={item.link}
+        >
           {item.icon && (
-            <item.icon className="inline-block align-text-bottom mr-0.5 sm:mr-1 h-4 w-4" />
+            <item.icon className="inline-block mr-0.5 sm:mr-1 h-4 w-4" />
           )}
           {item.title}
         </Link>
@@ -55,7 +56,7 @@ function FooterLinks() {
 }
 
 /**
- * TODO: Update component description
+ * Footer component has your footer links and icons
  */
 export function Footer() {
   return (
