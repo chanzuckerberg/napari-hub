@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { ReactNode } from 'react';
 
 import { Link } from '@/components/common';
-import { Copy, GitHub, Twitter } from '@/components/common/icons';
+import { CZI, GitHub, NapariLogo } from '@/components/common/icons';
 
 import styles from './Footer.module.scss';
 
@@ -44,6 +44,9 @@ function FooterLinks() {
     <>
       {FOOTER_LINKS.map((item) => (
         <Link className="whitespace-nowrap" key={item.link} href={item.link}>
+          {item.icon && (
+            <item.icon className="inline-block align-text-bottom mr-0.5 sm:mr-1 h-4 w-4" />
+          )}
           {item.title}
         </Link>
       ))}
@@ -62,11 +65,11 @@ export function Footer() {
       </div>
       <div className="flex flex-row justify-end gap-2">
         <Link href="https://napari.org">
-          <Twitter className="w-6 h-6" />
+          <NapariLogo className="w-8 h-8" />
         </Link>
         <div className="border-r-[1px] border-black" />
         <Link href="https://chanzuckerberg.com">
-          <Copy className="w-6 h-6" />
+          <CZI className="w-8 h-8" />
         </Link>
       </div>
     </div>
