@@ -30,7 +30,7 @@ export function SignupForm() {
         >
           <input
             type="email"
-            name="email"
+            name="EMAIL"
             aria-label="email address"
             placeholder="email"
             value={email}

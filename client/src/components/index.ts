@@ -1,4 +1,5 @@
 export * from './AppBar';
+export * from './Footer';
 export * from './Layout';
 export * from './MenuDrawer';
 export * from './PluginDetails';
