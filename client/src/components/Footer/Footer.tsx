@@ -6,6 +6,7 @@ import { CZI, GitHub, IconProps, NapariLogo } from '@/components/common/icons';
 interface FooterLink {
   title: string;
   link: string;
+  newTab?: boolean;
   icon?: ComponentType<IconProps>;
 }
 
@@ -29,6 +30,7 @@ const FOOTER_LINKS: FooterLink[] = [
   {
     title: 'GitHub repo',
     link: 'https://github.com/chanzuckerberg/napari-hub',
+    newTab: true,
     icon: GitHub,
   },
 ];
@@ -44,6 +46,7 @@ function FooterLinks() {
           className="whitespace-nowrap flex flex-row items-center"
           key={item.link}
           href={item.link}
+          newTab={item.newTab}
         >
           {item.icon && (
             <item.icon className="inline-block mr-0.5 sm:mr-1 h-4 w-4" />
@@ -65,11 +68,11 @@ export function Footer() {
         <FooterLinks />
       </div>
       <div className="flex flex-row justify-end gap-2">
-        <Link href="https://napari.org">
+        <Link href="https://napari.org" newTab>
           <NapariLogo className="w-8 h-8" />
         </Link>
         <div className="border-r-[1px] border-black" />
-        <Link href="https://chanzuckerberg.com">
+        <Link href="https://chanzuckerberg.com" newTab>
           <CZI className="w-8 h-8" />
         </Link>
       </div>
