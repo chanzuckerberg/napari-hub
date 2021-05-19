@@ -11,7 +11,7 @@ MC_URL.search = new URLSearchParams({
 }).toString();
 
 interface Props {
-  onSubmit?: (event?: React.FormEvent) => void;
+  onSubmit?: (event: React.FormEvent) => void;
 }
 
 /**

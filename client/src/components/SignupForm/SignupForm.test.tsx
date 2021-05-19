@@ -1,4 +1,5 @@
 import { fireEvent, render } from '@testing-library/react';
+import { FormEvent } from 'react';
 
 import { SignupForm } from './SignupForm';
 
@@ -9,7 +10,7 @@ describe('<SignupForm />', () => {
   });
 
   it('should submit the form', () => {
-    const onSubmit = jest.fn((event) => event.preventDefault());
+    const onSubmit = jest.fn((event: FormEvent) => event.preventDefault());
     const { getByTestId } = render(<SignupForm onSubmit={onSubmit} />);
     const inputValue = 'example@example.com';
 
@@ -23,7 +24,7 @@ describe('<SignupForm />', () => {
   });
 
   it('should not submit empty form', () => {
-    const onSubmit = jest.fn((event) => event.preventDefault());
+    const onSubmit = jest.fn((event: FormEvent) => event.preventDefault());
     const { getByTestId } = render(<SignupForm onSubmit={onSubmit} />);
     const inputValue = '';
 
@@ -37,7 +38,7 @@ describe('<SignupForm />', () => {
   });
 
   it('should error on invalid email address', () => {
-    const onSubmit = jest.fn((event) => event.preventDefault());
+    const onSubmit = jest.fn((event: FormEvent) => event.preventDefault());
     const { getByTestId } = render(<SignupForm onSubmit={onSubmit} />);
     const inputValue = 'verybadinvalidemail';
 
