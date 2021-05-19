@@ -41,3 +41,10 @@ export interface PluginData extends PluginIndexData {
 export type Mutable<T> = {
   -readonly [K in keyof T]: T[K];
 };
+
+/**
+ * Helper type for removing all optional properties from a type.
+ */
+export type NonPartial<T> = {
+  [K in keyof T]-?: T[K];
+};
