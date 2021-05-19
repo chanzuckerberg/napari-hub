@@ -3,8 +3,6 @@ import React, { useRef, useState } from 'react';
 
 import { ColumnLayout } from '@/components/common';
 
-import styles from './SignupForm.module.scss';
-
 // MailChimp form target
 const MC_URL = new URL('https://dev.us5.list-manage.com/subscribe/post');
 MC_URL.search = new URLSearchParams({
