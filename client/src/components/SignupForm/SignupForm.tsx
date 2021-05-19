@@ -10,10 +10,14 @@ MC_URL.search = new URLSearchParams({
   id: '63bf16756e',
 }).toString();
 
+interface Props {
+  onSubmit?: (event?: React.FormEvent) => void;
+}
+
 /**
  * Signup form to capture email address and send it to MailChimp
  */
-export function SignupForm() {
+export function SignupForm({ onSubmit }: Props) {
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
   const emailRef = useRef<HTMLInputElement | null>(null);
@@ -39,6 +43,8 @@ export function SignupForm() {
 
     if (!isValid) {
       event.preventDefault(); // do not submit form
+    } else if (onSubmit) {
+      onSubmit(event);
     }
   };
 
@@ -74,8 +80,12 @@ export function SignupForm() {
               'border-b',
               !error ? 'border-black' : 'border-napari-error',
             )}
+            data-testid="emailField"
           />
-          <span className="text-xs align-text-top h-[1.5em] text-napari-error xl:row-start-2 col-span-2">
+          <span
+            data-testid="emailError"
+            className="text-xs align-text-top h-[1.5em] text-napari-error xl:row-start-2 col-span-2"
+          >
             {error}
           </span>
           <input
@@ -90,6 +100,7 @@ export function SignupForm() {
               // border & interaction
               'border-none cursor-pointer',
             )}
+            data-testid="submitButton"
           />
         </form>
       </div>

@@ -26,6 +26,7 @@ Object {
             <input
               aria-label="email address"
               class="prose-sm bg-transparent focus:outline-none h-10 xl:h-[35px] col-span-2 border-b border-black"
+              data-testid="emailField"
               name="EMAIL"
               placeholder="email"
               required=""
@@ -34,9 +35,11 @@ Object {
             />
             <span
               class="text-xs align-text-top h-[1.5em] text-napari-error xl:row-start-2 col-span-2"
+              data-testid="emailError"
             />
             <input
               class="prose-sm font-semibold bg-napari-primary h-[35px] col-span-2 xl:col-span-1 border-none cursor-pointer"
+              data-testid="submitButton"
               name="subscribe"
               type="submit"
               value="Subscribe"
@@ -68,6 +71,7 @@ Object {
           <input
             aria-label="email address"
             class="prose-sm bg-transparent focus:outline-none h-10 xl:h-[35px] col-span-2 border-b border-black"
+            data-testid="emailField"
             name="EMAIL"
             placeholder="email"
             required=""
@@ -76,9 +80,11 @@ Object {
           />
           <span
             class="text-xs align-text-top h-[1.5em] text-napari-error xl:row-start-2 col-span-2"
+            data-testid="emailError"
           />
           <input
             class="prose-sm font-semibold bg-napari-primary h-[35px] col-span-2 xl:col-span-1 border-none cursor-pointer"
+            data-testid="submitButton"
             name="subscribe"
             type="submit"
             value="Subscribe"
