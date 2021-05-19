@@ -218,6 +218,8 @@ exports[`<Layout /> should match snapshot 1`] = `
       <a
         class="whitespace-nowrap flex flex-row items-center"
         href="https://github.com/chanzuckerberg/napari-hub"
+        rel="noreferrer"
+        target="_blank"
       >
         <svg
           class="inline-block mr-0.5 sm:mr-1 h-4 w-4"
@@ -240,6 +242,8 @@ exports[`<Layout /> should match snapshot 1`] = `
     >
       <a
         href="https://napari.org"
+        rel="noreferrer"
+        target="_blank"
       >
         <svg
           class="w-8 h-8"
@@ -371,6 +375,8 @@ exports[`<Layout /> should match snapshot 1`] = `
       />
       <a
         href="https://chanzuckerberg.com"
+        rel="noreferrer"
+        target="_blank"
       >
         <svg
           class="w-8 h-8"
