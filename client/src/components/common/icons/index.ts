@@ -1,6 +1,7 @@
 export * from './Close';
 export * from './Copy';
 export * from './GitHub';
+export * from './Hub';
 export * from './Menu';
 export * from './ProjectDocumentation';
 export * from './ProjectIssues';
