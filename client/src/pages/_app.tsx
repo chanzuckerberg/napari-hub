@@ -8,7 +8,7 @@ import '@/axios';
 import '@/tailwind.scss';
 import '@/global.scss';
 
-import { StylesProvider, ThemeProvider } from '@material-ui/core/styles';
+import { StylesProvider, ThemeProvider } from '@material-ui/styles';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 import { ReactNode, useEffect, useRef } from 'react';

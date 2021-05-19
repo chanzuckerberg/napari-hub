@@ -15,18 +15,23 @@ function getMUIImportsPlugin(name) {
     path = `esm/${path}`;
   }
 
+  const packages = [
+    '@material-ui/core',
+    '@material-ui/icons',
+    '@material-ui/styles',
+  ];
+
   return [
     'babel-plugin-transform-imports',
-    {
-      '@material-ui/core': {
-        transform: `@material-ui/core/${path}`,
+
+    packages.reduce((config, package) => {
+      config[package] = {
+        transform: `${package}/${path}`,
         preventFullImport: true,
-      },
-      '@material-ui/icons': {
-        transform: `@material-ui/icons/${path}`,
-        preventFullImport: true,
-      },
-    },
+      };
+
+      return config;
+    }, {}),
   ];
 }
 
