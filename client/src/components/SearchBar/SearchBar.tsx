@@ -17,11 +17,25 @@ interface Props {
 }
 
 /**
+ * Creates a new URL with the search query added. It also adds the plugin search
+ * ID so that the browser scrolls the search bar to the top.
+ *
+ * @param query The query string.
+ * @returns The URL object.
+ */
+function getURLWithSearchParam(query: string): URL {
+  const url = new URL(SEARCH_PAGE, window.location.origin);
+  url.searchParams.set(SEARCH_QUERY_PARAM, encodeURIComponent(query));
+
+  return url;
+}
+
+/**
  * Search bar component. This renders an input field with a underline and
  * magnifying glass icon to the right of the component. When the user enters a query,
  * one of two things can happen:
  *
- * 1. User is on search page, so typing a query re-renders the plugin list.
+ * 1. User is on search page, so submitting a query re-renders the plugin list.
  *
  * 2. User is not on search page, so submitting a query redirects to the search
  * page with the `search=` URL parameter set.
@@ -30,10 +44,27 @@ interface Props {
  */
 export function SearchBar({ large }: Props) {
   const router = useRouter();
-  const { results, query, setQuery } = useSearchState() ?? {};
+  const { results, setQuery } = useSearchState() ?? {};
 
-  // Local state for query. This is only used if the context state above isn't available.
+  // Local state for query. This is used to store the current entered query string.
   const [localQuery, setLocalQuery] = useState('');
+
+  /**
+   * Performs a search query on form submission. If the user is on the search
+   * page, this runs the query through the search engine. Otherwise, it
+   * redirects to the search page with the query added to the URL.
+   */
+  async function submitForm() {
+    // Search state is only available on search enabled pages.
+    const isSearchPage = results !== undefined;
+
+    if (isSearchPage) {
+      setQuery?.(localQuery);
+    } else {
+      const url = getURLWithSearchParam(localQuery);
+      await router.push(url);
+    }
+  }
 
   return (
     <form
@@ -49,21 +80,7 @@ export function SearchBar({ large }: Props) {
       )}
       onSubmit={async (event) => {
         event.preventDefault();
-
-        // Search state is only available on search enabled pages.
-        const isSearchPage = results !== undefined;
-
-        // If searching from another page, redirect to the search page with the
-        // search query parameter to initiate a search on load.
-        if (!isSearchPage) {
-          const url = new URL(SEARCH_PAGE, window.location.origin);
-          url.searchParams.set(
-            SEARCH_QUERY_PARAM,
-            encodeURIComponent(localQuery),
-          );
-
-          await router.push(url);
-        }
+        await submitForm();
       }}
     >
       <input
@@ -88,14 +105,9 @@ export function SearchBar({ large }: Props) {
         )}
         onChange={(event) => {
           const { value } = event.target;
-
-          if (setQuery) {
-            setQuery(value);
-          } else {
-            setLocalQuery(value);
-          }
+          setLocalQuery(value);
         }}
-        value={query ?? localQuery}
+        value={localQuery}
       />
 
       <Search
