@@ -14,3 +14,9 @@ beforeEach(() => {
     ...originalWindowLocation,
   };
 });
+
+jest.mock('next/router', () => ({
+  useRouter: jest.fn().mockReturnValue({
+    query: {},
+  }),
+}));
