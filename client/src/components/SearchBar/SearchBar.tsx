@@ -2,12 +2,14 @@ import clsx from 'clsx';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import { Search } from '@/components/common/icons';
+import { Close, Search } from '@/components/common/icons';
 import {
   SEARCH_PAGE,
   SEARCH_QUERY_PARAM,
   useSearchState,
 } from '@/context/search';
+
+import styles from './SearchBar.module.scss';
 
 interface Props {
   /**
@@ -44,10 +46,17 @@ function getURLWithSearchParam(query: string): URL {
  */
 export function SearchBar({ large }: Props) {
   const router = useRouter();
-  const { results, setQuery } = useSearchState() ?? {};
+  const { results, query, setQuery } = useSearchState() ?? {};
 
   // Local state for query. This is used to store the current entered query string.
   const [localQuery, setLocalQuery] = useState('');
+
+  const iconClassName = clsx(
+    'h-5 w-5',
+
+    // 22x22 pixels when root font-size is 16px
+    large && 'h-[1.375rem] w-[1.375rem]',
+  );
 
   /**
    * Performs a search query on form submission. If the user is on the search
@@ -110,14 +119,28 @@ export function SearchBar({ large }: Props) {
         value={localQuery}
       />
 
-      <Search
-        className={clsx(
-          'w-5 h-5',
+      <button
+        onClick={async () => {
+          // Clear local query if close button is clicked and the search engine
+          // is currently rendering the results for another query.
+          if (query) {
+            setLocalQuery('');
+          }
 
-          // 22x22 pixels when root font-size is 16px
-          large && 'h-[1.375rem] w-[1.375rem]',
+          await submitForm();
+        }}
+        // We use `type="button"` because `type="submit"` will first call the
+        // `onClick()` handler and then the `onSubmit()` handler, regardless of
+        // whether the user clicked on the button or not.
+        type="button"
+      >
+        {/* Render close button if the user submitted a query. */}
+        {query ? (
+          <Close className={clsx(iconClassName, styles.closeIcon)} />
+        ) : (
+          <Search className={iconClassName} />
         )}
-      />
+      </button>
     </form>
   );
 }
