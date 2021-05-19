@@ -8,6 +8,7 @@ import {
   SEARCH_QUERY_PARAM,
   useSearchState,
 } from '@/context/search';
+import { useActiveQueryParameter } from '@/context/search/search.hooks';
 
 import styles from './SearchBar.module.scss';
 
@@ -46,10 +47,11 @@ function getURLWithSearchParam(query: string): URL {
  */
 export function SearchBar({ large }: Props) {
   const router = useRouter();
+  const initialQuery = useActiveQueryParameter();
   const { results, query, setQuery } = useSearchState() ?? {};
 
   // Local state for query. This is used to store the current entered query string.
-  const [localQuery, setLocalQuery] = useState('');
+  const [localQuery, setLocalQuery] = useState(initialQuery);
 
   const iconClassName = clsx(
     'h-5 w-5',
