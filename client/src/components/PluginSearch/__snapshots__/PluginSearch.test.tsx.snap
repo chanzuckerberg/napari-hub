@@ -3,7 +3,7 @@
 exports[`<PluginSearch /> should match snapshot 1`] = `
 <DocumentFragment>
   <div
-    class="grid grid-cols-2 justify-center gap-6 md:gap-12 xl:grid-cols-napari-3 2xl:grid-cols-napari-4 3xl:grid-cols-napari-5"
+    class="grid justify-center gap-6 md:gap-12 grid-cols-2 screen-875:grid-cols-napari-3 screen-1150:grid-cols-napari-4 screen-1425:grid-cols-napari-5"
   >
     <div
       class="fresnel-container fresnel-greaterThanOrEqual-3xl "

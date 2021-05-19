@@ -56,38 +56,65 @@ exports[`<Layout /> should match snapshot 1`] = `
       </svg>
     </button>
   </div>
-  <nav
-    class="bg-napari-primary h-napari-app-bar justify-center items-center px-6 md:px-12 2xl:p-0 zero:grid-cols-[min-content,1fr] grid grid-cols-2 justify-center gap-6 md:gap-12 xl:grid-cols-napari-3 2xl:grid-cols-napari-4 3xl:grid-cols-napari-5"
+  <header
+    class="bg-napari-primary h-napari-app-bar justify-center items-center px-6 md:px-12 2xl:p-0 zero:grid-cols-[min-content,1fr] grid justify-center gap-6 md:gap-12 grid-cols-2 screen-875:grid-cols-napari-3 screen-1150:grid-cols-napari-4 screen-1425:grid-cols-napari-5"
   >
-    <header
-      class="flex"
-      data-testid="appBarHeader"
+    <div
+      class="fresnel-container fresnel-greaterThanOrEqual-lg "
     >
-      <h1
-        class="whitespace-nowrap"
+      <nav
+        class="flex"
       >
-        <a
-          href="/"
+        <h1
+          class="whitespace-nowrap"
         >
-          napari 
-          <strong>
-            hub
-          </strong>
-        </a>
-      </h1>
-      <a
-        class="ml-6"
-        href="/about"
+          <a
+            href="/"
+          >
+            napari 
+            <strong>
+              hub
+            </strong>
+          </a>
+        </h1>
+        <div
+          class="flex"
+        >
+          <a
+            class="ml-6"
+            href="/about"
+          >
+            About
+          </a>
+          <a
+            class="ml-6"
+            href="/faq"
+          >
+            FAQ
+          </a>
+        </div>
+      </nav>
+    </div>
+    <div
+      class="fresnel-container fresnel-lessThan-lg "
+    >
+      <nav
+        class="flex"
       >
-        About
-      </a>
-      <a
-        class="ml-6"
-        href="/faq"
-      >
-        FAQ
-      </a>
-    </header>
+        <h1
+          class="whitespace-nowrap"
+        >
+          <a
+            href="/"
+          >
+            napari 
+            <strong>
+              hub
+            </strong>
+          </a>
+        </h1>
+      </nav>
+    </div>
     <div
       class="flex items-center w-full justify-self-end xl:col-span-2 2xl:col-span-3"
     >
@@ -100,47 +127,51 @@ exports[`<Layout /> should match snapshot 1`] = `
           data-testid="searchBarInput"
           value=""
         />
-        <div
-          style="overflow: hidden; box-sizing: border-box; display: inline-block; position: relative; width: 14px; height: 14px;"
+        <svg
+          class="w-5 h-5"
+          fill="none"
+          height="16"
+          viewBox="0 0 16 16"
+          width="16"
+          xmlns="http://www.w3.org/2000/svg"
         >
-          <noscript />
-          <img
-            alt="Icon for napari search bar"
-            decoding="async"
-            src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
-            style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; box-sizing: border-box; padding: 0px; margin: auto; display: block; width: 0px; height: 0px; min-width: 100%; max-width: 100%; min-height: 100%; max-height: 100%;"
+          <path
+            d="M8.32004 7.68001L0.746704 15.2533M10.6667 9.60001C13.0134 9.60001 14.9334 7.68001 14.9334 5.33335C14.9334 2.98668 13.0134 1.06668 10.6667 1.06668C8.32004 1.06668 6.40004 2.98668 6.40004 5.33335C6.40004 7.68001 8.32004 9.60001 10.6667 9.60001Z"
+            stroke="black"
+            stroke-width="2"
           />
-        </div>
+        </svg>
       </form>
       <button
         class="ml-6 flex lg:hidden"
         type="button"
       >
-        <div
-          style="display: inline-block; max-width: 100%; overflow: hidden; position: relative; box-sizing: border-box; margin: 0px;"
+        <svg
+          fill="none"
+          height="16"
+          viewBox="0 0 16 16"
+          width="16"
+          xmlns="http://www.w3.org/2000/svg"
         >
-          <div
-            style="box-sizing: border-box; display: block; max-width: 100%;"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              role="presentation"
-              src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmVyc2lvbj0iMS4xIi8+"
-              style="max-width: 100%; display: block; margin: 0px; padding: 0px;"
-            />
-          </div>
-          <noscript />
-          <img
-            alt="Menu button icon"
-            decoding="async"
-            src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
-            style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; box-sizing: border-box; padding: 0px; margin: auto; display: block; width: 0px; height: 0px; min-width: 100%; max-width: 100%; min-height: 100%; max-height: 100%;"
+          <path
+            d="M16 1H0"
+            stroke="black"
+            stroke-width="1.98857"
           />
-        </div>
+          <path
+            d="M16 7.99924H0"
+            stroke="black"
+            stroke-width="1.98857"
+          />
+          <path
+            d="M16 15H0"
+            stroke="black"
+            stroke-width="1.98857"
+          />
+        </svg>
       </button>
     </div>
-  </nav>
+  </header>
   <main>
     <h1>
       Hello, World!
