@@ -34,6 +34,9 @@ body {
     should only happen in rare cases where the viewport is < 300px.
   */
   @apply overflow-x-auto;
+
+  // Apply Barlow font to entire site.
+  @apply font-barlow;
 }
 
 /* stylelint-disable selector-max-id */

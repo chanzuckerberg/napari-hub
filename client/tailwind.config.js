@@ -26,6 +26,10 @@ module.exports = {
   theme: {
     screens,
     extend: {
+      fontFamily: {
+        barlow: ['Barlow, sans-serif'],
+      },
+
       spacing: {
         // Use 25px and 50px for margins, paddings, gaps, etc.
         6: pixelsToRem(25),

@@ -11,6 +11,7 @@ export const theme = createMuiTheme({
   },
 
   typography: {
+    fontFamily: 'Barlow',
     button: {
       // Remove uppercase styling from buttons
       textTransform: 'none',
