@@ -6,7 +6,7 @@ import { SignupForm } from './SignupForm';
 describe('<SignupForm />', () => {
   it('should match snapshot', () => {
     const component = render(<SignupForm />);
-    expect(component).toMatchSnapshot();
+    expect(component.asFragment()).toMatchSnapshot();
   });
 
   it('should submit the form', () => {

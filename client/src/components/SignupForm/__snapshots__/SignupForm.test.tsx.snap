@@ -1,148 +1,48 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<SignupForm /> should match snapshot 1`] = `
-Object {
-  "asFragment": [Function],
-  "baseElement": <body>
-    <div>
-      <div
-        class="bg-napari-primary-light p-6 xl:px-0 xl:py-12 grid grid-cols-2 justify-center gap-6 md:gap-12 xl:grid-cols-napari-3 2xl:grid-cols-napari-4 3xl:grid-cols-napari-5"
-      >
-        <div
-          class="col-span-2 md:col-span-3 3xl:col-start-2"
-        >
-          <h3
-            class="prose-lg font-semibold mb-4"
-          >
-            Sign up to receive updates
-          </h3>
-          <form
-            action="https://dev.us5.list-manage.com/subscribe/post?u=79f50c0d0474ff43dffedabda&id=63bf16756e"
-            class="grid grid-cols-2 xl:grid-cols-napari-3 gap-y-0.5 md:gap-x-12"
-            method="post"
-            novalidate=""
-            target="_blank"
-          >
-            <input
-              aria-label="email address"
-              class="prose-sm bg-transparent focus:outline-none h-10 xl:h-[35px] col-span-2 border-b border-black"
-              data-testid="emailField"
-              name="EMAIL"
-              placeholder="email"
-              required=""
-              type="email"
-              value=""
-            />
-            <span
-              class="text-xs align-text-top h-[1.5em] text-napari-error xl:row-start-2 col-span-2"
-              data-testid="emailError"
-            />
-            <input
-              class="prose-sm font-semibold bg-napari-primary h-[35px] col-span-2 xl:col-span-1 border-none cursor-pointer"
-              data-testid="submitButton"
-              name="subscribe"
-              type="submit"
-              value="Subscribe"
-            />
-          </form>
-        </div>
-      </div>
-    </div>
-  </body>,
-  "container": <div>
+<DocumentFragment>
+  <div
+    class="bg-napari-primary-light p-6 xl:px-0 xl:py-12 grid grid-cols-2 justify-center gap-6 md:gap-12 xl:grid-cols-napari-3 2xl:grid-cols-napari-4 3xl:grid-cols-napari-5"
+  >
     <div
-      class="bg-napari-primary-light p-6 xl:px-0 xl:py-12 grid grid-cols-2 justify-center gap-6 md:gap-12 xl:grid-cols-napari-3 2xl:grid-cols-napari-4 3xl:grid-cols-napari-5"
+      class="col-span-2 md:col-span-3 3xl:col-start-2"
     >
-      <div
-        class="col-span-2 md:col-span-3 3xl:col-start-2"
+      <h3
+        class="prose-lg font-semibold mb-4"
       >
-        <h3
-          class="prose-lg font-semibold mb-4"
-        >
-          Sign up to receive updates
-        </h3>
-        <form
-          action="https://dev.us5.list-manage.com/subscribe/post?u=79f50c0d0474ff43dffedabda&id=63bf16756e"
-          class="grid grid-cols-2 xl:grid-cols-napari-3 gap-y-0.5 md:gap-x-12"
-          method="post"
-          novalidate=""
-          target="_blank"
-        >
-          <input
-            aria-label="email address"
-            class="prose-sm bg-transparent focus:outline-none h-10 xl:h-[35px] col-span-2 border-b border-black"
-            data-testid="emailField"
-            name="EMAIL"
-            placeholder="email"
-            required=""
-            type="email"
-            value=""
-          />
-          <span
-            class="text-xs align-text-top h-[1.5em] text-napari-error xl:row-start-2 col-span-2"
-            data-testid="emailError"
-          />
-          <input
-            class="prose-sm font-semibold bg-napari-primary h-[35px] col-span-2 xl:col-span-1 border-none cursor-pointer"
-            data-testid="submitButton"
-            name="subscribe"
-            type="submit"
-            value="Subscribe"
-          />
-        </form>
-      </div>
+        Sign up to receive updates
+      </h3>
+      <form
+        action="https://dev.us5.list-manage.com/subscribe/post?u=79f50c0d0474ff43dffedabda&id=63bf16756e"
+        class="grid grid-cols-2 xl:grid-cols-napari-3 gap-y-0.5 md:gap-x-12"
+        method="post"
+        novalidate=""
+        target="_blank"
+      >
+        <input
+          aria-label="email address"
+          class="prose-sm bg-transparent focus:outline-none h-10 xl:h-[35px] col-span-2 border-b border-black"
+          data-testid="emailField"
+          name="EMAIL"
+          placeholder="email"
+          required=""
+          type="email"
+          value=""
+        />
+        <span
+          class="text-xs align-text-top h-[1.5em] text-napari-error xl:row-start-2 col-span-2"
+          data-testid="emailError"
+        />
+        <input
+          class="prose-sm font-semibold bg-napari-primary h-[35px] col-span-2 xl:col-span-1 border-none cursor-pointer"
+          data-testid="submitButton"
+          name="subscribe"
+          type="submit"
+          value="Subscribe"
+        />
+      </form>
     </div>
-  </div>,
-  "debug": [Function],
-  "findAllByAltText": [Function],
-  "findAllByDisplayValue": [Function],
-  "findAllByLabelText": [Function],
-  "findAllByPlaceholderText": [Function],
-  "findAllByRole": [Function],
-  "findAllByTestId": [Function],
-  "findAllByText": [Function],
-  "findAllByTitle": [Function],
-  "findByAltText": [Function],
-  "findByDisplayValue": [Function],
-  "findByLabelText": [Function],
-  "findByPlaceholderText": [Function],
-  "findByRole": [Function],
-  "findByTestId": [Function],
-  "findByText": [Function],
-  "findByTitle": [Function],
-  "getAllByAltText": [Function],
-  "getAllByDisplayValue": [Function],
-  "getAllByLabelText": [Function],
-  "getAllByPlaceholderText": [Function],
-  "getAllByRole": [Function],
-  "getAllByTestId": [Function],
-  "getAllByText": [Function],
-  "getAllByTitle": [Function],
-  "getByAltText": [Function],
-  "getByDisplayValue": [Function],
-  "getByLabelText": [Function],
-  "getByPlaceholderText": [Function],
-  "getByRole": [Function],
-  "getByTestId": [Function],
-  "getByText": [Function],
-  "getByTitle": [Function],
-  "queryAllByAltText": [Function],
-  "queryAllByDisplayValue": [Function],
-  "queryAllByLabelText": [Function],
-  "queryAllByPlaceholderText": [Function],
-  "queryAllByRole": [Function],
-  "queryAllByTestId": [Function],
-  "queryAllByText": [Function],
-  "queryAllByTitle": [Function],
-  "queryByAltText": [Function],
-  "queryByDisplayValue": [Function],
-  "queryByLabelText": [Function],
-  "queryByPlaceholderText": [Function],
-  "queryByRole": [Function],
-  "queryByTestId": [Function],
-  "queryByText": [Function],
-  "queryByTitle": [Function],
-  "rerender": [Function],
-  "unmount": [Function],
-}
+  </div>
+</DocumentFragment>
 `;
