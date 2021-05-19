@@ -1,8 +1,7 @@
 const { reduce } = require('lodash');
 const typography = require('@tailwindcss/typography');
 
-const breakpoints = require('./breakpoints');
-const colors = require('./colors');
+const { breakpoints, colors, fontFamily } = require('./src/theme');
 
 // Add px unit to all breakpoint values.
 const screens = reduce(
@@ -27,7 +26,7 @@ module.exports = {
     screens,
     extend: {
       fontFamily: {
-        barlow: ['Barlow, sans-serif'],
+        barlow: fontFamily,
       },
 
       spacing: {
