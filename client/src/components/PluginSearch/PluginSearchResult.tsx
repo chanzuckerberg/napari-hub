@@ -73,6 +73,7 @@ export function PluginSearchResult({ className, plugin }: Props) {
       href={`/plugins/${plugin.name}`}
     >
       <article
+        data-testid="searchResult"
         className={clsx(
           'grid gap-x-6 md:gap-x-12',
           'screen-600:grid-cols-napari-2',
