@@ -9,6 +9,13 @@ import {
   useSearchState,
 } from '@/context/search';
 
+interface Props {
+  /**
+   * Render large variant of search bar with a larger font size and search icon.
+   */
+  large?: boolean;
+}
+
 /**
  * Search bar component. This renders an input field with a underline and
  * magnifying glass icon to the right of the component. When the user enters a query,
@@ -21,7 +28,7 @@ import {
  *
  * This makes the SearchBar component re-useable for non-search enabled pages.
  */
-export function SearchBar() {
+export function SearchBar({ large }: Props) {
   const router = useRouter();
   const { results, query, setQuery } = useSearchState() ?? {};
 
@@ -37,6 +44,8 @@ export function SearchBar() {
 
         // Borders
         'border-b-2 border-black',
+
+        large && 'text-xl',
       )}
       onSubmit={async (event) => {
         event.preventDefault();
@@ -89,7 +98,14 @@ export function SearchBar() {
         value={query ?? localQuery}
       />
 
-      <Search className="w-5 h-5" />
+      <Search
+        className={clsx(
+          'w-5 h-5',
+
+          // 22x22 pixels when root font-size is 16px
+          large && 'h-[1.375rem] w-[1.375rem]',
+        )}
+      />
     </form>
   );
 }
