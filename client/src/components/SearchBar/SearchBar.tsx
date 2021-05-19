@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
+import { PLUGIN_SEARCH_ID } from '@/components';
 import { Close, Search } from '@/components/common/icons';
 import {
   SEARCH_PAGE,
@@ -29,6 +30,7 @@ interface Props {
 function getURLWithSearchParam(query: string): URL {
   const url = new URL(SEARCH_PAGE, window.location.origin);
   url.searchParams.set(SEARCH_QUERY_PARAM, encodeURIComponent(query));
+  url.hash = PLUGIN_SEARCH_ID;
 
   return url;
 }

@@ -8,7 +8,7 @@ import { useActiveQueryParameter } from '@/context/search';
  * ID used for the plugin search container. This is useful for scrolling to the
  * the search container.
  */
-const PLUGIN_SEARCH_ID = 'pluginSearch';
+export const PLUGIN_SEARCH_ID = 'pluginSearch';
 
 /**
  * Component that renders the landing page search bar.
