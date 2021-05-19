@@ -2,1288 +2,4323 @@
 
 exports[`<PluginSearch /> should match snapshot 1`] = `
 <DocumentFragment>
-  <div
-    class="grid justify-center gap-6 md:gap-12 grid-cols-2 screen-875:grid-cols-napari-3 screen-1150:grid-cols-napari-4 screen-1425:grid-cols-napari-5"
+  <header
+    class="bg-napari-primary p-6 screen-495:p-12 grid justify-center gap-6 md:gap-12 grid-cols-2 screen-875:grid-cols-napari-3 screen-1150:grid-cols-napari-3 screen-1425:grid-cols-napari-5"
   >
     <div
-      class="fresnel-container fresnel-greaterThanOrEqual-3xl "
+      class="fresnel-container fresnel-greaterThanOrEqual-screen-1425 "
     >
-      <div />
+      <nav
+        class="flex flex-col"
+      >
+        <a
+          class="whitespace-nowrap"
+          href="/"
+        >
+          napari 
+          <strong>
+            hub
+          </strong>
+        </a>
+        <div
+          class="flex flex-col"
+        >
+          <a
+            class="mt-4"
+            href="/about"
+          >
+            About
+          </a>
+          <a
+            class="mt-4"
+            href="/faq"
+          >
+            FAQ
+          </a>
+        </div>
+      </nav>
     </div>
-    <div>
+    <div
+      class="fresnel-container fresnel-lessThan-screen-1425 "
+    >
+      <nav
+        class="mb-6 flex"
+      >
+        <a
+          class="whitespace-nowrap"
+          href="/"
+        >
+          napari 
+          <strong>
+            hub
+          </strong>
+        </a>
+        <div
+          class="flex"
+        >
+          <a
+            class="ml-6"
+            href="/about"
+          >
+            About
+          </a>
+          <a
+            class="ml-6"
+            href="/faq"
+          >
+            FAQ
+          </a>
+        </div>
+      </nav>
+    </div>
+    <h1
+      class="font-bold col-span-full -mt-12 screen-1425:m-0 screen-1425:col-start-2 screen-1425:col-span-3 heading"
+    >
+      Discover, install, and share napari plugins
+    </h1>
+    <svg
+      class="h-full self-center screen-1425:row-start-2 screen-1425:col-start-2 logo"
+      fill="none"
+      height="198"
+      viewBox="0 0 226 198"
+      width="226"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <circle
+        cx="126.469"
+        cy="98.7158"
+        fill="white"
+        r="45.6721"
+        stroke="#D2EFFF"
+        stroke-width="4.80759"
+      />
+      <path
+        clip-rule="evenodd"
+        d="M130.13 83C130.916 82.1168 131.393 80.9531 131.393 79.6779C131.393 76.9164 129.154 74.6779 126.393 74.6779C123.631 74.6779 121.393 76.9164 121.393 79.6779C121.393 80.9531 121.87 82.1168 122.656 83H110.393V95.0565C109.545 94.3945 108.478 94 107.319 94C104.557 94 102.319 96.2386 102.319 99C102.319 101.761 104.557 104 107.319 104C108.478 104 109.545 103.606 110.393 102.944V115.051H122.402C121.769 114.213 121.393 113.169 121.393 112.038C121.393 109.277 123.631 107.038 126.393 107.038C129.154 107.038 131.393 109.277 131.393 112.038C131.393 113.169 131.017 114.213 130.384 115.051H142.443V102.991C141.606 103.624 140.562 104 139.431 104C136.669 104 134.431 101.761 134.431 99C134.431 96.2386 136.669 94 139.431 94C140.562 94 141.606 94.3757 142.443 95.0092V83H130.13Z"
+        fill="black"
+        fill-rule="evenodd"
+      />
+      <path
+        d="M29.7566 58.6526L2.00001 74.6779"
+        stroke="black"
+        stroke-width="4.80759"
+      />
+      <path
+        d="M142.52 194.868L110.469 194.868"
+        stroke="white"
+        stroke-width="5"
+      />
+      <path
+        d="M131.226 194.868H110.393"
+        stroke="black"
+        stroke-width="5"
+      />
+      <circle
+        cx="42.961"
+        cy="146.728"
+        fill="black"
+        r="2.5"
+      />
+      <circle
+        cx="126.393"
+        cy="2.5"
+        fill="black"
+        r="2.5"
+      />
+      <path
+        d="M167.702 74.6779L188.519 62.6589"
+        stroke="#D2EFFF"
+        stroke-width="2"
+      />
+      <path
+        d="M85.3929 75L63.7456 62.6589"
+        stroke="#D2EFFF"
+        stroke-width="2"
+      />
+      <path
+        d="M85.3929 122L63.7456 134.773"
+        stroke="#D2EFFF"
+        stroke-width="2"
+      />
+      <path
+        d="M126.393 50.6399L126.393 26.602"
+        stroke="#D2EFFF"
+        stroke-width="2"
+      />
+      <path
+        d="M126.393 170.83L126.393 146.792"
+        stroke="#D2EFFF"
+        stroke-width="2"
+      />
+      <path
+        d="M167.702 123.074L188.519 135.093"
+        stroke="#D2EFFF"
+        stroke-width="2"
+      />
+      <circle
+        cx="209.418"
+        cy="50.6399"
+        fill="white"
+        r="13.5253"
+        stroke="#D2EFFF"
+        stroke-width="5"
+      />
+      <circle
+        cx="209.393"
+        cy="50.8323"
+        fill="black"
+        r="5"
+      />
+      <path
+        clip-rule="evenodd"
+        d="M219.968 62.6589C217.143 65.1523 213.432 66.6652 209.368 66.6652C205.303 66.6652 201.593 65.1523 198.768 62.6589C201.593 60.1655 205.303 58.6526 209.368 58.6526C213.432 58.6526 217.143 60.1655 219.968 62.6589Z"
+        fill="black"
+        fill-rule="evenodd"
+      />
+      <circle
+        cx="209.418"
+        cy="146.792"
+        fill="white"
+        r="13.5253"
+        stroke="#D2EFFF"
+        stroke-width="5"
+      />
+      <circle
+        cx="209.393"
+        cy="146.984"
+        fill="black"
+        r="5"
+      />
+      <path
+        clip-rule="evenodd"
+        d="M219.968 158.811C217.143 161.304 213.432 162.817 209.368 162.817C205.303 162.817 201.593 161.304 198.768 158.811C201.593 156.317 205.303 154.804 209.368 154.804C213.432 154.804 217.143 156.317 219.968 158.811Z"
+        fill="black"
+        fill-rule="evenodd"
+      />
+      <circle
+        cx="43.0251"
+        cy="50.6399"
+        fill="white"
+        r="13.5253"
+        stroke="#D2EFFF"
+        stroke-width="5"
+      />
+      <path
+        d="M115.393 168.7L126.724 180.032L138.056 168.7"
+        stroke="#D2EFFF"
+        stroke-width="5"
+      />
+    </svg>
+    <ul
+      class="list-disc font-semibold space-y-4 list ml-6 screen-875:col-span-2"
+    >
+      <li>
+        Discover plugins that solve your image analysis challenges
+      </li>
+      <li>
+        Install into napari straight from your browser
+      </li>
+      <li
+        class="fresnel-greaterThanOrEqual-screen-725"
+      >
+        Share your image analysis tools with napari’s growing community
+      </li>
+    </ul>
+    <ul
+      class="list-disc font-semibold space-y-4 list fresnel-lessThan-screen-725 col-span-2 px-6"
+    >
+      <li>
+        Share your image analysis tools with napari’s growing community
+      </li>
+    </ul>
+  </header>
+  <div
+    class="bg-napari-light h-36 items-center px-6 md:px-12 grid justify-center gap-6 md:gap-12 grid-cols-2 screen-875:grid-cols-napari-3 screen-1150:grid-cols-napari-3 screen-1425:grid-cols-napari-5"
+    id="pluginSearch"
+  >
+    <div
+      class="col-span-2 screen-875:col-span-3 screen-1425:col-start-2"
+    >
       <h2
-        class="font-bold text-2xl mb-6"
+        class="font-bold text-xl mb-4 whitespace-nowrap"
       >
-        Browse plugins
+        Search for a plugin by keyword or author
       </h2>
-      <article
-        class="py-5 border-t-2 border-black"
+      <form
+        class="flex flex-auto items-center border-b-2 border-black text-xl"
+        data-testid="searchBarForm"
       >
-        <h3
-          class="inline font-bold text-lg hover:underline"
-          data-testid="searchResultName"
-        >
-          <a
-            href="/plugins/napari-compressed-labels-io"
-          >
-            napari-compressed-labels-io
-          </a>
-        </h3>
-        <p
-          class="mt-2"
-          data-testid="searchResultSummary"
-        >
-          Plugin exploring different options for reading and writing compressed and portable labels layers in napari.
-        </p>
-        <ul
-          class="mt-5"
-        >
-          <li
-            class="my-2"
-            data-testid="searchResultAuthor"
-          >
-            <span
-              class="font-bold"
-            >
-              Draga Doncila 
-            </span>
-            (ddoncila@gmail.com)
-          </li>
-        </ul>
-      </article>
-      <article
-        class="py-5 border-t-2 border-black"
-      >
-        <h3
-          class="inline font-bold text-lg hover:underline"
-          data-testid="searchResultName"
-        >
-          <a
-            href="/plugins/affinder"
-          >
-            affinder
-          </a>
-        </h3>
-        <p
-          class="mt-2"
-          data-testid="searchResultSummary"
-        >
-          Quickly find the affine matrix mapping one image to another using manual correspondence points annotation
-        </p>
-        <ul
-          class="mt-5"
-        >
-          <li
-            class="my-2"
-            data-testid="searchResultAuthor"
-          >
-            <span
-              class="font-bold"
-            >
-              Juan Nunez-Iglesias 
-            </span>
-            (juan.nunez-iglesias@monash.edu)
-          </li>
-        </ul>
-      </article>
-      <article
-        class="py-5 border-t-2 border-black"
-      >
-        <h3
-          class="inline font-bold text-lg hover:underline"
-          data-testid="searchResultName"
-        >
-          <a
-            href="/plugins/napping"
-          >
-            napping
-          </a>
-        </h3>
-        <p
-          class="mt-2"
-          data-testid="searchResultSummary"
-        >
-          Control point mapping and coordination transformation using napari
-        </p>
-        <ul
-          class="mt-5"
-        >
-          <li
-            class="my-2"
-            data-testid="searchResultAuthor"
-          >
-            <span
-              class="font-bold"
-            >
-              Jonas Windhager 
-            </span>
-            (jonas.windhager@uzh.ch)
-          </li>
-        </ul>
-      </article>
-      <article
-        class="py-5 border-t-2 border-black"
-      >
-        <h3
-          class="inline font-bold text-lg hover:underline"
-          data-testid="searchResultName"
-        >
-          <a
-            href="/plugins/napari-console"
-          >
-            napari-console
-          </a>
-        </h3>
-        <p
-          class="mt-2"
-          data-testid="searchResultSummary"
-        >
-          A plugin that adds a console to napari
-        </p>
-        <ul
-          class="mt-5"
-        >
-          <li
-            class="my-2"
-            data-testid="searchResultAuthor"
-          >
-            <span
-              class="font-bold"
-            >
-              Nicholas Sofroniew 
-            </span>
-            (sofroniewn@gmail.com)
-          </li>
-        </ul>
-      </article>
-      <article
-        class="py-5 border-t-2 border-black"
-      >
-        <h3
-          class="inline font-bold text-lg hover:underline"
-          data-testid="searchResultName"
-        >
-          <a
-            href="/plugins/napari-hdf5-labels-io"
-          >
-            napari-hdf5-labels-io
-          </a>
-        </h3>
-        <p
-          class="mt-2"
-          data-testid="searchResultSummary"
-        >
-          Napari plugin to store set of layers in a .h5 file. Label layer are stored in a sparse representation
-        </p>
-        <ul
-          class="mt-5"
-        >
-          <li
-            class="my-2"
-            data-testid="searchResultAuthor"
-          >
-            <span
-              class="font-bold"
-            >
-              Duway Nicolas Lesmes Leon 
-            </span>
-            (dlesmesleon@hotmail.com)
-          </li>
-        </ul>
-      </article>
-      <article
-        class="py-5 border-t-2 border-black"
-      >
-        <h3
-          class="inline font-bold text-lg hover:underline"
-          data-testid="searchResultName"
-        >
-          <a
-            href="/plugins/PlatyMatch"
-          >
-            PlatyMatch
-          </a>
-        </h3>
-        <p
-          class="mt-2"
-          data-testid="searchResultSummary"
-        >
-          \`PlatyMatch\` allows registration of volumetric images of embryos by establishing correspondences between cells
-        </p>
-        <ul
-          class="mt-5"
-        >
-          <li
-            class="my-2"
-            data-testid="searchResultAuthor"
-          >
-            <span
-              class="font-bold"
-            >
-              Manan Lalit 
-            </span>
-            (lalit@mpi-cbg.de)
-          </li>
-        </ul>
-      </article>
-      <article
-        class="py-5 border-t-2 border-black"
-      >
-        <h3
-          class="inline font-bold text-lg hover:underline"
-          data-testid="searchResultName"
-        >
-          <a
-            href="/plugins/napari_video"
-          >
-            napari_video
-          </a>
-        </h3>
-        <p
-          class="mt-2"
-          data-testid="searchResultSummary"
-        >
-          napari plugin for reading videos.
-        </p>
-        <ul
-          class="mt-5"
-        >
-          <li
-            class="my-2"
-            data-testid="searchResultAuthor"
-          >
-            <span
-              class="font-bold"
-            >
-              Jan Clemens 
-            </span>
-            (clemensjan@googlemail.com)
-          </li>
-        </ul>
-      </article>
-      <article
-        class="py-5 border-t-2 border-black"
-      >
-        <h3
-          class="inline font-bold text-lg hover:underline"
-          data-testid="searchResultName"
-        >
-          <a
-            href="/plugins/cellfinder-napari"
-          >
-            cellfinder-napari
-          </a>
-        </h3>
-        <p
-          class="mt-2"
-          data-testid="searchResultSummary"
-        >
-          Efficient cell detection in large images
-        </p>
-        <ul
-          class="mt-5"
-        >
-          <li
-            class="my-2"
-            data-testid="searchResultAuthor"
-          >
-            <span
-              class="font-bold"
-            >
-              Adam Tyson 
-            </span>
-            (code@adamltyson.com)
-          </li>
-        </ul>
-      </article>
-      <article
-        class="py-5 border-t-2 border-black"
-      >
-        <h3
-          class="inline font-bold text-lg hover:underline"
-          data-testid="searchResultName"
-        >
-          <a
-            href="/plugins/napari-svg"
-          >
-            napari-svg
-          </a>
-        </h3>
-        <p
-          class="mt-2"
-          data-testid="searchResultSummary"
-        >
-          A plugin for reading and writing svg files with napari
-        </p>
-        <ul
-          class="mt-5"
-        >
-          <li
-            class="my-2"
-            data-testid="searchResultAuthor"
-          >
-            <span
-              class="font-bold"
-            >
-              Nicholas Sofroniew 
-            </span>
-            (sofroniewn@gmail.com)
-          </li>
-        </ul>
-      </article>
-      <article
-        class="py-5 border-t-2 border-black"
-      >
-        <h3
-          class="inline font-bold text-lg hover:underline"
-          data-testid="searchResultName"
-        >
-          <a
-            href="/plugins/napari-yapic-prediction"
-          >
-            napari-yapic-prediction
-          </a>
-        </h3>
-        <p
-          class="mt-2"
-          data-testid="searchResultSummary"
-        >
-          Napari widget plugin to perform yapic model segmentation prediction in the napari window
-        </p>
-        <ul
-          class="mt-5"
-        >
-          <li
-            class="my-2"
-            data-testid="searchResultAuthor"
-          >
-            <span
-              class="font-bold"
-            >
-              Duway Nicolas Lesmes Leon 
-            </span>
-            (dlesmesleon@hotmail.com)
-          </li>
-        </ul>
-      </article>
-      <article
-        class="py-5 border-t-2 border-black"
-      >
-        <h3
-          class="inline font-bold text-lg hover:underline"
-          data-testid="searchResultName"
-        >
-          <a
-            href="/plugins/napari-demo"
-          >
-            napari-demo
-          </a>
-        </h3>
-        <p
-          class="mt-2"
-          data-testid="searchResultSummary"
-        >
-          demo plugin
-        </p>
-        <ul
-          class="mt-5"
-        >
-          <li
-            class="my-2"
-            data-testid="searchResultAuthor"
-          >
-            <span
-              class="font-bold"
-            >
-              Ziyang Liu 
-            </span>
-            (zliu@chanzuckerberg.com)
-          </li>
-          <li
-            class="my-2"
-            data-testid="searchResultAuthor"
-          >
-            <span
-              class="font-bold"
-            >
-              Justin T. Kiggins 
-            </span>
-          </li>
-        </ul>
-      </article>
-      <article
-        class="py-5 border-t-2 border-black"
-      >
-        <h3
-          class="inline font-bold text-lg hover:underline"
-          data-testid="searchResultName"
-        >
-          <a
-            href="/plugins/ome-zarr"
-          >
-            ome-zarr
-          </a>
-        </h3>
-        <p
-          class="mt-2"
-          data-testid="searchResultSummary"
-        >
-          Implementation of images in Zarr files.
-        </p>
-        <ul
-          class="mt-5"
-        >
-          <li
-            class="my-2"
-            data-testid="searchResultAuthor"
-          >
-            <span
-              class="font-bold"
-            >
-              The Open Microscopy Team 
-            </span>
-          </li>
-        </ul>
-      </article>
-      <article
-        class="py-5 border-t-2 border-black"
-      >
-        <h3
-          class="inline font-bold text-lg hover:underline"
-          data-testid="searchResultName"
-        >
-          <a
-            href="/plugins/napari-brainreg"
-          >
-            napari-brainreg
-          </a>
-        </h3>
-        <p
-          class="mt-2"
-          data-testid="searchResultSummary"
-        >
-          Visualise brainreg registration output
-        </p>
-        <ul
-          class="mt-5"
-        >
-          <li
-            class="my-2"
-            data-testid="searchResultAuthor"
-          >
-            <span
-              class="font-bold"
-            >
-              Adam Tyson 
-            </span>
-            (adam.tyson@ucl.ac.uk)
-          </li>
-        </ul>
-      </article>
-      <article
-        class="py-5 border-t-2 border-black"
-      >
-        <h3
-          class="inline font-bold text-lg hover:underline"
-          data-testid="searchResultName"
-        >
-          <a
-            href="/plugins/napari-itk-io"
-          >
-            napari-itk-io
-          </a>
-        </h3>
-        <p
-          class="mt-2"
-          data-testid="searchResultSummary"
-        >
-          File IO with itk for napari
-        </p>
-        <ul
-          class="mt-5"
-        >
-          <li
-            class="my-2"
-            data-testid="searchResultAuthor"
-          >
-            <span
-              class="font-bold"
-            >
-              Matt McCormick 
-            </span>
-            (matt.mccormick@kitware.com)
-          </li>
-        </ul>
-      </article>
-      <article
-        class="py-5 border-t-2 border-black"
-      >
-        <h3
-          class="inline font-bold text-lg hover:underline"
-          data-testid="searchResultName"
-        >
-          <a
-            href="/plugins/napari-imc"
-          >
-            napari-imc
-          </a>
-        </h3>
-        <p
-          class="mt-2"
-          data-testid="searchResultSummary"
-        >
-          Imaging Mass Cytometry (IMC) file type support for napari
-        </p>
-        <ul
-          class="mt-5"
-        >
-          <li
-            class="my-2"
-            data-testid="searchResultAuthor"
-          >
-            <span
-              class="font-bold"
-            >
-              Jonas Windhager 
-            </span>
-            (jonas.windhager@uzh.ch)
-          </li>
-        </ul>
-      </article>
-      <article
-        class="py-5 border-t-2 border-black"
-      >
-        <h3
-          class="inline font-bold text-lg hover:underline"
-          data-testid="searchResultName"
-        >
-          <a
-            href="/plugins/napari-mri"
-          >
-            napari-mri
-          </a>
-        </h3>
-        <p
-          class="mt-2"
-          data-testid="searchResultSummary"
-        >
-          A simple plugin to use with napari for 3D-viewing of                  Magnetic Resonance Imaging file formats
-        </p>
-        <ul
-          class="mt-5"
-        >
-          <li
-            class="my-2"
-            data-testid="searchResultAuthor"
-          >
-            <span
-              class="font-bold"
-            >
-              SUSMITA SAHA 
-            </span>
-            (susmi06@yahoo.com)
-          </li>
-        </ul>
-      </article>
-      <article
-        class="py-5 border-t-2 border-black"
-      >
-        <h3
-          class="inline font-bold text-lg hover:underline"
-          data-testid="searchResultName"
-        >
-          <a
-            href="/plugins/napari-properties-viewer"
-          >
-            napari-properties-viewer
-          </a>
-        </h3>
-        <p
-          class="mt-2"
-          data-testid="searchResultSummary"
-        >
-          A viewer for napari layer properties
-        </p>
-        <ul
-          class="mt-5"
-        >
-          <li
-            class="my-2"
-            data-testid="searchResultAuthor"
-          >
-            <span
-              class="font-bold"
-            >
-              Kevin Yamauchi 
-            </span>
-            (kevin.yamauchi@gmail.com)
-          </li>
-        </ul>
-      </article>
-      <article
-        class="py-5 border-t-2 border-black"
-      >
-        <h3
-          class="inline font-bold text-lg hover:underline"
-          data-testid="searchResultName"
-        >
-          <a
-            href="/plugins/napari-medical-image-formats"
-          >
-            napari-medical-image-formats
-          </a>
-        </h3>
-        <p
-          class="mt-2"
-          data-testid="searchResultSummary"
-        >
-          A Plugin in order to read medical image formats such as DICOM and NIfTI
-        </p>
-        <ul
-          class="mt-5"
-        >
-          <li
-            class="my-2"
-            data-testid="searchResultAuthor"
-          >
-            <span
-              class="font-bold"
-            >
-              Marc Boucsein, Marc Buckmakowski 
-            </span>
-          </li>
-        </ul>
-      </article>
-      <article
-        class="py-5 border-t-2 border-black"
-      >
-        <h3
-          class="inline font-bold text-lg hover:underline"
-          data-testid="searchResultName"
-        >
-          <a
-            href="/plugins/misic-napari-plugin"
-          >
-            misic-napari-plugin
-          </a>
-        </h3>
-        <p
-          class="mt-2"
-          data-testid="searchResultSummary"
-        >
-          segmentation of bacteria
-        </p>
-        <ul
-          class="mt-5"
-        >
-          <li
-            class="my-2"
-            data-testid="searchResultAuthor"
-          >
-            <span
-              class="font-bold"
-            >
-              lcb-iam-pswap-le 
-            </span>
-            (spanigrahi@imm.cnrs.fr)
-          </li>
-        </ul>
-      </article>
-      <article
-        class="py-5 border-t-2 border-black"
-      >
-        <h3
-          class="inline font-bold text-lg hover:underline"
-          data-testid="searchResultName"
-        >
-          <a
-            href="/plugins/napari-dv"
-          >
-            napari-dv
-          </a>
-        </h3>
-        <p
-          class="mt-2"
-          data-testid="searchResultSummary"
-        >
-          Deltavision/MRC file reader for napari
-        </p>
-        <ul
-          class="mt-5"
-        >
-          <li
-            class="my-2"
-            data-testid="searchResultAuthor"
-          >
-            <span
-              class="font-bold"
-            >
-              Talley Lambert 
-            </span>
-            (talley.lambert@gmail.com)
-          </li>
-        </ul>
-      </article>
-      <article
-        class="py-5 border-t-2 border-black"
-      >
-        <h3
-          class="inline font-bold text-lg hover:underline"
-          data-testid="searchResultName"
-        >
-          <a
-            href="/plugins/nd2-dask"
-          >
-            nd2-dask
-          </a>
-        </h3>
-        <p
-          class="mt-2"
-          data-testid="searchResultSummary"
-        >
-          Plugin to load nd2 data into napari
-        </p>
-        <ul
-          class="mt-5"
-        >
-          <li
-            class="my-2"
-            data-testid="searchResultAuthor"
-          >
-            <span
-              class="font-bold"
-            >
-              Draga Doncila Pop 
-            </span>
-            (ddon0001@student.monash.edu)
-          </li>
-        </ul>
-      </article>
-      <article
-        class="py-5 border-t-2 border-black"
-      >
-        <h3
-          class="inline font-bold text-lg hover:underline"
-          data-testid="searchResultName"
-        >
-          <a
-            href="/plugins/napari-czifile2"
-          >
-            napari-czifile2
-          </a>
-        </h3>
-        <p
-          class="mt-2"
-          data-testid="searchResultSummary"
-        >
-          Carl Zeiss Image (.czi) file support for napari
-        </p>
-        <ul
-          class="mt-5"
-        >
-          <li
-            class="my-2"
-            data-testid="searchResultAuthor"
-          >
-            <span
-              class="font-bold"
-            >
-              Jonas Windhager 
-            </span>
-            (jonas.windhager@uzh.ch)
-          </li>
-        </ul>
-      </article>
-      <article
-        class="py-5 border-t-2 border-black"
-      >
-        <h3
-          class="inline font-bold text-lg hover:underline"
-          data-testid="searchResultName"
-        >
-          <a
-            href="/plugins/napari-dzi-zarr"
-          >
-            napari-dzi-zarr
-          </a>
-        </h3>
-        <p
-          class="mt-2"
-          data-testid="searchResultSummary"
-        >
-          An experimental plugin for viewing Deep Zoom Images (DZI) with napari and zarr.
-        </p>
-        <ul
-          class="mt-5"
-        >
-          <li
-            class="my-2"
-            data-testid="searchResultAuthor"
-          >
-            <span
-              class="font-bold"
-            >
-              Trevor Manz 
-            </span>
-            (trevor.j.manz@gmail.com)
-          </li>
-        </ul>
-      </article>
-      <article
-        class="py-5 border-t-2 border-black"
-      >
-        <h3
-          class="inline font-bold text-lg hover:underline"
-          data-testid="searchResultName"
-        >
-          <a
-            href="/plugins/napari-animation"
-          >
-            napari-animation
-          </a>
-        </h3>
-        <p
-          class="mt-2"
-          data-testid="searchResultSummary"
-        >
-          A plugin to make animations with napari
-        </p>
-        <ul
-          class="mt-5"
-        >
-          <li
-            class="my-2"
-            data-testid="searchResultAuthor"
-          >
-            <span
-              class="font-bold"
-            >
-              Nicholas Sofroniew, Alister Burt, Guillaume Witz, Faris Abouakil, Talley Lambert 
-            </span>
-          </li>
-        </ul>
-      </article>
-      <article
-        class="py-5 border-t-2 border-black"
-      >
-        <h3
-          class="inline font-bold text-lg hover:underline"
-          data-testid="searchResultName"
-        >
-          <a
-            href="/plugins/napari-minimal-plugin"
-          >
-            napari-minimal-plugin
-          </a>
-        </h3>
-        <p
-          class="mt-2"
-          data-testid="searchResultSummary"
-        >
-          A minimal plugin
-        </p>
-        <ul
-          class="mt-5"
-        >
-          <li
-            class="my-2"
-            data-testid="searchResultAuthor"
-          >
-            <span
-              class="font-bold"
-            >
-              Manan Lalit 
-            </span>
-            (lalit@mpi-cbg.de)
-          </li>
-        </ul>
-      </article>
-      <article
-        class="py-5 border-t-2 border-black"
-      >
-        <h3
-          class="inline font-bold text-lg hover:underline"
-          data-testid="searchResultName"
-        >
-          <a
-            href="/plugins/napari-cellfinder"
-          >
-            napari-cellfinder
-          </a>
-        </h3>
-        <p
-          class="mt-2"
-          data-testid="searchResultSummary"
-        >
-          Visualise cellfinder results with napari
-        </p>
-        <ul
-          class="mt-5"
-        >
-          <li
-            class="my-2"
-            data-testid="searchResultAuthor"
-          >
-            <span
-              class="font-bold"
-            >
-              Adam Tyson 
-            </span>
-            (adam.tyson@ucl.ac.uk)
-          </li>
-        </ul>
-      </article>
-      <article
-        class="py-5 border-t-2 border-black"
-      >
-        <h3
-          class="inline font-bold text-lg hover:underline"
-          data-testid="searchResultName"
-        >
-          <a
-            href="/plugins/napari-nikon-nd2"
-          >
-            napari-nikon-nd2
-          </a>
-        </h3>
-        <p
-          class="mt-2"
-          data-testid="searchResultSummary"
-        >
-          Opens Nikon ND2 files into napari.
-        </p>
-        <ul
-          class="mt-5"
-        >
-          <li
-            class="my-2"
-            data-testid="searchResultAuthor"
-          >
-            <span
-              class="font-bold"
-            >
-              Chris Wood 
-            </span>
-            (cwood1967@gmail.com)
-          </li>
-        </ul>
-      </article>
-      <article
-        class="py-5 border-t-2 border-black"
-      >
-        <h3
-          class="inline font-bold text-lg hover:underline"
-          data-testid="searchResultName"
-        >
-          <a
-            href="/plugins/napari-em-reader"
-          >
-            napari-em-reader
-          </a>
-        </h3>
-        <p
-          class="mt-2"
-          data-testid="searchResultSummary"
-        >
-          A napari plugin to read .em files
-        </p>
-        <ul
-          class="mt-5"
-        >
-          <li
-            class="my-2"
-            data-testid="searchResultAuthor"
-          >
-            <span
-              class="font-bold"
-            >
-              Lorenzo Gaifas 
-            </span>
-            (brisvag@gmail.com)
-          </li>
-        </ul>
-      </article>
-      <article
-        class="py-5 border-t-2 border-black"
-      >
-        <h3
-          class="inline font-bold text-lg hover:underline"
-          data-testid="searchResultName"
-        >
-          <a
-            href="/plugins/elastix-napari"
-          >
-            elastix-napari
-          </a>
-        </h3>
-        <p
-          class="mt-2"
-          data-testid="searchResultSummary"
-        >
-          A toolbox for rigid and nonrigid registration of images.
-        </p>
-        <ul
-          class="mt-5"
-        >
-          <li
-            class="my-2"
-            data-testid="searchResultAuthor"
-          >
-            <span
-              class="font-bold"
-            >
-              Viktor van der Valk 
-            </span>
-            (v.o.van_der_valk@lumc.nl)
-          </li>
-        </ul>
-      </article>
-      <article
-        class="py-5 border-t-2 border-black"
-      >
-        <h3
-          class="inline font-bold text-lg hover:underline"
-          data-testid="searchResultName"
-        >
-          <a
-            href="/plugins/PartSeg"
-          >
-            PartSeg
-          </a>
-        </h3>
-        <p
-          class="mt-2"
-          data-testid="searchResultSummary"
-        >
-          PartSeg is python GUI for bio imaging analysis especially nucleus analysis,
-        </p>
-        <ul
-          class="mt-5"
-        >
-          <li
-            class="my-2"
-            data-testid="searchResultAuthor"
-          >
-            <span
-              class="font-bold"
-            >
-              Grzegorz Bokota 
-            </span>
-            (g.bokota@cent.uw.edu.pl)
-          </li>
-        </ul>
-      </article>
-      <article
-        class="py-5 border-t-2 border-black"
-      >
-        <h3
-          class="inline font-bold text-lg hover:underline"
-          data-testid="searchResultName"
-        >
-          <a
-            href="/plugins/brainglobe-napari-io"
-          >
-            brainglobe-napari-io
-          </a>
-        </h3>
-        <p
-          class="mt-2"
-          data-testid="searchResultSummary"
-        >
-          Read and write files from the BrainGlobe neuroanatomy suite
-        </p>
-        <ul
-          class="mt-5"
-        >
-          <li
-            class="my-2"
-            data-testid="searchResultAuthor"
-          >
-            <span
-              class="font-bold"
-            >
-              Adam Tyson 
-            </span>
-            (adam.tyson@ucl.ac.uk)
-          </li>
-        </ul>
-      </article>
-      <article
-        class="py-5 border-t-2 border-black"
-      >
-        <h3
-          class="inline font-bold text-lg hover:underline"
-          data-testid="searchResultName"
-        >
-          <a
-            href="/plugins/napari-aicsimageio"
-          >
-            napari-aicsimageio
-          </a>
-        </h3>
-        <p
-          class="mt-2"
-          data-testid="searchResultSummary"
-        >
-          AICSImageIO bindings for napari
-        </p>
-        <ul
-          class="mt-5"
-        >
-          <li
-            class="my-2"
-            data-testid="searchResultAuthor"
-          >
-            <span
-              class="font-bold"
-            >
-              Jackson Maxfield Brown 
-            </span>
-            (jmaxfieldbrown@gmail.com)
-          </li>
-        </ul>
-      </article>
-      <article
-        class="py-5 border-t-2 border-black"
-      >
-        <h3
-          class="inline font-bold text-lg hover:underline"
-          data-testid="searchResultName"
-        >
-          <a
-            href="/plugins/napari-lazy-openslide"
-          >
-            napari-lazy-openslide
-          </a>
-        </h3>
-        <p
-          class="mt-2"
-          data-testid="searchResultSummary"
-        >
-          A plugin to lazily load multiscale whole-slide images with openslide and dask.
-        </p>
-        <ul
-          class="mt-5"
-        >
-          <li
-            class="my-2"
-            data-testid="searchResultAuthor"
-          >
-            <span
-              class="font-bold"
-            >
-              Trevor Manz 
-            </span>
-            (trevor.j.manz@gmail.com)
-          </li>
-        </ul>
-      </article>
-      <article
-        class="py-5 border-t-2 border-black"
-      >
-        <h3
-          class="inline font-bold text-lg hover:underline"
-          data-testid="searchResultName"
-        >
-          <a
-            href="/plugins/napari-btrack-reader"
-          >
-            napari-btrack-reader
-          </a>
-        </h3>
-        <p
-          class="mt-2"
-          data-testid="searchResultSummary"
-        >
-          A plugin to load btrack files
-        </p>
-        <ul
-          class="mt-5"
-        >
-          <li
-            class="my-2"
-            data-testid="searchResultAuthor"
-          >
-            <span
-              class="font-bold"
-            >
-              Alan R. Lowe 
-            </span>
-            (code@arlowe.co.uk)
-          </li>
-        </ul>
-      </article>
-      <article
-        class="py-5 border-t-2 border-black"
-      >
-        <h3
-          class="inline font-bold text-lg hover:underline"
-          data-testid="searchResultName"
-        >
-          <a
-            href="/plugins/cellpose-napari"
-          >
-            cellpose-napari
-          </a>
-        </h3>
-        <p
-          class="mt-2"
-          data-testid="searchResultSummary"
-        >
-          a generalist algorithm for anatomical segmentation
-        </p>
-        <ul
-          class="mt-5"
-        >
-          <li
-            class="my-2"
-            data-testid="searchResultAuthor"
-          >
-            <span
-              class="font-bold"
-            >
-              Carsen Stringer 
-            </span>
-            (stringerc@janelia.hhmi.org)
-          </li>
-        </ul>
-      </article>
-      <article
-        class="py-5 border-t-2 border-black"
-      >
-        <h3
-          class="inline font-bold text-lg hover:underline"
-          data-testid="searchResultName"
-        >
-          <a
-            href="/plugins/brainreg-segment"
-          >
-            brainreg-segment
-          </a>
-        </h3>
-        <p
-          class="mt-2"
-          data-testid="searchResultSummary"
-        >
-          Manual segmentation of 3D brain structures in a common anatomical space
-        </p>
-        <ul
-          class="mt-5"
-        >
-          <li
-            class="my-2"
-            data-testid="searchResultAuthor"
-          >
-            <span
-              class="font-bold"
-            >
-              Adam Tyson, Horst Obenhaus 
-            </span>
-            (code@adamltyson.com)
-          </li>
-        </ul>
-      </article>
+        <input
+          aria-label="Search bar for searching for napari plugins."
+          class="flex flex-auto border-none outline-none bg-transparent w-0"
+          data-testid="searchBarInput"
+          value=""
+        />
+        <button
+          type="button"
+        >
+          <svg
+            class="h-5 w-5 h-[1.375rem] w-[1.375rem]"
+            fill="none"
+            height="16"
+            viewBox="0 0 16 16"
+            width="16"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <title>
+              Icon for search.
+            </title>
+            <path
+              d="M8.32004 7.68001L0.746704 15.2533M10.6667 9.60001C13.0134 9.60001 14.9334 7.68001 14.9334 5.33335C14.9334 2.98668 13.0134 1.06668 10.6667 1.06668C8.32004 1.06668 6.40004 2.98668 6.40004 5.33335C6.40004 7.68001 8.32004 9.60001 10.6667 9.60001Z"
+              stroke="black"
+              stroke-width="2"
+            />
+          </svg>
+        </button>
+      </form>
     </div>
+  </div>
+  <div
+    class="p-6 md:p-12 grid justify-center gap-x-6 gap-x-12 grid-cols-2 screen-875:grid-cols-napari-3 screen-1150:grid-cols-napari-3 screen-1425:grid-cols-napari-5"
+  >
+    <div
+      class="col-span-2"
+    >
+      <h1>
+        TODO search filters
+      </h1>
+    </div>
+    <h2
+      class="col-span-2 font-bold text-2xl mb-6 screen-875:col-start-2"
+    >
+      Browse plugins
+    </h2>
+    <a
+      class="col-span-2 screen-875:col-start-2 screen-875:col-span-2 screen-1425:col-start-2 screen-1425:col-span-3 py-5 border-t-2 border-black hover:bg-napari-hover-gray"
+      href="/plugins/napari-compressed-labels-io"
+    >
+      <article
+        class="grid gap-x-6 md:gap-x-12 screen-600:grid-cols-napari-2 screen-1425:grid-cols-napari-3"
+        data-testid="searchResult"
+      >
+        <div
+          class="screen-1425:col-span-2 flex flex-col justify-between"
+        >
+          <div>
+            <h3
+              class="inline font-bold text-lg"
+              data-testid="searchResultName"
+            >
+              napari-compressed-labels-io
+            </h3>
+            <p
+              class="mt-2"
+              data-testid="searchResultSummary"
+            >
+              Plugin exploring different options for reading and writing compressed and portable labels layers in napari.
+            </p>
+          </div>
+          <ul
+            class="mt-5"
+          >
+            <li
+              class="my-2 font-bold"
+              data-testid="searchResultAuthor"
+            >
+              Draga Doncila
+            </li>
+          </ul>
+        </div>
+        <ul
+          class="mt-4 space-y-1"
+        >
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              0.0.2
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              release date: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              03 March 2021
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              license: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              MIT
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              Python version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              &gt;=3.6
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              operating system: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              All
+            </span>
+          </li>
+        </ul>
+      </article>
+    </a>
+    <a
+      class="col-span-2 screen-875:col-start-2 screen-875:col-span-2 screen-1425:col-start-2 screen-1425:col-span-3 py-5 border-t-2 border-black hover:bg-napari-hover-gray"
+      href="/plugins/affinder"
+    >
+      <article
+        class="grid gap-x-6 md:gap-x-12 screen-600:grid-cols-napari-2 screen-1425:grid-cols-napari-3"
+        data-testid="searchResult"
+      >
+        <div
+          class="screen-1425:col-span-2 flex flex-col justify-between"
+        >
+          <div>
+            <h3
+              class="inline font-bold text-lg"
+              data-testid="searchResultName"
+            >
+              affinder
+            </h3>
+            <p
+              class="mt-2"
+              data-testid="searchResultSummary"
+            >
+              Quickly find the affine matrix mapping one image to another using manual correspondence points annotation
+            </p>
+          </div>
+          <ul
+            class="mt-5"
+          >
+            <li
+              class="my-2 font-bold"
+              data-testid="searchResultAuthor"
+            >
+              Juan Nunez-Iglesias
+            </li>
+          </ul>
+        </div>
+        <ul
+          class="mt-4 space-y-1"
+        >
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              0.2.0
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              release date: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              24 March 2021
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              license: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              BSD-3
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              Python version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              &gt;=3.7
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              operating system: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              All
+            </span>
+          </li>
+        </ul>
+      </article>
+    </a>
+    <a
+      class="col-span-2 screen-875:col-start-2 screen-875:col-span-2 screen-1425:col-start-2 screen-1425:col-span-3 py-5 border-t-2 border-black hover:bg-napari-hover-gray"
+      href="/plugins/napping"
+    >
+      <article
+        class="grid gap-x-6 md:gap-x-12 screen-600:grid-cols-napari-2 screen-1425:grid-cols-napari-3"
+        data-testid="searchResult"
+      >
+        <div
+          class="screen-1425:col-span-2 flex flex-col justify-between"
+        >
+          <div>
+            <h3
+              class="inline font-bold text-lg"
+              data-testid="searchResultName"
+            >
+              napping
+            </h3>
+            <p
+              class="mt-2"
+              data-testid="searchResultSummary"
+            >
+              Control point mapping and coordination transformation using napari
+            </p>
+          </div>
+          <ul
+            class="mt-5"
+          >
+            <li
+              class="my-2 font-bold"
+              data-testid="searchResultAuthor"
+            >
+              Jonas Windhager
+            </li>
+          </ul>
+        </div>
+        <ul
+          class="mt-4 space-y-1"
+        >
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              0.1.7
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              release date: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              15 March 2021
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              license: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              MIT
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              Python version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              &gt;=3.7
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              operating system: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              All
+            </span>
+          </li>
+        </ul>
+      </article>
+    </a>
+    <a
+      class="col-span-2 screen-875:col-start-2 screen-875:col-span-2 screen-1425:col-start-2 screen-1425:col-span-3 py-5 border-t-2 border-black hover:bg-napari-hover-gray"
+      href="/plugins/napari-console"
+    >
+      <article
+        class="grid gap-x-6 md:gap-x-12 screen-600:grid-cols-napari-2 screen-1425:grid-cols-napari-3"
+        data-testid="searchResult"
+      >
+        <div
+          class="screen-1425:col-span-2 flex flex-col justify-between"
+        >
+          <div>
+            <h3
+              class="inline font-bold text-lg"
+              data-testid="searchResultName"
+            >
+              napari-console
+            </h3>
+            <p
+              class="mt-2"
+              data-testid="searchResultSummary"
+            >
+              A plugin that adds a console to napari
+            </p>
+          </div>
+          <ul
+            class="mt-5"
+          >
+            <li
+              class="my-2 font-bold"
+              data-testid="searchResultAuthor"
+            >
+              Nicholas Sofroniew
+            </li>
+          </ul>
+        </div>
+        <ul
+          class="mt-4 space-y-1"
+        >
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              0.0.3
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              release date: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              14 February 2021
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              license: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              BSD-3
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              Python version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              &gt;=3.7
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              operating system: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              All
+            </span>
+          </li>
+        </ul>
+      </article>
+    </a>
+    <a
+      class="col-span-2 screen-875:col-start-2 screen-875:col-span-2 screen-1425:col-start-2 screen-1425:col-span-3 py-5 border-t-2 border-black hover:bg-napari-hover-gray"
+      href="/plugins/napari-hdf5-labels-io"
+    >
+      <article
+        class="grid gap-x-6 md:gap-x-12 screen-600:grid-cols-napari-2 screen-1425:grid-cols-napari-3"
+        data-testid="searchResult"
+      >
+        <div
+          class="screen-1425:col-span-2 flex flex-col justify-between"
+        >
+          <div>
+            <h3
+              class="inline font-bold text-lg"
+              data-testid="searchResultName"
+            >
+              napari-hdf5-labels-io
+            </h3>
+            <p
+              class="mt-2"
+              data-testid="searchResultSummary"
+            >
+              Napari plugin to store set of layers in a .h5 file. Label layer are stored in a sparse representation
+            </p>
+          </div>
+          <ul
+            class="mt-5"
+          >
+            <li
+              class="my-2 font-bold"
+              data-testid="searchResultAuthor"
+            >
+              Duway Nicolas Lesmes Leon
+            </li>
+          </ul>
+        </div>
+        <ul
+          class="mt-4 space-y-1"
+        >
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              0.2.dev13
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              release date: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              07 April 2021
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              license: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              GNU GPL v3.0
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              Python version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              &lt;3.9
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              operating system: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              All
+            </span>
+          </li>
+        </ul>
+      </article>
+    </a>
+    <a
+      class="col-span-2 screen-875:col-start-2 screen-875:col-span-2 screen-1425:col-start-2 screen-1425:col-span-3 py-5 border-t-2 border-black hover:bg-napari-hover-gray"
+      href="/plugins/PlatyMatch"
+    >
+      <article
+        class="grid gap-x-6 md:gap-x-12 screen-600:grid-cols-napari-2 screen-1425:grid-cols-napari-3"
+        data-testid="searchResult"
+      >
+        <div
+          class="screen-1425:col-span-2 flex flex-col justify-between"
+        >
+          <div>
+            <h3
+              class="inline font-bold text-lg"
+              data-testid="searchResultName"
+            >
+              PlatyMatch
+            </h3>
+            <p
+              class="mt-2"
+              data-testid="searchResultSummary"
+            >
+              \`PlatyMatch\` allows registration of volumetric images of embryos by establishing correspondences between cells
+            </p>
+          </div>
+          <ul
+            class="mt-5"
+          >
+            <li
+              class="my-2 font-bold"
+              data-testid="searchResultAuthor"
+            >
+              Manan Lalit
+            </li>
+          </ul>
+        </div>
+        <ul
+          class="mt-4 space-y-1"
+        >
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              0.0.2
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              release date: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              03 May 2021
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              license: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              BSD-3
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              Python version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              &gt;=3.6
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              operating system: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              All
+            </span>
+          </li>
+        </ul>
+      </article>
+    </a>
+    <a
+      class="col-span-2 screen-875:col-start-2 screen-875:col-span-2 screen-1425:col-start-2 screen-1425:col-span-3 py-5 border-t-2 border-black hover:bg-napari-hover-gray"
+      href="/plugins/napari_video"
+    >
+      <article
+        class="grid gap-x-6 md:gap-x-12 screen-600:grid-cols-napari-2 screen-1425:grid-cols-napari-3"
+        data-testid="searchResult"
+      >
+        <div
+          class="screen-1425:col-span-2 flex flex-col justify-between"
+        >
+          <div>
+            <h3
+              class="inline font-bold text-lg"
+              data-testid="searchResultName"
+            >
+              napari_video
+            </h3>
+            <p
+              class="mt-2"
+              data-testid="searchResultSummary"
+            >
+              napari plugin for reading videos.
+            </p>
+          </div>
+          <ul
+            class="mt-5"
+          >
+            <li
+              class="my-2 font-bold"
+              data-testid="searchResultAuthor"
+            >
+              Jan Clemens
+            </li>
+          </ul>
+        </div>
+        <ul
+          class="mt-4 space-y-1"
+        >
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              0.2.6
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              release date: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              16 March 2021
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              license: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            />
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              Python version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              &gt;=3.6
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              operating system: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            />
+          </li>
+        </ul>
+      </article>
+    </a>
+    <a
+      class="col-span-2 screen-875:col-start-2 screen-875:col-span-2 screen-1425:col-start-2 screen-1425:col-span-3 py-5 border-t-2 border-black hover:bg-napari-hover-gray"
+      href="/plugins/cellfinder-napari"
+    >
+      <article
+        class="grid gap-x-6 md:gap-x-12 screen-600:grid-cols-napari-2 screen-1425:grid-cols-napari-3"
+        data-testid="searchResult"
+      >
+        <div
+          class="screen-1425:col-span-2 flex flex-col justify-between"
+        >
+          <div>
+            <h3
+              class="inline font-bold text-lg"
+              data-testid="searchResultName"
+            >
+              cellfinder-napari
+            </h3>
+            <p
+              class="mt-2"
+              data-testid="searchResultSummary"
+            >
+              Efficient cell detection in large images
+            </p>
+          </div>
+          <ul
+            class="mt-5"
+          >
+            <li
+              class="my-2 font-bold"
+              data-testid="searchResultAuthor"
+            >
+              Adam Tyson
+            </li>
+          </ul>
+        </div>
+        <ul
+          class="mt-4 space-y-1"
+        >
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              0.0.9
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              release date: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              27 April 2021
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              license: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              GPL-3.0
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              Python version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              &gt;=3.6
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              operating system: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              All
+            </span>
+          </li>
+        </ul>
+      </article>
+    </a>
+    <a
+      class="col-span-2 screen-875:col-start-2 screen-875:col-span-2 screen-1425:col-start-2 screen-1425:col-span-3 py-5 border-t-2 border-black hover:bg-napari-hover-gray"
+      href="/plugins/napari-svg"
+    >
+      <article
+        class="grid gap-x-6 md:gap-x-12 screen-600:grid-cols-napari-2 screen-1425:grid-cols-napari-3"
+        data-testid="searchResult"
+      >
+        <div
+          class="screen-1425:col-span-2 flex flex-col justify-between"
+        >
+          <div>
+            <h3
+              class="inline font-bold text-lg"
+              data-testid="searchResultName"
+            >
+              napari-svg
+            </h3>
+            <p
+              class="mt-2"
+              data-testid="searchResultSummary"
+            >
+              A plugin for reading and writing svg files with napari
+            </p>
+          </div>
+          <ul
+            class="mt-5"
+          >
+            <li
+              class="my-2 font-bold"
+              data-testid="searchResultAuthor"
+            >
+              Nicholas Sofroniew
+            </li>
+          </ul>
+        </div>
+        <ul
+          class="mt-4 space-y-1"
+        >
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              0.1.5
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              release date: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              01 May 2021
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              license: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              BSD-3
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              Python version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              &gt;=3.7
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              operating system: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              All
+            </span>
+          </li>
+        </ul>
+      </article>
+    </a>
+    <a
+      class="col-span-2 screen-875:col-start-2 screen-875:col-span-2 screen-1425:col-start-2 screen-1425:col-span-3 py-5 border-t-2 border-black hover:bg-napari-hover-gray"
+      href="/plugins/napari-yapic-prediction"
+    >
+      <article
+        class="grid gap-x-6 md:gap-x-12 screen-600:grid-cols-napari-2 screen-1425:grid-cols-napari-3"
+        data-testid="searchResult"
+      >
+        <div
+          class="screen-1425:col-span-2 flex flex-col justify-between"
+        >
+          <div>
+            <h3
+              class="inline font-bold text-lg"
+              data-testid="searchResultName"
+            >
+              napari-yapic-prediction
+            </h3>
+            <p
+              class="mt-2"
+              data-testid="searchResultSummary"
+            >
+              Napari widget plugin to perform yapic model segmentation prediction in the napari window
+            </p>
+          </div>
+          <ul
+            class="mt-5"
+          >
+            <li
+              class="my-2 font-bold"
+              data-testid="searchResultAuthor"
+            >
+              Duway Nicolas Lesmes Leon
+            </li>
+          </ul>
+        </div>
+        <ul
+          class="mt-4 space-y-1"
+        >
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              0.1.dev78
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              release date: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              21 April 2021
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              license: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              GNU GPL v3.0
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              Python version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              &gt;=3.6
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              operating system: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              All
+            </span>
+          </li>
+        </ul>
+      </article>
+    </a>
+    <a
+      class="col-span-2 screen-875:col-start-2 screen-875:col-span-2 screen-1425:col-start-2 screen-1425:col-span-3 py-5 border-t-2 border-black hover:bg-napari-hover-gray"
+      href="/plugins/napari-demo"
+    >
+      <article
+        class="grid gap-x-6 md:gap-x-12 screen-600:grid-cols-napari-2 screen-1425:grid-cols-napari-3"
+        data-testid="searchResult"
+      >
+        <div
+          class="screen-1425:col-span-2 flex flex-col justify-between"
+        >
+          <div>
+            <h3
+              class="inline font-bold text-lg"
+              data-testid="searchResultName"
+            >
+              napari-demo
+            </h3>
+            <p
+              class="mt-2"
+              data-testid="searchResultSummary"
+            >
+              demo plugin
+            </p>
+          </div>
+          <ul
+            class="mt-5"
+          >
+            <li
+              class="my-2 font-bold"
+              data-testid="searchResultAuthor"
+            >
+              Ziyang Liu
+            </li>
+            <li
+              class="my-2 font-bold"
+              data-testid="searchResultAuthor"
+            >
+              Justin T. Kiggins
+            </li>
+          </ul>
+        </div>
+        <ul
+          class="mt-4 space-y-1"
+        >
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              0.0.2
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              release date: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              26 April 2021
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              license: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              BSD-3
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              Python version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              &gt;=3.6
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              operating system: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              All
+            </span>
+          </li>
+        </ul>
+      </article>
+    </a>
+    <a
+      class="col-span-2 screen-875:col-start-2 screen-875:col-span-2 screen-1425:col-start-2 screen-1425:col-span-3 py-5 border-t-2 border-black hover:bg-napari-hover-gray"
+      href="/plugins/ome-zarr"
+    >
+      <article
+        class="grid gap-x-6 md:gap-x-12 screen-600:grid-cols-napari-2 screen-1425:grid-cols-napari-3"
+        data-testid="searchResult"
+      >
+        <div
+          class="screen-1425:col-span-2 flex flex-col justify-between"
+        >
+          <div>
+            <h3
+              class="inline font-bold text-lg"
+              data-testid="searchResultName"
+            >
+              ome-zarr
+            </h3>
+            <p
+              class="mt-2"
+              data-testid="searchResultSummary"
+            >
+              Implementation of images in Zarr files.
+            </p>
+          </div>
+          <ul
+            class="mt-5"
+          >
+            <li
+              class="my-2 font-bold"
+              data-testid="searchResultAuthor"
+            >
+              The Open Microscopy Team
+            </li>
+          </ul>
+        </div>
+        <ul
+          class="mt-4 space-y-1"
+        >
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              0.0.18
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              release date: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              24 April 2021
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              license: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            />
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              Python version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              &gt;=3.6
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              operating system: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              All
+            </span>
+          </li>
+        </ul>
+      </article>
+    </a>
+    <a
+      class="col-span-2 screen-875:col-start-2 screen-875:col-span-2 screen-1425:col-start-2 screen-1425:col-span-3 py-5 border-t-2 border-black hover:bg-napari-hover-gray"
+      href="/plugins/napari-brainreg"
+    >
+      <article
+        class="grid gap-x-6 md:gap-x-12 screen-600:grid-cols-napari-2 screen-1425:grid-cols-napari-3"
+        data-testid="searchResult"
+      >
+        <div
+          class="screen-1425:col-span-2 flex flex-col justify-between"
+        >
+          <div>
+            <h3
+              class="inline font-bold text-lg"
+              data-testid="searchResultName"
+            >
+              napari-brainreg
+            </h3>
+            <p
+              class="mt-2"
+              data-testid="searchResultSummary"
+            >
+              Visualise brainreg registration output
+            </p>
+          </div>
+          <ul
+            class="mt-5"
+          >
+            <li
+              class="my-2 font-bold"
+              data-testid="searchResultAuthor"
+            >
+              Adam Tyson
+            </li>
+          </ul>
+        </div>
+        <ul
+          class="mt-4 space-y-1"
+        >
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              0.2.3
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              release date: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              13 November 2020
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              license: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              MIT
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              Python version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              &gt;=3.6
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              operating system: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              All
+            </span>
+          </li>
+        </ul>
+      </article>
+    </a>
+    <a
+      class="col-span-2 screen-875:col-start-2 screen-875:col-span-2 screen-1425:col-start-2 screen-1425:col-span-3 py-5 border-t-2 border-black hover:bg-napari-hover-gray"
+      href="/plugins/napari-itk-io"
+    >
+      <article
+        class="grid gap-x-6 md:gap-x-12 screen-600:grid-cols-napari-2 screen-1425:grid-cols-napari-3"
+        data-testid="searchResult"
+      >
+        <div
+          class="screen-1425:col-span-2 flex flex-col justify-between"
+        >
+          <div>
+            <h3
+              class="inline font-bold text-lg"
+              data-testid="searchResultName"
+            >
+              napari-itk-io
+            </h3>
+            <p
+              class="mt-2"
+              data-testid="searchResultSummary"
+            >
+              File IO with itk for napari
+            </p>
+          </div>
+          <ul
+            class="mt-5"
+          >
+            <li
+              class="my-2 font-bold"
+              data-testid="searchResultAuthor"
+            >
+              Matt McCormick
+            </li>
+          </ul>
+        </div>
+        <ul
+          class="mt-4 space-y-1"
+        >
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              0.1.0
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              release date: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              28 April 2021
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              license: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              Apache Software License 2.0
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              Python version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              &gt;=3.6
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              operating system: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              All
+            </span>
+          </li>
+        </ul>
+      </article>
+    </a>
+    <a
+      class="col-span-2 screen-875:col-start-2 screen-875:col-span-2 screen-1425:col-start-2 screen-1425:col-span-3 py-5 border-t-2 border-black hover:bg-napari-hover-gray"
+      href="/plugins/napari-imc"
+    >
+      <article
+        class="grid gap-x-6 md:gap-x-12 screen-600:grid-cols-napari-2 screen-1425:grid-cols-napari-3"
+        data-testid="searchResult"
+      >
+        <div
+          class="screen-1425:col-span-2 flex flex-col justify-between"
+        >
+          <div>
+            <h3
+              class="inline font-bold text-lg"
+              data-testid="searchResultName"
+            >
+              napari-imc
+            </h3>
+            <p
+              class="mt-2"
+              data-testid="searchResultSummary"
+            >
+              Imaging Mass Cytometry (IMC) file type support for napari
+            </p>
+          </div>
+          <ul
+            class="mt-5"
+          >
+            <li
+              class="my-2 font-bold"
+              data-testid="searchResultAuthor"
+            >
+              Jonas Windhager
+            </li>
+          </ul>
+        </div>
+        <ul
+          class="mt-4 space-y-1"
+        >
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              0.5.3
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              release date: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              15 March 2021
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              license: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              MIT
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              Python version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              &gt;=3.7
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              operating system: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              All
+            </span>
+          </li>
+        </ul>
+      </article>
+    </a>
+    <a
+      class="col-span-2 screen-875:col-start-2 screen-875:col-span-2 screen-1425:col-start-2 screen-1425:col-span-3 py-5 border-t-2 border-black hover:bg-napari-hover-gray"
+      href="/plugins/napari-mri"
+    >
+      <article
+        class="grid gap-x-6 md:gap-x-12 screen-600:grid-cols-napari-2 screen-1425:grid-cols-napari-3"
+        data-testid="searchResult"
+      >
+        <div
+          class="screen-1425:col-span-2 flex flex-col justify-between"
+        >
+          <div>
+            <h3
+              class="inline font-bold text-lg"
+              data-testid="searchResultName"
+            >
+              napari-mri
+            </h3>
+            <p
+              class="mt-2"
+              data-testid="searchResultSummary"
+            >
+              A simple plugin to use with napari for 3D-viewing of                  Magnetic Resonance Imaging file formats
+            </p>
+          </div>
+          <ul
+            class="mt-5"
+          >
+            <li
+              class="my-2 font-bold"
+              data-testid="searchResultAuthor"
+            >
+              SUSMITA SAHA
+            </li>
+          </ul>
+        </div>
+        <ul
+          class="mt-4 space-y-1"
+        >
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              0.1.0
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              release date: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              20 March 2021
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              license: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            />
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              Python version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              &gt;=3.7
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              operating system: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              All
+            </span>
+          </li>
+        </ul>
+      </article>
+    </a>
+    <a
+      class="col-span-2 screen-875:col-start-2 screen-875:col-span-2 screen-1425:col-start-2 screen-1425:col-span-3 py-5 border-t-2 border-black hover:bg-napari-hover-gray"
+      href="/plugins/napari-properties-viewer"
+    >
+      <article
+        class="grid gap-x-6 md:gap-x-12 screen-600:grid-cols-napari-2 screen-1425:grid-cols-napari-3"
+        data-testid="searchResult"
+      >
+        <div
+          class="screen-1425:col-span-2 flex flex-col justify-between"
+        >
+          <div>
+            <h3
+              class="inline font-bold text-lg"
+              data-testid="searchResultName"
+            >
+              napari-properties-viewer
+            </h3>
+            <p
+              class="mt-2"
+              data-testid="searchResultSummary"
+            >
+              A viewer for napari layer properties
+            </p>
+          </div>
+          <ul
+            class="mt-5"
+          >
+            <li
+              class="my-2 font-bold"
+              data-testid="searchResultAuthor"
+            >
+              Kevin Yamauchi
+            </li>
+          </ul>
+        </div>
+        <ul
+          class="mt-4 space-y-1"
+        >
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              0.0.1
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              release date: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              28 April 2021
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              license: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              BSD-3
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              Python version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              &gt;=3.6
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              operating system: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              All
+            </span>
+          </li>
+        </ul>
+      </article>
+    </a>
+    <a
+      class="col-span-2 screen-875:col-start-2 screen-875:col-span-2 screen-1425:col-start-2 screen-1425:col-span-3 py-5 border-t-2 border-black hover:bg-napari-hover-gray"
+      href="/plugins/napari-medical-image-formats"
+    >
+      <article
+        class="grid gap-x-6 md:gap-x-12 screen-600:grid-cols-napari-2 screen-1425:grid-cols-napari-3"
+        data-testid="searchResult"
+      >
+        <div
+          class="screen-1425:col-span-2 flex flex-col justify-between"
+        >
+          <div>
+            <h3
+              class="inline font-bold text-lg"
+              data-testid="searchResultName"
+            >
+              napari-medical-image-formats
+            </h3>
+            <p
+              class="mt-2"
+              data-testid="searchResultSummary"
+            >
+              A Plugin in order to read medical image formats such as DICOM and NIfTI
+            </p>
+          </div>
+          <ul
+            class="mt-5"
+          >
+            <li
+              class="my-2 font-bold"
+              data-testid="searchResultAuthor"
+            >
+              Marc Boucsein, Marc Buckmakowski
+            </li>
+          </ul>
+        </div>
+        <ul
+          class="mt-4 space-y-1"
+        >
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              0.3.6
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              release date: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              24 April 2021
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              license: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              BSD-3
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              Python version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              &gt;=3.7
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              operating system: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              All
+            </span>
+          </li>
+        </ul>
+      </article>
+    </a>
+    <a
+      class="col-span-2 screen-875:col-start-2 screen-875:col-span-2 screen-1425:col-start-2 screen-1425:col-span-3 py-5 border-t-2 border-black hover:bg-napari-hover-gray"
+      href="/plugins/misic-napari-plugin"
+    >
+      <article
+        class="grid gap-x-6 md:gap-x-12 screen-600:grid-cols-napari-2 screen-1425:grid-cols-napari-3"
+        data-testid="searchResult"
+      >
+        <div
+          class="screen-1425:col-span-2 flex flex-col justify-between"
+        >
+          <div>
+            <h3
+              class="inline font-bold text-lg"
+              data-testid="searchResultName"
+            >
+              misic-napari-plugin
+            </h3>
+            <p
+              class="mt-2"
+              data-testid="searchResultSummary"
+            >
+              segmentation of bacteria
+            </p>
+          </div>
+          <ul
+            class="mt-5"
+          >
+            <li
+              class="my-2 font-bold"
+              data-testid="searchResultAuthor"
+            >
+              lcb-iam-pswap-le
+            </li>
+          </ul>
+        </div>
+        <ul
+          class="mt-4 space-y-1"
+        >
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              0.1.1
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              release date: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              09 April 2021
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              license: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              MIT
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              Python version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              &gt;=3.6
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              operating system: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              All
+            </span>
+          </li>
+        </ul>
+      </article>
+    </a>
+    <a
+      class="col-span-2 screen-875:col-start-2 screen-875:col-span-2 screen-1425:col-start-2 screen-1425:col-span-3 py-5 border-t-2 border-black hover:bg-napari-hover-gray"
+      href="/plugins/napari-dv"
+    >
+      <article
+        class="grid gap-x-6 md:gap-x-12 screen-600:grid-cols-napari-2 screen-1425:grid-cols-napari-3"
+        data-testid="searchResult"
+      >
+        <div
+          class="screen-1425:col-span-2 flex flex-col justify-between"
+        >
+          <div>
+            <h3
+              class="inline font-bold text-lg"
+              data-testid="searchResultName"
+            >
+              napari-dv
+            </h3>
+            <p
+              class="mt-2"
+              data-testid="searchResultSummary"
+            >
+              Deltavision/MRC file reader for napari
+            </p>
+          </div>
+          <ul
+            class="mt-5"
+          >
+            <li
+              class="my-2 font-bold"
+              data-testid="searchResultAuthor"
+            >
+              Talley Lambert
+            </li>
+          </ul>
+        </div>
+        <ul
+          class="mt-4 space-y-1"
+        >
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              0.2.5
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              release date: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              27 January 2021
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              license: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              MIT
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              Python version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              &gt;=3.6
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              operating system: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              All
+            </span>
+          </li>
+        </ul>
+      </article>
+    </a>
+    <a
+      class="col-span-2 screen-875:col-start-2 screen-875:col-span-2 screen-1425:col-start-2 screen-1425:col-span-3 py-5 border-t-2 border-black hover:bg-napari-hover-gray"
+      href="/plugins/nd2-dask"
+    >
+      <article
+        class="grid gap-x-6 md:gap-x-12 screen-600:grid-cols-napari-2 screen-1425:grid-cols-napari-3"
+        data-testid="searchResult"
+      >
+        <div
+          class="screen-1425:col-span-2 flex flex-col justify-between"
+        >
+          <div>
+            <h3
+              class="inline font-bold text-lg"
+              data-testid="searchResultName"
+            >
+              nd2-dask
+            </h3>
+            <p
+              class="mt-2"
+              data-testid="searchResultSummary"
+            >
+              Plugin to load nd2 data into napari
+            </p>
+          </div>
+          <ul
+            class="mt-5"
+          >
+            <li
+              class="my-2 font-bold"
+              data-testid="searchResultAuthor"
+            >
+              Draga Doncila Pop
+            </li>
+          </ul>
+        </div>
+        <ul
+          class="mt-4 space-y-1"
+        >
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              0.0.5
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              release date: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              03 February 2021
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              license: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              BSD-3
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              Python version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              &gt;=3.6
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              operating system: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              All
+            </span>
+          </li>
+        </ul>
+      </article>
+    </a>
+    <a
+      class="col-span-2 screen-875:col-start-2 screen-875:col-span-2 screen-1425:col-start-2 screen-1425:col-span-3 py-5 border-t-2 border-black hover:bg-napari-hover-gray"
+      href="/plugins/napari-czifile2"
+    >
+      <article
+        class="grid gap-x-6 md:gap-x-12 screen-600:grid-cols-napari-2 screen-1425:grid-cols-napari-3"
+        data-testid="searchResult"
+      >
+        <div
+          class="screen-1425:col-span-2 flex flex-col justify-between"
+        >
+          <div>
+            <h3
+              class="inline font-bold text-lg"
+              data-testid="searchResultName"
+            >
+              napari-czifile2
+            </h3>
+            <p
+              class="mt-2"
+              data-testid="searchResultSummary"
+            >
+              Carl Zeiss Image (.czi) file support for napari
+            </p>
+          </div>
+          <ul
+            class="mt-5"
+          >
+            <li
+              class="my-2 font-bold"
+              data-testid="searchResultAuthor"
+            >
+              Jonas Windhager
+            </li>
+          </ul>
+        </div>
+        <ul
+          class="mt-4 space-y-1"
+        >
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              0.2.1
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              release date: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              17 April 2021
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              license: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              MIT
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              Python version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              &gt;=3.7
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              operating system: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              All
+            </span>
+          </li>
+        </ul>
+      </article>
+    </a>
+    <a
+      class="col-span-2 screen-875:col-start-2 screen-875:col-span-2 screen-1425:col-start-2 screen-1425:col-span-3 py-5 border-t-2 border-black hover:bg-napari-hover-gray"
+      href="/plugins/napari-dzi-zarr"
+    >
+      <article
+        class="grid gap-x-6 md:gap-x-12 screen-600:grid-cols-napari-2 screen-1425:grid-cols-napari-3"
+        data-testid="searchResult"
+      >
+        <div
+          class="screen-1425:col-span-2 flex flex-col justify-between"
+        >
+          <div>
+            <h3
+              class="inline font-bold text-lg"
+              data-testid="searchResultName"
+            >
+              napari-dzi-zarr
+            </h3>
+            <p
+              class="mt-2"
+              data-testid="searchResultSummary"
+            >
+              An experimental plugin for viewing Deep Zoom Images (DZI) with napari and zarr.
+            </p>
+          </div>
+          <ul
+            class="mt-5"
+          >
+            <li
+              class="my-2 font-bold"
+              data-testid="searchResultAuthor"
+            >
+              Trevor Manz
+            </li>
+          </ul>
+        </div>
+        <ul
+          class="mt-4 space-y-1"
+        >
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              0.1.2
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              release date: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              06 April 2021
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              license: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              BSD-3
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              Python version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              &gt;=3.6
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              operating system: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              All
+            </span>
+          </li>
+        </ul>
+      </article>
+    </a>
+    <a
+      class="col-span-2 screen-875:col-start-2 screen-875:col-span-2 screen-1425:col-start-2 screen-1425:col-span-3 py-5 border-t-2 border-black hover:bg-napari-hover-gray"
+      href="/plugins/napari-animation"
+    >
+      <article
+        class="grid gap-x-6 md:gap-x-12 screen-600:grid-cols-napari-2 screen-1425:grid-cols-napari-3"
+        data-testid="searchResult"
+      >
+        <div
+          class="screen-1425:col-span-2 flex flex-col justify-between"
+        >
+          <div>
+            <h3
+              class="inline font-bold text-lg"
+              data-testid="searchResultName"
+            >
+              napari-animation
+            </h3>
+            <p
+              class="mt-2"
+              data-testid="searchResultSummary"
+            >
+              A plugin to make animations with napari
+            </p>
+          </div>
+          <ul
+            class="mt-5"
+          >
+            <li
+              class="my-2 font-bold"
+              data-testid="searchResultAuthor"
+            >
+              Nicholas Sofroniew, Alister Burt, Guillaume Witz, Faris Abouakil, Talley Lambert
+            </li>
+          </ul>
+        </div>
+        <ul
+          class="mt-4 space-y-1"
+        >
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              0.0.1rc5
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              release date: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              03 May 2021
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              license: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              BSD 3-Clause
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              Python version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              &gt;=3.7
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              operating system: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              All
+            </span>
+          </li>
+        </ul>
+      </article>
+    </a>
+    <a
+      class="col-span-2 screen-875:col-start-2 screen-875:col-span-2 screen-1425:col-start-2 screen-1425:col-span-3 py-5 border-t-2 border-black hover:bg-napari-hover-gray"
+      href="/plugins/napari-minimal-plugin"
+    >
+      <article
+        class="grid gap-x-6 md:gap-x-12 screen-600:grid-cols-napari-2 screen-1425:grid-cols-napari-3"
+        data-testid="searchResult"
+      >
+        <div
+          class="screen-1425:col-span-2 flex flex-col justify-between"
+        >
+          <div>
+            <h3
+              class="inline font-bold text-lg"
+              data-testid="searchResultName"
+            >
+              napari-minimal-plugin
+            </h3>
+            <p
+              class="mt-2"
+              data-testid="searchResultSummary"
+            >
+              A minimal plugin
+            </p>
+          </div>
+          <ul
+            class="mt-5"
+          >
+            <li
+              class="my-2 font-bold"
+              data-testid="searchResultAuthor"
+            >
+              Manan Lalit
+            </li>
+          </ul>
+        </div>
+        <ul
+          class="mt-4 space-y-1"
+        >
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              0.0.1
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              release date: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              02 May 2021
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              license: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              BSD-3
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              Python version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              &gt;=3.6
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              operating system: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              All
+            </span>
+          </li>
+        </ul>
+      </article>
+    </a>
+    <a
+      class="col-span-2 screen-875:col-start-2 screen-875:col-span-2 screen-1425:col-start-2 screen-1425:col-span-3 py-5 border-t-2 border-black hover:bg-napari-hover-gray"
+      href="/plugins/napari-cellfinder"
+    >
+      <article
+        class="grid gap-x-6 md:gap-x-12 screen-600:grid-cols-napari-2 screen-1425:grid-cols-napari-3"
+        data-testid="searchResult"
+      >
+        <div
+          class="screen-1425:col-span-2 flex flex-col justify-between"
+        >
+          <div>
+            <h3
+              class="inline font-bold text-lg"
+              data-testid="searchResultName"
+            >
+              napari-cellfinder
+            </h3>
+            <p
+              class="mt-2"
+              data-testid="searchResultSummary"
+            >
+              Visualise cellfinder results with napari
+            </p>
+          </div>
+          <ul
+            class="mt-5"
+          >
+            <li
+              class="my-2 font-bold"
+              data-testid="searchResultAuthor"
+            >
+              Adam Tyson
+            </li>
+          </ul>
+        </div>
+        <ul
+          class="mt-4 space-y-1"
+        >
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              0.2.1
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              release date: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              14 January 2021
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              license: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              MIT
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              Python version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              &gt;=3.6
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              operating system: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              All
+            </span>
+          </li>
+        </ul>
+      </article>
+    </a>
+    <a
+      class="col-span-2 screen-875:col-start-2 screen-875:col-span-2 screen-1425:col-start-2 screen-1425:col-span-3 py-5 border-t-2 border-black hover:bg-napari-hover-gray"
+      href="/plugins/napari-nikon-nd2"
+    >
+      <article
+        class="grid gap-x-6 md:gap-x-12 screen-600:grid-cols-napari-2 screen-1425:grid-cols-napari-3"
+        data-testid="searchResult"
+      >
+        <div
+          class="screen-1425:col-span-2 flex flex-col justify-between"
+        >
+          <div>
+            <h3
+              class="inline font-bold text-lg"
+              data-testid="searchResultName"
+            >
+              napari-nikon-nd2
+            </h3>
+            <p
+              class="mt-2"
+              data-testid="searchResultSummary"
+            >
+              Opens Nikon ND2 files into napari.
+            </p>
+          </div>
+          <ul
+            class="mt-5"
+          >
+            <li
+              class="my-2 font-bold"
+              data-testid="searchResultAuthor"
+            >
+              Chris Wood
+            </li>
+          </ul>
+        </div>
+        <ul
+          class="mt-4 space-y-1"
+        >
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              0.1.3
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              release date: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              03 February 2021
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              license: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              Apache Software License 2.0
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              Python version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              &gt;=3.6
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              operating system: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              All
+            </span>
+          </li>
+        </ul>
+      </article>
+    </a>
+    <a
+      class="col-span-2 screen-875:col-start-2 screen-875:col-span-2 screen-1425:col-start-2 screen-1425:col-span-3 py-5 border-t-2 border-black hover:bg-napari-hover-gray"
+      href="/plugins/napari-em-reader"
+    >
+      <article
+        class="grid gap-x-6 md:gap-x-12 screen-600:grid-cols-napari-2 screen-1425:grid-cols-napari-3"
+        data-testid="searchResult"
+      >
+        <div
+          class="screen-1425:col-span-2 flex flex-col justify-between"
+        >
+          <div>
+            <h3
+              class="inline font-bold text-lg"
+              data-testid="searchResultName"
+            >
+              napari-em-reader
+            </h3>
+            <p
+              class="mt-2"
+              data-testid="searchResultSummary"
+            >
+              A napari plugin to read .em files
+            </p>
+          </div>
+          <ul
+            class="mt-5"
+          >
+            <li
+              class="my-2 font-bold"
+              data-testid="searchResultAuthor"
+            >
+              Lorenzo Gaifas
+            </li>
+          </ul>
+        </div>
+        <ul
+          class="mt-4 space-y-1"
+        >
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              0.1.0
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              release date: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              23 February 2021
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              license: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              BSD-3
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              Python version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              &gt;=3.6
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              operating system: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              All
+            </span>
+          </li>
+        </ul>
+      </article>
+    </a>
+    <a
+      class="col-span-2 screen-875:col-start-2 screen-875:col-span-2 screen-1425:col-start-2 screen-1425:col-span-3 py-5 border-t-2 border-black hover:bg-napari-hover-gray"
+      href="/plugins/elastix-napari"
+    >
+      <article
+        class="grid gap-x-6 md:gap-x-12 screen-600:grid-cols-napari-2 screen-1425:grid-cols-napari-3"
+        data-testid="searchResult"
+      >
+        <div
+          class="screen-1425:col-span-2 flex flex-col justify-between"
+        >
+          <div>
+            <h3
+              class="inline font-bold text-lg"
+              data-testid="searchResultName"
+            >
+              elastix-napari
+            </h3>
+            <p
+              class="mt-2"
+              data-testid="searchResultSummary"
+            >
+              A toolbox for rigid and nonrigid registration of images.
+            </p>
+          </div>
+          <ul
+            class="mt-5"
+          >
+            <li
+              class="my-2 font-bold"
+              data-testid="searchResultAuthor"
+            >
+              Viktor van der Valk
+            </li>
+          </ul>
+        </div>
+        <ul
+          class="mt-4 space-y-1"
+        >
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              0.1.3
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              release date: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              16 April 2021
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              license: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              Apache Software License 2.0
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              Python version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              &gt;=3.6
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              operating system: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              All
+            </span>
+          </li>
+        </ul>
+      </article>
+    </a>
+    <a
+      class="col-span-2 screen-875:col-start-2 screen-875:col-span-2 screen-1425:col-start-2 screen-1425:col-span-3 py-5 border-t-2 border-black hover:bg-napari-hover-gray"
+      href="/plugins/PartSeg"
+    >
+      <article
+        class="grid gap-x-6 md:gap-x-12 screen-600:grid-cols-napari-2 screen-1425:grid-cols-napari-3"
+        data-testid="searchResult"
+      >
+        <div
+          class="screen-1425:col-span-2 flex flex-col justify-between"
+        >
+          <div>
+            <h3
+              class="inline font-bold text-lg"
+              data-testid="searchResultName"
+            >
+              PartSeg
+            </h3>
+            <p
+              class="mt-2"
+              data-testid="searchResultSummary"
+            >
+              PartSeg is python GUI for bio imaging analysis especially nucleus analysis,
+            </p>
+          </div>
+          <ul
+            class="mt-5"
+          >
+            <li
+              class="my-2 font-bold"
+              data-testid="searchResultAuthor"
+            >
+              Grzegorz Bokota
+            </li>
+          </ul>
+        </div>
+        <ul
+          class="mt-4 space-y-1"
+        >
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              0.13.4
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              release date: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              17 April 2021
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              license: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              BSD-3-Clause
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              Python version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              &gt;=3.7
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              operating system: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              All
+            </span>
+          </li>
+        </ul>
+      </article>
+    </a>
+    <a
+      class="col-span-2 screen-875:col-start-2 screen-875:col-span-2 screen-1425:col-start-2 screen-1425:col-span-3 py-5 border-t-2 border-black hover:bg-napari-hover-gray"
+      href="/plugins/brainglobe-napari-io"
+    >
+      <article
+        class="grid gap-x-6 md:gap-x-12 screen-600:grid-cols-napari-2 screen-1425:grid-cols-napari-3"
+        data-testid="searchResult"
+      >
+        <div
+          class="screen-1425:col-span-2 flex flex-col justify-between"
+        >
+          <div>
+            <h3
+              class="inline font-bold text-lg"
+              data-testid="searchResultName"
+            >
+              brainglobe-napari-io
+            </h3>
+            <p
+              class="mt-2"
+              data-testid="searchResultSummary"
+            >
+              Read and write files from the BrainGlobe neuroanatomy suite
+            </p>
+          </div>
+          <ul
+            class="mt-5"
+          >
+            <li
+              class="my-2 font-bold"
+              data-testid="searchResultAuthor"
+            >
+              Adam Tyson
+            </li>
+          </ul>
+        </div>
+        <ul
+          class="mt-4 space-y-1"
+        >
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              0.0.2
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              release date: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              12 March 2021
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              license: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              GPL-3.0
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              Python version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              &gt;=3.6
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              operating system: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              All
+            </span>
+          </li>
+        </ul>
+      </article>
+    </a>
+    <a
+      class="col-span-2 screen-875:col-start-2 screen-875:col-span-2 screen-1425:col-start-2 screen-1425:col-span-3 py-5 border-t-2 border-black hover:bg-napari-hover-gray"
+      href="/plugins/napari-aicsimageio"
+    >
+      <article
+        class="grid gap-x-6 md:gap-x-12 screen-600:grid-cols-napari-2 screen-1425:grid-cols-napari-3"
+        data-testid="searchResult"
+      >
+        <div
+          class="screen-1425:col-span-2 flex flex-col justify-between"
+        >
+          <div>
+            <h3
+              class="inline font-bold text-lg"
+              data-testid="searchResultName"
+            >
+              napari-aicsimageio
+            </h3>
+            <p
+              class="mt-2"
+              data-testid="searchResultSummary"
+            >
+              AICSImageIO bindings for napari
+            </p>
+          </div>
+          <ul
+            class="mt-5"
+          >
+            <li
+              class="my-2 font-bold"
+              data-testid="searchResultAuthor"
+            >
+              Jackson Maxfield Brown
+            </li>
+          </ul>
+        </div>
+        <ul
+          class="mt-4 space-y-1"
+        >
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              0.2.0
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              release date: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              13 December 2020
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              license: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              BSD-3-Clause
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              Python version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              &gt;=3.7
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              operating system: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            />
+          </li>
+        </ul>
+      </article>
+    </a>
+    <a
+      class="col-span-2 screen-875:col-start-2 screen-875:col-span-2 screen-1425:col-start-2 screen-1425:col-span-3 py-5 border-t-2 border-black hover:bg-napari-hover-gray"
+      href="/plugins/napari-lazy-openslide"
+    >
+      <article
+        class="grid gap-x-6 md:gap-x-12 screen-600:grid-cols-napari-2 screen-1425:grid-cols-napari-3"
+        data-testid="searchResult"
+      >
+        <div
+          class="screen-1425:col-span-2 flex flex-col justify-between"
+        >
+          <div>
+            <h3
+              class="inline font-bold text-lg"
+              data-testid="searchResultName"
+            >
+              napari-lazy-openslide
+            </h3>
+            <p
+              class="mt-2"
+              data-testid="searchResultSummary"
+            >
+              A plugin to lazily load multiscale whole-slide images with openslide and dask.
+            </p>
+          </div>
+          <ul
+            class="mt-5"
+          >
+            <li
+              class="my-2 font-bold"
+              data-testid="searchResultAuthor"
+            >
+              Trevor Manz
+            </li>
+          </ul>
+        </div>
+        <ul
+          class="mt-4 space-y-1"
+        >
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              0.2.0
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              release date: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              30 January 2021
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              license: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              BSD-3
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              Python version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              &gt;=3.6
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              operating system: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              All
+            </span>
+          </li>
+        </ul>
+      </article>
+    </a>
+    <a
+      class="col-span-2 screen-875:col-start-2 screen-875:col-span-2 screen-1425:col-start-2 screen-1425:col-span-3 py-5 border-t-2 border-black hover:bg-napari-hover-gray"
+      href="/plugins/napari-btrack-reader"
+    >
+      <article
+        class="grid gap-x-6 md:gap-x-12 screen-600:grid-cols-napari-2 screen-1425:grid-cols-napari-3"
+        data-testid="searchResult"
+      >
+        <div
+          class="screen-1425:col-span-2 flex flex-col justify-between"
+        >
+          <div>
+            <h3
+              class="inline font-bold text-lg"
+              data-testid="searchResultName"
+            >
+              napari-btrack-reader
+            </h3>
+            <p
+              class="mt-2"
+              data-testid="searchResultSummary"
+            >
+              A plugin to load btrack files
+            </p>
+          </div>
+          <ul
+            class="mt-5"
+          >
+            <li
+              class="my-2 font-bold"
+              data-testid="searchResultAuthor"
+            >
+              Alan R. Lowe
+            </li>
+          </ul>
+        </div>
+        <ul
+          class="mt-4 space-y-1"
+        >
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              0.1.0
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              release date: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              05 November 2020
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              license: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              BSD-3
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              Python version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              &gt;=3.6
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              operating system: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              All
+            </span>
+          </li>
+        </ul>
+      </article>
+    </a>
+    <a
+      class="col-span-2 screen-875:col-start-2 screen-875:col-span-2 screen-1425:col-start-2 screen-1425:col-span-3 py-5 border-t-2 border-black hover:bg-napari-hover-gray"
+      href="/plugins/cellpose-napari"
+    >
+      <article
+        class="grid gap-x-6 md:gap-x-12 screen-600:grid-cols-napari-2 screen-1425:grid-cols-napari-3"
+        data-testid="searchResult"
+      >
+        <div
+          class="screen-1425:col-span-2 flex flex-col justify-between"
+        >
+          <div>
+            <h3
+              class="inline font-bold text-lg"
+              data-testid="searchResultName"
+            >
+              cellpose-napari
+            </h3>
+            <p
+              class="mt-2"
+              data-testid="searchResultSummary"
+            >
+              a generalist algorithm for anatomical segmentation
+            </p>
+          </div>
+          <ul
+            class="mt-5"
+          >
+            <li
+              class="my-2 font-bold"
+              data-testid="searchResultAuthor"
+            >
+              Carsen Stringer
+            </li>
+          </ul>
+        </div>
+        <ul
+          class="mt-4 space-y-1"
+        >
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              0.1.3
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              release date: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              02 May 2021
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              license: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              BSD-3
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              Python version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              &gt;=3.6
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              operating system: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              All
+            </span>
+          </li>
+        </ul>
+      </article>
+    </a>
+    <a
+      class="col-span-2 screen-875:col-start-2 screen-875:col-span-2 screen-1425:col-start-2 screen-1425:col-span-3 py-5 border-t-2 border-black hover:bg-napari-hover-gray"
+      href="/plugins/brainreg-segment"
+    >
+      <article
+        class="grid gap-x-6 md:gap-x-12 screen-600:grid-cols-napari-2 screen-1425:grid-cols-napari-3"
+        data-testid="searchResult"
+      >
+        <div
+          class="screen-1425:col-span-2 flex flex-col justify-between"
+        >
+          <div>
+            <h3
+              class="inline font-bold text-lg"
+              data-testid="searchResultName"
+            >
+              brainreg-segment
+            </h3>
+            <p
+              class="mt-2"
+              data-testid="searchResultSummary"
+            >
+              Manual segmentation of 3D brain structures in a common anatomical space
+            </p>
+          </div>
+          <ul
+            class="mt-5"
+          >
+            <li
+              class="my-2 font-bold"
+              data-testid="searchResultAuthor"
+            >
+              Adam Tyson, Horst Obenhaus
+            </li>
+          </ul>
+        </div>
+        <ul
+          class="mt-4 space-y-1"
+        >
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              0.2.7
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              release date: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              26 April 2021
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              license: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            />
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              Python version: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              &gt;=3.7
+            </span>
+          </li>
+          <li
+            class="grid grid-cols-[auto,1fr]"
+          >
+            <h4
+              class="inline whitespace-nowrap"
+            >
+              operating system: 
+            </h4>
+            <span
+              class="font-bold ml-1"
+            >
+              Windows 10, Linux
+            </span>
+          </li>
+        </ul>
+      </article>
+    </a>
   </div>
 </DocumentFragment>
 `;
