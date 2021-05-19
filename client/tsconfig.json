@@ -14,7 +14,8 @@
     "noUnusedParameters": true,
     "paths": {
       "@/*": ["./src/*"],
-      "@/breakpoints": ["./breakpoints"]
+      "@/breakpoints": ["./breakpoints"],
+      "@/colors": ["./colors"]
     },
     "resolveJsonModule": true,
     "skipLibCheck": true,
