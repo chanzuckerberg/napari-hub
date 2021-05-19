@@ -1,14 +1,12 @@
 import clsx from 'clsx';
-import Image from 'next/image';
 import { useState } from 'react';
 
 import { MenuDrawer, SearchBar } from '@/components';
 import { ColumnLayout, Link } from '@/components/common';
+import { Menu } from '@/components/common/icons';
 import { MediaFragment } from '@/components/common/media';
 import { MenuDrawerItem } from '@/components/MenuDrawer/types';
 import { useSearchState } from '@/context/search';
-
-const IMAGE_SIZE = 16;
 
 const MENU_ITEMS: MenuDrawerItem[] = [
   {
@@ -123,12 +121,7 @@ export function AppBar() {
             onClick={() => setVisible(true)}
             type="button"
           >
-            <Image
-              src="/icons/menu.svg"
-              alt="Menu button icon"
-              width={IMAGE_SIZE}
-              height={IMAGE_SIZE}
-            />
+            <Menu />
           </button>
         </div>
       </ColumnLayout>

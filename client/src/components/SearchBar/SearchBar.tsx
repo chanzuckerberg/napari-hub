@@ -1,15 +1,13 @@
 import clsx from 'clsx';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
+import { Search } from '@/components/common/icons';
 import {
   SEARCH_PAGE,
   SEARCH_QUERY_PARAM,
   useSearchState,
 } from '@/context/search';
-
-const SEARCH_ICON_SIZE = 14;
 
 /**
  * Search bar component. This renders an input field with a underline and
@@ -89,13 +87,8 @@ export function SearchBar() {
         }}
         value={query ?? localQuery}
       />
-      <Image
-        src="/icons/search.svg"
-        alt="Icon for napari search bar"
-        layout="fixed"
-        width={SEARCH_ICON_SIZE}
-        height={SEARCH_ICON_SIZE}
-      />
+
+      <Search className="w-5 h-5" />
     </form>
   );
 }
