@@ -48,3 +48,13 @@ export type Mutable<T> = {
 export type NonPartial<T> = {
   [K in keyof T]-?: T[K];
 };
+
+/**
+ * Data used for rendering links to different pages in the app.
+ *
+ * TODO Consolidate with MenuDrawerItem.
+ */
+export interface AppLink {
+  link: string;
+  title: string;
+}
