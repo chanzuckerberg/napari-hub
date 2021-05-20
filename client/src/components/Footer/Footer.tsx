@@ -69,11 +69,14 @@ export function Footer() {
       </div>
       <div className="flex flex-row justify-end gap-2">
         <Link href="https://napari.org" newTab>
-          <NapariLogo className="w-8 h-8" />
+          <NapariLogo className="w-8 h-8" alt="Go to napari main website." />
         </Link>
         <div className="border-r-[1px] border-black" />
         <Link href="https://chanzuckerberg.com" newTab>
-          <CZI className="w-8 h-8" />
+          <CZI
+            className="w-8 h-8"
+            alt="Go to Chan Zuckerberg Initiative main website."
+          />
         </Link>
       </div>
     </div>
