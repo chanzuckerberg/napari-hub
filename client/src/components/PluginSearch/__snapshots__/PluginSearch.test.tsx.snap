@@ -77,6 +77,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
       Discover, install, and share napari plugins
     </h1>
     <svg
+      aria-hidden="true"
       class="h-full self-center screen-1425:row-start-2 screen-1425:col-start-2 logo"
       fill="none"
       height="198"
@@ -234,17 +235,19 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
   </header>
   <div
     class="bg-napari-light h-36 items-center px-6 md:px-12 grid justify-center gap-6 md:gap-12 grid-cols-2 screen-875:grid-cols-napari-3 screen-1150:grid-cols-napari-3 screen-1425:grid-cols-napari-5"
-    id="pluginSearch"
+    id="plugin-search"
   >
     <div
       class="col-span-2 screen-875:col-span-3 screen-1425:col-start-2"
     >
       <h2
         class="font-bold text-xl mb-4 whitespace-nowrap"
+        id="plugin-search-title"
       >
         Search for a plugin by keyword or author
       </h2>
       <form
+        aria-describedby="plugin-search-title"
         class="flex flex-auto items-center border-b-2 border-black text-xl"
         data-testid="searchBarForm"
       >
@@ -255,6 +258,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           value=""
         />
         <button
+          aria-label="Submit search query"
           type="button"
         >
           <svg
@@ -279,20 +283,20 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
     </div>
   </div>
   <div
-    class="p-6 md:p-12 grid justify-center gap-x-6 gap-x-12 grid-cols-2 screen-875:grid-cols-napari-3 screen-1150:grid-cols-napari-3 screen-1425:grid-cols-napari-5"
+    class="p-6 md:p-12 grid justify-center gap-x-6 md:gap-x-12 grid-cols-2 screen-875:grid-cols-napari-3 screen-1150:grid-cols-napari-3 screen-1425:grid-cols-napari-5"
   >
     <div
       class="col-span-2"
     >
-      <h1>
+      <p>
         TODO search filters
-      </h1>
+      </p>
     </div>
-    <h2
+    <h3
       class="col-span-2 font-bold text-2xl mb-6 screen-875:col-start-2"
     >
       Browse plugins
-    </h2>
+    </h3>
     <a
       class="col-span-2 screen-875:col-start-2 screen-875:col-span-2 screen-1425:col-start-2 screen-1425:col-span-3 py-5 border-t-2 border-black hover:bg-napari-hover-gray"
       href="/plugins/napari-compressed-labels-io"
@@ -305,12 +309,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           class="screen-1425:col-span-2 flex flex-col justify-between"
         >
           <div>
-            <h3
+            <h4
               class="inline font-bold text-lg"
               data-testid="searchResultName"
             >
               napari-compressed-labels-io
-            </h3>
+            </h4>
             <p
               class="mt-2"
               data-testid="searchResultSummary"
@@ -335,11 +339,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -349,11 +353,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               release date: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -363,11 +367,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               license: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -377,11 +381,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               Python version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -391,11 +395,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               operating system: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -417,12 +421,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           class="screen-1425:col-span-2 flex flex-col justify-between"
         >
           <div>
-            <h3
+            <h4
               class="inline font-bold text-lg"
               data-testid="searchResultName"
             >
               affinder
-            </h3>
+            </h4>
             <p
               class="mt-2"
               data-testid="searchResultSummary"
@@ -447,11 +451,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -461,11 +465,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               release date: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -475,11 +479,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               license: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -489,11 +493,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               Python version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -503,11 +507,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               operating system: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -529,12 +533,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           class="screen-1425:col-span-2 flex flex-col justify-between"
         >
           <div>
-            <h3
+            <h4
               class="inline font-bold text-lg"
               data-testid="searchResultName"
             >
               napping
-            </h3>
+            </h4>
             <p
               class="mt-2"
               data-testid="searchResultSummary"
@@ -559,11 +563,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -573,11 +577,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               release date: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -587,11 +591,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               license: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -601,11 +605,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               Python version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -615,11 +619,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               operating system: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -641,12 +645,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           class="screen-1425:col-span-2 flex flex-col justify-between"
         >
           <div>
-            <h3
+            <h4
               class="inline font-bold text-lg"
               data-testid="searchResultName"
             >
               napari-console
-            </h3>
+            </h4>
             <p
               class="mt-2"
               data-testid="searchResultSummary"
@@ -671,11 +675,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -685,11 +689,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               release date: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -699,11 +703,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               license: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -713,11 +717,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               Python version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -727,11 +731,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               operating system: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -753,12 +757,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           class="screen-1425:col-span-2 flex flex-col justify-between"
         >
           <div>
-            <h3
+            <h4
               class="inline font-bold text-lg"
               data-testid="searchResultName"
             >
               napari-hdf5-labels-io
-            </h3>
+            </h4>
             <p
               class="mt-2"
               data-testid="searchResultSummary"
@@ -783,11 +787,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -797,11 +801,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               release date: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -811,11 +815,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               license: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -825,11 +829,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               Python version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -839,11 +843,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               operating system: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -865,12 +869,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           class="screen-1425:col-span-2 flex flex-col justify-between"
         >
           <div>
-            <h3
+            <h4
               class="inline font-bold text-lg"
               data-testid="searchResultName"
             >
               PlatyMatch
-            </h3>
+            </h4>
             <p
               class="mt-2"
               data-testid="searchResultSummary"
@@ -895,11 +899,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -909,11 +913,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               release date: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -923,11 +927,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               license: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -937,11 +941,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               Python version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -951,11 +955,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               operating system: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -977,12 +981,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           class="screen-1425:col-span-2 flex flex-col justify-between"
         >
           <div>
-            <h3
+            <h4
               class="inline font-bold text-lg"
               data-testid="searchResultName"
             >
               napari_video
-            </h3>
+            </h4>
             <p
               class="mt-2"
               data-testid="searchResultSummary"
@@ -1007,11 +1011,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -1021,11 +1025,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               release date: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -1035,11 +1039,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               license: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             />
@@ -1047,11 +1051,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               Python version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -1061,11 +1065,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               operating system: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             />
@@ -1085,12 +1089,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           class="screen-1425:col-span-2 flex flex-col justify-between"
         >
           <div>
-            <h3
+            <h4
               class="inline font-bold text-lg"
               data-testid="searchResultName"
             >
               cellfinder-napari
-            </h3>
+            </h4>
             <p
               class="mt-2"
               data-testid="searchResultSummary"
@@ -1115,11 +1119,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -1129,11 +1133,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               release date: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -1143,11 +1147,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               license: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -1157,11 +1161,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               Python version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -1171,11 +1175,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               operating system: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -1197,12 +1201,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           class="screen-1425:col-span-2 flex flex-col justify-between"
         >
           <div>
-            <h3
+            <h4
               class="inline font-bold text-lg"
               data-testid="searchResultName"
             >
               napari-svg
-            </h3>
+            </h4>
             <p
               class="mt-2"
               data-testid="searchResultSummary"
@@ -1227,11 +1231,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -1241,11 +1245,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               release date: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -1255,11 +1259,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               license: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -1269,11 +1273,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               Python version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -1283,11 +1287,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               operating system: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -1309,12 +1313,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           class="screen-1425:col-span-2 flex flex-col justify-between"
         >
           <div>
-            <h3
+            <h4
               class="inline font-bold text-lg"
               data-testid="searchResultName"
             >
               napari-yapic-prediction
-            </h3>
+            </h4>
             <p
               class="mt-2"
               data-testid="searchResultSummary"
@@ -1339,11 +1343,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -1353,11 +1357,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               release date: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -1367,11 +1371,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               license: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -1381,11 +1385,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               Python version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -1395,11 +1399,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               operating system: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -1421,12 +1425,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           class="screen-1425:col-span-2 flex flex-col justify-between"
         >
           <div>
-            <h3
+            <h4
               class="inline font-bold text-lg"
               data-testid="searchResultName"
             >
               napari-demo
-            </h3>
+            </h4>
             <p
               class="mt-2"
               data-testid="searchResultSummary"
@@ -1457,11 +1461,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -1471,11 +1475,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               release date: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -1485,11 +1489,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               license: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -1499,11 +1503,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               Python version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -1513,11 +1517,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               operating system: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -1539,12 +1543,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           class="screen-1425:col-span-2 flex flex-col justify-between"
         >
           <div>
-            <h3
+            <h4
               class="inline font-bold text-lg"
               data-testid="searchResultName"
             >
               ome-zarr
-            </h3>
+            </h4>
             <p
               class="mt-2"
               data-testid="searchResultSummary"
@@ -1569,11 +1573,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -1583,11 +1587,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               release date: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -1597,11 +1601,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               license: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             />
@@ -1609,11 +1613,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               Python version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -1623,11 +1627,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               operating system: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -1649,12 +1653,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           class="screen-1425:col-span-2 flex flex-col justify-between"
         >
           <div>
-            <h3
+            <h4
               class="inline font-bold text-lg"
               data-testid="searchResultName"
             >
               napari-brainreg
-            </h3>
+            </h4>
             <p
               class="mt-2"
               data-testid="searchResultSummary"
@@ -1679,11 +1683,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -1693,11 +1697,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               release date: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -1707,11 +1711,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               license: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -1721,11 +1725,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               Python version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -1735,11 +1739,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               operating system: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -1761,12 +1765,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           class="screen-1425:col-span-2 flex flex-col justify-between"
         >
           <div>
-            <h3
+            <h4
               class="inline font-bold text-lg"
               data-testid="searchResultName"
             >
               napari-itk-io
-            </h3>
+            </h4>
             <p
               class="mt-2"
               data-testid="searchResultSummary"
@@ -1791,11 +1795,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -1805,11 +1809,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               release date: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -1819,11 +1823,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               license: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -1833,11 +1837,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               Python version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -1847,11 +1851,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               operating system: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -1873,12 +1877,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           class="screen-1425:col-span-2 flex flex-col justify-between"
         >
           <div>
-            <h3
+            <h4
               class="inline font-bold text-lg"
               data-testid="searchResultName"
             >
               napari-imc
-            </h3>
+            </h4>
             <p
               class="mt-2"
               data-testid="searchResultSummary"
@@ -1903,11 +1907,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -1917,11 +1921,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               release date: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -1931,11 +1935,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               license: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -1945,11 +1949,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               Python version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -1959,11 +1963,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               operating system: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -1985,12 +1989,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           class="screen-1425:col-span-2 flex flex-col justify-between"
         >
           <div>
-            <h3
+            <h4
               class="inline font-bold text-lg"
               data-testid="searchResultName"
             >
               napari-mri
-            </h3>
+            </h4>
             <p
               class="mt-2"
               data-testid="searchResultSummary"
@@ -2015,11 +2019,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -2029,11 +2033,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               release date: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -2043,11 +2047,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               license: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             />
@@ -2055,11 +2059,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               Python version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -2069,11 +2073,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               operating system: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -2095,12 +2099,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           class="screen-1425:col-span-2 flex flex-col justify-between"
         >
           <div>
-            <h3
+            <h4
               class="inline font-bold text-lg"
               data-testid="searchResultName"
             >
               napari-properties-viewer
-            </h3>
+            </h4>
             <p
               class="mt-2"
               data-testid="searchResultSummary"
@@ -2125,11 +2129,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -2139,11 +2143,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               release date: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -2153,11 +2157,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               license: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -2167,11 +2171,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               Python version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -2181,11 +2185,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               operating system: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -2207,12 +2211,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           class="screen-1425:col-span-2 flex flex-col justify-between"
         >
           <div>
-            <h3
+            <h4
               class="inline font-bold text-lg"
               data-testid="searchResultName"
             >
               napari-medical-image-formats
-            </h3>
+            </h4>
             <p
               class="mt-2"
               data-testid="searchResultSummary"
@@ -2237,11 +2241,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -2251,11 +2255,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               release date: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -2265,11 +2269,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               license: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -2279,11 +2283,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               Python version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -2293,11 +2297,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               operating system: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -2319,12 +2323,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           class="screen-1425:col-span-2 flex flex-col justify-between"
         >
           <div>
-            <h3
+            <h4
               class="inline font-bold text-lg"
               data-testid="searchResultName"
             >
               misic-napari-plugin
-            </h3>
+            </h4>
             <p
               class="mt-2"
               data-testid="searchResultSummary"
@@ -2349,11 +2353,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -2363,11 +2367,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               release date: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -2377,11 +2381,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               license: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -2391,11 +2395,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               Python version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -2405,11 +2409,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               operating system: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -2431,12 +2435,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           class="screen-1425:col-span-2 flex flex-col justify-between"
         >
           <div>
-            <h3
+            <h4
               class="inline font-bold text-lg"
               data-testid="searchResultName"
             >
               napari-dv
-            </h3>
+            </h4>
             <p
               class="mt-2"
               data-testid="searchResultSummary"
@@ -2461,11 +2465,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -2475,11 +2479,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               release date: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -2489,11 +2493,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               license: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -2503,11 +2507,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               Python version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -2517,11 +2521,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               operating system: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -2543,12 +2547,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           class="screen-1425:col-span-2 flex flex-col justify-between"
         >
           <div>
-            <h3
+            <h4
               class="inline font-bold text-lg"
               data-testid="searchResultName"
             >
               nd2-dask
-            </h3>
+            </h4>
             <p
               class="mt-2"
               data-testid="searchResultSummary"
@@ -2573,11 +2577,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -2587,11 +2591,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               release date: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -2601,11 +2605,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               license: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -2615,11 +2619,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               Python version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -2629,11 +2633,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               operating system: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -2655,12 +2659,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           class="screen-1425:col-span-2 flex flex-col justify-between"
         >
           <div>
-            <h3
+            <h4
               class="inline font-bold text-lg"
               data-testid="searchResultName"
             >
               napari-czifile2
-            </h3>
+            </h4>
             <p
               class="mt-2"
               data-testid="searchResultSummary"
@@ -2685,11 +2689,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -2699,11 +2703,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               release date: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -2713,11 +2717,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               license: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -2727,11 +2731,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               Python version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -2741,11 +2745,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               operating system: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -2767,12 +2771,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           class="screen-1425:col-span-2 flex flex-col justify-between"
         >
           <div>
-            <h3
+            <h4
               class="inline font-bold text-lg"
               data-testid="searchResultName"
             >
               napari-dzi-zarr
-            </h3>
+            </h4>
             <p
               class="mt-2"
               data-testid="searchResultSummary"
@@ -2797,11 +2801,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -2811,11 +2815,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               release date: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -2825,11 +2829,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               license: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -2839,11 +2843,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               Python version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -2853,11 +2857,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               operating system: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -2879,12 +2883,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           class="screen-1425:col-span-2 flex flex-col justify-between"
         >
           <div>
-            <h3
+            <h4
               class="inline font-bold text-lg"
               data-testid="searchResultName"
             >
               napari-animation
-            </h3>
+            </h4>
             <p
               class="mt-2"
               data-testid="searchResultSummary"
@@ -2909,11 +2913,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -2923,11 +2927,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               release date: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -2937,11 +2941,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               license: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -2951,11 +2955,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               Python version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -2965,11 +2969,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               operating system: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -2991,12 +2995,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           class="screen-1425:col-span-2 flex flex-col justify-between"
         >
           <div>
-            <h3
+            <h4
               class="inline font-bold text-lg"
               data-testid="searchResultName"
             >
               napari-minimal-plugin
-            </h3>
+            </h4>
             <p
               class="mt-2"
               data-testid="searchResultSummary"
@@ -3021,11 +3025,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -3035,11 +3039,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               release date: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -3049,11 +3053,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               license: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -3063,11 +3067,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               Python version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -3077,11 +3081,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               operating system: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -3103,12 +3107,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           class="screen-1425:col-span-2 flex flex-col justify-between"
         >
           <div>
-            <h3
+            <h4
               class="inline font-bold text-lg"
               data-testid="searchResultName"
             >
               napari-cellfinder
-            </h3>
+            </h4>
             <p
               class="mt-2"
               data-testid="searchResultSummary"
@@ -3133,11 +3137,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -3147,11 +3151,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               release date: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -3161,11 +3165,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               license: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -3175,11 +3179,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               Python version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -3189,11 +3193,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               operating system: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -3215,12 +3219,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           class="screen-1425:col-span-2 flex flex-col justify-between"
         >
           <div>
-            <h3
+            <h4
               class="inline font-bold text-lg"
               data-testid="searchResultName"
             >
               napari-nikon-nd2
-            </h3>
+            </h4>
             <p
               class="mt-2"
               data-testid="searchResultSummary"
@@ -3245,11 +3249,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -3259,11 +3263,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               release date: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -3273,11 +3277,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               license: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -3287,11 +3291,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               Python version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -3301,11 +3305,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               operating system: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -3327,12 +3331,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           class="screen-1425:col-span-2 flex flex-col justify-between"
         >
           <div>
-            <h3
+            <h4
               class="inline font-bold text-lg"
               data-testid="searchResultName"
             >
               napari-em-reader
-            </h3>
+            </h4>
             <p
               class="mt-2"
               data-testid="searchResultSummary"
@@ -3357,11 +3361,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -3371,11 +3375,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               release date: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -3385,11 +3389,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               license: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -3399,11 +3403,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               Python version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -3413,11 +3417,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               operating system: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -3439,12 +3443,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           class="screen-1425:col-span-2 flex flex-col justify-between"
         >
           <div>
-            <h3
+            <h4
               class="inline font-bold text-lg"
               data-testid="searchResultName"
             >
               elastix-napari
-            </h3>
+            </h4>
             <p
               class="mt-2"
               data-testid="searchResultSummary"
@@ -3469,11 +3473,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -3483,11 +3487,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               release date: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -3497,11 +3501,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               license: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -3511,11 +3515,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               Python version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -3525,11 +3529,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               operating system: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -3551,12 +3555,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           class="screen-1425:col-span-2 flex flex-col justify-between"
         >
           <div>
-            <h3
+            <h4
               class="inline font-bold text-lg"
               data-testid="searchResultName"
             >
               PartSeg
-            </h3>
+            </h4>
             <p
               class="mt-2"
               data-testid="searchResultSummary"
@@ -3581,11 +3585,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -3595,11 +3599,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               release date: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -3609,11 +3613,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               license: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -3623,11 +3627,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               Python version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -3637,11 +3641,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               operating system: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -3663,12 +3667,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           class="screen-1425:col-span-2 flex flex-col justify-between"
         >
           <div>
-            <h3
+            <h4
               class="inline font-bold text-lg"
               data-testid="searchResultName"
             >
               brainglobe-napari-io
-            </h3>
+            </h4>
             <p
               class="mt-2"
               data-testid="searchResultSummary"
@@ -3693,11 +3697,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -3707,11 +3711,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               release date: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -3721,11 +3725,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               license: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -3735,11 +3739,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               Python version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -3749,11 +3753,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               operating system: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -3775,12 +3779,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           class="screen-1425:col-span-2 flex flex-col justify-between"
         >
           <div>
-            <h3
+            <h4
               class="inline font-bold text-lg"
               data-testid="searchResultName"
             >
               napari-aicsimageio
-            </h3>
+            </h4>
             <p
               class="mt-2"
               data-testid="searchResultSummary"
@@ -3805,11 +3809,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -3819,11 +3823,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               release date: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -3833,11 +3837,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               license: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -3847,11 +3851,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               Python version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -3861,11 +3865,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               operating system: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             />
@@ -3885,12 +3889,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           class="screen-1425:col-span-2 flex flex-col justify-between"
         >
           <div>
-            <h3
+            <h4
               class="inline font-bold text-lg"
               data-testid="searchResultName"
             >
               napari-lazy-openslide
-            </h3>
+            </h4>
             <p
               class="mt-2"
               data-testid="searchResultSummary"
@@ -3915,11 +3919,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -3929,11 +3933,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               release date: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -3943,11 +3947,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               license: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -3957,11 +3961,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               Python version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -3971,11 +3975,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               operating system: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -3997,12 +4001,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           class="screen-1425:col-span-2 flex flex-col justify-between"
         >
           <div>
-            <h3
+            <h4
               class="inline font-bold text-lg"
               data-testid="searchResultName"
             >
               napari-btrack-reader
-            </h3>
+            </h4>
             <p
               class="mt-2"
               data-testid="searchResultSummary"
@@ -4027,11 +4031,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -4041,11 +4045,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               release date: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -4055,11 +4059,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               license: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -4069,11 +4073,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               Python version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -4083,11 +4087,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               operating system: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -4109,12 +4113,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           class="screen-1425:col-span-2 flex flex-col justify-between"
         >
           <div>
-            <h3
+            <h4
               class="inline font-bold text-lg"
               data-testid="searchResultName"
             >
               cellpose-napari
-            </h3>
+            </h4>
             <p
               class="mt-2"
               data-testid="searchResultSummary"
@@ -4139,11 +4143,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -4153,11 +4157,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               release date: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -4167,11 +4171,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               license: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -4181,11 +4185,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               Python version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -4195,11 +4199,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               operating system: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -4221,12 +4225,12 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           class="screen-1425:col-span-2 flex flex-col justify-between"
         >
           <div>
-            <h3
+            <h4
               class="inline font-bold text-lg"
               data-testid="searchResultName"
             >
               brainreg-segment
-            </h3>
+            </h4>
             <p
               class="mt-2"
               data-testid="searchResultSummary"
@@ -4251,11 +4255,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -4265,11 +4269,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               release date: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -4279,11 +4283,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               license: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             />
@@ -4291,11 +4295,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               Python version: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >
@@ -4305,11 +4309,11 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           <li
             class="grid grid-cols-[auto,1fr]"
           >
-            <h4
+            <h5
               class="inline whitespace-nowrap"
             >
               operating system: 
-            </h4>
+            </h5>
             <span
               class="font-bold ml-1"
             >

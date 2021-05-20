@@ -123,6 +123,7 @@ exports[`<AppBar /> should match snapshot 1`] = `
           value=""
         />
         <button
+          aria-label="Submit search query"
           type="button"
         >
           <svg
