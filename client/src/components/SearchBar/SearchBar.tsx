@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { HTMLProps, useState } from 'react';
 
 import { PLUGIN_SEARCH_ID } from '@/components';
 import { Close, Search } from '@/components/common/icons';
@@ -13,7 +13,7 @@ import { useActiveQueryParameter } from '@/context/search/search.hooks';
 
 import styles from './SearchBar.module.scss';
 
-interface Props {
+interface Props extends HTMLProps<HTMLFormElement> {
   /**
    * Render large variant of search bar with a larger font size and search icon.
    */
@@ -47,7 +47,7 @@ function getURLWithSearchParam(query: string): URL {
  *
  * This makes the SearchBar component re-useable for non-search enabled pages.
  */
-export function SearchBar({ large }: Props) {
+export function SearchBar({ large, ...props }: Props) {
   const router = useRouter();
   const initialQuery = useActiveQueryParameter();
   const { results, query, setQuery } = useSearchState() ?? {};
@@ -95,6 +95,7 @@ export function SearchBar({ large }: Props) {
         event.preventDefault();
         await submitForm();
       }}
+      {...props}
     >
       <input
         aria-label="Search bar for searching for napari plugins."
@@ -124,6 +125,7 @@ export function SearchBar({ large }: Props) {
       />
 
       <button
+        aria-label={query ? 'Clear search bar text' : 'Submit search query'}
         onClick={async () => {
           // Clear local query if close button is clicked and the search engine
           // is currently rendering the results for another query.

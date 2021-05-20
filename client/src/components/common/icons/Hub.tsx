@@ -3,6 +3,7 @@ import { IconProps } from './icons.type';
 export function Hub({ className }: IconProps) {
   return (
     <svg
+      aria-hidden="true"
       width="226"
       height="198"
       viewBox="0 0 226 198"

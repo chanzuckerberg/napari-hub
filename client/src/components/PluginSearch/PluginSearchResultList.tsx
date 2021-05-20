@@ -9,7 +9,7 @@ export function PluginSearchResultList() {
 
   return (
     <>
-      <h2
+      <h3
         className={clsx(
           'col-span-2',
           'font-bold text-2xl mb-6',
@@ -17,7 +17,7 @@ export function PluginSearchResultList() {
         )}
       >
         Browse plugins
-      </h2>
+      </h3>
 
       {results.map(({ plugin }) => (
         <PluginSearchResult

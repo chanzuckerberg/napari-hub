@@ -84,12 +84,12 @@ export function PluginSearchResult({ className, plugin }: Props) {
           {/* Wrapper div to group plugin name and summary  */}
           <div>
             {/* Plugin name */}
-            <h3
+            <h4
               className="inline font-bold text-lg"
               data-testid="searchResultName"
             >
               {plugin.name}
-            </h3>
+            </h4>
 
             {/* Plugin summary */}
             <p className="mt-2" data-testid="searchResultSummary">
@@ -118,7 +118,7 @@ export function PluginSearchResult({ className, plugin }: Props) {
               key={`${item.label}-${item.value}`}
               className="grid grid-cols-[auto,1fr]"
             >
-              <h4 className="inline whitespace-nowrap">{item.label}: </h4>
+              <h5 className="inline whitespace-nowrap">{item.label}: </h5>
               <span className="font-bold ml-1">{item.value}</span>
             </li>
           ))}
