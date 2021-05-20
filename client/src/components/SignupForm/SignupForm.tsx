@@ -49,7 +49,7 @@ export function SignupForm({ onSubmit }: Props) {
   };
 
   return (
-    <ColumnLayout className="bg-napari-primary-light p-6 xl:px-0 xl:py-12">
+    <ColumnLayout className="bg-napari-light p-6 xl:px-0 xl:py-12">
       <div className="col-span-2 md:col-span-3 3xl:col-start-2">
         <h3 className="prose-lg font-semibold mb-4">
           Sign up to receive updates
