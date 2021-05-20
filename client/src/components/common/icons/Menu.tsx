@@ -10,6 +10,7 @@ export function Menu({ className }: IconProps) {
       xmlns="http://www.w3.org/2000/svg"
       className={className}
     >
+      <title>Icon for opening side menu.</title>
       <path d="M16 1H0" stroke="black" strokeWidth="1.98857" />
       <path d="M16 7.99924H0" stroke="black" strokeWidth="1.98857" />
       <path d="M16 15H0" stroke="black" strokeWidth="1.98857" />

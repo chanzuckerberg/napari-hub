@@ -44,19 +44,18 @@ export function AppBarLinks({ className, items, vertical }: Props) {
 
   return (
     <nav className={clsx(className, 'flex', vertical && 'flex-col')}>
-      <h1 className="whitespace-nowrap">
-        <Link
-          // Redirect to home page
-          href="/"
-          // Clear search related query parameter data if the user is currently
-          // on the search page. Without this, the `useQueryParameter()` hook
-          // will re-set the query parameter with the current query in the
-          // search bar.
-          onClick={() => setQuery?.('')}
-        >
-          napari <strong>hub</strong>
-        </Link>
-      </h1>
+      <Link
+        className="whitespace-nowrap"
+        // Redirect to home page
+        href="/"
+        // Clear search related query parameter data if the user is currently
+        // on the search page. Without this, the `useQueryParameter()` hook
+        // will re-set the query parameter with the current query in the
+        // search bar.
+        onClick={() => setQuery?.('')}
+      >
+        napari <strong>hub</strong>
+      </Link>
 
       {items && <LinkList items={items} vertical={vertical} />}
     </nav>

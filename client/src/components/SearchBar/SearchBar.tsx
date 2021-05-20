@@ -58,6 +58,7 @@ export function SearchBar() {
       }}
     >
       <input
+        aria-label="Search bar for searching for napari plugins."
         data-testid="searchBarInput"
         className={clsx(
           // Flex layout
