@@ -1,7 +1,7 @@
 const { reduce } = require('lodash');
 const typography = require('@tailwindcss/typography');
 
-const breakpoints = require('./breakpoints');
+const { breakpoints, colors, fontFamily } = require('./src/theme');
 
 // Add px unit to all breakpoint values.
 const screens = reduce(
@@ -25,6 +25,10 @@ module.exports = {
   theme: {
     screens,
     extend: {
+      fontFamily: {
+        barlow: fontFamily,
+      },
+
       spacing: {
         // Use 25px and 50px for margins, paddings, gaps, etc.
         6: pixelsToRem(25),
@@ -32,8 +36,10 @@ module.exports = {
       },
 
       colors: {
-        'napari-primary': '#80d1ff',
-        'napari-primary-light': 'rgba(128, 215, 255, 0.25)',
+        'napari-primary': colors.primary,
+        'napari-hover': colors.hover,
+        'napari-hover-gray': colors.hoverGray,
+        'napari-light': colors.light,
       },
 
       width: (theme) => ({
