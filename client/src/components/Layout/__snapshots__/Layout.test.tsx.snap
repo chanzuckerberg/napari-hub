@@ -65,18 +65,15 @@ exports[`<Layout /> should match snapshot 1`] = `
       <nav
         class="flex"
       >
-        <h1
+        <a
           class="whitespace-nowrap"
+          href="/"
         >
-          <a
-            href="/"
-          >
-            napari 
-            <strong>
-              hub
-            </strong>
-          </a>
-        </h1>
+          napari 
+          <strong>
+            hub
+          </strong>
+        </a>
         <div
           class="flex"
         >
@@ -101,18 +98,15 @@ exports[`<Layout /> should match snapshot 1`] = `
       <nav
         class="flex"
       >
-        <h1
+        <a
           class="whitespace-nowrap"
+          href="/"
         >
-          <a
-            href="/"
-          >
-            napari 
-            <strong>
-              hub
-            </strong>
-          </a>
-        </h1>
+          napari 
+          <strong>
+            hub
+          </strong>
+        </a>
       </nav>
     </div>
     <div
@@ -123,6 +117,7 @@ exports[`<Layout /> should match snapshot 1`] = `
         data-testid="searchBarForm"
       >
         <input
+          aria-label="Search bar for searching for napari plugins."
           class="flex flex-auto border-none outline-none bg-transparent w-0"
           data-testid="searchBarInput"
           value=""
@@ -135,6 +130,9 @@ exports[`<Layout /> should match snapshot 1`] = `
           width="16"
           xmlns="http://www.w3.org/2000/svg"
         >
+          <title>
+            Icon for search.
+          </title>
           <path
             d="M8.32004 7.68001L0.746704 15.2533M10.6667 9.60001C13.0134 9.60001 14.9334 7.68001 14.9334 5.33335C14.9334 2.98668 13.0134 1.06668 10.6667 1.06668C8.32004 1.06668 6.40004 2.98668 6.40004 5.33335C6.40004 7.68001 8.32004 9.60001 10.6667 9.60001Z"
             stroke="black"
@@ -153,6 +151,9 @@ exports[`<Layout /> should match snapshot 1`] = `
           width="16"
           xmlns="http://www.w3.org/2000/svg"
         >
+          <title>
+            Icon for opening side menu.
+          </title>
           <path
             d="M16 1H0"
             stroke="black"
