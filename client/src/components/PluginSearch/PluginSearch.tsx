@@ -15,7 +15,7 @@ export function PluginSearch() {
       <AppBarLanding />
       <PluginSearchBar />
 
-      <div className="min-h-[60vh]">
+      <div className="min-h-screen">
         <ColumnLayout
           className="p-6 md:p-12"
           classes={{
