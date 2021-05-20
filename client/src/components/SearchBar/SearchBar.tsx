@@ -67,14 +67,14 @@ export function SearchBar({ large, ...props }: Props) {
    * page, this runs the query through the search engine. Otherwise, it
    * redirects to the search page with the query added to the URL.
    */
-  async function submitForm() {
+  async function submitForm(searchQuery: string) {
     // Search state is only available on search enabled pages.
     const isSearchPage = results !== undefined;
 
     if (isSearchPage) {
-      setQuery?.(localQuery);
+      setQuery?.(searchQuery);
     } else {
-      const url = getURLWithSearchParam(localQuery);
+      const url = getURLWithSearchParam(searchQuery);
       await router.push(url);
     }
   }
@@ -93,7 +93,7 @@ export function SearchBar({ large, ...props }: Props) {
       )}
       onSubmit={async (event) => {
         event.preventDefault();
-        await submitForm();
+        await submitForm(localQuery);
       }}
       {...props}
     >
@@ -129,11 +129,14 @@ export function SearchBar({ large, ...props }: Props) {
         onClick={async () => {
           // Clear local query if close button is clicked and the search engine
           // is currently rendering the results for another query.
+          let searchQuery = localQuery;
+
           if (query) {
             setLocalQuery('');
+            searchQuery = '';
           }
 
-          await submitForm();
+          await submitForm(searchQuery);
         }}
         // We use `type="button"` because `type="submit"` will first call the
         // `onClick()` handler and then the `onSubmit()` handler, regardless of
