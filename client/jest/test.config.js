@@ -4,7 +4,6 @@ module.exports = {
   testMatch: ['<rootDir>/src/**/*.test.ts?(x)'],
 
   moduleNameMapper: {
-    '^@/breakpoints(.*)$': '<rootDir>/breakpoints',
     '^@/(.*)$': '<rootDir>/src/$1',
 
     /*
