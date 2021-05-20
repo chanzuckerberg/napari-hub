@@ -49,14 +49,14 @@ export function SignupForm({ onSubmit }: Props) {
   };
 
   return (
-    <ColumnLayout className="bg-napari-light p-6 xl:px-0 xl:py-12">
-      <div className="col-span-2 md:col-span-3 3xl:col-start-2">
-        <h3 className="prose-lg font-semibold mb-4">
+    <ColumnLayout className="bg-napari-light p-6 screen-875:px-0 screen-875:py-12">
+      <div className="col-span-2 screen-495:col-span-3 screen-1425:col-start-2">
+        <h3 className="text-lg font-semibold mb-4">
           Sign up to receive updates
         </h3>
         <form
           onSubmit={handleSubmit}
-          className="grid grid-cols-2 xl:grid-cols-napari-3 gap-y-0.5 md:gap-x-12"
+          className="grid grid-cols-2 screen-875:grid-cols-napari-3 gap-y-0.5 screen-495:gap-x-12"
           noValidate
           action={MC_URL.href}
           method="post"
@@ -73,9 +73,9 @@ export function SignupForm({ onSubmit }: Props) {
             required
             className={clsx(
               // font & colors
-              'prose-sm bg-transparent focus:outline-none',
+              'text-sm bg-transparent focus:outline-none',
               // sizing
-              'h-10 xl:h-[35px] col-span-2 md:col-span-1 xl:col-span-2',
+              'h-10 screen-875:h-[35px] col-span-2 screen-495:col-span-1 screen-875:col-span-2',
               // underline
               'border-b',
               !error ? 'border-black' : 'border-napari-error',
@@ -84,7 +84,7 @@ export function SignupForm({ onSubmit }: Props) {
           />
           <span
             data-testid="emailError"
-            className="text-xs align-text-top h-[1.5em] text-napari-error md:row-start-2 col-span-2 md:col-span-1 xl:col-span-2"
+            className="text-xs align-text-top h-[1.5em] text-napari-error screen-495:row-start-2 col-span-2 screen-495:col-span-1 screen-875:col-span-2"
           >
             {error}
           </span>
@@ -94,9 +94,9 @@ export function SignupForm({ onSubmit }: Props) {
             value="Subscribe"
             className={clsx(
               // font & colors
-              'prose-sm font-semibold bg-napari-primary',
+              'text-sm font-semibold bg-napari-primary',
               // sizing
-              'h-[35px] col-span-2 md:col-span-1',
+              'h-[35px] col-span-2 screen-495:col-span-1',
               // border & interaction
               'border-none cursor-pointer',
             )}

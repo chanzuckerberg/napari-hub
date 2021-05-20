@@ -147,26 +147,26 @@ exports[`<Layout /> should match snapshot 1`] = `
     </h1>
   </main>
   <div
-    class="bg-napari-light p-6 xl:px-0 xl:py-12 grid grid-cols-2 justify-center gap-6 md:gap-12 xl:grid-cols-napari-3 2xl:grid-cols-napari-4 3xl:grid-cols-napari-5"
+    class="bg-napari-light p-6 screen-875:px-0 screen-875:py-12 grid grid-cols-2 justify-center gap-6 md:gap-12 xl:grid-cols-napari-3 2xl:grid-cols-napari-4 3xl:grid-cols-napari-5"
   >
     <div
-      class="col-span-2 md:col-span-3 3xl:col-start-2"
+      class="col-span-2 screen-495:col-span-3 screen-1425:col-start-2"
     >
       <h3
-        class="prose-lg font-semibold mb-4"
+        class="text-lg font-semibold mb-4"
       >
         Sign up to receive updates
       </h3>
       <form
         action="https://dev.us5.list-manage.com/subscribe/post?u=79f50c0d0474ff43dffedabda&id=63bf16756e"
-        class="grid grid-cols-2 xl:grid-cols-napari-3 gap-y-0.5 md:gap-x-12"
+        class="grid grid-cols-2 screen-875:grid-cols-napari-3 gap-y-0.5 screen-495:gap-x-12"
         method="post"
         novalidate=""
         target="_blank"
       >
         <input
           aria-label="email address"
-          class="prose-sm bg-transparent focus:outline-none h-10 xl:h-[35px] col-span-2 md:col-span-1 xl:col-span-2 border-b border-black"
+          class="text-sm bg-transparent focus:outline-none h-10 screen-875:h-[35px] col-span-2 screen-495:col-span-1 screen-875:col-span-2 border-b border-black"
           data-testid="emailField"
           name="EMAIL"
           placeholder="email"
@@ -175,11 +175,11 @@ exports[`<Layout /> should match snapshot 1`] = `
           value=""
         />
         <span
-          class="text-xs align-text-top h-[1.5em] text-napari-error md:row-start-2 col-span-2 md:col-span-1 xl:col-span-2"
+          class="text-xs align-text-top h-[1.5em] text-napari-error screen-495:row-start-2 col-span-2 screen-495:col-span-1 screen-875:col-span-2"
           data-testid="emailError"
         />
         <input
-          class="prose-sm font-semibold bg-napari-primary h-[35px] col-span-2 md:col-span-1 border-none cursor-pointer"
+          class="text-sm font-semibold bg-napari-primary h-[35px] col-span-2 screen-495:col-span-1 border-none cursor-pointer"
           data-testid="submitButton"
           name="subscribe"
           type="submit"
@@ -189,37 +189,37 @@ exports[`<Layout /> should match snapshot 1`] = `
     </div>
   </div>
   <div
-    class="flex flex-row flex-wrap justify-items-center gap-6 bg-napari-primary p-6 md:pl-12"
+    class="flex flex-row flex-wrap justify-items-center gap-6 bg-napari-primary p-6 screen-495:pl-12"
   >
     <div
-      class="w-full flex-1 flex flex-row items-center justify-between gap-2 sm:gap-6 sm:justify-start"
+      class="w-full flex-1 flex flex-row items-center justify-between gap-2 sm:gap-6 screen-320:justify-start"
     >
       <a
-        class="whitespace-nowrap font-semibold text-sm sm:text-xs flex flex-row items-center"
+        class="whitespace-nowrap font-semibold text-sm flex flex-row items-center"
         href="/about"
       >
         About
       </a>
       <a
-        class="whitespace-nowrap font-semibold text-sm sm:text-xs flex flex-row items-center"
+        class="whitespace-nowrap font-semibold text-sm flex flex-row items-center"
         href="/faq"
       >
         FAQ
       </a>
       <a
-        class="whitespace-nowrap font-semibold text-sm sm:text-xs flex flex-row items-center"
+        class="whitespace-nowrap font-semibold text-sm flex flex-row items-center"
         href="/privacy"
       >
         Privacy policy
       </a>
       <a
-        class="whitespace-nowrap font-semibold text-sm sm:text-xs flex flex-row items-center"
+        class="whitespace-nowrap font-semibold text-sm flex flex-row items-center"
         href="/contact"
       >
         Contact
       </a>
       <a
-        class="whitespace-nowrap font-semibold text-sm sm:text-xs flex flex-row items-center"
+        class="whitespace-nowrap font-semibold text-sm flex flex-row items-center"
         href="https://github.com/chanzuckerberg/napari-hub"
         rel="noreferrer"
         target="_blank"
