@@ -189,43 +189,43 @@ exports[`<Layout /> should match snapshot 1`] = `
     </div>
   </div>
   <div
-    class="flex flex-col gap-6 lg:gap-0 lg:flex-row lg:items-center bg-napari-primary p-6 lg:pl-12"
+    class="flex flex-row flex-wrap justify-items-center gap-6 bg-napari-primary p-6 md:pl-12"
   >
     <div
-      class="w-full h-8 flex-1 flex flex-row items-center gap-2 sm:gap-4 lg:gap-6 lg:w-min lg:justify-start"
+      class="w-full flex-1 flex flex-row items-center justify-between gap-2 sm:gap-6 sm:justify-start"
     >
       <a
-        class="whitespace-nowrap flex flex-row items-center"
+        class="whitespace-nowrap font-semibold text-sm sm:text-xs flex flex-row items-center"
         href="/about"
       >
         About
       </a>
       <a
-        class="whitespace-nowrap flex flex-row items-center"
+        class="whitespace-nowrap font-semibold text-sm sm:text-xs flex flex-row items-center"
         href="/faq"
       >
         FAQ
       </a>
       <a
-        class="whitespace-nowrap flex flex-row items-center"
+        class="whitespace-nowrap font-semibold text-sm sm:text-xs flex flex-row items-center"
         href="/privacy"
       >
         Privacy policy
       </a>
       <a
-        class="whitespace-nowrap flex flex-row items-center"
+        class="whitespace-nowrap font-semibold text-sm sm:text-xs flex flex-row items-center"
         href="/contact"
       >
         Contact
       </a>
       <a
-        class="whitespace-nowrap flex flex-row items-center"
+        class="whitespace-nowrap font-semibold text-sm sm:text-xs flex flex-row items-center"
         href="https://github.com/chanzuckerberg/napari-hub"
         rel="noreferrer"
         target="_blank"
       >
         <svg
-          class="inline-block mr-0.5 sm:mr-1 h-4 w-4"
+          class="inline-block mr-0.5 h-3 w-3"
           fill="none"
           height="14"
           viewBox="0 0 14 14"
@@ -241,7 +241,7 @@ exports[`<Layout /> should match snapshot 1`] = `
       </a>
     </div>
     <div
-      class="flex flex-row justify-end gap-2"
+      class="flex flex-row flex-grow w-min justify-end gap-2"
     >
       <a
         href="https://napari.org"

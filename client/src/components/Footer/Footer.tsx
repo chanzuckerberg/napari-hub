@@ -43,14 +43,12 @@ function FooterLinks() {
     <>
       {FOOTER_LINKS.map((item) => (
         <Link
-          className="whitespace-nowrap flex flex-row items-center"
+          className="whitespace-nowrap font-semibold text-sm sm:text-xs flex flex-row items-center"
           key={item.link}
           href={item.link}
           newTab={item.newTab}
         >
-          {item.icon && (
-            <item.icon className="inline-block mr-0.5 sm:mr-1 h-4 w-4" />
-          )}
+          {item.icon && <item.icon className="inline-block mr-0.5 h-3 w-3" />}
           {item.title}
         </Link>
       ))}
@@ -63,11 +61,11 @@ function FooterLinks() {
  */
 export function Footer() {
   return (
-    <div className="flex flex-col gap-6 lg:gap-0 lg:flex-row lg:items-center bg-napari-primary p-6 lg:pl-12">
-      <div className="w-full h-8 flex-1 flex flex-row items-center gap-2 sm:gap-4 lg:gap-6 lg:w-min lg:justify-start">
+    <div className="flex flex-row flex-wrap justify-items-center gap-6 bg-napari-primary p-6 md:pl-12">
+      <div className="w-full flex-1 flex flex-row items-center justify-between gap-2 sm:gap-6 sm:justify-start">
         <FooterLinks />
       </div>
-      <div className="flex flex-row justify-end gap-2">
+      <div className="flex flex-row flex-grow w-min justify-end gap-2">
         <Link href="https://napari.org" newTab>
           <NapariLogo className="w-8 h-8" alt="Go to napari main website." />
         </Link>
