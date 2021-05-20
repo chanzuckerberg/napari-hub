@@ -17,8 +17,7 @@ const colors = {
 const breakpoints = {
   // Special screen size for fresnel when using `lessThan` queries.
   zero: 0,
-  'screen-300': 300,
-  'screen-320': 320,
+  'screen-300': 300, // if there's a smaller breakpoint, update global.scss
   'screen-375': 375,
   'screen-495': 495,
   'screen-550': 550,
@@ -47,6 +46,7 @@ const theme = createMuiTheme({
     primary: {
       main: colors.primary,
       light: colors.light,
+      error: colors.error,
     },
   },
 

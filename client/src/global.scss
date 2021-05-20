@@ -1,3 +1,6 @@
+$min-font-size: 11px;
+$min-content: 300px; // smallest breakpoint in the theme
+
 html {
   /*
     Enable scrollbar for the entire page by default. This is to prevent
@@ -16,7 +19,11 @@ html {
 
     https://blog.logrocket.com/the-elements-of-responsive-typography
   */
-  font-size: clamp(11px, 3.25vw, 100%);
+  font-size: clamp(
+    #{$min-font-size},
+    #{$min-font-size / $min-content * 100vw},
+    100%
+  );
 
   /*
     Use smooth transition when scrolling between different parts of the page.
