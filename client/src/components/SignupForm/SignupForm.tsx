@@ -75,7 +75,7 @@ export function SignupForm({ onSubmit }: Props) {
               // font & colors
               'prose-sm bg-transparent focus:outline-none',
               // sizing
-              'h-10 xl:h-[35px] col-span-2',
+              'h-10 xl:h-[35px] col-span-2 md:col-span-1 xl:col-span-2',
               // underline
               'border-b',
               !error ? 'border-black' : 'border-napari-error',
@@ -84,7 +84,7 @@ export function SignupForm({ onSubmit }: Props) {
           />
           <span
             data-testid="emailError"
-            className="text-xs align-text-top h-[1.5em] text-napari-error xl:row-start-2 col-span-2"
+            className="text-xs align-text-top h-[1.5em] text-napari-error md:row-start-2 col-span-2 md:col-span-1 xl:col-span-2"
           >
             {error}
           </span>
@@ -96,7 +96,7 @@ export function SignupForm({ onSubmit }: Props) {
               // font & colors
               'prose-sm font-semibold bg-napari-primary',
               // sizing
-              'h-[35px] col-span-2 xl:col-span-1',
+              'h-[35px] col-span-2 md:col-span-1',
               // border & interaction
               'border-none cursor-pointer',
             )}
