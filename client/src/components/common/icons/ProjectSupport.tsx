@@ -1,6 +1,6 @@
 import { IconProps } from './icons.type';
 
-export function ProjectSupport({ className }: IconProps) {
+export function ProjectSupport({ className, alt }: IconProps) {
   return (
     <svg
       className={className}
@@ -10,6 +10,7 @@ export function ProjectSupport({ className }: IconProps) {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
+      {alt && <title>{alt}</title>}
       <mask id="path-1-inside-1" fill="white">
         <path
           fillRule="evenodd"
