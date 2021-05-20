@@ -3,7 +3,7 @@ import { MediaProps } from '@artsy/fresnel/dist/Media';
 import clsx from 'clsx';
 import { cloneElement, ReactElement } from 'react';
 
-import breakpoints from '@/breakpoints';
+import { breakpoints } from '@/theme';
 
 const AppMedia = createMedia({ breakpoints });
 

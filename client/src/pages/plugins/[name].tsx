@@ -1,3 +1,4 @@
+import { Button } from '@material-ui/core';
 import axios, { AxiosError } from 'axios';
 import { GetServerSidePropsContext } from 'next';
 import { ParsedUrlQuery } from 'node:querystring';
@@ -78,6 +79,14 @@ export async function getServerSideProps({
 export default function PluginPage({ error, plugin }: Props) {
   return (
     <>
+      <Button
+        className="ml-12 mt-12"
+        color="primary"
+        variant="contained"
+        disableElevation
+      >
+        ayy lmao
+      </Button>
       {error ? (
         <ErrorMessage error={error}>Unable to load plugin</ErrorMessage>
       ) : (
