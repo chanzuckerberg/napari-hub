@@ -89,7 +89,7 @@ export function SearchBar() {
         value={query ?? localQuery}
       />
 
-      <Search className="w-5 h-5" />
+      <Search alt="" className="w-5 h-5" />
     </form>
   );
 }

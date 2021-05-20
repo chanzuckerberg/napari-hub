@@ -73,7 +73,7 @@ export function AppBar() {
             onClick={() => setVisible(true)}
             type="button"
           >
-            <Menu />
+            <Menu alt="Icon for opening side menu." />
           </button>
         </div>
       </ColumnLayout>
