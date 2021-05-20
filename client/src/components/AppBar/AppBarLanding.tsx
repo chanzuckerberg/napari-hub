@@ -70,7 +70,7 @@ export function AppBarLanding() {
       <Hub
         className={clsx(
           'h-full',
-          'self-center',
+          'self-center justify-self-end',
           'screen-1425:row-start-2 screen-1425:col-start-2',
           styles.logo,
         )}

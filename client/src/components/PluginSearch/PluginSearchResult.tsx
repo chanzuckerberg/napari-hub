@@ -98,7 +98,7 @@ export function PluginSearchResult({ className, plugin }: Props) {
           </div>
 
           {/* Plugin authors */}
-          <ul className="mt-5">
+          <ul className="mt-5 text-xs">
             {plugin.authors.map((author) => (
               <li
                 className="my-2 font-bold"
@@ -112,7 +112,7 @@ export function PluginSearchResult({ className, plugin }: Props) {
         </div>
 
         {/* Plugin metadata */}
-        <ul className="mt-4 space-y-1">
+        <ul className="mt-4 screen-600:m-0 space-y-1 text-sm">
           {items.map((item) => (
             <li
               key={`${item.label}-${item.value}`}
