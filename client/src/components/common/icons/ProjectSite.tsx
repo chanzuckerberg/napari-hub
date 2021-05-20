@@ -1,6 +1,6 @@
 import { IconProps } from './icons.type';
 
-export function ProjectSite({ className }: IconProps) {
+export function ProjectSite({ className, alt }: IconProps) {
   return (
     <svg
       className={className}
@@ -10,6 +10,7 @@ export function ProjectSite({ className }: IconProps) {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
+      {alt && <title>{alt}</title>}
       <path d="M2.86395 5.49995V14.4999H6" stroke="black" />
       <path d="M1 7.36396L7.36396 0.999999L13.7279 7.36396" stroke="black" />
       <path

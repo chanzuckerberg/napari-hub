@@ -11,6 +11,7 @@ const colors = {
   hover: '#98daff',
   hoverGray: '#f7f7f7',
   light: '#d2efff',
+  error: '#eb1000',
 };
 
 const breakpoints = {
