@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { usePrevious } from 'react-use';
 import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 
 import { useActiveURLParameter } from '@/hooks';
@@ -6,9 +7,14 @@ import { PluginIndexData } from '@/types';
 import { Logger } from '@/utils/logger';
 import { measureExecution } from '@/utils/performance';
 
-import { SearchQueryParams } from './constants';
+import {
+  DEFAULT_SORT_TYPE,
+  SearchQueryParams,
+  SearchSortType,
+} from './constants';
 import { FuseSearchEngine } from './engines';
 import { SearchEngine, SearchResult } from './search.types';
+import { SortForm } from './sort.hooks';
 
 const logger = new Logger('search.hooks.ts');
 
@@ -119,4 +125,34 @@ export function useSearch(index: PluginIndexData[]) {
   const results = useSearchResults(engine, searchForm.query ?? '', index);
 
   return { results, searchForm };
+}
+
+/**
+ * Hook that sets the sort mode to relevance
+ *
+ * @param query The query string
+ * @param form The sort form
+ */
+export function useSearchSetSortType(
+  query: string | undefined,
+  form: SortForm,
+) {
+  // Store in ref because we don't want to re-render when setting this value.
+  const isSearchingRef = useRef(false);
+
+  useEffect(() => {
+    if (!process.browser) return;
+
+    if (query && !isSearchingRef.current) {
+      form.setSortType(SearchSortType.Relevance);
+      isSearchingRef.current = true;
+    } else if (!query && isSearchingRef.current) {
+      isSearchingRef.current = false;
+
+      // Don't set sort type if user already picked a different sort type.
+      if (form.sortType === SearchSortType.Relevance) {
+        form.setSortType(DEFAULT_SORT_TYPE);
+      }
+    }
+  }, [form, query]);
 }

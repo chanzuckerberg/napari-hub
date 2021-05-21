@@ -2,7 +2,11 @@ import { createEnumParam, useQueryParam, withDefault } from 'use-query-params';
 
 import { useActiveURLParameter } from '@/hooks';
 
-import { SearchQueryParams, SearchSortType } from './constants';
+import {
+  DEFAULT_SORT_TYPE,
+  SearchQueryParams,
+  SearchSortType,
+} from './constants';
 import { SearchResult } from './search.types';
 import { sortResults } from './sorters';
 
@@ -20,7 +24,7 @@ function useForm() {
     withDefault(
       createEnumParam(SortTypeValues),
       // Default to release date if sort type is not initial in URL
-      initialSortType ?? SearchSortType.ReleaseDate,
+      initialSortType ?? DEFAULT_SORT_TYPE,
     ),
   );
 
