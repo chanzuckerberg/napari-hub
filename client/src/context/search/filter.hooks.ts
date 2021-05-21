@@ -42,9 +42,10 @@ function useInitialFormState(results: SearchResult[]) {
 }
 
 /**
+ * Hook that returns up the filter form state and state setters.
  *
- * @param results
- * @returns
+ * @param results Search results to populate initial state with
+ * @returns The filter form state
  */
 function useForm(results: SearchResult[]) {
   const initialState = useInitialFormState(results) ?? getDefaultState(results);
