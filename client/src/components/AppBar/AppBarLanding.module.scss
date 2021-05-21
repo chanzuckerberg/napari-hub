@@ -1,0 +1,11 @@
+.heading {
+  font-size: clamp(35px, 10vw, 61px);
+}
+
+.logo {
+  width: clamp(122px, 35vw, 223px);
+}
+
+.list li {
+  font-size: clamp(14px, 4vw, 24px);
+}

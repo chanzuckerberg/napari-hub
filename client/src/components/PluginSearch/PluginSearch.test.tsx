@@ -49,7 +49,7 @@ describe('<PluginSearch />', () => {
     mockSearch(query);
 
     const [title] = screen.getAllByTestId('searchResultName');
-    expect(title.querySelector('a')?.innerHTML).toContain(query);
+    expect(title.innerHTML).toContain(query);
   });
 
   it('should show result with match in summary', () => {
@@ -62,14 +62,6 @@ describe('<PluginSearch />', () => {
 
   it('should show result with match in author name', () => {
     const query = 'ziyang';
-    mockSearch(query);
-
-    const [author] = screen.getAllByTestId('searchResultAuthor');
-    expect(author.innerHTML.toLowerCase()).toContain(query);
-  });
-
-  it('should show result with match in author email', () => {
-    const query = 'gmail.com';
     mockSearch(query);
 
     const [author] = screen.getAllByTestId('searchResultAuthor');

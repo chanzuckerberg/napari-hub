@@ -1,5 +1,7 @@
 import '@testing-library/jest-dom';
 
+import timezoneMock from 'timezone-mock';
+
 // Mock window.location for every test case:
 // https://stackoverflow.com/a/57612279
 const originalWindowLocation = window.location;
@@ -14,3 +16,14 @@ beforeEach(() => {
     ...originalWindowLocation,
   };
 });
+
+// Mock timezone to have consistent test results in CI.
+beforeAll(() => {
+  timezoneMock.register('US/Pacific');
+});
+
+jest.mock('next/router', () => ({
+  useRouter: jest.fn().mockReturnValue({
+    query: {},
+  }),
+}));

@@ -1,29 +1,36 @@
+import { Footer, SignupForm } from '@/components';
+import { AppBarLanding } from '@/components/AppBar';
 import { ColumnLayout } from '@/components/common';
-import { Media } from '@/components/common/media';
-import { useSearchState } from '@/context/search';
 
-import { SearchResult } from './SearchResult';
+import { PluginSearchBar } from './PluginSearchBar';
+import { PluginSearchControls } from './PluginSearchControls';
+import { PluginSearchResultList } from './PluginSearchResultList';
 
 /**
- * Component for rendering the plugin search bar and results.
+ * Component for rendering the landing page and plugin search.
  */
 export function PluginSearch() {
-  const { results = [] } = useSearchState() ?? {};
-
   return (
-    <ColumnLayout>
-      {/* TODO filter column */}
-      <Media greaterThanOrEqual="3xl">
-        <div />
-      </Media>
+    <>
+      <AppBarLanding />
+      <PluginSearchBar />
 
-      {/* Search results */}
-      <div>
-        <h2 className="font-bold text-2xl mb-6">Browse plugins</h2>
-        {results.map(({ plugin }) => (
-          <SearchResult key={plugin.name} plugin={plugin} />
-        ))}
+      <div className="min-h-screen">
+        <ColumnLayout
+          className="p-6 md:p-12"
+          classes={{
+            gap: 'gap-x-6 md:gap-x-12',
+            // Use 3-column layout instead of 4-column layout.
+            fourColumn: 'screen-1150:grid-cols-napari-3',
+          }}
+        >
+          <PluginSearchControls />
+          <PluginSearchResultList />
+        </ColumnLayout>
       </div>
-    </ColumnLayout>
+
+      <SignupForm />
+      <Footer />
+    </>
   );
 }
