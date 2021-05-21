@@ -116,7 +116,7 @@ export function useSearch(index: PluginIndexData[]) {
 
   // Use search engine to find plugins using the query.
   const engine = useSearchEngine(index);
-  const results = useSearchResults(engine, searchForm.query, index);
+  const results = useSearchResults(engine, searchForm.query ?? '', index);
 
   return { results, searchForm };
 }
