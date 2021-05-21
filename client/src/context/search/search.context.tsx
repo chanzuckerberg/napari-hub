@@ -4,7 +4,7 @@ import { ReactNode } from 'react-markdown';
 import { PluginIndexData } from '@/types';
 
 import { useFilters } from './filter.hooks';
-import { useSearch } from './search.hooks';
+import { useSearch, useSearchSetSortType } from './search.hooks';
 import { useSort } from './sort.hooks';
 import { SearchState } from './types';
 
@@ -27,9 +27,11 @@ export function useSearchState(): SearchState | null {
  * and get search results.
  */
 export function PluginSearchProvider({ children, pluginIndex }: Props) {
-  const { results, searchForm } = useSearch(pluginIndex);
+  const { searchForm, results } = useSearch(pluginIndex);
   const { filterForm, filteredResults } = useFilters(results);
   const { sortForm, sortedResults } = useSort(filteredResults);
+
+  useSearchSetSortType(searchForm.query, sortForm);
 
   return (
     <PluginSearchStateContext.Provider
