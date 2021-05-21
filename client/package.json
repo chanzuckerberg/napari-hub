@@ -56,7 +56,8 @@
     "remark-parse": "^9.0.0",
     "remark-rehype": "^8.1.0",
     "remark-remove-comments": "^0.2.0",
-    "unified": "^9.2.1"
+    "unified": "^9.2.1",
+    "utility-types": "^3.10.0"
   },
   "devDependencies": {
     "@babel/core": "^7.13.15",

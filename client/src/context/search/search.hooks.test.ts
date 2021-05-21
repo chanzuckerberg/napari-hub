@@ -1,8 +1,9 @@
 import { renderHook } from '@testing-library/react-hooks';
 import { NextRouter, useRouter } from 'next/router';
+import { Mutable } from 'utility-types';
 
 import pluginIndex from '@/fixtures/index.json';
-import { Mutable, PluginIndexData } from '@/types';
+import { PluginIndexData } from '@/types';
 
 import { SEARCH_PAGE, SEARCH_QUERY_PARAM } from './search.constants';
 import {

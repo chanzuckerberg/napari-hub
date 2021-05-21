@@ -36,20 +36,6 @@ export interface PluginData extends PluginIndexData {
 }
 
 /**
- * Helper type to remove the readonly modifier from the properties of a type.
- */
-export type Mutable<T> = {
-  -readonly [K in keyof T]: T[K];
-};
-
-/**
- * Helper type for removing all optional properties from a type.
- */
-export type NonPartial<T> = {
-  [K in keyof T]-?: T[K];
-};
-
-/**
  * Data used for rendering links to different pages in the app.
  *
  * TODO Consolidate with MenuDrawerItem.
@@ -58,3 +44,5 @@ export interface AppLink {
   link: string;
   title: string;
 }
+
+export type URLParameters<V = string | undefined> = Record<string, V>;
