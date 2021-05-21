@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { usePrevious } from 'react-use';
 import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 
 import { useActiveURLParameter } from '@/hooks';
