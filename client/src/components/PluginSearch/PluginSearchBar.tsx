@@ -2,7 +2,8 @@ import { useEffect } from 'react';
 
 import { SearchBar } from '@/components';
 import { ColumnLayout } from '@/components/common';
-import { useActiveQueryParameter } from '@/context/search';
+import { SearchQueryParams } from '@/context/search';
+import { useActiveURLParameter } from '@/hooks';
 
 import { PLUGIN_SEARCH_ID } from './PluginSearch.constants';
 
@@ -10,7 +11,7 @@ import { PLUGIN_SEARCH_ID } from './PluginSearch.constants';
  * Component that renders the landing page search bar.
  */
 export function PluginSearchBar() {
-  const activeQuery = useActiveQueryParameter();
+  const activeQuery = useActiveURLParameter(SearchQueryParams.Search);
 
   // Scroll to search container when the search changes.
   useEffect(() => {
