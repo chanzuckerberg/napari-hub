@@ -28,7 +28,7 @@ function getDefaultSearchEngine() {
  * @param getSearchEngine Function for creating a search engine.
  * @returns The search engine instance
  */
-export function useSearchEngine(
+function useSearchEngine(
   index: PluginIndexData[],
   getSearchEngine: () => SearchEngine = getDefaultSearchEngine,
 ): SearchEngine | null {
@@ -55,7 +55,7 @@ export function useSearchEngine(
  * @param index The plugin index
  * @returns The filtered plugins
  */
-export function useSearchResults(
+function useSearchResults(
   engine: SearchEngine | null,
   query: string,
   index: PluginIndexData[],
@@ -140,8 +140,6 @@ export function useSearchSetSortType(
   const isSearchingRef = useRef(false);
 
   useEffect(() => {
-    if (!process.browser) return;
-
     if (query && !isSearchingRef.current) {
       form.setSortType(SearchSortType.Relevance);
       isSearchingRef.current = true;
