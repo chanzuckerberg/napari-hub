@@ -3,7 +3,7 @@
 exports[`<SignupForm /> should match snapshot 1`] = `
 <DocumentFragment>
   <div
-    class="bg-napari-light p-6 screen-875:px-0 screen-875:py-12 grid grid-cols-2 justify-center gap-6 md:gap-12 xl:grid-cols-napari-3 2xl:grid-cols-napari-4 3xl:grid-cols-napari-5"
+    class="bg-napari-light p-6 screen-495:p-12 grid grid-cols-2 justify-center gap-6 md:gap-12 xl:grid-cols-napari-3 2xl:grid-cols-napari-4 3xl:grid-cols-napari-5"
   >
     <div
       class="col-span-2 screen-495:col-span-3 screen-1425:col-start-2"
@@ -20,27 +20,41 @@ exports[`<SignupForm /> should match snapshot 1`] = `
         novalidate=""
         target="_blank"
       >
-        <input
+        <div
           aria-label="email address"
-          class="text-sm bg-transparent focus:outline-none h-10 screen-875:h-[35px] col-span-2 screen-495:col-span-1 screen-875:col-span-2 border-b border-black"
-          data-testid="emailField"
-          name="EMAIL"
-          placeholder="email"
-          required=""
-          type="email"
-          value=""
-        />
-        <span
-          class="text-xs align-text-top h-[1.5em] text-napari-error screen-495:row-start-2 col-span-2 screen-495:col-span-1 screen-875:col-span-2"
-          data-testid="emailError"
-        />
-        <input
-          class="text-sm font-semibold bg-napari-primary h-[35px] col-span-2 screen-495:col-span-1 border-none cursor-pointer"
+          class="MuiFormControl-root MuiTextField-root text-sm justify-end h-10 screen-495:h-[35px] col-span-2 screen-495:col-span-1 screen-875:col-span-2"
+        >
+          <div
+            class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
+          >
+            <input
+              aria-invalid="false"
+              class="MuiInputBase-input MuiInput-input"
+              data-testid="emailField"
+              name="EMAIL"
+              placeholder="email"
+              required=""
+              type="email"
+              value=""
+            />
+          </div>
+        </div>
+        <button
+          class="MuiButtonBase-root MuiButton-root MuiButton-contained text-sm font-semibold h-[35px] col-span-2 screen-495:col-span-1 MuiButton-containedPrimary MuiButton-disableElevation"
           data-testid="submitButton"
           name="subscribe"
+          tabindex="0"
           type="submit"
-          value="Subscribe"
-        />
+        >
+          <span
+            class="MuiButton-label"
+          >
+            Subscribe
+          </span>
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </button>
       </form>
     </div>
   </div>

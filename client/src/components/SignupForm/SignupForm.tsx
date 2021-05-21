@@ -1,3 +1,4 @@
+import { Button, TextField } from '@material-ui/core';
 import clsx from 'clsx';
 import React, { useRef, useState } from 'react';
 
@@ -49,7 +50,7 @@ export function SignupForm({ onSubmit }: Props) {
   };
 
   return (
-    <ColumnLayout className="bg-napari-light p-6 screen-875:px-0 screen-875:py-12">
+    <ColumnLayout className="bg-napari-light p-6 screen-495:p-12">
       <div className="col-span-2 screen-495:col-span-3 screen-1425:col-start-2">
         <h3 className="text-lg font-semibold mb-4">
           Sign up to receive updates
@@ -62,8 +63,10 @@ export function SignupForm({ onSubmit }: Props) {
           method="post"
           target="_blank"
         >
-          <input
-            ref={emailRef}
+          <TextField
+            inputRef={emailRef}
+            error={error !== ''}
+            helperText={error}
             type="email"
             name="EMAIL"
             aria-label="email address"
@@ -71,37 +74,34 @@ export function SignupForm({ onSubmit }: Props) {
             value={email}
             onChange={(event) => setEmail(event.target.value)}
             required
+            margin="none"
             className={clsx(
-              // font & colors
-              'text-sm bg-transparent focus:outline-none',
+              // font
+              'text-sm',
+              // make underline align with submit button
+              'justify-end',
               // sizing
-              'h-10 screen-875:h-[35px] col-span-2 screen-495:col-span-1 screen-875:col-span-2',
-              // underline
-              'border-b',
-              !error ? 'border-black' : 'border-napari-error',
+              'h-10 screen-495:h-[35px] col-span-2 screen-495:col-span-1 screen-875:col-span-2',
             )}
-            data-testid="emailField"
+            inputProps={{ 'data-testid': 'emailField' }}
+            FormHelperTextProps={{ 'data-testid': 'emailError ' }}
           />
-          <span
-            data-testid="emailError"
-            className="text-xs align-text-top h-[1.5em] text-napari-error screen-495:row-start-2 col-span-2 screen-495:col-span-1 screen-875:col-span-2"
-          >
-            {error}
-          </span>
-          <input
+          <Button
             type="submit"
+            color="primary"
             name="subscribe"
-            value="Subscribe"
+            variant="contained"
+            disableElevation
             className={clsx(
               // font & colors
-              'text-sm font-semibold bg-napari-primary',
+              'text-sm font-semibold',
               // sizing
               'h-[35px] col-span-2 screen-495:col-span-1',
-              // border & interaction
-              'border-none cursor-pointer',
             )}
             data-testid="submitButton"
-          />
+          >
+            Subscribe
+          </Button>
         </form>
       </div>
     </ColumnLayout>

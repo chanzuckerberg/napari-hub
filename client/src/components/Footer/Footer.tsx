@@ -62,7 +62,7 @@ function FooterLinks() {
 export function Footer() {
   return (
     <div className="flex flex-row flex-wrap justify-items-center gap-6 bg-napari-primary p-6 screen-495:pl-12">
-      <div className="w-full flex-1 flex flex-row items-center justify-between gap-2 sm:gap-6 screen-320:justify-start">
+      <div className="w-full flex-1 flex flex-row items-center gap-6 screen-320:justify-start">
         <FooterLinks />
       </div>
       <div className="flex flex-row flex-grow w-min justify-end gap-2">
