@@ -1,4 +1,4 @@
-import { Button, TextField } from '@material-ui/core';
+import { Button, FormHelperTextProps, TextField } from '@material-ui/core';
 import clsx from 'clsx';
 import React, { useRef, useState } from 'react';
 
@@ -84,7 +84,9 @@ export function SignupForm({ onSubmit }: Props) {
               'h-10 screen-495:h-[35px] col-span-2 screen-495:col-span-1 screen-875:col-span-2',
             )}
             inputProps={{ 'data-testid': 'emailField' }}
-            FormHelperTextProps={{ 'data-testid': 'emailError ' }}
+            FormHelperTextProps={
+              { 'data-testid': 'emailError ' } as FormHelperTextProps
+            }
           />
           <Button
             type="submit"
