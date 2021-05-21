@@ -16,13 +16,11 @@ import { SearchResult } from './search.types';
  * @returns The version checkbox state
  */
 function getInitialPythonVersionState(results: SearchResult[]) {
-  const versions = results.reduce<CheckboxFormState>((state, { plugin }) => {
+  return results.reduce<CheckboxFormState>((state, { plugin }) => {
     // eslint-disable-next-line no-param-reassign
     state[plugin.python_version] = false;
     return state;
   }, {});
-
-  return versions;
 }
 
 /**
@@ -34,18 +32,13 @@ function getInitialPythonVersionState(results: SearchResult[]) {
  * @returns The OS checkbox state
  */
 function getInitialOperatingSystemState(results: SearchResult[]) {
-  const operatingSystems = results.reduce<CheckboxFormState>(
-    (state, { plugin }) => {
-      plugin.operating_system.forEach((os) => {
-        // eslint-disable-next-line no-param-reassign
-        state[formatOperatingSystem(os)] = false;
-      });
-      return state;
-    },
-    {},
-  );
-
-  return operatingSystems;
+  return results.reduce<CheckboxFormState>((state, { plugin }) => {
+    plugin.operating_system.forEach((os) => {
+      // eslint-disable-next-line no-param-reassign
+      state[formatOperatingSystem(os)] = false;
+    });
+    return state;
+  }, {});
 }
 
 /**
