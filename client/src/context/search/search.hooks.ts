@@ -1,12 +1,13 @@
-import { useRouter } from 'next/router';
 import { useEffect, useMemo, useState } from 'react';
+import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 
+import { useActiveURLParameter } from '@/hooks';
 import { PluginIndexData } from '@/types';
 import { Logger } from '@/utils/logger';
 import { measureExecution } from '@/utils/performance';
 
+import { SearchQueryParams } from './constants';
 import { FuseSearchEngine } from './engines';
-import { SEARCH_PAGE, SEARCH_QUERY_PARAM } from './search.constants';
 import { SearchEngine, SearchResult } from './search.types';
 
 const logger = new Logger('search.hooks.ts');
@@ -83,61 +84,39 @@ export function useSearchResults(
   return plugins;
 }
 
-/**
- * Hook that gets the active query parameter from the URL. First it tries
- * getting the query parameter from the Next.js router. This will be populated
- * on initial server side rendering.
- *
- * If the query object is empty, check the URL for the query parameter. The
- * query object will only be empty for client side navigation:
- * https://github.com/vercel/next.js/issues/9473
- *
- * @returns Query parameter or empty string if undefined
- */
-export function useActiveQueryParameter(): string {
-  const router = useRouter();
-  let query = router.query[SEARCH_QUERY_PARAM] as string | undefined;
+function useForm() {
+  const initialQuery = useActiveURLParameter(SearchQueryParams.Search);
+  const [query, setQuery] = useQueryParam(
+    SearchQueryParams.Search,
+    withDefault(StringParam, initialQuery),
+  );
 
-  if (!query && process.browser) {
-    const url = new URL(window.location.href);
-    query = url.searchParams.get(SEARCH_QUERY_PARAM) ?? '';
+  function clearQuery() {
+    setQuery(undefined);
   }
 
-  return query ?? '';
+  return {
+    clearQuery,
+    query,
+    setQuery,
+  };
 }
 
+export type SearchForm = ReturnType<typeof useForm>;
+
 /**
- * Hook that syncs the query string to the `query` URL parameter. If the query
- * is empty, then the URL parameter is removed.
+ * Hook that sets up the browser search engine and searches for results using
+ * the query string.
  *
- * @param query The search query string.
+ * @param index The plugin index
+ * @returns Search query, results, and query updater
  */
-export function useQueryParameter(query: string): void {
-  const router = useRouter();
-  const activeQuery = useActiveQueryParameter();
+export function useSearch(index: PluginIndexData[]) {
+  const searchForm = useForm();
 
-  useEffect(() => {
-    // Skip routing if queries are equal to prevent infinite rendering
-    if (query === activeQuery) {
-      return;
-    }
+  // Use search engine to find plugins using the query.
+  const engine = useSearchEngine(index);
+  const results = useSearchResults(engine, searchForm.query, index);
 
-    logger.debug('setting query parameter:', {
-      activeQuery,
-      query,
-    });
-
-    const queryParams: Record<string, string> = {};
-    if (query) {
-      queryParams[SEARCH_QUERY_PARAM] = query;
-    }
-
-    router
-      // Use shallow rendering to prevent unnecessary data fetching:
-      // https://nextjs.org/docs/routing/shallow-routing
-      .replace(SEARCH_PAGE, { query: queryParams }, { shallow: true })
-      .catch((err) =>
-        logger.error('Unable to set search query parameter', err),
-      );
-  }, [activeQuery, query, router]);
+  return { results, searchForm };
 }
