@@ -3,8 +3,8 @@ import { createEnumParam, useQueryParam, withDefault } from 'use-query-params';
 import { useActiveURLParameter } from '@/hooks';
 
 import { SearchQueryParams, SearchSortType } from './constants';
-import { sortResults } from './sorters';
 import { SearchResult } from './search.types';
+import { sortResults } from './sorters';
 
 const SortTypeValues = Object.values(SearchSortType);
 
