@@ -1,5 +1,6 @@
-import { SEARCH_PAGE, SearchQueryParams } from '@/context/search';
 import { Page } from 'playwright';
+
+import { SEARCH_PAGE, SearchQueryParams } from '@/context/search';
 
 function getFirstSearchResultName() {
   return page.$('[data-testid=searchResultName]');
@@ -69,7 +70,7 @@ describe('/ (Home page)', () => {
     await expect(await getFirstSearchResultName()).toHaveText('napari_video');
   });
 
-  it.only('should maintain search query when navigating back', async () => {
+  it('should maintain search query when navigating back', async () => {
     const query = 'video';
     await page.goto(getSearchURL());
     await submitQuery(query);

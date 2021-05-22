@@ -15,7 +15,7 @@ export function PluginSearchBar() {
   useEffect(() => {
     if (search?.query) {
       const alignTop = true;
-      searchBarRef.current?.scrollIntoView(alignTop);
+      searchBarRef.current?.scrollIntoView?.(alignTop);
     }
   }, [search]);
 
