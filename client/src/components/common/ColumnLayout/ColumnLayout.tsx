@@ -1,5 +1,11 @@
 import clsx from 'clsx';
-import { createElement, HTMLProps, ReactHTML, ReactNode } from 'react';
+import {
+  createElement,
+  HTMLProps,
+  MutableRefObject,
+  ReactHTML,
+  ReactNode,
+} from 'react';
 
 interface Classes {
   gap: string;
@@ -11,7 +17,7 @@ interface Classes {
 
 type HTMLKey = keyof ReactHTML;
 
-interface Props<T extends HTMLKey> extends HTMLProps<ReactHTML[T]> {
+interface Props<T extends HTMLKey, Ref> extends HTMLProps<ReactHTML[T]> {
   /**
    * Children to render as columns. The 1st, 2nd, and 3rd child nodes are used
    * for the 1st, 2nd, and 3rd columns, respectively.
@@ -27,6 +33,8 @@ interface Props<T extends HTMLKey> extends HTMLProps<ReactHTML[T]> {
    * Root component to use for column layout. The default is `div`.
    */
   component?: T;
+
+  innerRef?: MutableRefObject<Ref>;
 }
 
 const defaultClasses: Classes = {
@@ -40,13 +48,14 @@ const defaultClasses: Classes = {
 /**
  * Component for rendering napari's column layout.
  */
-export function ColumnLayout<T extends HTMLKey>({
+export function ColumnLayout<T extends HTMLKey, Ref = never>({
   children,
   classes = {},
   className,
   component,
+  innerRef,
   ...props
-}: Props<T>) {
+}: Props<T, Ref>) {
   // Use `createElement()` to dynamically create element from `component` prop.
   return createElement(
     component ?? 'div',
@@ -65,6 +74,7 @@ export function ColumnLayout<T extends HTMLKey>({
           ...classes,
         }),
       ),
+      ref: innerRef,
       ...props,
     },
     children,

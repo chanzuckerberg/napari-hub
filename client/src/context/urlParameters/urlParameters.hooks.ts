@@ -44,14 +44,14 @@ export function useHistory(): PushReplaceHistory {
         router.push(
           { pathname: router.pathname, query: router.query },
           { search, pathname },
-          { shallow: true },
+          { shallow: true, scroll: false },
         ),
 
       replace: async ({ search }: Location) => {
         await router.replace(
           { pathname: router.pathname, query: router.query },
           { search, pathname },
-          { shallow: true },
+          { shallow: true, scroll: false },
         );
       },
       location,

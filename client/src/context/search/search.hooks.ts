@@ -93,8 +93,12 @@ function useForm() {
   const initialQuery = useActiveURLParameter(SearchQueryParams.Search);
   const [query, setQuery] = useQueryParam(
     SearchQueryParams.Search,
-    withDefault(StringParam, initialQuery),
+    withDefault(StringParam, undefined),
   );
+
+  useEffect(() => {
+    setQuery(initialQuery);
+  }, [initialQuery]);
 
   function clearQuery() {
     setQuery(undefined);

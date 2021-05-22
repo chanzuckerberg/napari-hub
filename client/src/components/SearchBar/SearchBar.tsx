@@ -2,7 +2,6 @@ import clsx from 'clsx';
 import { useRouter } from 'next/router';
 import { HTMLProps, useState } from 'react';
 
-import { PLUGIN_SEARCH_ID } from '@/components';
 import { Close, Search } from '@/components/common/icons';
 import {
   SEARCH_PAGE,
@@ -20,8 +19,7 @@ interface Props extends HTMLProps<HTMLFormElement> {
 }
 
 /**
- * Creates a new URL with the search query added. It also adds the plugin search
- * ID so that the browser scrolls the search bar to the top.
+ * Creates a new URL with the search query added.
  *
  * @param query The query string.
  * @returns The URL object.
@@ -29,7 +27,6 @@ interface Props extends HTMLProps<HTMLFormElement> {
 function getURLWithSearchParam(query: string): URL {
   const url = new URL(SEARCH_PAGE, window.location.origin);
   url.searchParams.set(SearchQueryParams.Search, encodeURIComponent(query));
-  url.hash = PLUGIN_SEARCH_ID;
 
   return url;
 }
