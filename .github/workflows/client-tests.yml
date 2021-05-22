@@ -88,7 +88,8 @@ jobs:
       fail-fast: false
       matrix:
         # TODO Look into adding support for Edge and Webkit testing
-        browser: [chromium, firefox]
+        # TODO Re-enable firefox when tests aren't flaky
+        browser: [chromium]
 
     steps:
       - name: Checkout Repo
