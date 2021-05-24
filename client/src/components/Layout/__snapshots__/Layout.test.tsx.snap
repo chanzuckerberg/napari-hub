@@ -193,7 +193,7 @@ exports[`<Layout /> should match snapshot 1`] = `
       </h3>
       <form
         action="https://dev.us5.list-manage.com/subscribe/post?u=79f50c0d0474ff43dffedabda&id=63bf16756e"
-        class="grid grid-cols-2 screen-875:grid-cols-napari-3 gap-y-6 border-napari-error screen-495:gap-x-12"
+        class="grid grid-cols-2 screen-875:grid-cols-napari-3 gap-y-6 screen-495:gap-x-12"
         method="post"
         novalidate=""
         target="_blank"
