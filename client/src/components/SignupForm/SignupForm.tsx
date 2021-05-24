@@ -67,7 +67,7 @@ export function SignupForm({ onSubmit }: Props) {
             // spacing
             'screen-495:gap-x-12',
             // make room for error message in vertical layout
-            error ? 'gap-y-6' : 'gap-y-2',
+            error ? 'gap-y-8' : 'gap-y-3.5',
           )}
         >
           <TextField
