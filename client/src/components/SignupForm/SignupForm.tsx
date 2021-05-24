@@ -57,11 +57,18 @@ export function SignupForm({ onSubmit }: Props) {
         </h3>
         <form
           onSubmit={handleSubmit}
-          className="grid grid-cols-2 screen-875:grid-cols-napari-3 gap-y-6 screen-495:gap-x-12"
           noValidate
           action={MC_URL.href}
           method="post"
           target="_blank"
+          className={clsx(
+            // grid
+            'grid grid-cols-2 screen-875:grid-cols-napari-3',
+            // spacing
+            'screen-495:gap-x-12',
+            // make room for error message in vertical layout
+            error ? 'gap-y-6' : 'gap-y-2',
+          )}
         >
           <TextField
             inputRef={emailRef}
