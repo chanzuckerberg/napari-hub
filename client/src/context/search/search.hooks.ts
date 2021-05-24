@@ -98,7 +98,7 @@ function useForm() {
 
   useEffect(() => {
     setQuery(initialQuery);
-  }, [initialQuery]);
+  }, [initialQuery, setQuery]);
 
   function clearQuery() {
     setQuery(undefined);
