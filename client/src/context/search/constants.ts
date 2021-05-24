@@ -13,7 +13,7 @@ export enum SearchSortType {
   PluginName = 'pluginName',
 }
 
-export const DEFAULT_SORT_TYPE = SearchSortType.ReleaseDate;
+export const DEFAULT_SORT_TYPE = SearchSortType.PluginName;
 
 /**
  * Query parameters used for storing search form data.
