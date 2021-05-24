@@ -86,9 +86,9 @@ export function SignupForm({ onSubmit }: Props) {
               // font
               'text-sm',
               // make underline align with submit button
-              'screen-495:justify-end',
+              'pt-0.5',
               // sizing
-              'h-10 max-h-[35px] col-span-2 screen-495:col-span-1 screen-875:col-span-2',
+              'h-8 screen-495:h-[35px] col-span-2 screen-495:col-span-1 screen-875:col-span-2',
             )}
             inputProps={{ 'data-testid': 'emailField' }}
             FormHelperTextProps={

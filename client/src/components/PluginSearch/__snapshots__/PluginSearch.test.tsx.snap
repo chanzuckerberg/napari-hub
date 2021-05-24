@@ -4345,7 +4345,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
       >
         <div
           aria-label="email address"
-          class="MuiFormControl-root MuiTextField-root text-sm screen-495:justify-end h-10 max-h-[35px] col-span-2 screen-495:col-span-1 screen-875:col-span-2"
+          class="MuiFormControl-root MuiTextField-root text-sm pt-0.5 h-8 screen-495:h-[35px] col-span-2 screen-495:col-span-1 screen-875:col-span-2"
         >
           <div
             class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
