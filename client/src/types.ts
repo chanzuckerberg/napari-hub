@@ -44,5 +44,3 @@ export interface AppLink {
   link: string;
   title: string;
 }
-
-export type URLParameters<V = string | undefined> = Record<string, V>;
