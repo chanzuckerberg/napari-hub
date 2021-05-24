@@ -57,7 +57,7 @@ export function SignupForm({ onSubmit }: Props) {
         </h3>
         <form
           onSubmit={handleSubmit}
-          className="grid grid-cols-2 screen-875:grid-cols-napari-3 gap-y-0.5 screen-495:gap-x-12"
+          className="grid grid-cols-2 screen-875:grid-cols-napari-3 screen-495:gap-x-12"
           noValidate
           action={MC_URL.href}
           method="post"

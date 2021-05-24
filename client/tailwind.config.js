@@ -54,7 +54,7 @@ module.exports = {
 
       gridTemplateColumns: (theme) => {
         const width = theme('width.napari-col');
-        const columns = [3, 4, 5];
+        const columns = [2, 3, 4, 5];
 
         return columns.reduce(
           // Add `repeat(225px, $column)` for each column

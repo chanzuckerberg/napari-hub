@@ -1,69 +1,13 @@
 import clsx from 'clsx';
-import Image from 'next/image';
 import { useState } from 'react';
 
 import { MenuDrawer, SearchBar } from '@/components';
-import { ColumnLayout, Link } from '@/components/common';
-import { MediaFragment } from '@/components/common/media';
-import { MenuDrawerItem } from '@/components/MenuDrawer/types';
-import { useSearchState } from '@/context/search';
+import { ColumnLayout } from '@/components/common';
+import { Menu } from '@/components/common/icons';
+import { Media } from '@/components/common/media';
 
-const IMAGE_SIZE = 16;
-
-const MENU_ITEMS: MenuDrawerItem[] = [
-  {
-    title: 'About',
-    link: '/about',
-  },
-  {
-    title: 'FAQ',
-    link: '/faq',
-  },
-];
-
-/**
- * Link bar for rendering menu links. This only shows up on lg+ screens.
- */
-function AppBarLinks() {
-  return (
-    <>
-      {MENU_ITEMS.map((item) => (
-        <Link className="ml-6" key={item.link} href={item.link}>
-          {item.title}
-        </Link>
-      ))}
-    </>
-  );
-}
-
-/**
- * Header that links back to the home page.
- */
-function AppBarHeader() {
-  const { setQuery } = useSearchState() ?? {};
-
-  return (
-    <header data-testid="appBarHeader" className="flex">
-      <h1 className="whitespace-nowrap">
-        <Link
-          // Redirect to home page
-          href="/"
-          // Clear search related query parameter data if the user is currently
-          // on the search page. Without this, the `useQueryParameter()` hook
-          // will re-set the query parameter with the current query in the
-          // search bar.
-          onClick={() => setQuery?.('')}
-        >
-          napari <strong>hub</strong>
-        </Link>
-      </h1>
-
-      <MediaFragment greaterThanOrEqual="lg">
-        <AppBarLinks />
-      </MediaFragment>
-    </header>
-  );
-}
+import { APP_LINKS } from './AppBar.constants';
+import { AppBarLinks } from './AppBarLinks';
 
 /**
  * App bar component that renders the home link, search bar, and menu.
@@ -74,7 +18,7 @@ export function AppBar() {
   return (
     <>
       <MenuDrawer
-        items={MENU_ITEMS}
+        items={APP_LINKS}
         onMenuClose={() => setVisible(false)}
         visible={visible}
       />
@@ -95,9 +39,15 @@ export function AppBar() {
           // to increase specificity over ColumnLayout.
           'zero:grid-cols-[min-content,1fr]',
         )}
-        component="nav"
+        component="header"
       >
-        <AppBarHeader />
+        <Media greaterThanOrEqual="lg">
+          <AppBarLinks items={APP_LINKS} />
+        </Media>
+
+        <Media lessThan="lg">
+          <AppBarLinks />
+        </Media>
 
         <div
           className={clsx(
@@ -123,12 +73,7 @@ export function AppBar() {
             onClick={() => setVisible(true)}
             type="button"
           >
-            <Image
-              src="/icons/menu.svg"
-              alt="Menu button icon"
-              width={IMAGE_SIZE}
-              height={IMAGE_SIZE}
-            />
+            <Menu alt="Icon for opening side menu." />
           </button>
         </div>
       </ColumnLayout>

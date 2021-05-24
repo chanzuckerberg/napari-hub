@@ -1,7 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import { ReactNode } from 'react';
 
-import { Layout } from '@/components';
 import { ErrorMessage } from '@/components/common';
 import { PluginSearch } from '@/components/PluginSearch';
 import { PluginSearchProvider } from '@/context/search/search';
@@ -35,9 +34,7 @@ export default function Home({ error, index }: Props) {
       ) : (
         index && (
           <PluginSearchProvider pluginIndex={index}>
-            <Layout>
-              <PluginSearch />
-            </Layout>
+            <PluginSearch />
           </PluginSearchProvider>
         )
       )}
