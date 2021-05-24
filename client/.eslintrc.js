@@ -70,7 +70,7 @@ module.exports = {
       definitions are generated using `export default styles`.
     */
     {
-      files: ['./src/pages/**/*.tsx', './src/**/*.module.scss.d.ts'],
+      files: ['./src/pages/**/*.ts{,x}', './src/**/*.module.scss.d.ts'],
       rules: {
         'import/no-default-export': 'off',
         'import/prefer-default-export': 'error',
