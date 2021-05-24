@@ -5,7 +5,7 @@ const withMDX = mdx({
 });
 
 module.exports = withMDX({
-  pageExtensions: ['tsx', 'mdx'],
+  pageExtensions: ['ts', 'tsx', 'mdx'],
 
   // Enable webpack 5 support for faster builds :)
   // https://nextjs.org/docs/messages/webpack5
