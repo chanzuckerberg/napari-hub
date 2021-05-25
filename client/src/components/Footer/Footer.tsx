@@ -43,7 +43,7 @@ function FooterLinks() {
     <>
       {FOOTER_LINKS.map((item) => (
         <Link
-          className="whitespace-nowrap font-semibold text-sm sm:text-xs flex flex-row items-center"
+          className="whitespace-nowrap font-semibold text-sm flex flex-row items-center"
           key={item.link}
           href={item.link}
           newTab={item.newTab}
@@ -61,8 +61,8 @@ function FooterLinks() {
  */
 export function Footer() {
   return (
-    <div className="flex flex-row flex-wrap justify-items-center gap-6 bg-napari-primary p-6 md:pl-12">
-      <div className="w-full flex-1 flex flex-row items-center justify-between gap-2 sm:gap-6 sm:justify-start">
+    <div className="flex flex-row flex-wrap justify-items-center gap-6 bg-napari-primary p-6 screen-495:pl-12">
+      <div className="w-full flex-1 flex flex-row items-center gap-6 justify-start">
         <FooterLinks />
       </div>
       <div className="flex flex-row flex-grow w-min justify-end gap-2">

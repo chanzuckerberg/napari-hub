@@ -4326,79 +4326,93 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
     </div>
   </div>
   <div
-    class="bg-napari-light p-6 xl:px-0 xl:py-12 grid justify-center gap-6 md:gap-12 grid-cols-2 screen-875:grid-cols-napari-3 screen-1150:grid-cols-napari-4 screen-1425:grid-cols-napari-5"
+    class="bg-napari-light p-6 screen-495:p-12 grid justify-center gap-6 md:gap-12 grid-cols-2 screen-875:grid-cols-napari-3 screen-1150:grid-cols-napari-4 screen-1425:grid-cols-napari-5"
   >
     <div
-      class="col-span-2 md:col-span-3 3xl:col-start-2"
+      class="col-span-2 screen-495:col-span-3 screen-1425:col-start-2"
     >
       <h3
-        class="prose-lg font-semibold mb-4"
+        class="text-lg font-semibold mb-1 screen-495:mb-4"
       >
         Sign up to receive updates
       </h3>
       <form
         action="https://dev.us5.list-manage.com/subscribe/post?u=79f50c0d0474ff43dffedabda&id=63bf16756e"
-        class="grid grid-cols-2 xl:grid-cols-napari-3 gap-y-0.5 md:gap-x-12"
+        class="grid grid-cols-2 screen-875:grid-cols-napari-3 screen-495:gap-x-12 gap-y-3.5"
         method="post"
         novalidate=""
         target="_blank"
       >
-        <input
+        <div
           aria-label="email address"
-          class="prose-sm bg-transparent focus:outline-none h-10 xl:h-[35px] col-span-2 md:col-span-1 xl:col-span-2 border-b border-black"
-          data-testid="emailField"
-          name="EMAIL"
-          placeholder="email"
-          required=""
-          type="email"
-          value=""
-        />
-        <span
-          class="text-xs align-text-top h-[1.5em] text-napari-error md:row-start-2 col-span-2 md:col-span-1 xl:col-span-2"
-          data-testid="emailError"
-        />
-        <input
-          class="prose-sm font-semibold bg-napari-primary h-[35px] col-span-2 md:col-span-1 border-none cursor-pointer"
+          class="MuiFormControl-root MuiTextField-root text-sm pt-0.5 h-8 screen-495:h-[35px] col-span-2 screen-495:col-span-1 screen-875:col-span-2"
+        >
+          <div
+            class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
+          >
+            <input
+              aria-invalid="false"
+              class="MuiInputBase-input MuiInput-input"
+              data-testid="emailField"
+              name="EMAIL"
+              placeholder="email"
+              required=""
+              type="email"
+              value=""
+            />
+          </div>
+        </div>
+        <button
+          class="MuiButtonBase-root MuiButton-root MuiButton-contained text-sm font-semibold h-[35px] col-span-2 screen-495:col-span-1 MuiButton-containedPrimary MuiButton-disableElevation"
           data-testid="submitButton"
           name="subscribe"
+          tabindex="0"
           type="submit"
-          value="Subscribe"
-        />
+        >
+          <span
+            class="MuiButton-label"
+          >
+            Subscribe
+          </span>
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </button>
       </form>
     </div>
   </div>
   <div
-    class="flex flex-row flex-wrap justify-items-center gap-6 bg-napari-primary p-6 md:pl-12"
+    class="flex flex-row flex-wrap justify-items-center gap-6 bg-napari-primary p-6 screen-495:pl-12"
   >
     <div
-      class="w-full flex-1 flex flex-row items-center justify-between gap-2 sm:gap-6 sm:justify-start"
+      class="w-full flex-1 flex flex-row items-center gap-6 justify-start"
     >
       <a
-        class="whitespace-nowrap font-semibold text-sm sm:text-xs flex flex-row items-center"
+        class="whitespace-nowrap font-semibold text-sm flex flex-row items-center"
         href="/about"
       >
         About
       </a>
       <a
-        class="whitespace-nowrap font-semibold text-sm sm:text-xs flex flex-row items-center"
+        class="whitespace-nowrap font-semibold text-sm flex flex-row items-center"
         href="/faq"
       >
         FAQ
       </a>
       <a
-        class="whitespace-nowrap font-semibold text-sm sm:text-xs flex flex-row items-center"
+        class="whitespace-nowrap font-semibold text-sm flex flex-row items-center"
         href="/privacy"
       >
         Privacy policy
       </a>
       <a
-        class="whitespace-nowrap font-semibold text-sm sm:text-xs flex flex-row items-center"
+        class="whitespace-nowrap font-semibold text-sm flex flex-row items-center"
         href="/contact"
       >
         Contact
       </a>
       <a
-        class="whitespace-nowrap font-semibold text-sm sm:text-xs flex flex-row items-center"
+        class="whitespace-nowrap font-semibold text-sm flex flex-row items-center"
         href="https://github.com/chanzuckerberg/napari-hub"
         rel="noreferrer"
         target="_blank"

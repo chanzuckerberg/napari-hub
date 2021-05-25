@@ -1,3 +1,4 @@
+import { Button, FormHelperTextProps, TextField } from '@material-ui/core';
 import clsx from 'clsx';
 import React, { useRef, useState } from 'react';
 
@@ -49,21 +50,30 @@ export function SignupForm({ onSubmit }: Props) {
   };
 
   return (
-    <ColumnLayout className="bg-napari-light p-6 xl:px-0 xl:py-12">
-      <div className="col-span-2 md:col-span-3 3xl:col-start-2">
-        <h3 className="prose-lg font-semibold mb-4">
+    <ColumnLayout className="bg-napari-light p-6 screen-495:p-12">
+      <div className="col-span-2 screen-495:col-span-3 screen-1425:col-start-2">
+        <h3 className="text-lg font-semibold mb-1 screen-495:mb-4">
           Sign up to receive updates
         </h3>
         <form
           onSubmit={handleSubmit}
-          className="grid grid-cols-2 xl:grid-cols-napari-3 gap-y-0.5 md:gap-x-12"
           noValidate
           action={MC_URL.href}
           method="post"
           target="_blank"
+          className={clsx(
+            // grid
+            'grid grid-cols-2 screen-875:grid-cols-napari-3',
+            // spacing
+            'screen-495:gap-x-12',
+            // make room for error message in vertical layout
+            error ? 'gap-y-8' : 'gap-y-3.5',
+          )}
         >
-          <input
-            ref={emailRef}
+          <TextField
+            inputRef={emailRef}
+            error={error !== ''}
+            helperText={error}
             type="email"
             name="EMAIL"
             aria-label="email address"
@@ -71,37 +81,36 @@ export function SignupForm({ onSubmit }: Props) {
             value={email}
             onChange={(event) => setEmail(event.target.value)}
             required
+            margin="none"
             className={clsx(
-              // font & colors
-              'prose-sm bg-transparent focus:outline-none',
+              // font
+              'text-sm',
+              // make underline align with submit button
+              'pt-0.5',
               // sizing
-              'h-10 xl:h-[35px] col-span-2 md:col-span-1 xl:col-span-2',
-              // underline
-              'border-b',
-              !error ? 'border-black' : 'border-napari-error',
+              'h-8 screen-495:h-[35px] col-span-2 screen-495:col-span-1 screen-875:col-span-2',
             )}
-            data-testid="emailField"
+            inputProps={{ 'data-testid': 'emailField' }}
+            FormHelperTextProps={
+              { 'data-testid': 'emailError' } as FormHelperTextProps
+            }
           />
-          <span
-            data-testid="emailError"
-            className="text-xs align-text-top h-[1.5em] text-napari-error md:row-start-2 col-span-2 md:col-span-1 xl:col-span-2"
-          >
-            {error}
-          </span>
-          <input
+          <Button
             type="submit"
+            color="primary"
             name="subscribe"
-            value="Subscribe"
+            variant="contained"
+            disableElevation
             className={clsx(
               // font & colors
-              'prose-sm font-semibold bg-napari-primary',
+              'text-sm font-semibold',
               // sizing
-              'h-[35px] col-span-2 md:col-span-1',
-              // border & interaction
-              'border-none cursor-pointer',
+              'h-[35px] col-span-2 screen-495:col-span-1',
             )}
             data-testid="submitButton"
-          />
+          >
+            Subscribe
+          </Button>
         </form>
       </div>
     </ColumnLayout>
