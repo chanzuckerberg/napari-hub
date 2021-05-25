@@ -35,10 +35,7 @@ function useInitialFormState(results: SearchResult[]) {
     }
   }, [initialFilterParam]);
 
-  return defaultsDeep(
-    initialFormState,
-    getDefaultState(results),
-  ) as FilterFormState;
+  return defaultsDeep(initialFormState, getDefaultState()) as FilterFormState;
 }
 
 /**
@@ -48,7 +45,7 @@ function useInitialFormState(results: SearchResult[]) {
  * @returns The filter form state
  */
 function useForm(results: SearchResult[]) {
-  const initialState = useInitialFormState(results) ?? getDefaultState(results);
+  const initialState = useInitialFormState(results) ?? getDefaultState();
 
   // We don't need the first parameter because we're storing the form state in a
   // separate `useState()` below.

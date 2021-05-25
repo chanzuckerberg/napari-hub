@@ -13,9 +13,22 @@ export interface LicenseFormState {
 }
 
 /**
- * State used for holding checked state of multiple checkboxes.
+ * Form state for filtering on operating systems.
  */
-export type CheckboxFormState = Record<string, boolean>;
+export interface OperatingSystemState {
+  linux: boolean;
+  mac: boolean;
+  windows: boolean;
+}
+
+/**
+ * Form state for filtering on python versions.
+ */
+export interface PythonVersionsState {
+  3.7: boolean;
+  3.8: boolean;
+  3.9: boolean;
+}
 
 /**
  * Root state object for the filter form. Each state object is a
@@ -25,6 +38,6 @@ export type CheckboxFormState = Record<string, boolean>;
 export interface FilterFormState {
   developmentStatus: DevelopmentStatusFormState;
   license: LicenseFormState;
-  operatingSystems: CheckboxFormState;
-  pythonVersions: CheckboxFormState;
+  operatingSystems: OperatingSystemState;
+  pythonVersions: PythonVersionsState;
 }
