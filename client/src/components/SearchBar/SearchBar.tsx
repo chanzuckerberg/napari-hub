@@ -2,14 +2,12 @@ import clsx from 'clsx';
 import { useRouter } from 'next/router';
 import { HTMLProps, useState } from 'react';
 
-import { PLUGIN_SEARCH_ID } from '@/components';
 import { Close, Search } from '@/components/common/icons';
 import {
   SEARCH_PAGE,
-  SEARCH_QUERY_PARAM,
+  SearchQueryParams,
   useSearchState,
 } from '@/context/search';
-import { useActiveQueryParameter } from '@/context/search/search.hooks';
 
 import styles from './SearchBar.module.scss';
 
@@ -21,16 +19,14 @@ interface Props extends HTMLProps<HTMLFormElement> {
 }
 
 /**
- * Creates a new URL with the search query added. It also adds the plugin search
- * ID so that the browser scrolls the search bar to the top.
+ * Creates a new URL with the search query added.
  *
  * @param query The query string.
  * @returns The URL object.
  */
 function getURLWithSearchParam(query: string): URL {
   const url = new URL(SEARCH_PAGE, window.location.origin);
-  url.searchParams.set(SEARCH_QUERY_PARAM, encodeURIComponent(query));
-  url.hash = PLUGIN_SEARCH_ID;
+  url.searchParams.set(SearchQueryParams.Search, encodeURIComponent(query));
 
   return url;
 }
@@ -49,11 +45,15 @@ function getURLWithSearchParam(query: string): URL {
  */
 export function SearchBar({ large, ...props }: Props) {
   const router = useRouter();
-  const initialQuery = useActiveQueryParameter();
-  const { results, query, setQuery } = useSearchState() ?? {};
+  const {
+    results,
+    search: { query, setQuery, clearQuery },
+  } = useSearchState() ?? {
+    search: {},
+  };
 
   // Local state for query. This is used to store the current entered query string.
-  const [localQuery, setLocalQuery] = useState(initialQuery);
+  const [localQuery, setLocalQuery] = useState(query ?? '');
 
   const iconClassName = clsx(
     'h-5 w-5',
@@ -72,7 +72,11 @@ export function SearchBar({ large, ...props }: Props) {
     const isSearchPage = results !== undefined;
 
     if (isSearchPage) {
-      setQuery?.(searchQuery);
+      if (searchQuery) {
+        setQuery?.(searchQuery);
+      } else {
+        clearQuery?.();
+      }
     } else {
       const url = getURLWithSearchParam(searchQuery);
       await router.push(url);

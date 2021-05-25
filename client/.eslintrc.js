@@ -49,11 +49,11 @@ module.exports = {
 
     /*
       Disable explicit return types for TSX files. Prefer inferred return
-      types for React component:
+      types for React components and Hooks:
       https://kentcdodds.com/blog/how-to-write-a-react-component-in-typescript
     */
     {
-      files: ['./src/**/*.tsx'],
+      files: ['./src/**/*.tsx', './src/**/*.hooks.ts'],
       rules: {
         '@typescript-eslint/explicit-module-boundary-types': 'off',
       },
