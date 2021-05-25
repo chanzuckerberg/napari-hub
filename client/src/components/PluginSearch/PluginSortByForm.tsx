@@ -25,12 +25,16 @@ const SORT_BY_LABELS: Record<SearchSortType, string> = {
   [SearchSortType.PluginName]: 'Plugin name',
 };
 
+/**
+ * Component for the radio form for selecting the plugin sort type.
+ */
 function SortForm() {
   const { search, sort } = useSearchState() ?? {};
   const isSearching = !!search?.query;
 
   const radios: SearchSortType[] = [];
 
+  // Add relevance sort type if user is searching fro a plugin.
   if (isSearching) {
     radios.push(SearchSortType.Relevance);
   }
@@ -86,6 +90,11 @@ function SortForm() {
   );
 }
 
+/**
+ * Renders the plugin sort form. For smaller screen sizes (< 875px), an
+ * expandable accordion layout is used. For larger screens, the sort form is
+ * rendered as-is.
+ */
 export function PluginSortByForm() {
   const form = <SortForm />;
 

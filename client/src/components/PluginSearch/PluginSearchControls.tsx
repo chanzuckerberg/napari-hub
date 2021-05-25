@@ -4,8 +4,7 @@ import { AnimateSharedLayout } from 'framer-motion';
 import { PluginSortByForm } from './PluginSortByForm';
 
 /**
- * Renders a JSON string of the search state. This should be replaced with the
- * actual sort and filter components.
+ * Renders the plugin search controls for filtering and sorting the list of plugins.
  */
 export function PluginSearchControls() {
   return (
