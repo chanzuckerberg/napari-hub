@@ -74,6 +74,8 @@ function SortForm() {
               : {})}
           >
             <FormControlLabel
+              data-testid="sortByRadio"
+              data-selected={sortType === sort?.sortType}
               value={sortType}
               control={
                 <Radio

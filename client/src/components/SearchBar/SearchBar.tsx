@@ -130,6 +130,7 @@ export function SearchBar({ large, ...props }: Props) {
 
       <button
         aria-label={query ? 'Clear search bar text' : 'Submit search query'}
+        data-testid={query ? 'clearQueryButton' : 'submitQueryButton'}
         onClick={async () => {
           // Clear local query if close button is clicked and the search engine
           // is currently rendering the results for another query.
