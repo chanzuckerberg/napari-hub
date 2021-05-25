@@ -14,6 +14,7 @@ exports[`<SearchBar /> should match snapshot 1`] = `
     />
     <button
       aria-label="Submit search query"
+      data-testid="submitQueryButton"
       type="button"
     >
       <svg

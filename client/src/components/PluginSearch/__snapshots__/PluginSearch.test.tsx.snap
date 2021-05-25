@@ -260,6 +260,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
         />
         <button
           aria-label="Submit search query"
+          data-testid="submitQueryButton"
           type="button"
         >
           <svg
@@ -375,6 +376,8 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                         >
                           <label
                             class="MuiFormControlLabel-root"
+                            data-selected="false"
+                            data-testid="sortByRadio"
                           >
                             <span
                               aria-disabled="false"
@@ -430,6 +433,8 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                         >
                           <label
                             class="MuiFormControlLabel-root"
+                            data-selected="false"
+                            data-testid="sortByRadio"
                           >
                             <span
                               aria-disabled="false"
@@ -485,6 +490,8 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                         >
                           <label
                             class="MuiFormControlLabel-root"
+                            data-selected="false"
+                            data-testid="sortByRadio"
                           >
                             <span
                               aria-disabled="false"
@@ -561,6 +568,8 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
             >
               <label
                 class="MuiFormControlLabel-root"
+                data-selected="false"
+                data-testid="sortByRadio"
               >
                 <span
                   aria-disabled="false"
@@ -616,6 +625,8 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
             >
               <label
                 class="MuiFormControlLabel-root"
+                data-selected="false"
+                data-testid="sortByRadio"
               >
                 <span
                   aria-disabled="false"
@@ -671,6 +682,8 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
             >
               <label
                 class="MuiFormControlLabel-root"
+                data-selected="false"
+                data-testid="sortByRadio"
               >
                 <span
                   aria-disabled="false"
