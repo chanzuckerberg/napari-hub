@@ -26,6 +26,10 @@ async function submitQuery(query: string) {
   await page.press('[data-testid=searchBarInput]', 'Enter');
 }
 
+async function getSelectedSortByRadio() {
+  return page.$('[data-testid=sortByRadio][data-selected=true]');
+}
+
 describe('/ (Home page)', () => {
   it('should update URL parameter when entering query', async () => {
     const query = 'video';
@@ -78,7 +82,17 @@ describe('/ (Home page)', () => {
     await page.waitForNavigation();
 
     await page.goBack();
+    await page.waitForNavigation();
+
     expect(hasSearchParam(page, query)).toBe(true);
     await expect(await getFirstSearchResultName()).toHaveText('napari_video');
+  });
+
+  it('should switch to relevance sort type when searching', async () => {
+    await page.goto(getSearchURL());
+    await expect(await getSelectedSortByRadio()).toHaveText('Release date');
+
+    await submitQuery('video');
+    await expect(await getSelectedSortByRadio()).toHaveText('Relevance');
   });
 });

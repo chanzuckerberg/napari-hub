@@ -260,6 +260,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
         />
         <button
           aria-label="Submit search query"
+          data-testid="submitQueryButton"
           type="button"
         >
           <svg
@@ -287,40 +288,457 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
       class="p-6 md:p-12 grid justify-center gap-x-6 md:gap-x-12 grid-cols-2 screen-875:grid-cols-napari-3 screen-1150:grid-cols-napari-3 screen-1425:grid-cols-napari-5"
     >
       <div
-        class="flex flex-col row-span-4 gap-6"
+        class="grid gap-6 col-span-2 screen-875:col-span-1 screen-875:row-span-3"
       >
-        <p>
-          TODO search filters
-        </p>
-        <pre
-          class="overflow-x-auto text-xs"
+        <div
+          class="MuiPaper-root MuiAccordion-root shadow-none fresnel-lessThan-screen-875 MuiAccordion-rounded MuiPaper-elevation1 MuiPaper-rounded"
         >
-          {
-  "filter": {
-    "developmentStatus": {
-      "onlyStablePlugins": false
-    },
-    "license": {
-      "onlyOpenSourcePlugins": false
-    },
-    "operatingSystems": {
-      "All": false,
-      "Windows 10": false,
-      "Linux": false
-    },
-    "pythonVersions": {
-      "&gt;=3.6": false,
-      "&gt;=3.7": false,
-      "&lt;3.9": false
-    }
-  },
-  "search": "",
-  "sort": "relevance"
-}
-        </pre>
+          <div
+            aria-disabled="false"
+            aria-expanded="false"
+            class="MuiButtonBase-root MuiAccordionSummary-root flex-row-reverse p-0 font-semibold"
+            role="button"
+            tabindex="0"
+          >
+            <div
+              class="MuiAccordionSummary-content !ml-6"
+            >
+              Sort By
+            </div>
+            <div
+              aria-disabled="false"
+              aria-hidden="true"
+              class="MuiButtonBase-root MuiIconButton-root MuiAccordionSummary-expandIcon p-0 MuiIconButton-edgeEnd"
+            >
+              <span
+                class="MuiIconButton-label"
+              >
+                <svg
+                  fill="none"
+                  height="12"
+                  viewBox="0 0 16 12"
+                  width="16"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g
+                    clip-path="url(#clip0)"
+                  >
+                    <path
+                      d="M1 2.07107L8.07107 9.14214L15.1421 2.07107"
+                      stroke="black"
+                      stroke-width="2"
+                    />
+                  </g>
+                  <defs>
+                    <clippath
+                      id="clip0"
+                    >
+                      <rect
+                        fill="white"
+                        height="12"
+                        width="16"
+                      />
+                    </clippath>
+                  </defs>
+                </svg>
+              </span>
+              <span
+                class="MuiTouchRipple-root"
+              />
+            </div>
+          </div>
+          <div
+            class="MuiCollapse-container MuiCollapse-hidden"
+            style="min-height: 0px;"
+          >
+            <div
+              class="MuiCollapse-wrapper"
+            >
+              <div
+                class="MuiCollapse-wrapperInner"
+              >
+                <div
+                  role="region"
+                >
+                  <div
+                    class="MuiAccordionDetails-root p-0"
+                  >
+                    <fieldset
+                      class="MuiFormControl-root"
+                    >
+                      <div
+                        aria-label="sort plugins by"
+                        class="MuiFormGroup-root"
+                        role="radiogroup"
+                      >
+                        <div
+                          style="transform: translate3d(0px, 0px, 0) scale(NaN, NaN); transform-origin: 50% 50% 0;"
+                        >
+                          <label
+                            class="MuiFormControlLabel-root"
+                            data-selected="false"
+                            data-testid="sortByRadio"
+                          >
+                            <span
+                              aria-disabled="false"
+                              class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiRadio-root text-black fill-current"
+                            >
+                              <span
+                                class="MuiIconButton-label"
+                              >
+                                <input
+                                  class="PrivateSwitchBase-input-4"
+                                  name="sort-by"
+                                  type="radio"
+                                  value="pluginName"
+                                />
+                                <div
+                                  class="PrivateRadioButtonIcon-root-5"
+                                >
+                                  <svg
+                                    aria-hidden="true"
+                                    class="MuiSvgIcon-root"
+                                    focusable="false"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
+                                    />
+                                  </svg>
+                                  <svg
+                                    aria-hidden="true"
+                                    class="MuiSvgIcon-root PrivateRadioButtonIcon-layer-6"
+                                    focusable="false"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      d="M8.465 8.465C9.37 7.56 10.62 7 12 7C14.76 7 17 9.24 17 12C17 13.38 16.44 14.63 15.535 15.535C14.63 16.44 13.38 17 12 17C9.24 17 7 14.76 7 12C7 10.62 7.56 9.37 8.465 8.465Z"
+                                    />
+                                  </svg>
+                                </div>
+                              </span>
+                              <span
+                                class="MuiTouchRipple-root"
+                              />
+                            </span>
+                            <span
+                              class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
+                            >
+                              Plugin name
+                            </span>
+                          </label>
+                        </div>
+                        <div
+                          style="transform: translate3d(0px, 0px, 0) scale(NaN, NaN); transform-origin: 50% 50% 0;"
+                        >
+                          <label
+                            class="MuiFormControlLabel-root"
+                            data-selected="false"
+                            data-testid="sortByRadio"
+                          >
+                            <span
+                              aria-disabled="false"
+                              class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiRadio-root text-black fill-current"
+                            >
+                              <span
+                                class="MuiIconButton-label"
+                              >
+                                <input
+                                  class="PrivateSwitchBase-input-4"
+                                  name="sort-by"
+                                  type="radio"
+                                  value="releaseDate"
+                                />
+                                <div
+                                  class="PrivateRadioButtonIcon-root-5"
+                                >
+                                  <svg
+                                    aria-hidden="true"
+                                    class="MuiSvgIcon-root"
+                                    focusable="false"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
+                                    />
+                                  </svg>
+                                  <svg
+                                    aria-hidden="true"
+                                    class="MuiSvgIcon-root PrivateRadioButtonIcon-layer-6"
+                                    focusable="false"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      d="M8.465 8.465C9.37 7.56 10.62 7 12 7C14.76 7 17 9.24 17 12C17 13.38 16.44 14.63 15.535 15.535C14.63 16.44 13.38 17 12 17C9.24 17 7 14.76 7 12C7 10.62 7.56 9.37 8.465 8.465Z"
+                                    />
+                                  </svg>
+                                </div>
+                              </span>
+                              <span
+                                class="MuiTouchRipple-root"
+                              />
+                            </span>
+                            <span
+                              class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
+                            >
+                              Release date
+                            </span>
+                          </label>
+                        </div>
+                        <div
+                          style="transform: translate3d(0px, 0px, 0) scale(NaN, NaN); transform-origin: 50% 50% 0;"
+                        >
+                          <label
+                            class="MuiFormControlLabel-root"
+                            data-selected="false"
+                            data-testid="sortByRadio"
+                          >
+                            <span
+                              aria-disabled="false"
+                              class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiRadio-root text-black fill-current"
+                            >
+                              <span
+                                class="MuiIconButton-label"
+                              >
+                                <input
+                                  class="PrivateSwitchBase-input-4"
+                                  name="sort-by"
+                                  type="radio"
+                                  value="firstReleased"
+                                />
+                                <div
+                                  class="PrivateRadioButtonIcon-root-5"
+                                >
+                                  <svg
+                                    aria-hidden="true"
+                                    class="MuiSvgIcon-root"
+                                    focusable="false"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
+                                    />
+                                  </svg>
+                                  <svg
+                                    aria-hidden="true"
+                                    class="MuiSvgIcon-root PrivateRadioButtonIcon-layer-6"
+                                    focusable="false"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      d="M8.465 8.465C9.37 7.56 10.62 7 12 7C14.76 7 17 9.24 17 12C17 13.38 16.44 14.63 15.535 15.535C14.63 16.44 13.38 17 12 17C9.24 17 7 14.76 7 12C7 10.62 7.56 9.37 8.465 8.465Z"
+                                    />
+                                  </svg>
+                                </div>
+                              </span>
+                              <span
+                                class="MuiTouchRipple-root"
+                              />
+                            </span>
+                            <span
+                              class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
+                            >
+                              First released
+                            </span>
+                          </label>
+                        </div>
+                      </div>
+                    </fieldset>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <fieldset
+          class="MuiFormControl-root"
+        >
+          <legend
+            class="MuiFormLabel-root fresnel-greaterThanOrEqual-screen-875 uppercase text-black font-semibold text-sm mb-2"
+          >
+            Sort By
+          </legend>
+          <div
+            aria-label="sort plugins by"
+            class="MuiFormGroup-root"
+            role="radiogroup"
+          >
+            <div
+              style="transform: translate3d(0px, 0px, 0) scale(NaN, NaN); transform-origin: 50% 50% 0;"
+            >
+              <label
+                class="MuiFormControlLabel-root"
+                data-selected="false"
+                data-testid="sortByRadio"
+              >
+                <span
+                  aria-disabled="false"
+                  class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiRadio-root text-black fill-current"
+                >
+                  <span
+                    class="MuiIconButton-label"
+                  >
+                    <input
+                      class="PrivateSwitchBase-input-4"
+                      name="sort-by"
+                      type="radio"
+                      value="pluginName"
+                    />
+                    <div
+                      class="PrivateRadioButtonIcon-root-5"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        class="MuiSvgIcon-root"
+                        focusable="false"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
+                        />
+                      </svg>
+                      <svg
+                        aria-hidden="true"
+                        class="MuiSvgIcon-root PrivateRadioButtonIcon-layer-6"
+                        focusable="false"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          d="M8.465 8.465C9.37 7.56 10.62 7 12 7C14.76 7 17 9.24 17 12C17 13.38 16.44 14.63 15.535 15.535C14.63 16.44 13.38 17 12 17C9.24 17 7 14.76 7 12C7 10.62 7.56 9.37 8.465 8.465Z"
+                        />
+                      </svg>
+                    </div>
+                  </span>
+                  <span
+                    class="MuiTouchRipple-root"
+                  />
+                </span>
+                <span
+                  class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
+                >
+                  Plugin name
+                </span>
+              </label>
+            </div>
+            <div
+              style="transform: translate3d(0px, 0px, 0) scale(NaN, NaN); transform-origin: 50% 50% 0;"
+            >
+              <label
+                class="MuiFormControlLabel-root"
+                data-selected="false"
+                data-testid="sortByRadio"
+              >
+                <span
+                  aria-disabled="false"
+                  class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiRadio-root text-black fill-current"
+                >
+                  <span
+                    class="MuiIconButton-label"
+                  >
+                    <input
+                      class="PrivateSwitchBase-input-4"
+                      name="sort-by"
+                      type="radio"
+                      value="releaseDate"
+                    />
+                    <div
+                      class="PrivateRadioButtonIcon-root-5"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        class="MuiSvgIcon-root"
+                        focusable="false"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
+                        />
+                      </svg>
+                      <svg
+                        aria-hidden="true"
+                        class="MuiSvgIcon-root PrivateRadioButtonIcon-layer-6"
+                        focusable="false"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          d="M8.465 8.465C9.37 7.56 10.62 7 12 7C14.76 7 17 9.24 17 12C17 13.38 16.44 14.63 15.535 15.535C14.63 16.44 13.38 17 12 17C9.24 17 7 14.76 7 12C7 10.62 7.56 9.37 8.465 8.465Z"
+                        />
+                      </svg>
+                    </div>
+                  </span>
+                  <span
+                    class="MuiTouchRipple-root"
+                  />
+                </span>
+                <span
+                  class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
+                >
+                  Release date
+                </span>
+              </label>
+            </div>
+            <div
+              style="transform: translate3d(0px, 0px, 0) scale(NaN, NaN); transform-origin: 50% 50% 0;"
+            >
+              <label
+                class="MuiFormControlLabel-root"
+                data-selected="false"
+                data-testid="sortByRadio"
+              >
+                <span
+                  aria-disabled="false"
+                  class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiRadio-root text-black fill-current"
+                >
+                  <span
+                    class="MuiIconButton-label"
+                  >
+                    <input
+                      class="PrivateSwitchBase-input-4"
+                      name="sort-by"
+                      type="radio"
+                      value="firstReleased"
+                    />
+                    <div
+                      class="PrivateRadioButtonIcon-root-5"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        class="MuiSvgIcon-root"
+                        focusable="false"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
+                        />
+                      </svg>
+                      <svg
+                        aria-hidden="true"
+                        class="MuiSvgIcon-root PrivateRadioButtonIcon-layer-6"
+                        focusable="false"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          d="M8.465 8.465C9.37 7.56 10.62 7 12 7C14.76 7 17 9.24 17 12C17 13.38 16.44 14.63 15.535 15.535C14.63 16.44 13.38 17 12 17C9.24 17 7 14.76 7 12C7 10.62 7.56 9.37 8.465 8.465Z"
+                        />
+                      </svg>
+                    </div>
+                  </span>
+                  <span
+                    class="MuiTouchRipple-root"
+                  />
+                </span>
+                <span
+                  class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
+                >
+                  First released
+                </span>
+              </label>
+            </div>
+          </div>
+        </fieldset>
       </div>
       <h3
-        class="col-span-2 font-bold text-xl mb-6 screen-875:col-start-2"
+        class="col-span-2 font-bold text-xl my-6 screen-875:col-start-2"
       >
         Browse plugins
       </h3>
