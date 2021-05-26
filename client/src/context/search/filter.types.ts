@@ -32,3 +32,13 @@ export interface FilterFormState {
   operatingSystems: OperatingSystemFormState;
   pythonVersions: Record<string, boolean>;
 }
+
+/**
+ * Form state for rendering filters in a chip / pill above the plugin search results.
+ */
+export interface FilterChipFormState {
+  id: string;
+  key: keyof FilterFormState;
+  subKey: string;
+  value: boolean;
+}

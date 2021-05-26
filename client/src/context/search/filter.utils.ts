@@ -1,8 +1,8 @@
-import { isEmpty, pickBy, reduce, set } from 'lodash';
+import { forEach, isEmpty, pickBy, reduce, set } from 'lodash';
 import { Dispatch, SetStateAction } from 'react';
 import { DeepPartial } from 'utility-types';
 
-import { FilterFormState } from './filter.types';
+import { FilterChipFormState, FilterFormState } from './filter.types';
 
 const SUPPORTED_PYTHON_VERSIONS = ['3.7', '3.8', '3.9'];
 
@@ -33,6 +33,29 @@ export function getDefaultState(): FilterFormState {
       {} as FilterFormState['pythonVersions'],
     ),
   };
+}
+
+export function getChipID(key: string, subKey: string): string {
+  return `${key}-${subKey}`;
+}
+
+export function getChipState(state: FilterFormState): FilterChipFormState[] {
+  const chips: FilterChipFormState[] = [];
+
+  forEach(state, (subState, key) => {
+    forEach(subState, (value: boolean, subKey) => {
+      if (value) {
+        chips.push({
+          subKey,
+          value,
+          key: key as keyof FilterFormState,
+          id: getChipID(key, subKey),
+        });
+      }
+    });
+  });
+
+  return chips;
 }
 
 /**
