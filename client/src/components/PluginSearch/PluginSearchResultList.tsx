@@ -2,6 +2,7 @@ import clsx from 'clsx';
 
 import { useSearchState } from '@/context/search';
 
+import { FilterChips } from './FilterChips';
 import { PluginSearchResult } from './PluginSearchResult';
 
 export function PluginSearchResultList() {
@@ -18,6 +19,8 @@ export function PluginSearchResultList() {
       >
         Browse plugins
       </h3>
+
+      <FilterChips className="col-span-2 screen-1425:col-span-3 mb-6" />
 
       {results.map(({ plugin }) => (
         <PluginSearchResult
