@@ -1,12 +1,29 @@
 import { Accordion } from '@/components/common';
 import { MediaFragment } from '@/components/common/media';
 
+import { PluginFilterBySection } from './PluginFilterBySection';
+
 /**
- * Component for the radio form for selecting the plugin sort type.
+ * Component for the form for selecting the plugin filter type.
  */
 function FilterForm() {
   return (
     <>
+      <PluginFilterBySection
+        title="Test"
+        filters={[
+          {
+            label: 'one',
+            enabled: true,
+            setEnabled: (enabled: boolean) => enabled,
+          },
+          {
+            label: 'two',
+            enabled: false,
+            setEnabled: (enabled: boolean) => enabled,
+          },
+        ]}
+      />
       {/* TODO Add filter by python versions */}
       {/* TODO Add filter by operating system */}
       {/* TODO Add filter by development status */}
