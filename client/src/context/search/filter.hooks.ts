@@ -1,4 +1,4 @@
-import { defaultsDeep, pickBy } from 'lodash';
+import { defaultsDeep } from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
 import { JsonParam, useQueryParam, withDefault } from 'use-query-params';
 import { DeepPartial } from 'utility-types';
@@ -80,10 +80,10 @@ function useForm() {
     setState((prevState) => ({
       ...prevState,
 
-      [key]: pickBy(
-        prevState[key as keyof FilterFormState],
-        (_, prevSubKey) => prevSubKey !== subKey,
-      ),
+      [key]: {
+        ...prevState[key as keyof FilterFormState],
+        [subKey]: false,
+      },
     }));
   }
 
