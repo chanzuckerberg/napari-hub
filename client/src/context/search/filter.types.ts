@@ -15,19 +15,10 @@ export interface LicenseFormState {
 /**
  * Form state for filtering on operating systems.
  */
-export interface OperatingSystemState {
+export interface OperatingSystemFormState {
   linux: boolean;
   mac: boolean;
   windows: boolean;
-}
-
-/**
- * Form state for filtering on python versions.
- */
-export interface PythonVersionsState {
-  3.7: boolean;
-  3.8: boolean;
-  3.9: boolean;
 }
 
 /**
@@ -38,6 +29,6 @@ export interface PythonVersionsState {
 export interface FilterFormState {
   developmentStatus: DevelopmentStatusFormState;
   license: LicenseFormState;
-  operatingSystems: OperatingSystemState;
-  pythonVersions: PythonVersionsState;
+  operatingSystems: OperatingSystemFormState;
+  pythonVersions: Record<string, boolean>;
 }

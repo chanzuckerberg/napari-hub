@@ -4,6 +4,8 @@ import { DeepPartial } from 'utility-types';
 
 import { FilterFormState } from './filter.types';
 
+const SUPPORTED_PYTHON_VERSIONS = ['3.7', '3.8', '3.9'];
+
 /**
  * Returns the default filter form state derived from the search results.
  *
@@ -26,11 +28,10 @@ export function getDefaultState(): FilterFormState {
       windows: false,
     },
 
-    pythonVersions: {
-      '3.7': false,
-      '3.8': false,
-      '3.9': false,
-    },
+    pythonVersions: SUPPORTED_PYTHON_VERSIONS.reduce(
+      (state, version) => set(state, [version], false),
+      {} as FilterFormState['pythonVersions'],
+    ),
   };
 }
 
