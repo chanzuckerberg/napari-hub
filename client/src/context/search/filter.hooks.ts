@@ -23,7 +23,7 @@ import { SearchResult } from './search.types';
  * @param results Search results
  * @returns The initial form state
  */
-function useInitialFormState(results: SearchResult[]) {
+function useInitialFormState() {
   const initialFilterParam =
     useActiveURLParameter(SearchQueryParams.Filter) ?? '';
 
@@ -35,10 +35,7 @@ function useInitialFormState(results: SearchResult[]) {
     }
   }, [initialFilterParam]);
 
-  return defaultsDeep(
-    initialFormState,
-    getDefaultState(results),
-  ) as FilterFormState;
+  return defaultsDeep(initialFormState, getDefaultState()) as FilterFormState;
 }
 
 /**
@@ -47,8 +44,8 @@ function useInitialFormState(results: SearchResult[]) {
  * @param results Search results to populate initial state with
  * @returns The filter form state
  */
-function useForm(results: SearchResult[]) {
-  const initialState = useInitialFormState(results) ?? getDefaultState(results);
+function useForm() {
+  const initialState = useInitialFormState();
 
   // We don't need the first parameter because we're storing the form state in a
   // separate `useState()` below.
@@ -62,7 +59,7 @@ function useForm(results: SearchResult[]) {
    * Resets the filter form state to its default state.
    */
   function clearAll() {
-    setState(getDefaultState(results));
+    setState(getDefaultState());
   }
 
   // Update the filter query parameter with the filtered state
@@ -95,7 +92,7 @@ export type FilterForm = ReturnType<typeof useForm>;
  * @returns Filtered results and form data
  */
 export function useFilters(results: SearchResult[]) {
-  const filterForm = useForm(results);
+  const filterForm = useForm();
   const filteredResults = filterResults(results, filterForm.state);
 
   return {

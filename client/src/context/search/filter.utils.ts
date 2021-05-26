@@ -2,44 +2,9 @@ import { isEmpty, pickBy, reduce, set } from 'lodash';
 import { Dispatch, SetStateAction } from 'react';
 import { DeepPartial } from 'utility-types';
 
-import { formatOperatingSystem } from '@/utils';
+import { FilterFormState } from './filter.types';
 
-import { CheckboxFormState, FilterFormState } from './filter.types';
-import { SearchResult } from './search.types';
-
-/**
- * Returns the initial checkbox state for Python versions using the search
- * results. This extends initial state with the versions available from
- * the search results.
- *
- * @param results
- * @returns The version checkbox state
- */
-function getInitialPythonVersionState(results: SearchResult[]) {
-  return results.reduce<CheckboxFormState>((state, { plugin }) => {
-    // eslint-disable-next-line no-param-reassign
-    state[plugin.python_version] = false;
-    return state;
-  }, {});
-}
-
-/**
- * Returns the initial checkbox state for operating systems using the search
- * results. This extends the initial state with the operating systems available
- * from the search results.
- *
- * @param results Search results
- * @returns The OS checkbox state
- */
-function getInitialOperatingSystemState(results: SearchResult[]) {
-  return results.reduce<CheckboxFormState>((state, { plugin }) => {
-    plugin.operating_system.forEach((os) => {
-      // eslint-disable-next-line no-param-reassign
-      state[formatOperatingSystem(os)] = false;
-    });
-    return state;
-  }, {});
-}
+const SUPPORTED_PYTHON_VERSIONS = ['3.7', '3.8', '3.9'];
 
 /**
  * Returns the default filter form state derived from the search results.
@@ -47,16 +12,26 @@ function getInitialOperatingSystemState(results: SearchResult[]) {
  * @param results Search results
  * @returns The default state
  */
-export function getDefaultState(results: SearchResult[]): FilterFormState {
+export function getDefaultState(): FilterFormState {
   return {
     developmentStatus: {
       onlyStablePlugins: false,
     },
+
     license: {
       onlyOpenSourcePlugins: false,
     },
-    operatingSystems: getInitialOperatingSystemState(results),
-    pythonVersions: getInitialPythonVersionState(results),
+
+    operatingSystems: {
+      linux: false,
+      mac: false,
+      windows: false,
+    },
+
+    pythonVersions: SUPPORTED_PYTHON_VERSIONS.reduce(
+      (state, version) => set(state, [version], false),
+      {} as FilterFormState['pythonVersions'],
+    ),
   };
 }
 
