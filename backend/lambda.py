@@ -9,6 +9,7 @@ import json
 import yaml
 
 import requests
+from requests.auth import HTTPBasicAuth
 from requests.exceptions import HTTPError
 from requests.utils import requote_uri
 
@@ -19,6 +20,7 @@ from google.cloud import bigquery
 # Environment variable set through lambda terraform infra config
 bucket = os.environ.get('BUCKET')
 slack_url = os.environ.get('SLACK_URL')
+zulip_credentials = os.environ.get('ZULIP_CREDENTIALS')
 cache_ttl = int(os.environ.get('TTL', "4"))
 plugins_key = 'cache/plugins.json'
 index_key = 'cache/index.json'
@@ -232,7 +234,9 @@ def get_plugins(context) -> dict:
     packages = query_pypi()
 
     if packages:
-        return cache(filter_excluded_plugin(packages), plugins_key)
+        packages = filter_excluded_plugin(packages)
+        notify_new_packages(get_cache(plugins_key), packages)
+        return cache(packages, plugins_key)
 
     send_alert(f"({datetime.now()})Actions Required! Failed to query pypi for "
                f"napari plugin packages, switching to backup analysis dump\n"
@@ -381,6 +385,50 @@ def send_alert(message: str):
             requests.post(slack_url, json=payload)
         except HTTPError:
             print("Unable to send alert")
+
+
+def notify_new_packages(existing_packages: dict, new_packages: dict):
+    """
+    Notify zulip about new packages.
+
+    :param existing_packages: existing packages in cache
+    :param new_packages: new packages found
+    """
+    if zulip_credentials is not None:
+        username = zulip_credentials.split(":")[0]
+        key = zulip_credentials.split(":")[1]
+        for package, version in new_packages.items():
+            if package not in existing_packages:
+                send_zulip_message(username, key, package, f'New plugin published with version {version}!')
+            elif existing_packages[package] != version:
+                send_zulip_message(username, key, package, f'A new version {version} has been published!')
+
+        for package, version in existing_packages.items():
+            if package not in new_packages:
+                send_zulip_message(username, key, package, f'This plugin has been unmarked as a plugin :(')
+
+
+def send_zulip_message(username: str, key: str, topic: str, message: str):
+    """
+    Send message to zulip
+    :param username: username for the user to post message
+    :param key: api key for the user
+    :param topic: topic in zulip stream to send
+    :param message: message to send
+    """
+    try:
+        data = {
+            'type': 'stream',
+            'to': 'hub-updates',
+            'topic': topic,
+            'content': message
+        }
+        response = requests.post('https://napari.zulipchat.com/api/v1/messages',
+                                 auth=HTTPBasicAuth(username, key), data=data)
+        if response.status_code != requests.codes.ok:
+            response.raise_for_status()
+    except HTTPError:
+        pass
 
 
 def query_analysis_dump() -> dict:
