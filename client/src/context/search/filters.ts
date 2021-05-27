@@ -5,6 +5,8 @@
 import { satisfies } from '@renovate/pep440';
 import { flow, intersection, isEmpty, some } from 'lodash';
 
+import { useSpdx } from '@/context/spdx';
+
 import { FilterFormState, OperatingSystemFormState } from './filter.types';
 import { SearchResult } from './search.types';
 import { SearchResultTransformFunction } from './types';
@@ -89,10 +91,16 @@ function useFilterByDevelopmentStatus(
 }
 
 function useFilterByLicense(
-  _: FilterFormState,
+  state: FilterFormState,
   results: SearchResult[],
 ): SearchResult[] {
-  return results;
+  const { isOSIApproved } = useSpdx();
+
+  if (!state.license.onlyOpenSourcePlugins) {
+    return results;
+  }
+
+  return results.filter(({ plugin }) => isOSIApproved(plugin.license));
 }
 
 /**

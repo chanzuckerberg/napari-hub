@@ -45,6 +45,15 @@ function getDevStatusResults(...devStatuses: string[][]): SearchResult[] {
   return getResults(...plugins);
 }
 
+function getLicenseResults(...licenses: string[]): SearchResult[] {
+  const plugins = licenses.map((license) => ({
+    ...pluginIndex[0],
+    license,
+  }));
+
+  return getResults(...plugins);
+}
+
 describe('filterResults()', () => {
   let state: FilterFormState;
 
@@ -182,6 +191,34 @@ describe('filterResults()', () => {
 
       const { result } = renderHook(() => useFilterResults(results, state));
       expect(result.current).toEqual(expected);
+    });
+  });
+
+  describe('filter by license', () => {
+    const results = getLicenseResults('valid', 'invalid');
+
+    beforeEach(() => {});
+
+    it('should allow all plugins when no filters are enabled', () => {
+      const { result } = renderHook(() => useFilterResults(results, state));
+      expect(result.current).toEqual(results);
+    });
+
+    it('should filter plugins with open source licenses', () => {
+      type F = typeof useSpdx;
+      type P = Parameters<F>;
+      type R = ReturnType<F>;
+
+      (useSpdx as jest.Mock<R, P>).mockReturnValueOnce({
+        isOSIApproved: jest
+          .fn()
+          .mockImplementationOnce((license: string) => license === 'valid'),
+      });
+
+      state.license.onlyOpenSourcePlugins = true;
+
+      const { result } = renderHook(() => useFilterResults(results, state));
+      expect(result.current).toEqual(getLicenseResults('valid'));
     });
   });
 });
