@@ -197,8 +197,6 @@ describe('filterResults()', () => {
   describe('filter by license', () => {
     const results = getLicenseResults('valid', 'invalid');
 
-    beforeEach(() => {});
-
     it('should allow all plugins when no filters are enabled', () => {
       const { result } = renderHook(() => useFilterResults(results, state));
       expect(result.current).toEqual(results);
