@@ -2,17 +2,34 @@
  * Module that contains the filter function implementations used by the filter hooks.
  */
 
-import { flow } from 'lodash';
+import { satisfies } from '@renovate/pep440';
+import { flow, isEmpty } from 'lodash';
 
 import { FilterFormState } from './filter.types';
 import { SearchResult } from './search.types';
 import { SearchResultTransformFunction } from './types';
 
 function filterByPythonVersion(
-  _: FilterFormState,
+  state: FilterFormState,
   results: SearchResult[],
 ): SearchResult[] {
-  return results;
+  // Collect all versions selected on the filter form
+  const selectedVersions = Object.entries(state.pythonVersions)
+    .filter(([, enabled]) => enabled)
+    .map(([version]) => version);
+
+  if (isEmpty(selectedVersions)) {
+    return results;
+  }
+
+  // Filter results that satisfy the enabled versions
+  return results.filter(({ plugin }) =>
+    selectedVersions.some((version) =>
+      // Plugin version can be a specifier, so we need to check if any of the
+      // selected versions match the plugin specifier.
+      satisfies(version, plugin.python_version),
+    ),
+  );
 }
 
 function filterByOperatingSystem(
