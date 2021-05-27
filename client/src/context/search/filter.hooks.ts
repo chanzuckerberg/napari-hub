@@ -12,7 +12,7 @@ import {
   getCheckboxSetter,
   getDefaultState,
 } from './filter.utils';
-import { filterResults } from './filters';
+import { useFilterResults } from './filters';
 import { SearchResult } from './search.types';
 
 /**
@@ -93,7 +93,7 @@ export type FilterForm = ReturnType<typeof useForm>;
  */
 export function useFilters(results: SearchResult[]) {
   const filterForm = useForm();
-  const filteredResults = filterResults(results, filterForm.state);
+  const filteredResults = useFilterResults(results, filterForm.state);
 
   return {
     filteredResults,

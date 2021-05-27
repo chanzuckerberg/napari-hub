@@ -1,9 +1,12 @@
+import { renderHook } from '@testing-library/react-hooks';
+
+import { useSpdx } from '@/context/spdx';
 import pluginIndex from '@/fixtures/index.json';
 import { PluginIndexData } from '@/types';
 
 import { FilterFormState } from './filter.types';
 import { getDefaultState } from './filter.utils';
-import { filterResults } from './filters';
+import { useFilterResults } from './filters';
 import { SearchResult } from './search.types';
 
 function getResults(...plugins: PluginIndexData[]): SearchResult[] {
@@ -47,12 +50,14 @@ describe('filterResults()', () => {
 
   beforeEach(() => {
     state = getDefaultState();
+    (useSpdx as jest.Mock).mockClear();
   });
 
   describe('filter by python versions', () => {
     it('should allow all plugins when no filters are enabled', () => {
       const results = getVersionResults('>=3.10', '>=3.9');
-      expect(filterResults(results, state)).toEqual(results);
+      const { result } = renderHook(() => useFilterResults(results, state));
+      expect(result.current).toEqual(results);
     });
 
     it("should filter plugins that don't match an exact version", () => {
@@ -81,9 +86,10 @@ describe('filterResults()', () => {
 
       state.pythonVersions['3.9'] = true;
 
-      testCases.forEach(({ input, output }) =>
-        expect(filterResults(input, state)).toEqual(output),
-      );
+      testCases.forEach(({ input, output }) => {
+        const { result } = renderHook(() => useFilterResults(input, state));
+        expect(result.current).toEqual(output);
+      });
     });
   });
 
@@ -93,7 +99,8 @@ describe('filterResults()', () => {
         ['Operating System :: OS Independent'],
         ['Operating System :: POSIX :: Linux'],
       );
-      expect(filterResults(results, state)).toEqual(results);
+      const { result } = renderHook(() => useFilterResults(results, state));
+      expect(result.current).toEqual(results);
     });
 
     it('should allow OS Independent plugins', () => {
@@ -102,7 +109,9 @@ describe('filterResults()', () => {
         ['Operating System :: POSIX :: Linux'],
       );
       state.operatingSystems.mac = true;
-      expect(filterResults(results, state)).toEqual(
+
+      const { result } = renderHook(() => useFilterResults(results, state));
+      expect(result.current).toEqual(
         getOperatingSystemResults(['Operating System :: OS Independent']),
       );
     });
@@ -143,7 +152,9 @@ describe('filterResults()', () => {
       testCases.forEach(({ input, output }) => {
         state = getDefaultState();
         Object.assign(state.operatingSystems, input);
-        expect(filterResults(results, state)).toEqual(output);
+
+        const { result } = renderHook(() => useFilterResults(results, state));
+        expect(result.current).toEqual(output);
       });
     });
   });
@@ -158,7 +169,8 @@ describe('filterResults()', () => {
     );
 
     it('should allow all plugins when no filters are enabled', () => {
-      expect(filterResults(results, state)).toEqual(results);
+      const { result } = renderHook(() => useFilterResults(results, state));
+      expect(result.current).toEqual(results);
     });
 
     it('should filter stable plugins', () => {
@@ -167,7 +179,9 @@ describe('filterResults()', () => {
         ['Development Status :: 5 - Production/Stable'],
         ['Development Status :: 6 - Mature'],
       );
-      expect(filterResults(results, state)).toEqual(expected);
+
+      const { result } = renderHook(() => useFilterResults(results, state));
+      expect(result.current).toEqual(expected);
     });
   });
 });

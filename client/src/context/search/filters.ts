@@ -9,7 +9,7 @@ import { FilterFormState, OperatingSystemFormState } from './filter.types';
 import { SearchResult } from './search.types';
 import { SearchResultTransformFunction } from './types';
 
-function filterByPythonVersion(
+function useFilterByPythonVersion(
   state: FilterFormState,
   results: SearchResult[],
 ): SearchResult[] {
@@ -38,7 +38,7 @@ const FILTER_OS_PATTERN: Record<keyof OperatingSystemFormState, RegExp> = {
   windows: /Windows/,
 };
 
-function filterByOperatingSystem(
+function useFilterByOperatingSystem(
   state: FilterFormState,
   results: SearchResult[],
 ): SearchResult[] {
@@ -73,7 +73,7 @@ const STABLE_DEV_STATUS = [
   'Development Status :: 6 - Mature',
 ];
 
-function filterByDevelopmentStatus(
+function useFilterByDevelopmentStatus(
   state: FilterFormState,
   results: SearchResult[],
 ): SearchResult[] {
@@ -88,7 +88,7 @@ function filterByDevelopmentStatus(
   );
 }
 
-function filterByLicense(
+function useFilterByLicense(
   _: FilterFormState,
   results: SearchResult[],
 ): SearchResult[] {
@@ -99,10 +99,10 @@ function filterByLicense(
  * List of functions to include for filtering search results.
  */
 const FILTERS = [
-  filterByPythonVersion,
-  filterByOperatingSystem,
-  filterByDevelopmentStatus,
-  filterByLicense,
+  useFilterByPythonVersion,
+  useFilterByOperatingSystem,
+  useFilterByDevelopmentStatus,
+  useFilterByLicense,
 ];
 
 /**
@@ -113,16 +113,16 @@ const FILTERS = [
  * @param state The filter form state
  * @returns The filtered search results
  */
-export function filterResults(
+export function useFilterResults(
   results: SearchResult[],
   state: FilterFormState,
 ): SearchResult[] {
   // `flow()` will execute a list of functions and provide successive results to
   // each function:
   // https://lodash.com/docs/4.17.15#flow
-  const filter: SearchResultTransformFunction = flow(
+  const useFilter: SearchResultTransformFunction = flow(
     FILTERS.map((fn) => fn.bind(null, state)),
   );
 
-  return filter(results);
+  return useFilter(results);
 }
