@@ -33,6 +33,15 @@ function getOperatingSystemResults(
   return getResults(...plugins);
 }
 
+function getDevStatusResults(...devStatuses: string[][]): SearchResult[] {
+  const plugins = devStatuses.map((development_status) => ({
+    ...pluginIndex[0],
+    development_status,
+  }));
+
+  return getResults(...plugins);
+}
+
 describe('filterResults()', () => {
   let state: FilterFormState;
 
@@ -136,6 +145,29 @@ describe('filterResults()', () => {
         Object.assign(state.operatingSystems, input);
         expect(filterResults(results, state)).toEqual(output);
       });
+    });
+  });
+
+  describe('filter by development status', () => {
+    const results = getDevStatusResults(
+      ['Development Status :: 1 - Planning'],
+      ['Development Status :: 2 - Pre-Alpha'],
+      ['Development Status :: 5 - Production/Stable'],
+      ['Development Status :: 6 - Mature'],
+      ['Development Status :: 7 - Inactive'],
+    );
+
+    it('should allow all plugins when no filters are enabled', () => {
+      expect(filterResults(results, state)).toEqual(results);
+    });
+
+    it('should filter stable plugins', () => {
+      state.developmentStatus.onlyStablePlugins = true;
+      const expected = getDevStatusResults(
+        ['Development Status :: 5 - Production/Stable'],
+        ['Development Status :: 6 - Mature'],
+      );
+      expect(filterResults(results, state)).toEqual(expected);
     });
   });
 });

@@ -3,7 +3,7 @@
  */
 
 import { satisfies } from '@renovate/pep440';
-import { flow, isEmpty, some } from 'lodash';
+import { flow, intersection, isEmpty, some } from 'lodash';
 
 import { FilterFormState, OperatingSystemFormState } from './filter.types';
 import { SearchResult } from './search.types';
@@ -68,11 +68,24 @@ function filterByOperatingSystem(
   });
 }
 
+const STABLE_DEV_STATUS = [
+  'Development Status :: 5 - Production/Stable',
+  'Development Status :: 6 - Mature',
+];
+
 function filterByDevelopmentStatus(
-  _: FilterFormState,
+  state: FilterFormState,
   results: SearchResult[],
 ): SearchResult[] {
-  return results;
+  if (!state.developmentStatus.onlyStablePlugins) {
+    return results;
+  }
+
+  // Filter plugins that include at least one of the stable dev statuses.
+  return results.filter(
+    ({ plugin }) =>
+      !isEmpty(intersection(STABLE_DEV_STATUS, plugin.development_status)),
+  );
 }
 
 function filterByLicense(
