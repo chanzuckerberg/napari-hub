@@ -1,6 +1,7 @@
-import axios, { AxiosError } from 'axios';
+import { AxiosError } from 'axios';
 import { ReactNode } from 'react';
 
+import { hubAPI } from '@/axios';
 import { ErrorMessage } from '@/components/common';
 import { PluginSearch } from '@/components/PluginSearch';
 import { PluginSearchProvider } from '@/context/search';
@@ -17,7 +18,7 @@ export async function getServerSideProps() {
   const props: Props = {};
 
   try {
-    const { data } = await axios.get<PluginIndexData[]>(url);
+    const { data } = await hubAPI.get<PluginIndexData[]>(url);
     props.index = data;
   } catch (err) {
     const error = err as AxiosError;

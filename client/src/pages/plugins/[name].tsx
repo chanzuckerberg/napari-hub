@@ -1,7 +1,8 @@
-import axios, { AxiosError } from 'axios';
+import { AxiosError } from 'axios';
 import { GetServerSidePropsContext } from 'next';
 import { ParsedUrlQuery } from 'node:querystring';
 
+import { hubAPI } from '@/axios';
 import { PluginDetails } from '@/components';
 import { ErrorMessage } from '@/components/common';
 import { PluginStateProvider } from '@/context/plugin';
@@ -56,7 +57,7 @@ export async function getServerSideProps({
   const props: Partial<Props> = {};
 
   try {
-    const { data } = await axios.get<PluginData | RequestError>(url);
+    const { data } = await hubAPI.get<PluginData | RequestError>(url);
 
     if (isRequestError(data)) {
       props.error = JSON.stringify(data, null, 2);

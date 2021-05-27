@@ -1,5 +1,6 @@
-import axios, { AxiosError } from 'axios';
+import { AxiosError } from 'axios';
 
+import { hubAPI } from '@/axios';
 import { ErrorMessage, Link } from '@/components/common';
 
 interface Props {
@@ -16,7 +17,7 @@ export async function getServerSideProps() {
   const props: Partial<Props> = {};
 
   try {
-    const { data } = await axios.get<Record<string, string>>(url);
+    const { data } = await hubAPI.get<Record<string, string>>(url);
     props.plugins = data;
   } catch (err) {
     const error = err as AxiosError;
