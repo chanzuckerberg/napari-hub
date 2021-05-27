@@ -3,9 +3,9 @@
  */
 
 import { satisfies } from '@renovate/pep440';
-import { flow, isEmpty } from 'lodash';
+import { flow, isEmpty, some } from 'lodash';
 
-import { FilterFormState } from './filter.types';
+import { FilterFormState, OperatingSystemFormState } from './filter.types';
 import { SearchResult } from './search.types';
 import { SearchResultTransformFunction } from './types';
 
@@ -32,11 +32,40 @@ function filterByPythonVersion(
   );
 }
 
+const FILTER_OS_PATTERN: Record<keyof OperatingSystemFormState, RegExp> = {
+  linux: /Linux/,
+  mac: /MacOS/,
+  windows: /Windows/,
+};
+
 function filterByOperatingSystem(
-  _: FilterFormState,
+  state: FilterFormState,
   results: SearchResult[],
 ): SearchResult[] {
-  return results;
+  return results.filter(({ plugin }) => {
+    // Don't filter if plugin supports all operating systems
+    if (plugin.operating_system.some((os) => os.includes('OS Independent'))) {
+      return true;
+    }
+
+    // Don't filter if none of the checkboxes are enabled
+    if (!some(state.operatingSystems, (enabled) => enabled)) {
+      return true;
+    }
+
+    return plugin.operating_system.some((os) =>
+      some(state.operatingSystems, (enabled, osKey) => {
+        if (enabled) {
+          const pattern =
+            FILTER_OS_PATTERN[osKey as keyof OperatingSystemFormState];
+
+          return !!pattern.exec(os);
+        }
+
+        return false;
+      }),
+    );
+  });
 }
 
 function filterByDevelopmentStatus(

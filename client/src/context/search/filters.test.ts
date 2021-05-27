@@ -22,6 +22,17 @@ function getVersionResults(...versions: string[]): SearchResult[] {
   return getResults(...plugins);
 }
 
+function getOperatingSystemResults(
+  ...operatingSystems: string[][]
+): SearchResult[] {
+  const plugins = operatingSystems.map((operating_system) => ({
+    ...pluginIndex[0],
+    operating_system,
+  }));
+
+  return getResults(...plugins);
+}
+
 describe('filterResults()', () => {
   let state: FilterFormState;
 
@@ -64,6 +75,67 @@ describe('filterResults()', () => {
       testCases.forEach(({ input, output }) =>
         expect(filterResults(input, state)).toEqual(output),
       );
+    });
+  });
+
+  describe('filter by operating systems', () => {
+    it('should allow all plugins when no filters are enabled', () => {
+      const results = getOperatingSystemResults(
+        ['Operating System :: OS Independent'],
+        ['Operating System :: POSIX :: Linux'],
+      );
+      expect(filterResults(results, state)).toEqual(results);
+    });
+
+    it('should allow OS Independent plugins', () => {
+      const results = getOperatingSystemResults(
+        ['Operating System :: OS Independent'],
+        ['Operating System :: POSIX :: Linux'],
+      );
+      state.operatingSystems.mac = true;
+      expect(filterResults(results, state)).toEqual(
+        getOperatingSystemResults(['Operating System :: OS Independent']),
+      );
+    });
+
+    it('should filter operating systems', () => {
+      const results = getOperatingSystemResults(
+        ['Operating System :: Microsoft :: Windows :: Windows 10'],
+        ['Environment :: MacOS X'],
+        ['Operating System :: POSIX :: Linux'],
+        ['Environment :: MacOS X', 'Operating System :: POSIX :: Linux'],
+      );
+
+      const testCases = [
+        {
+          input: { mac: true },
+          output: getOperatingSystemResults(
+            ['Environment :: MacOS X'],
+            ['Environment :: MacOS X', 'Operating System :: POSIX :: Linux'],
+          ),
+        },
+
+        {
+          input: { linux: true },
+          output: getOperatingSystemResults(
+            ['Operating System :: POSIX :: Linux'],
+            ['Environment :: MacOS X', 'Operating System :: POSIX :: Linux'],
+          ),
+        },
+
+        {
+          input: { windows: true },
+          output: getOperatingSystemResults([
+            'Operating System :: Microsoft :: Windows :: Windows 10',
+          ]),
+        },
+      ];
+
+      testCases.forEach(({ input, output }) => {
+        state = getDefaultState();
+        Object.assign(state.operatingSystems, input);
+        expect(filterResults(results, state)).toEqual(output);
+      });
     });
   });
 });
