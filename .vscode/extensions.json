@@ -6,8 +6,8 @@
     "ms-vscode.vscode-typescript-next",
     "silvenon.mdx",
     "esbenp.prettier-vscode",
-    "jpoissonnier.vscode-styled-components",
     "bradlc.vscode-tailwindcss",
-    "streetsidesoftware.code-spell-checker"
+    "streetsidesoftware.code-spell-checker",
+    "Orta.vscode-jest"
   ]
 }

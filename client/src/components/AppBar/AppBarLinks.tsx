@@ -40,11 +40,12 @@ interface Props extends CommonProps {
  * Component that includes site-wide navigational links.
  */
 export function AppBarLinks({ className, items, vertical }: Props) {
-  const { setQuery } = useSearchState() ?? {};
+  const { search } = useSearchState() ?? {};
 
   return (
     <nav className={clsx(className, 'flex', vertical && 'flex-col')}>
       <Link
+        data-testid="appBarHome"
         className="whitespace-nowrap"
         // Redirect to home page
         href="/"
@@ -52,7 +53,7 @@ export function AppBarLinks({ className, items, vertical }: Props) {
         // on the search page. Without this, the `useQueryParameter()` hook
         // will re-set the query parameter with the current query in the
         // search bar.
-        onClick={() => setQuery?.('')}
+        onClick={() => search?.setQuery('')}
       >
         napari <strong>hub</strong>
       </Link>

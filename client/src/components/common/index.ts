@@ -1,3 +1,4 @@
+export * from './Accordion';
 export * from './ColumnLayout';
 export * from './Divider';
 export * from './ErrorMessage';

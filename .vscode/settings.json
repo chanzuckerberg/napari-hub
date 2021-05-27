@@ -3,5 +3,7 @@
   "tailwindCSS.experimental.classRegex": [
     ["clsx\\(([^)]*)\\)", "'([^']*)'", "\"([^\"]*)\""],
     ["classes={([^)]*)}", ":\\s*?'([^']*)'", ":\\s*?\"([^\"]*)\""]
-  ]
+  ],
+  "jest.jestCommandLine": "node_modules/.bin/jest -c jest/test.config.js",
+  "jest.rootPath": "client"
 }

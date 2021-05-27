@@ -44,6 +44,7 @@
     "lodash-es": "^4.17.21",
     "next": "10.1.3",
     "next-dynamic-loading-props": "^0.1.1",
+    "query-string": "^7.0.0",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-markdown": "^6.0.0",
@@ -56,7 +57,9 @@
     "remark-parse": "^9.0.0",
     "remark-rehype": "^8.1.0",
     "remark-remove-comments": "^0.2.0",
-    "unified": "^9.2.1"
+    "unified": "^9.2.1",
+    "use-query-params": "^1.2.2",
+    "utility-types": "^3.10.0"
   },
   "devDependencies": {
     "@babel/core": "^7.13.15",
@@ -99,8 +102,10 @@
     "sass": "^1.32.8",
     "stylelint": "^13.12.0",
     "stylelint-config-css-modules": "^2.2.0",
+    "stylelint-config-prettier": "^8.0.2",
     "stylelint-config-recommended": "^4.0.0",
     "stylelint-config-sass-guidelines": "^8.0.0",
+    "stylelint-prettier": "^1.2.0",
     "tailwindcss": "^2.1.1",
     "timezone-mock": "^1.1.4",
     "typed-scss-modules": "^4.1.1",

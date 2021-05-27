@@ -1,5 +1,6 @@
-import { PLUGIN_SEARCH_ID } from '@/components/PluginSearch/PluginSearch.constants';
-import { SEARCH_PAGE, SEARCH_QUERY_PARAM } from '@/context/search';
+import { Page } from 'playwright';
+
+import { SEARCH_PAGE, SearchQueryParams } from '@/context/search';
 
 function getFirstSearchResultName() {
   return page.$('[data-testid=searchResultName]');
@@ -7,13 +8,17 @@ function getFirstSearchResultName() {
 
 function getSearchURL(query = '') {
   const url = new URL(SEARCH_PAGE, 'http://localhost:8080');
-  url.hash = PLUGIN_SEARCH_ID;
 
   if (query) {
-    url.searchParams.set(SEARCH_QUERY_PARAM, query);
+    url.searchParams.set(SearchQueryParams.Search, query);
   }
 
   return url.toString();
+}
+
+function hasSearchParam(page: Page, query: string) {
+  const param = `${SearchQueryParams.Search}=${query}`;
+  return page.url().includes(param);
 }
 
 async function submitQuery(query: string) {
@@ -21,12 +26,16 @@ async function submitQuery(query: string) {
   await page.press('[data-testid=searchBarInput]', 'Enter');
 }
 
+async function getSelectedSortByRadio() {
+  return page.$('[data-testid=sortByRadio][data-selected=true]');
+}
+
 describe('/ (Home page)', () => {
   it('should update URL parameter when entering query', async () => {
     const query = 'video';
     await page.goto(getSearchURL());
     await submitQuery(query);
-    expect(page.url()).toEqual(getSearchURL(query));
+    expect(hasSearchParam(page, query)).toBe(true);
   });
 
   it('should render search results for query', async () => {
@@ -42,7 +51,7 @@ describe('/ (Home page)', () => {
 
   it('should render original list when query is cleared', async () => {
     await page.goto(getSearchURL('video'));
-    await submitQuery('');
+    await page.click('[data-testid=clearQueryButton]');
     await expect(await getFirstSearchResultName()).not.toHaveText(
       'napari_video',
     );
@@ -50,7 +59,7 @@ describe('/ (Home page)', () => {
 
   it('should clear query when clicking on app bar home link', async () => {
     await page.goto(getSearchURL('video'));
-    await page.click('[data-testid=appBarHome] a');
+    await page.click('[data-testid=appBarHome]');
     await expect(await getFirstSearchResultName()).not.toHaveText(
       'napari_video',
     );
@@ -66,14 +75,24 @@ describe('/ (Home page)', () => {
   });
 
   it('should maintain search query when navigating back', async () => {
+    const query = 'video';
     await page.goto(getSearchURL());
-    await submitQuery('video');
+    await submitQuery(query);
     await page.click('[data-testid=searchResult]');
     await page.waitForNavigation();
 
     await page.goBack();
     await page.waitForNavigation();
-    expect(page.url()).toEqual(getSearchURL('video'));
+
+    expect(hasSearchParam(page, query)).toBe(true);
     await expect(await getFirstSearchResultName()).toHaveText('napari_video');
+  });
+
+  it('should switch to relevance sort type when searching', async () => {
+    await page.goto(getSearchURL());
+    await expect(await getSelectedSortByRadio()).toHaveText('Release date');
+
+    await submitQuery('video');
+    await expect(await getSelectedSortByRadio()).toHaveText('Relevance');
   });
 });

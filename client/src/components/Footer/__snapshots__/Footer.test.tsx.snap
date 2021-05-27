@@ -3,37 +3,37 @@
 exports[`<Footer /> should match snapshot 1`] = `
 <DocumentFragment>
   <div
-    class="flex flex-row flex-wrap justify-items-center gap-6 bg-napari-primary p-6 md:pl-12"
+    class="flex flex-row flex-wrap justify-items-center gap-6 bg-napari-primary p-6 screen-495:pl-12"
   >
     <div
-      class="w-full flex-1 flex flex-row items-center justify-between gap-2 sm:gap-6 sm:justify-start"
+      class="w-full flex-1 flex flex-row items-center gap-6 justify-start"
     >
       <a
-        class="whitespace-nowrap font-semibold text-sm sm:text-xs flex flex-row items-center"
+        class="whitespace-nowrap font-semibold text-sm flex flex-row items-center"
         href="/about"
       >
         About
       </a>
       <a
-        class="whitespace-nowrap font-semibold text-sm sm:text-xs flex flex-row items-center"
+        class="whitespace-nowrap font-semibold text-sm flex flex-row items-center"
         href="/faq"
       >
         FAQ
       </a>
       <a
-        class="whitespace-nowrap font-semibold text-sm sm:text-xs flex flex-row items-center"
+        class="whitespace-nowrap font-semibold text-sm flex flex-row items-center"
         href="/privacy"
       >
         Privacy policy
       </a>
       <a
-        class="whitespace-nowrap font-semibold text-sm sm:text-xs flex flex-row items-center"
+        class="whitespace-nowrap font-semibold text-sm flex flex-row items-center"
         href="/contact"
       >
         Contact
       </a>
       <a
-        class="whitespace-nowrap font-semibold text-sm sm:text-xs flex flex-row items-center"
+        class="whitespace-nowrap font-semibold text-sm flex flex-row items-center"
         href="https://github.com/chanzuckerberg/napari-hub"
         rel="noreferrer"
         target="_blank"

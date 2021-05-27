@@ -1,4 +1,4 @@
-import { fireEvent, render } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { FormEvent } from 'react';
 
 import { SignupForm } from './SignupForm';
@@ -19,7 +19,7 @@ describe('<SignupForm />', () => {
     });
     fireEvent.click(getByTestId('submitButton'));
 
-    expect(getByTestId('emailError').textContent).toEqual('');
+    expect(screen.queryByTestId('emailError')).not.toBeInTheDocument();
     expect(onSubmit).toHaveBeenCalled();
   });
 

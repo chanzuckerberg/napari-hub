@@ -2,7 +2,7 @@ import clsx from 'clsx';
 
 import { Link } from '@/components/common';
 import { PluginIndexData } from '@/types';
-import { formatDate } from '@/utils/date';
+import { formatDate, formatOperatingSystem } from '@/utils';
 
 interface Props {
   className?: string;
@@ -12,28 +12,6 @@ interface Props {
 interface SearchResultItem {
   label: string;
   value: string;
-}
-
-/**
- * Utility for formatting the list of operating systems as a comma list. This
- * also removes the nested classifiers so that only the OS name is rendered.
- *
- * @param operatingSystems List of operating systems classifiers.
- * @returns The operating system formatted as a comma list.
- */
-function formatOperatingSystem(operatingSystems: string[]): string {
-  return operatingSystems
-    .map((os) => {
-      // Return last part of OS trove classifier. The nesting on pypi is
-      // arbitrary, so you can have a long string like "Operating Systems ::
-      // Microsoft :: Windows :: Windows 10", or a short string like "Operating
-      // Systems :: OS Independent".
-      const parts = os.split(' :: ');
-      const name = parts[parts.length - 1];
-
-      return name.replace('OS Independent', 'All');
-    })
-    .join(', ');
 }
 
 /**
@@ -60,7 +38,7 @@ export function PluginSearchResult({ className, plugin }: Props) {
     },
     {
       label: 'operating system',
-      value: formatOperatingSystem(plugin.operating_system),
+      value: plugin.operating_system.map(formatOperatingSystem).join(', '),
     },
   ];
 

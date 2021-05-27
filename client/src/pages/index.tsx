@@ -3,7 +3,8 @@ import { ReactNode } from 'react';
 
 import { ErrorMessage } from '@/components/common';
 import { PluginSearch } from '@/components/PluginSearch';
-import { PluginSearchProvider } from '@/context/search/search';
+import { PluginSearchProvider } from '@/context/search';
+import { URLParameterStateProvider } from '@/context/urlParameters';
 import { PluginIndexData } from '@/types';
 
 interface Props {
@@ -33,9 +34,11 @@ export default function Home({ error, index }: Props) {
         <ErrorMessage error={error}>Unable to fetch plugin index</ErrorMessage>
       ) : (
         index && (
-          <PluginSearchProvider pluginIndex={index}>
-            <PluginSearch />
-          </PluginSearchProvider>
+          <URLParameterStateProvider>
+            <PluginSearchProvider pluginIndex={index}>
+              <PluginSearch />
+            </PluginSearchProvider>
+          </URLParameterStateProvider>
         )
       )}
     </>

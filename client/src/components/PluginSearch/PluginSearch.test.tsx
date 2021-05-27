@@ -1,8 +1,13 @@
 import { render, screen } from '@testing-library/react';
+import { set } from 'lodash';
 import { NextRouter, useRouter } from 'next/router';
 
-import { SEARCH_QUERY_PARAM } from '@/context/search';
-import { PluginSearchProvider } from '@/context/search/search';
+import {
+  PluginSearchProvider,
+  SearchQueryParams,
+  SearchSortType,
+} from '@/context/search';
+import { URLParameterStateProvider } from '@/context/urlParameters';
 import pluginIndex from '@/fixtures/index.json';
 
 import { PluginSearch } from './PluginSearch';
@@ -17,18 +22,28 @@ function mockSearch(query = '') {
     .fn<ReturnType<Replace>, Parameters<Replace>>()
     .mockReturnValue(Promise.resolve(true));
 
+  const params = [
+    [SearchQueryParams.Search, query],
+    [SearchQueryParams.Sort, SearchSortType.Relevance],
+  ];
+
   (useRouter as jest.Mock).mockReturnValue({
+    asPath: `/?${new URLSearchParams(params).toString()}`,
     pathname: '/',
-    query: {
-      [SEARCH_QUERY_PARAM]: query,
-    },
+    query: params.reduce(
+      (result, [key, value]) => set(result, key, value),
+      {} as Record<string, string>,
+    ),
+    push: jest.fn(),
     replace,
   });
 
   const component = render(
-    <PluginSearchProvider pluginIndex={pluginIndex}>
-      <PluginSearch />
-    </PluginSearchProvider>,
+    <URLParameterStateProvider>
+      <PluginSearchProvider pluginIndex={pluginIndex}>
+        <PluginSearch />
+      </PluginSearchProvider>
+    </URLParameterStateProvider>,
   );
 
   return { component, replace };

@@ -2,6 +2,10 @@ extends:
   - stylelint-config-recommended
   - stylelint-config-sass-guidelines
   - stylelint-config-css-modules
+  - stylelint-config-prettier
+
+plugins:
+  - stylelint-prettier
 
 rules:
   # Enforce camel case CSS classes for CSS modules because camel case

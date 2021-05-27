@@ -1,27 +1,27 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { SearchBar } from '@/components';
 import { ColumnLayout } from '@/components/common';
-import { useActiveQueryParameter } from '@/context/search';
-
-import { PLUGIN_SEARCH_ID } from './PluginSearch.constants';
+import { useSearchState } from '@/context/search';
 
 /**
  * Component that renders the landing page search bar.
  */
 export function PluginSearchBar() {
-  const activeQuery = useActiveQueryParameter();
+  const { search } = useSearchState() ?? {};
+  const searchBarRef = useRef<HTMLDivElement | null>(null);
 
   // Scroll to search container when the search changes.
   useEffect(() => {
-    if (activeQuery) {
-      window.location.hash = PLUGIN_SEARCH_ID;
+    if (search?.query) {
+      const alignTop = true;
+      searchBarRef.current?.scrollIntoView?.(alignTop);
     }
-  }, [activeQuery]);
+  }, [search]);
 
   return (
     <ColumnLayout
-      id={PLUGIN_SEARCH_ID}
+      innerRef={searchBarRef}
       className="bg-napari-light h-36 items-center px-6 md:px-12"
       classes={{
         // Use 3-column layout instead of 4-column.
