@@ -10,6 +10,7 @@ import { FilterFormState } from './filter.types';
 import {
   filterFalsyValues,
   getCheckboxSetter,
+  getChipState,
   getDefaultState,
 } from './filter.utils';
 import { filterResults } from './filters';
@@ -54,6 +55,7 @@ function useForm() {
   >(SearchQueryParams.Filter, withDefault(JsonParam, initialState));
 
   const [state, setState] = useState<FilterFormState>(initialState);
+  const chips = getChipState(state);
 
   /**
    * Resets the filter form state to its default state.
@@ -68,13 +70,35 @@ function useForm() {
     state,
   ]);
 
+  /**
+   * Removes a chip from the chips state.
+   *
+   * @param key The key of root filter state
+   * @param subKey The sub key of the filter state
+   */
+  function removeChip(key: string, subKey: string) {
+    setState((prevState) => ({
+      ...prevState,
+
+      [key]: {
+        ...prevState[key as keyof FilterFormState],
+        [subKey]: false,
+      },
+    }));
+  }
+
   return {
+    // State
+    chips,
+    state,
+
+    // State update functions
     clearAll,
+    removeChip,
     setDevelopmentStatus: getCheckboxSetter(setState, 'developmentStatus'),
     setLicense: getCheckboxSetter(setState, 'license'),
     setOperatingSystem: getCheckboxSetter(setState, 'operatingSystems'),
     setPythonVersion: getCheckboxSetter(setState, 'pythonVersions'),
-    state,
   };
 }
 
