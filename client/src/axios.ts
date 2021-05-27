@@ -24,5 +24,7 @@ export const hubAPI = axios.create({
   },
 });
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-axios.defaults.headers.common.Host = API_URL_HOST;
+export const spdxLicenseDataAPI = axios.create({
+  baseURL:
+    'https://raw.githubusercontent.com/spdx/license-list-data/master/json/licenses.json',
+});

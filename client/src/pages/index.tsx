@@ -1,25 +1,38 @@
 import { AxiosError } from 'axios';
 import { ReactNode } from 'react';
 
-import { hubAPI } from '@/axios';
+import { hubAPI, spdxLicenseDataAPI } from '@/axios';
 import { ErrorMessage } from '@/components/common';
 import { PluginSearch } from '@/components/PluginSearch';
 import { PluginSearchProvider } from '@/context/search';
+import {
+  SpdxLicenseData,
+  SpdxLicenseProvider,
+  SpdxLicenseResponse,
+} from '@/context/spdx';
 import { URLParameterStateProvider } from '@/context/urlParameters';
 import { PluginIndexData } from '@/types';
 
 interface Props {
+  licenses?: SpdxLicenseData[];
   index?: PluginIndexData[];
   error?: string;
 }
+
+const LICENSE_JSON_URL =
+  'https://raw.githubusercontent.com/spdx/license-list-data/master/json/licenses.json';
 
 export async function getServerSideProps() {
   const url = '/plugins/index';
   const props: Props = {};
 
   try {
-    const { data } = await hubAPI.get<PluginIndexData[]>(url);
-    props.index = data;
+    const { data: index } = await hubAPI.get<PluginIndexData[]>(url);
+    const {
+      data: { licenses },
+    } = await spdxLicenseDataAPI.get<SpdxLicenseResponse>(LICENSE_JSON_URL);
+
+    Object.assign(props, { index, licenses });
   } catch (err) {
     const error = err as AxiosError;
     props.error = error.message;
@@ -28,17 +41,20 @@ export async function getServerSideProps() {
   return { props };
 }
 
-export default function Home({ error, index }: Props) {
+export default function Home({ error, index, licenses }: Props) {
   return (
     <>
       {error ? (
         <ErrorMessage error={error}>Unable to fetch plugin index</ErrorMessage>
       ) : (
-        index && (
+        index &&
+        licenses && (
           <URLParameterStateProvider>
-            <PluginSearchProvider pluginIndex={index}>
-              <PluginSearch />
-            </PluginSearchProvider>
+            <SpdxLicenseProvider licenses={licenses}>
+              <PluginSearchProvider pluginIndex={index}>
+                <PluginSearch />
+              </PluginSearchProvider>
+            </SpdxLicenseProvider>
           </URLParameterStateProvider>
         )
       )}
