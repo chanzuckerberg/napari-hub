@@ -165,8 +165,20 @@ data aws_iam_policy_document backend_policy {
   }
 }
 
-resource "aws_iam_role_policy" "policy" {
+resource aws_iam_role_policy policy {
   name     = "${local.custom_stack_name}-${var.env}-policy"
   role     = module.backend_lambda.role_name
   policy   = data.aws_iam_policy_document.backend_policy.json
+}
+
+resource aws_s3_bucket_object excluded_plugins {
+  bucket = local.data_bucket_name
+  key    = "${local.custom_stack_name}/excluded_plugins.json"
+  content = <<EOF
+{
+  "napari-demo":null,
+  "napari-cellfinder":null,
+  "napari-brainreg":null
+}
+EOF
 }
