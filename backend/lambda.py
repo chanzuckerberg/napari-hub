@@ -405,7 +405,7 @@ def notify_new_packages(existing_packages: dict, new_packages: dict):
 
         for package, version in existing_packages.items():
             if package not in new_packages:
-                send_zulip_message(username, key, package, f'This plugin has been unmarked as a plugin :(')
+                send_zulip_message(username, key, package, f'This plugin is no longer available on the [napari hub](https://napari-hub.org) :(')
 
 
 def send_zulip_message(username: str, key: str, topic: str, message: str):
