@@ -401,7 +401,7 @@ def notify_new_packages(existing_packages: dict, new_packages: dict):
             if package not in existing_packages:
                 send_zulip_message(username, key, package, f'A new plugin has been published on the napari hub! Check out [{package}](https://napari-hub.org/plugins/{package})!')
             elif existing_packages[package] != version:
-                send_zulip_message(username, key, package, f'A new version {version} has been published!')
+                send_zulip_message(username, key, package, f'A new version of [{package}](https://napari-hub.org/plugins/{package}) is available on the napari hub! Check out [{version}](https://napari-hub.org/plugins/{package})!')
 
         for package, version in existing_packages.items():
             if package not in new_packages:
