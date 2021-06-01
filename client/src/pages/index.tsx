@@ -19,9 +19,6 @@ interface Props {
   error?: string;
 }
 
-const LICENSE_JSON_URL =
-  'https://raw.githubusercontent.com/spdx/license-list-data/master/json/licenses.json';
-
 export async function getServerSideProps() {
   const url = '/plugins/index';
   const props: Props = {};
@@ -30,7 +27,7 @@ export async function getServerSideProps() {
     const { data: index } = await hubAPI.get<PluginIndexData[]>(url);
     const {
       data: { licenses },
-    } = await spdxLicenseDataAPI.get<SpdxLicenseResponse>(LICENSE_JSON_URL);
+    } = await spdxLicenseDataAPI.get<SpdxLicenseResponse>('');
 
     Object.assign(props, { index, licenses });
   } catch (err) {
