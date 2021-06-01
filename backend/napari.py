@@ -12,6 +12,7 @@ import yaml
 from flask import Flask, jsonify
 
 import requests
+from requests.auth import HTTPBasicAuth
 from requests.exceptions import HTTPError
 from requests.utils import requote_uri
 
@@ -23,6 +24,7 @@ from google.cloud import bigquery
 bucket = os.environ.get('BUCKET')
 bucket_path = os.environ.get('BUCKET_PATH', '')
 slack_url = os.environ.get('SLACK_URL')
+zulip_credentials = os.environ.get('ZULIP_CREDENTIALS')
 cache_ttl = int(os.environ.get('TTL', "4"))
 endpoint_url = os.environ.get('BOTO_ENDPOINT_URL', None)
 plugins_key = 'cache/plugins.json'
@@ -222,7 +224,9 @@ def get_plugins() -> dict:
     packages = query_pypi()
 
     if packages:
-        return cache(filter_excluded_plugin(packages), plugins_key)
+        packages = filter_excluded_plugin(packages)
+        notify_new_packages(get_cache(plugins_key), packages)
+        return cache(packages, plugins_key)
 
     send_alert(f"({datetime.now()})Actions Required! Failed to query pypi for "
                f"napari plugin packages, switching to backup analysis dump")
@@ -365,6 +369,50 @@ def send_alert(message: str):
             requests.post(slack_url, json=payload)
         except HTTPError:
             print("Unable to send alert")
+
+
+def notify_new_packages(existing_packages: dict, new_packages: dict):
+    """
+    Notify zulip about new packages.
+
+    :param existing_packages: existing packages in cache
+    :param new_packages: new packages found
+    """
+    if zulip_credentials is not None:
+        username = zulip_credentials.split(":")[0]
+        key = zulip_credentials.split(":")[1]
+        for package, version in new_packages.items():
+            if package not in existing_packages:
+                send_zulip_message(username, key, package, f'A new plugin has been published on the napari hub! Check out [{package}](https://napari-hub.org/plugins/{package})!')
+            elif existing_packages[package] != version:
+                send_zulip_message(username, key, package, f'A new version of [{package}](https://napari-hub.org/plugins/{package}) is available on the napari hub! Check out [{version}](https://napari-hub.org/plugins/{package})!')
+
+        for package, version in existing_packages.items():
+            if package not in new_packages:
+                send_zulip_message(username, key, package, f'This plugin is no longer available on the [napari hub](https://napari-hub.org) :(')
+
+
+def send_zulip_message(username: str, key: str, topic: str, message: str):
+    """
+    Send message to zulip
+    :param username: username for the user to post message
+    :param key: api key for the user
+    :param topic: topic in zulip stream to send
+    :param message: message to send
+    """
+    try:
+        data = {
+            'type': 'stream',
+            'to': 'hub-updates',
+            'topic': topic,
+            'content': message
+        }
+        response = requests.post('https://napari.zulipchat.com/api/v1/messages',
+                                 auth=HTTPBasicAuth(username, key), data=data)
+        if response.status_code != requests.codes.ok:
+            response.raise_for_status()
+    except HTTPError:
+        pass
 
 
 def query_analysis_dump() -> dict:
