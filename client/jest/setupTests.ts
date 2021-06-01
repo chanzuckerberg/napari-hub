@@ -27,3 +27,9 @@ jest.mock('next/router', () => ({
     query: {},
   }),
 }));
+
+jest.mock('@/context/spdx', () => ({
+  useSpdx: jest.fn().mockReturnValue({
+    isOSIApproved: jest.fn().mockReturnValue(false),
+  }),
+}));

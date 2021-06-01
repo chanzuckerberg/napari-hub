@@ -17,7 +17,14 @@ const API_URL = process.env.API_URL || 'http://localhost:8081';
  */
 const API_URL_HOST = process.env.API_URL_HOST || new URL(API_URL).host;
 
-axios.defaults.baseURL = API_URL;
+export const hubAPI = axios.create({
+  baseURL: API_URL,
+  headers: {
+    Host: API_URL_HOST,
+  },
+});
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-axios.defaults.headers.common.Host = API_URL_HOST;
+export const spdxLicenseDataAPI = axios.create({
+  baseURL:
+    'https://raw.githubusercontent.com/spdx/license-list-data/master/json/licenses.json',
+});
