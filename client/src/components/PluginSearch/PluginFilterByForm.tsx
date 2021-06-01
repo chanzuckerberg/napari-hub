@@ -1,3 +1,5 @@
+import { FormLabel } from '@material-ui/core';
+
 import { Accordion } from '@/components/common';
 import { MediaFragment } from '@/components/common/media';
 
@@ -9,6 +11,16 @@ import { PluginFilterBySection } from './PluginFilterBySection';
 function FilterForm() {
   return (
     <>
+      {/* Only show label on larger screens. This is because the Accordion already includes a title. */}
+      <MediaFragment greaterThanOrEqual="screen-875">
+        <FormLabel
+          className="uppercase text-black font-semibold text-sm mb-2"
+          component="legend"
+          focused={false}
+        >
+          Filter By
+        </FormLabel>
+      </MediaFragment>
       <PluginFilterBySection
         title="Test"
         filters={[
