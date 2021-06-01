@@ -22,6 +22,13 @@ echo " done"
 echo "Creating s3 bucket secrets"
 local_aws="aws --endpoint-url=${LOCALSTACK_URL}"
 ${local_aws} s3api create-bucket --bucket imaging-test-napari-hub &>/dev/null || true
+cat << EOF | ${local_aws} s3 cp - s3://imaging-test-napari-hub/excluded_plugins.json &>/dev/null || true
+{
+  "napari-demo":null,
+  "napari-cellfinder":null,
+  "napari-brainreg":null
+}
+EOF
 
 echo
 echo "Dev env is up and running!"
