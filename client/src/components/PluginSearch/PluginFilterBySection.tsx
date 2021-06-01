@@ -27,22 +27,23 @@ export function PluginFilterBySection({ title, filters }: Props) {
     <FormControl component="fieldset">
       <FormLabel
         component="legend"
-        className="font-semibold text-black text-md mb-4"
+        className="font-semibold text-black text-sm mb-2"
       >
         {title}
       </FormLabel>
-      <FormGroup>
+      <FormGroup className="gap-2 justify-items-start">
         {filters.map((filter) => (
           <FormControlLabel
+            className="items-start m-0"
             control={
               <Checkbox
                 value={filter.enabled}
                 checked={filter.enabled}
                 onChange={(event) => filter.setEnabled(event.target.checked)}
-                className="text-black fill-current"
+                className="text-black fill-current py-1 pr-2 pl-0"
                 color="default"
-                icon={<CheckboxIcon />}
-                checkedIcon={<CheckboxIcon checked />}
+                icon={<CheckboxIcon className="w-4 h-4" />}
+                checkedIcon={<CheckboxIcon checked className="w-4 h-4" />}
               />
             }
             label={filter.label}

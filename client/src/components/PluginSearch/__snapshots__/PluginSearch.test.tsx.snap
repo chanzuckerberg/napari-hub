@@ -737,302 +737,1056 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           </div>
         </fieldset>
         <div
-          class="MuiPaper-root MuiAccordion-root shadow-none fresnel-lessThan-screen-875 MuiAccordion-rounded MuiPaper-elevation1 MuiPaper-rounded"
+          class="fresnel-container fresnel-lessThan-screen-875 "
         >
           <div
-            aria-disabled="false"
-            aria-expanded="false"
-            class="MuiButtonBase-root MuiAccordionSummary-root flex-row-reverse p-0 font-semibold"
-            role="button"
-            tabindex="0"
+            class="MuiPaper-root MuiAccordion-root shadow-none MuiAccordion-rounded MuiPaper-elevation1 MuiPaper-rounded"
           >
-            <div
-              class="MuiAccordionSummary-content !ml-6"
-            >
-              Filter By
-            </div>
             <div
               aria-disabled="false"
-              aria-hidden="true"
-              class="MuiButtonBase-root MuiIconButton-root MuiAccordionSummary-expandIcon p-0 MuiIconButton-edgeEnd"
-            >
-              <span
-                class="MuiIconButton-label"
-              >
-                <svg
-                  fill="none"
-                  height="12"
-                  viewBox="0 0 16 12"
-                  width="16"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <g
-                    clip-path="url(#clip0)"
-                  >
-                    <path
-                      d="M1 2.07107L8.07107 9.14214L15.1421 2.07107"
-                      stroke="black"
-                      stroke-width="2"
-                    />
-                  </g>
-                  <defs>
-                    <clippath
-                      id="clip0"
-                    >
-                      <rect
-                        fill="white"
-                        height="12"
-                        width="16"
-                      />
-                    </clippath>
-                  </defs>
-                </svg>
-              </span>
-              <span
-                class="MuiTouchRipple-root"
-              />
-            </div>
-          </div>
-          <div
-            class="MuiCollapse-container MuiCollapse-hidden"
-            style="min-height: 0px;"
-          >
-            <div
-              class="MuiCollapse-wrapper"
+              aria-expanded="false"
+              class="MuiButtonBase-root MuiAccordionSummary-root flex-row-reverse p-0 font-semibold"
+              role="button"
+              tabindex="0"
             >
               <div
-                class="MuiCollapse-wrapperInner"
+                class="MuiAccordionSummary-content !ml-6"
+              >
+                Filter By
+              </div>
+              <div
+                aria-disabled="false"
+                aria-hidden="true"
+                class="MuiButtonBase-root MuiIconButton-root MuiAccordionSummary-expandIcon p-0 MuiIconButton-edgeEnd"
+              >
+                <span
+                  class="MuiIconButton-label"
+                >
+                  <svg
+                    fill="none"
+                    height="12"
+                    viewBox="0 0 16 12"
+                    width="16"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g
+                      clip-path="url(#clip0)"
+                    >
+                      <path
+                        d="M1 2.07107L8.07107 9.14214L15.1421 2.07107"
+                        stroke="black"
+                        stroke-width="2"
+                      />
+                    </g>
+                    <defs>
+                      <clippath
+                        id="clip0"
+                      >
+                        <rect
+                          fill="white"
+                          height="12"
+                          width="16"
+                        />
+                      </clippath>
+                    </defs>
+                  </svg>
+                </span>
+                <span
+                  class="MuiTouchRipple-root"
+                />
+              </div>
+            </div>
+            <div
+              class="MuiCollapse-container MuiCollapse-hidden"
+              style="min-height: 0px;"
+            >
+              <div
+                class="MuiCollapse-wrapper"
               >
                 <div
-                  role="region"
+                  class="MuiCollapse-wrapperInner"
                 >
                   <div
-                    class="MuiAccordionDetails-root p-0"
+                    role="region"
                   >
-                    <fieldset
-                      class="MuiFormControl-root"
+                    <div
+                      class="MuiAccordionDetails-root p-0"
                     >
-                      <legend
-                        class="MuiFormLabel-root font-semibold text-black text-md mb-4"
-                      >
-                        Test
-                      </legend>
                       <div
-                        class="MuiFormGroup-root"
+                        class="flex flex-col gap-6"
                       >
-                        <label
-                          class="MuiFormControlLabel-root"
+                        <div
+                          class="fresnel-container fresnel-greaterThanOrEqual-screen-875 "
+                        />
+                        <fieldset
+                          class="MuiFormControl-root"
                         >
-                          <span
-                            aria-disabled="false"
-                            class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current PrivateSwitchBase-checked-2 Mui-checked"
+                          <legend
+                            class="MuiFormLabel-root font-semibold text-black text-sm mb-2"
                           >
-                            <span
-                              class="MuiIconButton-label"
+                            Python versions
+                          </legend>
+                          <div
+                            class="MuiFormGroup-root gap-2 justify-items-start"
+                          >
+                            <label
+                              class="MuiFormControlLabel-root items-start m-0"
                             >
-                              <input
-                                checked=""
-                                class="PrivateSwitchBase-input-4"
-                                data-indeterminate="false"
-                                type="checkbox"
-                                value="true"
-                              />
-                              <svg
-                                fill="none"
-                                height="14"
-                                viewBox="0 0 14 14"
-                                width="14"
-                                xmlns="http://www.w3.org/2000/svg"
+                              <span
+                                aria-disabled="false"
+                                class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current py-1 pr-2 pl-0 PrivateSwitchBase-checked-2 Mui-checked"
                               >
-                                <title>
-                                  checked checkbox
-                                </title>
-                                <rect
-                                  height="13"
-                                  stroke="black"
-                                  width="13"
-                                  x="0.5"
-                                  y="0.5"
+                                <span
+                                  class="MuiIconButton-label"
+                                >
+                                  <input
+                                    checked=""
+                                    class="PrivateSwitchBase-input-4"
+                                    data-indeterminate="false"
+                                    type="checkbox"
+                                    value="true"
+                                  />
+                                  <svg
+                                    class="w-4 h-4"
+                                    fill="none"
+                                    height="14"
+                                    viewBox="0 0 14 14"
+                                    width="14"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <title>
+                                      checked checkbox
+                                    </title>
+                                    <rect
+                                      height="13"
+                                      stroke="black"
+                                      width="13"
+                                      x="0.5"
+                                      y="0.5"
+                                    />
+                                    <path
+                                      d="M2.5 7 l3 3 l6 -6"
+                                      stroke="black"
+                                      stroke-width="1.5"
+                                    />
+                                  </svg>
+                                </span>
+                                <span
+                                  class="MuiTouchRipple-root"
                                 />
-                                <path
-                                  d="M2.5 7 l3 3 l6 -6"
-                                  stroke="black"
-                                  stroke-width="1.5"
+                              </span>
+                              <span
+                                class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
+                              >
+                                3.6
+                              </span>
+                            </label>
+                            <label
+                              class="MuiFormControlLabel-root items-start m-0"
+                            >
+                              <span
+                                aria-disabled="false"
+                                class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current py-1 pr-2 pl-0"
+                              >
+                                <span
+                                  class="MuiIconButton-label"
+                                >
+                                  <input
+                                    class="PrivateSwitchBase-input-4"
+                                    data-indeterminate="false"
+                                    type="checkbox"
+                                    value="false"
+                                  />
+                                  <svg
+                                    class="w-4 h-4"
+                                    fill="none"
+                                    height="14"
+                                    viewBox="0 0 14 14"
+                                    width="14"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <title>
+                                      unchecked checkbox
+                                    </title>
+                                    <rect
+                                      height="13"
+                                      stroke="black"
+                                      width="13"
+                                      x="0.5"
+                                      y="0.5"
+                                    />
+                                  </svg>
+                                </span>
+                                <span
+                                  class="MuiTouchRipple-root"
                                 />
-                              </svg>
-                            </span>
-                            <span
-                              class="MuiTouchRipple-root"
-                            />
-                          </span>
-                          <span
-                            class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
-                          >
-                            one
-                          </span>
-                        </label>
-                        <label
-                          class="MuiFormControlLabel-root"
+                              </span>
+                              <span
+                                class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
+                              >
+                                3.7
+                              </span>
+                            </label>
+                            <label
+                              class="MuiFormControlLabel-root items-start m-0"
+                            >
+                              <span
+                                aria-disabled="false"
+                                class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current py-1 pr-2 pl-0"
+                              >
+                                <span
+                                  class="MuiIconButton-label"
+                                >
+                                  <input
+                                    class="PrivateSwitchBase-input-4"
+                                    data-indeterminate="false"
+                                    type="checkbox"
+                                    value="false"
+                                  />
+                                  <svg
+                                    class="w-4 h-4"
+                                    fill="none"
+                                    height="14"
+                                    viewBox="0 0 14 14"
+                                    width="14"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <title>
+                                      unchecked checkbox
+                                    </title>
+                                    <rect
+                                      height="13"
+                                      stroke="black"
+                                      width="13"
+                                      x="0.5"
+                                      y="0.5"
+                                    />
+                                  </svg>
+                                </span>
+                                <span
+                                  class="MuiTouchRipple-root"
+                                />
+                              </span>
+                              <span
+                                class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
+                              >
+                                3.8
+                              </span>
+                            </label>
+                            <label
+                              class="MuiFormControlLabel-root items-start m-0"
+                            >
+                              <span
+                                aria-disabled="false"
+                                class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current py-1 pr-2 pl-0"
+                              >
+                                <span
+                                  class="MuiIconButton-label"
+                                >
+                                  <input
+                                    class="PrivateSwitchBase-input-4"
+                                    data-indeterminate="false"
+                                    type="checkbox"
+                                    value="false"
+                                  />
+                                  <svg
+                                    class="w-4 h-4"
+                                    fill="none"
+                                    height="14"
+                                    viewBox="0 0 14 14"
+                                    width="14"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <title>
+                                      unchecked checkbox
+                                    </title>
+                                    <rect
+                                      height="13"
+                                      stroke="black"
+                                      width="13"
+                                      x="0.5"
+                                      y="0.5"
+                                    />
+                                  </svg>
+                                </span>
+                                <span
+                                  class="MuiTouchRipple-root"
+                                />
+                              </span>
+                              <span
+                                class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
+                              >
+                                3.9
+                              </span>
+                            </label>
+                          </div>
+                        </fieldset>
+                        <fieldset
+                          class="MuiFormControl-root"
                         >
-                          <span
-                            aria-disabled="false"
-                            class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current"
+                          <legend
+                            class="MuiFormLabel-root font-semibold text-black text-sm mb-2"
                           >
-                            <span
-                              class="MuiIconButton-label"
+                            Operating system
+                          </legend>
+                          <div
+                            class="MuiFormGroup-root gap-2 justify-items-start"
+                          >
+                            <label
+                              class="MuiFormControlLabel-root items-start m-0"
                             >
-                              <input
-                                class="PrivateSwitchBase-input-4"
-                                data-indeterminate="false"
-                                type="checkbox"
-                                value="false"
-                              />
-                              <svg
-                                fill="none"
-                                height="14"
-                                viewBox="0 0 14 14"
-                                width="14"
-                                xmlns="http://www.w3.org/2000/svg"
+                              <span
+                                aria-disabled="false"
+                                class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current py-1 pr-2 pl-0"
                               >
-                                <title>
-                                  unchecked checkbox
-                                </title>
-                                <rect
-                                  height="13"
-                                  stroke="black"
-                                  width="13"
-                                  x="0.5"
-                                  y="0.5"
+                                <span
+                                  class="MuiIconButton-label"
+                                >
+                                  <input
+                                    class="PrivateSwitchBase-input-4"
+                                    data-indeterminate="false"
+                                    type="checkbox"
+                                    value="false"
+                                  />
+                                  <svg
+                                    class="w-4 h-4"
+                                    fill="none"
+                                    height="14"
+                                    viewBox="0 0 14 14"
+                                    width="14"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <title>
+                                      unchecked checkbox
+                                    </title>
+                                    <rect
+                                      height="13"
+                                      stroke="black"
+                                      width="13"
+                                      x="0.5"
+                                      y="0.5"
+                                    />
+                                  </svg>
+                                </span>
+                                <span
+                                  class="MuiTouchRipple-root"
                                 />
-                              </svg>
-                            </span>
-                            <span
-                              class="MuiTouchRipple-root"
-                            />
-                          </span>
-                          <span
-                            class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
+                              </span>
+                              <span
+                                class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
+                              >
+                                Linux
+                              </span>
+                            </label>
+                            <label
+                              class="MuiFormControlLabel-root items-start m-0"
+                            >
+                              <span
+                                aria-disabled="false"
+                                class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current py-1 pr-2 pl-0"
+                              >
+                                <span
+                                  class="MuiIconButton-label"
+                                >
+                                  <input
+                                    class="PrivateSwitchBase-input-4"
+                                    data-indeterminate="false"
+                                    type="checkbox"
+                                    value="false"
+                                  />
+                                  <svg
+                                    class="w-4 h-4"
+                                    fill="none"
+                                    height="14"
+                                    viewBox="0 0 14 14"
+                                    width="14"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <title>
+                                      unchecked checkbox
+                                    </title>
+                                    <rect
+                                      height="13"
+                                      stroke="black"
+                                      width="13"
+                                      x="0.5"
+                                      y="0.5"
+                                    />
+                                  </svg>
+                                </span>
+                                <span
+                                  class="MuiTouchRipple-root"
+                                />
+                              </span>
+                              <span
+                                class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
+                              >
+                                Mac
+                              </span>
+                            </label>
+                            <label
+                              class="MuiFormControlLabel-root items-start m-0"
+                            >
+                              <span
+                                aria-disabled="false"
+                                class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current py-1 pr-2 pl-0"
+                              >
+                                <span
+                                  class="MuiIconButton-label"
+                                >
+                                  <input
+                                    class="PrivateSwitchBase-input-4"
+                                    data-indeterminate="false"
+                                    type="checkbox"
+                                    value="false"
+                                  />
+                                  <svg
+                                    class="w-4 h-4"
+                                    fill="none"
+                                    height="14"
+                                    viewBox="0 0 14 14"
+                                    width="14"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <title>
+                                      unchecked checkbox
+                                    </title>
+                                    <rect
+                                      height="13"
+                                      stroke="black"
+                                      width="13"
+                                      x="0.5"
+                                      y="0.5"
+                                    />
+                                  </svg>
+                                </span>
+                                <span
+                                  class="MuiTouchRipple-root"
+                                />
+                              </span>
+                              <span
+                                class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
+                              >
+                                Windows
+                              </span>
+                            </label>
+                          </div>
+                        </fieldset>
+                        <fieldset
+                          class="MuiFormControl-root"
+                        >
+                          <legend
+                            class="MuiFormLabel-root font-semibold text-black text-sm mb-2"
                           >
-                            two
-                          </span>
-                        </label>
+                            Development status
+                          </legend>
+                          <div
+                            class="MuiFormGroup-root gap-2 justify-items-start"
+                          >
+                            <label
+                              class="MuiFormControlLabel-root items-start m-0"
+                            >
+                              <span
+                                aria-disabled="false"
+                                class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current py-1 pr-2 pl-0"
+                              >
+                                <span
+                                  class="MuiIconButton-label"
+                                >
+                                  <input
+                                    class="PrivateSwitchBase-input-4"
+                                    data-indeterminate="false"
+                                    type="checkbox"
+                                    value="false"
+                                  />
+                                  <svg
+                                    class="w-4 h-4"
+                                    fill="none"
+                                    height="14"
+                                    viewBox="0 0 14 14"
+                                    width="14"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <title>
+                                      unchecked checkbox
+                                    </title>
+                                    <rect
+                                      height="13"
+                                      stroke="black"
+                                      width="13"
+                                      x="0.5"
+                                      y="0.5"
+                                    />
+                                  </svg>
+                                </span>
+                                <span
+                                  class="MuiTouchRipple-root"
+                                />
+                              </span>
+                              <span
+                                class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
+                              >
+                                Only show stable plugins
+                              </span>
+                            </label>
+                          </div>
+                        </fieldset>
+                        <fieldset
+                          class="MuiFormControl-root"
+                        >
+                          <legend
+                            class="MuiFormLabel-root font-semibold text-black text-sm mb-2"
+                          >
+                            License
+                          </legend>
+                          <div
+                            class="MuiFormGroup-root gap-2 justify-items-start"
+                          >
+                            <label
+                              class="MuiFormControlLabel-root items-start m-0"
+                            >
+                              <span
+                                aria-disabled="false"
+                                class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current py-1 pr-2 pl-0"
+                              >
+                                <span
+                                  class="MuiIconButton-label"
+                                >
+                                  <input
+                                    class="PrivateSwitchBase-input-4"
+                                    data-indeterminate="false"
+                                    type="checkbox"
+                                    value="false"
+                                  />
+                                  <svg
+                                    class="w-4 h-4"
+                                    fill="none"
+                                    height="14"
+                                    viewBox="0 0 14 14"
+                                    width="14"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <title>
+                                      unchecked checkbox
+                                    </title>
+                                    <rect
+                                      height="13"
+                                      stroke="black"
+                                      width="13"
+                                      x="0.5"
+                                      y="0.5"
+                                    />
+                                  </svg>
+                                </span>
+                                <span
+                                  class="MuiTouchRipple-root"
+                                />
+                              </span>
+                              <span
+                                class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
+                              >
+                                Only show plugins with open source license
+                              </span>
+                            </label>
+                          </div>
+                        </fieldset>
                       </div>
-                    </fieldset>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <fieldset
-          class="MuiFormControl-root"
+        <div
+          class="fresnel-container fresnel-greaterThanOrEqual-screen-875 "
         >
-          <legend
-            class="MuiFormLabel-root font-semibold text-black text-md mb-4"
-          >
-            Test
-          </legend>
           <div
-            class="MuiFormGroup-root"
+            class="flex flex-col gap-6"
           >
-            <label
-              class="MuiFormControlLabel-root"
+            <div
+              class="fresnel-container fresnel-greaterThanOrEqual-screen-875 "
             >
-              <span
-                aria-disabled="false"
-                class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current PrivateSwitchBase-checked-2 Mui-checked"
+              <legend
+                class="MuiFormLabel-root uppercase text-black font-semibold text-sm"
               >
-                <span
-                  class="MuiIconButton-label"
-                >
-                  <input
-                    checked=""
-                    class="PrivateSwitchBase-input-4"
-                    data-indeterminate="false"
-                    type="checkbox"
-                    value="true"
-                  />
-                  <svg
-                    fill="none"
-                    height="14"
-                    viewBox="0 0 14 14"
-                    width="14"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <title>
-                      checked checkbox
-                    </title>
-                    <rect
-                      height="13"
-                      stroke="black"
-                      width="13"
-                      x="0.5"
-                      y="0.5"
-                    />
-                    <path
-                      d="M2.5 7 l3 3 l6 -6"
-                      stroke="black"
-                      stroke-width="1.5"
-                    />
-                  </svg>
-                </span>
-                <span
-                  class="MuiTouchRipple-root"
-                />
-              </span>
-              <span
-                class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
-              >
-                one
-              </span>
-            </label>
-            <label
-              class="MuiFormControlLabel-root"
+                Filter By
+              </legend>
+            </div>
+            <fieldset
+              class="MuiFormControl-root"
             >
-              <span
-                aria-disabled="false"
-                class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current"
+              <legend
+                class="MuiFormLabel-root font-semibold text-black text-sm mb-2"
               >
-                <span
-                  class="MuiIconButton-label"
+                Python versions
+              </legend>
+              <div
+                class="MuiFormGroup-root gap-2 justify-items-start"
+              >
+                <label
+                  class="MuiFormControlLabel-root items-start m-0"
                 >
-                  <input
-                    class="PrivateSwitchBase-input-4"
-                    data-indeterminate="false"
-                    type="checkbox"
-                    value="false"
-                  />
-                  <svg
-                    fill="none"
-                    height="14"
-                    viewBox="0 0 14 14"
-                    width="14"
-                    xmlns="http://www.w3.org/2000/svg"
+                  <span
+                    aria-disabled="false"
+                    class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current py-1 pr-2 pl-0 PrivateSwitchBase-checked-2 Mui-checked"
                   >
-                    <title>
-                      unchecked checkbox
-                    </title>
-                    <rect
-                      height="13"
-                      stroke="black"
-                      width="13"
-                      x="0.5"
-                      y="0.5"
+                    <span
+                      class="MuiIconButton-label"
+                    >
+                      <input
+                        checked=""
+                        class="PrivateSwitchBase-input-4"
+                        data-indeterminate="false"
+                        type="checkbox"
+                        value="true"
+                      />
+                      <svg
+                        class="w-4 h-4"
+                        fill="none"
+                        height="14"
+                        viewBox="0 0 14 14"
+                        width="14"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <title>
+                          checked checkbox
+                        </title>
+                        <rect
+                          height="13"
+                          stroke="black"
+                          width="13"
+                          x="0.5"
+                          y="0.5"
+                        />
+                        <path
+                          d="M2.5 7 l3 3 l6 -6"
+                          stroke="black"
+                          stroke-width="1.5"
+                        />
+                      </svg>
+                    </span>
+                    <span
+                      class="MuiTouchRipple-root"
                     />
-                  </svg>
-                </span>
-                <span
-                  class="MuiTouchRipple-root"
-                />
-              </span>
-              <span
-                class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
+                  </span>
+                  <span
+                    class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
+                  >
+                    3.6
+                  </span>
+                </label>
+                <label
+                  class="MuiFormControlLabel-root items-start m-0"
+                >
+                  <span
+                    aria-disabled="false"
+                    class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current py-1 pr-2 pl-0"
+                  >
+                    <span
+                      class="MuiIconButton-label"
+                    >
+                      <input
+                        class="PrivateSwitchBase-input-4"
+                        data-indeterminate="false"
+                        type="checkbox"
+                        value="false"
+                      />
+                      <svg
+                        class="w-4 h-4"
+                        fill="none"
+                        height="14"
+                        viewBox="0 0 14 14"
+                        width="14"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <title>
+                          unchecked checkbox
+                        </title>
+                        <rect
+                          height="13"
+                          stroke="black"
+                          width="13"
+                          x="0.5"
+                          y="0.5"
+                        />
+                      </svg>
+                    </span>
+                    <span
+                      class="MuiTouchRipple-root"
+                    />
+                  </span>
+                  <span
+                    class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
+                  >
+                    3.7
+                  </span>
+                </label>
+                <label
+                  class="MuiFormControlLabel-root items-start m-0"
+                >
+                  <span
+                    aria-disabled="false"
+                    class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current py-1 pr-2 pl-0"
+                  >
+                    <span
+                      class="MuiIconButton-label"
+                    >
+                      <input
+                        class="PrivateSwitchBase-input-4"
+                        data-indeterminate="false"
+                        type="checkbox"
+                        value="false"
+                      />
+                      <svg
+                        class="w-4 h-4"
+                        fill="none"
+                        height="14"
+                        viewBox="0 0 14 14"
+                        width="14"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <title>
+                          unchecked checkbox
+                        </title>
+                        <rect
+                          height="13"
+                          stroke="black"
+                          width="13"
+                          x="0.5"
+                          y="0.5"
+                        />
+                      </svg>
+                    </span>
+                    <span
+                      class="MuiTouchRipple-root"
+                    />
+                  </span>
+                  <span
+                    class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
+                  >
+                    3.8
+                  </span>
+                </label>
+                <label
+                  class="MuiFormControlLabel-root items-start m-0"
+                >
+                  <span
+                    aria-disabled="false"
+                    class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current py-1 pr-2 pl-0"
+                  >
+                    <span
+                      class="MuiIconButton-label"
+                    >
+                      <input
+                        class="PrivateSwitchBase-input-4"
+                        data-indeterminate="false"
+                        type="checkbox"
+                        value="false"
+                      />
+                      <svg
+                        class="w-4 h-4"
+                        fill="none"
+                        height="14"
+                        viewBox="0 0 14 14"
+                        width="14"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <title>
+                          unchecked checkbox
+                        </title>
+                        <rect
+                          height="13"
+                          stroke="black"
+                          width="13"
+                          x="0.5"
+                          y="0.5"
+                        />
+                      </svg>
+                    </span>
+                    <span
+                      class="MuiTouchRipple-root"
+                    />
+                  </span>
+                  <span
+                    class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
+                  >
+                    3.9
+                  </span>
+                </label>
+              </div>
+            </fieldset>
+            <fieldset
+              class="MuiFormControl-root"
+            >
+              <legend
+                class="MuiFormLabel-root font-semibold text-black text-sm mb-2"
               >
-                two
-              </span>
-            </label>
+                Operating system
+              </legend>
+              <div
+                class="MuiFormGroup-root gap-2 justify-items-start"
+              >
+                <label
+                  class="MuiFormControlLabel-root items-start m-0"
+                >
+                  <span
+                    aria-disabled="false"
+                    class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current py-1 pr-2 pl-0"
+                  >
+                    <span
+                      class="MuiIconButton-label"
+                    >
+                      <input
+                        class="PrivateSwitchBase-input-4"
+                        data-indeterminate="false"
+                        type="checkbox"
+                        value="false"
+                      />
+                      <svg
+                        class="w-4 h-4"
+                        fill="none"
+                        height="14"
+                        viewBox="0 0 14 14"
+                        width="14"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <title>
+                          unchecked checkbox
+                        </title>
+                        <rect
+                          height="13"
+                          stroke="black"
+                          width="13"
+                          x="0.5"
+                          y="0.5"
+                        />
+                      </svg>
+                    </span>
+                    <span
+                      class="MuiTouchRipple-root"
+                    />
+                  </span>
+                  <span
+                    class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
+                  >
+                    Linux
+                  </span>
+                </label>
+                <label
+                  class="MuiFormControlLabel-root items-start m-0"
+                >
+                  <span
+                    aria-disabled="false"
+                    class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current py-1 pr-2 pl-0"
+                  >
+                    <span
+                      class="MuiIconButton-label"
+                    >
+                      <input
+                        class="PrivateSwitchBase-input-4"
+                        data-indeterminate="false"
+                        type="checkbox"
+                        value="false"
+                      />
+                      <svg
+                        class="w-4 h-4"
+                        fill="none"
+                        height="14"
+                        viewBox="0 0 14 14"
+                        width="14"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <title>
+                          unchecked checkbox
+                        </title>
+                        <rect
+                          height="13"
+                          stroke="black"
+                          width="13"
+                          x="0.5"
+                          y="0.5"
+                        />
+                      </svg>
+                    </span>
+                    <span
+                      class="MuiTouchRipple-root"
+                    />
+                  </span>
+                  <span
+                    class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
+                  >
+                    Mac
+                  </span>
+                </label>
+                <label
+                  class="MuiFormControlLabel-root items-start m-0"
+                >
+                  <span
+                    aria-disabled="false"
+                    class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current py-1 pr-2 pl-0"
+                  >
+                    <span
+                      class="MuiIconButton-label"
+                    >
+                      <input
+                        class="PrivateSwitchBase-input-4"
+                        data-indeterminate="false"
+                        type="checkbox"
+                        value="false"
+                      />
+                      <svg
+                        class="w-4 h-4"
+                        fill="none"
+                        height="14"
+                        viewBox="0 0 14 14"
+                        width="14"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <title>
+                          unchecked checkbox
+                        </title>
+                        <rect
+                          height="13"
+                          stroke="black"
+                          width="13"
+                          x="0.5"
+                          y="0.5"
+                        />
+                      </svg>
+                    </span>
+                    <span
+                      class="MuiTouchRipple-root"
+                    />
+                  </span>
+                  <span
+                    class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
+                  >
+                    Windows
+                  </span>
+                </label>
+              </div>
+            </fieldset>
+            <fieldset
+              class="MuiFormControl-root"
+            >
+              <legend
+                class="MuiFormLabel-root font-semibold text-black text-sm mb-2"
+              >
+                Development status
+              </legend>
+              <div
+                class="MuiFormGroup-root gap-2 justify-items-start"
+              >
+                <label
+                  class="MuiFormControlLabel-root items-start m-0"
+                >
+                  <span
+                    aria-disabled="false"
+                    class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current py-1 pr-2 pl-0"
+                  >
+                    <span
+                      class="MuiIconButton-label"
+                    >
+                      <input
+                        class="PrivateSwitchBase-input-4"
+                        data-indeterminate="false"
+                        type="checkbox"
+                        value="false"
+                      />
+                      <svg
+                        class="w-4 h-4"
+                        fill="none"
+                        height="14"
+                        viewBox="0 0 14 14"
+                        width="14"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <title>
+                          unchecked checkbox
+                        </title>
+                        <rect
+                          height="13"
+                          stroke="black"
+                          width="13"
+                          x="0.5"
+                          y="0.5"
+                        />
+                      </svg>
+                    </span>
+                    <span
+                      class="MuiTouchRipple-root"
+                    />
+                  </span>
+                  <span
+                    class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
+                  >
+                    Only show stable plugins
+                  </span>
+                </label>
+              </div>
+            </fieldset>
+            <fieldset
+              class="MuiFormControl-root"
+            >
+              <legend
+                class="MuiFormLabel-root font-semibold text-black text-sm mb-2"
+              >
+                License
+              </legend>
+              <div
+                class="MuiFormGroup-root gap-2 justify-items-start"
+              >
+                <label
+                  class="MuiFormControlLabel-root items-start m-0"
+                >
+                  <span
+                    aria-disabled="false"
+                    class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current py-1 pr-2 pl-0"
+                  >
+                    <span
+                      class="MuiIconButton-label"
+                    >
+                      <input
+                        class="PrivateSwitchBase-input-4"
+                        data-indeterminate="false"
+                        type="checkbox"
+                        value="false"
+                      />
+                      <svg
+                        class="w-4 h-4"
+                        fill="none"
+                        height="14"
+                        viewBox="0 0 14 14"
+                        width="14"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <title>
+                          unchecked checkbox
+                        </title>
+                        <rect
+                          height="13"
+                          stroke="black"
+                          width="13"
+                          x="0.5"
+                          y="0.5"
+                        />
+                      </svg>
+                    </span>
+                    <span
+                      class="MuiTouchRipple-root"
+                    />
+                  </span>
+                  <span
+                    class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
+                  >
+                    Only show plugins with open source license
+                  </span>
+                </label>
+              </div>
+            </fieldset>
           </div>
-        </fieldset>
+        </div>
       </div>
       <h3
         class="col-span-2 font-bold text-xl my-6 screen-875:col-start-2"
