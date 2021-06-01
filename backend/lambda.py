@@ -399,7 +399,7 @@ def notify_new_packages(existing_packages: dict, new_packages: dict):
         key = zulip_credentials.split(":")[1]
         for package, version in new_packages.items():
             if package not in existing_packages:
-                send_zulip_message(username, key, package, f'New plugin published with version {version}!')
+                send_zulip_message(username, key, package, f'A new plugin has been published on the napari hub! Check out [{package}](https://napari-hub.org/plugins/{package})!')
             elif existing_packages[package] != version:
                 send_zulip_message(username, key, package, f'A new version {version} has been published!')
 
