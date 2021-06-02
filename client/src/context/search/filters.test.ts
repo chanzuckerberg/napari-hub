@@ -12,6 +12,7 @@ import { SearchResult } from './search.types';
 function getResults(...plugins: PluginIndexData[]): SearchResult[] {
   return plugins.map((plugin) => ({
     index: 0,
+    matches: {},
     plugin,
   }));
 }
