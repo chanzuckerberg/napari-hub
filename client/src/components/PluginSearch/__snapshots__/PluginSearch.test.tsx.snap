@@ -823,14 +823,16 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                         >
                           <legend
                             class="MuiFormLabel-root font-semibold text-black text-sm mb-2"
+                            data-testid="title"
                           >
                             Python versions
                           </legend>
                           <div
-                            class="MuiFormGroup-root gap-2 justify-items-start"
+                            class="MuiFormGroup-root gap-2"
                           >
                             <label
                               class="MuiFormControlLabel-root items-start m-0"
+                              data-testid="input"
                             >
                               <span
                                 aria-disabled="false"
@@ -883,6 +885,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                             </label>
                             <label
                               class="MuiFormControlLabel-root items-start m-0"
+                              data-testid="input"
                             >
                               <span
                                 aria-disabled="false"
@@ -929,6 +932,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                             </label>
                             <label
                               class="MuiFormControlLabel-root items-start m-0"
+                              data-testid="input"
                             >
                               <span
                                 aria-disabled="false"
@@ -975,6 +979,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                             </label>
                             <label
                               class="MuiFormControlLabel-root items-start m-0"
+                              data-testid="input"
                             >
                               <span
                                 aria-disabled="false"
@@ -1026,14 +1031,16 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                         >
                           <legend
                             class="MuiFormLabel-root font-semibold text-black text-sm mb-2"
+                            data-testid="title"
                           >
                             Operating system
                           </legend>
                           <div
-                            class="MuiFormGroup-root gap-2 justify-items-start"
+                            class="MuiFormGroup-root gap-2"
                           >
                             <label
                               class="MuiFormControlLabel-root items-start m-0"
+                              data-testid="input"
                             >
                               <span
                                 aria-disabled="false"
@@ -1080,6 +1087,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                             </label>
                             <label
                               class="MuiFormControlLabel-root items-start m-0"
+                              data-testid="input"
                             >
                               <span
                                 aria-disabled="false"
@@ -1126,6 +1134,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                             </label>
                             <label
                               class="MuiFormControlLabel-root items-start m-0"
+                              data-testid="input"
                             >
                               <span
                                 aria-disabled="false"
@@ -1177,14 +1186,16 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                         >
                           <legend
                             class="MuiFormLabel-root font-semibold text-black text-sm mb-2"
+                            data-testid="title"
                           >
                             Development status
                           </legend>
                           <div
-                            class="MuiFormGroup-root gap-2 justify-items-start"
+                            class="MuiFormGroup-root gap-2"
                           >
                             <label
                               class="MuiFormControlLabel-root items-start m-0"
+                              data-testid="input"
                             >
                               <span
                                 aria-disabled="false"
@@ -1236,14 +1247,16 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                         >
                           <legend
                             class="MuiFormLabel-root font-semibold text-black text-sm mb-2"
+                            data-testid="title"
                           >
                             License
                           </legend>
                           <div
-                            class="MuiFormGroup-root gap-2 justify-items-start"
+                            class="MuiFormGroup-root gap-2"
                           >
                             <label
                               class="MuiFormControlLabel-root items-start m-0"
+                              data-testid="input"
                             >
                               <span
                                 aria-disabled="false"
@@ -1318,14 +1331,16 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
             >
               <legend
                 class="MuiFormLabel-root font-semibold text-black text-sm mb-2"
+                data-testid="title"
               >
                 Python versions
               </legend>
               <div
-                class="MuiFormGroup-root gap-2 justify-items-start"
+                class="MuiFormGroup-root gap-2"
               >
                 <label
                   class="MuiFormControlLabel-root items-start m-0"
+                  data-testid="input"
                 >
                   <span
                     aria-disabled="false"
@@ -1378,6 +1393,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                 </label>
                 <label
                   class="MuiFormControlLabel-root items-start m-0"
+                  data-testid="input"
                 >
                   <span
                     aria-disabled="false"
@@ -1424,6 +1440,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                 </label>
                 <label
                   class="MuiFormControlLabel-root items-start m-0"
+                  data-testid="input"
                 >
                   <span
                     aria-disabled="false"
@@ -1470,6 +1487,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                 </label>
                 <label
                   class="MuiFormControlLabel-root items-start m-0"
+                  data-testid="input"
                 >
                   <span
                     aria-disabled="false"
@@ -1521,14 +1539,16 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
             >
               <legend
                 class="MuiFormLabel-root font-semibold text-black text-sm mb-2"
+                data-testid="title"
               >
                 Operating system
               </legend>
               <div
-                class="MuiFormGroup-root gap-2 justify-items-start"
+                class="MuiFormGroup-root gap-2"
               >
                 <label
                   class="MuiFormControlLabel-root items-start m-0"
+                  data-testid="input"
                 >
                   <span
                     aria-disabled="false"
@@ -1575,6 +1595,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                 </label>
                 <label
                   class="MuiFormControlLabel-root items-start m-0"
+                  data-testid="input"
                 >
                   <span
                     aria-disabled="false"
@@ -1621,6 +1642,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                 </label>
                 <label
                   class="MuiFormControlLabel-root items-start m-0"
+                  data-testid="input"
                 >
                   <span
                     aria-disabled="false"
@@ -1672,14 +1694,16 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
             >
               <legend
                 class="MuiFormLabel-root font-semibold text-black text-sm mb-2"
+                data-testid="title"
               >
                 Development status
               </legend>
               <div
-                class="MuiFormGroup-root gap-2 justify-items-start"
+                class="MuiFormGroup-root gap-2"
               >
                 <label
                   class="MuiFormControlLabel-root items-start m-0"
+                  data-testid="input"
                 >
                   <span
                     aria-disabled="false"
@@ -1731,14 +1755,16 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
             >
               <legend
                 class="MuiFormLabel-root font-semibold text-black text-sm mb-2"
+                data-testid="title"
               >
                 License
               </legend>
               <div
-                class="MuiFormGroup-root gap-2 justify-items-start"
+                class="MuiFormGroup-root gap-2"
               >
                 <label
                   class="MuiFormControlLabel-root items-start m-0"
+                  data-testid="input"
                 >
                   <span
                     aria-disabled="false"

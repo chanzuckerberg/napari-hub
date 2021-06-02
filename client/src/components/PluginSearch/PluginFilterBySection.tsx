@@ -8,7 +8,7 @@ import {
 
 import { CheckboxIcon } from '@/components/common/icons';
 
-interface FilterItem {
+export interface FilterItem {
   label: string;
   enabled: boolean;
   setEnabled: (enabled: boolean) => void;
@@ -28,10 +28,11 @@ export function PluginFilterBySection({ title, filters }: Props) {
       <FormLabel
         component="legend"
         className="font-semibold text-black text-sm mb-2"
+        data-testid="title"
       >
         {title}
       </FormLabel>
-      <FormGroup className="gap-2 justify-items-start">
+      <FormGroup className="gap-2">
         {filters.map((filter) => (
           <FormControlLabel
             className="items-start m-0"
@@ -47,6 +48,8 @@ export function PluginFilterBySection({ title, filters }: Props) {
               />
             }
             label={filter.label}
+            key={filter.label}
+            data-testid="input"
           />
         ))}
       </FormGroup>
