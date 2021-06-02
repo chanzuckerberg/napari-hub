@@ -37,6 +37,7 @@
     "@types/lodash-es": "^4.17.4",
     "@types/unist": "^2.0.3",
     "axios": "^0.21.1",
+    "cheerio": "^1.0.0-rc.9",
     "clsx": "^1.1.1",
     "dayjs": "^1.10.4",
     "framer-motion": "^4.1.3",

@@ -19,6 +19,37 @@ interface Props {
   error?: string;
 }
 
+/**
+ * Helper function that renders the textual content of the Markdown string. This
+ * works by rendering the Markdown to HTML and then using a parser to extract
+ * only the text.
+ *
+ * @param markdown The markdown string.
+ * @returns The text content of the Markdown
+ */
+async function renderDescription(markdown: string): Promise<string> {
+  // Dynamically import modules so that we only use them on the server.
+  const unified = (await import('unified')).default;
+  const markdownParser = (await import('remark-parse')).default;
+  const remark2rehype = (await import('remark-rehype')).default;
+  const rehype2html = (await import('rehype-stringify')).default;
+  const cheerio = (await import('cheerio')).default;
+
+  // Render Markdown to HTML
+  const plugins = [markdownParser, remark2rehype, rehype2html];
+  const processor = plugins.reduce(
+    (currentProcessor, plugin) => currentProcessor.use(plugin),
+    unified(),
+  );
+
+  const html = String(processor.processSync(markdown));
+  const $ = cheerio.load(`<main>${html}</main>`);
+
+  // The `text()` method returns only the text content recursively for each element:
+  // https://cheerio.js.org/classes/cheerio.html#text
+  return $('main').text();
+}
+
 export async function getServerSideProps() {
   const url = '/plugins/index';
   const props: Props = {};
@@ -28,6 +59,16 @@ export async function getServerSideProps() {
     const {
       data: { licenses },
     } = await spdxLicenseDataAPI.get<SpdxLicenseResponse>('');
+
+    // Replace plugin description with rendered version for indexing. This is
+    // necessary so that we don't include hidden links and HTML tags in the
+    // search index.
+    await Promise.all(
+      index.map(async (plugin) => {
+        // eslint-disable-next-line no-param-reassign
+        plugin.description = await renderDescription(plugin.description);
+      }),
+    );
 
     Object.assign(props, { index, licenses });
   } catch (err) {
