@@ -1,12 +1,26 @@
 import clsx from 'clsx';
+import { isEmpty } from 'lodash';
 
-import { Link } from '@/components/common';
+import { Link, TextHighlighter } from '@/components/common';
+import { SearchResultMatch } from '@/context/search';
 import { PluginIndexData } from '@/types';
 import { formatDate, formatOperatingSystem } from '@/utils';
 
 interface Props {
+  /**
+   * Class applied to root element.
+   */
   className?: string;
+
+  /**
+   * The plugin data.
+   */
   plugin: PluginIndexData;
+
+  /**
+   * Search engine matches for text highlighting.
+   */
+  matches: Partial<Record<string, SearchResultMatch>>;
 }
 
 interface SearchResultItem {
@@ -15,9 +29,39 @@ interface SearchResultItem {
 }
 
 /**
+ * Number of characters to show on the left and right sides of the matched
+ * substring.
+ */
+const MAX_PREVIEW_LENGTH = 20;
+
+/**
+ * Helper function that returns a substring of the plugin description that
+ * includes the highlighted word and a constant buffer before and after the
+ * highlighted word.
+ *
+ * @param description The plugin description
+ * @param start The start index of the highlighted word
+ * @param end The end index of the highlighted word
+ * @returns The description preview substring
+ */
+function getDescriptionPreview(
+  description: string,
+  match: SearchResultMatch,
+): string {
+  const minLength = 0;
+  const maxLength = description.length - 1;
+
+  const previewStart = Math.max(minLength, match.start - MAX_PREVIEW_LENGTH);
+  const previewEnd = Math.min(maxLength, match.end + MAX_PREVIEW_LENGTH);
+  const preview = description.slice(previewStart, previewEnd + 1);
+
+  return `...${preview}...`;
+}
+
+/**
  * Component for rendering a plugin search result.
  */
-export function PluginSearchResult({ className, plugin }: Props) {
+export function PluginSearchResult({ className, matches, plugin }: Props) {
   // TODO consolidate with PluginGithubData component in PluginMetadata.tsx
   const items: SearchResultItem[] = [
     {
@@ -41,6 +85,22 @@ export function PluginSearchResult({ className, plugin }: Props) {
       value: plugin.operating_system.map(formatOperatingSystem).join(', '),
     },
   ];
+
+  const isSearching = !isEmpty(matches);
+
+  /**
+   * Helper function to render highlighted text when searching.
+   *
+   * @param text The text to render.
+   * @param word The word that needs to be highlighted.
+   */
+  function renderText(text: string, word: string | undefined) {
+    return (
+      <TextHighlighter disabled={!isSearching} words={[word]}>
+        {text}
+      </TextHighlighter>
+    );
+  }
 
   return (
     <Link
@@ -66,12 +126,12 @@ export function PluginSearchResult({ className, plugin }: Props) {
               className="inline font-bold text-lg"
               data-testid="searchResultName"
             >
-              {plugin.name}
+              {renderText(plugin.name, matches.name?.match)}
             </h4>
 
             {/* Plugin summary */}
             <p className="mt-2" data-testid="searchResultSummary">
-              {plugin.summary}
+              {renderText(plugin.summary, matches.summary?.match)}
             </p>
           </div>
 
@@ -83,10 +143,20 @@ export function PluginSearchResult({ className, plugin }: Props) {
                 key={author.name}
                 data-testid="searchResultAuthor"
               >
-                {author.name}
+                {renderText(author.name, matches[author.name]?.match)}
               </li>
             ))}
           </ul>
+
+          {/* Search preview of plugin description. */}
+          {isSearching && matches.description && (
+            <TextHighlighter
+              className="italic text-xs"
+              words={[matches.description.match]}
+            >
+              {getDescriptionPreview(plugin.description, matches.description)}
+            </TextHighlighter>
+          )}
         </div>
 
         {/* Plugin metadata */}
