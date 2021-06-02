@@ -21,6 +21,27 @@ export interface SearchEngine {
 }
 
 /**
+ * Interface for search result matches. Matches are used for highlighting
+ * matched words in the plugin data.
+ */
+export interface SearchResultMatch {
+  /**
+   * The start index of the matched substring.
+   */
+  start: number;
+
+  /**
+   * The end index of the matched substring.
+   */
+  end: number;
+
+  /**
+   * The substring extracted using the start and end indices.
+   */
+  match: string;
+}
+
+/**
  * Generic interface for storing a search result. This is used to standardize
  * the search result object so that different libraries / APIs could be used if
  * necessary.
@@ -35,4 +56,10 @@ export interface SearchResult {
    * The plugin data.
    */
   plugin: PluginIndexData;
+
+  /**
+   * Dictionary storing the first text match for a particular key in the plugin
+   * index data.
+   */
+  matches: Partial<Record<string, SearchResultMatch>>;
 }

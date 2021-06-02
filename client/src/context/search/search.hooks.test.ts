@@ -49,8 +49,10 @@ describe('useSearch()', () => {
   const mockPlugin: SearchResult = {
     index: 6,
     plugin: pluginIndex[6],
+    matches: {},
   };
   const pluginIndexList = pluginIndex.map((plugin, index) => ({
+    matches: {},
     index,
     plugin,
   }));
@@ -77,7 +79,7 @@ describe('useSearch()', () => {
   it('should return match in search result list', () => {
     const { result } = renderHook(() => useSearch(pluginIndex));
     act(() => result.current.searchForm.setQuery('video'));
-    expect(result.current.results[0]).toEqual(mockPlugin);
+    expect(result.current.results[0]).toMatchObject(mockPlugin);
   });
 });
 

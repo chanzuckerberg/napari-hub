@@ -67,9 +67,10 @@ function useSearchResults(
     // If the search engine hasn't been created yet or if the query is empty,
     // then return the full list of plugins.
     if (!engine || !query) {
-      return index.map((plugin, pluginIndex) => ({
+      return index.map<SearchResult>((plugin, pluginIndex) => ({
         plugin,
         index: pluginIndex,
+        matches: {},
       }));
     }
 
