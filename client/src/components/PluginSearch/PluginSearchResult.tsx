@@ -32,7 +32,7 @@ interface SearchResultItem {
  * Number of characters to show on the left and right sides of the matched
  * substring.
  */
-const MAX_PREVIEW_LENGTH = 20;
+const MAX_PREVIEW_LENGTH = 40;
 
 /**
  * Helper function that returns a substring of the plugin description that
@@ -48,14 +48,36 @@ function getDescriptionPreview(
   description: string,
   match: SearchResultMatch,
 ): string {
-  const minLength = 0;
-  const maxLength = description.length - 1;
+  const minIndex = 0;
+  const maxIndex = description.length - 1;
 
-  const previewStart = Math.max(minLength, match.start - MAX_PREVIEW_LENGTH);
-  const previewEnd = Math.min(maxLength, match.end + MAX_PREVIEW_LENGTH);
-  const preview = description.slice(previewStart, previewEnd + 1);
+  const start = match.start - MAX_PREVIEW_LENGTH;
+  const end = match.end + MAX_PREVIEW_LENGTH;
+  let previewStart = Math.max(minIndex, start);
+  let previewEnd = Math.min(maxIndex, end);
 
-  return `...${preview}...`;
+  // If the start / end index overflows, append `diff` characters to the other
+  // side of the preview.
+  if (start < minIndex) {
+    const diff = minIndex - start;
+    previewEnd = Math.min(maxIndex, previewEnd + diff);
+  }
+  if (end >= maxIndex) {
+    const diff = end - maxIndex;
+    previewStart = Math.max(minIndex, start - diff);
+  }
+
+  let preview = description.slice(previewStart, previewEnd + 1);
+
+  // Only append `...` if the preview doesn't reach the start / end of the description.
+  if (previewStart > minIndex) {
+    preview = `...${preview}`;
+  }
+  if (previewEnd < maxIndex) {
+    preview += '...';
+  }
+
+  return preview;
 }
 
 /**
