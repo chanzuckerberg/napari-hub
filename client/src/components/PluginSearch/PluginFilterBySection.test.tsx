@@ -1,4 +1,5 @@
 import { fireEvent, render } from '@testing-library/react';
+import { zip } from 'lodash';
 
 import { FilterItem, PluginFilterBySection } from './PluginFilterBySection';
 
@@ -28,13 +29,12 @@ describe('Plugin filter-by section', () => {
 
     expect(inputs).toHaveLength(filters.length);
 
-    for (let i = 0; i < filters.length; i += 1) {
-      const filter = filters[i];
-      const input = inputs[i];
-
-      expect(input.lastElementChild?.innerHTML).toBe(filter.label);
-      expect(input.querySelector('input')?.checked).toBe(filter.enabled);
-    }
+    (zip(filters, inputs) as Array<[FilterItem, HTMLElement]>).forEach(
+      ([filter, input]) => {
+        expect(input.lastElementChild?.innerHTML).toBe(filter.label);
+        expect(input.querySelector('input')?.checked).toBe(filter.enabled);
+      },
+    );
   });
 
   it('should call setEnabled when checked', () => {
@@ -59,14 +59,13 @@ describe('Plugin filter-by section', () => {
 
     expect(inputs).toHaveLength(filters.length);
 
-    for (let i = 0; i < filters.length; i += 1) {
-      const filter = filters[i];
-      const input = inputs[i];
-
-      const checkbox = input.querySelector('input');
-      expect(checkbox).not.toBeUndefined();
-      fireEvent.click(checkbox as HTMLElement);
-      expect(filter.setEnabled).toHaveBeenCalledWith(!filter.enabled);
-    }
+    (zip(filters, inputs) as Array<[FilterItem, HTMLElement]>).forEach(
+      ([filter, input]) => {
+        const checkbox = input.querySelector('input');
+        expect(checkbox).not.toBeUndefined();
+        fireEvent.click(checkbox as HTMLElement);
+        expect(filter.setEnabled).toHaveBeenCalledWith(!filter.enabled);
+      },
+    );
   });
 });
