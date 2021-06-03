@@ -1,5 +1,4 @@
 import os
-import os.path
 import concurrent.futures
 import re
 from datetime import datetime, timedelta, timezone
@@ -22,9 +21,8 @@ from google.cloud import bigquery
 
 # Environment variable set through lambda terraform infra config
 bucket = os.environ.get('BUCKET')
-bucket_path = os.environ.get('BUCKET_PATH', '')
 slack_url = os.environ.get('SLACK_URL')
-zulip_credentials = os.environ.get('ZULIP_CREDENTIALS')
+zulip_credentials = os.environ.get('ZULIP_CREDENTIALS', "")
 cache_ttl = int(os.environ.get('TTL', "4"))
 endpoint_url = os.environ.get('BOTO_ENDPOINT_URL', None)
 plugins_key = 'cache/plugins.json'
@@ -225,7 +223,8 @@ def get_plugins() -> dict:
 
     if packages:
         packages = filter_excluded_plugin(packages)
-        notify_new_packages(get_cache(plugins_key), packages)
+        if zulip_credentials is not None and len(zulip_credentials.split(":")) == 2:
+            notify_new_packages(get_cache(plugins_key), packages)
         return cache(packages, plugins_key)
 
     send_alert(f"({datetime.now()})Actions Required! Failed to query pypi for "
@@ -282,7 +281,7 @@ def cache_available(key: str, ttl: [timedelta, None]) -> bool:
     if bucket is None:
         return False
     try:
-        last_modified = s3.Object(bucket, os.path.join(bucket_path, key)).last_modified
+        last_modified = s3.Object(bucket, key).last_modified
         if ttl is None:
             return True
         if last_modified is None or \
@@ -378,18 +377,20 @@ def notify_new_packages(existing_packages: dict, new_packages: dict):
     :param existing_packages: existing packages in cache
     :param new_packages: new packages found
     """
-    if zulip_credentials is not None:
-        username = zulip_credentials.split(":")[0]
-        key = zulip_credentials.split(":")[1]
-        for package, version in new_packages.items():
-            if package not in existing_packages:
-                send_zulip_message(username, key, package, f'A new plugin has been published on the napari hub! Check out [{package}](https://napari-hub.org/plugins/{package})!')
-            elif existing_packages[package] != version:
-                send_zulip_message(username, key, package, f'A new version of [{package}](https://napari-hub.org/plugins/{package}) is available on the napari hub! Check out [{version}](https://napari-hub.org/plugins/{package})!')
+    username = zulip_credentials.split(":")[0]
+    key = zulip_credentials.split(":")[1]
+    for package, version in new_packages.items():
+        if package not in existing_packages:
+            send_zulip_message(username, key, package,
+                               f'A new plugin has been published on the napari hub! Check out [{package}](https://napari-hub.org/plugins/{package})!')
+        elif existing_packages[package] != version:
+            send_zulip_message(username, key, package,
+                               f'A new version of [{package}](https://napari-hub.org/plugins/{package}) is available on the napari hub! Check out [{version}](https://napari-hub.org/plugins/{package})!')
 
-        for package, version in existing_packages.items():
-            if package not in new_packages:
-                send_zulip_message(username, key, package, f'This plugin is no longer available on the [napari hub](https://napari-hub.org) :(')
+    for package, version in existing_packages.items():
+        if package not in new_packages:
+            send_zulip_message(username, key, package,
+                               f'This plugin is no longer available on the [napari hub](https://napari-hub.org) :(')
 
 
 def send_zulip_message(username: str, key: str, topic: str, message: str):
@@ -441,7 +442,7 @@ def get_cache(key: str) -> dict:
     :param key: key to the cache to get
     :return: file content for the key
     """
-    return json.loads(s3.Object(bucket, os.path.join(bucket_path, key)).get()['Body'].read())
+    return json.loads(s3.Object(bucket, key).get()['Body'].read())
 
 
 def cache(content: [dict, list], key: str) -> dict:
@@ -461,5 +462,5 @@ def cache(content: [dict, list], key: str) -> dict:
     with tempfile.NamedTemporaryFile(mode="w") as fp:
         fp.write(json.dumps(content))
         fp.flush()
-        s3_client.upload_file(fp.name, bucket, os.path.join(bucket_path, key))
+        s3_client.upload_file(fp.name, bucket, key)
     return content
