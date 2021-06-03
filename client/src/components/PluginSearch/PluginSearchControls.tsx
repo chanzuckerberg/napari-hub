@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import { AnimateSharedLayout } from 'framer-motion';
 
+import { PluginFilterByForm } from './PluginFilterByForm';
 import { PluginSortByForm } from './PluginSortByForm';
 
 /**
@@ -16,6 +17,7 @@ export function PluginSearchControls() {
     >
       <AnimateSharedLayout>
         <PluginSortByForm />
+        <PluginFilterByForm />
       </AnimateSharedLayout>
     </div>
   );
