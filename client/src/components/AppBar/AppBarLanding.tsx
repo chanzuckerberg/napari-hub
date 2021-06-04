@@ -45,6 +45,7 @@ export function AppBarLanding() {
       classes={{
         // Use 3-column layout instead of 4-column.
         fourColumn: 'screen-1150:grid-cols-napari-3',
+        gap: 'gap-x-6 md:gap-x-12',
       }}
       component="header"
     >
@@ -59,7 +60,7 @@ export function AppBarLanding() {
       <h1
         className={clsx(
           'font-bold col-span-full',
-          '-mt-12 screen-1425:m-0',
+          'mb-6 md:mb-12',
           'screen-1425:col-start-2 screen-1425:col-span-3',
           styles.heading,
         )}
@@ -87,7 +88,7 @@ export function AppBarLanding() {
 
       {/* Render as separate list so that it renders below everything on smaller screens. */}
       <MediaFragment lessThan="screen-725">
-        <List className="col-span-2 px-6">{lastListNode}</List>
+        <List className="col-span-2 px-6 mt-4">{lastListNode}</List>
       </MediaFragment>
     </ColumnLayout>
   );
