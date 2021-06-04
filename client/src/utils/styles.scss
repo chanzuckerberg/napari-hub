@@ -14,3 +14,9 @@ $min-content: strip(theme('screens.screen-300'));
 
   @return $value;
 }
+/**
+ * Function for calculating the rem value for another value.
+ */
+@function calculate-rem($value) {
+  @return $value / 16px * 1rem;
+}
