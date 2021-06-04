@@ -1,5 +1,8 @@
+import { Divider } from '@material-ui/core';
 import clsx from 'clsx';
 import { AnimateSharedLayout } from 'framer-motion';
+
+import { Media } from '@/components/common/media';
 
 import { PluginFilterByForm } from './PluginFilterByForm';
 import { PluginSortByForm } from './PluginSortByForm';
@@ -20,6 +23,11 @@ export function PluginSearchControls() {
     >
       <AnimateSharedLayout>
         <PluginSortByForm />
+
+        <Media className="my-6" greaterThanOrEqual="screen-875">
+          <Divider className="bg-black" />
+        </Media>
+
         <PluginFilterByForm />
       </AnimateSharedLayout>
     </aside>
