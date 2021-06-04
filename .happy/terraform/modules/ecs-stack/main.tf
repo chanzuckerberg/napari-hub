@@ -66,7 +66,7 @@ module frontend_service {
   task_role_arn     = local.frontend_ecs_role_arn
   service_port      = 8080
   env               = var.env
-  host_match        = try(join(".", [module.frontend_dns[0].dns_prefix, local.external_dns]), "")
+  host_match        = try(join(".", [module.frontend_dns.dns_prefix, local.external_dns]), "")
   priority          = local.priority
   api_url           = module.api_gateway_proxy_stage.invoke_url
   frontend_url      = local.frontend_url
