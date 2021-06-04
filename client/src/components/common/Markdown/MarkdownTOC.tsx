@@ -5,6 +5,7 @@ import { getHeadersFromMarkdown } from './Markdown.utils';
 interface Props {
   className?: string;
   markdown: string;
+  free?: boolean;
 }
 
 /**
@@ -15,8 +16,10 @@ interface Props {
  * For this to work, there needs to be a corresponding `<Markdown />` component
  * somewhere with the same markdown content.
  */
-export function MarkdownTOC({ className, markdown }: Props) {
+export function MarkdownTOC({ className, markdown, free }: Props) {
   const headers = getHeadersFromMarkdown(markdown);
 
-  return <TableOfContents className={className} headers={headers} />;
+  return (
+    <TableOfContents className={className} headers={headers} free={free} />
+  );
 }

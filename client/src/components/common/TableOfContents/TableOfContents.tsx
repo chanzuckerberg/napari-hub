@@ -6,17 +6,25 @@ import { TOCHeader } from './TableOfContents.types';
 interface Props {
   className?: string;
   headers: TOCHeader[];
+  free?: boolean;
 }
 
 /**
  * Component for rendering TOC from the given headers. Highlighting will
  * only work if the headers match those present on the page.
  */
-export function TableOfContents({ className, headers }: Props) {
+export function TableOfContents({ className, headers, free }: Props) {
   const activeHeader = useActiveHeader(headers);
 
   return (
-    <ul className={clsx(className, 'flex flex-col', 'border-l border-black')}>
+    <ul
+      className={clsx(
+        className,
+        'flex flex-col',
+        'border-l border-black',
+        !free && 'fixed',
+      )}
+    >
       {headers.map((header) => {
         const isActive = header.id === activeHeader;
 

@@ -1,4 +1,5 @@
-import { MarkdownHeader } from './Markdown.types';
+import { TOCHeader } from '@/components/common/TableOfContents/TableOfContents.types';
+
 import { getHeadersFromMarkdown } from './Markdown.utils';
 
 const MARKDOWN_WITHOUT_HEADERS = `
@@ -35,7 +36,7 @@ describe('getHeadersFromMarkdown()', () => {
 
   it('should return array of headers', () => {
     const headers = getHeadersFromMarkdown(MARKDOWN_WITH_HEADERS);
-    const expected: MarkdownHeader[] = [
+    const expected: TOCHeader[] = [
       {
         id: 'foo',
         text: 'Foo',
