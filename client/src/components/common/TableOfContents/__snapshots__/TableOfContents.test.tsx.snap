@@ -3,7 +3,7 @@
 exports[`Table of Contents should match snapshot 1`] = `
 <DocumentFragment>
   <ul
-    class="flex flex-col border-l border-black"
+    class="flex flex-col border-l border-black fixed"
   >
     <li
       class="flex pl-6 h-6 border-l-4 my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-black"
