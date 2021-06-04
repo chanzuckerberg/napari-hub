@@ -8,10 +8,9 @@ on:
       - "v*"
 
 jobs:
-  prod:
-    name: deploy to production
-    runs-on: ubuntu-latest
-    if: github.repository == 'chanzuckerberg/napari-hub' && startsWith(github.ref, 'refs/tags/v')
+  push-image:
+    runs-on: ubuntu-20.04
+    if: github.repository == 'chanzuckerberg/napari-hub' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
     steps:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -27,39 +26,46 @@ jobs:
           registry: ${{ secrets.ECR_REPO }}
       - name: Checkout Repo
         uses: actions/checkout@v2
-      - name: Deploy Changes
+      - name: Docker build, push, and tag
         shell: bash
+        # TODO: Remove this environment variable and the "--env ${ENV}" from the script below
+        # after we have unified the ECR repos
         env:
-          TFE_TOKEN: ${{ secrets.TFE_TOKEN }}
+          ENV: ${{ fromJSON('["prod", "staging"]')[github.ref == 'refs/heads/main'] }}
         run: |
-          pip install --upgrade pip
           pip install -r .happy/requirements.txt
-          scripts/happy --profile="" --env prod update prod
-  staging:
-    name: deploy to staging
-    runs-on: ubuntu-latest
-    if: github.repository == 'chanzuckerberg/napari-hub' && github.ref == 'refs/heads/main'
-    steps:
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-west-2
-          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
-          role-duration-seconds: 900
-      - name: Login to ECR
-        uses: docker/login-action@v1
-        with:
-          registry: ${{ secrets.ECR_REPO }}
-      - name: Checkout Repo
-        uses: actions/checkout@v2
-      - name: Deploy Changes
-        shell: bash
-        env:
-          TFE_TOKEN: ${{ secrets.TFE_TOKEN }}
-        run: |
-          pip install --upgrade pip
-          pip install -r .happy/requirements.txt
-          scripts/happy --profile="" --env staging update staging
+          scripts/happy --profile="" --env ${ENV} push --extra-tag sha-${GITHUB_SHA:0:8} --extra-tag build-${GITHUB_RUN_NUMBER} --extra-tag branch-$(echo ${GITHUB_REF#refs/heads/} | sed 's/[\+\/]/-/g') frontend backend
+      # - uses: 8398a7/action-slack@v3
+      #   with:
+      #     status: ${{ job.status }}
+      #     fields: repo,commit,author,eventName,workflow,job,mention
+      #     mention: 'here'
+      #   env:
+      #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+      #   if: failure() && github.ref == 'refs/heads/main'
 
+  create_deployment:
+    if: github.repository == 'chanzuckerberg/napari-hub' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
+    needs:
+      - push-image
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Generate payload
+        run: |
+          echo "payload={\"tag\":\"sha-${GITHUB_SHA:0:8}\"}" >> $GITHUB_ENV
+      - uses: avakar/create-deployment@v1
+        with:
+          auto_merge: false
+          # A hack to emulate a ternary statement
+          environment: ${{ fromJSON('["prod", "staging"]')[github.ref == 'refs/heads/main'] }}
+          payload: ${{ env.payload }}
+          required_contexts: ""  # Temporary hack to avoid checking Github Status for the commit
+          # TODO: Avoid circular dependency on the deploy step; this step hasn't finished yet so
+          # it's not considered ready for deploy normally by required_contexts, but we need to
+          # deploy for this to be considered ready.
+          # Unfortunately there is no blocklist for required_contexts, only an allowlist, so
+          # we'd have to enumerate every other Github PR status here, which can be constantly changing.
+          # For now, we just ignore required_contexts to deploy on every success.
+          # See https://github.community/t/can-i-avoid-creating-a-check-run-from-a-job-needed-for-deployments-api/16426
+        env:
+          GITHUB_TOKEN: ${{ secrets.CZIBUILDBOT_GITHUB_TOKEN }}
