@@ -9,16 +9,19 @@ import { PluginSortByForm } from './PluginSortByForm';
  */
 export function PluginSearchControls() {
   return (
-    <div
+    <aside
       className={clsx(
-        'grid gap-6',
-        'col-span-2 screen-875:col-span-1 screen-875:row-span-3',
+        // Grid
+        'col-span-2 screen-875:col-span-1',
+
+        // Margins
+        'mb-6 screen-875:m-0',
       )}
     >
       <AnimateSharedLayout>
         <PluginSortByForm />
         <PluginFilterByForm />
       </AnimateSharedLayout>
-    </div>
+    </aside>
   );
 }
