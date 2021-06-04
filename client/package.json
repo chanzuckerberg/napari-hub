@@ -7,7 +7,7 @@
     "dev": "nodemon -x 'run-p dev:*' -w tailwind.config.js",
     "dev:api": "node mock-server",
     "dev:next": "next dev -p 8080",
-    "dev:tsm": "tsm -w -e default 'src/**/*.module.scss'",
+    "dev:tsm": "tsm -w -e default -p.@ src 'src/**/*.module.scss'",
     "lint": "run-p lint:*",
     "lint:prettier": "prettier --check .",
     "lint:stylelint": "stylelint **/*.scss",
