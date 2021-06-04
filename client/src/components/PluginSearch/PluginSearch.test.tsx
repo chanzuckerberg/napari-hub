@@ -83,6 +83,6 @@ describe('<PluginSearch />', () => {
     mockSearch('neuron');
 
     const [author] = screen.getAllByTestId('searchResultSummary');
-    expect(author.innerHTML.toLowerCase()).toContain('neuroanatomy');
+    expect(author.innerHTML.toLowerCase()).toContain('neuro');
   });
 });

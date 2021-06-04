@@ -15,6 +15,9 @@ module.exports = {
   plugins: ['simple-import-sort'],
 
   rules: {
+    // It's helpful to split functionality into multiple functions within a class.
+    'class-methods-use-this': 'off',
+
     // Throws errors for exported functions, which is a common pattern with ES modules.
     '@typescript-eslint/unbound-method': 'off',
 
