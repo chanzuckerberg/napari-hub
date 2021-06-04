@@ -15,6 +15,7 @@ export interface FilterItem {
 }
 
 interface Props {
+  className?: string;
   title: string;
   filters: FilterItem[];
 }
@@ -22,13 +23,14 @@ interface Props {
 /**
  * Component for the section of each filter type
  */
-export function PluginFilterBySection({ title, filters }: Props) {
+export function PluginFilterBySection({ className, title, filters }: Props) {
   return (
-    <FormControl component="fieldset">
+    <FormControl className={className} component="fieldset">
       <FormLabel
         component="legend"
         className="font-semibold text-black text-sm mb-2"
         data-testid="title"
+        focused={false}
       >
         {title}
       </FormLabel>
@@ -45,6 +47,11 @@ export function PluginFilterBySection({ title, filters }: Props) {
                 color="default"
                 icon={<CheckboxIcon className="w-4 h-4" />}
                 checkedIcon={<CheckboxIcon checked className="w-4 h-4" />}
+                // Disable ripple to prevent weird issue on Chrome where
+                // clicking on the checkbox causes the next
+                // PluginFilterBySection component below to render an invisible
+                // title.
+                disableRipple
               />
             }
             label={filter.label}
