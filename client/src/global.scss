@@ -22,6 +22,16 @@ html {
   font-size: viewport-clamp(11px, 100%);
 
   /*
+    Awful hack to get clamp resizing working in Safari 14:
+    https://stackoverflow.com/a/65093383
+
+    We need to use a really small value because we want to keep the viewport
+    unit. If we use `0vw` directly, SASS will automatically remove the unit:
+    https://stackoverflow.com/questions/63965489/safari-14-min-max-clamp-not-working-with-vw-and-px-values#comment116930866_65093383
+  */
+  min-height: 0.0001vw;
+
+  /*
     Use smooth transition when scrolling between different parts of the page.
 
     TODO This currently has no support in Safari, so we'll probably have to
