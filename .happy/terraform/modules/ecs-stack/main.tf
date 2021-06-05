@@ -90,6 +90,7 @@ module backend_lambda {
 
   environment = {
     "BUCKET" = local.data_bucket_name
+    "BUCKET_PATH" = ""
     "GOOGLE_APPLICATION_CREDENTIALS" = "./credentials.json"
     "SLACK_URL" = local.slack_url
     "ZULIP_CREDENTIALS" = local.zulip_credentials

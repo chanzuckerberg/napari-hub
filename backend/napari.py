@@ -1,4 +1,5 @@
 import os
+import os.path
 import concurrent.futures
 import re
 from datetime import datetime, timedelta, timezone
@@ -21,6 +22,7 @@ from google.cloud import bigquery
 
 # Environment variable set through lambda terraform infra config
 bucket = os.environ.get('BUCKET')
+bucket_path = os.environ.get('BUCKET_PATH', '')
 slack_url = os.environ.get('SLACK_URL')
 zulip_credentials = os.environ.get('ZULIP_CREDENTIALS', "")
 cache_ttl = int(os.environ.get('TTL', "4"))
@@ -281,7 +283,7 @@ def cache_available(key: str, ttl: [timedelta, None]) -> bool:
     if bucket is None:
         return False
     try:
-        last_modified = s3.Object(bucket, key).last_modified
+        last_modified = s3.Object(bucket, os.path.join(bucket_path, key)).last_modified
         if ttl is None:
             return True
         if last_modified is None or \
@@ -442,7 +444,7 @@ def get_cache(key: str) -> dict:
     :param key: key to the cache to get
     :return: file content for the key
     """
-    return json.loads(s3.Object(bucket, key).get()['Body'].read())
+    return json.loads(s3.Object(bucket, os.path.join(bucket_path, key)).get()['Body'].read())
 
 
 def cache(content: [dict, list], key: str) -> dict:
@@ -462,5 +464,5 @@ def cache(content: [dict, list], key: str) -> dict:
     with tempfile.NamedTemporaryFile(mode="w") as fp:
         fp.write(json.dumps(content))
         fp.flush()
-        s3_client.upload_file(fp.name, bucket, key)
+        s3_client.upload_file(fp.name, bucket, os.path.join(bucket_path, key))
     return content
