@@ -1,3 +1,4 @@
+export * from './CheckboxIcon';
 export * from './Close';
 export * from './Copy';
 export * from './CZI';

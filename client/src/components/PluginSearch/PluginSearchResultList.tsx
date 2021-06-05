@@ -22,7 +22,7 @@ export function PluginSearchResultList() {
 
       <FilterChips className="col-span-2 screen-1425:col-span-3 mb-6" />
 
-      {results.map(({ plugin }) => (
+      {results.map(({ plugin, matches }) => (
         <PluginSearchResult
           className={clsx(
             'col-span-2',
@@ -31,6 +31,7 @@ export function PluginSearchResultList() {
           )}
           key={plugin.name}
           plugin={plugin}
+          matches={matches}
         />
       ))}
     </>
