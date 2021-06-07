@@ -36,6 +36,15 @@ export interface PluginData extends PluginIndexData {
 }
 
 /**
+ * Plugin repo data to render with plugin metadata.
+ */
+export interface PluginRepoData {
+  forks: number;
+  issuesAndPRs: number;
+  stars: number;
+}
+
+/**
  * Data used for rendering links to different pages in the app.
  *
  * TODO Consolidate with MenuDrawerItem.
