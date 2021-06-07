@@ -60,6 +60,7 @@
     "remark-parse": "^9.0.0",
     "remark-rehype": "^8.1.0",
     "remark-remove-comments": "^0.2.0",
+    "remark-slug": "^6.0.0",
     "string-similarity": "^4.0.4",
     "unified": "^9.2.1",
     "use-query-params": "^1.2.2",

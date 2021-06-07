@@ -4,7 +4,9 @@ import markdownParser from 'remark-parse';
 import remark2rehype from 'remark-rehype';
 import unified from 'unified';
 
-import { HeadingNode, MarkdownHeader, MarkdownNode } from './Markdown.types';
+import { TOC_HEADER_TAG, TOCHeader } from '@/components/common/TableOfContents';
+
+import { HeadingNode, MarkdownNode } from './Markdown.types';
 
 /**
  * Plugins for transforming markdown to HTML. This also adds slug IDs to each
@@ -25,11 +27,6 @@ const UNIFIED_PLUGINS = [
 ];
 
 /**
- * Header tag to use for TOC.
- */
-export const TOC_HEADER_TAG = 'h2';
-
-/**
  * Function for extracting TOC headers from a markdown string.  This uses
  * unified, remark, and rehype to parse the markdown string.  The string is
  * parsed synchronously so that rendering the headers work in SSR.  This is
@@ -38,9 +35,9 @@ export const TOC_HEADER_TAG = 'h2';
  * https://git.io/JObhE
  *
  * @param markdown Markdown string.
- * @returns Array of MarkdownHeader objects.
+ * @returns Array of TOCHeader objects.
  */
-export function getHeadersFromMarkdown(markdown: string): MarkdownHeader[] {
+export function getHeadersFromMarkdown(markdown: string): TOCHeader[] {
   if (!markdown) {
     return [];
   }
@@ -56,10 +53,10 @@ export function getHeadersFromMarkdown(markdown: string): MarkdownHeader[] {
     processor.parse(markdown),
   ) as MarkdownNode;
 
-  // Convert all H2 headings into MarkdownHeader objects.
+  // Convert all H2 headings into TOCHeader objects.
   return children
     .filter((node): node is HeadingNode => node.tagName === TOC_HEADER_TAG)
-    .map<MarkdownHeader>((node) => ({
+    .map<TOCHeader>((node) => ({
       id: node.properties.id,
       text: node.children[0].value,
     }));

@@ -1,11 +1,11 @@
-import clsx from 'clsx';
+import { TableOfContents } from '@/components/common';
 
-import { useActiveHeader } from './Markdown.hooks';
 import { getHeadersFromMarkdown } from './Markdown.utils';
 
 interface Props {
   className?: string;
   markdown: string;
+  free?: boolean;
 }
 
 /**
@@ -16,49 +16,10 @@ interface Props {
  * For this to work, there needs to be a corresponding `<Markdown />` component
  * somewhere with the same markdown content.
  */
-export function MarkdownTOC({ className, markdown }: Props) {
+export function MarkdownTOC({ className, markdown, free }: Props) {
   const headers = getHeadersFromMarkdown(markdown);
-  const activeHeader = useActiveHeader(headers);
 
   return (
-    <ul className={clsx(className, 'flex flex-col', 'border-l border-black')}>
-      {headers.map((header) => {
-        const isActive = header.id === activeHeader;
-
-        return (
-          <li
-            className={clsx(
-              // Layout
-              'flex',
-              // 'flex items-center',
-
-              // Box model
-              'pl-6 h-6 border-l-4',
-
-              // Apply top/bottom margins except for first/last items
-              'my-2 first:mt-0 last:mb-0',
-
-              // Smooth transition for border color
-              'transition-colors',
-
-              'hover:border-napari-primary',
-              !isActive && 'border-transparent',
-              isActive && 'border-black',
-            )}
-            key={header.id}
-            data-active={isActive}
-            data-testid="tocItem"
-          >
-            {/*
-              Use normal link component instead of Next.js Link because we're
-              not loading another page.
-            */}
-            <a className={clsx(isActive && 'font-bold')} href={`#${header.id}`}>
-              {header.text}
-            </a>
-          </li>
-        );
-      })}
-    </ul>
+    <TableOfContents className={className} headers={headers} free={free} />
   );
 }

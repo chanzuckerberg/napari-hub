@@ -1,7 +1,12 @@
 const mdx = require('@next/mdx');
+const slug = require('remark-slug');
+const html = require('rehype-stringify');
 
 const withMDX = mdx({
   extensions: /\.mdx$/,
+  options: {
+    remarkPlugins: [slug, html],
+  },
 });
 
 module.exports = withMDX({
