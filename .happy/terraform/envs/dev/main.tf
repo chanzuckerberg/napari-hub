@@ -22,7 +22,7 @@ module stack {
   stack_name            = var.stack_name
   env                   = local.env
   delete_protected      = false
-  require_okta          = false
+  require_okta          = true
   stack_prefix          = "/${var.stack_name}"
   tags                  = local.tags
   wait_for_steady_state = var.wait_for_steady_state
