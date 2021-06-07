@@ -1475,7 +1475,7 @@ the coverage at least stays the same before you submit a pull request.
       Install
     </button>
     <ul
-      class="fixed flex mt-24 flex flex-col border-l border-black"
+      class="mt-24 flex flex-col border-l border-black fixed"
     >
       <li
         class="flex pl-6 h-6 border-l-4 my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"

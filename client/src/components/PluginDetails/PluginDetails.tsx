@@ -88,10 +88,7 @@ function PluginRightColumn() {
       {/*  Keep button on screen when scrolling on 2xl. */}
       <CallToActionButton className="fixed" />
 
-      <Markdown.TOC
-        className="fixed flex mt-24"
-        markdown={plugin.description}
-      />
+      <Markdown.TOC className="mt-24" markdown={plugin.description} />
     </Media>
   );
 }

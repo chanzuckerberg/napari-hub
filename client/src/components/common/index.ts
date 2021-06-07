@@ -5,4 +5,5 @@ export * from './ErrorMessage';
 export * from './Link';
 export * from './Markdown';
 export * from './Overlay';
+export * from './TableOfContents';
 export * from './TextHighlighter';

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { MarkdownHeader } from './Markdown.types';
+import { TOCHeader } from './TableOfContents.types';
 
 /**
  * The designs requires a 35px margin between the heading and the top of the
@@ -20,7 +20,7 @@ const TOP_OFFSET = 35;
  * @param headers Markdown headers from `getHeadersFromMarkdown()`
  * @returns Active header ID
  */
-export function useActiveHeader(headers: MarkdownHeader[]): string {
+export function useActiveHeader(headers: TOCHeader[]): string {
   const [active, setActive] = useState(headers[0]?.id ?? '');
 
   useEffect(() => {

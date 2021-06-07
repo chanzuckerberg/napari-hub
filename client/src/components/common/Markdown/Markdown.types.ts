@@ -1,11 +1,6 @@
 import { ReactHTML } from 'react';
 import { Node } from 'unist';
 
-export interface MarkdownHeader {
-  id: string;
-  text: string;
-}
-
 export interface MarkdownNode extends Node {
   children: MarkdownNode[];
   tagName: keyof ReactHTML;

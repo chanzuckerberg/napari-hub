@@ -1,6 +1,7 @@
 export * from './AppBar';
 export * from './Footer';
 export * from './Layout';
+export * from './LayoutMDX';
 export * from './MenuDrawer';
 export * from './PluginDetails';
 export * from './PluginSearch';
