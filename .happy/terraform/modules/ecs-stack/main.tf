@@ -38,18 +38,18 @@ locals {
   frontend_alb_dns      = try(local.secret[local.alb_key]["frontend"]["dns_name"], "")
 
   slack_url = try(local.secret["slack_url"], "")
+  zulip_credentials = try(local.secret["zulip_credentials"], "")
 
-  frontend_url = try(join("", ["https://", module.frontend_dns[0].dns_prefix, ".", local.external_dns]), var.frontend_url)
+  frontend_url = try(join("", ["https://", module.frontend_dns.dns_prefix, ".", local.external_dns]), var.frontend_url)
 }
 
 module frontend_dns {
-  count                 = var.require_okta ? 1 : 0
   source                = "../dns"
   custom_stack_name     = local.custom_stack_name
   app_name              = "frontend"
   alb_dns               = local.frontend_alb_dns
   canonical_hosted_zone = local.frontend_alb_zone
-  zone                  = local.internal_dns
+  zone                  = local.external_dns
 }
 
 module frontend_service {
@@ -66,7 +66,7 @@ module frontend_service {
   task_role_arn     = local.frontend_ecs_role_arn
   service_port      = 8080
   env               = var.env
-  host_match        = try(join(".", [module.frontend_dns[0].dns_prefix, local.external_dns]), "")
+  host_match        = try(join(".", [module.frontend_dns.dns_prefix, local.external_dns]), "")
   priority          = local.priority
   api_url           = module.api_gateway_proxy_stage.invoke_url
   frontend_url      = local.frontend_url
@@ -90,9 +90,10 @@ module backend_lambda {
 
   environment = {
     "BUCKET" = local.data_bucket_name
-    "BUCKET_PATH" = local.custom_stack_name
+    "BUCKET_PATH" = ""
     "GOOGLE_APPLICATION_CREDENTIALS" = "./credentials.json"
     "SLACK_URL" = local.slack_url
+    "ZULIP_CREDENTIALS" = local.zulip_credentials
   }
 
   log_retention_in_days = 14
@@ -169,16 +170,4 @@ resource aws_iam_role_policy policy {
   name     = "${local.custom_stack_name}-${var.env}-policy"
   role     = module.backend_lambda.role_name
   policy   = data.aws_iam_policy_document.backend_policy.json
-}
-
-resource aws_s3_bucket_object excluded_plugins {
-  bucket = local.data_bucket_name
-  key    = "${local.custom_stack_name}/excluded_plugins.json"
-  content = <<EOF
-{
-  "napari-demo":null,
-  "napari-cellfinder":null,
-  "napari-brainreg":null
-}
-EOF
 }

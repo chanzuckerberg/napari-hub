@@ -50,6 +50,10 @@ resource aws_ecs_task_definition task_definition {
         "value": "${var.api_url}"
       },
       {
+        "name": "ENV",
+        "value": "${var.env}"
+      },
+      {
         "name": "AWS_DEFAULT_REGION",
         "value": "${data.aws_region.current.name}"
       }
@@ -85,7 +89,7 @@ resource aws_lb_target_group target_group {
   deregistration_delay = 10
   health_check {
     interval            = 15
-    path                = "/"
+    path                = "/api/health"
     protocol            = "HTTP"
     timeout             = 5
     healthy_threshold   = 2
