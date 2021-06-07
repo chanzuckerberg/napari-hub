@@ -15,7 +15,10 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
-
+      - name: Install Dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install -r .happy/requirements.txt
       - name: Deploy Changes
         run: |
           sudo scripts/happy --env prod update prod
@@ -26,7 +29,10 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
-
+      - name: Install Dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install -r .happy/requirements.txt
       - name: Deploy Changes
         run: |
           sudo scripts/happy --env staging update staging
