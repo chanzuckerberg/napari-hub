@@ -3,7 +3,8 @@
 $min-content: strip(theme('screens.screen-300'));
 
 /**
- * Function for clamping a min and max value scaled based on
+ * Function for clamping a min and max value scaled based on the ratio between
+ * the min value and the min content width to ensure proper scaling.
  */
 @function viewport-clamp($min-value, $max-value) {
   $value: clamp(

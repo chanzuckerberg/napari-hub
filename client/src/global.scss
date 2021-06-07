@@ -9,13 +9,12 @@ html {
   @apply overflow-y-scroll;
 
   /*
-    Use viewport width for fluid typography. This value is calculated based
-    on the ratio between the starting font size and the minimum content width to ensure proper scaling.
-    The minimum font size is from the design spec, and the maximum font size
-    is set to the user's preferred font size set by their browser settings.
+    Use viewport width for fluid typography. The minimum font size is from the
+    design spec, and the maximum font size is set to the user's preferred font
+    size set by their browser settings.
 
-    Texts, margins, and paddings should use the `text-<size>` Tailwind classes or rem / em units in
-    CSS to ensure the font size is more accessible.
+    Texts, margins, and paddings should use the `text-<size>` Tailwind classes
+    or rem / em units in CSS to ensure the font size is more accessible.
 
     https://blog.logrocket.com/the-elements-of-responsive-typography
   */
