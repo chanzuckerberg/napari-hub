@@ -7,8 +7,8 @@ export function useHeaders() {
 
   useEffect(() => {
     // based off of https://www.emgoto.com/react-table-of-contents/
-    const headerElements = Array.from(
-      document.querySelectorAll(TOC_HEADER_TAG),
+    const headerElements: HTMLHeadingElement[] = Array.from(
+      document.querySelectorAll(`.markdown ${TOC_HEADER_TAG}`),
     );
     setHeaders(
       headerElements.map<TOCHeader>((header) => ({

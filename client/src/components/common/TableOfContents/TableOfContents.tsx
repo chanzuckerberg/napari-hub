@@ -4,8 +4,17 @@ import { useActiveHeader } from './TableOfContents.hooks';
 import { TOCHeader } from './TableOfContents.types';
 
 interface Props {
+  /**
+   * className: additional classes to apply to this component
+   */
   className?: string;
+  /**
+   * headers: header ids and titles to link to
+   */
   headers: TOCHeader[];
+  /**
+   * free: whether the component should move with the page or be fixed in place
+   */
   free?: boolean;
 }
 

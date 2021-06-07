@@ -15,7 +15,7 @@ export function LayoutMDX({ toc, children }: Props) {
 
   return (
     <ColumnLayout className="p-6 md:p-12 screen-1150:px-0">
-      <article className="prose-2xl col-span-2 screen-875:col-span-3 screen-1425:col-start-2">
+      <article className="markdown prose-2xl col-span-2 screen-875:col-span-3 screen-1425:col-start-2">
         {children}
       </article>
       {toc && (
