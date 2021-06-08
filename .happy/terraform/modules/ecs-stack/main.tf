@@ -40,7 +40,7 @@ locals {
   slack_url = try(local.secret["slack_url"], "")
   zulip_credentials = try(local.secret["zulip_credentials"], "")
 
-  frontend_url = try(join("", ["https://", module.frontend_dns.dns_prefix, ".", local.external_dns]), var.frontend_url)
+  frontend_url = var.frontend_url != "" ? var.frontend_url: try(join("", ["https://", module.frontend_dns.dns_prefix, ".", local.external_dns]), var.frontend_url)
 }
 
 module frontend_dns {
@@ -66,7 +66,7 @@ module frontend_service {
   task_role_arn     = local.frontend_ecs_role_arn
   service_port      = 8080
   env               = var.env
-  host_match        = try(join(".", [module.frontend_dns.dns_prefix, local.external_dns]), "")
+  host_match        = var.frontend_url != "" ? "": join(".", [module.frontend_dns.dns_prefix, local.external_dns])
   priority          = local.priority
   api_url           = module.api_gateway_proxy_stage.invoke_url
   frontend_url      = local.frontend_url
