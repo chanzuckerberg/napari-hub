@@ -32,7 +32,7 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install -r .happy/requirements.txt
-          scripts/happy --profile="" --env prod update prod
+          scripts/happy --env prod update prod
   staging:
     name: deploy to staging
     runs-on: ubuntu-latest
@@ -57,5 +57,5 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install -r .happy/requirements.txt
-          scripts/happy --profile="" --env staging update staging
+          scripts/happy --env staging update staging
 
