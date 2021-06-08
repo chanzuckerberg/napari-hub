@@ -1,11 +1,14 @@
+@import '@/utils/styles';
+
 .heading {
-  font-size: clamp(35px, 10vw, 61px);
+  font-size: viewport-clamp(35px, 61px);
 }
 
 .logo {
-  width: clamp(122px, 35vw, 223px);
+  height: calculate-rem(194px);
+  width: viewport-clamp(122px, 223px);
 }
 
 .list li {
-  font-size: clamp(14px, 4vw, 24px);
+  font-size: viewport-clamp(14px, 24px);
 }

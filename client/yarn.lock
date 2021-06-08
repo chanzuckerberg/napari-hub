@@ -8398,6 +8398,14 @@ postcss-sorting@^5.0.1:
     lodash "^4.17.14"
     postcss "^7.0.17"
 
+postcss-strip-units@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/postcss-strip-units/-/postcss-strip-units-2.0.1.tgz#53d279b348f385f51db674b6e1f994617ba195ad"
+  integrity sha512-2SVcTibIombPsjhKym8z2pFbsIH28TDvXvyUPyvTUr9d32cn8mg2mviuNgkdXxnPtqD6VHWBxSGSkUCcduikPA==
+  dependencies:
+    postcss "^6.0.14"
+    reduce-function-call "^1.0.1"
+
 postcss-syntax@^0.36.2:
   version "0.36.2"
   resolved "https://registry.yarnpkg.com/postcss-syntax/-/postcss-syntax-0.36.2.tgz"
@@ -8432,7 +8440,7 @@ postcss@8.1.7:
     nanoid "^3.1.16"
     source-map "^0.6.1"
 
-postcss@^6.0.1, postcss@^6.0.9:
+postcss@^6.0.1, postcss@^6.0.14, postcss@^6.0.9:
   version "6.0.23"
   resolved "https://registry.yarnpkg.com/postcss/-/postcss-6.0.23.tgz"
   integrity sha512-soOk1h6J3VMTZtVeVpv15/Hpdl2cBLX3CAw4TAbkpTJiNPk9YP/zWcD1ND+xEtvyuuvKzbxliTOIyvkSeSJ6ag==
@@ -8955,6 +8963,13 @@ reduce-css-calc@^2.1.8:
   dependencies:
     css-unit-converter "^1.1.1"
     postcss-value-parser "^3.3.0"
+
+reduce-function-call@^1.0.1:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/reduce-function-call/-/reduce-function-call-1.0.3.tgz#60350f7fb252c0a67eb10fd4694d16909971300f"
+  integrity sha512-Hl/tuV2VDgWgCSEeWMLwxLZqX7OK59eU1guxXsRKTAyeYimivsKdtcV4fu3r710tpG5GmDKDhQ0HSZLExnNmyQ==
+  dependencies:
+    balanced-match "^1.0.0"
 
 refractor@^3.2.0:
   version "3.3.1"

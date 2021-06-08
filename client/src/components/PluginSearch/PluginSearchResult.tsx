@@ -136,7 +136,7 @@ export function PluginSearchResult({ className, matches, plugin }: Props) {
         data-testid="searchResult"
         className={clsx(
           'grid gap-x-6 md:gap-x-12',
-          'screen-600:grid-cols-napari-2',
+          'screen-600:grid-cols-2',
           'screen-1425:grid-cols-napari-3',
         )}
       >
