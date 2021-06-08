@@ -38,7 +38,9 @@ locals {
   frontend_alb_dns      = try(local.secret[local.alb_key]["frontend"]["dns_name"], "")
 
   slack_url = try(local.secret["slack_url"], "")
-  zulip_credentials = try(local.secret["zulip_credentials"], "")
+  zulip_credentials = try(local.secret["zulip"]["credentials"], "")
+  github_client_id = try(local.secret["github"]["client_id"], "")
+  github_client_secret = try(local.secret["github"]["client_secret"], "")
 
   frontend_url = var.frontend_url != "" ? var.frontend_url: try(join("", ["https://", module.frontend_dns.dns_prefix, ".", local.external_dns]), var.frontend_url)
 }
@@ -93,7 +95,9 @@ module backend_lambda {
     "BUCKET_PATH" = ""
     "GOOGLE_APPLICATION_CREDENTIALS" = "./credentials.json"
     "SLACK_URL" = local.slack_url
-    "ZULIP_CREDENTIALS" = local.zulip_credentials
+    "ZULIP_CREDENTIALS" = local.zulip_credentials,
+    "GITHUB_CLIENT_ID" = local.github_client_id
+    "GITHUB_CLIENT_SECRET" = local.github_client_secret
   }
 
   log_retention_in_days = 14
