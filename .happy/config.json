@@ -16,6 +16,12 @@
             "secret_arn": "happy/env-staging-config",
             "terraform_directory": ".happy/terraform/envs/staging",
             "log_group_prefix": "/napari-hub/staging"
+        },
+        "prod": {
+            "aws_profile": "sci-imaging",
+            "secret_arn": "happy/env-prod-config",
+            "terraform_directory": ".happy/terraform/envs/prod",
+            "log_group_prefix": "/napari-hub/prod"
         }
     },
     "tasks": {}
