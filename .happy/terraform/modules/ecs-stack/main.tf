@@ -71,6 +71,8 @@ module frontend_service {
   host_match        = var.frontend_url != "" ? "": join(".", [module.frontend_dns.dns_prefix, local.external_dns])
   priority          = local.priority
   api_url           = module.api_gateway_proxy_stage.invoke_url
+  github_client_id  = local.github_client_id
+  github_client_secret = local.github_client_secret
   frontend_url      = local.frontend_url
   tags              = var.tags
 
@@ -95,9 +97,7 @@ module backend_lambda {
     "BUCKET_PATH" = ""
     "GOOGLE_APPLICATION_CREDENTIALS" = "./credentials.json"
     "SLACK_URL" = local.slack_url
-    "ZULIP_CREDENTIALS" = local.zulip_credentials,
-    "GITHUB_CLIENT_ID" = local.github_client_id
-    "GITHUB_CLIENT_SECRET" = local.github_client_secret
+    "ZULIP_CREDENTIALS" = local.zulip_credentials
   }
 
   log_retention_in_days = 14

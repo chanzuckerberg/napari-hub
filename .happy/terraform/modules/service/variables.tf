@@ -77,6 +77,16 @@ variable api_url {
   description = "URL for the backend api."
 }
 
+variable github_client_id {
+  type        = string
+  description = "client id for github api"
+}
+
+variable github_client_secret {
+  type        = string
+  description = "client secret for github api"
+}
+
 variable frontend_url {
   type        = string
   description = "URL for the frontend app."

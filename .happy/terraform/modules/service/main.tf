@@ -56,6 +56,14 @@ resource aws_ecs_task_definition task_definition {
       {
         "name": "AWS_DEFAULT_REGION",
         "value": "${data.aws_region.current.name}"
+      },
+      {
+        "name": "GITHUB_CLIENT_ID",
+        "value": "${var.github_client_id}"
+      },
+      {
+        "name": "GITHUB_CLIENT_SECRET",
+        "value": "${var.github_client_secret}"
       }
     ],
     "portMappings": [
