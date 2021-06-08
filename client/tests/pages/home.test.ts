@@ -31,6 +31,10 @@ async function getSelectedSortByRadio() {
 }
 
 describe('/ (Home page)', () => {
+  beforeEach(async () => {
+    await jestPlaywright.resetPage();
+  });
+
   it('should update URL parameter when entering query', async () => {
     const query = 'video';
     await page.goto(getSearchURL());
