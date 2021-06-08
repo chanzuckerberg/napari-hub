@@ -30,9 +30,9 @@ jobs:
       - name: Deploy Changes
         shell: bash
         run: |
-          python3 -m pip install --upgrade pip
-          python3 -m pip install -r .happy/requirements.txt
-          sudo scripts/happy --env prod update prod
+          pip install --upgrade pip
+          pip install -r .happy/requirements.txt
+          scripts/happy --profile="" --env prod update prod
   staging:
     name: deploy to staging
     runs-on: ubuntu-latest
@@ -55,7 +55,7 @@ jobs:
       - name: Deploy Changes
         shell: bash
         run: |
-          python3 -m pip install --upgrade pip
-          python3 -m pip install -r .happy/requirements.txt
-          sudo scripts/happy --env staging update staging
+          pip install --upgrade pip
+          pip install -r .happy/requirements.txt
+          scripts/happy --profile="" --env staging update staging
 
