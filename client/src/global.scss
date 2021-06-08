@@ -1,5 +1,4 @@
-$min-font-size: 11px;
-$min-content: 300px; // smallest breakpoint in the theme
+@import '@/utils/styles';
 
 html {
   /*
@@ -10,21 +9,26 @@ html {
   @apply overflow-y-scroll;
 
   /*
-    Use viewport width for fluid typography. This value is calculated based
-    on the ratio between the starting font size and the minimum content width to ensure proper scaling.
-    The minimum font size is from the design spec, and the maximum font size
-    is set to the user's preferred font size set by their browser settings.
+    Use viewport width for fluid typography. The minimum font size is from the
+    design spec, and the maximum font size is set to the user's preferred font
+    size set by their browser settings.
 
-    Texts, margins, and paddings should use the `text-<size>` Tailwind classes or rem / em units in
-    CSS to ensure the font size is more accessible.
+    Texts, margins, and paddings should use the `text-<size>` Tailwind classes
+    or rem / em units in CSS to ensure the font size is more accessible.
 
     https://blog.logrocket.com/the-elements-of-responsive-typography
   */
-  font-size: clamp(
-    #{$min-font-size},
-    #{$min-font-size / $min-content * 100vw},
-    100%
-  );
+  font-size: viewport-clamp(11px, 100%);
+
+  /*
+    Awful hack to get clamp resizing working in Safari 14:
+    https://stackoverflow.com/a/65093383
+
+    We need to use a really small value because we want to keep the viewport
+    unit. If we use `0vw` directly, SASS will automatically remove the unit:
+    https://stackoverflow.com/questions/63965489/safari-14-min-max-clamp-not-working-with-vw-and-px-values#comment116930866_65093383
+  */
+  min-height: 0.0001vw;
 
   /*
     Use smooth transition when scrolling between different parts of the page.

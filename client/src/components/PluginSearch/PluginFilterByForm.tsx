@@ -2,13 +2,51 @@ import { FormLabel } from '@material-ui/core';
 
 import { Accordion } from '@/components/common';
 import { Media } from '@/components/common/media';
+import { useSearchState } from '@/context/search';
 
 import { PluginFilterBySection } from './PluginFilterBySection';
+
+const SECTION_LABELS: Record<string, string | undefined> = {
+  // Operating System
+  linux: 'Linux',
+  mac: 'Mac',
+  windows: 'Windows',
+
+  // Development Status
+  onlyStablePlugins: 'Only show stable plugins',
+
+  // License
+  onlyOpenSourcePlugins: 'Only show plugins with open source licenses',
+};
 
 /**
  * Component for the form for selecting the plugin filter type.
  */
 function FilterForm() {
+  const { filter } = useSearchState() ?? {};
+  const sections = [
+    {
+      title: 'Python versions',
+      state: filter?.state.pythonVersions,
+      setState: filter?.setPythonVersion,
+    },
+    {
+      title: 'Operating system',
+      state: filter?.state.operatingSystems,
+      setState: filter?.setOperatingSystem,
+    },
+    {
+      title: 'Development status',
+      state: filter?.state.developmentStatus,
+      setState: filter?.setDevelopmentStatus,
+    },
+    {
+      title: 'License',
+      state: filter?.state.license,
+      setState: filter?.setLicense,
+    },
+  ];
+
   return (
     <div className="flex flex-col gap-6">
       {/* Only show label on larger screens. This is because the Accordion already includes a title. */}
@@ -21,71 +59,21 @@ function FilterForm() {
           Filter By
         </FormLabel>
       </Media>
-      <PluginFilterBySection
-        title="Python versions"
-        filters={[
-          {
-            label: '3.6',
-            enabled: true,
-            setEnabled: (enabled: boolean) => enabled,
-          },
-          {
-            label: '3.7',
-            enabled: false,
-            setEnabled: (enabled: boolean) => enabled,
-          },
-          {
-            label: '3.8',
-            enabled: false,
-            setEnabled: (enabled: boolean) => enabled,
-          },
-          {
-            label: '3.9',
-            enabled: false,
-            setEnabled: (enabled: boolean) => enabled,
-          },
-        ]}
-      />
-      <PluginFilterBySection
-        title="Operating system"
-        filters={[
-          {
-            label: 'Linux',
-            enabled: false,
-            setEnabled: (enabled: boolean) => enabled,
-          },
-          {
-            label: 'Mac',
-            enabled: false,
-            setEnabled: (enabled: boolean) => enabled,
-          },
-          {
-            label: 'Windows',
-            enabled: false,
-            setEnabled: (enabled: boolean) => enabled,
-          },
-        ]}
-      />
-      <PluginFilterBySection
-        title="Development status"
-        filters={[
-          {
-            label: 'Only show stable plugins',
-            enabled: false,
-            setEnabled: (enabled: boolean) => enabled,
-          },
-        ]}
-      />
-      <PluginFilterBySection
-        title="License"
-        filters={[
-          {
-            label: 'Only show plugins with open source license',
-            enabled: false,
-            setEnabled: (enabled: boolean) => enabled,
-          },
-        ]}
-      />
+
+      {sections.map((section) => (
+        <PluginFilterBySection
+          key={section.title}
+          title={section.title}
+          filters={Object.entries(section.state ?? {}).map(
+            ([key, enabled]: [string, boolean]) => ({
+              enabled,
+              label: SECTION_LABELS[key] ?? key,
+              setEnabled: (nextEnabled: boolean) =>
+                section.setState?.({ [key]: nextEnabled }),
+            }),
+          )}
+        />
+      ))}
     </div>
   );
 }
