@@ -25,7 +25,7 @@ bucket = os.environ.get('BUCKET')
 bucket_path = os.environ.get('BUCKET_PATH', '')
 slack_url = os.environ.get('SLACK_URL')
 zulip_credentials = os.environ.get('ZULIP_CREDENTIALS', "")
-cache_ttl = int(os.environ.get('TTL', "4"))
+cache_ttl = int(os.environ.get('TTL', "6"))
 endpoint_url = os.environ.get('BOTO_ENDPOINT_URL', None)
 plugins_key = 'cache/plugins.json'
 index_key = 'cache/index.json'
@@ -90,11 +90,21 @@ def get_index() -> dict:
     """
     Get the index page related metadata for all plugins.
 
-    :param context: context for the run to raise alerts for
     :return: json for index page metadata
     """
     if cache_available(index_key, cache_ttl):
         return jsonify(get_cache(index_key))
+    else:
+        return update_index()
+
+
+@app.route('/plugins/index/update')
+def update_index() -> dict:
+    """
+    update the index page related metadata for all plugins.
+
+    :return: json for index page metadata
+    """
     results = []
     with concurrent.futures.ThreadPoolExecutor(max_workers=32) as executor:
         futures = [executor.submit(filter_index, k, v)
@@ -312,6 +322,7 @@ def filter_excluded_plugin(packages: dict) -> dict:
     return filtered
 
 
+@app.route('/plugins/excluded')
 def get_exclusion_list() -> dict:
     """
     Get the exclusion plugin list.
