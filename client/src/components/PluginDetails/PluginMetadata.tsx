@@ -35,6 +35,9 @@ function PluginGithubData() {
       count: repo.issuesAndPRs,
     },
   ];
+  const error =
+    repoFetchError &&
+    `We're having trouble loading the GitHub stats: ${repoFetchError.status}`;
 
   return (
     <div
@@ -50,8 +53,8 @@ function PluginGithubData() {
       )}
     >
       <h4 className="font-bold">Github Activity</h4>
-      {repoFetchError ? (
-        <p className="text-napari-error mt-2">API Error: {repoFetchError}</p>
+      {error ? (
+        <p className="text-napari-error mt-2">{error}</p>
       ) : (
         <ul className="list-none">
           {items.map((item) => (

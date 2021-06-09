@@ -1,3 +1,5 @@
+import { RequestError } from '@octokit/types';
+
 export interface PluginAuthor {
   name: string;
   email?: string;
@@ -43,6 +45,8 @@ export interface PluginRepoData {
   issuesAndPRs: number;
   stars: number;
 }
+
+export type PluginRepoFetchError = Pick<RequestError, 'name' | 'status'>;
 
 /**
  * Data used for rendering links to different pages in the app.

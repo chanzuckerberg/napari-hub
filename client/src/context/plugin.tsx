@@ -1,7 +1,7 @@
 import { createContext, useContext } from 'react';
 import { ReactNode } from 'react-markdown';
 
-import { PluginData, PluginRepoData } from '@/types';
+import { PluginData, PluginRepoData, PluginRepoFetchError } from '@/types';
 
 /**
  * Shared state for plugin data.
@@ -9,7 +9,7 @@ import { PluginData, PluginRepoData } from '@/types';
 interface PluginState {
   plugin: PluginData;
   repo: PluginRepoData;
-  repoFetchError?: string;
+  repoFetchError?: PluginRepoFetchError;
 }
 
 const PluginStateContext = createContext<PluginState | null>(null);

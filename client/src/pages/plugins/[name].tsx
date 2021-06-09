@@ -8,7 +8,7 @@ import { hubAPI } from '@/axios';
 import { PluginDetails } from '@/components';
 import { ErrorMessage } from '@/components/common';
 import { PluginStateProvider } from '@/context/plugin';
-import { PluginData, PluginRepoData } from '@/types';
+import { PluginData, PluginRepoData, PluginRepoFetchError } from '@/types';
 
 /**
  * Interface for parameters in URL.
@@ -30,7 +30,7 @@ interface Props {
   error?: string;
   plugin?: PluginData;
   repo?: PluginRepoData;
-  repoFetchError?: string;
+  repoFetchError?: PluginRepoFetchError;
 }
 
 type RequestResponse = PluginData | RequestError;
@@ -83,7 +83,8 @@ async function fetchRepoData(url: string): Promise<PluginRepoData | undefined> {
         octokit = new Octokit({
           authStrategy: createOAuthAppAuth,
           auth: {
-            clientId: process.env.GITHUB_CLIENT_ID,
+            // clientId: process.env.GITHUB_CLIENT_ID,
+            clientId: `${process.env.GITHUB_CLIENT_ID}derp`,
             clientSecret: process.env.GITHUB_CLIENT_SECRET,
             clientType: 'oauth-app',
           },
@@ -136,7 +137,10 @@ export async function getServerSideProps({
     }
 
     if (isOctokitError(err)) {
-      props.repoFetchError = `${err.name} (${err.status})`;
+      props.repoFetchError = {
+        name: err.name,
+        status: err.status,
+      };
     }
   }
 
