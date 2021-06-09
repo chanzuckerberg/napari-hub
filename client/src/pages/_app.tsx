@@ -11,6 +11,7 @@ import '@/global.scss';
 import { StylesProvider, ThemeProvider } from '@material-ui/styles';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
+import NextPlausibleProvider from 'next-plausible';
 import { ReactNode, useEffect, useRef } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
@@ -45,18 +46,56 @@ function ReactQueryProvider({ children, dehydratedState }: QueryProviderProps) {
   );
 }
 
+interface ProviderProps {
+  children: ReactNode;
+}
+
+function MaterialUIProvider({ children }: ProviderProps) {
+  useEffect(() => {
+    // Remove the server-side injected CSS.
+    const jssStyles = document.querySelector('#jss-server-side');
+    jssStyles?.parentElement?.removeChild?.(jssStyles);
+  }, []);
+
+  return (
+    <MediaContextProvider>
+      <ThemeProvider theme={theme}>
+        <StylesProvider
+          // By default, Material UI will inject styles at the bottom of the
+          // body so that it has higher priority over other CSS rules. This
+          // makes it harder to override CSS, so we use `injectFirst` to
+          // inject styles in the head element instead:
+          // https://material-ui.com/styles/advanced/#injectfirst
+          injectFirst
+        >
+          {children}
+        </StylesProvider>
+      </ThemeProvider>
+    </MediaContextProvider>
+  );
+}
+
+function PlausibleProvider({ children }: ProviderProps) {
+  const isUsingPlausible = process.env.PLAUSIBLE === 'true';
+  if (!isUsingPlausible) {
+    return <>{children}</>;
+  }
+
+  const isProd = process.env.ENV === 'prod';
+  const domain = isProd ? 'napari-hub.org' : 'dev.napari-hub.org';
+  return (
+    <NextPlausibleProvider domain={domain} enabled trackOutboundLinks>
+      {children}
+    </NextPlausibleProvider>
+  );
+}
+
 export default function App({ Component, pageProps }: AppProps) {
   // Render using custom layout if component exports one:
   // https://adamwathan.me/2019/10/17/persistent-layout-patterns-in-nextjs/
   const { getLayout } = Component as GetLayoutComponent;
   let page: ReactNode = <Component {...pageProps} />;
   page = getLayout?.(page) ?? <Layout>{page}</Layout>;
-
-  useEffect(() => {
-    // Remove the server-side injected CSS.
-    const jssStyles = document.querySelector('#jss-server-side');
-    jssStyles?.parentElement?.removeChild?.(jssStyles);
-  }, []);
 
   return (
     <>
@@ -72,18 +111,9 @@ export default function App({ Component, pageProps }: AppProps) {
 
       <ReactQueryProvider dehydratedState={pageProps.dehydratedState}>
         <MediaContextProvider>
-          <ThemeProvider theme={theme}>
-            <StylesProvider
-              // By default, Material UI will inject styles at the bottom of the
-              // body so that it has higher priority over other CSS rules. This
-              // makes it harder to override CSS, so we use `injectFirst` to
-              // inject styles in the head element instead:
-              // https://material-ui.com/styles/advanced/#injectfirst
-              injectFirst
-            >
-              {page}
-            </StylesProvider>
-          </ThemeProvider>
+          <MaterialUIProvider>
+            <PlausibleProvider>{page}</PlausibleProvider>
+          </MaterialUIProvider>
         </MediaContextProvider>
       </ReactQueryProvider>
     </>
