@@ -14,4 +14,20 @@ describe('<Markdown />', () => {
     );
     expect(queryByText('Hello World')).toBeFalsy();
   });
+
+  it('should render GitHub videos in markdown', () => {
+    const { queryByTestId } = render(
+      <Markdown>
+        https://user-images.githubusercontent.com/example.mp4
+      </Markdown>,
+    );
+    expect(queryByTestId('markdownVideo')).toBeTruthy();
+  });
+
+  it('should not render non-GitHub videos in markdown', () => {
+    const { queryByTestId } = render(
+      <Markdown>https://example.com/example.mp4</Markdown>,
+    );
+    expect(queryByTestId('markdownVideo')).toBeFalsy();
+  });
 });
