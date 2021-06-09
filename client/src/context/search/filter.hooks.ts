@@ -3,13 +3,12 @@ import { useEffect, useMemo, useState } from 'react';
 import { JsonParam, useQueryParam, withDefault } from 'use-query-params';
 import { DeepPartial } from 'utility-types';
 
-import { useActiveURLParameter } from '@/hooks';
+import { useActiveURLParameter, usePlausible } from '@/hooks';
 
 import { SearchQueryParams } from './constants';
 import { FilterFormState } from './filter.types';
 import {
   filterFalsyValues,
-  getCheckboxSetter,
   getChipState,
   getDefaultState,
 } from './filter.utils';
@@ -39,6 +38,20 @@ function useInitialFormState() {
   return defaultsDeep(initialFormState, getDefaultState()) as FilterFormState;
 }
 
+function usePlausibleEvents() {
+  const plausible = usePlausible();
+
+  function sendPlausibleEvent(field: string, value: string, checked: boolean) {
+    plausible('Filter', {
+      checked,
+      field,
+      value,
+    });
+  }
+
+  return sendPlausibleEvent;
+}
+
 /**
  * Hook that returns up the filter form state and state setters.
  *
@@ -46,6 +59,7 @@ function useInitialFormState() {
  * @returns The filter form state
  */
 function useForm() {
+  const sendPlausibleEvent = usePlausibleEvents();
   const initialState = useInitialFormState();
 
   // We don't need the first parameter because we're storing the form state in a
@@ -85,6 +99,33 @@ function useForm() {
         [subKey]: false,
       },
     }));
+
+    sendPlausibleEvent(key, subKey, false);
+  }
+
+  /**
+   * Higher order function that returns a state setter for checkbox sub-states.
+   *
+   * @param key The sub-state to use
+   * @returns A function to merge state into the sub-state
+   */
+  function getCheckboxSetter<
+    K extends keyof FilterFormState,
+    S extends FilterFormState[K]
+  >(key: K) {
+    return (nextState: Partial<S>): void => {
+      setState((prevState) => ({
+        ...prevState,
+        [key]: {
+          ...prevState[key],
+          ...nextState,
+        },
+      }));
+
+      Object.entries(nextState).forEach(([subKey, checked]) =>
+        sendPlausibleEvent(key, subKey, checked as boolean),
+      );
+    };
   }
 
   return {
@@ -95,10 +136,10 @@ function useForm() {
     // State update functions
     clearAll,
     removeChip,
-    setDevelopmentStatus: getCheckboxSetter(setState, 'developmentStatus'),
-    setLicense: getCheckboxSetter(setState, 'license'),
-    setOperatingSystem: getCheckboxSetter(setState, 'operatingSystems'),
-    setPythonVersion: getCheckboxSetter(setState, 'pythonVersions'),
+    setDevelopmentStatus: getCheckboxSetter('developmentStatus'),
+    setLicense: getCheckboxSetter('license'),
+    setOperatingSystem: getCheckboxSetter('operatingSystems'),
+    setPythonVersion: getCheckboxSetter('pythonVersions'),
   };
 }
 
