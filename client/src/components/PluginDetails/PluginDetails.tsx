@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import { ColumnLayout, Markdown } from '@/components/common';
 import { Media, MediaFragment } from '@/components/common/media';
 import { usePluginState } from '@/context/plugin';
+import { usePlausible } from '@/hooks';
 
 import { CallToActionButton } from './CallToActionButton';
 import { PluginMetadata } from './PluginMetadata';
@@ -82,13 +83,23 @@ function PluginCenterColumn() {
 
 function PluginRightColumn() {
   const { plugin } = usePluginState();
+  const plausible = usePlausible();
 
   return (
     <Media greaterThanOrEqual="2xl">
       {/*  Keep button on screen when scrolling on 2xl. */}
       <CallToActionButton className="fixed" />
 
-      <Markdown.TOC className="mt-24" markdown={plugin.description} />
+      <Markdown.TOC
+        className="mt-24"
+        markdown={plugin.description}
+        onClick={(section) => {
+          plausible('Description Nav', {
+            section,
+            plugin: plugin.name,
+          });
+        }}
+      />
     </Media>
   );
 }

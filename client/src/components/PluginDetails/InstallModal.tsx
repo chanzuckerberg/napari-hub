@@ -8,6 +8,7 @@ import { Fade } from '@/components/common/animations';
 import { Close, Copy } from '@/components/common/icons';
 import { MediaFragment } from '@/components/common/media';
 import { usePluginState } from '@/context/plugin';
+import { usePlausible } from '@/hooks';
 
 import styles from './InstallModal.module.scss';
 
@@ -17,6 +18,7 @@ import styles from './InstallModal.module.scss';
  */
 function CopyPluginNameButton() {
   const { plugin } = usePluginState();
+  const plausible = usePlausible();
 
   return (
     <button
@@ -33,7 +35,13 @@ function CopyPluginNameButton() {
         // Animate colors when hovering over button
         'transition-colors',
       )}
-      onClick={() => navigator.clipboard.writeText(plugin.name)}
+      onClick={async () => {
+        await navigator.clipboard?.writeText?.(plugin.name);
+
+        plausible('Copy Package', {
+          plugin: plugin.name,
+        });
+      }}
       type="button"
     >
       {plugin.name} <Copy className="inline" />
