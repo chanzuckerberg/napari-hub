@@ -6,6 +6,7 @@ import removeComments from 'remark-remove-comments';
 
 import styles from './Markdown.module.scss';
 import { MarkdownCode } from './MarkdownCode';
+import { MarkdownParagraph } from './MarkdownParagraph';
 import { MarkdownTOC } from './MarkdownTOC';
 
 interface Props {
@@ -38,6 +39,7 @@ const REHYPE_PLUGINS = [
 export function Markdown({ className, children, disableHeader }: Props) {
   const components: TransformOptions['components'] = {
     code: MarkdownCode,
+    p: MarkdownParagraph,
   };
 
   if (disableHeader) {
