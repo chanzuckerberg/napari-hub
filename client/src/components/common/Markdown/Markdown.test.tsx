@@ -3,10 +3,6 @@ import { cleanup, render } from '@testing-library/react';
 import { Markdown } from './Markdown';
 
 describe('<Markdown />', () => {
-  beforeEach(() => {
-    cleanup();
-  });
-
   it('should match snapshot', () => {
     const { asFragment } = render(<Markdown># Hello World</Markdown>);
     expect(asFragment()).toMatchSnapshot();
