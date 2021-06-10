@@ -11,11 +11,11 @@ import { PluginSearchResultList } from './PluginSearchResultList';
  */
 export function PluginSearch() {
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
       <AppBarLanding />
       <PluginSearchBar />
 
-      <div className="min-h-screen">
+      <div className="flex-grow">
         <ColumnLayout
           className="p-6 md:p-12"
           classes={{
@@ -31,6 +31,6 @@ export function PluginSearch() {
 
       <SignupForm />
       <Footer />
-    </>
+    </div>
   );
 }
