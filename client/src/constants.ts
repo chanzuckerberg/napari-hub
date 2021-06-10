@@ -28,4 +28,14 @@ export const LINKS: Record<string, LinkInfo> = {
     newTab: true,
     icon: GitHub,
   },
+  NAPARI_GOVERNANCE: {
+    title: 'napari governance model',
+    link: 'https://napari.org/docs/dev/developers/GOVERNANCE.html',
+    newTab: true,
+  },
+  CZI_EOSS: {
+    title: 'Chan Zuckerberg Initiative EOSS Program',
+    link: 'https://chanzuckerberg.com/eoss/',
+    newTab: true,
+  },
 };
