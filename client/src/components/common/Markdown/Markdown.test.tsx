@@ -30,4 +30,13 @@ describe('<Markdown />', () => {
     );
     expect(queryByTestId('markdownVideo')).toBeFalsy();
   });
+
+  it('should not render GitHub videos in paragraphs', () => {
+    const { queryByTestId } = render(
+      <Markdown>
+        Foo bar https://user-images.githubusercontent.com/example.mp4
+      </Markdown>,
+    );
+    expect(queryByTestId('markdownVideo')).toBeFalsy();
+  });
 });
