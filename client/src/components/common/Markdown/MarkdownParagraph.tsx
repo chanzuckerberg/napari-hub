@@ -7,7 +7,7 @@ interface Props {
   children?: ReactNode;
 }
 
-const ALLOWED_VIDEO_REGEX = /https:\/\/(user-images\.githubusercontent)\.com.*mp4/;
+const ALLOWED_VIDEO_REGEX = /https:\/\/(user-images\.githubusercontent)\.com.*(mp4|mov)/;
 
 /**
  * Component for rendering a paragraph element, or a video element if the
@@ -33,9 +33,12 @@ export function MarkdownParagraph({ className, children }: Props) {
     if (match) {
       result = (
         // eslint-disable-next-line jsx-a11y/media-has-caption
-        <video data-testid="markdownVideo" className={className} controls>
-          <source type="video/mp4" src={href} />
-        </video>
+        <video
+          data-testid="markdownVideo"
+          className={className}
+          controls
+          src={href}
+        />
       );
     }
   }
