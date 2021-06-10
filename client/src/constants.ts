@@ -28,9 +28,34 @@ export const LINKS: Record<string, LinkInfo> = {
     newTab: true,
     icon: GitHub,
   },
+  NAPARI_REPO: {
+    title: 'GitHub repo',
+    link: 'https://github.com/napari/napari',
+    newTab: true,
+  },
   NAPARI_GOVERNANCE: {
     title: 'napari governance model',
     link: 'https://napari.org/docs/dev/developers/GOVERNANCE.html',
+    newTab: true,
+  },
+  IMAGESC: {
+    title: 'napari image.sc forum',
+    link: 'https://forum.image.sc/tag/napari',
+    newTab: true,
+  },
+  PLAUSIBLE: {
+    title: 'napari.dev analytics dashboard',
+    link: 'https://plausible.io/napari.dev',
+    newTab: true,
+  },
+  PLAUSIBLE_PRIVACY: {
+    title: 'Plausible.io Privacy Policy',
+    link: 'https://plausible.io/data-policy',
+    newTab: true,
+  },
+  MAILCHIMP_PRIVACY: {
+    title: 'Mailchimp Privacy Policy',
+    link: 'https://mailchimp.com/legal/privacy/',
     newTab: true,
   },
   CZI_EOSS: {
