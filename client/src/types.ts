@@ -1,3 +1,7 @@
+import { ComponentType } from 'react';
+
+import { IconProps } from '@/components/common/icons';
+
 export interface PluginAuthor {
   name: string;
   email?: string;
@@ -36,11 +40,23 @@ export interface PluginData extends PluginIndexData {
 }
 
 /**
- * Data used for rendering links to different pages in the app.
- *
- * TODO Consolidate with MenuDrawerItem.
+ * Data used for rendering links in the app.
  */
-export interface AppLink {
+export interface LinkInfo {
+  /**
+   * URL of this link.
+   */
   link: string;
+  /**
+   * Title of the link to use.
+   */
   title: string;
+  /**
+   * If the link should open in a new tab.
+   */
+  newTab?: boolean;
+  /**
+   * Icon associated with the link.
+   */
+  icon?: ComponentType<IconProps>;
 }

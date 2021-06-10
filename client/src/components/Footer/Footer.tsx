@@ -1,38 +1,14 @@
-import { ComponentType } from 'react';
-
 import { Link } from '@/components/common';
-import { CZI, GitHub, IconProps, NapariLogo } from '@/components/common/icons';
+import { CZI, NapariLogo } from '@/components/common/icons';
+import { LINKS } from '@/constants';
+import { LinkInfo } from '@/types';
 
-interface FooterLink {
-  title: string;
-  link: string;
-  newTab?: boolean;
-  icon?: ComponentType<IconProps>;
-}
-
-const FOOTER_LINKS: FooterLink[] = [
-  {
-    title: 'About',
-    link: '/about',
-  },
-  {
-    title: 'FAQ',
-    link: '/faq',
-  },
-  {
-    title: 'Privacy policy',
-    link: '/privacy',
-  },
-  {
-    title: 'Contact',
-    link: '/contact',
-  },
-  {
-    title: 'GitHub repo',
-    link: 'https://github.com/chanzuckerberg/napari-hub',
-    newTab: true,
-    icon: GitHub,
-  },
+const FOOTER_LINKS: LinkInfo[] = [
+  LINKS.ABOUT,
+  LINKS.FAQ,
+  LINKS.PRIVACY,
+  LINKS.CONTACT,
+  LINKS.HUB_REPO,
 ];
 
 /**
