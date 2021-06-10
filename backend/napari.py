@@ -160,6 +160,27 @@ def get_extra_metadata(download_url: str) -> dict:
     return extra_metadata
 
 
+def get_download_url(plugin: dict) -> [str, None]:
+    """
+    Get download url for github.
+
+    :param plugin: plugin metadata dictionary
+    :return: download url if one is available, else None
+    """
+    project_urls = get_attribute(plugin, ["info", "project_urls"])
+    if project_urls:
+        source_code_url = get_attribute(project_urls, ["Source Code"])
+        if source_code_url:
+            return source_code_url
+        elif isinstance(project_urls, dict):
+            for key, url in project_urls.items():
+                if url.startswith("https://github.com"):
+                    return url
+            return None
+    else:
+        return None
+
+
 def format_plugin(plugin: dict) -> dict:
     """
     Format the plugin dictionary to extra relevant information.
@@ -169,7 +190,7 @@ def format_plugin(plugin: dict) -> dict:
     """
     version = get_attribute(plugin, ["info", "version"])
 
-    download_url = get_attribute(plugin, ["info", "project_urls", "Source Code"])
+    download_url = get_download_url(plugin)
 
     extra_metadata = {}
     project_urls = {}
