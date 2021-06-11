@@ -176,9 +176,7 @@ def get_download_url(plugin: dict) -> [str, None]:
             for key, url in project_urls.items():
                 if url.startswith("https://github.com"):
                     return url
-            return None
-    else:
-        return None
+    return None
 
 
 def format_plugin(plugin: dict) -> dict:
