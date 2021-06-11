@@ -78,6 +78,9 @@ jobs:
           - name: tsc
             run: yarn type-check
 
+          - name: pytest
+            run: pytest
+
   # Run E2E tests on different browsers.
   e2e:
     needs: tests

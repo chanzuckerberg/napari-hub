@@ -38,7 +38,7 @@ index_subset = {'name', 'summary', 'description', 'description_content_type',
 s3 = boto3.resource('s3', endpoint_url=endpoint_url)
 s3_client = boto3.client("s3", endpoint_url=endpoint_url)
 cache_ttl = timedelta(minutes=cache_ttl)
-
+github_pattern = re.compile("https://github\\.com/([^/]+)/([^/]+)")
 
 app = Flask(__name__)
 
@@ -175,7 +175,7 @@ def get_download_url(plugin: dict) -> [str, None]:
         elif isinstance(project_urls, dict):
             for key, url in project_urls.items():
                 if url.startswith("https://github.com"):
-                    return url
+                    return github_pattern.match(url).group(0)
     return None
 
 
