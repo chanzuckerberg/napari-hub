@@ -1,0 +1,32 @@
+# Workflow for running backend tests for PRs and main branch
+
+name: Backend Tests
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'backend/**'
+  pull_request:
+    branches:
+      - '**'
+    paths:
+      - 'backend/**'
+
+defaults:
+  run:
+    working-directory: /
+
+jobs:
+  # Runs pytest for backend code
+  tests:
+    name: pytest
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: pytest
+        run : pytest
