@@ -83,8 +83,7 @@ async function fetchRepoData(url: string): Promise<PluginRepoData | undefined> {
         octokit = new Octokit({
           authStrategy: createOAuthAppAuth,
           auth: {
-            // clientId: process.env.GITHUB_CLIENT_ID,
-            clientId: `${process.env.GITHUB_CLIENT_ID}derp`,
+            clientId: process.env.GITHUB_CLIENT_ID,
             clientSecret: process.env.GITHUB_CLIENT_SECRET,
             clientType: 'oauth-app',
           },
