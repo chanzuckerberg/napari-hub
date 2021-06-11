@@ -16,7 +16,7 @@ on:
 
 defaults:
   run:
-    working-directory: /
+    working-directory: backend/
 
 jobs:
   # Runs pytest for backend code
@@ -28,5 +28,11 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v2
 
-      - name: pytest
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest
+
+      - name: Run tests
         run : pytest
