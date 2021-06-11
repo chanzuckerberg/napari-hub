@@ -1,20 +1,21 @@
 import { createContext, useContext } from 'react';
 import { ReactNode } from 'react-markdown';
 
-import { PluginData } from '@/types';
+import { PluginData, PluginRepoData, PluginRepoFetchError } from '@/types';
 
 /**
  * Shared state for plugin data.
  */
 interface PluginState {
   plugin: PluginData;
+  repo: PluginRepoData;
+  repoFetchError?: PluginRepoFetchError;
 }
 
 const PluginStateContext = createContext<PluginState | null>(null);
 
-interface Props {
+interface Props extends PluginState {
   children: ReactNode;
-  plugin: PluginData;
 }
 
 /**
@@ -22,9 +23,9 @@ interface Props {
  * plugin state directly from context so that we don't have to pass the
  * `plugin` prop around everywhere.
  */
-export function PluginStateProvider({ children, plugin }: Props) {
+export function PluginStateProvider({ children, ...props }: Props) {
   return (
-    <PluginStateContext.Provider value={{ plugin }}>
+    <PluginStateContext.Provider value={props}>
       {children}
     </PluginStateContext.Provider>
   );
