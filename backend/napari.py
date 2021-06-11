@@ -175,7 +175,9 @@ def get_download_url(plugin: dict) -> [str, None]:
         elif isinstance(project_urls, dict):
             for key, url in project_urls.items():
                 if url.startswith("https://github.com"):
-                    return github_pattern.match(url).group(0)
+                    match = github_pattern.match(url)
+                    if match:
+                        return github_pattern.match(url).group(0)
     return None
 
 

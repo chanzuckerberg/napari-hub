@@ -134,8 +134,11 @@ def test_github_get_url():
     plugins = {"info": {"project_urls": {"Source Code": "test1"}}}
     assert("test1" == get_download_url(plugins))
 
-    plugins = {"info": {"project_urls": {"Random": "https://"}}}
+    plugins = {"info": {"project_urls": {"Random": "https://random.com"}}}
     assert(get_download_url(plugins) is None)
 
-    plugins = {"info": {"project_urls": {"Random": "https://github.com/napari/napari/issues"}}}
-    assert("https://github.com/napari/napari" == get_download_url(plugins))
+    plugins = {"info": {"project_urls": {"Random": "https://github.com/org"}}}
+    assert(get_download_url(plugins) is None)
+
+    plugins = {"info": {"project_urls": {"Random": "https://github.com/org/repo/random"}}}
+    assert("https://github.com/org/repo" == get_download_url(plugins))
