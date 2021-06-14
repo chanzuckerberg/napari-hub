@@ -1,3 +1,5 @@
+import type { Octokit as OctokitInstance } from '@octokit/rest';
+import type { RequestError as OctokitRequestError } from '@octokit/types';
 import { AxiosError } from 'axios';
 import { GetServerSidePropsContext } from 'next';
 import { ParsedUrlQuery } from 'node:querystring';
@@ -6,7 +8,7 @@ import { hubAPI } from '@/axios';
 import { PluginDetails } from '@/components';
 import { ErrorMessage } from '@/components/common';
 import { PluginStateProvider } from '@/context/plugin';
-import { PluginData } from '@/types';
+import { PluginData, PluginRepoData, PluginRepoFetchError } from '@/types';
 
 /**
  * Interface for parameters in URL.
@@ -25,8 +27,10 @@ interface RequestError {
 }
 
 interface Props {
-  plugin?: PluginData;
   error?: string;
+  plugin?: PluginData;
+  repo?: PluginRepoData;
+  repoFetchError?: PluginRepoFetchError;
 }
 
 type RequestResponse = PluginData | RequestError;
@@ -43,6 +47,67 @@ function isRequestError(data: RequestResponse): data is RequestError {
  */
 function isPlugin(data: RequestResponse): data is RequestError {
   return !!(data as PluginData).name;
+}
+
+function isAxiosError(error: unknown): error is AxiosError {
+  return !!(error as AxiosError).isAxiosError;
+}
+
+function isOctokitError(error: unknown): error is OctokitRequestError {
+  return !!(error as OctokitRequestError).documentation_url;
+}
+
+/**
+ * Regex used for capturing the repo name in a repo URL.
+ * Inspiration: https://regexr.com/4uvj8
+ */
+const REPO_REGEX = /(?:git@|https:\/\/)(github).com[/:](.*)(?:.git)?/;
+
+let octokit: OctokitInstance | undefined;
+
+async function fetchRepoData(url: string): Promise<PluginRepoData | undefined> {
+  const match = REPO_REGEX.exec(url);
+  let repoData: PluginRepoData | undefined;
+
+  if (match) {
+    const [, type, name] = match;
+    const [owner, repo] = name.split('/');
+
+    if (type === 'github') {
+      // Initialize octokit once on server
+      if (!octokit) {
+        const { Octokit } = await import('@octokit/rest');
+        const { createOAuthAppAuth } = await import('@octokit/auth-oauth-app');
+
+        // Authenticate as oauth app
+        octokit = new Octokit({
+          authStrategy: createOAuthAppAuth,
+          auth: {
+            clientId: process.env.GITHUB_CLIENT_ID,
+            clientSecret: process.env.GITHUB_CLIENT_SECRET,
+            clientType: 'oauth-app',
+          },
+        });
+      }
+
+      const { data, status } = await octokit.repos.get({
+        owner,
+        repo,
+      });
+
+      if (status === 200) {
+        repoData = {
+          forks: data.forks_count,
+          issuesAndPRs: data.open_issues_count,
+          stars: data.stargazers_count,
+        };
+      }
+    } else if (type === 'gitlab') {
+      // TODO Implement GitLab support
+    }
+  }
+
+  return repoData;
 }
 
 /**
@@ -63,20 +128,40 @@ export async function getServerSideProps({
       props.error = JSON.stringify(data, null, 2);
     } else if (isPlugin(data)) {
       props.plugin = data;
+      props.repo = await fetchRepoData(data.code_repository);
     }
   } catch (err) {
-    const error = err as AxiosError;
-    props.error = error.message;
+    if (isAxiosError(err)) {
+      props.error = err.message;
+    }
+
+    if (isOctokitError(err)) {
+      props.repoFetchError = {
+        name: err.name,
+        status: err.status,
+      };
+    }
   }
 
   return { props };
 }
 
+const defaultRepoData: PluginRepoData = {
+  forks: 0,
+  issuesAndPRs: 0,
+  stars: 0,
+};
+
 /**
  * This page fetches plugin data from the hub API and renders it in the
  * PluginDetails component.
  */
-export default function PluginPage({ error, plugin }: Props) {
+export default function PluginPage({
+  error,
+  plugin,
+  repo = defaultRepoData,
+  repoFetchError,
+}: Props) {
   return (
     <>
       {error ? (
@@ -84,7 +169,11 @@ export default function PluginPage({ error, plugin }: Props) {
       ) : (
         <>
           {plugin ? (
-            <PluginStateProvider plugin={plugin}>
+            <PluginStateProvider
+              plugin={plugin}
+              repo={repo}
+              repoFetchError={repoFetchError}
+            >
               <PluginDetails />
             </PluginStateProvider>
           ) : (
