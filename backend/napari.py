@@ -123,15 +123,14 @@ def get_file(download_url: str, file: str) -> [dict, None]:
     :return: file context for the file to download
     """
     api_url = download_url.replace("https://github.com/",
-                                   "https://api.github.com/repos/")
+                                   "https://raw.githubusercontent.com/")
     try:
-        response = requests.get(
-            f'{api_url}/{file}')
+        url = f'{api_url}/HEAD/{file}'
+        print(url)
+        response = requests.get(url)
         if response.status_code != requests.codes.ok:
             response.raise_for_status()
-        info = json.loads(response.text)
-        if "download_url" in info:
-            return requests.get(info["download_url"]).text
+        return response.text
     except HTTPError:
         pass
 
@@ -147,12 +146,12 @@ def get_extra_metadata(download_url: str) -> dict:
     """
     extra_metadata = {}
 
-    description = get_file(download_url, "contents/.napari/DESCRIPTION.md")
+    description = get_file(download_url, ".napari/DESCRIPTION.md")
 
     if description is not None:
         extra_metadata['description'] = description
 
-    yaml_file = get_file(download_url, "contents/.napari/config.yml")
+    yaml_file = get_file(download_url, ".napari/config.yml")
     if yaml_file:
         config = yaml.safe_load(yaml_file)
         extra_metadata.update(config)
