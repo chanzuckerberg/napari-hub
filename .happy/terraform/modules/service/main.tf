@@ -35,7 +35,7 @@ resource aws_ecs_task_definition task_definition {
     "name": "web",
     "essential": true,
     "image": "${var.image}",
-    "memory": ${var.memory},
+    "memoryReservation": ${var.memory},
     "environment": [
       {
         "name": "AWS_REGION",
