@@ -49,11 +49,19 @@ export interface PluginRepoData {
 export type PluginRepoFetchError = Pick<RequestError, 'name' | 'status'>;
 
 /**
- * Data used for rendering links to different pages in the app.
- *
- * TODO Consolidate with MenuDrawerItem.
+ * Data used for rendering links in the app.
  */
-export interface AppLink {
+export interface LinkInfo {
+  /**
+   * URL of this link.
+   */
   link: string;
+  /**
+   * Title of the link to use.
+   */
   title: string;
+  /**
+   * If the link should open in a new tab.
+   */
+  newTab?: boolean;
 }

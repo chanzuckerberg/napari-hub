@@ -1,12 +1,4 @@
-import { AppLink } from '@/types';
+import { LINKS } from '@/constants';
+import { LinkInfo } from '@/types';
 
-export const APP_LINKS: AppLink[] = [
-  {
-    title: 'About',
-    link: '/about',
-  },
-  {
-    title: 'FAQ',
-    link: '/faq',
-  },
-];
+export const APP_LINKS: LinkInfo[] = [LINKS.ABOUT, LINKS.FAQ];

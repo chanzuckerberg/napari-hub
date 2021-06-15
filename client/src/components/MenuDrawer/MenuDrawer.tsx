@@ -5,12 +5,12 @@ import { useClickAway } from 'react-use';
 
 import { Link, Overlay } from '@/components/common';
 import { Close } from '@/components/common/icons';
+import { LinkInfo } from '@/types';
 
 import styles from './MenuDrawer.module.scss';
-import { MenuDrawerItem } from './types';
 
 interface Props {
-  items: MenuDrawerItem[];
+  items: LinkInfo[];
   onMenuClose: () => void;
   visible: boolean;
 }

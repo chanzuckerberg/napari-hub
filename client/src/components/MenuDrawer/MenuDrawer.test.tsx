@@ -1,13 +1,14 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { ComponentProps } from 'react';
 
+import { LinkInfo } from '@/types';
+
 import { MenuDrawer } from './MenuDrawer';
-import { MenuDrawerItem } from './types';
 
 const noop = () => {};
 
 describe('<MenuDrawer />', () => {
-  const mockItems: MenuDrawerItem[] = [
+  const mockItems: LinkInfo[] = [
     {
       title: 'foo',
       link: '/foo',

@@ -8,11 +8,11 @@ interface Props {
 
 export function Layout({ children }: Props) {
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
       <AppBar />
-      <main>{children}</main>
+      <main className="flex-grow">{children}</main>
       <SignupForm />
       <Footer />
-    </>
+    </div>
   );
 }

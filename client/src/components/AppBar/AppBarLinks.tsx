@@ -2,14 +2,14 @@ import clsx from 'clsx';
 
 import { Link } from '@/components/common';
 import { useSearchState } from '@/context/search';
-import { AppLink } from '@/types';
+import { LinkInfo } from '@/types';
 
 interface CommonProps {
   vertical?: boolean;
 }
 
 interface LinkListProps extends CommonProps {
-  items: AppLink[];
+  items: LinkInfo[];
 }
 
 /**
@@ -33,7 +33,7 @@ function LinkList({ items, vertical }: LinkListProps) {
 
 interface Props extends CommonProps {
   className?: string;
-  items?: AppLink[];
+  items?: LinkInfo[];
 }
 
 /**
