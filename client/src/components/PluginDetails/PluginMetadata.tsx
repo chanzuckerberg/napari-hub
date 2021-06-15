@@ -20,20 +20,24 @@ interface GithubMetadataItem {
  * TODO Replace this with actual GitHub data.
  */
 function PluginGithubData() {
+  const { repo, repoFetchError } = usePluginState();
   const items: GithubMetadataItem[] = [
     {
       title: 'Stars',
-      count: 0,
+      count: repo.stars,
     },
     {
       title: 'Forks',
-      count: 0,
+      count: repo.forks,
     },
     {
       title: 'Issues + PRs',
-      count: 0,
+      count: repo.issuesAndPRs,
     },
   ];
+  const error =
+    repoFetchError &&
+    `We're having trouble loading the GitHub stats: ${repoFetchError.status}`;
 
   return (
     <div
@@ -49,13 +53,17 @@ function PluginGithubData() {
       )}
     >
       <h4 className="font-bold">Github Activity</h4>
-      <ul className="list-none">
-        {items.map((item) => (
-          <li className="my-2" key={item.title}>
-            {item.title}: <span className="font-bold">{item.count}</span>
-          </li>
-        ))}
-      </ul>
+      {error ? (
+        <p className="text-napari-error mt-2">{error}</p>
+      ) : (
+        <ul className="list-none">
+          {items.map((item) => (
+            <li className="my-2" key={item.title}>
+              {item.title}: <span className="font-bold">{item.count}</span>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

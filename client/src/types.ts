@@ -1,3 +1,5 @@
+import { RequestError } from '@octokit/types';
+
 export interface PluginAuthor {
   name: string;
   email?: string;
@@ -34,6 +36,17 @@ export interface PluginData extends PluginIndexData {
   support: string;
   twitter: string;
 }
+
+/**
+ * Plugin repo data to render with plugin metadata.
+ */
+export interface PluginRepoData {
+  forks: number;
+  issuesAndPRs: number;
+  stars: number;
+}
+
+export type PluginRepoFetchError = Pick<RequestError, 'name' | 'status'>;
 
 /**
  * Data used for rendering links in the app.

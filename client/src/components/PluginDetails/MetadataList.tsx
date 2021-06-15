@@ -1,6 +1,9 @@
 import clsx from 'clsx';
 import { ReactNode } from 'react-markdown';
 
+import { usePluginState } from '@/context/plugin';
+import { usePlausible } from '@/hooks';
+
 import styles from './MetadataList.module.scss';
 import { MetadataItem, MetadataValueTypes } from './PluginDetails.types';
 
@@ -28,6 +31,8 @@ interface MetadataListItemProps extends CommonProps {
  * heading and metadata value.
  */
 function MetadataListItem({ inline, title, values }: MetadataListItemProps) {
+  const { plugin } = usePluginState();
+  const plausible = usePlausible();
   const isEmpty = values.filter(Boolean).length === 0;
 
   return (
@@ -83,6 +88,15 @@ function MetadataListItem({ inline, title, values }: MetadataListItemProps) {
                     href={value.href}
                     target="_blank"
                     rel="noreferrer"
+                    onClick={() => {
+                      const url = new URL(value.href);
+                      plausible('Links', {
+                        host: url.host,
+                        link: value.text,
+                        plugin: plugin.name,
+                        url: value.href,
+                      });
+                    }}
                   >
                     {value.text}
                   </a>

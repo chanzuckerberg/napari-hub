@@ -1,9 +1,10 @@
 from unittest import mock
-import importlib
 import requests
 from requests.exceptions import HTTPError
 
-api = importlib.import_module("backend.lambda")
+from backend.napari import get_plugin
+from backend.napari import get_plugins
+from backend.napari import get_download_url
 
 
 class FakeResponse:
@@ -98,7 +99,7 @@ plugin = """
     'requests.get', return_value=FakeResponse(data=plugin_list)
 )
 def test_get_plugins(mock_get):
-    result = api.get_plugins(None)
+    result = get_plugins()
     assert len(result) == 2
     assert result['package1'] == "0.2.7"
     assert result['package2'] == "0.1.0"
@@ -107,7 +108,7 @@ def test_get_plugins(mock_get):
     'requests.get', return_value=FakeResponse(data=plugin)
 )
 def test_get_plugin(mock_get):
-    result = api.get_plugin("test")
+    result = get_plugin("test")
     assert(result["name"] == "test")
     assert(result["summary"] == "A test plugin")
     assert(result["description"] == "description")
@@ -126,4 +127,18 @@ def test_get_plugin(mock_get):
     assert(result["support"] == "")
     assert(result["report_issues"] == "")
     assert(result["twitter"] == "")
-    assert(result["code_repository"] == "")
+    assert(result["code_repository"] == "https://github.com/test/test")
+
+
+def test_github_get_url():
+    plugins = {"info": {"project_urls": {"Source Code": "test1"}}}
+    assert("test1" == get_download_url(plugins))
+
+    plugins = {"info": {"project_urls": {"Random": "https://random.com"}}}
+    assert(get_download_url(plugins) is None)
+
+    plugins = {"info": {"project_urls": {"Random": "https://github.com/org"}}}
+    assert(get_download_url(plugins) is None)
+
+    plugins = {"info": {"project_urls": {"Random": "https://github.com/org/repo/random"}}}
+    assert("https://github.com/org/repo" == get_download_url(plugins))

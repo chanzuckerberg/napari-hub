@@ -1,6 +1,8 @@
+import { useEffect, useRef } from 'react';
+import { usePrevious } from 'react-use';
 import { createEnumParam, useQueryParam, withDefault } from 'use-query-params';
 
-import { useActiveURLParameter } from '@/hooks';
+import { useActiveURLParameter, usePlausible } from '@/hooks';
 
 import {
   DEFAULT_SORT_TYPE,
@@ -40,6 +42,23 @@ function useForm() {
  */
 export type SortForm = ReturnType<typeof useForm>;
 
+function usePlausibleEvents(sortType: SearchSortType) {
+  const plausible = usePlausible();
+  const prevSortType = usePrevious(sortType);
+  const initialLoadRef = useRef(false);
+
+  useEffect(() => {
+    // Don't log sort event on initial load.
+    if (initialLoadRef.current && sortType !== prevSortType) {
+      plausible('Sort', {
+        by: sortType,
+      });
+    } else if (!initialLoadRef.current) {
+      initialLoadRef.current = true;
+    }
+  }, [plausible, prevSortType, sortType]);
+}
+
 /**
  * Hook that provides access to the sort form state and handles sorting plugins
  * based on the selected sort type.
@@ -49,6 +68,7 @@ export type SortForm = ReturnType<typeof useForm>;
  */
 export function useSort(results: SearchResult[]) {
   const sortForm = useForm();
+  usePlausibleEvents(sortForm.sortType);
   const sortedResults = sortResults(sortForm.sortType, results);
 
   return {

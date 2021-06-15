@@ -8,7 +8,14 @@ import { PluginDetails } from './PluginDetails';
 describe('<PluginDetails />', () => {
   it('should match snapshot', () => {
     render(
-      <PluginStateProvider plugin={napariPlugin}>
+      <PluginStateProvider
+        plugin={napariPlugin}
+        repo={{
+          forks: 0,
+          issuesAndPRs: 0,
+          stars: 0,
+        }}
+      >
         <PluginDetails />
       </PluginStateProvider>,
     );

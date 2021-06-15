@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { usePrevious } from 'react-use';
 import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 
-import { useActiveURLParameter } from '@/hooks';
+import { useActiveURLParameter, usePlausible } from '@/hooks';
 import { PluginIndexData } from '@/types';
 import { Logger } from '@/utils/logger';
 import { measureExecution } from '@/utils/performance';
@@ -47,6 +48,17 @@ function useSearchEngine(
   return engine;
 }
 
+function usePlausibleEvents(query?: string) {
+  const plausible = usePlausible();
+  const prevQuery = usePrevious(query);
+
+  useEffect(() => {
+    if (query && query !== prevQuery) {
+      plausible('Search');
+    }
+  }, [plausible, prevQuery, query]);
+}
+
 /**
  * Hook that returns a new list of plugins when the search query updates.
  *
@@ -85,7 +97,9 @@ function useSearchResults(
     });
 
     return results;
-  }, [engine, query, index]);
+  }, [engine, index, query]);
+
+  usePlausibleEvents(query);
 
   return plugins;
 }

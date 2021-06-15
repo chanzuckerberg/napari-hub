@@ -1,5 +1,4 @@
 import { forEach, isEmpty, pickBy, reduce, set } from 'lodash';
-import { Dispatch, SetStateAction } from 'react';
 import { DeepPartial } from 'utility-types';
 
 import { FilterChipFormState, FilterFormState } from './filter.types';
@@ -56,27 +55,6 @@ export function getChipState(state: FilterFormState): FilterChipFormState[] {
   });
 
   return chips;
-}
-
-/**
- * Higher order function that returns a state setter for checkbox sub-states.
- *
- * @param setState The root state setter
- * @param key The sub-state to use
- * @returns A function to merge state into the sub-state
- */
-export function getCheckboxSetter<S extends FilterFormState, K extends keyof S>(
-  setState: Dispatch<SetStateAction<S>>,
-  key: K,
-) {
-  return (nextState: Partial<S[K]>): void =>
-    setState((prevState) => ({
-      ...prevState,
-      [key]: {
-        ...prevState[key],
-        ...nextState,
-      },
-    }));
 }
 
 /**
