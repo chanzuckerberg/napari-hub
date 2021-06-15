@@ -82,6 +82,9 @@ function PlausibleProvider({ children }: ProviderProps) {
   }
 
   const isProd = process.env.ENV === 'prod';
+  // Plausible doesn't actually do any domain checking, so the domain is used
+  // mostly an ID for which Plausible dashboard we want to send data to.
+  // https://github.com/plausible/analytics/discussions/183
   const domain = isProd ? 'napari-hub.org' : 'dev.napari-hub.org';
   return (
     <NextPlausibleProvider domain={domain} enabled trackOutboundLinks>

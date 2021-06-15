@@ -31,7 +31,9 @@ module.exports = withMDX({
     config.plugins.push(
       new EnvironmentPlugin({
         // Environment variable for current deployment environment (possible
-        // values are local, dev, staging, and prod)
+        // values are local, dev, staging, and prod) If an `ENV` variable is not
+        // defined, the value `local` is used by default (for example when
+        // running `yarn dev`).
         ENV: 'local',
 
         // Environment variable for enabling plausible analytics. By default,
