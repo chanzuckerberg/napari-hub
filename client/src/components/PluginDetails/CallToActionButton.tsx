@@ -1,6 +1,9 @@
 import clsx from 'clsx';
 import { useState } from 'react';
 
+import { usePluginState } from '@/context/plugin';
+import { usePlausible } from '@/hooks';
+
 import { InstallModal } from './InstallModal';
 
 interface Props {
@@ -12,6 +15,8 @@ interface Props {
  * install button will render the modal visible.
  */
 export function CallToActionButton({ className }: Props) {
+  const { plugin } = usePluginState();
+  const plausible = usePlausible();
   const [visible, setVisible] = useState(false);
 
   return (
@@ -28,7 +33,12 @@ export function CallToActionButton({ className }: Props) {
           // Dimensions
           'h-12 w-full lg:max-w-napari-col',
         )}
-        onClick={() => setVisible(true)}
+        onClick={() => {
+          setVisible(true);
+          plausible('Install', {
+            plugin: plugin.name,
+          });
+        }}
         type="button"
       >
         Install

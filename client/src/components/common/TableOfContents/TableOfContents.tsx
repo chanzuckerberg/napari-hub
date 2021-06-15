@@ -8,10 +8,17 @@ interface Props {
    * className: additional classes to apply to this component
    */
   className?: string;
+
+  /**
+   * onClick: callback for when headings are clicked.
+   */
+  onClick?(heading: string): void;
+
   /**
    * headers: header ids and titles to link to
    */
   headers: TOCHeader[];
+
   /**
    * free: whether the component should move with the page or be fixed in place
    */
@@ -22,7 +29,7 @@ interface Props {
  * Component for rendering TOC from the given headers. Highlighting will
  * only work if the headers match those present on the page.
  */
-export function TableOfContents({ className, headers, free }: Props) {
+export function TableOfContents({ className, onClick, headers, free }: Props) {
   const activeHeader = useActiveHeader(headers);
 
   return (
@@ -65,7 +72,11 @@ export function TableOfContents({ className, headers, free }: Props) {
               Use normal link component instead of Next.js Link because we're
               not loading another page.
             */}
-            <a className={clsx(isActive && 'font-bold')} href={`#${header.id}`}>
+            <a
+              className={clsx(isActive && 'font-bold')}
+              href={`#${header.id}`}
+              onClick={() => onClick?.(header.text)}
+            >
               {header.text}
             </a>
           </li>
