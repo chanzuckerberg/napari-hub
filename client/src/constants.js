@@ -1,7 +1,4 @@
-import { GitHub } from '@/components/common/icons';
-import { LinkInfo } from '@/types';
-
-export const LINKS: Record<string, LinkInfo> = {
+const LINKS = {
   HOME: {
     title: 'Home',
     link: '/',
@@ -26,7 +23,6 @@ export const LINKS: Record<string, LinkInfo> = {
     title: 'GitHub repo',
     link: 'https://github.com/chanzuckerberg/napari-hub',
     newTab: true,
-    icon: GitHub,
   },
   NAPARI_REPO: {
     title: 'GitHub repo',
@@ -35,7 +31,7 @@ export const LINKS: Record<string, LinkInfo> = {
   },
   NAPARI_GOVERNANCE: {
     title: 'napari governance model',
-    link: 'https://napari.org/docs/dev/developers/GOVERNANCE.html',
+    link: 'https://napari.org/community/governance.html',
     newTab: true,
   },
   IMAGESC: {
@@ -64,3 +60,5 @@ export const LINKS: Record<string, LinkInfo> = {
     newTab: true,
   },
 };
+
+module.exports = { LINKS };

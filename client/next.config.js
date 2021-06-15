@@ -2,10 +2,13 @@ const mdx = require('@next/mdx');
 const slug = require('remark-slug');
 const html = require('rehype-stringify');
 
+const linkvars = require('./src/utils/linkvars');
+const { LINKS } = require('./src/constants');
+
 const withMDX = mdx({
   extensions: /\.mdx$/,
   options: {
-    remarkPlugins: [slug, html],
+    remarkPlugins: [slug, html, [linkvars, { vars: LINKS }]],
   },
 });
 

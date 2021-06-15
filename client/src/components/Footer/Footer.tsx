@@ -1,14 +1,23 @@
+import { ComponentType } from 'react';
+
 import { Link } from '@/components/common';
-import { CZI, NapariLogo } from '@/components/common/icons';
+import { CZI, GitHub, IconProps, NapariLogo } from '@/components/common/icons';
 import { LINKS } from '@/constants';
 import { LinkInfo } from '@/types';
 
-const FOOTER_LINKS: LinkInfo[] = [
+interface FooterItem extends LinkInfo {
+  /**
+   * Icon associated with the link.
+   */
+  icon?: ComponentType<IconProps>;
+}
+
+const FOOTER_LINKS: FooterItem[] = [
   LINKS.ABOUT,
   LINKS.FAQ,
   LINKS.PRIVACY,
   LINKS.CONTACT,
-  LINKS.HUB_REPO,
+  { ...LINKS.HUB_REPO, icon: GitHub },
 ];
 
 /**

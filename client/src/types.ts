@@ -1,7 +1,3 @@
-import { ComponentType } from 'react';
-
-import { IconProps } from '@/components/common/icons';
-
 export interface PluginAuthor {
   name: string;
   email?: string;
@@ -55,8 +51,4 @@ export interface LinkInfo {
    * If the link should open in a new tab.
    */
   newTab?: boolean;
-  /**
-   * Icon associated with the link.
-   */
-  icon?: ComponentType<IconProps>;
 }
