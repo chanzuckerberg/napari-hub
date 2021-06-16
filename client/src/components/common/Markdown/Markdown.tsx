@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import ReactMarkdown, { TransformOptions } from 'react-markdown';
 import slug from 'rehype-slug';
 import gfm from 'remark-gfm';
+import breaks from 'remark-breaks';
 import removeComments from 'remark-remove-comments';
 
 import styles from './Markdown.module.scss';
@@ -21,6 +22,9 @@ interface Props {
 }
 
 const REMARK_PLUGINS = [
+  // breaks without spaces
+  breaks,
+
   // Add support for GitHub style markdown like checkboxes.
   gfm,
 
