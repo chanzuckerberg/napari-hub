@@ -31,12 +31,13 @@ async function renderDescription(markdown: string): Promise<string> {
   // Dynamically import modules so that we only use them on the server.
   const unified = (await import('unified')).default;
   const markdownParser = (await import('remark-parse')).default;
+  const gfm = (await import('remark-gfm')).default;
   const remark2rehype = (await import('remark-rehype')).default;
   const rehype2html = (await import('rehype-stringify')).default;
   const cheerio = (await import('cheerio')).default;
 
   // Render Markdown to HTML
-  const plugins = [markdownParser, remark2rehype, rehype2html];
+  const plugins = [markdownParser, gfm, remark2rehype, rehype2html];
   const processor = plugins.reduce(
     (currentProcessor, plugin) => currentProcessor.use(plugin),
     unified(),
