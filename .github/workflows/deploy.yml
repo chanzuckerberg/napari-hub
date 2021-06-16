@@ -30,6 +30,7 @@ jobs:
       - name: Deploy Changes
         shell: bash
         env:
+          ENV: prod
           TFE_TOKEN: ${{ secrets.TFE_TOKEN }}
         run: |
           pip install --upgrade pip
@@ -57,9 +58,9 @@ jobs:
       - name: Deploy Changes
         shell: bash
         env:
+          ENV: staging
           TFE_TOKEN: ${{ secrets.TFE_TOKEN }}
         run: |
           pip install --upgrade pip
           pip install -r .happy/requirements.txt
           scripts/happy --profile="" --env staging update staging
-
