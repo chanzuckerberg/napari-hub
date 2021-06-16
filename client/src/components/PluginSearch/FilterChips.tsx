@@ -30,7 +30,7 @@ const SUBKEY_LABEL: Record<string, string | undefined> = {
 
   // OS labels
   linux: 'Linux',
-  mac: 'Mac',
+  mac: 'macOS',
   windows: 'Windows',
 };
 

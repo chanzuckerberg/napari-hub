@@ -1076,7 +1076,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                                   <span
                                     class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
                                   >
-                                    Mac
+                                    macOS
                                   </span>
                                 </label>
                                 <label
@@ -1507,7 +1507,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                       <span
                         class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
                       >
-                        Mac
+                        macOS
                       </span>
                     </label>
                     <label

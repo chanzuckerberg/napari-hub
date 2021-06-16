@@ -9,7 +9,7 @@ import { PluginFilterBySection } from './PluginFilterBySection';
 const SECTION_LABELS: Record<string, string | undefined> = {
   // Operating System
   linux: 'Linux',
-  mac: 'Mac',
+  mac: 'macOS',
   windows: 'Windows',
 
   // Development Status
