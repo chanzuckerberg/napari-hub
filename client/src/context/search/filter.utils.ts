@@ -27,7 +27,7 @@ export function getDefaultState(): FilterFormState {
       windows: false,
     },
 
-    pythonVersions: SUPPORTED_PYTHON_VERSIONS.reduce(
+    pythonVersions: SUPPORTED_PYTHON_VERSIONS.sort().reduce(
       (state, version) => set(state, [version], false),
       {} as FilterFormState['pythonVersions'],
     ),
