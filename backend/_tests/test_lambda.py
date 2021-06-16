@@ -107,7 +107,10 @@ def test_get_plugins(mock_get):
 @mock.patch(
     'requests.get', return_value=FakeResponse(data=plugin)
 )
-def test_get_plugin(mock_get):
+@mock.patch(
+    'backend.napari.get_plugins', return_value={'test': '0.0.1'}
+)
+def test_get_plugin(mock_get, mock_plugins):
     result = get_plugin("test")
     assert(result["name"] == "test")
     assert(result["summary"] == "A test plugin")
@@ -128,6 +131,16 @@ def test_get_plugin(mock_get):
     assert(result["report_issues"] == "")
     assert(result["twitter"] == "")
     assert(result["code_repository"] == "https://github.com/test/test")
+
+
+@mock.patch(
+    'requests.get', return_value=FakeResponse(data=plugin)
+)
+@mock.patch(
+    'backend.napari.get_plugins', return_value={'not_test': '0.0.1'}
+)
+def test_get_invalid_plugin(mock_get, mock_plugins):
+    assert({} == get_plugin("test"))
 
 
 def test_github_get_url():
