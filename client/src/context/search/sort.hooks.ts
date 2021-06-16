@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { useEffectOnce, usePrevious } from 'react-use';
+import { usePrevious } from 'react-use';
 import { createEnumParam, useQueryParam, withDefault } from 'use-query-params';
 
 import { useActiveURLParameter, usePlausible } from '@/hooks';
@@ -18,27 +18,17 @@ const SortTypeValues = Object.values(SearchSortType);
  * Hook that provides the form state for the sort by form.
  */
 function useForm() {
-  const searchParam = useActiveURLParameter<string>(SearchQueryParams.Search);
-  const sortTypeParam = useActiveURLParameter<SearchSortType>(
+  const initialSortType = useActiveURLParameter<SearchSortType>(
     SearchQueryParams.Sort,
   );
-
   const [sortType, setSortType] = useQueryParam(
     SearchQueryParams.Sort,
-    withDefault(createEnumParam(SortTypeValues), DEFAULT_SORT_TYPE),
+    withDefault(
+      createEnumParam(SortTypeValues),
+      // Default to release date if sort type is not initial in URL
+      initialSortType ?? DEFAULT_SORT_TYPE,
+    ),
   );
-
-  // On initial load, set the sort type to:
-  // 1. The sort type defined in the query parameter.
-  // 2. Relevance if the sort parameter isn't in the URL, but the search parameter is.
-  useEffectOnce(() => {
-    const initialSortType =
-      sortTypeParam ?? searchParam ? SearchSortType.Relevance : undefined;
-
-    if (initialSortType) {
-      setSortType(initialSortType);
-    }
-  });
 
   return {
     sortType,
