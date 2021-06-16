@@ -52,7 +52,7 @@ export function Accordion({
         {title}
       </AccordionSummary>
 
-      <AccordionDetails className="p-0">{children}</AccordionDetails>
+      <AccordionDetails className="p-0 flex-col">{children}</AccordionDetails>
     </MUIAccordion>
   );
 }
