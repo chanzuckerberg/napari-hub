@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 import ReactMarkdown, { TransformOptions } from 'react-markdown';
 import slug from 'rehype-slug';
-import gfm from 'remark-gfm';
 import breaks from 'remark-breaks';
+import gfm from 'remark-gfm';
 import removeComments from 'remark-remove-comments';
 
 import styles from './Markdown.module.scss';
