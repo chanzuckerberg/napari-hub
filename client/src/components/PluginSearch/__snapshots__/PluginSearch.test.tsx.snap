@@ -299,7 +299,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
             <div
               aria-disabled="false"
               aria-expanded="false"
-              class="MuiButtonBase-root MuiAccordionSummary-root flex-row-reverse p-0 font-semibold"
+              class="MuiButtonBase-root MuiAccordionSummary-root p-0 font-semibold flex-row-reverse"
               role="button"
               tabindex="0"
             >
@@ -364,7 +364,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                     role="region"
                   >
                     <div
-                      class="MuiAccordionDetails-root p-0"
+                      class="MuiAccordionDetails-root p-0 flex-col"
                     >
                       <fieldset
                         class="MuiFormControl-root"
@@ -760,7 +760,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                 <div
                   aria-disabled="false"
                   aria-expanded="false"
-                  class="MuiButtonBase-root MuiAccordionSummary-root flex-row-reverse p-0 font-semibold"
+                  class="MuiButtonBase-root MuiAccordionSummary-root p-0 font-semibold flex-row-reverse"
                   role="button"
                   tabindex="0"
                 >
@@ -825,7 +825,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                         role="region"
                       >
                         <div
-                          class="MuiAccordionDetails-root p-0"
+                          class="MuiAccordionDetails-root p-0 flex-col"
                         >
                           <div
                             class="flex flex-col gap-6"

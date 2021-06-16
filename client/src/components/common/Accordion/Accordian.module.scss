@@ -1,0 +1,15 @@
+.expandIcon {
+  &.expanded {
+    transform: rotate(45deg);
+  }
+}
+
+.accordion {
+  &.expanded::before {
+    opacity: 1;
+  }
+
+  &::before {
+    background-color: #000;
+  }
+}
