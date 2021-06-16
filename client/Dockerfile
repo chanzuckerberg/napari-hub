@@ -9,6 +9,7 @@ RUN yarn install
 
 # Build for production
 COPY . /app
+ARG ENV
 RUN yarn build
 
 # Application image

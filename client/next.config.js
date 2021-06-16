@@ -42,7 +42,9 @@ module.exports = withMDX({
         // Environment variable for enabling plausible analytics. By default,
         // analytics are enabled for production and staging deployments, but can
         // be enabled manually for testing.
-        PLAUSIBLE: ['prod', 'staging'].includes(process.env.ENV),
+        PLAUSIBLE: JSON.stringify(
+          ['prod', 'staging'].includes(process.env.ENV),
+        ),
       }),
     );
 

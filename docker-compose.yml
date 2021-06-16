@@ -30,6 +30,7 @@ services:
         - HAPPY_COMMIT
         - HAPPY_BRANCH
         - HAPPY_TAG
+        - ENV
     restart: always
     depends_on:
       - backend
