@@ -366,8 +366,7 @@ def query_pypi() -> dict:
     name_pattern = re.compile('class="package-snippet__name">(.+)</span>')
     version_pattern = re.compile(
         'class="package-snippet__version">(.+)</span>')
-    url = requote_uri(f"https://pypi.org/search/?c=Framework :: napari&page=")
-
+    url = requote_uri(f"https://pypi.org/search/?q=&o=-created&c=Framework :: napari&page=")
     while True:
         try:
             response = requests.get(f'{url}{page}')
