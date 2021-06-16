@@ -283,13 +283,16 @@ def get_plugin(plugin: str, version: str = None) -> dict:
     :param version: version of the plugin
     :return: plugin metadata dictionary
     """
-    if version is None:
-        # TODO when version is None, how do we get a cached file?
-        url = f"https://pypi.org/pypi/{plugin}/json"
-    else:
-        if cache_available(f'cache/{plugin}/{version}.json', None):
-            return get_cache(f'cache/{plugin}/{version}.json')
-        url = f"https://pypi.org/pypi/{plugin}/{version}/json"
+    plugins = get_plugins()
+    if plugin not in plugins:
+        return {}
+    elif version is None:
+        version = plugins[plugin]
+
+    if cache_available(f'cache/{plugin}/{version}.json', None):
+        return get_cache(f'cache/{plugin}/{version}.json')
+
+    url = f"https://pypi.org/pypi/{plugin}/{version}/json"
     try:
         response = requests.get(url)
         if response.status_code != requests.codes.ok:
