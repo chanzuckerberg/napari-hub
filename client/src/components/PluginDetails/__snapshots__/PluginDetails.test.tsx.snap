@@ -855,6 +855,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
             src="https://img.shields.io/pypi/l/napari-compressed-labels-io.svg?color=green"
           />
         </a>
+        <br />
         
 
         <a
@@ -865,6 +866,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
             src="https://img.shields.io/pypi/v/napari-compressed-labels-io.svg?color=green"
           />
         </a>
+        <br />
         
 
         <a
@@ -875,6 +877,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
             src="https://img.shields.io/pypi/pyversions/napari-compressed-labels-io.svg?color=green"
           />
         </a>
+        <br />
         
 
         <a
@@ -885,6 +888,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
             src="https://github.com/DragaDoncila/napari-compressed-labels-io/workflows/tests/badge.svg"
           />
         </a>
+        <br />
         
 
         <a
@@ -1180,7 +1184,10 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
           tox
         </a>
         , please ensure
-the coverage at least stays the same before you submit a pull request.
+        <br />
+        
+
+        the coverage at least stays the same before you submit a pull request.
       </p>
       
 
@@ -1199,7 +1206,10 @@ the coverage at least stays the same before you submit a pull request.
           MIT
         </a>
          license,
-"napari-compressed-labels-io" is free and open source software
+        <br />
+        
+
+        "napari-compressed-labels-io" is free and open source software
       </p>
       
 
