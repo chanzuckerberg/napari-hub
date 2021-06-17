@@ -26,7 +26,7 @@ export class FuseSearchEngine implements SearchEngine {
         threshold value:
         https://git.io/J3xRx
       */
-      threshold: 0.2,
+      threshold: 0.16,
 
       /*
         Finds matches in string regardless of location. This would have the most
@@ -36,7 +36,24 @@ export class FuseSearchEngine implements SearchEngine {
       */
       ignoreLocation: true,
 
-      keys: ['authors.name', 'name', 'summary', 'description'],
+      keys: [
+        {
+          name: 'name',
+          weight: 8,
+        },
+        {
+          name: 'summary',
+          weight: 4,
+        },
+        {
+          name: 'authors.name',
+          weight: 2,
+        },
+        {
+          name: 'description',
+          weight: 1,
+        },
+      ],
 
       /*
         Allow searching with extended search operators:
