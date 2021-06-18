@@ -37,6 +37,8 @@ export type Events = {
 
   Search: never;
 
+  Signup: never;
+
   Sort: {
     by: string;
   };
