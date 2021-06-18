@@ -78,7 +78,7 @@ export function AppBarLanding() {
 
       <List className="ml-6 screen-875:col-span-2">
         <li>Discover plugins that solve your image analysis challenges</li>
-        <li>Install into napari straight from your browser</li>
+        <li>Install into napari with confidence</li>
 
         {/* Render in list if screen is wide enough. */}
         <MediaFragment greaterThanOrEqual="screen-725">
