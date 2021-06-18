@@ -68,6 +68,7 @@
     "remark-slug": "^6.0.0",
     "string-similarity": "^4.0.4",
     "unified": "^9.2.1",
+    "use-debounce": "^6.0.1",
     "use-query-params": "^1.2.2",
     "utility-types": "^3.10.0"
   },
