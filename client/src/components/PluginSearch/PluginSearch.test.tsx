@@ -80,7 +80,7 @@ describe('<PluginSearch />', () => {
   });
 
   it('should support fuzzy matching', () => {
-    mockSearch('neuron');
+    mockSearch('neuro');
 
     const [author] = screen.getAllByTestId('searchResultSummary');
     expect(author.innerHTML.toLowerCase()).toContain('neuro');
