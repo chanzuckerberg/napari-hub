@@ -7,7 +7,6 @@ const createMuiTheme = require('@material-ui/core/styles/createMuiTheme')
   .default;
 
 const colors = {
-  primaryDark: '#80d7ff',
   primary: '#80d1ff',
   hover: '#98daff',
   hoverGray: '#f7f7f7',

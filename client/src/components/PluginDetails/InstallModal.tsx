@@ -35,8 +35,9 @@ function CopyPluginNameButton() {
     <Button
       className={clsx(
         // Button colors
-        'bg-napari-light hover:bg-napari-primary',
-        clicked && 'bg-napari-primary-dark hover:bg-napari-primary',
+        clicked
+          ? 'bg-napari-primary hover:bg-napari-primary'
+          : 'bg-napari-light hover:bg-napari-primary',
 
         // Dimensions
         'w-[253px] h-6',
