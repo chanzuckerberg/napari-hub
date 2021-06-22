@@ -80,9 +80,9 @@ describe('<PluginSearch />', () => {
   });
 
   it('should support fuzzy matching', () => {
-    mockSearch('neuron');
+    mockSearch('animate');
 
-    const [author] = screen.getAllByTestId('searchResultSummary');
-    expect(author.innerHTML.toLowerCase()).toContain('neuro');
+    const [summary] = screen.getAllByTestId('searchResultSummary');
+    expect(summary.textContent).toContain('animation');
   });
 });
