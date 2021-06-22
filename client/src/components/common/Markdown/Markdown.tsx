@@ -1,7 +1,8 @@
 import clsx from 'clsx';
 import ReactMarkdown, { TransformOptions } from 'react-markdown';
+import raw from 'rehype-raw';
+import sanitize from 'rehype-sanitize';
 import slug from 'rehype-slug';
-import breaks from 'remark-breaks';
 import gfm from 'remark-gfm';
 import removeComments from 'remark-remove-comments';
 
@@ -22,9 +23,6 @@ interface Props {
 }
 
 const REMARK_PLUGINS = [
-  // breaks without spaces
-  breaks,
-
   // Add support for GitHub style markdown like checkboxes.
   gfm,
 
@@ -35,6 +33,12 @@ const REMARK_PLUGINS = [
 const REHYPE_PLUGINS = [
   // Add slug IDs to every heading.
   slug,
+
+  // Parse inner HTML
+  raw,
+
+  // Sanitize inner HTML
+  sanitize,
 ];
 
 /**
