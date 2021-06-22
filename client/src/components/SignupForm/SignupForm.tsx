@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import React, { useRef, useState } from 'react';
 
 import { ColumnLayout } from '@/components/common';
+import { usePlausible } from '@/hooks';
 
 // MailChimp form target
 const MC_URL = new URL('https://dev.us5.list-manage.com/subscribe/post');
@@ -22,6 +23,7 @@ export function SignupForm({ onSubmit }: Props) {
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
   const emailRef = useRef<HTMLInputElement | null>(null);
+  const plausible = usePlausible();
 
   const validate = () => {
     const validityState = emailRef.current?.validity;
@@ -42,10 +44,11 @@ export function SignupForm({ onSubmit }: Props) {
   const handleSubmit = (event: React.FormEvent) => {
     const isValid = validate();
 
-    if (!isValid) {
+    if (isValid) {
+      onSubmit?.(event);
+      plausible('Signup');
+    } else {
       event.preventDefault(); // do not submit form
-    } else if (onSubmit) {
-      onSubmit(event);
     }
   };
 
