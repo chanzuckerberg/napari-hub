@@ -855,7 +855,6 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
             src="https://img.shields.io/pypi/l/napari-compressed-labels-io.svg?color=green"
           />
         </a>
-        <br />
         
 
         <a
@@ -866,7 +865,6 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
             src="https://img.shields.io/pypi/v/napari-compressed-labels-io.svg?color=green"
           />
         </a>
-        <br />
         
 
         <a
@@ -877,7 +875,6 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
             src="https://img.shields.io/pypi/pyversions/napari-compressed-labels-io.svg?color=green"
           />
         </a>
-        <br />
         
 
         <a
@@ -888,7 +885,6 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
             src="https://github.com/DragaDoncila/napari-compressed-labels-io/workflows/tests/badge.svg"
           />
         </a>
-        <br />
         
 
         <a
@@ -1068,7 +1064,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
 
       <pre>
         <code
-          language="json"
+          language=""
           node="[object Object]"
         >
           {
@@ -1184,10 +1180,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
           tox
         </a>
         , please ensure
-        <br />
-        
-
-        the coverage at least stays the same before you submit a pull request.
+the coverage at least stays the same before you submit a pull request.
       </p>
       
 
@@ -1206,10 +1199,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
           MIT
         </a>
          license,
-        <br />
-        
-
-        "napari-compressed-labels-io" is free and open source software
+"napari-compressed-labels-io" is free and open source software
       </p>
       
 
