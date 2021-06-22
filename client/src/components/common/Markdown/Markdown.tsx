@@ -31,14 +31,14 @@ const REMARK_PLUGINS = [
 ];
 
 const REHYPE_PLUGINS = [
-  // Add slug IDs to every heading.
-  slug,
-
   // Parse inner HTML
   raw,
 
   // Sanitize inner HTML
   sanitize,
+
+  // Add slug IDs to every heading.
+  slug,
 ];
 
 /**
