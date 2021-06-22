@@ -5795,7 +5795,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           class="whitespace-nowrap font-semibold text-sm flex flex-row items-center"
           href="/privacy"
         >
-          Privacy policy
+          Privacy Policy
         </a>
         <a
           class="whitespace-nowrap font-semibold text-sm flex flex-row items-center"
