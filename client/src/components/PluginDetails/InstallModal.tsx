@@ -1,7 +1,10 @@
+import { Button } from '@material-ui/core';
+import { CheckCircle } from '@material-ui/icons';
 import clsx from 'clsx';
 import Image from 'next/image';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { useClickAway } from 'react-use';
+import { useDebouncedCallback } from 'use-debounce';
 
 import { Overlay } from '@/components/common';
 import { Fade } from '@/components/common/animations';
@@ -12,22 +15,36 @@ import { usePlausible } from '@/hooks';
 
 import styles from './InstallModal.module.scss';
 
+const COPY_FEEDBACK_DEBOUNCE_DURATION_MS = 2_000;
+
 /**
  * Component that renders an inline button for copying the plugin name to the
  * user's clipboard.
  */
 function CopyPluginNameButton() {
+  const [clicked, setClicked] = useState(false);
   const { plugin } = usePluginState();
   const plausible = usePlausible();
 
+  const setClickDebounced = useDebouncedCallback(
+    (value: boolean) => setClicked(value),
+    COPY_FEEDBACK_DEBOUNCE_DURATION_MS,
+  );
+
   return (
-    <button
+    <Button
       className={clsx(
         // Button colors
-        'bg-napari-light hover:bg-napari-primary',
+        clicked
+          ? 'bg-napari-primary hover:bg-napari-primary'
+          : 'bg-napari-light hover:bg-napari-primary',
+
+        // Dimensions
+        'h-6',
 
         // Show button inline with text.
-        'inline',
+        'inline-flex items-center',
+        'text-base',
 
         // Padding
         'py-px px-1',
@@ -38,14 +55,29 @@ function CopyPluginNameButton() {
       onClick={async () => {
         await navigator.clipboard?.writeText?.(plugin.name);
 
+        // Set `clicked` to true immediately when the user clicks
+        if (!clicked) {
+          setClicked(true);
+        }
+
+        // Set `clicked` to false after 3 seconds. This function is debounced,
+        // so if the user clicks on the button again, it'll reset the timeout.
+        setClickDebounced(false);
+
         plausible('Copy Package', {
           plugin: plugin.name,
         });
       }}
-      type="button"
     >
-      {plugin.name} <Copy className="inline" />
-    </button>
+      {plugin.name}{' '}
+      <span className="ml-2 inline-flex">
+        {clicked ? (
+          <CheckCircle className="w-4" />
+        ) : (
+          <Copy className="inline w-4" />
+        )}
+      </span>
+    </Button>
   );
 }
 
