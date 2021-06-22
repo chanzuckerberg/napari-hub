@@ -8,7 +8,7 @@ import {
   ProjectSupport,
   Twitter,
 } from '@/components/common/icons';
-import { MediaFragment } from '@/components/common/media';
+import { Media } from '@/components/common/media';
 import { usePluginState } from '@/context/plugin';
 
 import { MetadataList } from './MetadataList';
@@ -127,13 +127,13 @@ export function SupportInfoBase({
 export function SupportInfo(props: CommonProps) {
   return (
     <>
-      <MediaFragment greaterThanOrEqual="xl">
+      <Media greaterThanOrEqual="xl">
         <SupportInfoBase {...props} horizontal />
-      </MediaFragment>
+      </Media>
 
-      <MediaFragment lessThan="xl">
+      <Media lessThan="xl">
         <SupportInfoBase {...props} inline />
-      </MediaFragment>
+      </Media>
     </>
   );
 }
