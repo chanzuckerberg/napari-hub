@@ -29,6 +29,11 @@ const LINKS = {
     link: 'https://github.com/napari/napari',
     newTab: true,
   },
+  NAPARI_WEBSITE: {
+    title: 'napari main website',
+    link: 'https://napari.org',
+    newTab: true,
+  },
   NAPARI_GOVERNANCE: {
     title: 'napari governance model',
     link: 'https://napari.org/community/governance.html',
