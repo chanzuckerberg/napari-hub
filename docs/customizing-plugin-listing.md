@@ -373,7 +373,7 @@ This is a link to the main project site for your plugin.
 
 We display this on the detailed plugin page.
 
-We source this from `["info"]["project_url"]` field of the JSON returned by the PyPI API.
+We source this from `["info"]["home_page"]` field of the JSON returned by the PyPI API.
 
 You can set this by setting the `url` value for your Python package in your package metadata.
 
