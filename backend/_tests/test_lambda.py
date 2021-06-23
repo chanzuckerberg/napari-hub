@@ -125,7 +125,7 @@ def test_get_plugin(mock_get, mock_plugins):
     assert(result["first_released"] == "2020-04-13T03:37:20.169990Z")
     assert(result["development_status"] == ['Development Status :: 4 - Beta'])
     assert(result["requirements"] is None)
-    assert(result["project_site"] == "https://pypi.org/project/test/")
+    assert(result["project_site"] == "https://github.com/test/test")
     assert(result["documentation"] == "")
     assert(result["support"] == "")
     assert(result["report_issues"] == "")
