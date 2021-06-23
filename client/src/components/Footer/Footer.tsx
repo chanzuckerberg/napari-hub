@@ -54,6 +54,8 @@ function FooterLinks() {
  *
  * We use margin instead of flex gap because
  * iOS Safari <14.6 does not support it
+ *
+ * TODO: revert to using flex wrap + flex gap when iOS 14.6 isn't so new
  */
 export function Footer() {
   return (
@@ -69,8 +71,11 @@ export function Footer() {
     >
       <div
         className={clsx(
+          // sizing
           'w-full flex-1',
+          // layout
           'flex flex-row items-center justify-start',
+          // spacing
           'mb-6 screen-655:mb-0 screen-655:mr-12',
         )}
       >
