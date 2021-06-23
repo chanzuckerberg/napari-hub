@@ -223,7 +223,7 @@ def format_plugin(plugin: dict) -> dict:
         # below are plugin details
         "requirements": get_attribute(plugin, ["info", "requires_dist"]),
         "project_site": project_urls.get('Project Site', get_attribute(
-            plugin, ["info", "project_url"])),
+            plugin, ["info", "home_page"])),
         "documentation": project_urls.get('Documentation', get_attribute(
             plugin, ["info", "project_urls", "Documentation"])),
         "support": project_urls.get('User Support', get_attribute(
