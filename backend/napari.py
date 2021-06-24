@@ -25,8 +25,11 @@ bucket = os.environ.get('BUCKET')
 bucket_path = os.environ.get('BUCKET_PATH', '')
 slack_url = os.environ.get('SLACK_URL')
 zulip_credentials = os.environ.get('ZULIP_CREDENTIALS', "")
+github_client_id = os.environ.get('GITHUB_CLIENT_ID', None)
+github_client_secret = os.environ.get('GITHUB_CLIENT_SECRET', None)
 cache_ttl = int(os.environ.get('TTL', "6"))
 endpoint_url = os.environ.get('BOTO_ENDPOINT_URL', None)
+
 plugins_key = 'cache/plugins.json'
 index_key = 'cache/index.json'
 exclusion_list = 'excluded_plugins.json'
@@ -146,6 +149,10 @@ def get_extra_metadata(download_url: str) -> dict:
     """
     extra_metadata = {}
 
+    github_license = get_license(download_url)
+    if github_license is not None:
+        extra_metadata['license'] = github_license
+
     description = get_file(download_url, ".napari/DESCRIPTION.md")
 
     if description is not None:
@@ -157,6 +164,21 @@ def get_extra_metadata(download_url: str) -> dict:
         extra_metadata.update(config)
 
     return extra_metadata
+
+
+def get_license(url: str) -> [str, None]:
+    try:
+        api_url = url.replace("https://github.com/",
+                              "https://api.github.com/repos/")
+        auth = None
+        if github_client_id is not None and github_client_secret is not None:
+            auth = HTTPBasicAuth(github_client_id, github_client_secret)
+        response = requests.get(f'{api_url}/license', auth=auth)
+        if response.status_code != requests.codes.ok:
+            response.raise_for_status()
+        return get_attribute(json.loads(response.text.strip()), ['license', "spdx_id"])
+    except HTTPError:
+        return None
 
 
 def get_download_url(plugin: dict) -> [str, None]:
@@ -204,7 +226,7 @@ def format_plugin(plugin: dict) -> dict:
         "description_content_type": f'{get_attribute(plugin, ["info", "description_content_type"])}',
         "authors": extra_metadata.get('authors', [{'name': get_attribute(plugin, ["info", "author"]),
                                                    'email': get_attribute(plugin, ["info", "author_email"])}]),
-        "license": get_attribute(plugin, ["info", "license"]),
+        "license": extra_metadata.get('license', get_attribute(plugin, ["info", "license"])),
         "python_version": get_attribute(plugin, ["info", "requires_python"]),
         "operating_system": filter_prefix(
             get_attribute(plugin, ["info", "classifiers"]),

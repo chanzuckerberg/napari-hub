@@ -5,6 +5,7 @@ from requests.exceptions import HTTPError
 from backend.napari import get_plugin
 from backend.napari import get_plugins
 from backend.napari import get_download_url
+from backend.napari import get_license
 
 
 class FakeResponse:
@@ -155,3 +156,25 @@ def test_github_get_url():
 
     plugins = {"info": {"project_urls": {"Random": "https://github.com/org/repo/random"}}}
     assert("https://github.com/org/repo" == get_download_url(plugins))
+
+
+license_response = """
+{
+  "name": "LICENSE",
+  "path": "LICENSE",
+  "license": {
+    "key": "bsd-3-clause",
+    "name": "BSD 3-Clause \\"New\\" or \\"Revised\\" License",
+    "spdx_id": "BSD-3-Clause",
+    "url": "https://api.github.com/licenses/bsd-3-clause"
+  }
+}
+"""
+
+
+@mock.patch(
+    'requests.get', return_value=FakeResponse(data=license_response)
+)
+def test_github_license(mock_get):
+    result = get_license("test_websitee")
+    assert result == "BSD-3-Clause"
