@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import { ReactNode } from 'react-markdown';
 
+import { Link } from '@/components/common';
 import { usePluginState } from '@/context/plugin';
 import { usePlausible } from '@/hooks';
 
@@ -83,11 +84,10 @@ function MetadataListItem({ inline, title, values }: MetadataListItemProps) {
                 >
                   {value.icon}
 
-                  <a
-                    className="ml-2 underline hover:text-napari-primary"
+                  <Link
+                    className="ml-2 underline"
                     href={value.href}
-                    target="_blank"
-                    rel="noreferrer"
+                    newTab
                     onClick={() => {
                       const url = new URL(value.href);
                       plausible('Links', {
@@ -99,7 +99,7 @@ function MetadataListItem({ inline, title, values }: MetadataListItemProps) {
                     }}
                   >
                     {value.text}
-                  </a>
+                  </Link>
                 </span>
               );
             }
