@@ -2,6 +2,7 @@ import type { Octokit as OctokitInstance } from '@octokit/rest';
 import type { RequestError as OctokitRequestError } from '@octokit/types';
 import { AxiosError } from 'axios';
 import { GetServerSidePropsContext } from 'next';
+import Head from 'next/head';
 import { ParsedUrlQuery } from 'node:querystring';
 
 import { hubAPI } from '@/axios';
@@ -168,6 +169,10 @@ export default function PluginPage({
 }: Props) {
   return (
     <>
+      <Head>
+        <title>napari hub | {plugin?.name}</title>
+      </Head>
+
       {error ? (
         <ErrorMessage error={error}>Unable to load plugin</ErrorMessage>
       ) : (

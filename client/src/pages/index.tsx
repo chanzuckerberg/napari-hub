@@ -1,4 +1,5 @@
 import { AxiosError } from 'axios';
+import Head from 'next/head';
 import { ReactNode } from 'react';
 
 import { hubAPI, spdxLicenseDataAPI } from '@/axios';
@@ -82,6 +83,10 @@ export async function getServerSideProps() {
 export default function Home({ error, index, licenses }: Props) {
   return (
     <>
+      <Head>
+        <title>napari hub | Search</title>
+      </Head>
+
       {error ? (
         <ErrorMessage error={error}>Unable to fetch plugin index</ErrorMessage>
       ) : (
