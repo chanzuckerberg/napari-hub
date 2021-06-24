@@ -167,10 +167,20 @@ export default function PluginPage({
   repo = defaultRepoData,
   repoFetchError,
 }: Props) {
+  let title = 'napari hub | plugins';
+  if (plugin?.name) {
+    title = `${title} | ${plugin.name}`;
+
+    const authors = plugin.authors.map(({ name }) => name).join(', ');
+    if (authors) {
+      title = `${title} by ${authors}`;
+    }
+  }
+
   return (
     <>
       <Head>
-        <title>napari hub | {plugin?.name}</title>
+        <title>{title}</title>
       </Head>
 
       {error ? (
