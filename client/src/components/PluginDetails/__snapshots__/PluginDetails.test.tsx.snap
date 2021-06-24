@@ -28,7 +28,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
             class="list-none block"
           >
             <li
-              class="my-2 last:mb-0 leading-8"
+              class="my-2 first:mt-0 last:mb-0 leading-8"
             >
               0.0.2
             </li>
@@ -47,7 +47,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
             class="list-none block"
           >
             <li
-              class="my-2 last:mb-0 leading-8"
+              class="my-2 first:mt-0 last:mb-0 leading-8"
             >
               03 March 2021
             </li>
@@ -66,7 +66,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
             class="list-none block"
           >
             <li
-              class="my-2 last:mb-0 leading-8"
+              class="my-2 first:mt-0 last:mb-0 leading-8"
             >
               22 February 2021
             </li>
@@ -85,7 +85,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
             class="list-none block"
           >
             <li
-              class="my-2 last:mb-0 leading-8"
+              class="my-2 first:mt-0 last:mb-0 leading-8"
             >
               4 - Beta
             </li>
@@ -104,7 +104,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
             class="list-none block"
           >
             <li
-              class="my-2 last:mb-0 leading-8"
+              class="my-2 first:mt-0 last:mb-0 leading-8"
             >
               MIT
             </li>
@@ -179,7 +179,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
             class="list-none block"
           >
             <li
-              class="my-2 last:mb-0 leading-8"
+              class="my-2 first:mt-0 last:mb-0 leading-8"
             >
               &gt;=3.6
             </li>
@@ -198,7 +198,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
             class="list-none block"
           >
             <li
-              class="my-2 last:mb-0 leading-8"
+              class="my-2 first:mt-0 last:mb-0 leading-8"
             >
               OS Independent
             </li>
@@ -217,22 +217,22 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
             class="list-none block"
           >
             <li
-              class="my-2 last:mb-0 leading-8"
+              class="my-2 first:mt-0 last:mb-0 leading-8"
             >
               napari-plugin-engine (&gt;=0.1.4)
             </li>
             <li
-              class="my-2 last:mb-0 leading-8"
+              class="my-2 first:mt-0 last:mb-0 leading-8"
             >
               numpy
             </li>
             <li
-              class="my-2 last:mb-0 leading-8"
+              class="my-2 first:mt-0 last:mb-0 leading-8"
             >
               zarr
             </li>
             <li
-              class="my-2 last:mb-0 leading-8"
+              class="my-2 first:mt-0 last:mb-0 leading-8"
             >
               dask[complete]
             </li>
@@ -292,7 +292,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
             class="list-none block"
           >
             <li
-              class="my-2 last:mb-0 leading-8"
+              class="my-2 first:mt-0 last:mb-0 leading-8"
             >
               Draga Doncila
             </li>
@@ -311,7 +311,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
             class="list-none block"
           >
             <li
-              class="my-2 last:mb-0 leading-8"
+              class="my-2 first:mt-0 last:mb-0 leading-8"
             >
               <span
                 class="flex items-center"
@@ -342,7 +342,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
                   />
                 </svg>
                 <a
-                  class="ml-2 underline hover:text-napari-primary"
+                  class="ml-2 underline"
                   href="https://pypi.org/project/napari-compressed-labels-io"
                   rel="noreferrer"
                   target="_blank"
@@ -352,7 +352,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
               </span>
             </li>
             <li
-              class="my-2 last:mb-0 leading-8"
+              class="my-2 first:mt-0 last:mb-0 leading-8"
             >
               <span
                 class="flex items-center"
@@ -379,7 +379,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
                   />
                 </svg>
                 <a
-                  class="ml-2 underline hover:text-napari-primary"
+                  class="ml-2 underline"
                   href="https://github.com/DragaDoncila/napari-compressed-labels-io"
                   rel="noreferrer"
                   target="_blank"
@@ -389,7 +389,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
               </span>
             </li>
             <li
-              class="my-2 last:mb-0 leading-8"
+              class="my-2 first:mt-0 last:mb-0 leading-8"
             >
               <span
                 class="flex items-center"
@@ -436,7 +436,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
                   />
                 </svg>
                 <a
-                  class="ml-2 underline hover:text-napari-primary"
+                  class="ml-2 underline"
                   href="https://github.com/DragaDoncila/napari-compressed-labels-io/issues"
                   rel="noreferrer"
                   target="_blank"
@@ -446,7 +446,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
               </span>
             </li>
             <li
-              class="my-2 last:mb-0 leading-8"
+              class="my-2 first:mt-0 last:mb-0 leading-8"
             >
               <span
                 class="flex items-center"
@@ -478,7 +478,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
                   />
                 </svg>
                 <a
-                  class="ml-2 underline hover:text-napari-primary"
+                  class="ml-2 underline"
                   href="https://github.com/DragaDoncila/napari-compressed-labels-io/issues"
                   rel="noreferrer"
                   target="_blank"
@@ -488,7 +488,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
               </span>
             </li>
             <li
-              class="my-2 last:mb-0 leading-8"
+              class="my-2 first:mt-0 last:mb-0 leading-8"
             >
               <span
                 class="flex items-center"
@@ -506,7 +506,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
                   />
                 </svg>
                 <a
-                  class="ml-2 underline hover:text-napari-primary"
+                  class="ml-2 underline"
                   href="https://twitter.com/DragaDoncila"
                   rel="noreferrer"
                   target="_blank"
@@ -530,7 +530,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
             class="list-none block"
           >
             <li
-              class="my-2 last:mb-0 leading-8"
+              class="my-2 first:mt-0 last:mb-0 leading-8"
             >
               <span
                 class="flex items-center"
@@ -548,7 +548,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
                   />
                 </svg>
                 <a
-                  class="ml-2 underline hover:text-napari-primary"
+                  class="ml-2 underline"
                   href="https://github.com/DragaDoncila/napari-compressed-labels-io"
                   rel="noreferrer"
                   target="_blank"
@@ -580,7 +580,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
             class="list-none inline"
           >
             <li
-              class="my-2 last:mb-0 leading-8 inline commaList"
+              class="my-2 first:mt-0 last:mb-0 leading-8 inline commaList"
             >
               Draga Doncila
             </li>
@@ -599,7 +599,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
             class="list-none inline"
           >
             <li
-              class="my-2 last:mb-0 leading-8 inline commaList"
+              class="my-2 first:mt-0 last:mb-0 leading-8 inline commaList"
             >
               <span
                 class="inline-flex items-center"
@@ -630,7 +630,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
                   />
                 </svg>
                 <a
-                  class="ml-2 underline hover:text-napari-primary"
+                  class="ml-2 underline"
                   href="https://pypi.org/project/napari-compressed-labels-io"
                   rel="noreferrer"
                   target="_blank"
@@ -640,7 +640,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
               </span>
             </li>
             <li
-              class="my-2 last:mb-0 leading-8 inline commaList"
+              class="my-2 first:mt-0 last:mb-0 leading-8 inline commaList"
             >
               <span
                 class="inline-flex items-center"
@@ -667,7 +667,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
                   />
                 </svg>
                 <a
-                  class="ml-2 underline hover:text-napari-primary"
+                  class="ml-2 underline"
                   href="https://github.com/DragaDoncila/napari-compressed-labels-io"
                   rel="noreferrer"
                   target="_blank"
@@ -677,7 +677,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
               </span>
             </li>
             <li
-              class="my-2 last:mb-0 leading-8 inline commaList"
+              class="my-2 first:mt-0 last:mb-0 leading-8 inline commaList"
             >
               <span
                 class="inline-flex items-center"
@@ -724,7 +724,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
                   />
                 </svg>
                 <a
-                  class="ml-2 underline hover:text-napari-primary"
+                  class="ml-2 underline"
                   href="https://github.com/DragaDoncila/napari-compressed-labels-io/issues"
                   rel="noreferrer"
                   target="_blank"
@@ -734,7 +734,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
               </span>
             </li>
             <li
-              class="my-2 last:mb-0 leading-8 inline commaList"
+              class="my-2 first:mt-0 last:mb-0 leading-8 inline commaList"
             >
               <span
                 class="inline-flex items-center"
@@ -766,7 +766,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
                   />
                 </svg>
                 <a
-                  class="ml-2 underline hover:text-napari-primary"
+                  class="ml-2 underline"
                   href="https://github.com/DragaDoncila/napari-compressed-labels-io/issues"
                   rel="noreferrer"
                   target="_blank"
@@ -776,7 +776,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
               </span>
             </li>
             <li
-              class="my-2 last:mb-0 leading-8 inline commaList"
+              class="my-2 first:mt-0 last:mb-0 leading-8 inline commaList"
             >
               <span
                 class="inline-flex items-center"
@@ -794,7 +794,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
                   />
                 </svg>
                 <a
-                  class="ml-2 underline hover:text-napari-primary"
+                  class="ml-2 underline"
                   href="https://twitter.com/DragaDoncila"
                   rel="noreferrer"
                   target="_blank"
@@ -818,7 +818,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
             class="list-none inline"
           >
             <li
-              class="my-2 last:mb-0 leading-8 inline commaList"
+              class="my-2 first:mt-0 last:mb-0 leading-8 inline commaList"
             >
               <span
                 class="inline-flex items-center"
@@ -836,7 +836,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
                   />
                 </svg>
                 <a
-                  class="ml-2 underline hover:text-napari-primary"
+                  class="ml-2 underline"
                   href="https://github.com/DragaDoncila/napari-compressed-labels-io"
                   rel="noreferrer"
                   target="_blank"
@@ -857,6 +857,8 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
       <p>
         <a
           href="https://github.com/DragaDoncila/napari-compressed-labels-io/raw/master/LICENSE"
+          rel="noreferrer"
+          target="_blank"
         >
           <img
             alt="License"
@@ -867,6 +869,8 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
 
         <a
           href="https://pypi.org/project/napari-compressed-labels-io"
+          rel="noreferrer"
+          target="_blank"
         >
           <img
             alt="PyPI"
@@ -877,6 +881,8 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
 
         <a
           href="https://python.org"
+          rel="noreferrer"
+          target="_blank"
         >
           <img
             alt="Python Version"
@@ -887,6 +893,8 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
 
         <a
           href="https://github.com/DragaDoncila/napari-compressed-labels-io/actions"
+          rel="noreferrer"
+          target="_blank"
         >
           <img
             alt="tests"
@@ -897,6 +905,8 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
 
         <a
           href="https://codecov.io/gh/DragaDoncila/napari-compressed-labels-io"
+          rel="noreferrer"
+          target="_blank"
         >
           <img
             alt="codecov"
@@ -1114,24 +1124,32 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
         This 
         <a
           href="https://github.com/napari/napari"
+          rel="noreferrer"
+          target="_blank"
         >
           napari
         </a>
          plugin was generated with 
         <a
           href="https://github.com/audreyr/cookiecutter"
+          rel="noreferrer"
+          target="_blank"
         >
           Cookiecutter
         </a>
          using with 
         <a
           href="https://github.com/napari"
+          rel="noreferrer"
+          target="_blank"
         >
           @napari
         </a>
         's 
         <a
           href="https://github.com/napari/cookiecutter-napari-plugin"
+          rel="noreferrer"
+          target="_blank"
         >
           cookiecutter-napari-plugin
         </a>
@@ -1156,6 +1174,8 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
          via 
         <a
           href="https://pypi.org/project/pip/"
+          rel="noreferrer"
+          target="_blank"
         >
           pip
         </a>
@@ -1184,6 +1204,8 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
         Contributions are very welcome. Tests can be run with 
         <a
           href="https://tox.readthedocs.io/en/latest/"
+          rel="noreferrer"
+          target="_blank"
         >
           tox
         </a>
@@ -1203,6 +1225,8 @@ the coverage at least stays the same before you submit a pull request.
         Distributed under the terms of the 
         <a
           href="http://opensource.org/licenses/MIT"
+          rel="noreferrer"
+          target="_blank"
         >
           MIT
         </a>
@@ -1222,6 +1246,8 @@ the coverage at least stays the same before you submit a pull request.
         If you encounter any problems, please 
         <a
           href="https://github.com/DragaDoncila/napari-compressed-labels-io/issues"
+          rel="noreferrer"
+          target="_blank"
         >
           file an issue
         </a>
@@ -1257,7 +1283,7 @@ the coverage at least stays the same before you submit a pull request.
             class="list-none inline"
           >
             <li
-              class="my-2 last:mb-0 leading-8 inline commaList"
+              class="my-2 first:mt-0 last:mb-0 leading-8 inline commaList"
             >
               0.0.2
             </li>
@@ -1276,7 +1302,7 @@ the coverage at least stays the same before you submit a pull request.
             class="list-none inline"
           >
             <li
-              class="my-2 last:mb-0 leading-8 inline commaList"
+              class="my-2 first:mt-0 last:mb-0 leading-8 inline commaList"
             >
               03 March 2021
             </li>
@@ -1295,7 +1321,7 @@ the coverage at least stays the same before you submit a pull request.
             class="list-none inline"
           >
             <li
-              class="my-2 last:mb-0 leading-8 inline commaList"
+              class="my-2 first:mt-0 last:mb-0 leading-8 inline commaList"
             >
               22 February 2021
             </li>
@@ -1314,7 +1340,7 @@ the coverage at least stays the same before you submit a pull request.
             class="list-none inline"
           >
             <li
-              class="my-2 last:mb-0 leading-8 inline commaList"
+              class="my-2 first:mt-0 last:mb-0 leading-8 inline commaList"
             >
               4 - Beta
             </li>
@@ -1333,7 +1359,7 @@ the coverage at least stays the same before you submit a pull request.
             class="list-none inline"
           >
             <li
-              class="my-2 last:mb-0 leading-8 inline commaList"
+              class="my-2 first:mt-0 last:mb-0 leading-8 inline commaList"
             >
               MIT
             </li>
@@ -1408,7 +1434,7 @@ the coverage at least stays the same before you submit a pull request.
             class="list-none inline"
           >
             <li
-              class="my-2 last:mb-0 leading-8 inline commaList"
+              class="my-2 first:mt-0 last:mb-0 leading-8 inline commaList"
             >
               &gt;=3.6
             </li>
@@ -1427,7 +1453,7 @@ the coverage at least stays the same before you submit a pull request.
             class="list-none inline"
           >
             <li
-              class="my-2 last:mb-0 leading-8 inline commaList"
+              class="my-2 first:mt-0 last:mb-0 leading-8 inline commaList"
             >
               OS Independent
             </li>
@@ -1446,22 +1472,22 @@ the coverage at least stays the same before you submit a pull request.
             class="list-none inline"
           >
             <li
-              class="my-2 last:mb-0 leading-8 inline commaList"
+              class="my-2 first:mt-0 last:mb-0 leading-8 inline commaList"
             >
               napari-plugin-engine (&gt;=0.1.4)
             </li>
             <li
-              class="my-2 last:mb-0 leading-8 inline commaList"
+              class="my-2 first:mt-0 last:mb-0 leading-8 inline commaList"
             >
               numpy
             </li>
             <li
-              class="my-2 last:mb-0 leading-8 inline commaList"
+              class="my-2 first:mt-0 last:mb-0 leading-8 inline commaList"
             >
               zarr
             </li>
             <li
-              class="my-2 last:mb-0 leading-8 inline commaList"
+              class="my-2 first:mt-0 last:mb-0 leading-8 inline commaList"
             >
               dask[complete]
             </li>
