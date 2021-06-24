@@ -189,7 +189,14 @@ export function PluginSearchResult({ className, matches, plugin }: Props) {
               className="grid grid-cols-[auto,1fr]"
             >
               <h5 className="inline whitespace-nowrap">{item.label}: </h5>
-              <span className="font-bold ml-1">{item.value}</span>
+              <span
+                className={clsx(
+                  'ml-1',
+                  item.value ? 'font-bold' : 'text-napari-gray',
+                )}
+              >
+                {item.value || 'information not submitted'}
+              </span>
             </li>
           ))}
         </ul>
