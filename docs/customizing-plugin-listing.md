@@ -217,13 +217,10 @@ We display this on the detailed plugin page and the plugin listings.
 
 We support filtering plugins based on whether the plugin is released under an [OSI-approved](https://opensource.org/licenses) open source license.
 
-We source this from the `["info"]["license"]` field of the JSON returned by the PyPI API.
+If the is a Github repository defined for the plugin, we source this from the Github API, which will infer the license by inspecting the LICENSE file in the repository
+If we cannot get a license from Github, we source this from the `["info"]["license"]` field of the JSON returned by the PyPI API.
 
 You can set this by setting the `license` value in your package metadata.
-
-> **_NOTE:_**  You must use either a valid SPDX Identifier or "Other".
-> If you specify a license here which is not an SPDX Identifier, we will display "Other".
-> You can find the full list of SPDX Identifiers at https://spdx.org/licenses/
 
 
 ``` INI
