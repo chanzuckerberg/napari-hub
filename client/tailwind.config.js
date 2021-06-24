@@ -41,6 +41,7 @@ module.exports = {
         'napari-hover-gray': colors.hoverGray,
         'napari-light': colors.light,
         'napari-error': colors.error,
+        'napari-gray': colors.gray,
       },
 
       width: (theme) => ({

@@ -128,7 +128,11 @@ export async function getServerSideProps({
       props.error = JSON.stringify(data, null, 2);
     } else if (isPlugin(data)) {
       props.plugin = data;
-      props.repo = await fetchRepoData(data.code_repository);
+
+      const repo = await fetchRepoData(data.code_repository);
+      if (repo) {
+        props.repo = repo;
+      }
     }
   } catch (err) {
     if (isAxiosError(err)) {

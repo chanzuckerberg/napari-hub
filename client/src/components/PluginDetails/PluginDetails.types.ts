@@ -12,6 +12,7 @@ type ArrayOrSingleValue<T> = T | T[];
 export interface MetadataItemLink {
   href: string;
   icon: ReactNode;
+  missingIcon?: ReactNode;
   text: string;
 }
 

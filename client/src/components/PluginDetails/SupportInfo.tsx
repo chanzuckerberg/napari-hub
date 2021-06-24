@@ -12,7 +12,8 @@ import { Media } from '@/components/common/media';
 import { usePluginState } from '@/context/plugin';
 
 import { MetadataList } from './MetadataList';
-import { MetadataItem } from './PluginDetails.types';
+import { MetadataItem, MetadataItemLink } from './PluginDetails.types';
+import styles from './SupportInfo.module.scss';
 
 /**
  * Extracts a Twitter's username from the given Twitter URL.  Regex copied
@@ -67,35 +68,47 @@ export function SupportInfoBase({
 
     {
       title: 'Learn more',
-      value: [
-        {
-          href: plugin.project_site,
-          icon: <ProjectSite />,
-          text: 'Project site',
-        },
+      value: ([] as MetadataItemLink[]).concat(
+        plugin.project_site
+          ? {
+              href: plugin.project_site,
+              icon: <ProjectSite />,
+              text: 'Project site',
+            }
+          : [],
+
         {
           href: plugin.documentation,
           icon: <ProjectDocumentation />,
+          missingIcon: (
+            <ProjectDocumentation className={styles.missingDocumentation} />
+          ),
           text: 'Documentation',
         },
         {
           href: plugin.support,
           icon: <ProjectSupport />,
+          missingIcon: (
+            <ProjectSupport className={styles.missingProjectSupport} />
+          ),
           text: 'Support',
         },
         {
           href: plugin.report_issues,
           icon: <ProjectIssues />,
+          missingIcon: (
+            <ProjectIssues className={styles.missingProjectIssues} />
+          ),
           text: 'Report issues',
         },
-        {
-          href: plugin.twitter,
-          icon: <Twitter />,
-          text: formatTwitter(plugin.twitter),
-        },
-      ].filter(
-        // Filter out items if the link or text is empty
-        (item) => item.href && item.text,
+
+        plugin.twitter
+          ? {
+              href: plugin.twitter,
+              icon: <Twitter />,
+              text: formatTwitter(plugin.twitter),
+            }
+          : [],
       ),
     },
 

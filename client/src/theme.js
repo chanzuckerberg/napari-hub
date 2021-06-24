@@ -10,6 +10,7 @@ const colors = {
   primary: '#80d1ff',
   hover: '#98daff',
   hoverGray: '#f7f7f7',
+  gray: '#808080',
   light: '#d2efff',
   error: '#eb1000',
 };
