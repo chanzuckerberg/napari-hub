@@ -60,7 +60,7 @@ export function AppBarLanding() {
       <h1
         className={clsx(
           'font-bold col-span-full',
-          'mb-6 md:mb-12',
+          'mb-6 screen-495:mb-12',
           'screen-1425:col-start-2 screen-1425:col-span-3',
           styles.heading,
         )}
@@ -68,23 +68,27 @@ export function AppBarLanding() {
         Discover, install, and share napari plugins
       </h1>
 
-      <Hub
+      <div
         className={clsx(
-          'self-center justify-self-end',
-          'screen-1425:row-start-2 screen-1425:col-start-2',
-          styles.logo,
+          'grid grid-cols-[min-content,1fr]',
+          'gap-6 screen-655:gap-12',
+          'col-span-2 screen-875:col-span-3',
+          'screen-1425:col-start-2',
+          'items-center',
         )}
-      />
+      >
+        <Hub className={styles.logo} />
 
-      <List className="ml-6 screen-875:col-span-2">
-        <li>Discover plugins that solve your image analysis challenges</li>
-        <li>Install into napari with confidence</li>
+        <List className="ml-7">
+          <li>Discover plugins that solve your image analysis challenges</li>
+          <li>Install into napari with confidence</li>
 
-        {/* Render in list if screen is wide enough. */}
-        <MediaFragment greaterThanOrEqual="screen-725">
-          {lastListNode}
-        </MediaFragment>
-      </List>
+          {/* Render in list if screen is wide enough. */}
+          <MediaFragment greaterThanOrEqual="screen-725">
+            {lastListNode}
+          </MediaFragment>
+        </List>
+      </div>
 
       {/* Render as separate list so that it renders below everything on smaller screens. */}
       <MediaFragment lessThan="screen-725">
