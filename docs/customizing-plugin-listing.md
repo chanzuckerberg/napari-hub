@@ -217,7 +217,7 @@ We display this on the detailed plugin page and the plugin listings.
 
 We support filtering plugins based on whether the plugin is released under an [OSI-approved](https://opensource.org/licenses) open source license.
 
-We source this from the `["info"]["license"]` field of the JSON returned by the PyPI API.
+We source this from the GitHub license API, if we cannot find one, we would source from `["info"]["license"]` field of the JSON returned by the PyPI API.
 
 You can set this by setting the `license` value in your package metadata.
 
