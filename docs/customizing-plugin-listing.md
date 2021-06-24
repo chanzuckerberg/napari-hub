@@ -57,6 +57,9 @@ Fields that can be defined through the napari config include...
 - [Report Issues](#report-issues)
 - [Twitter](#twitter)
 
+Fields that come from the GitHub API
+- [License](#license)
+
 ## Fields
 
 For each of the fields in a plugin's listing, we outline below how the field is used and where we source the data.
@@ -67,7 +70,7 @@ For each of the fields in a plugin's listing, we outline below how the field is 
 | Summary              |     ✅      |     ✅      |     ⛔      |      ⛔       |    ✅    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://pypi.org/static/images/logo-small.svg" height="20">) |
 | Description          |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ✅    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://pypi.org/static/images/logo-small.svg" height="20">) |
 | Authors              |     ✅      |     ✅      |     ⛔      |      ⛔       |    ✅    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://pypi.org/static/images/logo-small.svg" height="20">) |
-| License              |     ✅      |     ✅      |     ✅      |      ⛔       |    ⛔    |    <img src="https://pypi.org/static/images/logo-small.svg" height="20"> |
+| License              |     ✅      |     ✅      |     ✅      |      ⛔       |    ⛔    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://pypi.org/static/images/logo-small.svg" height="20">) |
 | Version              |     ✅      |     ✅      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://pypi.org/static/images/logo-small.svg" height="20"> |
 | Development Status   |     ✅      |     ⛔      |     ✅      |      ⛔       |    ⛔    |    <img src="https://pypi.org/static/images/logo-small.svg" height="20"> |
 | Python Version       |     ✅      |     ⛔      |     ✅      |      ⛔       |    ⛔    |    <img src="https://pypi.org/static/images/logo-small.svg" height="20"> |
