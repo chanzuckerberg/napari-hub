@@ -5718,7 +5718,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
       </div>
     </div>
     <div
-      class="bg-napari-light p-6 screen-495:p-12 grid justify-center gap-6 md:gap-12 grid-cols-2 screen-875:grid-cols-napari-3 screen-1150:grid-cols-napari-4 screen-1425:grid-cols-napari-5"
+      class="bg-napari-light p-6 screen-495:p-12 grid justify-center gap-6 md:gap-12 grid-cols-2 screen-875:grid-cols-napari-3 screen-1150:grid-cols-napari-3 screen-1425:grid-cols-napari-5"
     >
       <div
         class="col-span-2 screen-495:col-span-3 screen-1425:col-start-2"

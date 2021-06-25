@@ -14,16 +14,18 @@ MC_URL.search = new URLSearchParams({
 
 interface Props {
   onSubmit?: (event: React.FormEvent) => void;
+  variant?: 'default' | 'home';
 }
 
 /**
  * Signup form to capture email address and send it to MailChimp
  */
-export function SignupForm({ onSubmit }: Props) {
+export function SignupForm({ onSubmit, variant = 'default' }: Props) {
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
   const emailRef = useRef<HTMLInputElement | null>(null);
   const plausible = usePlausible();
+  const isHome = variant === 'home';
 
   const validate = () => {
     const validityState = emailRef.current?.validity;
@@ -53,7 +55,11 @@ export function SignupForm({ onSubmit }: Props) {
   };
 
   return (
-    <ColumnLayout className="bg-napari-light p-6 screen-495:p-12">
+    <ColumnLayout
+      className="bg-napari-light p-6 screen-495:p-12"
+      // Use 3-column layout instead of 4-column layout.
+      classes={isHome ? { fourColumn: 'screen-1150:grid-cols-napari-3' } : {}}
+    >
       <div className="col-span-2 screen-495:col-span-3 screen-1425:col-start-2">
         <h3 className="text-lg font-semibold mb-1 screen-495:mb-4">
           Sign up to receive updates
