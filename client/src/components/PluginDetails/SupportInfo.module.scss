@@ -1,0 +1,25 @@
+.missingProjectSupport {
+  path {
+    @apply fill-current text-napari-gray;
+  }
+
+  circle {
+    @apply stroke-current text-napari-gray;
+  }
+}
+
+.missingProjectIssues {
+  path {
+    @apply fill-current stroke-current text-napari-gray;
+  }
+}
+
+.missingDocumentation {
+  path {
+    @apply stroke-current text-napari-gray;
+  }
+
+  path:nth-of-type(3) {
+    @apply fill-current text-napari-gray;
+  }
+}

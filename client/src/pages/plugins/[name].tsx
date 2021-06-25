@@ -2,6 +2,7 @@ import type { Octokit as OctokitInstance } from '@octokit/rest';
 import type { RequestError as OctokitRequestError } from '@octokit/types';
 import { AxiosError } from 'axios';
 import { GetServerSidePropsContext } from 'next';
+import Head from 'next/head';
 import { ParsedUrlQuery } from 'node:querystring';
 
 import { hubAPI } from '@/axios';
@@ -128,7 +129,11 @@ export async function getServerSideProps({
       props.error = JSON.stringify(data, null, 2);
     } else if (isPlugin(data)) {
       props.plugin = data;
-      props.repo = await fetchRepoData(data.code_repository);
+
+      const repo = await fetchRepoData(data.code_repository);
+      if (repo) {
+        props.repo = repo;
+      }
     }
   } catch (err) {
     if (isAxiosError(err)) {
@@ -162,8 +167,22 @@ export default function PluginPage({
   repo = defaultRepoData,
   repoFetchError,
 }: Props) {
+  let title = 'napari hub | plugins';
+  if (plugin?.name) {
+    title = `${title} | ${plugin.name}`;
+
+    const authors = plugin.authors.map(({ name }) => name).join(', ');
+    if (authors) {
+      title = `${title} by ${authors}`;
+    }
+  }
+
   return (
     <>
+      <Head>
+        <title>{title}</title>
+      </Head>
+
       {error ? (
         <ErrorMessage error={error}>Unable to load plugin</ErrorMessage>
       ) : (

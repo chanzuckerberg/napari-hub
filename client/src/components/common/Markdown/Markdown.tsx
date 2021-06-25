@@ -1,8 +1,9 @@
 import clsx from 'clsx';
-import ReactMarkdown, { TransformOptions } from 'react-markdown';
+import ReactMarkdown, { PluggableList, TransformOptions } from 'react-markdown';
 import raw from 'rehype-raw';
 import sanitize from 'rehype-sanitize';
 import slug from 'rehype-slug';
+import externalLinks from 'remark-external-links';
 import gfm from 'remark-gfm';
 import removeComments from 'remark-remove-comments';
 
@@ -22,15 +23,17 @@ interface Props {
   disableHeader?: boolean;
 }
 
-const REMARK_PLUGINS = [
+const REMARK_PLUGINS: PluggableList = [
   // Add support for GitHub style markdown like checkboxes.
   gfm,
 
   // Remove HTML comments from markdown.
   removeComments,
+
+  [externalLinks, { target: '_blank', rel: 'noreferrer' }],
 ];
 
-const REHYPE_PLUGINS = [
+const REHYPE_PLUGINS: PluggableList = [
   // Parse inner HTML
   raw,
 
