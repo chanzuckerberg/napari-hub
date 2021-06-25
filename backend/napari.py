@@ -176,7 +176,11 @@ def get_license(url: str) -> [str, None]:
         response = requests.get(f'{api_url}/license', auth=auth)
         if response.status_code != requests.codes.ok:
             response.raise_for_status()
-        return get_attribute(json.loads(response.text.strip()), ['license', "spdx_id"])
+        spdx_id = get_attribute(json.loads(response.text.strip()), ['license', "spdx_id"])
+        if spdx_id == "NOASSERTION":
+            return None
+        else:
+            return spdx_id
     except HTTPError:
         return None
 
