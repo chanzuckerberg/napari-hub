@@ -10,7 +10,7 @@ It's time to write a description.
 
 The description is the main way for you connect with your users through the napari hub.
 You can provide a description of your plugin by creating a markdown file in your repo at `.napari/DESCRIPTION.md`.
-It's the primary way for potential users learn about your plugin, what it does, and whether it might solve their problem.
+It's the primary way for potential users learn about your plugin, understand what it does, and determine whether it might solve their problem.
 
 It's a blank canvas, for you to customize as you see fit.
 
