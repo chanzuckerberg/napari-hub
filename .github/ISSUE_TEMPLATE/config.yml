@@ -1,2 +1,11 @@
 # Ref: https://help.github.com/en/github/building-a-strong-community/configuring-issue-templates-for-your-repository#configuring-the-template-chooser
 blank_issues_enabled: true  # default
+contact_links:
+- name: 💡 Feature Request
+  url: https://github.com/chanzuckerberg/napari-hub/discussions/new
+  about: |
+  Have an feature request? Start an "Ideas" thread on our discussion forum.
+- name: 🤷 How do I?
+  url: https://github.com/chanzuckerberg/napari-hub/discussions/new
+  about: |
+    Looking for help? Start a "Q&A" thread on our discussion forum.
