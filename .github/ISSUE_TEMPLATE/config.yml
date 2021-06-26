@@ -2,7 +2,7 @@
 blank_issues_enabled: true  # default
 contact_links:
 - name: 💡 Feature Request
-  url: https://github.com/chanzuckerberg/napari-hub/discussions/new
+  url: https://github.com/chanzuckerberg/napari-hub/discussions/new?category=ideas
   about: |
   Have an feature request? Start an "Ideas" thread on our discussion forum.
 - name: 🤷 How do I?
