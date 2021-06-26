@@ -6,6 +6,6 @@ contact_links:
   about: |
   Have an feature request? Start an "Ideas" thread on our discussion forum.
 - name: 🤷 How do I?
-  url: https://github.com/chanzuckerberg/napari-hub/discussions/new
+  url: https://github.com/chanzuckerberg/napari-hub/discussions/new?category=q-a
   about: |
   Looking for help? Start a "Q&A" thread on our discussion forum.
