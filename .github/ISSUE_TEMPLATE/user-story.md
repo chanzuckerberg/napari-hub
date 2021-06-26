@@ -24,7 +24,7 @@ assignees: ''
 Also, here are a few points that need to be addressed:
 
 1. Constraint 1;
-1. Constraint 2;
+2. Constraint 2;
 1. Constraint 3.
 ]
 
