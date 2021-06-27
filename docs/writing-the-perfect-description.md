@@ -4,13 +4,15 @@ You've done the hard parts.
 You've built your new plugin.
 You've packaged it.
 You've got your unit tests passing.
-You're ready to share it will the world.
+You're ready to share it with the world.
 
 It's time to write a description.
 
-The description is the main way for you connect with your users through the napari hub.
+The description is the main way for you to connect with your users through the napari hub.
 You can provide a description of your plugin by creating a markdown file in your repo at `.napari/DESCRIPTION.md`.
-It's the primary way for potential users learn about your plugin, understand what it does, and determine whether it might solve their problem.
+If you've used napari's [cookiecutter template](https://github.com/napari/cookiecutter-napari-plugin), you'll
+find a template description already there for you.
+This description is the primary way for potential users learn about your plugin, understand what it does, and determine whether it might solve their problem.
 
 It's a blank canvas, for you to customize as you see fit.
 
@@ -27,7 +29,7 @@ The best plugin descriptions start with a clear summary of the plugin that lets 
 Things to consider:
 
 - Who is this plugin for? Is it for cell biologists or neuroscientists? For Python novices or folks with advanced computational experience?
-- What kind of data does this plugin work on? 2D or 3D? Time series? Multichannel?
+- What kind of data does this plugin work on? 2D or 3D? Time series? Multichannel? If your plugin provides a reader or writer, what file types does it support?
 - What makes your plugin different from other plugins that do similar things? Is it faster? More robust?
 
 For example, see the [affinder summary](https://github.com/jni/affinder/blob/master/.napari/DESCRIPTION.md#description)
@@ -53,11 +55,11 @@ So if a user searches for "segmentation" and your plugin does segmentation but d
 ## What not to include
 
 There's a good chance that you've included some of this information as part of your Github README.
-However, we don't recommend simply duplicating your README: While your Github README focuses on information that is relevant to other Python developers, your description is meant for all users of your plugin, no matter their familiarity with Github or Python.
+However, we don't recommend simply duplicating your README. While your Github README focuses on information that is relevant to other Python developers, your description is meant for all users of your plugin, no matter their familiarity with Github or Python.
 
 ### We don't need no badges
 
-We don't recommend including and shields or badges in your description.
+We don't recommend including any shields or badges in your description.
 These are great for Github, but we've found that hub users tend to find them distracting and confusing.
 If there's a shield that you're excited about, [reach out and add your idea to our discussion page](https://github.com/chanzuckerberg/napari-hub/discussions/categories/ideas) and we can explore other ways to add the relevant information to your plugin's metadata.
 
