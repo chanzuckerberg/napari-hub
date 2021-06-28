@@ -176,5 +176,27 @@ license_response = """
     'requests.get', return_value=FakeResponse(data=license_response)
 )
 def test_github_license(mock_get):
-    result = get_license("test_websitee")
+    result = get_license("test_website")
     assert result == "BSD-3-Clause"
+
+
+no_license_response = """
+{
+  "name": "LICENSE",
+  "path": "LICENSE",
+  "license": {
+    "key": "other",
+    "name": "Other",
+    "spdx_id": "NOASSERTION",
+    "url": null
+  }
+}
+"""
+
+
+@mock.patch(
+    'requests.get', return_value=FakeResponse(data=no_license_response)
+)
+def test_github_no_assertion_license(mock_get):
+    result = get_license("test_website")
+    assert result is None
