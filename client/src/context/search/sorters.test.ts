@@ -43,7 +43,10 @@ describe('compareDates()', () => {
       '2020-01-01 00:00:00',
     ];
 
-    expect(sortNewToOld(shuffle(datesSorted))).toEqual(datesSorted);
+    const datesShuffled = shuffle(datesSorted);
+
+    expect(datesShuffled).not.toEqual(datesSorted);
+    expect(sortNewToOld(datesShuffled)).toEqual(datesSorted);
   });
 
   it('should sort dates from newest to oldest (complex)', () => {
@@ -60,6 +63,9 @@ describe('compareDates()', () => {
       '2028-02-01 15:50:49',
     ];
 
+    const datesShuffled = shuffle(datesSorted);
+
+    expect(datesShuffled).not.toEqual(datesSorted);
     expect(sortNewToOld(shuffle(datesSorted))).toEqual(datesSorted);
   });
 });
