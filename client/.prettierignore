@@ -9,3 +9,6 @@ pnpm-lock.yaml
 
 # Jest snapshots
 *.snap
+
+# Static assets
+public
