@@ -8,8 +8,8 @@ export const SEARCH_PAGE = '/';
  */
 export enum SearchSortType {
   Relevance = 'relevance',
-  ReleaseDate = 'lastUpdated',
-  FirstReleased = 'created',
+  ReleaseDate = 'recentlyUpdated',
+  FirstReleased = 'newest',
   PluginName = 'pluginName',
 }
 
