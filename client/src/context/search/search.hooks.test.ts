@@ -6,8 +6,14 @@ import { act } from 'react-dom/test-utils';
 
 import pluginIndex from '@/fixtures/index.json';
 
-import { useSearch } from './search.hooks';
+import {
+  DEFAULT_SORT_TYPE,
+  SearchQueryParams,
+  SearchSortType,
+} from './constants';
+import { useSearch, useSearchSetSortType } from './search.hooks';
 import { SearchEngine, SearchResult } from './search.types';
+import type { SortForm } from './sort.hooks';
 
 jest.mock('next/router', () => ({
   useRouter: jest.fn(),
@@ -83,4 +89,64 @@ describe('useSearch()', () => {
   });
 });
 
-describe('useSearchSetSortType()', () => {});
+describe('useSearchSetSortType()', () => {
+  let form: SortForm;
+  const oldLocation = window.location;
+
+  beforeEach(() => {
+    form = {
+      setSortType: jest.fn(),
+      sortType: SearchSortType.Relevance,
+    };
+
+    window.location = oldLocation;
+  });
+
+  function mockSortType(sortType: SearchSortType) {
+    const url = new URL('http://localhost');
+    url.searchParams.set(SearchQueryParams.Sort, sortType);
+
+    window.location = { href: url.toString() } as Location;
+    form.sortType = sortType;
+  }
+
+  it('should set sort type to relevance on intial load', () => {
+    renderHook(() => useSearchSetSortType('video', form));
+    expect(form.setSortType).toHaveBeenCalled();
+  });
+
+  it('should not set sort type to relevance when user has sort type on initial load', () => {
+    mockSortType(SearchSortType.PluginName);
+    renderHook(() => useSearchSetSortType('video', form));
+    expect(form.setSortType).not.toHaveBeenCalled();
+  });
+
+  it('should set sort type to relevance when user enters query', () => {
+    let query = '';
+    const { rerender } = renderHook(() => useSearchSetSortType(query, form));
+    expect(form.setSortType).not.toHaveBeenCalled();
+
+    query = 'video';
+    rerender();
+    expect(form.setSortType).toHaveBeenCalledWith(SearchSortType.Relevance);
+  });
+
+  it('should set sort type to default when user clears query and sort type is relevance', () => {
+    let query = 'video';
+    const { rerender } = renderHook(() => useSearchSetSortType(query, form));
+
+    query = '';
+    rerender();
+    expect(form.setSortType).toHaveBeenCalledWith(DEFAULT_SORT_TYPE);
+  });
+
+  it('should maintain sort type when user clears query and sort type is not relevance', () => {
+    mockSortType(SearchSortType.PluginName);
+    let query = 'video';
+    const { rerender } = renderHook(() => useSearchSetSortType(query, form));
+
+    query = '';
+    rerender();
+    expect(form.setSortType).not.toHaveBeenCalled();
+  });
+});
