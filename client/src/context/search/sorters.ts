@@ -3,14 +3,16 @@ import { SearchResult } from './search.types';
 import { SearchResultTransformFunction } from './types';
 
 /**
- * Compares two dates by comparing the milliseconds time. Used for the sorting
- * by date functions below.
+ * Compare two dates to sort from newest to oldest.
+ *
+ * See: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort#description
  *
  * @param dateA The first date
  * @param dateB The second date
- * @returns The difference between the dates in milliseconds
+ * @returns >0 if dateA is newer than dateB, <0 if dateB is newer than dateA, and 0 if equal.
  */
-function compareDates(dateA: string, dateB: string) {
+export function compareDates(dateA: string, dateB: string): number {
+  // time in ms makes newer dates have higher values
   return new Date(dateA).getTime() - new Date(dateB).getTime();
 }
 
