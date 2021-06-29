@@ -87,19 +87,22 @@ function PluginRightColumn() {
 
   return (
     <Media greaterThanOrEqual="2xl">
-      {/*  Keep button on screen when scrolling on 2xl. */}
-      <CallToActionButton className="fixed" />
+      <div className="sticky top-12">
+        {/*  Keep button on screen when scrolling on 2xl. */}
+        <CallToActionButton />
 
-      <Markdown.TOC
-        className="mt-24"
-        markdown={plugin.description}
-        onClick={(section) => {
-          plausible('Description Nav', {
-            section,
-            plugin: plugin.name,
-          });
-        }}
-      />
+        <Markdown.TOC
+          className="mt-9"
+          markdown={plugin.description}
+          onClick={(section) => {
+            plausible('Description Nav', {
+              section,
+              plugin: plugin.name,
+            });
+          }}
+          free
+        />
+      </div>
     </Media>
   );
 }
