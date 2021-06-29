@@ -35,11 +35,12 @@ function FilterForm() {
       state: filter?.state.operatingSystems,
       setState: filter?.setOperatingSystem,
     },
-    {
-      title: 'Development status',
-      state: filter?.state.developmentStatus,
-      setState: filter?.setDevelopmentStatus,
-    },
+    // TODO Uncomment when we figure out what to do with the dev status filter
+    // {
+    //   title: 'Development status',
+    //   state: filter?.state.developmentStatus,
+    //   setState: filter?.setDevelopmentStatus,
+    // },
     {
       title: 'License',
       state: filter?.state.license,
