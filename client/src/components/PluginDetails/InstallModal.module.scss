@@ -1,6 +1,17 @@
+@import '@/utils/styles';
+
 // Make SVG stroke color black
 .closeIcon {
   path {
     @apply stroke-current text-black;
   }
+}
+
+.modal {
+  $min-width: 270px;
+  $max-width: 775px;
+
+  max-width: $max-width;
+  min-width: $min-width;
+  width: viewport-clamp($min-width, $max-width);
 }
