@@ -1136,64 +1136,6 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                                 class="MuiFormLabel-root font-semibold text-black text-sm mb-2"
                                 data-testid="title"
                               >
-                                Development status
-                              </legend>
-                              <div
-                                class="MuiFormGroup-root gap-2"
-                              >
-                                <label
-                                  class="MuiFormControlLabel-root items-start m-0"
-                                  data-testid="input"
-                                >
-                                  <span
-                                    aria-disabled="false"
-                                    class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current py-1 pr-2 pl-0"
-                                  >
-                                    <span
-                                      class="MuiIconButton-label"
-                                    >
-                                      <input
-                                        class="PrivateSwitchBase-input-4"
-                                        data-indeterminate="false"
-                                        type="checkbox"
-                                        value="false"
-                                      />
-                                      <svg
-                                        class="w-4 h-4"
-                                        fill="none"
-                                        height="14"
-                                        viewBox="0 0 14 14"
-                                        width="14"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                      >
-                                        <title>
-                                          unchecked checkbox
-                                        </title>
-                                        <rect
-                                          height="13"
-                                          stroke="black"
-                                          width="13"
-                                          x="0.5"
-                                          y="0.5"
-                                        />
-                                      </svg>
-                                    </span>
-                                  </span>
-                                  <span
-                                    class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
-                                  >
-                                    Only show stable plugins
-                                  </span>
-                                </label>
-                              </div>
-                            </fieldset>
-                            <fieldset
-                              class="MuiFormControl-root"
-                            >
-                              <legend
-                                class="MuiFormLabel-root font-semibold text-black text-sm mb-2"
-                                data-testid="title"
-                              >
                                 License
                               </legend>
                               <div
@@ -1556,64 +1498,6 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                         class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
                       >
                         Windows
-                      </span>
-                    </label>
-                  </div>
-                </fieldset>
-                <fieldset
-                  class="MuiFormControl-root"
-                >
-                  <legend
-                    class="MuiFormLabel-root font-semibold text-black text-sm mb-2"
-                    data-testid="title"
-                  >
-                    Development status
-                  </legend>
-                  <div
-                    class="MuiFormGroup-root gap-2"
-                  >
-                    <label
-                      class="MuiFormControlLabel-root items-start m-0"
-                      data-testid="input"
-                    >
-                      <span
-                        aria-disabled="false"
-                        class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current py-1 pr-2 pl-0"
-                      >
-                        <span
-                          class="MuiIconButton-label"
-                        >
-                          <input
-                            class="PrivateSwitchBase-input-4"
-                            data-indeterminate="false"
-                            type="checkbox"
-                            value="false"
-                          />
-                          <svg
-                            class="w-4 h-4"
-                            fill="none"
-                            height="14"
-                            viewBox="0 0 14 14"
-                            width="14"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <title>
-                              unchecked checkbox
-                            </title>
-                            <rect
-                              height="13"
-                              stroke="black"
-                              width="13"
-                              x="0.5"
-                              y="0.5"
-                            />
-                          </svg>
-                        </span>
-                      </span>
-                      <span
-                        class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
-                      >
-                        Only show stable plugins
                       </span>
                     </label>
                   </div>
