@@ -1500,114 +1500,118 @@ the coverage at least stays the same before you submit a pull request.
     class="fresnel-container fresnel-greaterThanOrEqual-2xl "
   >
     <div
-      class="absolute min-w-napari-xs"
-    />
-    <button
-      class="fixed bg-napari-primary h-12 w-full lg:max-w-napari-col"
-      type="button"
+      class="sticky top-12"
     >
-      Install
-    </button>
-    <ul
-      class="mt-24 flex flex-col border-l border-black fixed"
-    >
-      <li
-        class="flex pl-6 h-6 border-l-4 my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
-        data-active="false"
-        data-testid="tocItem"
+      <div
+        class="absolute min-w-napari-xs"
+      />
+      <button
+        class="bg-napari-primary h-12 w-full lg:max-w-napari-col"
+        type="button"
       >
-        <a
-          class=""
-          href="#description"
-        >
-          Description
-        </a>
-      </li>
-      <li
-        class="flex pl-6 h-6 border-l-4 my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
-        data-active="false"
-        data-testid="tocItem"
+        Install
+      </button>
+      <ul
+        class="mt-9 flex flex-col border-l border-black"
       >
-        <a
-          class=""
-          href="#writers"
+        <li
+          class="flex pl-6 h-6 border-l-4 my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
+          data-active="false"
+          data-testid="tocItem"
         >
-          Writers
-        </a>
-      </li>
-      <li
-        class="flex pl-6 h-6 border-l-4 my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
-        data-active="false"
-        data-testid="tocItem"
-      >
-        <a
-          class=""
-          href="#readers"
+          <a
+            class=""
+            href="#description"
+          >
+            Description
+          </a>
+        </li>
+        <li
+          class="flex pl-6 h-6 border-l-4 my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
+          data-active="false"
+          data-testid="tocItem"
         >
-          Readers
-        </a>
-      </li>
-      <li
-        class="flex pl-6 h-6 border-l-4 my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
-        data-active="false"
-        data-testid="tocItem"
-      >
-        <a
-          class=""
-          href="#zmeta"
+          <a
+            class=""
+            href="#writers"
+          >
+            Writers
+          </a>
+        </li>
+        <li
+          class="flex pl-6 h-6 border-l-4 my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
+          data-active="false"
+          data-testid="tocItem"
         >
-          .zmeta
-        </a>
-      </li>
-      <li
-        class="flex pl-6 h-6 border-l-4 my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
-        data-active="false"
-        data-testid="tocItem"
-      >
-        <a
-          class=""
-          href="#installation"
+          <a
+            class=""
+            href="#readers"
+          >
+            Readers
+          </a>
+        </li>
+        <li
+          class="flex pl-6 h-6 border-l-4 my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
+          data-active="false"
+          data-testid="tocItem"
         >
-          Installation
-        </a>
-      </li>
-      <li
-        class="flex pl-6 h-6 border-l-4 my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
-        data-active="false"
-        data-testid="tocItem"
-      >
-        <a
-          class=""
-          href="#contributing"
+          <a
+            class=""
+            href="#zmeta"
+          >
+            .zmeta
+          </a>
+        </li>
+        <li
+          class="flex pl-6 h-6 border-l-4 my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
+          data-active="false"
+          data-testid="tocItem"
         >
-          Contributing
-        </a>
-      </li>
-      <li
-        class="flex pl-6 h-6 border-l-4 my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
-        data-active="false"
-        data-testid="tocItem"
-      >
-        <a
-          class=""
-          href="#license"
+          <a
+            class=""
+            href="#installation"
+          >
+            Installation
+          </a>
+        </li>
+        <li
+          class="flex pl-6 h-6 border-l-4 my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
+          data-active="false"
+          data-testid="tocItem"
         >
-          License
-        </a>
-      </li>
-      <li
-        class="flex pl-6 h-6 border-l-4 my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-black"
-        data-active="true"
-        data-testid="tocItem"
-      >
-        <a
-          class="font-bold"
-          href="#issues"
+          <a
+            class=""
+            href="#contributing"
+          >
+            Contributing
+          </a>
+        </li>
+        <li
+          class="flex pl-6 h-6 border-l-4 my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
+          data-active="false"
+          data-testid="tocItem"
         >
-          Issues
-        </a>
-      </li>
-    </ul>
+          <a
+            class=""
+            href="#license"
+          >
+            License
+          </a>
+        </li>
+        <li
+          class="flex pl-6 h-6 border-l-4 my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-black"
+          data-active="true"
+          data-testid="tocItem"
+        >
+          <a
+            class="font-bold"
+            href="#issues"
+          >
+            Issues
+          </a>
+        </li>
+      </ul>
+    </div>
   </div>
 </div>
 `;
