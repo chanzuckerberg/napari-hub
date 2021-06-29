@@ -266,7 +266,7 @@ exports[`<Layout /> should match snapshot 1`] = `
           class="whitespace-nowrap font-semibold text-sm mr-6 last:mr-0"
           href="/privacy"
         >
-          Privacy policy
+          Privacy
         </a>
         <a
           class="whitespace-nowrap font-semibold text-sm mr-6 last:mr-0"
