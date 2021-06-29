@@ -1,12 +1,14 @@
+import { isEqual, shuffle as ldshuffle } from 'lodash';
+
 import { compareDates } from './sorters';
 
 function shuffle<T>(array: Array<T>): Array<T> {
-  // https://flaviocopes.com/how-to-shuffle-array-javascript/
-  const shuffled = array.slice();
+  let shuffled: Array<T>;
 
+  // guarantee array is shuffled
   do {
-    shuffled.sort(() => Math.random() - 0.5);
-  } while (shuffled === array);
+    shuffled = ldshuffle(array);
+  } while (isEqual(array, shuffled));
 
   return shuffled;
 }
@@ -20,27 +22,27 @@ describe('compareDates()', () => {
     expect(compareDates('1995-12-17 03:24:00', '1995-12-17T03:24:00')).toBe(0);
   });
 
-  it('should return a positive number when dateA is newer than dateB', () => {
+  it('should return a negative number when dateA is newer than dateB', () => {
     expect(
       compareDates('2020-01-01 00:00:00', '2019-01-01 00:00:00'),
-    ).toBeGreaterThan(0);
+    ).toBeLessThan(0);
   });
 
-  it('should return a negative number when dateB is newer than dateA', () => {
+  it('should return a positive number when dateB is newer than dateA', () => {
     expect(
       compareDates('2020-01-01 00:00:00', '2020-01-01 00:00:01'),
-    ).toBeLessThan(0);
+    ).toBeGreaterThan(0);
   });
 
   it('should sort dates from newest to oldest (trivial)', () => {
     const datesSorted = [
-      '2019-01-01 00:00:00',
-      '2019-01-01 00:00:01',
-      '2019-01-01 00:01:00',
-      '2019-01-01 01:00:00',
-      '2019-01-02 00:00:00',
-      '2019-02-01 00:00:00',
       '2020-01-01 00:00:00',
+      '2019-02-01 00:00:00',
+      '2019-01-02 00:00:00',
+      '2019-01-01 01:00:00',
+      '2019-01-01 00:01:00',
+      '2019-01-01 00:00:01',
+      '2019-01-01 00:00:00',
     ];
 
     const datesShuffled = shuffle(datesSorted);
@@ -51,16 +53,16 @@ describe('compareDates()', () => {
 
   it('should sort dates from newest to oldest (complex)', () => {
     const datesSorted = [
-      '2000-09-01 08:32:31',
-      '2000-09-24 04:16:24',
-      '2003-06-10 19:46:13',
-      '2004-04-12 20:23:48',
-      '2008-08-08 05:29:52',
-      '2010-06-28 20:01:09',
-      '2012-01-02 17:44:56',
-      '2013-07-26 07:04:39',
-      '2013-08-20 16:17:33',
       '2028-02-01 15:50:49',
+      '2013-08-20 16:17:33',
+      '2013-07-26 07:04:39',
+      '2012-01-02 17:44:56',
+      '2010-06-28 20:01:09',
+      '2008-08-08 05:29:52',
+      '2004-04-12 20:23:48',
+      '2003-06-10 19:46:13',
+      '2000-09-24 04:16:24',
+      '2000-09-01 08:32:31',
     ];
 
     const datesShuffled = shuffle(datesSorted);

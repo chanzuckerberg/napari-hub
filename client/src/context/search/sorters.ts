@@ -9,11 +9,11 @@ import { SearchResultTransformFunction } from './types';
  *
  * @param dateA The first date
  * @param dateB The second date
- * @returns >0 if dateA is newer than dateB, <0 if dateB is newer than dateA, and 0 if equal.
+ * @returns <0 if dateA is newer than dateB, >0 if dateB is newer than dateA, and 0 if equal.
  */
 export function compareDates(dateA: string, dateB: string): number {
   // time in ms makes newer dates have higher values
-  return new Date(dateA).getTime() - new Date(dateB).getTime();
+  return new Date(dateB).getTime() - new Date(dateA).getTime();
 }
 
 function sortByReleaseDate(results: SearchResult[]) {
