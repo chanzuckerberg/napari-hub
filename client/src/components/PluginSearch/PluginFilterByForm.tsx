@@ -49,7 +49,7 @@ function FilterForm() {
   ];
 
   return (
-    <div className="grid grid-cols-1 gap-6 screen-600:grid-cols-2 screen-875:grid-cols-1">
+    <div className="grid grid-cols-1 screen-600:grid-cols-2 screen-875:grid-cols-1">
       {/* Only show label on larger screens. This is because the Accordion already includes a title. */}
       <Media greaterThanOrEqual="screen-875">
         <FormLabel
@@ -63,6 +63,7 @@ function FilterForm() {
 
       {sections.map((section) => (
         <PluginFilterBySection
+          className="mt-6"
           key={section.title}
           title={section.title}
           filters={Object.entries(section.state ?? {}).map(

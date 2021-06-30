@@ -21,7 +21,7 @@ function PluginCenterColumn() {
   const { plugin } = usePluginState();
 
   return (
-    <article className="w-full col-span-2 xl:col-span-3">
+    <article className="w-full col-span-2 screen-875:col-span-3">
       <h1 className="font-bold text-4xl">{plugin.name}</h1>
       <h2 className="font-semibold my-6 text-lg">{plugin.summary}</h2>
 
@@ -34,7 +34,7 @@ function PluginCenterColumn() {
           'lg:flex-row lg:items-center',
 
           // Margins
-          'my-6 md:my-12',
+          'my-6 screen-495:mt-12 screen-600:mb-12',
         )}
         lessThan="3xl"
       >
@@ -51,14 +51,14 @@ function PluginCenterColumn() {
               Top margins: This is used for smaller layouts because the CTA
               button is above the metadata link.
             */
-            'mt-6 md:mt-12 lg:mt-0',
+            'mt-6 screen-600:mt-0',
 
             /*
               Left margins: This is used when the CTA and metadata link are
               inline.  The margin is removed when the CTA moves to the right
-              column on 2xl layouts.
+              column on 1150px layouts.
             */
-            'lg:ml-12 2xl:ml-0',
+            'screen-600:ml-12 screen-1150:ml-0',
           )}
           href="#pluginMetadata"
         >

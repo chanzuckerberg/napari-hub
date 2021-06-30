@@ -34,7 +34,7 @@ export function PluginFilterBySection({ className, title, filters }: Props) {
       >
         {title}
       </FormLabel>
-      <FormGroup className="gap-2">
+      <FormGroup>
         {filters.map((filter) => (
           <FormControlLabel
             className="items-start m-0"
@@ -43,7 +43,7 @@ export function PluginFilterBySection({ className, title, filters }: Props) {
                 value={filter.enabled}
                 checked={filter.enabled}
                 onChange={(event) => filter.setEnabled(event.target.checked)}
-                className="text-black fill-current py-1 pr-2 pl-0"
+                className="text-black fill-current py-1 pr-2 pl-0 mb-2 last:mb-0"
                 color="default"
                 icon={<CheckboxIcon className="w-4 h-4" />}
                 checkedIcon={<CheckboxIcon checked className="w-4 h-4" />}

@@ -832,13 +832,13 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                           class="MuiAccordionDetails-root p-0 flex-col"
                         >
                           <div
-                            class="grid grid-cols-1 gap-6 screen-600:grid-cols-2 screen-875:grid-cols-1"
+                            class="grid grid-cols-1 screen-600:grid-cols-2 screen-875:grid-cols-1"
                           >
                             <div
                               class="fresnel-container fresnel-greaterThanOrEqual-screen-875 "
                             />
                             <fieldset
-                              class="MuiFormControl-root"
+                              class="MuiFormControl-root mt-6"
                             >
                               <legend
                                 class="MuiFormLabel-root font-semibold text-black text-sm mb-2"
@@ -847,7 +847,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                                 Python versions
                               </legend>
                               <div
-                                class="MuiFormGroup-root gap-2"
+                                class="MuiFormGroup-root"
                               >
                                 <label
                                   class="MuiFormControlLabel-root items-start m-0"
@@ -855,7 +855,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                                 >
                                   <span
                                     aria-disabled="false"
-                                    class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current py-1 pr-2 pl-0"
+                                    class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current py-1 pr-2 pl-0 mb-2 last:mb-0"
                                   >
                                     <span
                                       class="MuiIconButton-label"
@@ -899,7 +899,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                                 >
                                   <span
                                     aria-disabled="false"
-                                    class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current py-1 pr-2 pl-0"
+                                    class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current py-1 pr-2 pl-0 mb-2 last:mb-0"
                                   >
                                     <span
                                       class="MuiIconButton-label"
@@ -943,7 +943,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                                 >
                                   <span
                                     aria-disabled="false"
-                                    class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current py-1 pr-2 pl-0"
+                                    class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current py-1 pr-2 pl-0 mb-2 last:mb-0"
                                   >
                                     <span
                                       class="MuiIconButton-label"
@@ -984,7 +984,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                               </div>
                             </fieldset>
                             <fieldset
-                              class="MuiFormControl-root"
+                              class="MuiFormControl-root mt-6"
                             >
                               <legend
                                 class="MuiFormLabel-root font-semibold text-black text-sm mb-2"
@@ -993,7 +993,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                                 Operating system
                               </legend>
                               <div
-                                class="MuiFormGroup-root gap-2"
+                                class="MuiFormGroup-root"
                               >
                                 <label
                                   class="MuiFormControlLabel-root items-start m-0"
@@ -1001,7 +1001,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                                 >
                                   <span
                                     aria-disabled="false"
-                                    class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current py-1 pr-2 pl-0"
+                                    class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current py-1 pr-2 pl-0 mb-2 last:mb-0"
                                   >
                                     <span
                                       class="MuiIconButton-label"
@@ -1045,7 +1045,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                                 >
                                   <span
                                     aria-disabled="false"
-                                    class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current py-1 pr-2 pl-0"
+                                    class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current py-1 pr-2 pl-0 mb-2 last:mb-0"
                                   >
                                     <span
                                       class="MuiIconButton-label"
@@ -1089,7 +1089,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                                 >
                                   <span
                                     aria-disabled="false"
-                                    class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current py-1 pr-2 pl-0"
+                                    class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current py-1 pr-2 pl-0 mb-2 last:mb-0"
                                   >
                                     <span
                                       class="MuiIconButton-label"
@@ -1130,7 +1130,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                               </div>
                             </fieldset>
                             <fieldset
-                              class="MuiFormControl-root"
+                              class="MuiFormControl-root mt-6"
                             >
                               <legend
                                 class="MuiFormLabel-root font-semibold text-black text-sm mb-2"
@@ -1139,7 +1139,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                                 License
                               </legend>
                               <div
-                                class="MuiFormGroup-root gap-2"
+                                class="MuiFormGroup-root"
                               >
                                 <label
                                   class="MuiFormControlLabel-root items-start m-0"
@@ -1147,7 +1147,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                                 >
                                   <span
                                     aria-disabled="false"
-                                    class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current py-1 pr-2 pl-0"
+                                    class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current py-1 pr-2 pl-0 mb-2 last:mb-0"
                                   >
                                     <span
                                       class="MuiIconButton-label"
@@ -1199,7 +1199,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
               class="fresnel-container fresnel-greaterThanOrEqual-screen-875 "
             >
               <div
-                class="grid grid-cols-1 gap-6 screen-600:grid-cols-2 screen-875:grid-cols-1"
+                class="grid grid-cols-1 screen-600:grid-cols-2 screen-875:grid-cols-1"
               >
                 <div
                   class="fresnel-container fresnel-greaterThanOrEqual-screen-875 "
@@ -1211,7 +1211,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                   </legend>
                 </div>
                 <fieldset
-                  class="MuiFormControl-root"
+                  class="MuiFormControl-root mt-6"
                 >
                   <legend
                     class="MuiFormLabel-root font-semibold text-black text-sm mb-2"
@@ -1220,7 +1220,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                     Python versions
                   </legend>
                   <div
-                    class="MuiFormGroup-root gap-2"
+                    class="MuiFormGroup-root"
                   >
                     <label
                       class="MuiFormControlLabel-root items-start m-0"
@@ -1228,7 +1228,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                     >
                       <span
                         aria-disabled="false"
-                        class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current py-1 pr-2 pl-0"
+                        class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current py-1 pr-2 pl-0 mb-2 last:mb-0"
                       >
                         <span
                           class="MuiIconButton-label"
@@ -1272,7 +1272,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                     >
                       <span
                         aria-disabled="false"
-                        class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current py-1 pr-2 pl-0"
+                        class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current py-1 pr-2 pl-0 mb-2 last:mb-0"
                       >
                         <span
                           class="MuiIconButton-label"
@@ -1316,7 +1316,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                     >
                       <span
                         aria-disabled="false"
-                        class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current py-1 pr-2 pl-0"
+                        class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current py-1 pr-2 pl-0 mb-2 last:mb-0"
                       >
                         <span
                           class="MuiIconButton-label"
@@ -1357,7 +1357,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                   </div>
                 </fieldset>
                 <fieldset
-                  class="MuiFormControl-root"
+                  class="MuiFormControl-root mt-6"
                 >
                   <legend
                     class="MuiFormLabel-root font-semibold text-black text-sm mb-2"
@@ -1366,7 +1366,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                     Operating system
                   </legend>
                   <div
-                    class="MuiFormGroup-root gap-2"
+                    class="MuiFormGroup-root"
                   >
                     <label
                       class="MuiFormControlLabel-root items-start m-0"
@@ -1374,7 +1374,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                     >
                       <span
                         aria-disabled="false"
-                        class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current py-1 pr-2 pl-0"
+                        class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current py-1 pr-2 pl-0 mb-2 last:mb-0"
                       >
                         <span
                           class="MuiIconButton-label"
@@ -1418,7 +1418,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                     >
                       <span
                         aria-disabled="false"
-                        class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current py-1 pr-2 pl-0"
+                        class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current py-1 pr-2 pl-0 mb-2 last:mb-0"
                       >
                         <span
                           class="MuiIconButton-label"
@@ -1462,7 +1462,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                     >
                       <span
                         aria-disabled="false"
-                        class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current py-1 pr-2 pl-0"
+                        class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current py-1 pr-2 pl-0 mb-2 last:mb-0"
                       >
                         <span
                           class="MuiIconButton-label"
@@ -1503,7 +1503,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                   </div>
                 </fieldset>
                 <fieldset
-                  class="MuiFormControl-root"
+                  class="MuiFormControl-root mt-6"
                 >
                   <legend
                     class="MuiFormLabel-root font-semibold text-black text-sm mb-2"
@@ -1512,7 +1512,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                     License
                   </legend>
                   <div
-                    class="MuiFormGroup-root gap-2"
+                    class="MuiFormGroup-root"
                   >
                     <label
                       class="MuiFormControlLabel-root items-start m-0"
@@ -1520,7 +1520,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                     >
                       <span
                         aria-disabled="false"
-                        class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current py-1 pr-2 pl-0"
+                        class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current py-1 pr-2 pl-0 mb-2 last:mb-0"
                       >
                         <span
                           class="MuiIconButton-label"
