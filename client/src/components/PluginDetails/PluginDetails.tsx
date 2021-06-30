@@ -87,8 +87,8 @@ function PluginRightColumn() {
 
   return (
     <Media greaterThanOrEqual="2xl">
+      {/*  Keep CTA button and TOC on screen when scrolling on 2xl. */}
       <div className="sticky top-12">
-        {/*  Keep button on screen when scrolling on 2xl. */}
         <CallToActionButton />
 
         <Markdown.TOC
