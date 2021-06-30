@@ -20,8 +20,8 @@ const DEFAULT_SORT_BY_RADIO_ORDER: SearchSortType[] = [
 
 const SORT_BY_LABELS: Record<SearchSortType, string> = {
   [SearchSortType.Relevance]: 'Relevance',
-  [SearchSortType.FirstReleased]: 'First released',
-  [SearchSortType.ReleaseDate]: 'Release date',
+  [SearchSortType.FirstReleased]: 'Newest',
+  [SearchSortType.ReleaseDate]: 'Recently updated',
   [SearchSortType.PluginName]: 'Plugin name',
 };
 

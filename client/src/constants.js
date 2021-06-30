@@ -12,7 +12,7 @@ const LINKS = {
     link: '/faq',
   },
   PRIVACY: {
-    title: 'Privacy policy',
+    title: 'Privacy',
     link: '/privacy',
   },
   CONTACT: {

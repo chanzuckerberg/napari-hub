@@ -29,7 +29,7 @@ export function PluginSearch() {
         </ColumnLayout>
       </div>
 
-      <SignupForm />
+      <SignupForm variant="home" />
       <Footer />
     </div>
   );

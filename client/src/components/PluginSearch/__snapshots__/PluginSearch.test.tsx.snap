@@ -454,7 +454,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                                     class="PrivateSwitchBase-input-4"
                                     name="sort-by"
                                     type="radio"
-                                    value="releaseDate"
+                                    value="recentlyUpdated"
                                   />
                                   <div
                                     class="PrivateRadioButtonIcon-root-5"
@@ -488,7 +488,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                               <span
                                 class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
                               >
-                                Release date
+                                Recently updated
                               </span>
                             </label>
                           </div>
@@ -511,7 +511,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                                     class="PrivateSwitchBase-input-4"
                                     name="sort-by"
                                     type="radio"
-                                    value="firstReleased"
+                                    value="newest"
                                   />
                                   <div
                                     class="PrivateRadioButtonIcon-root-5"
@@ -545,7 +545,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                               <span
                                 class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
                               >
-                                First released
+                                Newest
                               </span>
                             </label>
                           </div>
@@ -646,7 +646,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                         class="PrivateSwitchBase-input-4"
                         name="sort-by"
                         type="radio"
-                        value="releaseDate"
+                        value="recentlyUpdated"
                       />
                       <div
                         class="PrivateRadioButtonIcon-root-5"
@@ -680,7 +680,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                   <span
                     class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
                   >
-                    Release date
+                    Recently updated
                   </span>
                 </label>
               </div>
@@ -703,7 +703,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                         class="PrivateSwitchBase-input-4"
                         name="sort-by"
                         type="radio"
-                        value="firstReleased"
+                        value="newest"
                       />
                       <div
                         class="PrivateRadioButtonIcon-root-5"
@@ -737,7 +737,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                   <span
                     class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
                   >
-                    First released
+                    Newest
                   </span>
                 </label>
               </div>
@@ -1136,64 +1136,6 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                                 class="MuiFormLabel-root font-semibold text-black text-sm mb-2"
                                 data-testid="title"
                               >
-                                Development status
-                              </legend>
-                              <div
-                                class="MuiFormGroup-root gap-2"
-                              >
-                                <label
-                                  class="MuiFormControlLabel-root items-start m-0"
-                                  data-testid="input"
-                                >
-                                  <span
-                                    aria-disabled="false"
-                                    class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current py-1 pr-2 pl-0"
-                                  >
-                                    <span
-                                      class="MuiIconButton-label"
-                                    >
-                                      <input
-                                        class="PrivateSwitchBase-input-4"
-                                        data-indeterminate="false"
-                                        type="checkbox"
-                                        value="false"
-                                      />
-                                      <svg
-                                        class="w-4 h-4"
-                                        fill="none"
-                                        height="14"
-                                        viewBox="0 0 14 14"
-                                        width="14"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                      >
-                                        <title>
-                                          unchecked checkbox
-                                        </title>
-                                        <rect
-                                          height="13"
-                                          stroke="black"
-                                          width="13"
-                                          x="0.5"
-                                          y="0.5"
-                                        />
-                                      </svg>
-                                    </span>
-                                  </span>
-                                  <span
-                                    class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
-                                  >
-                                    Only show stable plugins
-                                  </span>
-                                </label>
-                              </div>
-                            </fieldset>
-                            <fieldset
-                              class="MuiFormControl-root"
-                            >
-                              <legend
-                                class="MuiFormLabel-root font-semibold text-black text-sm mb-2"
-                                data-testid="title"
-                              >
                                 License
                               </legend>
                               <div
@@ -1556,64 +1498,6 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                         class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
                       >
                         Windows
-                      </span>
-                    </label>
-                  </div>
-                </fieldset>
-                <fieldset
-                  class="MuiFormControl-root"
-                >
-                  <legend
-                    class="MuiFormLabel-root font-semibold text-black text-sm mb-2"
-                    data-testid="title"
-                  >
-                    Development status
-                  </legend>
-                  <div
-                    class="MuiFormGroup-root gap-2"
-                  >
-                    <label
-                      class="MuiFormControlLabel-root items-start m-0"
-                      data-testid="input"
-                    >
-                      <span
-                        aria-disabled="false"
-                        class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root text-black fill-current py-1 pr-2 pl-0"
-                      >
-                        <span
-                          class="MuiIconButton-label"
-                        >
-                          <input
-                            class="PrivateSwitchBase-input-4"
-                            data-indeterminate="false"
-                            type="checkbox"
-                            value="false"
-                          />
-                          <svg
-                            class="w-4 h-4"
-                            fill="none"
-                            height="14"
-                            viewBox="0 0 14 14"
-                            width="14"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <title>
-                              unchecked checkbox
-                            </title>
-                            <rect
-                              height="13"
-                              stroke="black"
-                              width="13"
-                              x="0.5"
-                              y="0.5"
-                            />
-                          </svg>
-                        </span>
-                      </span>
-                      <span
-                        class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
-                      >
-                        Only show stable plugins
                       </span>
                     </label>
                   </div>
@@ -5734,7 +5618,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
       </div>
     </div>
     <div
-      class="bg-napari-light p-6 screen-495:p-12 grid justify-center gap-6 md:gap-12 grid-cols-2 screen-875:grid-cols-napari-3 screen-1150:grid-cols-napari-4 screen-1425:grid-cols-napari-5"
+      class="bg-napari-light p-6 screen-495:p-12 grid justify-center gap-6 md:gap-12 grid-cols-2 screen-875:grid-cols-napari-3 screen-1150:grid-cols-napari-3 screen-1425:grid-cols-napari-5"
     >
       <div
         class="col-span-2 screen-495:col-span-3 screen-1425:col-start-2"
@@ -5811,7 +5695,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
           class="whitespace-nowrap font-semibold text-sm mr-6 last:mr-0"
           href="/privacy"
         >
-          Privacy policy
+          Privacy
         </a>
         <a
           class="whitespace-nowrap font-semibold text-sm mr-6 last:mr-0"
