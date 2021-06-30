@@ -1,6 +1,7 @@
 const mdx = require('@next/mdx');
 const slug = require('remark-slug');
 const html = require('rehype-stringify');
+const externalLinks = require('remark-external-links');
 const { EnvironmentPlugin } = require('webpack');
 
 const linkvars = require('./src/utils/linkvars');
@@ -9,7 +10,12 @@ const { LINKS } = require('./src/constants');
 const withMDX = mdx({
   extensions: /\.mdx$/,
   options: {
-    remarkPlugins: [slug, html, [linkvars, { vars: LINKS }]],
+    remarkPlugins: [
+      slug,
+      html,
+      [externalLinks, { target: '_blank', rel: 'noreferrer' }],
+      [linkvars, { vars: LINKS }],
+    ],
   },
 });
 
