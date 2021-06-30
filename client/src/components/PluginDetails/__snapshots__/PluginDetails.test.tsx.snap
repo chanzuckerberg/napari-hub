@@ -242,7 +242,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
     </div>
   </div>
   <article
-    class="w-full col-span-2 xl:col-span-3"
+    class="w-full col-span-2 screen-875:col-span-3"
   >
     <h1
       class="font-bold text-4xl"
@@ -255,7 +255,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
       Plugin exploring different options for reading and writing compressed and portable labels layers in napari.
     </h2>
     <div
-      class="fresnel-container fresnel-lessThan-3xl flex flex-col lg:flex-row lg:items-center my-6 md:my-12"
+      class="fresnel-container fresnel-lessThan-3xl flex flex-col lg:flex-row lg:items-center my-6 screen-495:mt-12 screen-600:mb-12"
     >
       <div
         class="absolute min-w-napari-xs"
@@ -267,7 +267,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
         Install
       </button>
       <a
-        class="underline hover:text-napari-primary mt-6 md:mt-12 lg:mt-0 lg:ml-12 2xl:ml-0"
+        class="underline hover:text-napari-primary mt-6 screen-600:mt-0 screen-600:ml-12 screen-1150:ml-0"
         href="#pluginMetadata"
       >
         View project data
