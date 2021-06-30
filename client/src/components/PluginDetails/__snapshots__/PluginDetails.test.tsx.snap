@@ -1506,7 +1506,7 @@ the coverage at least stays the same before you submit a pull request.
         class="mt-9 flex flex-col border-l border-black"
       >
         <li
-          class="flex pl-6 h-6 border-l-4 my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
+          class="flex pl-6 border-l-4 min-h-6 h-auto my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
           data-active="false"
           data-testid="tocItem"
         >
@@ -1518,7 +1518,7 @@ the coverage at least stays the same before you submit a pull request.
           </a>
         </li>
         <li
-          class="flex pl-6 h-6 border-l-4 my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
+          class="flex pl-6 border-l-4 min-h-6 h-auto my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
           data-active="false"
           data-testid="tocItem"
         >
@@ -1530,7 +1530,7 @@ the coverage at least stays the same before you submit a pull request.
           </a>
         </li>
         <li
-          class="flex pl-6 h-6 border-l-4 my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
+          class="flex pl-6 border-l-4 min-h-6 h-auto my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
           data-active="false"
           data-testid="tocItem"
         >
@@ -1542,7 +1542,7 @@ the coverage at least stays the same before you submit a pull request.
           </a>
         </li>
         <li
-          class="flex pl-6 h-6 border-l-4 my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
+          class="flex pl-6 border-l-4 min-h-6 h-auto my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
           data-active="false"
           data-testid="tocItem"
         >
@@ -1554,7 +1554,7 @@ the coverage at least stays the same before you submit a pull request.
           </a>
         </li>
         <li
-          class="flex pl-6 h-6 border-l-4 my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
+          class="flex pl-6 border-l-4 min-h-6 h-auto my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
           data-active="false"
           data-testid="tocItem"
         >
@@ -1566,7 +1566,7 @@ the coverage at least stays the same before you submit a pull request.
           </a>
         </li>
         <li
-          class="flex pl-6 h-6 border-l-4 my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
+          class="flex pl-6 border-l-4 min-h-6 h-auto my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
           data-active="false"
           data-testid="tocItem"
         >
@@ -1578,7 +1578,7 @@ the coverage at least stays the same before you submit a pull request.
           </a>
         </li>
         <li
-          class="flex pl-6 h-6 border-l-4 my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
+          class="flex pl-6 border-l-4 min-h-6 h-auto my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
           data-active="false"
           data-testid="tocItem"
         >
@@ -1590,7 +1590,7 @@ the coverage at least stays the same before you submit a pull request.
           </a>
         </li>
         <li
-          class="flex pl-6 h-6 border-l-4 my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-black"
+          class="flex pl-6 border-l-4 min-h-6 h-auto my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-black"
           data-active="true"
           data-testid="tocItem"
         >
