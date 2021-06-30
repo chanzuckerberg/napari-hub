@@ -52,7 +52,11 @@ export function TableOfContents({ className, onClick, headers, free }: Props) {
               // 'flex items-center',
 
               // Box model
-              'pl-6 h-6 border-l-4',
+              'pl-6 border-l-4',
+
+              // Ensure height is at least 25px, but also allow scaling for
+              // multiline items.
+              'min-h-6 h-auto',
 
               // Apply top/bottom margins except for first/last items
               'my-2 first:mt-0 last:mb-0',
