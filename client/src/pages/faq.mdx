@@ -20,14 +20,6 @@ install and get viewing in no time.
 
 </Accordion>
 
-<Accordion title="How do I install a napari plugin?" variant="faq">
-
-content content content content content content content content content
-content content content content content content content content content
-content content content content content content content content content
-
-</Accordion>
-
 <Accordion title="How do I get help with napari?" variant="faq">
 
 napari is a community partner on the [image.sc forum]({IMAGESC}) and all help and support requests
@@ -36,6 +28,14 @@ should be posted on the forum with the tag napari. We look forward to interactin
 Bug reports should be made on napari’s
 [github issues]({NAPARI_REPO}/issues/new?template=bug_report.md) using the bug report template.
 If you think something isn’t working, don’t hesitate to reach out - it is probably us and not you!
+
+</Accordion>
+
+<Accordion title="How do I get help with a napari plugin?" variant="faq">
+
+Plugin authors are encouraged to add links to their listing, showing users of their plugin where to find help.
+
+If the plugin author has not indicated where to get help, the [image.sc](https://forum.image.sc/tag/napari) community is a great place to ask questions about napari and napari plugins.
 
 </Accordion>
 
@@ -81,7 +81,7 @@ napari$
 </Accordion>
 
 <Accordion
-  title="Who is in charge here; who is building this?"
+  title="Who is building this?"
   variant="faq"
 >
 
@@ -119,9 +119,18 @@ and how to share your plugin with the world.
   variant="faq"
 >
 
-content content content content content content content content content
-content content content content content content content content content
-content content content content content content content content content
+To add your plugin to the napari hub, simply push it to PyPI.
+If you used the napari plugin cookiecutter as a template for your plugin, it comes already
+[configured to deploy to PyPI when you tag a versioned release](https://github.com/napari/cookiecutter-napari-plugin#set-up-automatic-deployments).
+
+</Accordion>
+
+<Accordion
+  title="How often do you check for new or updated plugins on PyPI?"
+  variant="faq"
+>
+
+We poll PyPI for updates every 5 minutes.
 
 </Accordion>
 
@@ -130,9 +139,23 @@ content content content content content content content content content
   variant="faq"
 >
 
-content content content content content content content content content
-content content content content content content content content content
-content content content content content content content content content
+We source metadata for your plugin's listing from both PyPI and Github.
+In addition to a bunch of standard PyPI stuff, we support additional custom fields,
+like a user-friendly description to complement your Github README.
+Check out [Customizing your plugin's listing](https://github.com/chanzuckerberg/napari-hub/blob/main/docs/customizing-plugin-listing.md)
+to see what metadata we will present and where we source it from.
+
+</Accordion>
+
+<Accordion
+  title="Can I preview my listing before I upload my plugin?"
+  variant="faq"
+>
+
+Yes, you can! The [napari-hub-cli](https://github.com/chanzuckerberg/napari-hub-cli)
+is a command-line tool that lets you preview your metadata and make sure that you’ve
+included everything the hub is looking for. Simply install it on your local development
+machine and point it at your local repository.
 
 </Accordion>
 
@@ -141,36 +164,57 @@ content content content content content content content content content
   variant="faq"
 >
 
-content content content content content content content content content
-content content content content content content content content content
-content content content content content content content content content
+If you remove your plugin from PyPI or yank a release, it will be removed from the napari hub within approximately 5 minutes.
+
+If you want your plugin to be available on PyPI, but not be visible on the napari hub, let us know by
+[submitting an issue](https://github.com/chanzuckerberg/napari-hub/issues/new)
+or sending an email to <team@napari-hub.org> and we’ll manually remove it from our listings.
 
 </Accordion>
 
 <Accordion
-  title={`"Why isn't my plugin "open source"?`}
+  title={`"My plugin is on PyPI, but why isn’t it showing up in the hub?"`}
   variant="faq"
 >
 
-content content content content content content content content content
-content content content content content content content content content
-content content content content content content content content content
+We check PyPI every 5 minutes, so if you just pushed it to PyPI, you might just need to go and get a cup of coffee.
+
+Search PyPI directly for your plugin among those tagged with [“Framework :: napari”](https://pypi.org/search/?c=Framework+%3A%3A+napari)
+
+If your plugin is on PyPI, but not showing up in that search, then you don’t have the “Framework :: napari” trove classifier properly defined.
+
+If your plugin does show up under [“Framework :: napari”](https://pypi.org/search/?c=Framework+%3A%3A+napari)
+on PyPI, but not on the hub, go and grab a cup of coffee.
+If it still doesn’t show up after 5 minutes, [open an issue](https://github.com/chanzuckerberg/napari-hub/issues/new?assignees=&labels=bug&template=bug_report.md&title=)
+and our team will look into it as soon as we can.
 
 </Accordion>
 
-<Accordion title={`Why isn't my plugin "stable"?`} variant="faq">
+<Accordion
+  title={`I updated my ".napari" directory in Github. Why aren’t my changes showing up?`}
+  variant="faq"
+>
 
-content content content content content content content content content
-content content content content content content content content content
-content content content content content content content content content
+We only pull plugin info from Github when we detect a new plugin or new release on PyPI.
+However, if you’d like to update your plugin listing with the latest metadata from your Github repo,
+just let us know by [_submitting an issue_](https://github.com/chanzuckerberg/napari-hub/issues/new)
+and we can manually trigger a refresh of your plugin metadata from Github.
 
 </Accordion>
 
-<Accordion title="How do I get help with a plugin?" variant="faq">
+<Accordion
+  title={`Why isn't my plugin "open source"?`}
+  variant="faq"
+>
 
-content content content content content content content content content
-content content content content content content content content content
-content content content content content content content content content
+To be considered an “open source” plugin, the hub must be able to detect that your
+plugin is distributed with an [OSI-approved open source license](https://opensource.org/licenses).
+That happens in one of two ways:
+
+- If you’ve linked to a Github repository, we’ll source [the license from Github’s API](https://docs.github.com/en/rest/reference/licenses#get-the-license-for-a-repository), which inspects your LICENSE file and infers the correct license.
+- If Github fails to identify your license, we’ll fallback on whatever you’ve specified in your Python setup. _Note: this MUST be a valid [SPDX license identifier](https://spdx.org/licenses/) in order to be detected as an “open source” license, such as “BSD-3-Clause”... “BSD-3” will not be recognized as “open source”._
+
+For more information on how we source this metadata, see [the "License" section of "Customizing your plugin's listing"](https://github.com/chanzuckerberg/napari-hub/blob/main/docs/customizing-plugin-listing.md#license)
 
 </Accordion>
 
