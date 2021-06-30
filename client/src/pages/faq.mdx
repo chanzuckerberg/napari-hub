@@ -157,7 +157,6 @@ is a command-line tool that lets you preview your metadata and make sure that yo
 included everything the hub is looking for. Simply install it on your local development
 machine and point it at your local repository.
 
-
 </Accordion>
 
 <Accordion
@@ -212,11 +211,10 @@ To be considered an “open source” plugin, the hub must be able to detect tha
 plugin is distributed with an [OSI-approved open source license](https://opensource.org/licenses).
 That happens in one of two ways:
 
-* If you’ve linked to a Github repository, we’ll source [the license from Github’s API](https://docs.github.com/en/rest/reference/licenses#get-the-license-for-a-repository), which inspects your LICENSE file and infers the correct license.
-* If Github fails to identify your license, we’ll fallback on whatever you’ve specified in your Python setup. *Note: this MUST be a valid [SPDX license identifier](https://spdx.org/licenses/) in order to be detected as an “open source” license, such as “BSD-3-Clause”... “BSD-3” will not be recognized as “open source”.*
+- If you’ve linked to a Github repository, we’ll source [the license from Github’s API](https://docs.github.com/en/rest/reference/licenses#get-the-license-for-a-repository), which inspects your LICENSE file and infers the correct license.
+- If Github fails to identify your license, we’ll fallback on whatever you’ve specified in your Python setup. _Note: this MUST be a valid [SPDX license identifier](https://spdx.org/licenses/) in order to be detected as an “open source” license, such as “BSD-3-Clause”... “BSD-3” will not be recognized as “open source”._
 
 For more information on how we source this metadata, see [the "License" section of "Customizing your plugin's listing"](https://github.com/chanzuckerberg/napari-hub/blob/main/docs/customizing-plugin-listing.md#license)
-
 
 </Accordion>
 
