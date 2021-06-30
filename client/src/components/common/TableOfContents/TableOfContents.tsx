@@ -38,7 +38,7 @@ export function TableOfContents({ className, onClick, headers, free }: Props) {
         className,
         'flex flex-col',
         'border-l border-black',
-        !free && 'fixed',
+        !free && 'sticky top-12',
       )}
     >
       {headers.map((header) => {
