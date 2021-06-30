@@ -1,15 +1,12 @@
-import { Button } from '@material-ui/core';
+import { Button, Dialog, IconButton } from '@material-ui/core';
 import { CheckCircle } from '@material-ui/icons';
 import clsx from 'clsx';
 import Image from 'next/image';
-import { useRef, useState } from 'react';
-import { useClickAway } from 'react-use';
+import { useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 
-import { Overlay } from '@/components/common';
-import { Fade } from '@/components/common/animations';
 import { Close, Copy } from '@/components/common/icons';
-import { MediaFragment } from '@/components/common/media';
+import { Media } from '@/components/common/media';
 import { usePluginState } from '@/context/plugin';
 import { usePlausible } from '@/hooks';
 
@@ -89,76 +86,92 @@ interface Closeable {
   onClose(): void;
 }
 
+function InstallModalHeader({ onClose }: Closeable) {
+  return (
+    <header className="flex justify-between mb-6 pt-6 px-6">
+      <h2 className="font-bold text-2xl screen-495:ml-6 mt-6">
+        Installing a plugin with napari
+      </h2>
+
+      {/* Close button */}
+      <Media greaterThanOrEqual="sm">
+        <IconButton onClick={onClose}>
+          <Close className={styles.closeIcon} />
+        </IconButton>
+      </Media>
+    </header>
+  );
+}
+
 /**
  * Component that renders the modal body.  This includes the instructions on
  * how to install the napari plugin and a button to copy the plugin name.
  */
-function InstallModalBody({ onClose }: Closeable) {
+function InstallModalBody() {
   return (
-    <>
-      {/* Header showing title and close button */}
-      <header className="flex justify-between mb-9">
-        <h2 className="font-bold text-2xl">Installing a plugin with napari</h2>
+    <ol className="list-decimal list-inside font-bold px-6 screen-495:px-12">
+      <li>
+        <p className="font-normal inline leading-8">
+          From the “Plugins” menu within the napari application, select
+          “Install/Uninstall Package(s)...”.
+        </p>
 
-        {/* Close button */}
-        <MediaFragment greaterThanOrEqual="sm">
-          <button onClick={onClose} type="button">
-            <Close className={styles.closeIcon} />
-          </button>
-        </MediaFragment>
-      </header>
+        <div className="my-3">
+          <Image
+            src="/images/plugin-install-menu.png"
+            alt="napari plugin install menu"
+            width={141}
+            height={74}
+          />
+        </div>
+      </li>
 
-      {/* Numbered list of instructions for installing a plugin */}
-      <ol className="list-decimal list-inside font-bold">
-        <li>
-          <p className="font-normal inline leading-8">
-            From the “Plugins” menu within the napari application, select
-            “Install/Uninstall Package(s)...”.
-          </p>
+      <li>
+        <p className="font-normal inline leading-8">
+          Copy <CopyPluginNameButton /> and paste it where it says “Install by
+          name/url…”
+        </p>
 
-          <div className="my-3">
-            <Image
-              src="/images/plugin-install-menu.png"
-              alt="napari plugin install menu"
-              width={141}
-              height={74}
-            />
-          </div>
-        </li>
+        <div className="my-3">
+          <Image
+            src="/images/plugin-list.png"
+            alt="napari plugin list"
+            width={430}
+            height={191}
+          />
+        </div>
+      </li>
 
-        <li>
-          <p className="font-normal inline leading-8">
-            Copy <CopyPluginNameButton /> and paste it where it says “Install by
-            name/url…”
-          </p>
+      <li>
+        <p className="font-normal inline">Click “Install”.</p>
+        <p className="font-normal italic text-xs my-6">
+          To get started with napari, visit{' '}
+          <a
+            className="underline hover:text-napari-primary"
+            href="https://napari.org"
+            target="_blank"
+            rel="noreferrer"
+          >
+            napari.org
+          </a>
+          .
+        </p>
+      </li>
+    </ol>
+  );
+}
 
-          <div className="my-3">
-            <Image
-              src="/images/plugin-list.png"
-              alt="napari plugin list"
-              width={430}
-              height={191}
-            />
-          </div>
-        </li>
-
-        <li>
-          <p className="font-normal inline">Click “Install”.</p>
-          <p className="font-normal italic text-xs my-6">
-            To get started with napari, visit{' '}
-            <a
-              className="underline hover:text-napari-primary"
-              href="https://napari.org"
-              target="_blank"
-              rel="noreferrer"
-            >
-              napari.org
-            </a>
-            .
-          </p>
-        </li>
-      </ol>
-    </>
+function InstallModalFooter({ onClose }: Closeable) {
+  return (
+    <div className="flex justify-end p-6 screen-495:p-12 pt-0 screen-495:pt-0">
+      <Button
+        className="border-2 border-napari-primary py-3 px-6"
+        onClick={onClose}
+        variant="outlined"
+      >
+        Close
+      </Button>
+    </div>
   );
 }
 
@@ -175,51 +188,25 @@ interface InstallModalProps extends Closeable {
  * is visible, and closing the modal when the user clicks away from it.
  */
 export function InstallModal({ onClose, visible }: InstallModalProps) {
-  const modalRef = useRef<HTMLDivElement | null>(null);
-  useClickAway(modalRef, onClose);
-
   return (
-    <>
-      <Overlay visible={visible} />
+    <Dialog
+      aria-labelledby="modal-title"
+      aria-describedby="modal-content"
+      className="flex items-center justify-center"
+      classes={{
+        paper: clsx(
+          styles.modal,
 
-      <div className="absolute min-w-napari-xs">
-        <Fade
-          className={clsx(
-            // White background and drop shadow
-            'bg-white shadow-2xl',
-
-            // Add scrollbar if modal contents are too long.
-            'overflow-y-auto',
-
-            // Render modal fixed to screen and above everything else
-            'fixed z-50',
-
-            // Padding
-            'p-6 md:p-12',
-
-            // Dimensions
-            'w-5/6 max-w-[775px] max-h-[706px]',
-
-            // Positioning: This centers the modal in the middle of the viewport
-            'top-1/2 left-1/2',
-            'transform -translate-x-1/2 -translate-y-1/2',
-          )}
-          ref={modalRef}
-          visible={visible}
-        >
-          <InstallModalBody onClose={onClose} />
-
-          <div className="flex justify-end">
-            <button
-              className="border-2 py-4 px-6 border-napari-primary"
-              onClick={onClose}
-              type="button"
-            >
-              Close
-            </button>
-          </div>
-        </Fade>
-      </div>
-    </>
+          // Override MUI margins
+          'mx-6',
+        ),
+      }}
+      open={visible}
+      onClose={onClose}
+    >
+      <InstallModalHeader onClose={onClose} />
+      <InstallModalBody />
+      <InstallModalFooter onClose={onClose} />
+    </Dialog>
   );
 }

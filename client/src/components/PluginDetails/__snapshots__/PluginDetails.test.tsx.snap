@@ -257,9 +257,6 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
     <div
       class="fresnel-container fresnel-lessThan-3xl flex flex-col lg:flex-row lg:items-center my-6 md:my-12"
     >
-      <div
-        class="absolute min-w-napari-xs"
-      />
       <button
         class="fresnel-lessThan-2xl bg-napari-primary h-12 w-full lg:max-w-napari-col"
         type="button"
@@ -1254,9 +1251,6 @@ the coverage at least stays the same before you submit a pull request.
          along with a detailed description.
       </p>
     </div>
-    <div
-      class="absolute min-w-napari-xs"
-    />
     <button
       class="mb-6 md:mb-12 2xl:mb-20 bg-napari-primary h-12 w-full lg:max-w-napari-col"
       type="button"
@@ -1502,9 +1496,6 @@ the coverage at least stays the same before you submit a pull request.
     <div
       class="sticky top-12"
     >
-      <div
-        class="absolute min-w-napari-xs"
-      />
       <button
         class="bg-napari-primary h-12 w-full lg:max-w-napari-col"
         type="button"
