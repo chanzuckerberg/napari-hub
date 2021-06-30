@@ -454,7 +454,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                                     class="PrivateSwitchBase-input-4"
                                     name="sort-by"
                                     type="radio"
-                                    value="releaseDate"
+                                    value="recentlyUpdated"
                                   />
                                   <div
                                     class="PrivateRadioButtonIcon-root-5"
@@ -488,7 +488,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                               <span
                                 class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
                               >
-                                Release date
+                                Recently updated
                               </span>
                             </label>
                           </div>
@@ -511,7 +511,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                                     class="PrivateSwitchBase-input-4"
                                     name="sort-by"
                                     type="radio"
-                                    value="firstReleased"
+                                    value="newest"
                                   />
                                   <div
                                     class="PrivateRadioButtonIcon-root-5"
@@ -545,7 +545,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                               <span
                                 class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
                               >
-                                First released
+                                Newest
                               </span>
                             </label>
                           </div>
@@ -646,7 +646,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                         class="PrivateSwitchBase-input-4"
                         name="sort-by"
                         type="radio"
-                        value="releaseDate"
+                        value="recentlyUpdated"
                       />
                       <div
                         class="PrivateRadioButtonIcon-root-5"
@@ -680,7 +680,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                   <span
                     class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
                   >
-                    Release date
+                    Recently updated
                   </span>
                 </label>
               </div>
@@ -703,7 +703,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                         class="PrivateSwitchBase-input-4"
                         name="sort-by"
                         type="radio"
-                        value="firstReleased"
+                        value="newest"
                       />
                       <div
                         class="PrivateRadioButtonIcon-root-5"
@@ -737,7 +737,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
                   <span
                     class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
                   >
-                    First released
+                    Newest
                   </span>
                 </label>
               </div>
