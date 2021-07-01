@@ -138,7 +138,7 @@ function PluginMetadataBase({
     },
     {
       title: 'Requirements',
-      value: plugin.requirements,
+      value: plugin.requirements.filter((req) => !req.includes('; extra == ')),
     },
   ];
 
