@@ -1,5 +1,5 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-cd client
+cd frontend
 node_modules/.bin/lint-staged
