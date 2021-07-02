@@ -14,7 +14,7 @@
         "--watchAll=false",
         "--config=jest/test.config.js"
       ],
-      "cwd": "${workspaceFolder}/client",
+      "cwd": "${workspaceFolder}/frontend",
       "disableOptimisticBPs": true,
       "windows": {
         "program": "node_modules/jest/bin/jest"

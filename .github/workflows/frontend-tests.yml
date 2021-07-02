@@ -1,26 +1,26 @@
 # Workflow for running several tests for PRs and pushes to the main branch for
-# napari hub client code.
+# napari hub frontend code.
 
-name: Client Tests
+name: Frontend Tests
 
 on:
   push:
     branches:
       - main
     paths:
-      - 'client/**'
+      - 'frontend/**'
   pull_request:
     branches:
       - '**'
     paths:
-      - 'client/**'
+      - 'frontend/**'
 
 defaults:
   run:
-    working-directory: client/
+    working-directory: frontend/
 
 jobs:
-  # Runs several tests on the client codebase to check for code style,
+  # Runs several tests on the frontend codebase to check for code style,
   # formatting, best practices, and run unit/integration tests.
   tests:
     name: ${{ matrix.name }}

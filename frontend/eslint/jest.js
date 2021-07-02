@@ -13,7 +13,7 @@ module.exports = {
     /*
       Jest version has to be passed explicitly because ESlint throws an error
       about not being able to find the Jest version. This is likely due to
-      the frontend being stored in `client/`.
+      the frontend being stored in `frontend/`.
       https://git.io/JYhAJ
     */
     jest: {

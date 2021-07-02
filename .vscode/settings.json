@@ -1,9 +1,9 @@
 {
-  "typescript.tsdk": "client/node_modules/typescript/lib",
+  "typescript.tsdk": "frontend/node_modules/typescript/lib",
   "tailwindCSS.experimental.classRegex": [
     ["clsx\\(([^)]*)\\)", "'([^']*)'", "\"([^\"]*)\""],
     ["classes={([^)]*)}", ":\\s*?'([^']*)'", ":\\s*?\"([^\"]*)\""]
   ],
   "jest.jestCommandLine": "node_modules/.bin/jest -c jest/test.config.js",
-  "jest.rootPath": "client"
+  "jest.rootPath": "frontend"
 }

@@ -61,10 +61,9 @@ CZI is proud to collaborate with the science community to accelerate research an
 
 ## Source Code
 
-We're building the napari hub out in the open, so if you want to contribute
-or get a sneak, please take a look at:
+We're building the napari hub out in the open, so if you want to contribute, please take a look at:
 
-- [napari hub client](client/README.md)
+- [napari hub frontend](frontend/README.md)
 
 ## Code of Conduct
 
