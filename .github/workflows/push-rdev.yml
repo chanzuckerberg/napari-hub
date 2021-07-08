@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - 'dev-*'
+  delete:
+    branches:
+      - 'dev-*'
 
 env:
   # Force using BuildKit instead of normal Docker, required so that metadata
@@ -56,6 +59,7 @@ jobs:
         run: |
           pip install -r .happy/requirements.txt
       - name: Create update dev
+        if: ${{ github.event_name == 'push' }}
         env:
           TFE_TOKEN: ${{ secrets.TFE_TOKEN }}
         run: |
@@ -67,3 +71,11 @@ jobs:
             echo "Creating stack $DEV_NAME"
             ./scripts/happy --profile="" create  --tag build-${GITHUB_RUN_NUMBER} $DEV_NAME
           fi
+      - name: Delete dev
+        if: ${{ github.event_name == 'delete' }}
+        env:
+          TFE_TOKEN: ${{ secrets.TFE_TOKEN }}
+        run: |
+          DEV_NAME=${GITHUB_REF#refs/heads/dev-}
+          echo "Updating stack $DEV_NAME"
+          ./scripts/happy --profile=""  delete --tag build-${GITHUB_RUN_NUMBER} $DEV_NAME
