@@ -45,10 +45,10 @@ jobs:
           DEV_NAME=${GITHUB_REF#refs/heads/dev-}
           if $(./scripts/happy --profile="" list | grep -q $DEV_NAME); then
             echo "Updating stack $DEV_NAME"
-            ./scripts/happy --profile=""  update --tag build-${GITHUB_RUN_NUMBER} $DEV_NAME
+            ./scripts/happy --profile="" update $DEV_NAME
           else
             echo "Creating stack $DEV_NAME"
-            ./scripts/happy --profile="" create  --tag build-${GITHUB_RUN_NUMBER} $DEV_NAME
+            ./scripts/happy --profile="" create $DEV_NAME
           fi
       - name: Delete dev
         if: ${{ github.event_name == 'delete' }}
