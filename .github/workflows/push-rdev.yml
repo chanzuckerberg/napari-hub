@@ -58,6 +58,6 @@ jobs:
           pip install --upgrade pip
           pip install -r .happy/requirements.txt
           BRANCH=${{ github.event.ref }}
-          DEV_NAME=${BRANCH#refs/heads/dev-}
+          DEV_NAME=${BRANCH#dev-}
           echo "Deleting stack $DEV_NAME"
-          ./scripts/happy --profile=""  delete $DEV_NAME
+          ./scripts/happy --profile="" delete $DEV_NAME
