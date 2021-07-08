@@ -10,7 +10,7 @@
 1. Visit [http://backend.naparinet.local:5000](http://backend.naparinet.local:5000) to view the backend, and [http://frontend.naparinet.local:3000](http://frontend.naparinet.local:3000) for the frontend.
 1. **Open the source code and start editing!**
 
-- Modify code in the `client` directory, save your changes and the browser will update in real time.
+- Modify code in the `frontend` directory, save your changes and the browser will update in real time.
 - Modify code in the `backend` directory, and the api will reload automatically.
 
 ### Containers managed by the dev environment

@@ -3,9 +3,10 @@
 Remote development environments are currently available for employees at CZI. For local development
 on your own machine, see instructions for setup at [./DEV_ENV.md].
 
+Remote environments are also available through branches that named after prefix `dev-`
+
 ## Remote Dev Pre-requisites
-1. Ensure your `awscli` is configured with the
-   [required credentials and profiles](../docs/awscli.md).
+1. Ensure your `awscli` is configured for `sci-imaging` profile.
 1. Make sure you have the *latest version* of the AWS CLI installed. `brew upgrade awscli` if you're not sure:
    ```
    % aws --version
@@ -24,7 +25,7 @@ The general remote dev workflow is:
 1. Make some code changes
 1. Run `./scripts/happy create <your-stack-name>` to create a new stack
 1. Visit the URL printed by the create step, share it with the team, etc.
-1. Run `./scripts/happy logs <your-stack-name> backend` to tail the logs of the data portal api.
+1. Run `./scripts/happy logs <your-stack-name> backend` to tail the logs of the napari hub api.
 1. Make some more code changes
 1. Run `./scripts/happy update <your-stack-name>` to update the remote stack with your latest changes.
 1. When you don't need your stack anymore, run `./scripts/happy delete <your-stack-name>` to free up remote dev resources.
