@@ -1,0 +1,221 @@
+import { LayoutMDX } from '@/components';
+import { Accordion } from '@/components/common';
+import { LINKS } from '@/constants';
+
+<LayoutMDX toc title="FAQ">
+
+# FAQ
+
+We hope these questions will help you in your napari plugin journey! We
+endeavour to update this regularly. If you need additional information or
+assistance, check out the [Contact]({CONTACT}) page or you can reach a human
+at <mailto:team@napari-hub.org>.
+
+## Using napari
+
+<Accordion title="How do I get started using napari?" variant="faq">
+
+If you’re new to napari, welcome and don’t fret! www.napari.org will help you
+install and get viewing in no time.
+
+</Accordion>
+
+<Accordion title="How do I get help with napari?" variant="faq">
+
+napari is a community partner on the [image.sc forum]({IMAGESC}) and all help and support requests
+should be posted on the forum with the tag napari. We look forward to interacting with you there.
+
+Bug reports should be made on napari’s
+[github issues]({NAPARI_REPO}/issues/new?template=bug_report.md) using the bug report template.
+If you think something isn’t working, don’t hesitate to reach out - it is probably us and not you!
+
+</Accordion>
+
+<Accordion title="How do I get help with a napari plugin?" variant="faq">
+
+Plugin authors are encouraged to add links to their listing, showing users of their plugin where to find help.
+
+If the plugin author has not indicated where to get help, the [image.sc](https://forum.image.sc/tag/napari) community is a great place to ask questions about napari and napari plugins.
+
+</Accordion>
+
+## Using the napari hub
+
+<Accordion
+  title="How do I perform more advanced search queries?"
+  variant="faq"
+>
+
+We use [fuse.js](https://fusejs.io/) for the plugin search engine.
+You should be fine with most queries, but if you want to perform more advanced search queries,
+you can use [extended search operators](https://fusejs.io/examples.html#extended-search)
+to fine tune your search results.
+
+#### Examples
+
+By default, whitespace will be considered as an AND operator.
+To combine results using OR, use the pipe operator:
+
+```
+console | animation
+```
+
+To find results that include a word (without fuzzy matching), use the apostrophe operator:
+
+```
+'video
+```
+
+To find results that start with a particular string, use the prefix operator.
+
+```
+^napari
+```
+
+Similar to find results that end with a particular string, use the suffix operator:
+
+```
+napari$
+```
+
+</Accordion>
+
+<Accordion
+  title="Who is building this?"
+  variant="faq"
+>
+
+The napari hub is a service of the Chan Zuckerberg Initiative in collaboration with napari,
+built by the CZI imaging team. You can learn more about who is steering
+this ship by visiting the [about page]({ABOUT}).
+
+</Accordion>
+
+<Accordion
+  title="I have a neat idea or question not answered here, where do I go?"
+  variant="faq"
+>
+
+Oh no, we didn’t answer your questions! Our apologies.
+We recommend you ask any hub community questions in [github discussions]({HUB_REPO}/discussions)-
+we value open source engagement and you never know who might have the right answer!
+For a full list of everyone involved, check out the [contacts page]({CONTACT}).
+
+</Accordion>
+
+## Building and sharing plugins
+
+<Accordion title="How do I build a napari plugin?" variant="faq">
+
+You can learn more about building a plugin for napari by reading
+[this tutorial](https://napari.org/plugins/stable/for_plugin_developers.html#plugins-for-plugin-developers),
+which will guide you through hook specifications, implementation,
+and how to share your plugin with the world.
+
+</Accordion>
+
+<Accordion
+  title="How do I add my plugin to the napari hub?"
+  variant="faq"
+>
+
+To add your plugin to the napari hub, simply push it to PyPI.
+If you used the napari plugin cookiecutter as a template for your plugin, it comes already
+[configured to deploy to PyPI when you tag a versioned release](https://github.com/napari/cookiecutter-napari-plugin#set-up-automatic-deployments).
+
+</Accordion>
+
+<Accordion
+  title="How often do you check for new or updated plugins on PyPI?"
+  variant="faq"
+>
+
+We poll PyPI for updates every 5 minutes.
+
+</Accordion>
+
+<Accordion
+  title="How do I customize my plugin's listing?"
+  variant="faq"
+>
+
+We source metadata for your plugin's listing from both PyPI and Github.
+In addition to a bunch of standard PyPI stuff, we support additional custom fields,
+like a user-friendly description to complement your Github README.
+Check out [Customizing your plugin's listing](https://github.com/chanzuckerberg/napari-hub/blob/main/docs/customizing-plugin-listing.md)
+to see what metadata we will present and where we source it from.
+
+</Accordion>
+
+<Accordion
+  title="Can I preview my listing before I upload my plugin?"
+  variant="faq"
+>
+
+Yes, you can! The [napari-hub-cli](https://github.com/chanzuckerberg/napari-hub-cli)
+is a command-line tool that lets you preview your metadata and make sure that you’ve
+included everything the hub is looking for. Simply install it on your local development
+machine and point it at your local repository.
+
+</Accordion>
+
+<Accordion
+  title="How do I remove my plugin from the napari hub?"
+  variant="faq"
+>
+
+If you remove your plugin from PyPI or yank a release, it will be removed from the napari hub within approximately 5 minutes.
+
+If you want your plugin to be available on PyPI, but not be visible on the napari hub, let us know by
+[submitting an issue](https://github.com/chanzuckerberg/napari-hub/issues/new)
+or sending an email to <team@napari-hub.org> and we’ll manually remove it from our listings.
+
+</Accordion>
+
+<Accordion
+  title={`"My plugin is on PyPI, but why isn’t it showing up in the hub?"`}
+  variant="faq"
+>
+
+We check PyPI every 5 minutes, so if you just pushed it to PyPI, you might just need to go and get a cup of coffee.
+
+Search PyPI directly for your plugin among those tagged with [“Framework :: napari”](https://pypi.org/search/?c=Framework+%3A%3A+napari)
+
+If your plugin is on PyPI, but not showing up in that search, then you don’t have the “Framework :: napari” trove classifier properly defined.
+
+If your plugin does show up under [“Framework :: napari”](https://pypi.org/search/?c=Framework+%3A%3A+napari)
+on PyPI, but not on the hub, go and grab a cup of coffee.
+If it still doesn’t show up after 5 minutes, [open an issue](https://github.com/chanzuckerberg/napari-hub/issues/new?assignees=&labels=bug&template=bug_report.md&title=)
+and our team will look into it as soon as we can.
+
+</Accordion>
+
+<Accordion
+  title={`I updated my ".napari" directory in Github. Why aren’t my changes showing up?`}
+  variant="faq"
+>
+
+We only pull plugin info from Github when we detect a new plugin or new release on PyPI.
+However, if you’d like to update your plugin listing with the latest metadata from your Github repo,
+just let us know by [_submitting an issue_](https://github.com/chanzuckerberg/napari-hub/issues/new)
+and we can manually trigger a refresh of your plugin metadata from Github.
+
+</Accordion>
+
+<Accordion
+  title={`Why isn't my plugin "open source"?`}
+  variant="faq"
+>
+
+To be considered an “open source” plugin, the hub must be able to detect that your
+plugin is distributed with an [OSI-approved open source license](https://opensource.org/licenses).
+That happens in one of two ways:
+
+- If you’ve linked to a Github repository, we’ll source [the license from Github’s API](https://docs.github.com/en/rest/reference/licenses#get-the-license-for-a-repository), which inspects your LICENSE file and infers the correct license.
+- If Github fails to identify your license, we’ll fallback on whatever you’ve specified in your Python setup. _Note: this MUST be a valid [SPDX license identifier](https://spdx.org/licenses/) in order to be detected as an “open source” license, such as “BSD-3-Clause”... “BSD-3” will not be recognized as “open source”._
+
+For more information on how we source this metadata, see [the "License" section of "Customizing your plugin's listing"](https://github.com/chanzuckerberg/napari-hub/blob/main/docs/customizing-plugin-listing.md#license)
+
+</Accordion>
+
+</LayoutMDX>

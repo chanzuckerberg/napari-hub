@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Table of Contents should match snapshot 1`] = `
+<DocumentFragment>
+  <ul
+    class="flex flex-col border-l border-black sticky top-12"
+  >
+    <li
+      class="flex pl-6 border-l-4 min-h-6 h-auto my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-black"
+      data-active="true"
+      data-testid="tocItem"
+    >
+      <a
+        class="font-bold"
+        href="#one"
+      >
+        One
+      </a>
+    </li>
+    <li
+      class="flex pl-6 border-l-4 min-h-6 h-auto my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
+      data-active="false"
+      data-testid="tocItem"
+    >
+      <a
+        class=""
+        href="#two"
+      >
+        Two
+      </a>
+    </li>
+  </ul>
+</DocumentFragment>
+`;

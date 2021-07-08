@@ -25,8 +25,11 @@ bucket = os.environ.get('BUCKET')
 bucket_path = os.environ.get('BUCKET_PATH', '')
 slack_url = os.environ.get('SLACK_URL')
 zulip_credentials = os.environ.get('ZULIP_CREDENTIALS', "")
+github_client_id = os.environ.get('GITHUB_CLIENT_ID', None)
+github_client_secret = os.environ.get('GITHUB_CLIENT_SECRET', None)
 cache_ttl = int(os.environ.get('TTL', "6"))
 endpoint_url = os.environ.get('BOTO_ENDPOINT_URL', None)
+
 plugins_key = 'cache/plugins.json'
 index_key = 'cache/index.json'
 exclusion_list = 'excluded_plugins.json'
@@ -38,7 +41,7 @@ index_subset = {'name', 'summary', 'description', 'description_content_type',
 s3 = boto3.resource('s3', endpoint_url=endpoint_url)
 s3_client = boto3.client("s3", endpoint_url=endpoint_url)
 cache_ttl = timedelta(minutes=cache_ttl)
-
+github_pattern = re.compile("https://github\\.com/([^/]+)/([^/]+)")
 
 app = Flask(__name__)
 
@@ -123,15 +126,14 @@ def get_file(download_url: str, file: str) -> [dict, None]:
     :return: file context for the file to download
     """
     api_url = download_url.replace("https://github.com/",
-                                   "https://api.github.com/repos/")
+                                   "https://raw.githubusercontent.com/")
     try:
-        response = requests.get(
-            f'{api_url}/{file}')
+        url = f'{api_url}/HEAD/{file}'
+        print(url)
+        response = requests.get(url)
         if response.status_code != requests.codes.ok:
             response.raise_for_status()
-        info = json.loads(response.text)
-        if "download_url" in info:
-            return requests.get(info["download_url"]).text
+        return response.text
     except HTTPError:
         pass
 
@@ -147,17 +149,61 @@ def get_extra_metadata(download_url: str) -> dict:
     """
     extra_metadata = {}
 
-    description = get_file(download_url, "contents/.napari/DESCRIPTION.md")
+    github_license = get_license(download_url)
+    if github_license is not None:
+        extra_metadata['license'] = github_license
+
+    description = get_file(download_url, ".napari/DESCRIPTION.md")
 
     if description is not None:
         extra_metadata['description'] = description
 
-    yaml_file = get_file(download_url, "contents/.napari/config.yml")
+    yaml_file = get_file(download_url, ".napari/config.yml")
     if yaml_file:
         config = yaml.safe_load(yaml_file)
         extra_metadata.update(config)
 
     return extra_metadata
+
+
+def get_license(url: str) -> [str, None]:
+    try:
+        api_url = url.replace("https://github.com/",
+                              "https://api.github.com/repos/")
+        auth = None
+        if github_client_id is not None and github_client_secret is not None:
+            auth = HTTPBasicAuth(github_client_id, github_client_secret)
+        response = requests.get(f'{api_url}/license', auth=auth)
+        if response.status_code != requests.codes.ok:
+            response.raise_for_status()
+        spdx_id = get_attribute(json.loads(response.text.strip()), ['license', "spdx_id"])
+        if spdx_id == "NOASSERTION":
+            return None
+        else:
+            return spdx_id
+    except HTTPError:
+        return None
+
+
+def get_download_url(plugin: dict) -> [str, None]:
+    """
+    Get download url for github.
+
+    :param plugin: plugin metadata dictionary
+    :return: download url if one is available, else None
+    """
+    project_urls = get_attribute(plugin, ["info", "project_urls"])
+    if project_urls:
+        source_code_url = get_attribute(project_urls, ["Source Code"])
+        if source_code_url:
+            return source_code_url
+        elif isinstance(project_urls, dict):
+            for key, url in project_urls.items():
+                if url.startswith("https://github.com"):
+                    match = github_pattern.match(url)
+                    if match:
+                        return github_pattern.match(url).group(0)
+    return None
 
 
 def format_plugin(plugin: dict) -> dict:
@@ -169,7 +215,7 @@ def format_plugin(plugin: dict) -> dict:
     """
     version = get_attribute(plugin, ["info", "version"])
 
-    download_url = get_attribute(plugin, ["info", "project_urls", "Source Code"])
+    download_url = get_download_url(plugin)
 
     extra_metadata = {}
     project_urls = {}
@@ -184,7 +230,7 @@ def format_plugin(plugin: dict) -> dict:
         "description_content_type": f'{get_attribute(plugin, ["info", "description_content_type"])}',
         "authors": extra_metadata.get('authors', [{'name': get_attribute(plugin, ["info", "author"]),
                                                    'email': get_attribute(plugin, ["info", "author_email"])}]),
-        "license": get_attribute(plugin, ["info", "license"]),
+        "license": extra_metadata.get('license', get_attribute(plugin, ["info", "license"])),
         "python_version": get_attribute(plugin, ["info", "requires_python"]),
         "operating_system": filter_prefix(
             get_attribute(plugin, ["info", "classifiers"]),
@@ -203,7 +249,7 @@ def format_plugin(plugin: dict) -> dict:
         # below are plugin details
         "requirements": get_attribute(plugin, ["info", "requires_dist"]),
         "project_site": project_urls.get('Project Site', get_attribute(
-            plugin, ["info", "project_url"])),
+            plugin, ["info", "home_page"])),
         "documentation": project_urls.get('Documentation', get_attribute(
             plugin, ["info", "project_urls", "Documentation"])),
         "support": project_urls.get('User Support', get_attribute(
@@ -263,13 +309,16 @@ def get_plugin(plugin: str, version: str = None) -> dict:
     :param version: version of the plugin
     :return: plugin metadata dictionary
     """
-    if version is None:
-        # TODO when version is None, how do we get a cached file?
-        url = f"https://pypi.org/pypi/{plugin}/json"
-    else:
-        if cache_available(f'cache/{plugin}/{version}.json', None):
-            return get_cache(f'cache/{plugin}/{version}.json')
-        url = f"https://pypi.org/pypi/{plugin}/{version}/json"
+    plugins = get_plugins()
+    if plugin not in plugins:
+        return {}
+    elif version is None:
+        version = plugins[plugin]
+
+    if cache_available(f'cache/{plugin}/{version}.json', None):
+        return get_cache(f'cache/{plugin}/{version}.json')
+
+    url = f"https://pypi.org/pypi/{plugin}/{version}/json"
     try:
         response = requests.get(url)
         if response.status_code != requests.codes.ok:
@@ -346,8 +395,7 @@ def query_pypi() -> dict:
     name_pattern = re.compile('class="package-snippet__name">(.+)</span>')
     version_pattern = re.compile(
         'class="package-snippet__version">(.+)</span>')
-    url = requote_uri(f"https://pypi.org/search/?c=Framework :: napari&page=")
-
+    url = requote_uri(f"https://pypi.org/search/?q=&o=-created&c=Framework :: napari&page=")
     while True:
         try:
             response = requests.get(f'{url}{page}')

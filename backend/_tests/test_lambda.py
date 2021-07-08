@@ -1,9 +1,11 @@
 from unittest import mock
-import importlib
 import requests
 from requests.exceptions import HTTPError
 
-api = importlib.import_module("backend.lambda")
+from backend.napari import get_plugin
+from backend.napari import get_plugins
+from backend.napari import get_download_url
+from backend.napari import get_license
 
 
 class FakeResponse:
@@ -98,7 +100,7 @@ plugin = """
     'requests.get', return_value=FakeResponse(data=plugin_list)
 )
 def test_get_plugins(mock_get):
-    result = api.get_plugins(None)
+    result = get_plugins()
     assert len(result) == 2
     assert result['package1'] == "0.2.7"
     assert result['package2'] == "0.1.0"
@@ -106,8 +108,11 @@ def test_get_plugins(mock_get):
 @mock.patch(
     'requests.get', return_value=FakeResponse(data=plugin)
 )
-def test_get_plugin(mock_get):
-    result = api.get_plugin("test")
+@mock.patch(
+    'backend.napari.get_plugins', return_value={'test': '0.0.1'}
+)
+def test_get_plugin(mock_get, mock_plugins):
+    result = get_plugin("test")
     assert(result["name"] == "test")
     assert(result["summary"] == "A test plugin")
     assert(result["description"] == "description")
@@ -121,9 +126,77 @@ def test_get_plugin(mock_get):
     assert(result["first_released"] == "2020-04-13T03:37:20.169990Z")
     assert(result["development_status"] == ['Development Status :: 4 - Beta'])
     assert(result["requirements"] is None)
-    assert(result["project_site"] == "https://pypi.org/project/test/")
+    assert(result["project_site"] == "https://github.com/test/test")
     assert(result["documentation"] == "")
     assert(result["support"] == "")
     assert(result["report_issues"] == "")
     assert(result["twitter"] == "")
-    assert(result["code_repository"] == "")
+    assert(result["code_repository"] == "https://github.com/test/test")
+
+
+@mock.patch(
+    'requests.get', return_value=FakeResponse(data=plugin)
+)
+@mock.patch(
+    'backend.napari.get_plugins', return_value={'not_test': '0.0.1'}
+)
+def test_get_invalid_plugin(mock_get, mock_plugins):
+    assert({} == get_plugin("test"))
+
+
+def test_github_get_url():
+    plugins = {"info": {"project_urls": {"Source Code": "test1"}}}
+    assert("test1" == get_download_url(plugins))
+
+    plugins = {"info": {"project_urls": {"Random": "https://random.com"}}}
+    assert(get_download_url(plugins) is None)
+
+    plugins = {"info": {"project_urls": {"Random": "https://github.com/org"}}}
+    assert(get_download_url(plugins) is None)
+
+    plugins = {"info": {"project_urls": {"Random": "https://github.com/org/repo/random"}}}
+    assert("https://github.com/org/repo" == get_download_url(plugins))
+
+
+license_response = """
+{
+  "name": "LICENSE",
+  "path": "LICENSE",
+  "license": {
+    "key": "bsd-3-clause",
+    "name": "BSD 3-Clause \\"New\\" or \\"Revised\\" License",
+    "spdx_id": "BSD-3-Clause",
+    "url": "https://api.github.com/licenses/bsd-3-clause"
+  }
+}
+"""
+
+
+@mock.patch(
+    'requests.get', return_value=FakeResponse(data=license_response)
+)
+def test_github_license(mock_get):
+    result = get_license("test_website")
+    assert result == "BSD-3-Clause"
+
+
+no_license_response = """
+{
+  "name": "LICENSE",
+  "path": "LICENSE",
+  "license": {
+    "key": "other",
+    "name": "Other",
+    "spdx_id": "NOASSERTION",
+    "url": null
+  }
+}
+"""
+
+
+@mock.patch(
+    'requests.get', return_value=FakeResponse(data=no_license_response)
+)
+def test_github_no_assertion_license(mock_get):
+    result = get_license("test_website")
+    assert result is None

@@ -1,0 +1,55 @@
+@import '@/utils/styles';
+
+html {
+  /*
+    Use viewport width for fluid typography. The minimum font size is from the
+    design spec, and the maximum font size is set to the user's preferred font
+    size set by their browser settings.
+
+    Texts, margins, and paddings should use the `text-<size>` Tailwind classes
+    or rem / em units in CSS to ensure the font size is more accessible.
+
+    https://blog.logrocket.com/the-elements-of-responsive-typography
+  */
+  font-size: viewport-clamp(11px, 100%);
+
+  /*
+    Awful hack to get clamp resizing working in Safari 14:
+    https://stackoverflow.com/a/65093383
+
+    We need to use a really small value because we want to keep the viewport
+    unit. If we use `0vw` directly, SASS will automatically remove the unit:
+    https://stackoverflow.com/questions/63965489/safari-14-min-max-clamp-not-working-with-vw-and-px-values#comment116930866_65093383
+  */
+  min-height: 0.0001vw;
+
+  /*
+    Use smooth transition when scrolling between different parts of the page.
+
+    TODO This currently has no support in Safari, so we'll probably have to
+    implement a solution in TypeScript.
+    https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-behavior
+  */
+  scroll-behavior: smooth;
+}
+
+body {
+  /*
+    Overflow body along x-axis when contents are too long for the page. This
+    should only happen in rare cases where the viewport is < 300px.
+  */
+  @apply overflow-x-auto;
+
+  // Apply Barlow font to entire site.
+  @apply font-barlow;
+}
+
+/* stylelint-disable selector-max-id */
+#__next {
+  /*
+    Limit minimum width to 300px so that the the body will begin overflowing
+    for viewports smaller than 300px.
+  */
+  @apply min-w-napari-xs;
+}
+/* stylelint-enable */

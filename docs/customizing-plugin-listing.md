@@ -57,6 +57,9 @@ Fields that can be defined through the napari config include...
 - [Report Issues](#report-issues)
 - [Twitter](#twitter)
 
+Fields that come from the GitHub API
+- [License](#license)
+
 ## Fields
 
 For each of the fields in a plugin's listing, we outline below how the field is used and where we source the data.
@@ -67,7 +70,7 @@ For each of the fields in a plugin's listing, we outline below how the field is 
 | Summary              |     ✅      |     ✅      |     ⛔      |      ⛔       |    ✅    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://pypi.org/static/images/logo-small.svg" height="20">) |
 | Description          |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ✅    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://pypi.org/static/images/logo-small.svg" height="20">) |
 | Authors              |     ✅      |     ✅      |     ⛔      |      ⛔       |    ✅    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://pypi.org/static/images/logo-small.svg" height="20">) |
-| License              |     ✅      |     ✅      |     ✅      |      ⛔       |    ⛔    |    <img src="https://pypi.org/static/images/logo-small.svg" height="20"> |
+| License              |     ✅      |     ✅      |     ✅      |      ⛔       |    ⛔    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://pypi.org/static/images/logo-small.svg" height="20">) |
 | Version              |     ✅      |     ✅      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://pypi.org/static/images/logo-small.svg" height="20"> |
 | Development Status   |     ✅      |     ⛔      |     ✅      |      ⛔       |    ⛔    |    <img src="https://pypi.org/static/images/logo-small.svg" height="20"> |
 | Python Version       |     ✅      |     ⛔      |     ✅      |      ⛔       |    ⛔    |    <img src="https://pypi.org/static/images/logo-small.svg" height="20"> |
@@ -214,7 +217,7 @@ We display this on the detailed plugin page and the plugin listings.
 
 We support filtering plugins based on whether the plugin is released under an [OSI-approved](https://opensource.org/licenses) open source license.
 
-We source this from the `["info"]["license"]` field of the JSON returned by the PyPI API.
+We source this from the GitHub license API, if we cannot find one, we would source from `["info"]["license"]` field of the JSON returned by the PyPI API.
 
 You can set this by setting the `license` value in your package metadata.
 
@@ -373,7 +376,7 @@ This is a link to the main project site for your plugin.
 
 We display this on the detailed plugin page.
 
-We source this from `["info"]["project_url"]` field of the JSON returned by the PyPI API.
+We source this from `["info"]["home_page"]` field of the JSON returned by the PyPI API.
 
 You can set this by setting the `url` value for your Python package in your package metadata.
 

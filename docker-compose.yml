@@ -1,10 +1,10 @@
-version: "3.8"
+version: '3.8'
 
 services:
   localstack:
     image: localstack/localstack@sha256:7c6635493185d25165979995fb073fd789c72b6d8b17ef3a70b798d55576732f
     ports:
-      - "4566:4566"
+      - '4566:4566'
     environment:
       - HOSTNAME_EXTERNAL=localstack
       - SERVICES=s3,secretsmanager
@@ -20,21 +20,22 @@ services:
         aliases:
           - localstack.naparinet.local
   frontend:
-    image: "${DOCKER_REPO}napari-hub-dev-frontend"
+    image: '${DOCKER_REPO}napari-hub-dev-frontend'
     build:
-      context: client
+      context: frontend
       cache_from:
-        - "${DOCKER_REPO}napari-hub-dev-frontend:branch-main"
+        - '${DOCKER_REPO}napari-hub-dev-frontend:branch-main'
       args:
         - BUILDKIT_INLINE_CACHE=1
         - HAPPY_COMMIT
         - HAPPY_BRANCH
         - HAPPY_TAG
+        - ENV
     restart: always
     depends_on:
       - backend
     ports:
-      - "8080:8080"
+      - '8080:8080'
     environment:
       - AWS_DEFAULT_REGION=us-west-2
       - AWS_ACCESS_KEY_ID=test
@@ -42,7 +43,7 @@ services:
       - BOTO_ENDPOINT_URL=http://localstack:4566
       - API_URL=http://backend.naparinet.local:5000/
     volumes:
-      - ./client:/app
+      - ./frontend:/app
       - /app/node_modules/
       - /app/.next/
     networks:
@@ -50,11 +51,11 @@ services:
         aliases:
           - frontend.naparinet.local
   backend:
-    image: "${DOCKER_REPO}napari-hub-dev-backend"
+    image: '${DOCKER_REPO}napari-hub-dev-backend'
     build:
       context: backend
       cache_from:
-        - "${DOCKER_REPO}napari-hub-dev-backend:branch-main"
+        - '${DOCKER_REPO}napari-hub-dev-backend:branch-main'
       args:
         - BUILDKIT_INLINE_CACHE=1
         - HAPPY_COMMIT
@@ -64,7 +65,7 @@ services:
     depends_on:
       - localstack
     ports:
-      - "5000:5000"
+      - '5000:5000'
     environment:
       - PYTHONUNBUFFERED=1
       - AWS_DEFAULT_REGION=us-west-2
