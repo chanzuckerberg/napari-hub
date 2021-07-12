@@ -234,7 +234,6 @@ information to support this decision can be found in this document:Next.js vs Sv
 * Who is responsible for the maintenance of this site?
  
  
-## Success Evaluation
 Achieve OKR “At least 25 plugins discoverable through a plugin discovery site” by end of H1 2021
 
 ### Milestones
