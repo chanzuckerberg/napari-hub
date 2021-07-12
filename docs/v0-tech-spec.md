@@ -7,7 +7,7 @@ The purpose of this document is to provide technical details in order to assist 
 ### Pages
 #### Landing page
 * Has some welcome copy and other info.
-* User can search and  browse as described in the search/list/browse view.
+* User can search and browse as described in the search/list/browse view.
 * Includes Email list signup. More details for this feature defined under Features: Mailing List
 
 #### Search/List/Browse view
