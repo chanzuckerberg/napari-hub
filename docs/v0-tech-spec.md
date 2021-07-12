@@ -171,7 +171,7 @@ Use Mailchimp forms and collect data within Mailchimp.
   * Health check for the http server
 
 ### Release Plan
-First version of the site will be released on production by June 30, 2021.
+First version of the site was released on production on June 30, 2021. Subsequent major and minor versions to follow.
 
 #### Domain name
 Decision: We will use napari-hub.org with naparihub.org redirecting to napari-hub.org
