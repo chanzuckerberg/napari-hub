@@ -92,7 +92,7 @@ may be a “one click” solution which opens up the napari viewer automatically
 There are further considerations to explore in the workflow of the user journey and engineering options to explore 
 so this will not be the target for the first version. Implementation on the engineering side should be low for this first version.
 
-For v0, the "install" CTA on the plugin detail page should pop up a modal that gives template-generated instructions 
+Decision for v0: The "install" CTA on the plugin detail page should pop up a modal that gives template-generated instructions 
 for installation. Modal is subject to the responsive design.
 
 #### Filter/Sort
