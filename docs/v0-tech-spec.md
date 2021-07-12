@@ -117,7 +117,7 @@ filter/sort functionality after v0 as we grow our plugins to use an indexing ser
     * Refreshes the list with no filters applied
   * Select a sort option
     * Refreshes the list sorted by the user’s selection
-* The search/filter/sort query should be encoded in the URL. User should be able to navigate  to another page such as 
+* The search/filter/sort query should be encoded in the URL. User should be able to navigate to another page such as 
   the details page and when returning to the page with filters, the page should remember the filters and sort and load that state. 
   * This will enable linking to specific search results from elsewhere on the site (e.g. link to all plugins with a 
     certain tag by clicking the tag name on the plugin detail page)
