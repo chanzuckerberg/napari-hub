@@ -42,13 +42,7 @@ High-level documentation for the napari hub frontend architecture.
 
 ## Components
 
-Components are responsible for rendering the entirety of the napari hub UI.
-Components are essentially JavaScript functions that accept some state and
-return a description of the UI it wants to render.
-
-### Composition
-
-Conceptually, you can think of frontend as a [giant function that takes in some
+Conceptually, you can think of the frontend as a [function that takes in some
 state and outputs some UI](https://reactjs.org/docs/components-and-props.html):
 
 ```ts
@@ -57,11 +51,17 @@ const UI = f(S)
 ```
 
 `S` represents the current state of the application, `UI` is a description of
-the what UI we want to render in the browser, and `f` is the root functional
-component that renders the entire UI.
+the what UI we want to render in the browser, and `f` is a function that returns
+a description of what the UI should look like. That function is known as a
+[component](https://reactjs.org/docs/components-and-props.html).
 
-Using this model, we've built the napari hub as a composition of functional
-components that each return a description of what the UI should look like,
+### Composition
+
+> You can skip this section if you're familiar with [React](https://reactjs.org/).
+
+Using [composition](https://reactjs.org/docs/composition-vs-inheritance.html),
+it's possible to build entire applications as a single function. With this
+model, we've built the napari hub as a composition of functional components,
 making it easier to modularize and reuse code.
 
 To better visualize the concept, you can think of the [landing page for napari
