@@ -218,6 +218,9 @@ We decided to use AWS which we will use services like Lambda, S3 and API Gateway
 After building some proof of concepts and testing, we decided to use React + Next.js and TailwindCSS. Further 
 information to support this decision can be found in this document:Next.js vs SvelteKit
 
+## Publishing of plugins
+* To be transparent and not require an approval process as well as share the responsibility to flagging bad plugins, we will publish activity to the hub-updates stream on the [napari Zulip](https://napari.zulipchat.com). Activity will be published for brand new plugins, new versions of plugins as well as plugin removals.
+
 ## Further Considerations
 * Since the first version will be very minimal, consider future features that may affect the chosen technologies and engineering design.
   * Even though the first version will support a small number of plugins, we should have a plan in order to scale and 
