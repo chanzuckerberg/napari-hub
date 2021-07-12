@@ -15,7 +15,7 @@ The purpose of this document is to provide technical details in order to assist 
 * Ability to browse existing plugins with additional filter and sort functionality
 * Technical requirements:
   * Page and plugin data should load in a reasonable amount of time.
-  * Search/list functionality should be able to support 100s of plugins (closer to the lower end)  for the first version. 
+  * Search/list functionality should be able to support low 100s of plugins for the first version. 
   * Search inputs should have form validation.
   * Search form fields:
     * Global search [input/textbox] - Spreadsheet with fields and info defined. We will use all items from the “Search” 
