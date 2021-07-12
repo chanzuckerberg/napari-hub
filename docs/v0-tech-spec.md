@@ -26,24 +26,24 @@ The purpose of this document is to provide technical details in order to assist 
       column. More details for this feature defined under Features: Filter/Sort
   * Plugin list data to display
     * Fields to display are defined in [this table](https://github.com/chanzuckerberg/napari-hub/wiki/Customizing-your-plugin's-listing#fields). We will use all items from the “List view” column
-    * Link to details page
+    * Link to the details page
     * We will add an “exclude” list for plugins to exclude from the list. The exclusions will be stored in a file and plugin data returned will not include those excluded plugins.
   * Actions (what happens when a user clicks on each link, button, etc.) 
     * Will be defined in the final Figma design/prototype
 
 #### Details view
 * Ability to learn more about each plugin (i.e. on a page of its own)
-* Content sourced from pypi & available sources linked from there (such as github)
+* Content sourced from pypi & available sources linked from there (such as GitHub)
 * Includes a call to action to install the plugin. More details of this feature defined in Features: Install “CTA”
 * Technical requirements:
   * Page should be built as a reusable template and only data will change dynamically.
   * Page should load in a reasonable amount of time.
-  * Plugin data to display from Pypi JSON API or Github:
+  * Plugin data to display from Pypi JSON API or GitHub:
   * Fields to display are defined in [this table](https://github.com/chanzuckerberg/napari-hub/wiki/Customizing-your-plugin's-listing#fields)v. We will use all items from the “Full view” column.
   * Flags for engineering:
-    * Description - will need to be parsed from markdown format or possible other formats like plain text or rst. 
+    * Description - will need to be parsed from Markdown format or possible other formats like plain text or rst. 
       For v0, we will support markdown and plain text formats only. 
-    * “Github source” column data will be sourced from files within a .napari folder as defined in this document
+    * “GitHub source” column data will be sourced from files within a .napari folder as defined in this document
   * Actions (what happens when a user clicks on each link, button, etc.) 
     * “Install” button - Details defined in Features: Install “CTA”
 
@@ -56,7 +56,7 @@ The purpose of this document is to provide technical details in order to assist 
 ### Overall site
 Technical requirements:
 * Site traffic: Site should be able to support 200 unique visitors / 1,000 page views per day at the bare minimum
-* Error pages: Show a friendly error page if there is a site error. This should not happen often, 
+* Error pages: Show a friendly error page if there is a site error. This should not happen very often, 
   but in case it does, the user should see a friendly error page.
 * Analytics tracking code: We will use Plausible without the need for cookie banners
 * Deployment: work with CZI Infra’s modules for deployment to ecs cluster, we will ship our front end in a docker container
@@ -67,7 +67,7 @@ Technical requirements:
 #### Global Search Bar
 ##### Technical decision
 Filter on the client-side using a JS indexing library like fuse.js, lunr or minisearch. After research, we decided to use fuse.js.
-Pros: Quick search for medium sized data and provides more complex search capabilities like fuzzy search out of the box.
+Pros: Quick search for medium-sized data and provides more complex search capabilities like fuzzy search out of the box.
 Cons: Requires developer time to get familiar with the libraries and how to implement them. Libraries are fixed in what 
 they can support, but they should be good enough for our needs.
 
@@ -87,7 +87,7 @@ Details on how to customize the plugin listing using this feature can be found o
 
 #### Install “CTA”
 We will provide a call to action which will trigger a means to install a plugin. For the first version, installation 
-may be several steps which include copying and pasting an install command into the napari viewer where future versions 
+may be several steps which include copying and pasting an installation command into the napari viewer where future versions 
 may be a “one click” solution which opens up the napari viewer automatically and starts the installation of the plugin. 
 There are further considerations to explore in the workflow of the user journey and engineering options to explore 
 so this will not be the target for the first version. Implementation on the engineering side should be low for this first version.
@@ -99,7 +99,7 @@ for installation. Modal is subject to the responsive design.
 We will provide users with the ability to filter and sort plugins on the search/browse/list page. Filter and sorting 
 are two different types of features that will be used in conjunction with one another to provide a better discovery 
 experience. Fields to use are defined in [this table](https://github.com/chanzuckerberg/napari-hub/wiki/Customizing-your-plugin's-listing#fields). We will use all items from the “Filterable” and "Sortable" columns. We should keep 
-in mind that filters may be added or removed based on user feedback and we should be able to provide a solution that 
+in mind that filters may be added or removed based on user feedback, and we should be able to provide a solution that 
 will scale both in design and implementation.
 
 ##### Technical decision
@@ -154,11 +154,11 @@ Use Mailchimp forms and collect data within Mailchimp.
   * Developers should ideally test on as many browsers they can (Chrome, Safari, Firefox are Edge if 
     developer has a Windows computer)
     * BrowserStack is a possible solution for testing multiple browsers
-  * Would be nice to setup E2E tests for multiple browsers
+  * Would be nice to set up E2E tests for multiple browsers
     * Playwright has experimental support
     * It’s possible to test Edge since it’s a webkit browser
 * Lighthouse Tests (Extra)
-  * Need to setup a GitHub workflow to run Lighthouse CI for every PR
+  * Need to set up a GitHub workflow to run Lighthouse CI for every PR
   * This will help reduce regressions in accessibility, performance, and SEO
   * Highlight improvements in aforementioned areas
 
@@ -177,7 +177,7 @@ First version of the site was released on production on June 30, 2021. Subsequen
 Decision: We will use napari-hub.org with naparihub.org redirecting to napari-hub.org
 
 #### Hosting strategy
-* We will use CZI hosted AWS since it will allow us more flexibility, is more future proof than Github pages and we 
+* We will use CZI hosted AWS since it will allow us more flexibility, is more future proof than GitHub pages, and we 
   have a budget for services. We can take advantage of AWS services like Lambda and load balancing.
 * We will work with CZI Infra Team to understand the components they have available for use. Terraform will be used. 
   Option to open source the Terraform files after release is still an open question on how best to do this.
@@ -192,7 +192,7 @@ Decision: We will use napari-hub.org with naparihub.org redirecting to napari-hu
 Deploy AWS lambda (to avoid machine level maintenance) to support API where we parse pypi result with a frequency 
 of 5min (configurable, fine tune later between 1min to 1 hour), and cache to aws s3. We will use the public google 
 bigquery dataset as a backup data source when the main query fails (this should also trigger an alert to our team 
-channel to indicate that the lambdas have switched to the backup approach, eng team is responsible to react to such 
+channel) to indicate that the lambdas have switched to the backup approach, eng team is responsible to react to such 
 alerts and make adjustment (be it pypi outage or pypi website structure change to address the failure and bring the
 parsing back online). The API to be built should return a list of plugin names, in the format of 
 “[“plugin_1”, “plugin_2]”, where each individual plugin name can then be used to query pypi API.
@@ -214,11 +214,11 @@ We decided to use AWS which we will use services like Lambda, S3 and API Gateway
 After building some proof of concepts and testing, we decided to use React + Next.js and TailwindCSS.
 
 ## Publishing of plugins
-* To be transparent and not require an approval process as well as share the responsibility to flagging bad plugins, we will publish activity to the hub-updates stream on the [napari Zulip](https://napari.zulipchat.com). Activity will be published for brand new plugins, new versions of plugins as well as plugin removals.
+* To be transparent and not require an approval process as well as share the responsibility to flagging bad plugins, we will publish activity to the hub-updates stream on the [napari Zulip](https://napari.zulipchat.com). Activity will be published for brand-new plugins, new versions of plugins as well as plugin removals.
 
 ## Further Considerations
 * Since the first version will be very minimal, consider future features that may affect the chosen technologies and engineering design.
-  * Even though the first version will support a small number of plugins, we should have a plan in order to scale and 
+  * Even though the first version will support a few plugins, we should have a plan in order to scale and 
     support potentially 1,000s of plugins in future versions.
   * We will use Plausible for analytics for the first version. In future releases, we may need more detailed analytics 
     and should provide this without the use of a cookie banner.
