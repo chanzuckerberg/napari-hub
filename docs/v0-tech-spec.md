@@ -148,7 +148,6 @@ Use Mailchimp forms and collect data within Mailchimp.
   * There should be a GitHub workflow that runs tests for PRs to prevent merging failing tests
 * End-To-End Tests
   * PRs should ideally include E2E tests for things like common actions, high value features, and features that depend on the backend
-* Need to figure out a way to either mock the backend or setup a dev deployment for local E2E testing
 * Can be used to promote staging to production:
   * Staging site can’t be promoted to production unless the E2E tests pass
 * Browser Testing
