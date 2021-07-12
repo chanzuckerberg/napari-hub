@@ -80,7 +80,7 @@ they can support, but they should be good enough for our needs.
   * This will allow users to easily share search results with a copy+paste of the URL
 
 #### napari-specific readme template
-Details on how to customize the plugin listing using this feature is defined in this document
+Details on how to customize the plugin listing using this feature can be found on the [wiki](https://github.com/chanzuckerberg/napari-hub/wiki/Customizing-your-plugin's-listing).
 Original issue created for feedback: https://github.com/chanzuckerberg/napari-hub/issues/10
 
 #### Manual input of plugin contributor name(s) and description
