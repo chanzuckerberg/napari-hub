@@ -25,7 +25,7 @@ The purpose of this document is to provide technical details in order to assist 
     * Sort [dropdown/radio buttons] - Fields to sort are defined in [this table](https://github.com/chanzuckerberg/napari-hub/wiki/Customizing-your-plugin's-listing#fields). We will use all items from the “Sortable” 
       column. More details for this feature defined under Features: Filter/Sort
   * Plugin list data to display
-    * Fields and info specification on Github. We will use all items from the “List view” column
+    * Fields to display are defined in [this table](https://github.com/chanzuckerberg/napari-hub/wiki/Customizing-your-plugin's-listing#fields). We will use all items from the “List view” column
     * Link to details page
     * We will add an “exclude” list for plugins to exclude from the list. The exclusions will be stored in a file and plugin data returned will not include those excluded plugins.
   * Actions (what happens when a user clicks on each link, button, etc.) 
