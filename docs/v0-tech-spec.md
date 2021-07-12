@@ -231,7 +231,8 @@ information to support this decision can be found in this document:Next.js vs Sv
     framework, we decided to integrate it into our implementation. Research from the spike can be found in this 
     document Material UI Integration
 * User support
-* Who is responsible for the maintenance of this site?
+For feature requests, please file [a new discussion under the ideas category](https://github.com/chanzuckerberg/napari-hub/discussions/categories/ideas).
+For bug reports, please file [a new issue](https://github.com/chanzuckerberg/napari-hub/issues).
  
  
 
