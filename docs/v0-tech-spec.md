@@ -175,7 +175,6 @@ First version of the site was released on production on June 30, 2021. Subsequen
 
 #### Domain name
 Decision: We will use napari-hub.org with naparihub.org redirecting to napari-hub.org
-Need to work with infra team to purchase domain or use subdomain subpage of napari.org. 
 
 #### Hosting strategy
 * We will use CZI hosted AWS since it will allow us more flexibility, is more future proof than Github pages and we 
