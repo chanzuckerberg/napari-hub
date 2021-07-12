@@ -20,7 +20,7 @@ The purpose of this document is to provide technical details in order to assist 
   * Search form fields:
     * Global search [input/textbox] - Spreadsheet with fields and info defined. We will use all items from the “Search” 
       column. More details for this feature defined under Features: Global Search Bar.
-    * Filter [checkboxes] - Spreadsheet with fields and info defined. We will use all items from the “Filter” column. 
+    * Filter [checkboxes] - Fields to filter are defined in [this table](https://github.com/chanzuckerberg/napari-hub/wiki/Customizing-your-plugin's-listing#fields). We will use all items from the “Filterable” column. 
       More details for this feature defined under Features: Filter/Sort
     * Sort [dropdown/radio buttons] - Spreadsheet with fields and info defined. We will use all items from the “Sort” 
       column. More details for this feature defined under Features: Filter/Sort
