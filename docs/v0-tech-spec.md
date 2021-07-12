@@ -195,7 +195,7 @@ bigquery dataset as a backup data source when the main query fails (this should 
 channel to indicate that the lambdas have switched to the backup approach, eng team is responsible to react to such 
 alerts and make adjustment (be it pypi outage or pypi website structure change to address the failure and bring the
 parsing back online). The API to be built should return a list of plugin names, in the format of 
-“[“plugin_1”, “plugin_2]”, where each individual plugin name can then be used to query qypi api
+“[“plugin_1”, “plugin_2]”, where each individual plugin name can then be used to query pypi API.
  
 ##### endpoints
 * /plugins
