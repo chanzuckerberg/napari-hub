@@ -98,7 +98,7 @@ for installation. Modal is subject to the responsive design.
 #### Filter/Sort
 We will provide users with the ability to filter and sort plugins on the search/browse/list page. Filter and sorting 
 are two different types of features that will be used in conjunction with one another to provide a better discovery 
-experience. Spreadsheet with fields and info defined. We will use all items from the “Filter” column. We should keep 
+experience. Fields to use are defined in [this table](https://github.com/chanzuckerberg/napari-hub/wiki/Customizing-your-plugin's-listing#fields). We will use all items from the “Filterable” and "Sortable" columns. We should keep 
 in mind that filters may be added or removed based on user feedback and we should be able to provide a solution that 
 will scale both in design and implementation.
 
