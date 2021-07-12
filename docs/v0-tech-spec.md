@@ -61,7 +61,7 @@ Technical requirements:
 * Analytics tracking code: We will use Plausible without the need for cookie banners
 * Deployment: work with CZI Infra’s modules for deployment to ecs cluster, we will ship our front end in a docker container
 * SEO: For v0, we should give minimal attention to SEO best practices. e.g. the title should include the plugin name. 
-  Each plugin should get a unique URL that includes the plugin name. plugin. the site should be readable by Google and Bing.
+  Each plugin should get a unique URL that includes the plugin name. The site should be readable by Google and Bing.
 
 ### Features
 #### Global Search Bar
