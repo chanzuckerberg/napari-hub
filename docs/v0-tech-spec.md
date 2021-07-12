@@ -39,7 +39,7 @@ The purpose of this document is to provide technical details in order to assist 
   * Page should be built as a reusable template and only data will change dynamically.
   * Page should load in a reasonable amount of time.
   * Plugin data to display from Pypi JSON API or Github:
-  * Fields and info specification on Github. We will use all items from the “Full view” column
+  * Fields to display are defined in [this table](https://github.com/chanzuckerberg/napari-hub/wiki/Customizing-your-plugin's-listing#fields)v. We will use all items from the “Full view” column.
   * Flags for engineering:
     * Description - will need to be parsed from markdown format or possible other formats like plain text or rst. 
       For v0, we will support markdown and plain text formats only. 
