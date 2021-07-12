@@ -133,7 +133,7 @@ Use Mailchimp forms and collect data within Mailchimp.
 ##### Technical requirements
 * Form fields: Email address
 * Form validation: Required field error, email address validation
-* Email notification goes to admin when user signs up. Similar to napari.dev
+* Email notification goes to admin when user signs up and subscriber gets added to list in Mailchimp.
 
 ### Test Plan
 #### Frontend Testing
