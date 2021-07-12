@@ -151,7 +151,7 @@ Use Mailchimp forms and collect data within Mailchimp.
 * Can be used to promote staging to production:
   * Staging site can’t be promoted to production unless the E2E tests pass
 * Browser Testing
-  * Developers should ideally test on as many browsers they can (Chrome, Safari, and Firefox are probably fine. Edge if 
+  * Developers should ideally test on as many browsers they can (Chrome, Safari, Firefox are Edge if 
     developer has a Windows computer)
     * BrowserStack is a possible solution for testing multiple browsers
   * Would be nice to setup E2E tests for multiple browsers
