@@ -66,7 +66,7 @@ Technical requirements:
 ### Features
 #### Global Search Bar
 ##### Technical decision
-Filter on the client-side using a JS indexing library like fuse.js, lunr or minisearch.
+Filter on the client-side using a JS indexing library like fuse.js, lunr or minisearch. After research, we decided to use fuse.js.
 Pros: Quick search for medium sized data and provides more complex search capabilities like fuzzy search out of the box.
 Cons: Requires developer time to get familiar with the libraries and how to implement them. Libraries are fixed in what 
 they can support, but they should be good enough for our needs.
