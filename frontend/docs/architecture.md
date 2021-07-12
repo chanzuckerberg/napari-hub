@@ -53,19 +53,18 @@ const UI = f(S)
 `S` represents the current state of the application, `UI` is a description of
 the what UI we want to render in the browser, and `f` is a function that returns
 a description of what the UI should look like. That function is known as a
-[component](https://reactjs.org/docs/components-and-props.html).
+**component**.
 
 ### Composition
 
 > You can skip this section if you're familiar with [React](https://reactjs.org/).
 
 Using [composition](https://reactjs.org/docs/composition-vs-inheritance.html),
-it's possible to build entire applications as a single function. With this
-model, we've built the napari hub as a composition of functional components,
-making it easier to modularize and reuse code.
-
-To better visualize the concept, you can think of the [landing page for napari
-hub](https://www.napari-hub.org/) as the composition of multiple components:
+it's possible to build entire applications as a single function. Since
+components are functions, we can build entire UIs as large components composing
+smaller components. To better visualize the concept, you can think of the
+[landing page for napari hub](https://www.napari-hub.org/) as the composition of
+multiple components:
 
 ```ts
 const landingPage = LandingPage(
