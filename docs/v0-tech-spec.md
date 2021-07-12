@@ -168,7 +168,7 @@ Use Mailchimp forms and collect data within Mailchimp.
 * API Load testing 
   * Confirm traffic we can handle in the current setup
 * Health test
-  * Setup health check for the http server
+  * Health check for the http server
 
 ### Release Plan
 First version of the site will be released on production by June 30, 2021.
