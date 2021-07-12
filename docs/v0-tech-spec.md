@@ -193,7 +193,7 @@ Deploy AWS lambda (to avoid machine level maintenance) to support API where we p
 of 5min (configurable, fine tune later between 1min to 1 hour), and cache to aws s3. We will use the public google 
 bigquery dataset as a backup data source when the main query fails (this should also trigger an alert to our team 
 channel to indicate that the lambdas have switched to the backup approach, eng team is responsible to react to such 
-alerts and make adjustment (be it pypi outage or pypi website structure change  to address the failure and bring the
+alerts and make adjustment (be it pypi outage or pypi website structure change to address the failure and bring the
 parsing back online). The API to be built should return a list of plugin names, in the format of 
 “[“plugin_1”, “plugin_2]”, where each individual plugin name can then be used to query qypi api
  
