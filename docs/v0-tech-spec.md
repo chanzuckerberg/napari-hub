@@ -51,7 +51,6 @@ The purpose of this document is to provide technical details in order to assist 
 * About 
 * Contact 
 * Privacy Policy 
-* Terms of Service
 * Help
 
 ### Overall site
