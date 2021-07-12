@@ -81,7 +81,6 @@ they can support, but they should be good enough for our needs.
 
 #### napari-specific readme template
 Details on how to customize the plugin listing using this feature can be found on the [wiki](https://github.com/chanzuckerberg/napari-hub/wiki/Customizing-your-plugin's-listing).
-Original issue created for feedback: https://github.com/chanzuckerberg/napari-hub/issues/10
 
 #### Manual input of plugin contributor name(s) and description
 Details on how to customize the plugin listing using this feature is defined in this document
