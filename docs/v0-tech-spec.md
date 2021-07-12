@@ -199,7 +199,7 @@ parsing back online). The API to be built should return a list of plugin names, 
  
 ##### endpoints
 * /plugins
-  * return list of plugin and versions:
+  * return list of plugin and versions
 * /plugins/index
   * return all plugins’ metadata used in main page
 * /plugins/{plugin_name}
