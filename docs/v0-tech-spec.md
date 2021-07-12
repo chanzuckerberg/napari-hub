@@ -211,8 +211,7 @@ parsing back online). The API to be built should return a list of plugin names, 
 We decided to use AWS which we will use services like Lambda, S3 and API Gateway. A software architecture diagram can be found [here](https://lucid.app/lucidchart/1ad7e89e-7265-4a04-b37b-135e7a57432c/view).
  
 #### Overall front-end technology:
-After building some proof of concepts and testing, we decided to use React + Next.js and TailwindCSS. Further 
-information to support this decision can be found in this document:Next.js vs SvelteKit
+After building some proof of concepts and testing, we decided to use React + Next.js and TailwindCSS.
 
 ## Publishing of plugins
 * To be transparent and not require an approval process as well as share the responsibility to flagging bad plugins, we will publish activity to the hub-updates stream on the [napari Zulip](https://napari.zulipchat.com). Activity will be published for brand new plugins, new versions of plugins as well as plugin removals.
@@ -226,10 +225,6 @@ information to support this decision can be found in this document:Next.js vs Sv
 * Impact on other teams/projects
   * Depending on our solution to getting the plugin list data, this could be something that the napari desktop 
     application could use as well. This may help to keep consistent.
-  * After starting the implementation, we learned that there is a CZI Science effort to create a unified design system 
-    based on Material UI. After doing a spike to figure out how much effort and the value we would get from using this 
-    framework, we decided to integrate it into our implementation. Research from the spike can be found in this 
-    document Material UI Integration
 * User support
 For feature requests, please file [a new discussion under the ideas category](https://github.com/chanzuckerberg/napari-hub/discussions/categories/ideas).
 For bug reports, please file [a new issue](https://github.com/chanzuckerberg/napari-hub/issues).
@@ -245,26 +240,3 @@ For bug reports, please file [a new issue](https://github.com/chanzuckerberg/nap
 ### Future work
 * First version will be minimal
 * We will iteratively add new features and get feedback from users in a continuous cycle of future releases
- 
-## Questions
-* Do we expect the site to still function if Pypi is down? How should we handle this if we don’t cache the data on our side? 
-  * For v0, it’s ok for the site to go down if Pypi goes down
-* What amount of time is appropriate before a plugin’s meta data gets updated on the site
-  * Do not have a number but the scale would be within range of minutes level (eg. 1min, 5min, etc) we can fine tune 
-    the number to specifics later through configuration, but the design would be accommodating towards this range.
-  * We can achieve up to hourly delay when building backend around google bigquery, and could improve to arbitrarily 
-    close when we are parsing their html, technically I would recommend the approach of using bigquery if the product 
-    requirement is tolerance up to an hour, and cache result from API when below 1 hour
-* During the Trust XFN meeting, it was emphasized that we should have some moderation built in to monitor the plugins 
-  which are published (and updated?). We need to determine what kind of mechanism to put in place in order to satisfy this requirement.
-  * Since the napari community wants to support a very open environment, they would not support a system in place 
-    which requires approval before plugins are published. One compromise that we can probably make is to provide a 
-    process to openly monitor plugin publishing activity and post it to a group/community through a tool like Zulip so 
-    that it is everyone's responsibility to flag a bad plugin and there is a process in place that allows for the 
-    removal of the plugin from showing up on the napari hub. 
-  * Decision:
-    * We will add an “exclude” list for plugins to exclude from the hub search results. The exclusions will be stored 
-      in a file and plugin data returned will not include those excluded plugins.
-    * To be transparent and not require an approval process as well as share the responsibility to flagging bad 
-      plugins, we will publish activity to a stream with topics on Zulip. Activity will be published for brand new 
-      plugins, new versions of plugins as well as if a plugin is removed.
