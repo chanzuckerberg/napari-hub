@@ -18,7 +18,7 @@ The purpose of this document is to provide technical details in order to assist 
   * Search/list functionality should be able to support low 100s of plugins for the first version. 
   * Search inputs should have form validation.
   * Search form fields:
-    * Global search [input/textbox] - Spreadsheet with fields and info defined. We will use all items from the “Search” 
+    * Search [input/textbox] - Fields to search are defined in [this table](https://github.com/chanzuckerberg/napari-hub/wiki/Customizing-your-plugin's-listing#fields). We will use all items from the “Searched” 
       column. More details for this feature defined under Features: Global Search Bar.
     * Filter [checkboxes] - Fields to filter are defined in [this table](https://github.com/chanzuckerberg/napari-hub/wiki/Customizing-your-plugin's-listing#fields). We will use all items from the “Filterable” column. 
       More details for this feature defined under Features: Filter/Sort
