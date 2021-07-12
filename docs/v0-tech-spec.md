@@ -72,7 +72,16 @@ Cons: Requires developer time to get familiar with the libraries and how to impl
 they can support, but they should be good enough for our needs.
 
 ##### Technical requirements
-* TBD Specifications on ordering, fuzzy search, etc. will be determined once Jeremy researches options in Solution #3.
+
+* Search is powered by [Fuse.js](https://fusejs.io/), a client-side fuzzy search engine.
+  * [Options](https://fusejs.io/api/options.html) are configured in [engines.ts](../frontend/src/context/search/engines.ts#L23-L68). Fuzziness is primarily controlled by the `threshold` option. 
+  * Whenever the user loads the search page, the plugin list is fetched from the backend and used to index the search engine in the browser.
+  * Results are ordered based on their [Fuse.js score](https://fusejs.io/concepts/scoring-theory.html), which is computed using a modified version of the [Bitap](https://en.wikipedia.org/wiki/Bitap_algorithm) algorithm.
+  * The following plugin [metadata](./customizing-plugin-listing.md) is used for the index. The number represents its [weight](https://fusejs.io/examples.html#weighted-search) used for scoring:
+    * Name (8)
+    * Summary (4)
+    * Author Name (2)
+    * Description (1)
 * The search/filter/sort query should be encoded in the URL. User should be able to navigate  to another page such as 
   the details page and when returning to the page with filters, the page should remember the filters and sort and load that state. 
   * This will enable linking to specific search results from elsewhere on the site (e.g. link to all plugins with a 
