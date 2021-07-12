@@ -185,7 +185,8 @@ Decision: We will use napari-hub.org with naparihub.org redirecting to napari-hu
 #### Staging site
 * We should have a separate staging site for testing
 * We will likely put up a coming soon page on the production site until release
-Solutions
+
+### Solutions
  
 #### API
 Deploy AWS lambda (to avoid machine level maintenance) to support API where we parse pypi result with a frequency 
