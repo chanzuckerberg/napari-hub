@@ -12,7 +12,7 @@ The purpose of this document is to provide technical details in order to assist 
 
 #### Search/List/Browse view
 * Ability for users to search for a plugin by words (i.e. global search bar with plugins as results)
-* Ability to browse existing plugins organized by type(s)
+* Ability to browse existing plugins with additional filter and sort functionality
 * Technical requirements:
   * Page and plugin data should load in a reasonable amount of time.
   * Search/list functionality should be able to support 100s of plugins (closer to the lower end)  for the first version. 
