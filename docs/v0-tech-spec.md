@@ -128,7 +128,7 @@ filter/sort functionality after v0 as we grow our plugins to use an indexing ser
 We will collect user data via a subscription form with the purpose of sending out future updates to subscribers.
 
 ##### Technical decision
-Use mail chimp forms and collect data within Mail chimp.
+Use Mailchimp forms and collect data within Mailchimp.
 
 ##### Technical requirements
 * Form fields: Email address
