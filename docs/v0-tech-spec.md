@@ -208,7 +208,7 @@ parsing back online). The API to be built should return a list of plugin names, 
   * return metadata for a specific version of plugin
 
 #### Overall back-end technology:
-We decided to use AWS which we will use services like Lambda, S3 and API Gateway.
+We decided to use AWS which we will use services like Lambda, S3 and API Gateway. A software architecture diagram can be found [here](https://lucid.app/lucidchart/1ad7e89e-7265-4a04-b37b-135e7a57432c/view).
  
 #### Overall front-end technology:
 After building some proof of concepts and testing, we decided to use React + Next.js and TailwindCSS. Further 
