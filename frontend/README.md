@@ -58,7 +58,7 @@ yarn install
 
 #### GitHub Token
 
-The frontend authenticates as a GitHub OAuth app to allow a increase the API rate limit. For development, you'll need to create an OAuth app on your personal account:
+The frontend authenticates as a GitHub OAuth app to allow an increase of the API rate limit. For development, you'll need to create an OAuth app on your personal account:
 
 1. [Create a new OAuth app](https://github.com/settings/applications/new)
    - a) **Application name**: Can be whatever you want (example: `napari hub dev`)
