@@ -51,7 +51,7 @@ jobs:
             ./scripts/happy --profile="" create $DEV_NAME
           fi
       - name: Delete dev
-        if: ${{ github.event_name == 'delete' }}
+        if: ${{ github.event_name == 'delete' && startsWith(github.event.ref, 'dev-') }}
         env:
           TFE_TOKEN: ${{ secrets.TFE_TOKEN }}
         run: |
