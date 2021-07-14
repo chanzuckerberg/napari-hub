@@ -55,17 +55,17 @@ export function usePageTransitions() {
     scrollYRef.current = window.scrollY;
   }, []);
 
-  function addScrollHandler() {
-    scrollYRef.current = 0;
-    shouldScrollRef.current = true;
-    document.addEventListener('scroll', loadingScrollHandler);
-  }
-
-  function removeScrollHandler() {
-    document.removeEventListener('scroll', loadingScrollHandler);
-  }
-
   useEffect(() => {
+    function addScrollHandler() {
+      scrollYRef.current = 0;
+      shouldScrollRef.current = true;
+      document.addEventListener('scroll', loadingScrollHandler);
+    }
+
+    function removeScrollHandler() {
+      document.removeEventListener('scroll', loadingScrollHandler);
+    }
+
     function onLoading(url: string, { shallow }: RouteEvent) {
       if (shallow) return;
 
