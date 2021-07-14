@@ -155,7 +155,7 @@ export function usePageTransitions() {
       router.events.off('routeChangeComplete', onFinishLoading);
       router.events.off('routeChangeError', onError);
     };
-  }, [addScrollHandler, removeScrollHandler, router]);
+  }, [loadingScrollHandler, router]);
 
   return { loading, nextUrl };
 }
