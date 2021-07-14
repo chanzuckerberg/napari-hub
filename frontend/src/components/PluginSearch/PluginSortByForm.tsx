@@ -9,7 +9,7 @@ import clsx from 'clsx';
 import { motion } from 'framer-motion';
 
 import { Accordion } from '@/components/common';
-import { MediaFragment } from '@/components/common/media';
+import { Media, MediaFragment } from '@/components/common/media';
 import { SearchSortType, useSearchState } from '@/context/search';
 
 const DEFAULT_SORT_BY_RADIO_ORDER: SearchSortType[] = [
@@ -102,11 +102,11 @@ export function PluginSortByForm() {
 
   return (
     <>
-      <MediaFragment lessThan="screen-875">
+      <Media lessThan="screen-875">
         <Accordion title="Sort By">{form}</Accordion>
-      </MediaFragment>
+      </Media>
 
-      <MediaFragment greaterThanOrEqual="screen-875">{form}</MediaFragment>
+      <Media greaterThanOrEqual="screen-875">{form}</Media>
     </>
   );
 }

@@ -6,7 +6,6 @@ import Document, {
   Main,
   NextScript,
 } from 'next/document';
-import { Children } from 'react';
 
 import { mediaStyles } from '@/components/common/media';
 import { theme } from '@/theme';
@@ -27,11 +26,12 @@ export default class HubDocument extends Document {
 
     return {
       ...initialProps,
-      // Styles fragment is rendered after the app and page rendering finish.
-      styles: [
-        ...Children.toArray(initialProps.styles),
-        sheets.getStyleElement(),
-      ],
+
+      // Add Material UI SSR stylesheet in `head` so that they load before
+      // application styles. This ensures any application styles overriding
+      // Material UI gets correctly applied. This prevents the style flashing
+      // from Material UI base styles to overridden styles
+      head: [<>{initialProps.head}</>, sheets.getStyleElement()],
     };
   }
 
