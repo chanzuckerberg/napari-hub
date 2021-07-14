@@ -1,0 +1,35 @@
+/**
+ * Self-host fonts so that we can improve performance:
+ *
+ * 1. Fonts can be cached by our CDN.
+ * 2. We can use resource hints to preload fonts and avoid FOUT.
+ *
+ * https://sia.codes/posts/making-google-fonts-faster
+*/
+
+$fonts: (
+  regular: (
+    weight: 400,
+    name: 'regular',
+  ),
+  semiBold: (
+    weight: 600,
+    name: '600',
+  ),
+  bold: (
+    weight: 700,
+    name: '700',
+  ),
+);
+
+/* stylelint-disable-next-line at-rule-no-unknown */
+@each $name, $font in $fonts {
+  $url: '/fonts/barlow-v5-latin-#{map-get($font, "name")}.woff2';
+
+  @font-face {
+    font-family: 'Barlow';
+    font-style: normal;
+    font-weight: map-get($font, 'weight');
+    src: url($url) format('woff2');
+  }
+}
