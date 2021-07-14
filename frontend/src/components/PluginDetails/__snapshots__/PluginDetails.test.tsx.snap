@@ -258,7 +258,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
       class="fresnel-container fresnel-lessThan-3xl flex flex-col lg:flex-row lg:items-center my-6 screen-495:mt-12 screen-600:mb-12"
     >
       <button
-        class="fresnel-lessThan-2xl bg-napari-primary h-12 w-full lg:max-w-napari-col"
+        class="fresnel-lessThan-2xl bg-napari-primary h-12 w-full screen-600:max-w-napari-col"
         type="button"
       >
         Install
@@ -274,7 +274,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
       class="fresnel-container fresnel-greaterThanOrEqual-xl "
     >
       <ul
-        class="text-black bg-gray-100 p-5 mb-6 md:mb-12 list-none grid grid-cols-3"
+        class="text-black bg-gray-100 p-5 mb-6 screen-495:mb-12 list-none grid grid-cols-3"
       >
         <li
           class="mb-4 text-sm"
@@ -562,7 +562,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
       class="fresnel-container fresnel-lessThan-xl "
     >
       <ul
-        class="text-black bg-gray-100 p-5 mb-6 md:mb-12 list-none"
+        class="text-black bg-gray-100 p-5 mb-6 screen-495:mb-12 list-none"
       >
         <li
           class="mb-4 text-sm"
@@ -1251,12 +1251,16 @@ the coverage at least stays the same before you submit a pull request.
          along with a detailed description.
       </p>
     </div>
-    <button
-      class="mb-6 md:mb-12 2xl:mb-20 bg-napari-primary h-12 w-full lg:max-w-napari-col"
-      type="button"
+    <div
+      class="mb-6 screen-495:mb-12 screen-1150:mb-20"
     >
-      Install
-    </button>
+      <button
+        class="bg-napari-primary h-12 w-full screen-600:max-w-napari-col"
+        type="button"
+      >
+        Install
+      </button>
+    </div>
     <div
       class="fresnel-lessThan-3xl fresnel-lessThan-3xl grid xl:grid-cols-3 3xl:grid-cols-1"
       id="pluginMetadata"
@@ -1497,7 +1501,7 @@ the coverage at least stays the same before you submit a pull request.
       class="sticky top-12"
     >
       <button
-        class="bg-napari-primary h-12 w-full lg:max-w-napari-col"
+        class="bg-napari-primary h-12 w-full screen-600:max-w-napari-col"
         type="button"
       >
         Install

@@ -5,6 +5,7 @@ import { ReactNode } from 'react';
 import { hubAPI, spdxLicenseDataAPI } from '@/axios';
 import { ErrorMessage } from '@/components/common';
 import { PluginSearch } from '@/components/PluginSearch';
+import { useLoadingState } from '@/context/loading';
 import { PluginSearchProvider } from '@/context/search';
 import {
   SpdxLicenseData,
@@ -81,6 +82,8 @@ export async function getServerSideProps() {
 }
 
 export default function Home({ error, index, licenses }: Props) {
+  const isLoading = useLoadingState();
+
   return (
     <>
       <Head>
@@ -94,9 +97,18 @@ export default function Home({ error, index, licenses }: Props) {
         licenses && (
           <URLParameterStateProvider>
             <SpdxLicenseProvider licenses={licenses}>
-              <PluginSearchProvider pluginIndex={index}>
+              {/*
+                Don't render PluginSearchProvider while loading. For some
+                reason, rendering while loading leads to a bug that freezes the
+                entire UI.
+              */}
+              {isLoading ? (
                 <PluginSearch />
-              </PluginSearchProvider>
+              ) : (
+                <PluginSearchProvider pluginIndex={index}>
+                  <PluginSearch />
+                </PluginSearchProvider>
+              )}
             </SpdxLicenseProvider>
           </URLParameterStateProvider>
         )

@@ -1,8 +1,7 @@
 import { useEffect, useRef } from 'react';
 
 import { SearchBar } from '@/components';
-import { ColumnLayout } from '@/components/common';
-import { useSearchState } from '@/context/search';
+import { ColumnLayout, SkeletonLoader } from '@/components/common';
 
 /**
  * Component that renders the landing page search bar.
@@ -36,7 +35,12 @@ export function PluginSearchBar() {
           Search for a plugin by keyword or author
         </h2>
 
-        <SearchBar aria-describedby="plugin-search-title" large />
+        <SkeletonLoader
+          className="h-7"
+          render={() => (
+            <SearchBar aria-describedby="plugin-search-title" large />
+          )}
+        />
       </div>
     </ColumnLayout>
   );
