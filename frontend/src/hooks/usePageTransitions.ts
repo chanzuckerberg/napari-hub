@@ -43,7 +43,9 @@ export function usePageTransitions() {
   // last scroll point.
   const shouldScrollRef = useRef(true);
 
-  // Memoized scroll handler used for updating the scroll refs while the page is loading.
+  // Memoized scroll handler used for updating the scroll refs while the page is
+  // loading. The callback needs to be memoized because `removeEventListener()`
+  // compares functions by reference.
   const loadingScrollHandler = useCallback(() => {
     if (!initialLoadRef.current) {
       shouldScrollRef.current = false;
@@ -52,6 +54,16 @@ export function usePageTransitions() {
     initialLoadRef.current = false;
     scrollYRef.current = window.scrollY;
   }, []);
+
+  function addScrollHandler() {
+    scrollYRef.current = 0;
+    shouldScrollRef.current = true;
+    document.addEventListener('scroll', loadingScrollHandler);
+  }
+
+  function removeScrollHandler() {
+    document.removeEventListener('scroll', loadingScrollHandler);
+  }
 
   useEffect(() => {
     function onLoading(url: string, { shallow }: RouteEvent) {
@@ -85,18 +97,16 @@ export function usePageTransitions() {
           const distanceFromTop = getSearchBarDistanceFromTop();
           window.scroll(0, Math.min(scrollY, distanceFromTop));
 
-          // Schedule scroll handler registration as separate task so that above
+          // Schedule scroll handler registration for next frame so that above
           // scroll doesn't trigger a scroll event.
-          setTimeout(() => {
-            shouldScrollRef.current = true;
-            document.addEventListener('scroll', loadingScrollHandler);
-          });
+          requestAnimationFrame(addScrollHandler);
         });
       } else if (isPluginPage(url)) {
         // Scroll to top of the plugin page loader.
         window.scroll(0, 0);
-        shouldScrollRef.current = true;
-        document.addEventListener('scroll', loadingScrollHandler);
+
+        // Schedule as macrotask so above scroll doesn't trigger a scroll event.
+        setTimeout(addScrollHandler);
       }
 
       setNextUrl(url);
@@ -106,25 +116,23 @@ export function usePageTransitions() {
     function onFinishLoading(url: string, { shallow }: RouteEvent) {
       if (shallow) return;
 
-      if (isSearchPage(url)) {
-        const scrollY = getSearchScrollY();
+      removeScrollHandler();
 
-        if (window.scrollY !== scrollY && shouldScrollRef.current) {
-          // Schedule scroll on macrotask queue for execution later. This is
-          // required because at runtime, the DOM hasn't finished loading yet
-          // for the current page.
-          setTimeout(() =>
+      if (isSearchPage(url)) {
+        setTimeout(() => {
+          const scrollY = getSearchScrollY();
+
+          if (window.scrollY !== scrollY && shouldScrollRef.current) {
+            // Schedule scroll on macrotask queue for execution later. This is
+            // required because at runtime, the DOM hasn't finished loading yet
+            // for the current page.
             window.scroll({
               top: scrollY,
               behavior: 'smooth',
-            }),
-          );
-        }
-
-        document.removeEventListener('scroll', loadingScrollHandler);
+            });
+          }
+        });
       } else if (isPluginPage(url)) {
-        document.removeEventListener('scroll', loadingScrollHandler);
-
         // Scroll to current scroll position while plugin page was loading. If
         // the user didn't scroll at all, this will be 0.
         window.scroll(0, scrollYRef.current);
@@ -147,7 +155,7 @@ export function usePageTransitions() {
       router.events.off('routeChangeComplete', onFinishLoading);
       router.events.off('routeChangeError', onError);
     };
-  }, [router, loadingScrollHandler]);
+  }, [addScrollHandler, removeScrollHandler, router]);
 
   return { loading, nextUrl };
 }
