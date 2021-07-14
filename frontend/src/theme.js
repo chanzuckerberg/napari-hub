@@ -3,8 +3,7 @@
  * Tailwind config can import it in a Node.js environment.
  */
 
-const createMuiTheme = require('@material-ui/core/styles/createMuiTheme')
-  .default;
+const createTheme = require('@material-ui/core/styles/createTheme').default;
 
 const colors = {
   primary: '#80d1ff',
@@ -42,7 +41,7 @@ const breakpoints = {
 
 const fontFamily = ['Barlow', 'sans-serif'];
 
-const theme = createMuiTheme({
+const theme = createTheme({
   palette: {
     primary: {
       main: colors.primary,
