@@ -225,7 +225,7 @@ exports[`<PluginSearch /> should match snapshot 1`] = `
             Discover plugins that solve your image analysis challenges
           </li>
           <li>
-            Install into napari with confidence
+            Understand how to install into napari
           </li>
           <li
             class="fresnel-greaterThanOrEqual-screen-725"
