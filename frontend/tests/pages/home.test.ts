@@ -94,7 +94,7 @@ describe('/ (Home page)', () => {
 
   it('should switch to relevance sort type when searching', async () => {
     await page.goto(getSearchURL());
-    await expect(await getSelectedSortByRadio()).toHaveText('Release date');
+    await expect(await getSelectedSortByRadio()).toHaveText('Recently updated');
 
     await submitQuery('video');
     await expect(await getSelectedSortByRadio()).toHaveText('Relevance');
