@@ -8,6 +8,7 @@ import {
   SearchQueryParams,
   useSearchState,
 } from '@/context/search';
+import { setSearchScrollY } from '@/utils';
 
 import styles from './SearchBar.module.scss';
 
@@ -72,6 +73,10 @@ export function SearchBar({ large, ...props }: Props) {
     const isSearchPage = results !== undefined;
 
     if (isSearchPage) {
+      // Reset `scrollY` value so that the browser can scroll to the search
+      // bar after searching.
+      setSearchScrollY(0);
+
       if (searchQuery) {
         setQuery?.(searchQuery);
       } else {
