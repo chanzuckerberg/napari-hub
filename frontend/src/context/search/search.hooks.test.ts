@@ -11,7 +11,7 @@ import {
   SearchQueryParams,
   SearchSortType,
 } from './constants';
-import { useSearch, useSearchSetSortType } from './search.hooks';
+import { useSearch, useSearchEffects } from './search.hooks';
 import { SearchEngine, SearchResult } from './search.types';
 import type { SortForm } from './sort.hooks';
 
@@ -89,7 +89,7 @@ describe('useSearch()', () => {
   });
 });
 
-describe('useSearchSetSortType()', () => {
+describe('useSearchEffects()', () => {
   let form: SortForm;
   const oldLocation = window.location;
 
@@ -111,19 +111,19 @@ describe('useSearchSetSortType()', () => {
   }
 
   it('should set sort type to relevance on intial load', () => {
-    renderHook(() => useSearchSetSortType('video', form));
+    renderHook(() => useSearchEffects('video', form));
     expect(form.setSortType).toHaveBeenCalled();
   });
 
   it('should not set sort type to relevance when user has sort type on initial load', () => {
     mockSortType(SearchSortType.PluginName);
-    renderHook(() => useSearchSetSortType('video', form));
+    renderHook(() => useSearchEffects('video', form));
     expect(form.setSortType).not.toHaveBeenCalled();
   });
 
   it('should set sort type to relevance when user enters query', () => {
     let query = '';
-    const { rerender } = renderHook(() => useSearchSetSortType(query, form));
+    const { rerender } = renderHook(() => useSearchEffects(query, form));
     expect(form.setSortType).not.toHaveBeenCalled();
 
     query = 'video';
@@ -133,7 +133,7 @@ describe('useSearchSetSortType()', () => {
 
   it('should set sort type to default when user clears query and sort type is relevance', () => {
     let query = 'video';
-    const { rerender } = renderHook(() => useSearchSetSortType(query, form));
+    const { rerender } = renderHook(() => useSearchEffects(query, form));
 
     query = '';
     rerender();
@@ -143,7 +143,7 @@ describe('useSearchSetSortType()', () => {
   it('should maintain sort type when user clears query and sort type is not relevance', () => {
     mockSortType(SearchSortType.PluginName);
     let query = 'video';
-    const { rerender } = renderHook(() => useSearchSetSortType(query, form));
+    const { rerender } = renderHook(() => useSearchEffects(query, form));
 
     query = '';
     rerender();

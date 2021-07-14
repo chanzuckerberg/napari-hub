@@ -4,6 +4,7 @@ import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 
 import { useActiveURLParameter, usePlausible } from '@/hooks';
 import { PluginIndexData } from '@/types';
+import { getSearchScrollY, scrollToSearchBar } from '@/utils';
 import { Logger } from '@/utils/logger';
 import { measureExecution } from '@/utils/performance';
 
@@ -160,10 +161,7 @@ function getSortParameter() {
  * @param query The query string
  * @param form The sort form
  */
-export function useSearchSetSortType(
-  query: string | undefined,
-  form: SortForm,
-) {
+export function useSearchEffects(query: string | undefined, form: SortForm) {
   // Ref used to determine if user is searching or not. This ref is `true` when
   // `query` is a non-empty string, and `false` when `query` is an empty string.
   // This is used to reduce calls to `form.setSortType()` when the `form` object changes.
@@ -180,6 +178,15 @@ export function useSearchSetSortType(
       // already set using some other value.
       if (!initialLoadRef.current || !getSortParameter()) {
         form.setSortType(SearchSortType.Relevance);
+      }
+
+      const scrollY = getSearchScrollY();
+      // The value is `0` on initial load and when the user submits a search query.
+      if (scrollY === 0) {
+        scrollToSearchBar({
+          // Smooth scroll to search bar when user submits a search query.
+          behavior: initialLoadRef.current ? 'auto' : 'smooth',
+        });
       }
 
       isSearchingRef.current = true;
