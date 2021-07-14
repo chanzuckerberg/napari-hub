@@ -97,7 +97,7 @@ module backend_lambda {
     "BUCKET_PATH" = ""
     "GOOGLE_APPLICATION_CREDENTIALS" = "./credentials.json"
     "SLACK_URL" = local.slack_url
-    "ZULIP_CREDENTIALS" = local.zulip_credentials
+    "ZULIP_CREDENTIALS  " = local.zulip_credentials
     "GITHUB_CLIENT_ID" = local.github_client_id
     "GITHUB_CLIENT_SECRET" = local.github_client_secret
   }
@@ -210,6 +210,7 @@ resource aws_acm_certificate_validation cert {
 }
 
 resource aws_lb_listener_certificate cert {
+  depends_on      = [aws_acm_certificate_validation.cert]
   listener_arn    = local.frontend_listener_arn
   certificate_arn = aws_acm_certificate.cert.arn
 }
