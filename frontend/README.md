@@ -1,7 +1,18 @@
-# Client
+# napari hub frontend
 
-napari hub website implemented with Next.js and TypeScript! We use a lot of
-cool frontend tech for the website:
+## Table of Contents
+
+- [Table of Contents](#table-of-contents)
+- [Development Features](#development-features)
+- [Quick Start](#quick-start)
+  - [Setup Node.js](#setup-nodejs)
+  - [Setup Secrets](#setup-secrets)
+    - [GitHub Token](#github-token)
+  - [Start Development Mode](#start-development-mode)
+- [Plop Generators](#plop-generators)
+- [Documentation](#documentation)
+
+## Development Features
 
 - :zap: [React](https://reactjs.org/) + [Next.js](https://nextjs.org/)
 - :crossed_swords: [TypeScript](https://www.typescriptlang.org/)
@@ -14,9 +25,9 @@ cool frontend tech for the website:
 - :mag: [ESlint](https://eslint.org/) + [Stylelint](https://stylelint.io/) for TypeScript and SCSS linting
 - :gear: [Plop](https://plopjs.com/documentation/) for boilerplate automation
 
-## Setup Dev Environment
+## Quick Start
 
-### Node.js
+### Setup Node.js
 
 We use Node.js and various packages on NPM for building napari hub. For
 package management, we use [yarn](https://classic.yarnpkg.com/en/).
@@ -43,21 +54,32 @@ npm -g install yarn
 yarn install
 ```
 
-## Development Mode
+### Setup Secrets
 
-To run the app in development mode, run the following command:
+#### GitHub Token
+
+The frontend authenticates as a GitHub OAuth app to allow an increase of the API rate limit. For development, you'll need to create an OAuth app on your personal account:
+
+1. [Create a new OAuth app](https://github.com/settings/applications/new)
+   - a) **Application name**: Can be whatever you want (example: `napari hub dev`)
+   - b) **Homepage URL**: http://localhost:8080
+   - c) **Application description**: Leave empty
+   - d) **Authorization callback URL**: http://localhost:8080
+1. Copy `.env.example` to `.env`.
+1. Change `GITHUB_CLIENT_ID` to the actual GitHub client ID.
+1. Change `GITHUB_CLIENT_SECERT` to the actual GitHub client secret.
+
+### Start Development Mode
+
+To start the frontend in [development mode](./docs/tooling#development-mode),
+run the following command:
 
 ```sh
 yarn dev
 ```
 
-This will start the Next.js dev server with
-[fast refresh](https://nextjs.org/docs/basic-features/fast-refresh).
-Edit some code and watch it update in the browser without having to refresh
-:heart_eyes:
-
-This will also start a mock server in the background, but it's also possible to
-[connect to an external API](#backend-api).
+Any changes to the code will [fast
+refersh](https://nextjs.org/docs/basic-features/fast-refresh) the browser UI.
 
 ## Plop Generators
 
@@ -77,19 +99,9 @@ argument:
 yarn plop component
 ```
 
-## Backend API
+## Documentation
 
-If you want to connect to an API directly, you'll need to use the `API_URL`
-environment variable to point to the API, and `MOCK_SERVER=false` to disable the
-mock API server.
-
-If you're locally forwarding the API through SSH and if the API checks the host
-header (e.g. AWS API Gateway), you will also need to set `API_URL_HOST` to pass
-the header check:
-
-```sh
-MOCK_SERVER=false \
-API_URL=https://localhost:8081 \
-API_HOST=<api-id>.execute-api.us-west-2.amazonaws.com \
-yarn dev
-```
+- [Architecture](./docs/architecture.md)
+- [Project Structure](./docs/project-structure.md)
+- [Testing](./docs/testing.md)
+- [Tooling](./docs/tooling.md)
