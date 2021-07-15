@@ -240,7 +240,7 @@ def format_plugin(plugin: dict) -> dict:
         "name": get_attribute(plugin, ["info", "name"]),
         "summary": extra_metadata.get('summary', get_attribute(plugin, ["info", "summary"])),
         "description": description,
-        "description_text": description_text,
+        "description_text": extra_metadata.get('description_text', ''),
         "description_content_type": f'{get_attribute(plugin, ["info", "description_content_type"])}',
         "authors": extra_metadata.get('authors', [{'name': get_attribute(plugin, ["info", "author"]),
                                                    'email': get_attribute(plugin, ["info", "author_email"])}]),
