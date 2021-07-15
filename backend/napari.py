@@ -234,7 +234,7 @@ def format_plugin(plugin: dict) -> dict:
         project_urls = extra_metadata.get('project_urls', {})
 
     description = extra_metadata.get('description', f'{get_attribute(plugin, ["info", "description"])}')
-    description_text = render_description(description)
+    extra_metadata['description_text'] = render_description(description)
 
     return {
         "name": get_attribute(plugin, ["info", "name"]),
