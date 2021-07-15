@@ -35,7 +35,7 @@ endpoint_url = os.environ.get('BOTO_ENDPOINT_URL', None)
 plugins_key = 'cache/plugins.json'
 index_key = 'cache/index.json'
 exclusion_list = 'excluded_plugins.json'
-index_subset = {'name', 'summary', 'description', 'description_text', 'description_content_type',
+index_subset = {'name', 'summary', 'description_text', 'description_content_type',
                 'authors', 'license', 'python_version', 'operating_system',
                 'release_date', 'version', 'first_released',
                 'development_status'}
