@@ -32,7 +32,7 @@ export interface PluginData extends PluginIndexData {
   project_site: string;
   release_date: string;
   report_issues: string;
-  requirements: string[];
+  requirements?: string[] | null | '';
   support: string;
   twitter: string;
 }
