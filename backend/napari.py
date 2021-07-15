@@ -210,7 +210,7 @@ def get_download_url(plugin: dict) -> [str, None]:
 def render_description(description: str) -> str:
     if description != '':
         html = markdown(description)
-        soup = BeautifulSoup(html)
+        soup = BeautifulSoup(html, 'html.parser')
         return soup.get_text()
 
     return ''
