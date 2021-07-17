@@ -5,15 +5,28 @@ import React from 'react';
 import { act } from 'react-dom/test-utils';
 
 import pluginIndex from '@/fixtures/index.json';
+import { setSkeletonResultCount } from '@/utils';
 
 import {
   DEFAULT_SORT_TYPE,
   SearchQueryParams,
   SearchSortType,
+  SKELETON_RESULT_COUNT_BUFFER,
 } from './constants';
-import { useSearch, useSearchEffects } from './search.hooks';
+import {
+  useSearch,
+  useSearchEffects,
+  UseSearchEffectsOptions,
+} from './search.hooks';
 import { SearchEngine, SearchResult } from './search.types';
-import type { SortForm } from './sort.hooks';
+
+jest.useFakeTimers();
+
+jest.mock('@/utils/search', () => ({
+  getSearchScrollY: jest.fn(),
+  scrollToSearchBar: jest.fn(),
+  setSkeletonResultCount: jest.fn(),
+}));
 
 jest.mock('next/router', () => ({
   useRouter: jest.fn(),
@@ -90,63 +103,95 @@ describe('useSearch()', () => {
 });
 
 describe('useSearchEffects()', () => {
-  let form: SortForm;
   const oldLocation = window.location;
 
   beforeEach(() => {
-    form = {
-      setSortType: jest.fn(),
-      sortType: SearchSortType.Relevance,
-    };
-
     window.location = oldLocation;
   });
 
-  function mockSortType(sortType: SearchSortType) {
+  function mockSortType(
+    options: UseSearchEffectsOptions,
+    sortType: SearchSortType,
+  ) {
     const url = new URL('http://localhost');
     url.searchParams.set(SearchQueryParams.Sort, sortType);
 
     window.location = { href: url.toString() } as Location;
-    form.sortType = sortType;
+    // eslint-disable-next-line no-param-reassign
+    options.sortForm.sortType = sortType;
+  }
+
+  function getOptions(
+    options: Partial<UseSearchEffectsOptions> = {},
+  ): UseSearchEffectsOptions {
+    return {
+      query: '',
+      results: [],
+      sortForm: {
+        setSortType: jest.fn(),
+        sortType: SearchSortType.Relevance,
+      },
+
+      ...options,
+    };
   }
 
   it('should set sort type to relevance on intial load', () => {
-    renderHook(() => useSearchEffects('video', form));
-    expect(form.setSortType).toHaveBeenCalled();
+    const options = getOptions({ query: 'video' });
+    renderHook(() => useSearchEffects(options));
+    expect(options.sortForm.setSortType).toHaveBeenCalled();
   });
 
   it('should not set sort type to relevance when user has sort type on initial load', () => {
-    mockSortType(SearchSortType.PluginName);
-    renderHook(() => useSearchEffects('video', form));
-    expect(form.setSortType).not.toHaveBeenCalled();
+    const options = getOptions({ query: 'video' });
+    mockSortType(options, SearchSortType.PluginName);
+    renderHook(() => useSearchEffects(options));
+    expect(options.sortForm.setSortType).not.toHaveBeenCalled();
   });
 
   it('should set sort type to relevance when user enters query', () => {
-    let query = '';
-    const { rerender } = renderHook(() => useSearchEffects(query, form));
-    expect(form.setSortType).not.toHaveBeenCalled();
+    const options = getOptions();
+    const { sortForm } = options;
+    const { rerender } = renderHook(() => useSearchEffects(options));
+    expect(sortForm.setSortType).not.toHaveBeenCalled();
 
-    query = 'video';
+    options.query = 'video';
     rerender();
-    expect(form.setSortType).toHaveBeenCalledWith(SearchSortType.Relevance);
+    expect(sortForm.setSortType).toHaveBeenCalledWith(SearchSortType.Relevance);
   });
 
   it('should set sort type to default when user clears query and sort type is relevance', () => {
-    let query = 'video';
-    const { rerender } = renderHook(() => useSearchEffects(query, form));
+    const options = getOptions({ query: 'video' });
+    const { rerender } = renderHook(() => useSearchEffects(options));
 
-    query = '';
+    options.query = '';
     rerender();
-    expect(form.setSortType).toHaveBeenCalledWith(DEFAULT_SORT_TYPE);
+    expect(options.sortForm.setSortType).toHaveBeenCalledWith(
+      DEFAULT_SORT_TYPE,
+    );
   });
 
   it('should maintain sort type when user clears query and sort type is not relevance', () => {
-    mockSortType(SearchSortType.PluginName);
-    let query = 'video';
-    const { rerender } = renderHook(() => useSearchEffects(query, form));
+    const options = getOptions({ query: 'video' });
+    mockSortType(options, SearchSortType.PluginName);
+    const { rerender } = renderHook(() => useSearchEffects(options));
 
-    query = '';
+    options.query = '';
     rerender();
-    expect(form.setSortType).not.toHaveBeenCalled();
+    expect(options.sortForm.setSortType).not.toHaveBeenCalled();
+  });
+
+  it('should set skeleton result count when rendered', () => {
+    const results = pluginIndex.slice(0, 3).map((plugin, index) => ({
+      index,
+      plugin,
+      matches: {},
+    }));
+
+    const options = getOptions({ results });
+    renderHook(() => useSearchEffects(options));
+
+    const expected = results.length + SKELETON_RESULT_COUNT_BUFFER;
+    expect(setSkeletonResultCount).toHaveBeenCalledWith(expected);
   });
 });

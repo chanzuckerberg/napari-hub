@@ -1,4 +1,3 @@
-import { debounce } from 'lodash';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { usePrevious } from 'react-use';
 import { StringParam, useQueryParam, withDefault } from 'use-query-params';
@@ -13,6 +12,7 @@ import {
   DEFAULT_SORT_TYPE,
   SearchQueryParams,
   SearchSortType,
+  SKELETON_RESULT_COUNT_BUFFER,
 } from './constants';
 import { FuseSearchEngine } from './engines';
 import { SearchEngine, SearchResult } from './search.types';
@@ -152,11 +152,7 @@ function getSortParameter() {
   return url.searchParams.get(SearchQueryParams.Sort);
 }
 
-// Debounce `setSkeletonResultCount()` because there may be multiple state
-// re-renders in quick succession where `result.length` doesn't change.
-const debouncedSetSkeletonResultCount = debounce(setSkeletonResultCount, 300);
-
-interface UseSearchEffectsOptions {
+export interface UseSearchEffectsOptions {
   query: string | undefined;
   sortForm: SortForm;
   results: SearchResult[];
@@ -204,8 +200,6 @@ export function useSearchEffects({
   }, [sortForm, query]);
 
   useEffect(() => {
-    // Add a small buffer because the heights for the skeleton results are not
-    // the same as the actual results.
-    debouncedSetSkeletonResultCount(results.length + 5);
+    setSkeletonResultCount(results.length + SKELETON_RESULT_COUNT_BUFFER);
   }, [results]);
 }

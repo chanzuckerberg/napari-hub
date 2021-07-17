@@ -12,11 +12,6 @@ import pluginIndex from '@/fixtures/index.json';
 
 import { PluginSearch } from './PluginSearch';
 
-jest.mock('@/utils/search', () => ({
-  getSearchScrollY: jest.fn(),
-  scrollToSearchBar: jest.fn(),
-}));
-
 function mockSearch(query = '') {
   type Replace = NextRouter['replace'];
   const replace = jest

@@ -1,3 +1,5 @@
+import { debounce } from 'lodash';
+
 import { SEARCH_BAR_ID } from '@/constants/search';
 
 /**
@@ -43,7 +45,7 @@ export function getSearchScrollY(): number {
  *
  * @param scrollY The current `scrollY` value
  */
-export function setSearchScrollY(scrollY: number): void {
+export function setSearchScrollYBase(scrollY: number): void {
   searchScrollY = scrollY;
   window.sessionStorage.setItem(SEARCH_SCROLL_Y_KEY, String(scrollY));
 }
@@ -68,10 +70,16 @@ export function getSkeletonResultCount(): number {
  *
  * @param count The result count.
  */
-export function setSkeletonResultCount(count: number): void {
+function setSkeletonResultCountBase(count: number): void {
   searchSkeletonResultCount = count;
   window.sessionStorage.setItem(SEARCH_SKELETON_COUNT_KEY, String(count));
 }
+
+/**
+ * Debounced export for `setSkeletonResultCount()` since this function may be
+ * called multiple times a second due to state re-renders.
+ */
+export const setSkeletonResultCount = debounce(setSkeletonResultCountBase, 300);
 
 function getSearchBar() {
   return document.getElementById(SEARCH_BAR_ID);
