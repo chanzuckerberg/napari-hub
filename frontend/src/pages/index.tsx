@@ -1,6 +1,7 @@
 import { AxiosError } from 'axios';
+import { debounce } from 'lodash';
 import Head from 'next/head';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect } from 'react';
 
 import { hubAPI, spdxLicenseDataAPI } from '@/axios';
 import { ErrorMessage } from '@/components/common';
@@ -14,6 +15,7 @@ import {
 } from '@/context/spdx';
 import { URLParameterStateProvider } from '@/context/urlParameters';
 import { PluginIndexData } from '@/types';
+import { setSearchScrollY } from '@/utils/search';
 
 interface Props {
   licenses?: SpdxLicenseData[];
@@ -83,6 +85,19 @@ export async function getServerSideProps() {
 
 export default function Home({ error, index, licenses }: Props) {
   const isLoading = useLoadingState();
+
+  useEffect(() => {
+    function scrollHandler() {
+      setSearchScrollY(window.scrollY);
+    }
+
+    // Debounce scroll handler so that we don't overrun the main thread with
+    // `localStorage.set()` calls.
+    const debouncedScrollHandler = debounce(scrollHandler, 300);
+
+    document.addEventListener('scroll', debouncedScrollHandler);
+    return () => document.removeEventListener('scroll', debouncedScrollHandler);
+  }, []);
 
   return (
     <>

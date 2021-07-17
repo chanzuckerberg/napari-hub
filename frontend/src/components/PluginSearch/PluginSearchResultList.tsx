@@ -5,17 +5,17 @@ import { ColumnLayout, SkeletonLoader } from '@/components/common';
 import { useLoadingState } from '@/context/loading';
 import { SearchResult, useSearchState } from '@/context/search';
 import { PluginIndexData } from '@/types';
+import { getSkeletonResultCount } from '@/utils';
 
 import { FilterChips } from './FilterChips';
 import { PluginSearchResult } from './PluginSearchResult';
-
-const SKELETON_RESULT_COUNT = 8;
 
 /**
  * Returns a constant array of fake search results for loading purposes.
  */
 function getSkeletonResults() {
-  return [...Array<SearchResult>(SKELETON_RESULT_COUNT)].map((_, idx) => ({
+  const count = getSkeletonResultCount();
+  return [...Array<SearchResult>(count)].map((_, idx) => ({
     matches: {},
     index: 0,
     plugin: { name: `fake-plugin-${idx}` } as PluginIndexData,

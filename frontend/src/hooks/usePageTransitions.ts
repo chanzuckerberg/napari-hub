@@ -89,13 +89,7 @@ export function usePageTransitions() {
         //
         // https://mzl.la/36x9rzG
         requestAnimationFrame(() => {
-          // This function gets the distance using `offsetTop`, which will cause
-          // a reflow. While this is usually bad for animations, it's fine here
-          // because we're using `requestAnimationFrame()` for scheduling
-          // instead of animation, so the function is only being called once per
-          // page load.
-          const distanceFromTop = getSearchBarDistanceFromTop();
-          window.scroll(0, Math.min(scrollY, distanceFromTop));
+          window.scroll(0, scrollY);
 
           // Schedule scroll handler registration for next frame so that above
           // scroll doesn't trigger a scroll event.
@@ -119,19 +113,7 @@ export function usePageTransitions() {
       removeScrollHandler();
 
       if (isSearchPage(url)) {
-        setTimeout(() => {
-          const scrollY = getSearchScrollY();
-
-          if (window.scrollY !== scrollY && shouldScrollRef.current) {
-            // Schedule scroll on macrotask queue for execution later. This is
-            // required because at runtime, the DOM hasn't finished loading yet
-            // for the current page.
-            window.scroll({
-              top: scrollY,
-              behavior: 'smooth',
-            });
-          }
-        });
+        console.log('finished loading search page');
       } else if (isPluginPage(url)) {
         // Scroll to current scroll position while plugin page was loading. If
         // the user didn't scroll at all, this will be 0.

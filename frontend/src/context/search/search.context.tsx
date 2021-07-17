@@ -31,7 +31,11 @@ export function PluginSearchProvider({ children, pluginIndex }: Props) {
   const { filterForm, filteredResults } = useFilters(results);
   const { sortForm, sortedResults } = useSort(filteredResults);
 
-  useSearchEffects(searchForm.query, sortForm);
+  useSearchEffects({
+    sortForm,
+    query: searchForm.query,
+    results: sortedResults,
+  });
 
   return (
     <PluginSearchStateContext.Provider

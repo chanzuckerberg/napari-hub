@@ -1,10 +1,11 @@
+import { debounce } from 'lodash';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { usePrevious } from 'react-use';
 import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 
 import { useActiveURLParameter, usePlausible } from '@/hooks';
 import { PluginIndexData } from '@/types';
-import { getSearchScrollY, scrollToSearchBar } from '@/utils';
+import { setSkeletonResultCount } from '@/utils';
 import { Logger } from '@/utils/logger';
 import { measureExecution } from '@/utils/performance';
 
@@ -151,25 +152,34 @@ function getSortParameter() {
   return url.searchParams.get(SearchQueryParams.Sort);
 }
 
+// Debounce `setSkeletonResultCount()` because there may be multiple state
+// re-renders in quick succession where `result.length` doesn't change.
+const debouncedSetSkeletonResultCount = debounce(setSkeletonResultCount, 300);
+
+interface UseSearchEffectsOptions {
+  query: string | undefined;
+  sortForm: SortForm;
+  results: SearchResult[];
+}
+
 /**
- * Hook that handles updating the sort type based on the search query. When a
- * user enters a search query, the sort type is automatically switched to
- * `Relevance`. Similarly, when the user clears the query, the sort type is
- * switched to either the default value or the selected sort type if it isn't
- * `Relevance`.
+ * Hook for running effects that have inter-state dependencies. The following effects are in place:
  *
- * @param query The query string
- * @param form The sort form
+ * 1. Effect that sets the sort type to `Relevance` when the user submits a query.
+ * 2. Effect that stores the result count in `localStorage` for the search page
+ *    skeleton loader.
  */
-export function useSearchEffects(query: string | undefined, form: SortForm) {
+export function useSearchEffects({
+  query,
+  sortForm,
+  results,
+}: UseSearchEffectsOptions) {
   // Ref used to determine if user is searching or not. This ref is `true` when
   // `query` is a non-empty string, and `false` when `query` is an empty string.
   // This is used to reduce calls to `form.setSortType()` when the `form` object changes.
   const isSearchingRef = useRef(false);
 
-  // Ref used for determining if the sort type should be set to `Relevance`
-  // on initial load. If the URL uses a different sort type, then its value is
-  // used instead.
+  // Ref used for tracking initial load.
   const initialLoadRef = useRef(true);
 
   useEffect(() => {
@@ -177,16 +187,7 @@ export function useSearchEffects(query: string | undefined, form: SortForm) {
       // During initial load, set the sort parameter to `Relevance` if it isn't
       // already set using some other value.
       if (!initialLoadRef.current || !getSortParameter()) {
-        form.setSortType(SearchSortType.Relevance);
-      }
-
-      const scrollY = getSearchScrollY();
-      // The value is `0` on initial load and when the user submits a search query.
-      if (scrollY === 0) {
-        scrollToSearchBar({
-          // Smooth scroll to search bar when user submits a search query.
-          behavior: initialLoadRef.current ? 'auto' : 'smooth',
-        });
+        sortForm.setSortType(SearchSortType.Relevance);
       }
 
       isSearchingRef.current = true;
@@ -194,11 +195,17 @@ export function useSearchEffects(query: string | undefined, form: SortForm) {
       isSearchingRef.current = false;
 
       // Don't set sort type if user already picked a different sort type.
-      if (form.sortType === SearchSortType.Relevance) {
-        form.setSortType(DEFAULT_SORT_TYPE);
+      if (sortForm.sortType === SearchSortType.Relevance) {
+        sortForm.setSortType(DEFAULT_SORT_TYPE);
       }
     }
 
     initialLoadRef.current = false;
-  }, [form, query]);
+  }, [sortForm, query]);
+
+  useEffect(() => {
+    // Add a small buffer because the heights for the skeleton results are not
+    // the same as the actual results.
+    debouncedSetSkeletonResultCount(results.length + 5);
+  }, [results]);
 }

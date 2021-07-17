@@ -8,7 +8,7 @@ import {
   SearchQueryParams,
   useSearchState,
 } from '@/context/search';
-import { setSearchScrollY } from '@/utils';
+import { scrollToSearchBar, setSearchScrollY } from '@/utils';
 
 import styles from './SearchBar.module.scss';
 
@@ -79,6 +79,7 @@ export function SearchBar({ large, ...props }: Props) {
 
       if (searchQuery) {
         setQuery?.(searchQuery);
+        scrollToSearchBar({ behavior: 'smooth' });
       } else {
         clearQuery?.();
       }
