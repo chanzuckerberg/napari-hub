@@ -1,12 +1,7 @@
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import {
-  getSearchBarDistanceFromTop,
-  getSearchScrollY,
-  Logger,
-  setSearchScrollY,
-} from '@/utils';
+import { getSearchScrollY, Logger, setSearchScrollY } from '@/utils';
 import { isPluginPage, isSearchPage } from '@/utils/page';
 
 const logger = new Logger('usePageTransitions.ts');
@@ -112,9 +107,7 @@ export function usePageTransitions() {
 
       removeScrollHandler();
 
-      if (isSearchPage(url)) {
-        console.log('finished loading search page');
-      } else if (isPluginPage(url)) {
+      if (isPluginPage(url)) {
         // Scroll to current scroll position while plugin page was loading. If
         // the user didn't scroll at all, this will be 0.
         window.scroll(0, scrollYRef.current);

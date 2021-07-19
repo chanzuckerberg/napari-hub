@@ -45,7 +45,7 @@ export function getSearchScrollY(): number {
  *
  * @param scrollY The current `scrollY` value
  */
-export function setSearchScrollYBase(scrollY: number): void {
+export function setSearchScrollY(scrollY: number): void {
   searchScrollY = scrollY;
   window.sessionStorage.setItem(SEARCH_SCROLL_Y_KEY, String(scrollY));
 }
