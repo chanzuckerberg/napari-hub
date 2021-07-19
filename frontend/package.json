@@ -19,6 +19,7 @@
     "e2e:update": "yarn e2e --updateSnapshot",
     "postinstall": "node postinstall",
     "start": "next start -p 8080",
+    "start:prod": "next start -p 8081",
     "test": "jest -c jest/test.config.js",
     "test:watch": "yarn test --watch",
     "test:update": "yarn test --updateSnapshot",
