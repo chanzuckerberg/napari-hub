@@ -171,12 +171,15 @@ export function PluginSearchResult({ className, matches, plugin }: Props) {
           </ul>
 
           {/* Search preview of plugin description. */}
-          {isSearching && matches.description && (
+          {isSearching && matches.description_text && (
             <TextHighlighter
               className="italic text-xs"
-              words={[matches.description.match]}
+              words={[matches.description_text.match]}
             >
-              {getDescriptionPreview(plugin.description, matches.description)}
+              {getDescriptionPreview(
+                plugin.description_text,
+                matches.description_text,
+              )}
             </TextHighlighter>
           )}
         </div>

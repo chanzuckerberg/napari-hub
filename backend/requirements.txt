@@ -5,3 +5,5 @@ google-cloud-bigquery
 gunicorn[gevent]
 pyyaml
 requests
+markdown
+bs4
