@@ -72,11 +72,11 @@ export function SearchBar({ large, ...props }: Props) {
     // Search state is only available on search enabled pages.
     const isSearchPage = results !== undefined;
 
-    if (isSearchPage) {
-      // Reset `scrollY` value so that the browser can scroll to the search
-      // bar after searching.
-      setSearchScrollY(0);
+    // Reset `scrollY` value so that the browser can scroll to the search
+    // bar after searching.
+    setSearchScrollY(0);
 
+    if (isSearchPage) {
       if (searchQuery) {
         setQuery?.(searchQuery);
         scrollToSearchBar({ behavior: 'smooth' });
