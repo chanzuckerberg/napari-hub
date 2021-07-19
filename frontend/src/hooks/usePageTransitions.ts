@@ -82,7 +82,7 @@ export function usePageTransitions() {
         // render. As a result, this avoids flickering between the top of the
         // page and the `scrollY` location.
         //
-        // https://mzl.la/36x9rzG
+        // https://mzl.la/2UvTwz4
         requestAnimationFrame(() => {
           window.scroll(0, scrollY);
 
