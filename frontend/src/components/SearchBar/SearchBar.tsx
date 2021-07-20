@@ -19,19 +19,6 @@ interface Props extends HTMLProps<HTMLFormElement> {
 }
 
 /**
- * Creates a new URL with the search query added.
- *
- * @param query The query string.
- * @returns The URL object.
- */
-function getURLWithSearchParam(query: string): URL {
-  const url = new URL(SEARCH_PAGE, window.location.origin);
-  url.searchParams.set(SearchQueryParams.Search, encodeURIComponent(query));
-
-  return url;
-}
-
-/**
  * Search bar component. This renders an input field with a underline and
  * magnifying glass icon to the right of the component. When the user enters a query,
  * one of two things can happen:
@@ -78,7 +65,13 @@ export function SearchBar({ large, ...props }: Props) {
         clearQuery?.();
       }
     } else {
-      const url = getURLWithSearchParam(searchQuery);
+      const url = {
+        pathname: SEARCH_PAGE,
+        query: {
+          // Params will be encoded automatically by Next.js.
+          [SearchQueryParams.Search]: searchQuery,
+        },
+      };
       await router.push(url);
     }
   }
