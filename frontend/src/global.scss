@@ -22,15 +22,6 @@ html {
     https://stackoverflow.com/questions/63965489/safari-14-min-max-clamp-not-working-with-vw-and-px-values#comment116930866_65093383
   */
   min-height: 0.0001vw;
-
-  /*
-    Use smooth transition when scrolling between different parts of the page.
-
-    TODO This currently has no support in Safari, so we'll probably have to
-    implement a solution in TypeScript.
-    https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-behavior
-  */
-  scroll-behavior: smooth;
 }
 
 body {

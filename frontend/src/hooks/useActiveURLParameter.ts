@@ -16,12 +16,16 @@ export function useActiveURLParameter<R extends string = string>(
   name: string,
 ): R | undefined {
   const router = useRouter();
-  let query = router.query[name] as string | undefined;
+  let value = router.query[name] as string | undefined;
 
-  if (!query && process.browser) {
+  if (!value && process.browser) {
     const url = new URL(window.location.href);
-    query = url.searchParams.get(name) ?? undefined;
+    value = url.searchParams.get(name) ?? undefined;
   }
 
-  return query as R;
+  if (value) {
+    value = decodeURIComponent(value);
+  }
+
+  return value as R;
 }

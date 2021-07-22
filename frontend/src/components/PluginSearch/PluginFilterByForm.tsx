@@ -1,6 +1,6 @@
 import { FormLabel } from '@material-ui/core';
 
-import { Accordion } from '@/components/common';
+import { Accordion, SkeletonLoader } from '@/components/common';
 import { Media } from '@/components/common/media';
 import { useSearchState } from '@/context/search';
 
@@ -91,10 +91,15 @@ export function PluginFilterByForm() {
   return (
     <>
       <Media lessThan="screen-875">
-        <Accordion title="Filter By">{form}</Accordion>
+        <SkeletonLoader
+          className="h-12 mt-6"
+          render={() => <Accordion title="Filter By">{form}</Accordion>}
+        />
       </Media>
 
-      <Media greaterThanOrEqual="screen-875">{form}</Media>
+      <Media greaterThanOrEqual="screen-875">
+        <SkeletonLoader className="h-[400px]" render={() => form} />
+      </Media>
     </>
   );
 }

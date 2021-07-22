@@ -13,18 +13,24 @@ import { StylesProvider, ThemeProvider } from '@material-ui/styles';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 import NextPlausibleProvider from 'next-plausible';
-import { ReactNode, useEffect, useRef } from 'react';
+import { ComponentType, ReactNode, useEffect, useRef } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { Hydrate } from 'react-query/hydration';
 
 import { Layout } from '@/components';
 import { MediaContextProvider } from '@/components/common/media';
+import { LoadingStateProvider } from '@/context/loading';
+import { usePageTransitions } from '@/hooks';
+import SearchPage from '@/pages/index';
+import PluginPage from '@/pages/plugins/[name]';
 import { theme } from '@/theme';
+import { PluginData } from '@/types';
+import { isPluginPage, isSearchPage } from '@/utils/page';
 
-interface GetLayoutComponent {
+type GetLayoutComponent = ComponentType & {
   getLayout?(page: ReactNode): ReactNode;
-}
+};
 
 interface QueryProviderProps {
   children: ReactNode;
@@ -95,11 +101,50 @@ function PlausibleProvider({ children }: ProviderProps) {
 }
 
 export default function App({ Component, pageProps }: AppProps) {
-  // Render using custom layout if component exports one:
-  // https://adamwathan.me/2019/10/17/persistent-layout-patterns-in-nextjs/
-  const { getLayout } = Component as GetLayoutComponent;
-  let page: ReactNode = <Component {...pageProps} />;
-  page = getLayout?.(page) ?? <Layout>{page}</Layout>;
+  const { loading, nextUrl } = usePageTransitions();
+
+  /**
+   * Render using custom layout if component exports one:
+   * https://adamwathan.me/2019/10/17/persistent-layout-patterns-in-nextjs/
+   */
+  function withLayout(
+    node: ReactNode,
+    { getLayout }: GetLayoutComponent = Component,
+  ) {
+    return getLayout?.(node) ?? <Layout>{node}</Layout>;
+  }
+
+  /**
+   * Renders the appropriate loader component for a specific page.
+   */
+  function getLoaderComponent() {
+    const searchPageLoader = isSearchPage(nextUrl) && (
+      <LoadingStateProvider loading key="/">
+        <SearchPage index={[]} licenses={[]} />
+      </LoadingStateProvider>
+    );
+
+    const pluginPageLoader = isPluginPage(nextUrl) && (
+      <Layout>
+        <LoadingStateProvider loading key="/plugins">
+          <PluginPage plugin={{} as PluginData} />
+        </LoadingStateProvider>
+      </Layout>
+    );
+
+    const loaders = [searchPageLoader, pluginPageLoader];
+
+    if (!loaders.some(Boolean)) {
+      return null;
+    }
+
+    return loaders;
+  }
+
+  // Use loader if page is loading and next page has a loader component.
+  let loader: ReactNode;
+  const isLoading = loading && (loader = getLoaderComponent());
+  const page = isLoading ? loader : withLayout(<Component {...pageProps} />);
 
   return (
     <>
