@@ -23,3 +23,9 @@ export enum SearchQueryParams {
   Search = 'search',
   Sort = 'sort',
 }
+
+/**
+ * Small buffer for skeleton results because the heights for the skeleton
+ * results are not the same as the actual results.
+ */
+export const SKELETON_RESULT_COUNT_BUFFER = 5;

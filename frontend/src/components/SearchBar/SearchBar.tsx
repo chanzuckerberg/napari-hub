@@ -8,6 +8,7 @@ import {
   SearchQueryParams,
   useSearchState,
 } from '@/context/search';
+import { scrollToSearchBar, setSearchScrollY } from '@/utils';
 
 import styles from './SearchBar.module.scss';
 
@@ -58,9 +59,14 @@ export function SearchBar({ large, ...props }: Props) {
     // Search state is only available on search enabled pages.
     const isSearchPage = results !== undefined;
 
+    // Reset `scrollY` value so that the browser can scroll to the search
+    // bar after searching.
+    setSearchScrollY(0);
+
     if (isSearchPage) {
       if (searchQuery) {
         setQuery?.(searchQuery);
+        scrollToSearchBar({ behavior: 'smooth' });
       } else {
         clearQuery?.();
       }

@@ -4,6 +4,7 @@ import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 
 import { useActiveURLParameter, usePlausible } from '@/hooks';
 import { PluginIndexData } from '@/types';
+import { setSkeletonResultCount } from '@/utils';
 import { Logger } from '@/utils/logger';
 import { measureExecution } from '@/utils/performance';
 
@@ -11,6 +12,7 @@ import {
   DEFAULT_SORT_TYPE,
   SearchQueryParams,
   SearchSortType,
+  SKELETON_RESULT_COUNT_BUFFER,
 } from './constants';
 import { FuseSearchEngine } from './engines';
 import { SearchEngine, SearchResult } from './search.types';
@@ -150,28 +152,30 @@ function getSortParameter() {
   return url.searchParams.get(SearchQueryParams.Sort);
 }
 
+export interface UseSearchEffectsOptions {
+  query: string | undefined;
+  sortForm: SortForm;
+  results: SearchResult[];
+}
+
 /**
- * Hook that handles updating the sort type based on the search query. When a
- * user enters a search query, the sort type is automatically switched to
- * `Relevance`. Similarly, when the user clears the query, the sort type is
- * switched to either the default value or the selected sort type if it isn't
- * `Relevance`.
+ * Hook for running effects that have inter-state dependencies. The following effects are in place:
  *
- * @param query The query string
- * @param form The sort form
+ * 1. Effect that sets the sort type to `Relevance` when the user submits a query.
+ * 2. Effect that stores the result count in `localStorage` for the search page
+ *    skeleton loader.
  */
-export function useSearchSetSortType(
-  query: string | undefined,
-  form: SortForm,
-) {
+export function useSearchEffects({
+  query,
+  sortForm,
+  results,
+}: UseSearchEffectsOptions) {
   // Ref used to determine if user is searching or not. This ref is `true` when
   // `query` is a non-empty string, and `false` when `query` is an empty string.
   // This is used to reduce calls to `form.setSortType()` when the `form` object changes.
   const isSearchingRef = useRef(false);
 
-  // Ref used for determining if the sort type should be set to `Relevance`
-  // on initial load. If the URL uses a different sort type, then its value is
-  // used instead.
+  // Ref used for tracking initial load.
   const initialLoadRef = useRef(true);
 
   useEffect(() => {
@@ -179,7 +183,7 @@ export function useSearchSetSortType(
       // During initial load, set the sort parameter to `Relevance` if it isn't
       // already set using some other value.
       if (!initialLoadRef.current || !getSortParameter()) {
-        form.setSortType(SearchSortType.Relevance);
+        sortForm.setSortType(SearchSortType.Relevance);
       }
 
       isSearchingRef.current = true;
@@ -187,11 +191,15 @@ export function useSearchSetSortType(
       isSearchingRef.current = false;
 
       // Don't set sort type if user already picked a different sort type.
-      if (form.sortType === SearchSortType.Relevance) {
-        form.setSortType(DEFAULT_SORT_TYPE);
+      if (sortForm.sortType === SearchSortType.Relevance) {
+        sortForm.setSortType(DEFAULT_SORT_TYPE);
       }
     }
 
     initialLoadRef.current = false;
-  }, [form, query]);
+  }, [sortForm, query]);
+
+  useEffect(() => {
+    setSkeletonResultCount(results.length + SKELETON_RESULT_COUNT_BUFFER);
+  }, [results]);
 }

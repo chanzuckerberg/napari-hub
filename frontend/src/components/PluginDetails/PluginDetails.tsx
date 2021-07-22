@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 
-import { ColumnLayout, Markdown } from '@/components/common';
+import { ColumnLayout, Markdown, SkeletonLoader } from '@/components/common';
 import { Media, MediaFragment } from '@/components/common/media';
 import { usePluginState } from '@/context/plugin';
 import { usePlausible } from '@/hooks';
@@ -22,8 +22,17 @@ function PluginCenterColumn() {
 
   return (
     <article className="w-full col-span-2 screen-875:col-span-3">
-      <h1 className="font-bold text-4xl">{plugin.name}</h1>
-      <h2 className="font-semibold my-6 text-lg">{plugin.summary}</h2>
+      <SkeletonLoader
+        className="h-12"
+        render={() => <h1 className="font-bold text-4xl">{plugin.name}</h1>}
+      />
+
+      <SkeletonLoader
+        className="h-6 my-6"
+        render={() => (
+          <h2 className="font-semibold my-6 text-lg">{plugin.summary}</h2>
+        )}
+      />
 
       <Media
         className={clsx(
@@ -42,37 +51,52 @@ function PluginCenterColumn() {
           <CallToActionButton />
         </MediaFragment>
 
-        <a
-          className={clsx(
-            // Text styling
-            'underline hover:text-napari-primary',
+        <SkeletonLoader
+          className="screen-600:ml-12 screen-1150:ml-0 mt-6 screen-600:mt-0 h-8 w-24"
+          render={() => (
+            <a
+              className={clsx(
+                // Text styling
+                'underline hover:text-napari-primary',
 
-            /*
-              Top margins: This is used for smaller layouts because the CTA
-              button is above the metadata link.
-            */
-            'mt-6 screen-600:mt-0',
+                /*
+                  Top margins: This is used for smaller layouts because the CTA
+                  button is above the metadata link.
+                */
+                'mt-6 screen-600:mt-0',
 
-            /*
-              Left margins: This is used when the CTA and metadata link are
-              inline.  The margin is removed when the CTA moves to the right
-              column on 1150px layouts.
-            */
-            'screen-600:ml-12 screen-1150:ml-0',
+                /*
+                  Left margins: This is used when the CTA and metadata link are
+                  inline.  The margin is removed when the CTA moves to the right
+                  column on 1150px layouts.
+                */
+                'screen-600:ml-12 screen-1150:ml-0',
+              )}
+              href="#pluginMetadata"
+            >
+              View project data
+            </a>
           )}
-          href="#pluginMetadata"
-        >
-          View project data
-        </a>
+        />
       </Media>
 
-      <SupportInfo className="mb-6 md:mb-12" />
+      <SkeletonLoader
+        className="h-[228px] my-6"
+        render={() => <SupportInfo className="mb-6 screen-495:mb-12" />}
+      />
 
-      <Markdown className="mb-10" disableHeader>
-        {plugin.description}
-      </Markdown>
+      <SkeletonLoader
+        className="h-[600px] mb-10"
+        render={() => (
+          <Markdown className="mb-10" disableHeader>
+            {plugin.description}
+          </Markdown>
+        )}
+      />
 
-      <CallToActionButton className="mb-6 md:mb-12 2xl:mb-20" />
+      <div className="mb-6 screen-495:mb-12 screen-1150:mb-20">
+        <CallToActionButton />
+      </div>
 
       <MediaFragment lessThan="3xl">
         <PluginMetadata />
@@ -91,16 +115,21 @@ function PluginRightColumn() {
       <div className="sticky top-12">
         <CallToActionButton />
 
-        <Markdown.TOC
-          className="mt-9"
-          markdown={plugin.description}
-          onClick={(section) => {
-            plausible('Description Nav', {
-              section,
-              plugin: plugin.name,
-            });
-          }}
-          free
+        <SkeletonLoader
+          className="h-56 mt-9"
+          render={() => (
+            <Markdown.TOC
+              className="mt-9"
+              markdown={plugin.description}
+              onClick={(section) => {
+                plausible('Description Nav', {
+                  section,
+                  plugin: plugin.name,
+                });
+              }}
+              free
+            />
+          )}
         />
       </div>
     </Media>

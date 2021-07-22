@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SkeletonLoader /> should match snapshot 1`] = `
+<DocumentFragment>
+  <h1>
+    Hello, World!
+  </h1>
+</DocumentFragment>
+`;
+
+exports[`<SkeletonLoader /> should match snapshot 2`] = `
+<DocumentFragment>
+  <h1>
+    Hello, World!
+  </h1>
+</DocumentFragment>
+`;
