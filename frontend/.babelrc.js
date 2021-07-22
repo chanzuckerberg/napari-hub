@@ -19,6 +19,7 @@ function getMUIImportsPlugin(name) {
     '@material-ui/core',
     '@material-ui/icons',
     '@material-ui/styles',
+    '@material-ui/lab',
   ];
 
   return [

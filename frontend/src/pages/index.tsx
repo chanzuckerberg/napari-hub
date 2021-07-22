@@ -1,10 +1,12 @@
 import { AxiosError } from 'axios';
+import { debounce } from 'lodash';
 import Head from 'next/head';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect } from 'react';
 
 import { hubAPI, spdxLicenseDataAPI } from '@/axios';
 import { ErrorMessage } from '@/components/common';
 import { PluginSearch } from '@/components/PluginSearch';
+import { useLoadingState } from '@/context/loading';
 import { PluginSearchProvider } from '@/context/search';
 import {
   SpdxLicenseData,
@@ -13,42 +15,12 @@ import {
 } from '@/context/spdx';
 import { URLParameterStateProvider } from '@/context/urlParameters';
 import { PluginIndexData } from '@/types';
+import { setSearchScrollY } from '@/utils/search';
 
 interface Props {
   licenses?: SpdxLicenseData[];
   index?: PluginIndexData[];
   error?: string;
-}
-
-/**
- * Helper function that renders the textual content of the Markdown string. This
- * works by rendering the Markdown to HTML and then using a parser to extract
- * only the text.
- *
- * @param markdown The markdown string.
- * @returns The text content of the Markdown
- */
-async function renderDescription(markdown: string): Promise<string> {
-  // Dynamically import modules so that we only use them on the server.
-  const unified = (await import('unified')).default;
-  const markdownParser = (await import('remark-parse')).default;
-  const remark2rehype = (await import('remark-rehype')).default;
-  const rehype2html = (await import('rehype-stringify')).default;
-  const cheerio = (await import('cheerio')).default;
-
-  // Render Markdown to HTML
-  const plugins = [markdownParser, remark2rehype, rehype2html];
-  const processor = plugins.reduce(
-    (currentProcessor, plugin) => currentProcessor.use(plugin),
-    unified(),
-  );
-
-  const html = String(processor.processSync(markdown));
-  const $ = cheerio.load(`<main>${html}</main>`);
-
-  // The `text()` method returns only the text content recursively for each element:
-  // https://cheerio.js.org/classes/cheerio.html#text
-  return $('main').text();
 }
 
 export async function getServerSideProps() {
@@ -61,16 +33,6 @@ export async function getServerSideProps() {
       data: { licenses },
     } = await spdxLicenseDataAPI.get<SpdxLicenseResponse>('');
 
-    // Replace plugin description with rendered version for indexing. This is
-    // necessary so that we don't include hidden links and HTML tags in the
-    // search index.
-    await Promise.all(
-      index.map(async (plugin) => {
-        // eslint-disable-next-line no-param-reassign
-        plugin.description = await renderDescription(plugin.description);
-      }),
-    );
-
     Object.assign(props, { index, licenses });
   } catch (err) {
     const error = err as AxiosError;
@@ -81,6 +43,21 @@ export async function getServerSideProps() {
 }
 
 export default function Home({ error, index, licenses }: Props) {
+  const isLoading = useLoadingState();
+
+  useEffect(() => {
+    function scrollHandler() {
+      setSearchScrollY(window.scrollY);
+    }
+
+    // Debounce scroll handler so that we don't overrun the main thread with
+    // `localStorage.set()` calls.
+    const debouncedScrollHandler = debounce(scrollHandler, 300);
+
+    document.addEventListener('scroll', debouncedScrollHandler);
+    return () => document.removeEventListener('scroll', debouncedScrollHandler);
+  }, []);
+
   return (
     <>
       <Head>
@@ -94,9 +71,18 @@ export default function Home({ error, index, licenses }: Props) {
         licenses && (
           <URLParameterStateProvider>
             <SpdxLicenseProvider licenses={licenses}>
-              <PluginSearchProvider pluginIndex={index}>
+              {/*
+                Don't render PluginSearchProvider while loading. For some
+                reason, rendering while loading leads to a bug that freezes the
+                entire UI.
+              */}
+              {isLoading ? (
                 <PluginSearch />
-              </PluginSearchProvider>
+              ) : (
+                <PluginSearchProvider pluginIndex={index}>
+                  <PluginSearch />
+                </PluginSearchProvider>
+              )}
             </SpdxLicenseProvider>
           </URLParameterStateProvider>
         )

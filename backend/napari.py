@@ -10,6 +10,8 @@ import json
 import yaml
 
 from flask import Flask, jsonify
+from markdown import markdown
+from bs4 import BeautifulSoup
 
 import requests
 from requests.auth import HTTPBasicAuth
@@ -33,7 +35,7 @@ endpoint_url = os.environ.get('BOTO_ENDPOINT_URL', None)
 plugins_key = 'cache/plugins.json'
 index_key = 'cache/index.json'
 exclusion_list = 'excluded_plugins.json'
-index_subset = {'name', 'summary', 'description', 'description_content_type',
+index_subset = {'name', 'summary', 'description_text', 'description_content_type',
                 'authors', 'license', 'python_version', 'operating_system',
                 'release_date', 'version', 'first_released',
                 'development_status'}
@@ -205,6 +207,14 @@ def get_download_url(plugin: dict) -> [str, None]:
                         return github_pattern.match(url).group(0)
     return None
 
+def render_description(description: str) -> str:
+    if description != '':
+        html = markdown(description)
+        soup = BeautifulSoup(html, 'html.parser')
+        return soup.get_text()
+
+    return ''
+
 
 def format_plugin(plugin: dict) -> dict:
     """
@@ -223,10 +233,14 @@ def format_plugin(plugin: dict) -> dict:
         extra_metadata = get_extra_metadata(download_url)
         project_urls = extra_metadata.get('project_urls', {})
 
+    description = extra_metadata.get('description', f'{get_attribute(plugin, ["info", "description"])}')
+    extra_metadata['description_text'] = render_description(description)
+
     return {
         "name": get_attribute(plugin, ["info", "name"]),
         "summary": extra_metadata.get('summary', get_attribute(plugin, ["info", "summary"])),
-        "description": extra_metadata.get('description', f'{get_attribute(plugin, ["info", "description"])}'),
+        "description": description,
+        "description_text": extra_metadata.get('description_text', ''),
         "description_content_type": f'{get_attribute(plugin, ["info", "description_content_type"])}',
         "authors": extra_metadata.get('authors', [{'name': get_attribute(plugin, ["info", "author"]),
                                                    'email': get_attribute(plugin, ["info", "author_email"])}]),

@@ -12,6 +12,7 @@ export interface PluginIndexData {
   authors: PluginAuthor[];
   description_content_type: string;
   description: string;
+  description_text: string;
   development_status: string[];
   first_released: string;
   license: string;

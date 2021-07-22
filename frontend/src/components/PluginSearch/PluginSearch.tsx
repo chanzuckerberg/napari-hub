@@ -11,11 +11,11 @@ import { PluginSearchResultList } from './PluginSearchResultList';
  */
 export function PluginSearch() {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col">
       <AppBarLanding />
       <PluginSearchBar />
 
-      <div className="flex-grow">
+      <div className="flex-grow min-h-screen">
         <ColumnLayout
           className="p-6 md:p-12"
           classes={{
