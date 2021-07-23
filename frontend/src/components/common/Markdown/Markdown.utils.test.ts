@@ -22,6 +22,12 @@ This is markdown
 ## Foo Bar
 `;
 
+const MARKDOWN_WITH_INVALID_HEADER = `
+## Foo
+## ![image](./invalid.png)
+## Bar
+`;
+
 describe('getHeadersFromMarkdown()', () => {
   it('should return empty array for empty markdown', () => {
     const headers = getHeadersFromMarkdown('');
@@ -48,6 +54,22 @@ describe('getHeadersFromMarkdown()', () => {
       {
         id: 'foo-bar',
         text: 'Foo Bar',
+      },
+    ];
+
+    expect(headers).toEqual(expected);
+  });
+
+  it('should ignore invalid headers', () => {
+    const headers = getHeadersFromMarkdown(MARKDOWN_WITH_INVALID_HEADER);
+    const expected: TOCHeader[] = [
+      {
+        id: 'foo',
+        text: 'Foo',
+      },
+      {
+        id: 'bar',
+        text: 'Bar',
       },
     ];
 
