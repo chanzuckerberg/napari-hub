@@ -22,10 +22,11 @@ This is markdown
 ## Foo Bar
 `;
 
-const MARKDOWN_WITH_INVALID_HEADER = `
+const MARKDOWN_WITH_INVALID_HEADERS = `
 ## Foo
 ## ![image](./invalid.png)
 ## Bar
+## ![image](./invalid-2.jpg)
 `;
 
 describe('getHeadersFromMarkdown()', () => {
@@ -61,7 +62,7 @@ describe('getHeadersFromMarkdown()', () => {
   });
 
   it('should ignore invalid headers', () => {
-    const headers = getHeadersFromMarkdown(MARKDOWN_WITH_INVALID_HEADER);
+    const headers = getHeadersFromMarkdown(MARKDOWN_WITH_INVALID_HEADERS);
     const expected: TOCHeader[] = [
       {
         id: 'foo',
