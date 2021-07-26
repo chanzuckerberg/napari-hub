@@ -82,7 +82,6 @@ jobs:
   e2e:
     needs: tests
     runs-on: ubuntu-20.04
-    if: github.event_name == 'push'
 
     strategy:
       fail-fast: false
