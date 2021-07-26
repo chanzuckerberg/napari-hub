@@ -6,6 +6,7 @@
 
 import '@/axios';
 import '@/tailwind.scss';
+import '@/fonts.scss';
 import '@/global.scss';
 
 import { StylesProvider, ThemeProvider } from '@material-ui/styles';
@@ -149,12 +150,20 @@ export default function App({ Component, pageProps }: AppProps) {
     <>
       <Head>
         <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" />
-        {/* TODO Make this load async to fix render blocking */}
-        <link
-          href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&display=swap"
-          rel="stylesheet"
-        />
+
+        {
+          // Preload Barlow fonts. See fonts.scss for more info.
+          ['regular', '600', '700'].map((size) => (
+            <link
+              key={size}
+              rel="preload"
+              as="font"
+              type="font/woff2"
+              href={`/fonts/barlow-v5-latin-${size}.woff2`}
+              crossOrigin=""
+            />
+          ))
+        }
       </Head>
 
       <ReactQueryProvider dehydratedState={pageProps.dehydratedState}>
