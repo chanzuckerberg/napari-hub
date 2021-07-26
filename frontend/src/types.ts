@@ -12,6 +12,7 @@ export interface PluginIndexData {
   authors: PluginAuthor[];
   description_content_type: string;
   description: string;
+  description_text: string;
   development_status: string[];
   first_released: string;
   license: string;
@@ -32,7 +33,7 @@ export interface PluginData extends PluginIndexData {
   project_site: string;
   release_date: string;
   report_issues: string;
-  requirements: string[];
+  requirements?: string[] | null | '';
   support: string;
   twitter: string;
 }

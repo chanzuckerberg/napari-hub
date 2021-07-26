@@ -1,7 +1,8 @@
 import clsx from 'clsx';
 import { isEmpty } from 'lodash';
 
-import { Link, TextHighlighter } from '@/components/common';
+import { Link, SkeletonLoader, TextHighlighter } from '@/components/common';
+import { useLoadingState } from '@/context/loading';
 import { SearchResultMatch } from '@/context/search';
 import { PluginIndexData } from '@/types';
 import { formatDate, formatOperatingSystem } from '@/utils';
@@ -84,29 +85,33 @@ function getDescriptionPreview(
  * Component for rendering a plugin search result.
  */
 export function PluginSearchResult({ className, matches, plugin }: Props) {
+  const isLoading = useLoadingState();
+
   // TODO consolidate with PluginGithubData component in PluginMetadata.tsx
-  const items: SearchResultItem[] = [
-    {
-      label: 'version',
-      value: plugin.version,
-    },
-    {
-      label: 'release date',
-      value: formatDate(plugin.release_date),
-    },
-    {
-      label: 'license',
-      value: plugin.license,
-    },
-    {
-      label: 'Python version',
-      value: plugin.python_version,
-    },
-    {
-      label: 'operating system',
-      value: plugin.operating_system.map(formatOperatingSystem).join(', '),
-    },
-  ];
+  const items: SearchResultItem[] = isLoading
+    ? []
+    : [
+        {
+          label: 'version',
+          value: plugin.version,
+        },
+        {
+          label: 'release date',
+          value: formatDate(plugin.release_date),
+        },
+        {
+          label: 'license',
+          value: plugin.license,
+        },
+        {
+          label: 'Python version',
+          value: plugin.python_version,
+        },
+        {
+          label: 'operating system',
+          value: plugin.operating_system.map(formatOperatingSystem).join(', '),
+        },
+      ];
 
   const isSearching = !isEmpty(matches);
 
@@ -124,14 +129,8 @@ export function PluginSearchResult({ className, matches, plugin }: Props) {
     );
   }
 
-  return (
-    <Link
-      className={clsx(
-        className,
-        'py-5 border-t-2 border-black hover:bg-napari-hover-gray',
-      )}
-      href={`/plugins/${plugin.name}`}
-    >
+  function renderResult() {
+    return (
       <article
         data-testid="searchResult"
         className={clsx(
@@ -148,59 +147,94 @@ export function PluginSearchResult({ className, matches, plugin }: Props) {
               className="inline font-bold text-lg"
               data-testid="searchResultName"
             >
-              {renderText(plugin.name, matches.name?.match)}
+              <SkeletonLoader
+                render={() => renderText(plugin.name, matches.name?.match)}
+              />
             </h4>
 
             {/* Plugin summary */}
             <p className="mt-2" data-testid="searchResultSummary">
-              {renderText(plugin.summary, matches.summary?.match)}
+              <SkeletonLoader
+                className="h-12"
+                render={() =>
+                  renderText(plugin.summary, matches.summary?.match)
+                }
+              />
             </p>
           </div>
 
           {/* Plugin authors */}
           <ul className="mt-5 text-xs">
-            {plugin.authors.map((author) => (
-              <li
-                className="my-2 font-bold"
-                key={author.name}
-                data-testid="searchResultAuthor"
-              >
-                {renderText(author.name, matches[author.name]?.match)}
-              </li>
-            ))}
+            <SkeletonLoader
+              render={() =>
+                plugin.authors.map((author) => (
+                  <li
+                    className="my-2 font-bold"
+                    key={author.name}
+                    data-testid="searchResultAuthor"
+                  >
+                    {renderText(author.name, matches[author.name]?.match)}
+                  </li>
+                ))
+              }
+            />
           </ul>
 
           {/* Search preview of plugin description. */}
-          {isSearching && matches.description && (
+          {isSearching && matches.description_text && (
             <TextHighlighter
               className="italic text-xs"
-              words={[matches.description.match]}
+              words={[matches.description_text.match]}
             >
-              {getDescriptionPreview(plugin.description, matches.description)}
+              {getDescriptionPreview(
+                plugin.description_text,
+                matches.description_text,
+              )}
             </TextHighlighter>
           )}
         </div>
 
         {/* Plugin metadata */}
         <ul className="mt-4 screen-600:m-0 space-y-1 text-sm">
-          {items.map((item) => (
-            <li
-              key={`${item.label}-${item.value}`}
-              className="grid grid-cols-[auto,1fr]"
-            >
-              <h5 className="inline whitespace-nowrap">{item.label}: </h5>
-              <span
-                className={clsx(
-                  'ml-1',
-                  item.value ? 'font-bold' : 'text-napari-gray',
-                )}
-              >
-                {item.value || 'information not submitted'}
-              </span>
-            </li>
-          ))}
+          <SkeletonLoader
+            className="h-full"
+            render={() =>
+              items.map((item) => (
+                <li
+                  key={`${item.label}-${item.value}`}
+                  className="grid grid-cols-[auto,1fr]"
+                >
+                  <h5 className="inline whitespace-nowrap">{item.label}: </h5>
+                  <span
+                    className={clsx(
+                      'ml-1',
+                      item.value ? 'font-bold' : 'text-napari-gray',
+                    )}
+                  >
+                    {item.value || 'information not submitted'}
+                  </span>
+                </li>
+              ))
+            }
+          />
         </ul>
       </article>
+    );
+  }
+
+  const resultClassName = clsx(className, 'py-5 border-t-2 border-black');
+
+  // Convert to link when loading so that user can't click on result.
+  if (isLoading) {
+    return <div className={resultClassName}>{renderResult()}</div>;
+  }
+
+  return (
+    <Link
+      className={clsx(resultClassName, 'hover:bg-napari-hover-gray')}
+      href={`/plugins/${plugin.name}`}
+    >
+      {renderResult()}
     </Link>
   );
 }

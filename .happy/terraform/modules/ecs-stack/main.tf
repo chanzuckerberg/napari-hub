@@ -210,6 +210,7 @@ resource aws_acm_certificate_validation cert {
 }
 
 resource aws_lb_listener_certificate cert {
+  depends_on      = [aws_acm_certificate_validation.cert]
   listener_arn    = local.frontend_listener_arn
   certificate_arn = aws_acm_certificate.cert.arn
 }

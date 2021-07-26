@@ -40,7 +40,7 @@ plugin_list = """
     <p class="package-snippet__description">test package 1</p>
   </a>
 </li>
-            
+
               <li>
   <a class="package-snippet" href="/project/napari-mri/">
     <h3 class="package-snippet__title">
@@ -64,7 +64,7 @@ plugin = """
 "Programming Language :: Python :: 3.7","Programming Language :: Python :: 3.8"
 ,"Programming Language :: Python :: Implementation :: CPython",
 "Programming Language :: Python :: Implementation :: PyPy",
-"Topic :: Software Development :: Testing"],"description":"description",
+"Topic :: Software Development :: Testing"],"description":"# description [example](http://example.com)",
   "description_content_type":"","docs_url":null,"download_url":"",
   "downloads":{"last_day":-1,"last_month":-1,"last_week":-1},
   "home_page":"https://github.com/test/test","keywords":"",
@@ -115,7 +115,8 @@ def test_get_plugin(mock_get, mock_plugins):
     result = get_plugin("test")
     assert(result["name"] == "test")
     assert(result["summary"] == "A test plugin")
-    assert(result["description"] == "description")
+    assert(result["description"] == "# description [example](http://example.com)")
+    assert(result["description_text"] == "description example")
     assert(result["description_content_type"] == "")
     assert(result["authors"] == [{'email': 'test@test.com', 'name': 'Test Author'}])
     assert(result["license"] == "BSD-3")

@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import { Link } from '@/components/common';
 import { useSearchState } from '@/context/search';
 import { LinkInfo } from '@/types';
+import { setSearchScrollY } from '@/utils';
 
 interface CommonProps {
   vertical?: boolean;
@@ -49,11 +50,17 @@ export function AppBarLinks({ className, items, vertical }: Props) {
         className="whitespace-nowrap"
         // Redirect to home page
         href="/"
-        // Clear search related query parameter data if the user is currently
-        // on the search page. Without this, the `useQueryParameter()` hook
-        // will re-set the query parameter with the current query in the
-        // search bar.
-        onClick={() => search?.setQuery('')}
+        onClick={() => {
+          // Clear search related query parameter data if the user is currently
+          // on the search page. Without this, the `useQueryParameter()` hook
+          // will re-set the query parameter with the current query in the
+          // search bar.
+          search?.setQuery('');
+
+          // When navigating back to the home page from the home link, reset
+          // `scrollY` so that the user starts from the top of the page.
+          setSearchScrollY(0);
+        }}
       >
         napari <strong>hub</strong>
       </Link>

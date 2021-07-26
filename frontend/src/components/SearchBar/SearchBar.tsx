@@ -8,6 +8,7 @@ import {
   SearchQueryParams,
   useSearchState,
 } from '@/context/search';
+import { scrollToSearchBar, setSearchScrollY } from '@/utils';
 
 import styles from './SearchBar.module.scss';
 
@@ -16,19 +17,6 @@ interface Props extends HTMLProps<HTMLFormElement> {
    * Render large variant of search bar with a larger font size and search icon.
    */
   large?: boolean;
-}
-
-/**
- * Creates a new URL with the search query added.
- *
- * @param query The query string.
- * @returns The URL object.
- */
-function getURLWithSearchParam(query: string): URL {
-  const url = new URL(SEARCH_PAGE, window.location.origin);
-  url.searchParams.set(SearchQueryParams.Search, encodeURIComponent(query));
-
-  return url;
 }
 
 /**
@@ -71,14 +59,25 @@ export function SearchBar({ large, ...props }: Props) {
     // Search state is only available on search enabled pages.
     const isSearchPage = results !== undefined;
 
+    // Reset `scrollY` value so that the browser can scroll to the search
+    // bar after searching.
+    setSearchScrollY(0);
+
     if (isSearchPage) {
       if (searchQuery) {
         setQuery?.(searchQuery);
+        scrollToSearchBar({ behavior: 'smooth' });
       } else {
         clearQuery?.();
       }
     } else {
-      const url = getURLWithSearchParam(searchQuery);
+      const url = {
+        pathname: SEARCH_PAGE,
+        query: {
+          // Params will be encoded automatically by Next.js.
+          [SearchQueryParams.Search]: searchQuery,
+        },
+      };
       await router.push(url);
     }
   }
