@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import { isArray } from 'lodash';
 import { ReactNode } from 'react-markdown';
 
 import { Divider, SkeletonLoader } from '@/components/common';
@@ -153,9 +154,11 @@ function PluginMetadataBase({
             },
             {
               title: 'Requirements',
-              value: plugin.requirements.filter(
-                (req) => !req.includes('; extra == '),
-              ),
+              value: isArray(plugin.requirements)
+                ? plugin.requirements.filter(
+                    (req) => !req.includes('; extra == '),
+                  )
+                : '',
             },
           ]}
         />
