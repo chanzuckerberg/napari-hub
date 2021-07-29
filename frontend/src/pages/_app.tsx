@@ -21,12 +21,13 @@ import { Hydrate } from 'react-query/hydration';
 import { Layout } from '@/components';
 import { MediaContextProvider } from '@/components/common/media';
 import { LoadingStateProvider } from '@/context/loading';
+import { PROD, STAGING } from '@/env';
 import { usePageTransitions } from '@/hooks';
 import SearchPage from '@/pages/index';
 import PluginPage from '@/pages/plugins/[name]';
 import { theme } from '@/theme';
 import { PluginData } from '@/types';
-import { isPluginPage, isSearchPage } from '@/utils/page';
+import { isPluginPage, isSearchPage } from '@/utils';
 
 type GetLayoutComponent = ComponentType & {
   getLayout?(page: ReactNode): ReactNode;
@@ -88,11 +89,10 @@ function PlausibleProvider({ children }: ProviderProps) {
     return <>{children}</>;
   }
 
-  const isProd = process.env.ENV === 'prod';
   // Plausible doesn't actually do any domain checking, so the domain is used
   // mostly an ID for which Plausible dashboard we want to send data to.
   // https://github.com/plausible/analytics/discussions/183
-  const domain = isProd ? 'napari-hub.org' : 'dev.napari-hub.org';
+  const domain = PROD ? 'napari-hub.org' : 'dev.napari-hub.org';
   return (
     <NextPlausibleProvider domain={domain} enabled trackOutboundLinks>
       {children}
@@ -150,6 +150,12 @@ export default function App({ Component, pageProps }: AppProps) {
     <>
       <Head>
         <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+        {/*
+          Disable indexing for non-prod and non-staging deployments.
+          https://developers.google.com/search/docs/advanced/crawling/block-indexing
+        */}
+        {!PROD && !STAGING && <meta name="robots" content="noindex" />}
 
         {
           // Preload Barlow fonts. See fonts.scss for more info.
