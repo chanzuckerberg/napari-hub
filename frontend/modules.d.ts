@@ -3,6 +3,26 @@
   @typescript-eslint/no-explicit-any,
 */
 
+declare module 'generate-robotstxt' {
+  export interface RobotsPolicyEntry {
+    userAgent: string;
+    allow?: string | string[];
+    disallow?: string | string[];
+    crawlDelay?: number;
+    cleanParam?: string;
+  }
+
+  export interface Options {
+    policy: RobotsPolicyEntry[];
+    sitemap: string;
+    host: string;
+  }
+
+  export default async function generateRobotsTxt(
+    options: Options,
+  ): Promise<string>;
+}
+
 declare module 'remark-remove-comments' {
   import { Pluggable, Settings } from 'unified';
 
