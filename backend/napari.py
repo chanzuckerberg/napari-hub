@@ -248,6 +248,7 @@ def format_plugin(plugin: dict) -> dict:
         "authors": extra_metadata.get('authors', [{'name': get_attribute(plugin, ["info", "author"]),
                                                    'email': get_attribute(plugin, ["info", "author_email"])}]),
         "license": extra_metadata.get('license', get_attribute(plugin, ["info", "license"])),
+        "citation": extra_metadata.get('citation'),
         "python_version": get_attribute(plugin, ["info", "requires_python"]),
         "operating_system": filter_prefix(
             get_attribute(plugin, ["info", "classifiers"]),
