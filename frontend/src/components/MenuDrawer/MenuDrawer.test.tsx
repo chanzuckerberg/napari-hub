@@ -23,12 +23,14 @@ describe('<MenuDrawer />', () => {
 
   const renderComponent = ({
     items = mockItems,
-    onMenuClose = noop,
+    onClose = noop,
+    onOpen = noop,
     visible = true,
   }: Partial<Props> = {}) => {
     const props = {
       items,
-      onMenuClose,
+      onClose,
+      onOpen,
       visible,
     } as Props;
 
@@ -53,12 +55,12 @@ describe('<MenuDrawer />', () => {
   });
 
   it('should call onClose when close button is clicked', () => {
-    const onMenuClose = jest.fn();
-    renderComponent({ onMenuClose, visible: true });
+    const onClose = jest.fn();
+    renderComponent({ onClose, visible: true });
 
     const closeButton = screen.getByTestId('drawerClose');
     fireEvent.click(closeButton);
 
-    expect(onMenuClose).toHaveBeenCalled();
+    expect(onClose).toHaveBeenCalled();
   });
 });

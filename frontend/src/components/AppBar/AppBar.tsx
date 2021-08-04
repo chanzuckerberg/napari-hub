@@ -19,7 +19,8 @@ export function AppBar() {
     <>
       <MenuDrawer
         items={APP_LINKS}
-        onMenuClose={() => setVisible(false)}
+        onClose={() => setVisible(false)}
+        onOpen={() => setVisible(true)}
         visible={visible}
       />
 
