@@ -6,59 +6,9 @@ exports[`<Layout /> should match snapshot 1`] = `
     class="flex flex-col min-h-screen"
   >
     <div
-      class="fixed top-0 right-0 flex flex-row items-start z-40 w-9/12 h-screen p-6 bg-black"
-      data-testid="menu"
-      style="transform: translateX(100%) translateZ(0);"
-    >
-      <ul
-        class="flex flex-auto flex-col"
-      >
-        <li
-          class="text-white item"
-          data-testid="drawerItem"
-        >
-          <a
-            href="/about"
-          >
-            About
-          </a>
-        </li>
-        <li
-          class="text-white item"
-          data-testid="drawerItem"
-        >
-          <a
-            href="/faq"
-          >
-            FAQ
-          </a>
-        </li>
-      </ul>
-      <button
-        class="flex"
-        data-testid="drawerClose"
-        type="button"
-      >
-        <svg
-          fill="none"
-          height="18"
-          viewBox="0 0 18 18"
-          width="18"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M1 1L17 17"
-            stroke="white"
-            stroke-width="2.35294"
-          />
-          <path
-            d="M17 1L1 17"
-            stroke="white"
-            stroke-width="2.35294"
-          />
-        </svg>
-      </button>
-    </div>
+      class="PrivateSwipeArea-root-1 PrivateSwipeArea-anchorRight-3"
+      style="width: 20px;"
+    />
     <header
       class="bg-napari-primary h-napari-app-bar justify-center items-center px-6 md:px-12 2xl:p-0 zero:grid-cols-[min-content,1fr] grid justify-center gap-6 md:gap-12 grid-cols-2 screen-875:grid-cols-napari-3 screen-1150:grid-cols-napari-4 screen-1425:grid-cols-napari-5"
     >

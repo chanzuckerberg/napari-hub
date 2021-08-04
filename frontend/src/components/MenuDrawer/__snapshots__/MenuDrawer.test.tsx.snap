@@ -2,57 +2,84 @@
 
 exports[`<MenuDrawer /> should match snapshot 1`] = `
 <div
-  class="fixed top-0 right-0 flex flex-row items-start z-40 w-9/12 h-screen p-6 bg-black"
+  class="MuiDrawer-root MuiDrawer-modal"
   data-testid="menu"
-  style="transform: translateX(100%) translateZ(0);"
+  role="presentation"
+  style="position: fixed; z-index: 1300; right: 0px; bottom: 0px; top: 0px; left: 0px;"
 >
-  <ul
-    class="flex flex-auto flex-col"
+  <div
+    aria-hidden="true"
+    class="MuiBackdrop-root"
+    style="opacity: 1; webkit-transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms; transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;"
+  />
+  <div
+    data-test="sentinelStart"
+    tabindex="0"
+  />
+  <div
+    class="MuiPaper-root MuiDrawer-paper bg-black flex-row w-9/12 p-6 MuiDrawer-paperAnchorRight MuiPaper-elevation16"
+    tabindex="-1"
   >
-    <li
-      class="text-white item"
-      data-testid="drawerItem"
+    <ul
+      class="text-white flex-grow"
     >
-      <a
-        href="/foo"
+      <li
+        class="mb-5 last:m-0"
+        data-testid="drawerItem"
       >
-        foo
-      </a>
-    </li>
-    <li
-      class="text-white item"
-      data-testid="drawerItem"
-    >
-      <a
-        href="/bar"
+        <a
+          href="/foo"
+        >
+          foo
+        </a>
+      </li>
+      <li
+        class="mb-5 last:m-0"
+        data-testid="drawerItem"
       >
-        bar
-      </a>
-    </li>
-  </ul>
-  <button
-    class="flex"
-    data-testid="drawerClose"
-    type="button"
-  >
-    <svg
-      fill="none"
-      height="18"
-      viewBox="0 0 18 18"
-      width="18"
-      xmlns="http://www.w3.org/2000/svg"
+        <a
+          href="/bar"
+        >
+          bar
+        </a>
+      </li>
+    </ul>
+    <button
+      class="MuiButtonBase-root MuiIconButton-root self-start p-0"
+      data-testid="drawerClose"
+      tabindex="0"
+      type="button"
     >
-      <path
-        d="M1 1L17 17"
-        stroke="white"
-        stroke-width="2.35294"
+      <span
+        class="MuiIconButton-label"
+      >
+        <svg
+          fill="none"
+          height="18"
+          viewBox="0 0 18 18"
+          width="18"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M1 1L17 17"
+            stroke="white"
+            stroke-width="2.35294"
+          />
+          <path
+            d="M17 1L1 17"
+            stroke="white"
+            stroke-width="2.35294"
+          />
+        </svg>
+      </span>
+      <span
+        class="MuiTouchRipple-root"
       />
-      <path
-        d="M17 1L1 17"
-        stroke="white"
-        stroke-width="2.35294"
-      />
-    </svg>
-  </button>
+    </button>
+  </div>
+  <div
+    data-test="sentinelEnd"
+    tabindex="0"
+  />
 </div>
 `;
