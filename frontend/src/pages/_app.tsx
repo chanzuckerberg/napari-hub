@@ -12,6 +12,7 @@ import '@/global.scss';
 import { StylesProvider, ThemeProvider } from '@material-ui/styles';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import NextPlausibleProvider from 'next-plausible';
 import { ComponentType, ReactNode, useEffect, useRef } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -19,6 +20,7 @@ import { ReactQueryDevtools } from 'react-query/devtools';
 import { Hydrate } from 'react-query/hydration';
 
 import { Layout } from '@/components';
+import { PageMetadata } from '@/components/common';
 import { MediaContextProvider } from '@/components/common/media';
 import { LoadingStateProvider } from '@/context/loading';
 import { usePageTransitions } from '@/hooks';
@@ -102,6 +104,7 @@ function PlausibleProvider({ children }: ProviderProps) {
 
 export default function App({ Component, pageProps }: AppProps) {
   const { loading, nextUrl } = usePageTransitions();
+  const router = useRouter();
 
   /**
    * Render using custom layout if component exports one:
@@ -125,8 +128,8 @@ export default function App({ Component, pageProps }: AppProps) {
     );
 
     const pluginPageLoader = isPluginPage(nextUrl) && (
-      <Layout>
-        <LoadingStateProvider loading key="/plugins">
+      <Layout key="/plugins">
+        <LoadingStateProvider loading>
           <PluginPage plugin={{} as PluginData} />
         </LoadingStateProvider>
       </Layout>
@@ -149,7 +152,13 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        {
+          // The plugin page has plugin specific content that needs to be added
+          // to the Page Metadata,
+          !router.pathname.includes('/plugins/') && (
+            <PageMetadata pathname={router.pathname} />
+          )
+        }
 
         {
           // Preload Barlow fonts. See fonts.scss for more info.

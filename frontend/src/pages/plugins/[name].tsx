@@ -3,11 +3,12 @@ import type { RequestError as OctokitRequestError } from '@octokit/types';
 import { AxiosError } from 'axios';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import { ParsedUrlQuery } from 'node:querystring';
 
 import { hubAPI } from '@/axios';
 import { PluginDetails } from '@/components';
-import { ErrorMessage } from '@/components/common';
+import { ErrorMessage, PageMetadata } from '@/components/common';
 import { PluginStateProvider } from '@/context/plugin';
 import { PluginData, PluginRepoData, PluginRepoFetchError } from '@/types';
 
@@ -167,20 +168,30 @@ export default function PluginPage({
   repo = defaultRepoData,
   repoFetchError,
 }: Props) {
+  const router = useRouter();
+
+  const keywords: string[] = [];
   let title = 'napari hub | plugins';
-  if (plugin?.name) {
+  if (plugin?.name && plugin?.authors) {
     title = `${title} | ${plugin.name}`;
 
     const authors = plugin.authors.map(({ name }) => name).join(', ');
     if (authors) {
       title = `${title} by ${authors}`;
     }
+
+    keywords.push(plugin.name, ...plugin.authors.map(({ name }) => name));
   }
 
   return (
     <>
       <Head>
         <title>{title}</title>
+        <PageMetadata
+          keywords={keywords}
+          description={plugin?.summary}
+          pathname={router.pathname}
+        />
       </Head>
 
       {error ? (
