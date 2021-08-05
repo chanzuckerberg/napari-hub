@@ -1,3 +1,5 @@
+import { flow } from 'lodash';
+import type Highlight from 'prism-react-renderer';
 import slug from 'rehype-slug';
 import html from 'rehype-stringify';
 import markdownParser from 'remark-parse';
@@ -62,3 +64,17 @@ export function getHeadersFromMarkdown(markdown: string): TOCHeader[] {
       text: node.children[0].value,
     }));
 }
+
+// TODO Import token from module when package is updated to export it.
+export type Token = Parameters<Highlight['getStyleForToken']>[0];
+type TokenTransformer = (tokens: Token[][]) => Token[][];
+
+function removeLastLine(tokens: Token[][]): Token[][] {
+  return tokens.filter((line, index) => {
+    const isLastLine = index === tokens.length - 1;
+    const isEmptyLine = line.length === 1 && line[0].empty;
+    return !(isLastLine && isEmptyLine);
+  });
+}
+
+export const transformTokens: TokenTransformer = flow([removeLastLine]);

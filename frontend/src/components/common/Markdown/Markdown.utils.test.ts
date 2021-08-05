@@ -1,6 +1,10 @@
 import { TOCHeader } from '@/components/common/TableOfContents';
 
-import { getHeadersFromMarkdown } from './Markdown.utils';
+import {
+  getHeadersFromMarkdown,
+  Token,
+  transformTokens,
+} from './Markdown.utils';
 
 const MARKDOWN_WITHOUT_HEADERS = `
 # Hello World!
@@ -75,5 +79,18 @@ describe('getHeadersFromMarkdown()', () => {
     ];
 
     expect(headers).toEqual(expected);
+  });
+});
+
+describe('transformTokens()', () => {
+  it('should remove the last line', () => {
+    const tokens: Token[][] = [[{ types: ['plain'], content: 'hello' }]];
+    expect(transformTokens(tokens)).toEqual(tokens);
+
+    const tokensWithEmptyLine = [
+      ...tokens,
+      [{ types: ['plain'], content: '', empty: true }],
+    ];
+    expect(transformTokens(tokensWithEmptyLine)).toEqual(tokens);
   });
 });
