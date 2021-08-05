@@ -6,15 +6,15 @@ import { transformTokens } from './Markdown.utils';
 import styles from './SyntaxHighlighter.module.scss';
 
 interface LineNumbersProps {
-  count: number;
+  length: number;
 }
 
-function LineNumbers({ count }: LineNumbersProps) {
+function LineNumbers({ length }: LineNumbersProps) {
   return (
     <div
       className={clsx(styles.lineNumbers, 'p-4 pr-2 shadow z-10 text-right')}
     >
-      {Array.from({ length: count }, (_, index) => (
+      {Array.from({ length }, (_, index) => (
         <div key={`line-${index}`} className="select-none">
           {index + 1}
         </div>
@@ -69,7 +69,7 @@ export function SyntaxHighlighter({
 
           return (
             <div className="grid grid-cols-[min-content,1fr]">
-              <LineNumbers count={tokens.length} />
+              <LineNumbers length={tokens.length} />
 
               <pre className={clsx(className, styles.code)} style={style}>
                 {tokens.map((line, index) => (
