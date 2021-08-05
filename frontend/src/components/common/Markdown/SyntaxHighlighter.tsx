@@ -1,37 +1,89 @@
-import { ReactNode } from 'react';
-import { PrismAsync as Highlight } from 'react-syntax-highlighter';
-import { materialLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import clsx from 'clsx';
+import Head from 'next/head';
+import Highlight, { defaultProps, Language } from 'prism-react-renderer';
+
+import { transformTokens } from './Markdown.utils';
+import styles from './SyntaxHighlighter.module.scss';
+
+interface LineNumbersProps {
+  count: number;
+}
+
+function LineNumbers({ count }: LineNumbersProps) {
+  return (
+    <div
+      className={clsx(styles.lineNumbers, 'p-4 pr-2 shadow z-10 text-right')}
+    >
+      {Array.from({ length: count }, (_, index) => (
+        <div key={`line-${index}`} className="select-none">
+          {index + 1}
+        </div>
+      ))}
+    </div>
+  );
+}
 
 export interface SyntaxHighlighterProps {
   language: string;
-  children: ReactNode;
+  children: string;
 }
 
 /**
- * Component for rendering syntax highlighting in Markdown. This uses the
- * `PrismAsync` component to also code-split and lazy-load the highlighting
- * library since it's large library (About 2MB GZipped in dev mode).
- *
- * TODO If necessary, investigate ways to make loading this library faster.
- * Maybe we can use `PrismAsyncLight` and limit markdown syntax highlighting to
- * a smaller subset of languages for faster processing:
- * https://github.com/react-syntax-highlighter/react-syntax-highlighter#light-build
+ * Component for rendering syntax highlighting using the prism-react-renderer
+ * library:
+ * https://github.com/FormidableLabs/prism-react-renderer#faq
  */
 export function SyntaxHighlighter({
   children,
   language,
-  ...props
 }: SyntaxHighlighterProps) {
   return (
-    <Highlight
-      language={language}
-      showLineNumbers
-      // Themes aren't typed for some reason, so ignore unsafe assignment error
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      style={materialLight}
-      {...props}
-    >
-      {children}
-    </Highlight>
+    <>
+      <Head>
+        {/*
+          TODO Upgrade to Next.js 10.2+ for auto font optimization:
+          https://nextjs.org/docs/basic-features/font-optimization
+        */}
+        <link
+          href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap"
+          rel="stylesheet"
+        />
+      </Head>
+
+      <Highlight
+        {...defaultProps}
+        code={children}
+        language={language as Language}
+        // Explicitly pass `undefined` so that we can use a custom CSS theme:
+        // https://github.com/FormidableLabs/prism-react-renderer#faq
+        theme={undefined}
+      >
+        {({
+          className,
+          style,
+          tokens: rawTokens,
+          getLineProps,
+          getTokenProps,
+        }) => {
+          const tokens = transformTokens(rawTokens);
+
+          return (
+            <div className="grid grid-cols-[min-content,1fr]">
+              <LineNumbers count={tokens.length} />
+
+              <pre className={clsx(className, styles.code)} style={style}>
+                {tokens.map((line, index) => (
+                  <div {...getLineProps({ line, key: index })}>
+                    {line.map((token, key) => (
+                      <span {...getTokenProps({ token, key })} />
+                    ))}
+                  </div>
+                ))}
+              </pre>
+            </div>
+          );
+        }}
+      </Highlight>
+    </>
   );
 }

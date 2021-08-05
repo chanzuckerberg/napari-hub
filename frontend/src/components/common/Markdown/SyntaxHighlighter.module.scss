@@ -1,0 +1,199 @@
+.code:hover .copyButton {
+  @apply block;
+}
+
+/*
+  stylelint-disable
+    selector-class-pattern,
+    selector-no-qualifying-type,
+*/
+
+$code-theme-palette: (
+  background: #f7f7f7,
+  plainText: #000,
+  comments: #6f6f6f,
+  strings: #0074b8,
+  numbers: #227b81,
+  operators: #956441,
+  functions: #004166,
+  keywords: #7518a1,
+  classes: #5471a0,
+  selectionBackground: theme('backgroundColor.napari-light'),
+  selectionText: #000,
+);
+
+.lineNumbers {
+  background: map-get($code-theme-palette, 'background');
+  color: map-get($code-theme-palette, 'comments');
+}
+
+pre.code {
+  @apply text-base m-0 p-4 rounded-none;
+  @apply overflow-auto relative break-words;
+
+  background: map-get($code-theme-palette, 'background');
+  color: map-get($code-theme-palette, 'plainText');
+  font-family: 'JetBrains Mono', monospace;
+  hyphens: none;
+  tab-size: 2;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-wrap: normal;
+
+  ::selection,
+  &::selection {
+    background: map-get($code-theme-palette, 'selectionBackground');
+    color: map-get($code-theme-palette, 'selectionText');
+  }
+
+  :global .token {
+    &.atrule {
+      color: map-get($code-theme-palette, 'functions');
+    }
+
+    &.attr-name {
+      color: map-get($code-theme-palette, 'operators');
+    }
+
+    &.attr-value {
+      color: map-get($code-theme-palette, 'strings');
+    }
+
+    &.attribute {
+      color: map-get($code-theme-palette, 'strings');
+    }
+
+    &.boolean {
+      color: map-get($code-theme-palette, 'functions');
+    }
+
+    &.builtin {
+      color: map-get($code-theme-palette, 'operators');
+    }
+
+    &.cdata {
+      color: map-get($code-theme-palette, 'operators');
+    }
+
+    &.char {
+      color: map-get($code-theme-palette, 'operators');
+    }
+
+    &.class {
+      color: map-get($code-theme-palette, 'operators');
+    }
+
+    &.class-name {
+      color: map-get($code-theme-palette, 'classes');
+    }
+
+    &.comment {
+      color: map-get($code-theme-palette, 'comments');
+    }
+
+    &.constant {
+      color: map-get($code-theme-palette, 'functions');
+    }
+
+    &.deleted {
+      color: map-get($code-theme-palette, 'keywords');
+    }
+
+    &.doctype {
+      color: map-get($code-theme-palette, 'comments');
+    }
+
+    &.entity {
+      color: map-get($code-theme-palette, 'keywords');
+    }
+
+    &.function {
+      color: map-get($code-theme-palette, 'functions');
+    }
+
+    &.hexcode {
+      color: map-get($code-theme-palette, 'numbers');
+    }
+
+    &.id {
+      color: map-get($code-theme-palette, 'functions');
+      font-weight: bold;
+    }
+
+    &.important {
+      color: map-get($code-theme-palette, 'functions');
+      font-weight: bold;
+    }
+
+    &.inserted {
+      color: map-get($code-theme-palette, 'operators');
+    }
+
+    &.keyword {
+      color: map-get($code-theme-palette, 'functions');
+    }
+
+    &.number {
+      color: map-get($code-theme-palette, 'numbers');
+    }
+
+    &.operator {
+      color: map-get($code-theme-palette, 'operators');
+    }
+
+    &.prolog {
+      color: map-get($code-theme-palette, 'comments');
+    }
+
+    &.property {
+      color: map-get($code-theme-palette, 'operators');
+    }
+
+    &.pseudo-class {
+      color: map-get($code-theme-palette, 'strings');
+    }
+
+    &.pseudo-element {
+      color: map-get($code-theme-palette, 'strings');
+    }
+
+    &.punctuation {
+      color: map-get($code-theme-palette, 'operators');
+    }
+
+    &.regex {
+      color: map-get($code-theme-palette, 'classes');
+    }
+
+    &.selector {
+      color: map-get($code-theme-palette, 'keywords');
+    }
+
+    &.string {
+      color: map-get($code-theme-palette, 'strings');
+    }
+
+    &.symbol {
+      color: map-get($code-theme-palette, 'functions');
+    }
+
+    &.tag {
+      color: map-get($code-theme-palette, 'keywords');
+    }
+
+    &.unit {
+      color: map-get($code-theme-palette, 'numbers');
+    }
+
+    &.url {
+      color: map-get($code-theme-palette, 'keywords');
+    }
+
+    &.variable {
+      color: map-get($code-theme-palette, 'keywords');
+    }
+  }
+}
+
+/* stylelint-enable */

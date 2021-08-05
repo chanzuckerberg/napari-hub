@@ -12,9 +12,6 @@
   }
 
   pre {
-    // Show scrollbar along x-axis for really long code
-    @apply overflow-x-auto;
-
     // The Tailwind prose class adds a background around pre elements.
     background: none;
   }
