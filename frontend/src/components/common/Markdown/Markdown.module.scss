@@ -1,4 +1,14 @@
 .markdown {
+  code {
+    @apply text-base font-normal p-1;
+    background: #f7f7f7;
+
+    &::before,
+    &::after {
+      content: '';
+    }
+  }
+
   h2 {
     /*
       The designs requires a 35px margin between the heading and the top of
