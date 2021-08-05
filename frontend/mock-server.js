@@ -13,7 +13,7 @@ const app = express();
 
 app.get('/plugins', async (_, res) => {
   const versions = pluginIndex.reduce(
-    (result, { name }) => set(result, name, '0.0.0'),
+    (result, { name, version }) => set(result, name, version),
     {},
   );
 
