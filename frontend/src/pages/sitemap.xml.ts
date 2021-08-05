@@ -60,7 +60,9 @@ async function getPluginEntries() {
   try {
     const url = '/plugins';
     const { data } = await hubAPI.get<Record<string, string>>(url);
-    return Object.keys(data).map(getEntry);
+    return Object.keys(data)
+      .map((name) => `/plugins/${name}`)
+      .map(getEntry);
   } catch (err) {
     logger.error('Unable to fetch plugin list:', err);
   }
