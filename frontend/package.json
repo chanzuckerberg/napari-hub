@@ -10,7 +10,7 @@
     "dev:tsm": "tsm -w -e default -p.@ src 'src/**/*.module.scss'",
     "lint": "run-p lint:*",
     "lint:prettier": "prettier --check .",
-    "lint:stylelint": "stylelint **/*.scss",
+    "lint:stylelint": "stylelint '**/*.scss'",
     "lint:eslint": "run-p lint:client lint:src",
     "lint:client": "eslint --ignore-pattern src .",
     "lint:src": "eslint src",
