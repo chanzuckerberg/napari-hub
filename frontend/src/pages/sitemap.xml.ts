@@ -35,7 +35,7 @@ const HUB_URL_IGNORE_REGEX = /\/(_app|_error|next|sitemap.xml|robots.txt|plugins
 /**
  * @returns a list of non-plugin page hub sitemap entries.
  */
-async function getHubEntries() {
+async function getHubEntries(): Promise<SitemapEntry[]> {
   const { getBuildManifest } = await import('@/utils/next');
 
   try {
@@ -56,7 +56,7 @@ async function getHubEntries() {
 /**
  * @returns A list of all hub plugin sitemap entries using the plugin versions API.
  */
-async function getPluginEntries() {
+async function getPluginEntries(): Promise<SitemapEntry[]> {
   try {
     const url = '/plugins';
     const { data } = await hubAPI.get<Record<string, string>>(url);
@@ -73,7 +73,7 @@ async function getPluginEntries() {
 /**
  * @returns XML string for the dynamic sitemap
  */
-async function renderSiteMap() {
+async function renderSiteMap(): Promise<string> {
   const { SitemapStream, streamToPromise } = await import('sitemap');
 
   const entries: SitemapEntry[] = (
