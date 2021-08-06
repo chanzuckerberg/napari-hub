@@ -6,6 +6,7 @@ from backend.napari import get_plugin
 from backend.napari import get_plugins
 from backend.napari import get_download_url
 from backend.napari import get_license
+from backend.napari import get_citation
 
 
 class FakeResponse:
@@ -201,3 +202,69 @@ no_license_response = """
 def test_github_no_assertion_license(mock_get):
     result = get_license("test_website")
     assert result is None
+
+
+def test_valid_citation():
+    citation_string = """# YAML 1.2
+---
+abstract: "Test"
+authors:
+  -
+    affiliation: "Test Center"
+    family-names: Fa
+    given-names: Gi N.
+    orcid: https://orcid.org/0000-0000-0000-0000
+  -
+    affiliation: "Test Center 2"
+    family-names: Family
+    given-names: Given
+cff-version: "1.0.3"
+date-released: 2019-11-12
+doi: 10.0000/something.0000000
+keywords:
+  - "citation"
+  - "test"
+  - "cff"
+  - "CITATION.cff"
+license: Apache-2.0
+message: "If you use this software, please cite it using these metadata."
+repository-code: "https://example.com/example"
+title: testing
+version: "0.0.0"
+"""
+    citation = get_citation(citation_string)
+    assert citation['citation'] == citation_string
+    assert citation['RIS'] == """TY  - COMP
+AU  - Fa, Gi N.
+AU  - Family, Given
+DO  - 10.0000/something.0000000
+KW  - citation
+KW  - test
+KW  - cff
+KW  - CITATION.cff
+M3  - software
+PB  - GitHub Inc.
+PP  - San Francisco, USA
+PY  - 2019/11/12
+T1  - testing
+UR  - https://example.com/example
+ER  -
+"""
+    assert citation['BibTex'] == """@misc{YourReferenceHere,
+author = {
+            Gi N. Fa and
+            Given Family
+         },
+title  = {testing},
+month  = {11},
+year   = {2019},
+doi    = {10.0000/something.0000000},
+url    = {https://example.com/example}
+}
+"""
+
+
+def test_invalid_citation():
+    citation_str = """Ha? What is this?"""
+    citations = get_citation(citation_str)
+    assert citations['citation'] is None

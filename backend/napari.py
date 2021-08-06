@@ -21,6 +21,7 @@ from requests.utils import requote_uri
 import boto3
 from botocore.exceptions import ClientError
 from google.cloud import bigquery
+from cffconvert.citation import Citation
 
 # Environment variable set through lambda terraform infra config
 bucket = os.environ.get('BUCKET')
@@ -164,11 +165,31 @@ def get_extra_metadata(download_url: str) -> dict:
         config = yaml.safe_load(yaml_file)
         extra_metadata.update(config)
 
-    citation = get_file(download_url, "CITATION.cff")
-    if citation is not None:
-        extra_metadata['citation'] = citation
+    citation_file = get_file(download_url, "CITATION.cff")
+    if citation_file is not None:
+        extra_metadata['citations'] = (get_citation(citation_file))
 
     return extra_metadata
+
+
+def get_citation(citation_str: str) -> dict:
+    """
+    Get citation information from the string.
+    :param citation_str: citation string to parse
+    :return: citation dictionary with parsed citation of different formats
+    """
+    citations = {}
+    try:
+        citation = Citation(cffstr=citation_str)
+        citations['citation'] = citation_str
+        citations['RIS'] = citation.as_ris()
+        citations['BibTex'] = citation.as_bibtex()
+    except ValueError:
+        # invalid CITATION.cff content
+        citations['citation'] = None
+        citations['RIS'] = None
+        citations['BibTex'] = None
+    return citations
 
 
 def get_license(url: str) -> [str, None]:
@@ -210,6 +231,7 @@ def get_download_url(plugin: dict) -> [str, None]:
                         return github_pattern.match(url).group(0)
     return None
 
+
 def render_description(description: str) -> str:
     if description != '':
         html = markdown(description)
@@ -248,7 +270,7 @@ def format_plugin(plugin: dict) -> dict:
         "authors": extra_metadata.get('authors', [{'name': get_attribute(plugin, ["info", "author"]),
                                                    'email': get_attribute(plugin, ["info", "author_email"])}]),
         "license": extra_metadata.get('license', get_attribute(plugin, ["info", "license"])),
-        "citation": extra_metadata.get('citation'),
+        "citations": extra_metadata.get('citations'),
         "python_version": get_attribute(plugin, ["info", "requires_python"]),
         "operating_system": filter_prefix(
             get_attribute(plugin, ["info", "classifiers"]),
