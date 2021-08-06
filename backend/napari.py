@@ -131,7 +131,6 @@ def get_file(download_url: str, file: str) -> [dict, None]:
                                    "https://raw.githubusercontent.com/")
     try:
         url = f'{api_url}/HEAD/{file}'
-        print(url)
         response = requests.get(url)
         if response.status_code != requests.codes.ok:
             response.raise_for_status()
@@ -164,6 +163,10 @@ def get_extra_metadata(download_url: str) -> dict:
     if yaml_file:
         config = yaml.safe_load(yaml_file)
         extra_metadata.update(config)
+
+    citation = get_file(download_url, "CITATION.cff")
+    if citation is not None:
+        extra_metadata['citation'] = citation
 
     return extra_metadata
 
@@ -245,6 +248,7 @@ def format_plugin(plugin: dict) -> dict:
         "authors": extra_metadata.get('authors', [{'name': get_attribute(plugin, ["info", "author"]),
                                                    'email': get_attribute(plugin, ["info", "author_email"])}]),
         "license": extra_metadata.get('license', get_attribute(plugin, ["info", "license"])),
+        "citation": extra_metadata.get('citation'),
         "python_version": get_attribute(plugin, ["info", "requires_python"]),
         "operating_system": filter_prefix(
             get_attribute(plugin, ["info", "classifiers"]),
