@@ -20,8 +20,8 @@ const PAGE_METADATA = {
       'algorithm',
     ],
     description:
-      'A site for napari plugins. Discover plugins that solve your image analysis' +
-      'challenges, learn how to install into napari, and share image analysis' +
+      'A site for napari plugins. Discover plugins that solve your image analysis ' +
+      'challenges, learn how to install into napari, and share image analysis ' +
       'tools with napari’s growing community.',
   },
 
@@ -29,9 +29,9 @@ const PAGE_METADATA = {
     regex: /^\/about$/,
     keywords: [...COMMON_KEYWORDS, 'about'],
     description:
-      'The napari hub is a service of the Chan Zuckerberg Initiative in' +
+      'The napari hub is a service of the Chan Zuckerberg Initiative in ' +
       'collaboration with napari.\n' +
-      'The napari hub seeks to solve many of the challenges and needs in finding' +
+      'The napari hub seeks to solve many of the challenges and needs in finding ' +
       'analysis solutions to bioimaging problems.',
   },
 
@@ -39,8 +39,8 @@ const PAGE_METADATA = {
     regex: /^\/contact$/,
     keywords: [...COMMON_KEYWORDS, 'contact'],
     description:
-      'If you would like to contact the napari hub team, you can do so in a' +
-      'variety of ways. For help with or ideas for the napari hub, please check' +
+      'If you would like to contact the napari hub team, you can do so in a ' +
+      'variety of ways. For help with or ideas for the napari hub, please check ' +
       'out the discussion board.',
   },
 
@@ -56,9 +56,9 @@ const PAGE_METADATA = {
       'question',
     ],
     description:
-      'We hope these questions will help you in your napari plugin journey! We' +
-      'endeavour to update this regularly. If you need additional information or' +
-      'assistance, check out the Contact page or you can reach a human at' +
+      'We hope these questions will help you in your napari plugin journey! We ' +
+      'endeavour to update this regularly. If you need additional information or ' +
+      'assistance, check out the Contact page or you can reach a human at ' +
       'team@napari-hub.org.',
   },
 
