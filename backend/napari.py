@@ -167,12 +167,12 @@ def get_extra_metadata(download_url: str) -> dict:
 
     citation_file = get_file(download_url, "CITATION.cff")
     if citation_file is not None:
-        extra_metadata['citations'] = (get_citation(citation_file))
+        extra_metadata['citations'] = get_citations(citation_file)
 
     return extra_metadata
 
 
-def get_citation(citation_str: str) -> dict:
+def get_citations(citation_str: str) -> dict:
     """
     Get citation information from the string.
     :param citation_str: citation string to parse
