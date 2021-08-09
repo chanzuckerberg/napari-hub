@@ -21,7 +21,14 @@ function PluginCenterColumn() {
   const { plugin } = usePluginState();
 
   return (
-    <article className="w-full col-span-2 screen-875:col-span-3">
+    <article
+      className={clsx(
+        'w-full col-span-2 row-start-1',
+        'screen-875:col-span-3',
+        'screen-1150:col-start-1',
+        'screen-1425:col-start-2',
+      )}
+    >
       <SkeletonLoader
         className="h-12"
         render={() => <h1 className="font-bold text-4xl">{plugin.name}</h1>}
@@ -110,7 +117,10 @@ function PluginRightColumn() {
   const plausible = usePlausible();
 
   return (
-    <Media greaterThanOrEqual="2xl">
+    <Media
+      className="col-start-4 screen-1425:col-start-5"
+      greaterThanOrEqual="2xl"
+    >
       {/*  Keep CTA button and TOC on screen when scrolling on 2xl. */}
       <div className="sticky top-12">
         <CallToActionButton />
@@ -143,8 +153,17 @@ export function PluginDetails() {
   return (
     <ColumnLayout className="p-6 md:p-12 2xl:px-0" data-testid="pluginDetails">
       <PluginLeftColumn />
-      <PluginCenterColumn />
+      {/*
+        The markup for the right column is placed before the center column so
+        that keyboard navigation focuses on the right column before the main
+        column since the main column can be very long.
+
+        A good example of this is implemented on the W3C site:
+        https://www.w3.org/WAI/tutorials/menus/flyout. When tabbing through the
+        site, it focuses on the table of contents before the main content.
+      */}
       <PluginRightColumn />
+      <PluginCenterColumn />
     </ColumnLayout>
   );
 }

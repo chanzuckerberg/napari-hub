@@ -23,18 +23,18 @@ describe('Plugin filter-by section', () => {
       <PluginFilterBySection title={title} filters={filters} />,
     );
 
-    expect(getByTestId('title').innerHTML).toBe(title);
+    expect(getByTestId('filterCheckboxTitle').innerHTML).toBe(title);
 
-    const inputs = getAllByTestId('input');
+    const filterCheckboxes = getAllByTestId('filterCheckbox');
 
-    expect(inputs).toHaveLength(filters.length);
+    expect(filterCheckboxes).toHaveLength(filters.length);
 
-    (zip(filters, inputs) as Array<[FilterItem, HTMLElement]>).forEach(
-      ([filter, input]) => {
-        expect(input.lastElementChild?.innerHTML).toBe(filter.label);
-        expect(input.querySelector('input')?.checked).toBe(filter.enabled);
-      },
-    );
+    (zip(filters, filterCheckboxes) as Array<
+      [FilterItem, HTMLElement]
+    >).forEach(([filter, input]) => {
+      expect(input.lastElementChild?.innerHTML).toBe(filter.label);
+      expect(input.querySelector('input')?.checked).toBe(filter.enabled);
+    });
   });
 
   it('should call setEnabled when checked', () => {
@@ -55,17 +55,17 @@ describe('Plugin filter-by section', () => {
       <PluginFilterBySection title="test" filters={filters} />,
     );
 
-    const inputs = getAllByTestId('input');
+    const filterCheckboxes = getAllByTestId('filterCheckbox');
 
-    expect(inputs).toHaveLength(filters.length);
+    expect(filterCheckboxes).toHaveLength(filters.length);
 
-    (zip(filters, inputs) as Array<[FilterItem, HTMLElement]>).forEach(
-      ([filter, input]) => {
-        const checkbox = input.querySelector('input');
-        expect(checkbox).not.toBeUndefined();
-        fireEvent.click(checkbox as HTMLElement);
-        expect(filter.setEnabled).toHaveBeenCalledWith(!filter.enabled);
-      },
-    );
+    (zip(filters, filterCheckboxes) as Array<
+      [FilterItem, HTMLElement]
+    >).forEach(([filter, input]) => {
+      const checkbox = input.querySelector('input');
+      expect(checkbox).not.toBeUndefined();
+      fireEvent.click(checkbox as HTMLElement);
+      expect(filter.setEnabled).toHaveBeenCalledWith(!filter.enabled);
+    });
   });
 });

@@ -241,8 +241,122 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
       </ul>
     </div>
   </div>
+  <div
+    class="fresnel-container fresnel-greaterThanOrEqual-2xl col-start-4 screen-1425:col-start-5"
+  >
+    <div
+      class="sticky top-12"
+    >
+      <button
+        class="bg-napari-primary h-12 w-full screen-600:max-w-napari-col"
+        type="button"
+      >
+        Install
+      </button>
+      <ul
+        class="mt-9 flex flex-col border-l border-black"
+      >
+        <li
+          class="flex pl-6 border-l-4 min-h-6 h-auto my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
+          data-active="false"
+          data-testid="tocItem"
+        >
+          <a
+            class=""
+            href="#description"
+          >
+            Description
+          </a>
+        </li>
+        <li
+          class="flex pl-6 border-l-4 min-h-6 h-auto my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
+          data-active="false"
+          data-testid="tocItem"
+        >
+          <a
+            class=""
+            href="#writers"
+          >
+            Writers
+          </a>
+        </li>
+        <li
+          class="flex pl-6 border-l-4 min-h-6 h-auto my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
+          data-active="false"
+          data-testid="tocItem"
+        >
+          <a
+            class=""
+            href="#readers"
+          >
+            Readers
+          </a>
+        </li>
+        <li
+          class="flex pl-6 border-l-4 min-h-6 h-auto my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
+          data-active="false"
+          data-testid="tocItem"
+        >
+          <a
+            class=""
+            href="#zmeta"
+          >
+            .zmeta
+          </a>
+        </li>
+        <li
+          class="flex pl-6 border-l-4 min-h-6 h-auto my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
+          data-active="false"
+          data-testid="tocItem"
+        >
+          <a
+            class=""
+            href="#installation"
+          >
+            Installation
+          </a>
+        </li>
+        <li
+          class="flex pl-6 border-l-4 min-h-6 h-auto my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
+          data-active="false"
+          data-testid="tocItem"
+        >
+          <a
+            class=""
+            href="#contributing"
+          >
+            Contributing
+          </a>
+        </li>
+        <li
+          class="flex pl-6 border-l-4 min-h-6 h-auto my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
+          data-active="false"
+          data-testid="tocItem"
+        >
+          <a
+            class=""
+            href="#license"
+          >
+            License
+          </a>
+        </li>
+        <li
+          class="flex pl-6 border-l-4 min-h-6 h-auto my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-black"
+          data-active="true"
+          data-testid="tocItem"
+        >
+          <a
+            class="font-bold"
+            href="#issues"
+          >
+            Issues
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
   <article
-    class="w-full col-span-2 screen-875:col-span-3"
+    class="w-full col-span-2 row-start-1 screen-875:col-span-3 screen-1150:col-start-1 screen-1425:col-start-2"
   >
     <h1
       class="font-bold text-4xl"
@@ -1494,119 +1608,5 @@ the coverage at least stays the same before you submit a pull request.
       </ul>
     </div>
   </article>
-  <div
-    class="fresnel-container fresnel-greaterThanOrEqual-2xl "
-  >
-    <div
-      class="sticky top-12"
-    >
-      <button
-        class="bg-napari-primary h-12 w-full screen-600:max-w-napari-col"
-        type="button"
-      >
-        Install
-      </button>
-      <ul
-        class="mt-9 flex flex-col border-l border-black"
-      >
-        <li
-          class="flex pl-6 border-l-4 min-h-6 h-auto my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
-          data-active="false"
-          data-testid="tocItem"
-        >
-          <a
-            class=""
-            href="#description"
-          >
-            Description
-          </a>
-        </li>
-        <li
-          class="flex pl-6 border-l-4 min-h-6 h-auto my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
-          data-active="false"
-          data-testid="tocItem"
-        >
-          <a
-            class=""
-            href="#writers"
-          >
-            Writers
-          </a>
-        </li>
-        <li
-          class="flex pl-6 border-l-4 min-h-6 h-auto my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
-          data-active="false"
-          data-testid="tocItem"
-        >
-          <a
-            class=""
-            href="#readers"
-          >
-            Readers
-          </a>
-        </li>
-        <li
-          class="flex pl-6 border-l-4 min-h-6 h-auto my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
-          data-active="false"
-          data-testid="tocItem"
-        >
-          <a
-            class=""
-            href="#zmeta"
-          >
-            .zmeta
-          </a>
-        </li>
-        <li
-          class="flex pl-6 border-l-4 min-h-6 h-auto my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
-          data-active="false"
-          data-testid="tocItem"
-        >
-          <a
-            class=""
-            href="#installation"
-          >
-            Installation
-          </a>
-        </li>
-        <li
-          class="flex pl-6 border-l-4 min-h-6 h-auto my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
-          data-active="false"
-          data-testid="tocItem"
-        >
-          <a
-            class=""
-            href="#contributing"
-          >
-            Contributing
-          </a>
-        </li>
-        <li
-          class="flex pl-6 border-l-4 min-h-6 h-auto my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
-          data-active="false"
-          data-testid="tocItem"
-        >
-          <a
-            class=""
-            href="#license"
-          >
-            License
-          </a>
-        </li>
-        <li
-          class="flex pl-6 border-l-4 min-h-6 h-auto my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-black"
-          data-active="true"
-          data-testid="tocItem"
-        >
-          <a
-            class="font-bold"
-            href="#issues"
-          >
-            Issues
-          </a>
-        </li>
-      </ul>
-    </div>
-  </div>
 </div>
 `;
