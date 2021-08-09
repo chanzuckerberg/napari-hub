@@ -37,6 +37,7 @@ module.exports = {
 
       colors: {
         'napari-primary': colors.primary,
+        'napari-lynx-white': colors.lynxWhite,
         'napari-hover': colors.hover,
         'napari-hover-gray': colors.hoverGray,
         'napari-light': colors.light,
