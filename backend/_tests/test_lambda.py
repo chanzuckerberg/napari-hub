@@ -6,7 +6,7 @@ from backend.napari import get_plugin
 from backend.napari import get_plugins
 from backend.napari import get_download_url
 from backend.napari import get_license
-from backend.napari import get_citation
+from backend.napari import get_citations
 
 
 class FakeResponse:
@@ -232,7 +232,7 @@ repository-code: "https://example.com/example"
 title: testing
 version: "0.0.0"
 """
-    citation = get_citation(citation_string)
+    citation = get_citations(citation_string)
     assert citation['citation'] == citation_string
     assert citation['RIS'] == """TY  - COMP
 AU  - Fa, Gi N.
@@ -266,5 +266,5 @@ url    = {https://example.com/example}
 
 def test_invalid_citation():
     citation_str = """Ha? What is this?"""
-    citations = get_citation(citation_str)
+    citations = get_citations(citation_str)
     assert citations['citation'] is None
