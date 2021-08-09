@@ -33,7 +33,7 @@ module.exports = {
 
     // Allow for-of loops since most browsers support it now.
     'no-restricted-syntax': config.rules['no-restricted-syntax'].filter(
-      (rule) => rule.selector === 'ForOfStatement',
+      (rule) => rule.selector !== 'ForOfStatement',
     ),
   },
 };
