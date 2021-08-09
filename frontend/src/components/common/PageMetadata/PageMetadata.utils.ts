@@ -83,13 +83,12 @@ interface PageMetadata {
 export function getPageMetadata(pathname: string): PageMetadata | null {
   let metadata: PageMetadata | null = null;
 
-  Object.values(PAGE_METADATA).some(({ regex, ...currentMetadata }) => {
+  for (const { regex, ...currentMetadata } of Object.values(PAGE_METADATA)) {
     if (regex.exec(pathname)) {
       metadata = currentMetadata;
+      break;
     }
-
-    return metadata;
-  });
+  }
 
   return metadata;
 }
