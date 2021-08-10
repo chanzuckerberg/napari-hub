@@ -66,7 +66,7 @@ export function FilterChips({ className }: Props) {
         {filter?.chips.map(({ id, key, subKey }) => (
           <li className="inline-block my-1 ml-1 text-black" key={id}>
             <Chip
-              className="pr-1 bg-napari-lynx-white"
+              className="pr-1 bg-napari-hover-gray"
               label={
                 <>
                   <span>{KEY_LABELS[key]}</span>

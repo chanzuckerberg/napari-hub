@@ -42,7 +42,7 @@ export function PluginSearchResultList() {
         />
       </h3>
 
-      <FilterChips className="h-6 my-5" />
+      <FilterChips className="my-5 h-6" />
 
       <ColumnLayout
         classes={{
