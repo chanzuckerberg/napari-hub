@@ -9,13 +9,13 @@
     opacity: 1;
   }
 
+  &::before {
+    background-color: #000;
+  }
+
   &.expanded + & {
     &::before {
       display: initial;
     }
-  }
-
-  &::before {
-    background-color: #000;
   }
 }

@@ -14,3 +14,9 @@ rules:
   selector-class-pattern:
     - ^[a-z][a-zA-Z0-9]+$
     - message: 'Classes should be camelCase'
+
+  max-nesting-depth:
+    - 3
+    - ignore:
+        - blockless-at-rules
+        - pseudo-classes

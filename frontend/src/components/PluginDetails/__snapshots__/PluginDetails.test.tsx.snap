@@ -1193,7 +1193,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
 
       <pre>
         <code
-          language=""
+          language="json"
           node="[object Object]"
         >
           {

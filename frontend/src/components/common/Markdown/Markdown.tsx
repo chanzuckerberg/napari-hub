@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import schema from 'hast-util-sanitize/lib/github.json';
 import ReactMarkdown, { PluggableList, TransformOptions } from 'react-markdown';
 import raw from 'rehype-raw';
 import sanitize from 'rehype-sanitize';
@@ -38,7 +39,17 @@ const REHYPE_PLUGINS: PluggableList = [
   raw,
 
   // Sanitize inner HTML
-  sanitize,
+  [
+    sanitize,
+    {
+      ...schema,
+      attributes: {
+        ...schema.attributes,
+        // Enable class names for code blocks
+        code: ['className'],
+      },
+    },
+  ],
 
   // Add slug IDs to every heading.
   slug,
