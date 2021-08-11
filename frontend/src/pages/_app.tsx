@@ -152,10 +152,10 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta name="viewport" content="width=device-width,initial-scale=1" />
 
         {/*
-          Disable indexing for non-prod and non-staging deployments.
+          Disable indexing for non-production deployments.
           https://developers.google.com/search/docs/advanced/crawling/block-indexing
         */}
-        {!PROD && !STAGING && <meta name="robots" content="noindex" />}
+        {!PROD && <meta name="robots" content="noindex" />}
 
         {
           // Preload Barlow fonts. See fonts.scss for more info.
