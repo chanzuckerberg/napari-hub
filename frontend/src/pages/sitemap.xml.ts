@@ -1,6 +1,7 @@
 import { GetServerSideProps } from 'next';
 
 import { hubAPI } from '@/axios';
+import { PluginIndexData } from '@/types';
 import { Logger } from '@/utils';
 
 const logger = new Logger('sitemap.xml.ts');
@@ -10,24 +11,16 @@ const logger = new Logger('sitemap.xml.ts');
  * interface can be found here: https://git.io/JBBxu
  */
 interface SitemapEntry {
+  /**
+   * The URL to be crawled by the search engine.
+   */
   url: string;
-  changefreq?:
-    | 'always'
-    | 'hourly'
-    | 'daily'
-    | 'weekly'
-    | 'monthly'
-    | 'yearly'
-    | 'never';
-  priority?: number;
-}
 
-function getEntry(url: string): SitemapEntry {
-  return {
-    url,
-    changefreq: 'daily',
-    priority: 0.7,
-  };
+  /**
+   * The last time this page was modified. This is an optional field and is used
+   * by Google if available.
+   */
+  lastmod?: string;
 }
 
 const HUB_URL_IGNORE_REGEX = /\/(_app|_error|next|sitemap.xml|robots.txt|plugins\/\[name\])/;
@@ -44,7 +37,7 @@ async function getHubEntries(): Promise<SitemapEntry[]> {
     if (manifest) {
       return Object.keys(manifest.pages)
         .filter((url) => !HUB_URL_IGNORE_REGEX.exec(url))
-        .map(getEntry);
+        .map((url) => ({ url }));
     }
   } catch (err) {
     logger.error('Unable to read Next.js build manifest:', err);
@@ -54,15 +47,21 @@ async function getHubEntries(): Promise<SitemapEntry[]> {
 }
 
 /**
- * @returns A list of all hub plugin sitemap entries using the plugin versions API.
+ * @returns A list of all hub plugin sitemap entries using the plugin index API.
  */
 async function getPluginEntries(): Promise<SitemapEntry[]> {
   try {
-    const url = '/plugins';
-    const { data } = await hubAPI.get<Record<string, string>>(url);
-    return Object.keys(data)
-      .map((name) => `/plugins/${name}`)
-      .map(getEntry);
+    const { data } = await hubAPI.get<PluginIndexData[]>('/plugins/index');
+
+    return data.map((plugin) => {
+      const url = `/plugins/${plugin.name}`;
+      const lastmod = new Date(plugin.release_date).toISOString();
+
+      return {
+        url,
+        lastmod,
+      };
+    });
   } catch (err) {
     logger.error('Unable to fetch plugin list:', err);
   }
