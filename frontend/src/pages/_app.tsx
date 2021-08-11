@@ -21,7 +21,7 @@ import { Hydrate } from 'react-query/hydration';
 import { Layout } from '@/components';
 import { MediaContextProvider } from '@/components/common/media';
 import { LoadingStateProvider } from '@/context/loading';
-import { PROD, STAGING } from '@/env';
+import { PROD } from '@/env';
 import { usePageTransitions } from '@/hooks';
 import SearchPage from '@/pages/index';
 import PluginPage from '@/pages/plugins/[name]';
