@@ -1,4 +1,5 @@
 const { resolve } = require('path');
+const config = require('eslint-config-airbnb-base/rules/style');
 
 module.exports = {
   parserOptions: {
@@ -29,5 +30,10 @@ module.exports = {
     // Let ESlint sort our imports for us so we don't have to think about it.
     'simple-import-sort/exports': 'error',
     'simple-import-sort/imports': 'error',
+
+    // Allow for-of loops since most browsers support it now.
+    'no-restricted-syntax': config.rules['no-restricted-syntax'].filter(
+      (rule) => rule.selector !== 'ForOfStatement',
+    ),
   },
 };

@@ -5,6 +5,7 @@ export * from './ErrorMessage';
 export * from './Link';
 export * from './Markdown';
 export * from './Overlay';
+export * from './PageMetadata';
 export * from './SkeletonLoader';
 export * from './TableOfContents';
 export * from './TextHighlighter';
