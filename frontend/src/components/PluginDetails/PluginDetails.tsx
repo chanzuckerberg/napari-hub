@@ -50,7 +50,7 @@ function PluginCenterColumn() {
           'lg:flex-row lg:items-center',
 
           // Margins
-          'my-6 screen-495:mt-12 screen-600:mb-12',
+          'my-6 screen-495:mt-30 screen-600:mb-12',
         )}
         lessThan="3xl"
       >
