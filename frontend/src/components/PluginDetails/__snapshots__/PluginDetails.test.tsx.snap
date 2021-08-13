@@ -369,7 +369,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
       Plugin exploring different options for reading and writing compressed and portable labels layers in napari.
     </h2>
     <div
-      class="fresnel-container fresnel-lessThan-3xl flex flex-col lg:flex-row lg:items-center my-6 screen-495:mt-12 screen-600:mb-12"
+      class="fresnel-container fresnel-lessThan-3xl flex flex-col lg:flex-row lg:items-center my-6 screen-495:mt-30 screen-600:mb-12"
     >
       <button
         class="fresnel-lessThan-2xl bg-napari-primary h-12 w-full screen-600:max-w-napari-col"
