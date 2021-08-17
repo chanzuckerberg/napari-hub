@@ -85,10 +85,7 @@ export function useActiveHeader(headers: TOCHeader[]) {
         return;
       }
 
-      // If user reaches the bottom, set the last header as selected.
-      if (window.innerHeight + window.scrollY >= document.body.scrollHeight) {
-        setActiveHeader(headers[headers.length - 1].id);
-      } else if (Math.floor(firstHeaderTop) <= TOP_OFFSET_PX) {
+      if (Math.floor(firstHeaderTop) <= TOP_OFFSET_PX) {
         setActiveHeader(firstHeader.id);
       } else {
         // If the first header in the viewport is greater than the offset, then the
