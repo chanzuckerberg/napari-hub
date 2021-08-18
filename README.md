@@ -58,7 +58,7 @@ We're a cross-functional product team in the [Imaging Program at the Chan Zucker
 - Draga Doncila Pop, Engineering ([@DragaDoncila](https://github.com/DragaDoncila))
 - Kira Evans, Engineering ([@kne42](https://github.com/kne42))
 - Justin Kiggins, Product ([@neuromusic](https://github.com/neuromusic))
-- Kevin Lai, Engineering ([@klai](ttps://github.com/klai))
+- Kevin Lai, Engineering ([@klai95](ttps://github.com/klai))
 - Justine Larsen, Engineering ([@justinelarsen](https://github.com/justinelarsen))
 - Ziyang Liu, Engineering ([@ziyangczi](https://github.com/ziyangczi))
 - Lucy Obus, User Experience ([@LCObus](https://github.com/LCObus))
