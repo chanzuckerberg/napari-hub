@@ -5,44 +5,60 @@
 [![backend tests status](https://github.com/chanzuckerberg/napari-hub/actions/workflows/backend-tests.yml/badge.svg)](https://github.com/chanzuckerberg/napari-hub/actions/workflows/backend-tests.yml?query=branch%3Amain)
 
 
-The [napari hub](https://www.napari-hub.org) lets napari users find community-built plugins that solve their analysis needs.  It hosts a growing ecosystem of plugins for segmentation, tracking, detection, registration, file loading, and more. 
+The [napari hub](https://www.napari-hub.org) lets napari users find community-built plugins that solve their analysis needs.  It hosts a growing ecosystem of plugins for segmentation, tracking, detection, registration, file loading, and more.
 
-Our vision is to support the imaging community by ensuring that researchers can easily find plugins that meet their needs and be confident that they will work and work together to support reproducible workflows. 
-We want to let plugin developers identify unmet needs in the ecosystem, capture actionable feedback to improve their plugins, and communicate the impact of their work to their funders.
+## Our goal
 
-## Contributing
+We seek to support the napari community by seeding and growing a healthy ecosystem of napari plugins that enable the imaging community to perform advanced analysis of imaging and microscopy data sets within napari’s rich interactive interface. To do make this happen, we need to
 
-No matter whether you're a user or developer of plugins, there are lots of ways that you can help us make the napari hub even better!
+1. enable the **bioimaging analysis community** to easily build, share and maintain napari plugins
+2. make it easy for **biology researchers** and **imaging scientists** to find, evaluate, and install these plugins
+3. make sure that **plugin developers** can get feedback for improvement and credit for their work
+
+## **What are we building now?**
+
+Over the second half of 2021, we are committed to...
+
+* **Improve** the process of finding, evaluating, and installing napari plugins
+* **Lower barriers** for plugin developers to build, share, and maintain their plugins
+* **Learn** more about what metrics give plugin users signal about quality and give plugin developers actionable feedback
+
+You can find our roadmap and other insights into our process (UXR studies, tech specs, designs, and more) by visiting the [_napari hub’s wiki._](https://github.com/chanzuckerberg/napari-hub/wiki)
+
+## How can you help?
+
+Interested in helping us grow a thriving community of plugins for napari? There are a few ways you can get involved.
 
 ### Join a UXR session
 
-No matter whether you are a user of creator of napari plugins, we want to make sure the napari hub makes your life easier. [Sign up for our UXR list](https://airtable.com/shr0hPRlLfYcnmVJk) and we'll reach out when there's a UXR session when you can give us feedback on concepts and prototypes.
+We rely heavily on User Experience Research to understand the needs and challenges of the bioimaging community, identify opportunities for solutions to these challenges, and get feedback on our work. Whether you’re a bench scientist, work at an imaging core, or develop computational methods, sign up here and we’ll reach out when there’s an interview, focus group, or workshop that matches your background.
 
 ### Share your ideas
 
-Do you have ideas for new features that would help make the napari hub even better? [Join the discussion](https://github.com/chanzuckerberg/napari-hub/discussions/categories/ideas), [add your ideas](https://github.com/chanzuckerberg/napari-hub/discussions/new?category=ideas), and give feedback on other’s ideas.
+Do you have ideas for new features that would help make the napari hub even better? [Join the discussion](https://github.com/chanzuckerberg/napari-hub/discussions/categories/ideas), add your ideas, and give feedback on other’s ideas.
 
 ### Report any bugs
 
-Something not working the way it should? [Let us know!](https://github.com/chanzuckerberg/napari-hub/issues/new?assignees=&labels=bug&template=bug_report.md&title=)
+Bugs happen. If something isn’t working right for you on the hub, please let us know by [submitting an issue](https://github.com/chanzuckerberg/napari-hub/issues).
 
 ### Help with open issues
 
-Do you want to contribute code? Check out our [good first issues](https://github.com/chanzuckerberg/napari-hub/contribute) & contributing guide if you'd like to help.
+Are you savvy with web development and want to contribute code? We’d love your help tackling some of the “[good first issues](https://github.com/chanzuckerberg/napari-hub/contribute)” we’ve tagged.
+
 
 ### Get involved in the napari community
 
 There are lots of opportunities to get involved with our partners in the napari project.  
 
-
 ## Team
 
-We're a cross-functional product team at the Chan Zuckerberg Initiative Foundation.
+We're a cross-functional product team in the [Imaging Program at the Chan Zuckerberg Initiative](https://chanzuckerberg.com/science/programs-resources/imaging/).
 
 - Jeremy Asuncion, Engineering ([@codemonkey800](https://github.com/codemonkey800))
 - Draga Doncila Pop, Engineering ([@DragaDoncila](https://github.com/DragaDoncila))
 - Kira Evans, Engineering ([@kne42](https://github.com/kne42))
 - Justin Kiggins, Product ([@neuromusic](https://github.com/neuromusic))
+- Kevin Lai, Engineering ([@klai](ttps://github.com/klai))
 - Justine Larsen, Engineering ([@justinelarsen](https://github.com/justinelarsen))
 - Ziyang Liu, Engineering ([@ziyangczi](https://github.com/ziyangczi))
 - Lucy Obus, User Experience ([@LCObus](https://github.com/LCObus))
