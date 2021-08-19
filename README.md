@@ -5,7 +5,7 @@
 [![backend tests status](https://github.com/chanzuckerberg/napari-hub/actions/workflows/backend-tests.yml/badge.svg)](https://github.com/chanzuckerberg/napari-hub/actions/workflows/backend-tests.yml?query=branch%3Amain)
 
 
-The [napari hub](https://www.napari-hub.org) lets napari users find community-built plugins that solve their analysis needs.  It hosts a growing ecosystem of plugins for segmentation, tracking, detection, registration, file loading, and more.
+The [napari hub](https://www.napari-hub.org) lets [napari](https://napari.org) users find community-built plugins that solve their analysis needs.  It hosts a growing ecosystem of plugins for segmentation, tracking, detection, registration, file loading, and more.
 
 ## Our goal
 
@@ -23,7 +23,7 @@ Over the second half of 2021, we are committed to...
 * **Lower barriers** for plugin developers to build, share, and maintain their plugins
 * **Learn** more about what metrics give plugin users signal about quality and give plugin developers actionable feedback
 
-You can find our roadmap and other insights into our process (UXR studies, tech specs, designs, and more) by visiting the [_napari hub’s wiki._](https://github.com/chanzuckerberg/napari-hub/wiki)
+You can find our roadmap and other insights into our process (UXR studies, tech specs, designs, and more) by visiting the [napari hub’s wiki.](https://github.com/chanzuckerberg/napari-hub/wiki)
 
 ## How can you help?
 
@@ -35,7 +35,7 @@ We rely heavily on User Experience Research to understand the needs and challeng
 
 ### Share your ideas
 
-Do you have ideas for new features that would help make the napari hub even better? [Join the discussion](https://github.com/chanzuckerberg/napari-hub/discussions/categories/ideas), add your ideas, and give feedback on other’s ideas.
+Do you have ideas for new features that would help make the napari hub even better? [Join the discussion](https://github.com/chanzuckerberg/napari-hub/discussions), add [your ideas](https://github.com/chanzuckerberg/napari-hub/discussions/categories/ideas), and give feedback on other’s ideas.
 
 ### Report any bugs
 
@@ -58,7 +58,7 @@ We're a cross-functional product team in the [Imaging Program at the Chan Zucker
 - Draga Doncila Pop, Engineering ([@DragaDoncila](https://github.com/DragaDoncila))
 - Kira Evans, Engineering ([@kne42](https://github.com/kne42))
 - Justin Kiggins, Product ([@neuromusic](https://github.com/neuromusic))
-- Kevin Lai, Engineering ([@klai95](ttps://github.com/klai))
+- Kevin Lai, Engineering ([@klai95](ttps://github.com/klai95))
 - Justine Larsen, Engineering ([@justinelarsen](https://github.com/justinelarsen))
 - Ziyang Liu, Engineering ([@ziyangczi](https://github.com/ziyangczi))
 - Lucy Obus, User Experience ([@LCObus](https://github.com/LCObus))
