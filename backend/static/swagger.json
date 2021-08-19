@@ -1,0 +1,123 @@
+{
+   "swagger": "2.0",
+   "info": {
+      "description": "This is the API Reference for Napari Hub.  You can find out more about     Napari Hub at [https://www.napari-hub.org/](https://www.napari-hub.org/).",
+      "version": "1.0.0",
+      "title": "Napari Hub API Reference",
+      "contact": {
+         "email": "team@napari-hub.org"
+      }
+   },
+   "tags": [
+      {
+         "name": "plugins",
+         "description": "Everything about plugins",
+         "externalDocs": {
+            "description": "Find out more about our website",
+            "url": "https://www.napari-hub.org"
+         }
+      }
+   ],
+   "schemes": [
+      "https",
+      "http"
+   ],
+   "paths": {
+      "/plugins": {
+         "get": {
+            "tags": [
+               "plugins"
+            ],
+            "summary": "Get all valid plugins list",
+            "description": "Get all valid plugins list. We would first try to see if there is a freshly cached list, and return that if available, then we try to read from pypi, and fail over to google bigquery analysis dump when pypi reading failed as well. If every attempts failed, we return the cached version regardless of freshness",
+            "produces": [
+               "application/json"
+            ],
+            "parameters": [
+               {
+                  "in": "body",
+                  "name": "body",
+                  "description": "Context for the run to raise alerts",
+                  "required": true,
+                  "schema": {}
+               }
+            ],
+            "responses": {
+               "default": {
+                  "description": "successful operation"
+               }
+            }
+         }
+      },
+      "/plugins/excluded": {
+         "get": {
+            "tags": [
+               "plugins"
+            ],
+            "summary": "Get the exclusion plugin list",
+            "description": "",
+            "produces": [
+               "application/json"
+            ],
+            "responses": {
+               "default": {
+                  "description": "successful operation"
+               }
+            }
+         }
+      },
+      "/plugins/index": {
+         "get": {
+            "tags": [
+               "plugins"
+            ],
+            "summary": "Get the index page related metadata for all plugins",
+            "description": "",
+            "produces": [
+               "application/json"
+            ],
+            "responses": {
+               "default": {
+                  "description": "successful operation"
+               }
+            }
+         }
+      },
+      "/plugins/index/update": {
+         "put": {
+            "tags": [
+               "plugins"
+            ],
+            "summary": "Update the yolo index page related metadata for all plugins",
+            "description": "",
+            "produces": [
+               "application/json"
+            ],
+            "responses": {
+               "default": {
+                  "description": "successful operation"
+               }
+            }
+         }
+      },
+      "ApiResponse": {
+         "type": "object",
+         "properties": {
+            "code": {
+               "type": "integer",
+               "format": "int32"
+            },
+            "type": {
+               "type": "string"
+            },
+            "message": {
+               "type": "string"
+            }
+         }
+      }
+   },
+   "externalDocs": {
+      "description": "Find out more about Napari Hub",
+      "url": "https://www.napari-hub.org"
+   }
+}

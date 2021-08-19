@@ -6,15 +6,16 @@ from datetime import datetime, timedelta, timezone
 import tempfile
 from typing import List
 
-import json
-import yaml
+import json, yaml
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template
+
 from markdown import markdown
 from bs4 import BeautifulSoup
 
 import requests
 from requests.auth import HTTPBasicAuth
+
 from requests.exceptions import HTTPError
 from requests.utils import requote_uri
 
@@ -46,8 +47,7 @@ s3_client = boto3.client("s3", endpoint_url=endpoint_url)
 cache_ttl = timedelta(minutes=cache_ttl)
 github_pattern = re.compile("https://github\\.com/([^/]+)/([^/]+)")
 
-app = Flask(__name__)
-
+app = Flask(__name__, static_folder='static', static_url_path='')
 
 def get_attribute(obj: dict, path: list):
     """
@@ -565,3 +565,11 @@ def cache(content: [dict, list], key: str) -> dict:
         fp.flush()
         s3_client.upload_file(fp.name, bucket, os.path.join(bucket_path, key))
     return content
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+# If we're running in stazsxnd alone mode, run the application
+if __name__ == '__main__':
+    app.run(debug=True)
