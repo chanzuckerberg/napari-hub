@@ -3,9 +3,10 @@
  */
 
 import { satisfies } from '@renovate/pep440';
+import { useAtom } from 'jotai';
 import { flow, intersection, isEmpty, some } from 'lodash';
 
-import { useSpdx } from '@/context/spdx';
+import { osiApprovedLicenseSetState } from '@/store/spdx';
 
 import { FilterFormState, OperatingSystemFormState } from './filter.types';
 import { SearchResult } from './search.types';
@@ -94,13 +95,13 @@ function useFilterByLicense(
   state: FilterFormState,
   results: SearchResult[],
 ): SearchResult[] {
-  const { isOSIApproved } = useSpdx();
+  const [licenseSet] = useAtom(osiApprovedLicenseSetState);
 
   if (!state.license.onlyOpenSourcePlugins) {
     return results;
   }
 
-  return results.filter(({ plugin }) => isOSIApproved(plugin.license));
+  return results.filter(({ plugin }) => licenseSet.has(plugin.license));
 }
 
 /**

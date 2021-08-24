@@ -1,5 +1,5 @@
 import { AxiosError } from 'axios';
-import { useAtom } from 'jotai';
+import { Provider, useAtom } from 'jotai';
 import { debounce } from 'lodash';
 import Head from 'next/head';
 import { ReactNode, useEffect } from 'react';
@@ -8,13 +8,14 @@ import { hubAPI, spdxLicenseDataAPI } from '@/axios';
 import { ErrorMessage } from '@/components/common';
 import { PluginSearch } from '@/components/PluginSearch';
 import { PluginSearchProvider } from '@/context/search';
-import {
-  SpdxLicenseData,
-  SpdxLicenseProvider,
-  SpdxLicenseResponse,
-} from '@/context/spdx';
 import { URLParameterStateProvider } from '@/context/urlParameters';
 import { loadingState } from '@/store/loading';
+import {
+  getOsiApprovedLicenseSet,
+  osiApprovedLicenseSetState,
+  SpdxLicenseData,
+  SpdxLicenseResponse,
+} from '@/store/spdx';
 import { PluginIndexData } from '@/types';
 import { setSearchScrollY } from '@/utils/search';
 
@@ -70,8 +71,12 @@ export default function Home({ error, index, licenses }: Props) {
       ) : (
         index &&
         licenses && (
-          <URLParameterStateProvider>
-            <SpdxLicenseProvider licenses={licenses}>
+          <Provider
+            initialValues={[
+              [osiApprovedLicenseSetState, getOsiApprovedLicenseSet(licenses)],
+            ]}
+          >
+            <URLParameterStateProvider>
               {/*
                 Don't render PluginSearchProvider while loading. For some
                 reason, rendering while loading leads to a bug that freezes the
@@ -84,8 +89,8 @@ export default function Home({ error, index, licenses }: Props) {
                   <PluginSearch />
                 </PluginSearchProvider>
               )}
-            </SpdxLicenseProvider>
-          </URLParameterStateProvider>
+            </URLParameterStateProvider>
+          </Provider>
         )
       )}
     </>
