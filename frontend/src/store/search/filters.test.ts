@@ -1,12 +1,19 @@
-import { renderHook } from '@testing-library/react-hooks';
+import { Getter, WritableAtom } from 'jotai';
 
-import { useSpdx } from '@/context/spdx';
 import pluginIndex from '@/fixtures/index.json';
 import { PluginIndexData } from '@/types';
 
-import { FilterFormState } from './filter.types';
-import { getDefaultState } from './filter.utils';
-import { useFilterResults } from './filters';
+import { osiApprovedLicenseSetState } from '../spdx';
+import {
+  filterLinuxState,
+  filterMacState,
+  filterOnlyOpenSourcePluginsState,
+  filterOnlyStablePluginsState,
+  filterPython39State,
+  FilterStateType,
+  filterWindowsState,
+} from './filter.state';
+import { filterResults } from './filters';
 import { SearchResult } from './search.types';
 
 function getResults(...plugins: PluginIndexData[]): SearchResult[] {
@@ -55,19 +62,17 @@ function getLicenseResults(...licenses: string[]): SearchResult[] {
   return getResults(...plugins);
 }
 
+function createMockFilterGet(...states: FilterStateType[]) {
+  return (jest.fn((state: FilterStateType) =>
+    states.includes(state),
+  ) as unknown) as Getter;
+}
+
 describe('filterResults()', () => {
-  let state: FilterFormState;
-
-  beforeEach(() => {
-    state = getDefaultState();
-    (useSpdx as jest.Mock).mockClear();
-  });
-
   describe('filter by python versions', () => {
     it('should allow all plugins when no filters are enabled', () => {
       const results = getVersionResults('>=3.10', '>=3.9');
-      const { result } = renderHook(() => useFilterResults(results, state));
-      expect(result.current).toEqual(results);
+      expect(filterResults(jest.fn(), results)).toEqual(results);
     });
 
     it("should filter plugins that don't match an exact version", () => {
@@ -94,11 +99,12 @@ describe('filterResults()', () => {
         },
       ];
 
-      state.pythonVersions['3.9'] = true;
-
       testCases.forEach(({ input, output }) => {
-        const { result } = renderHook(() => useFilterResults(input, state));
-        expect(result.current).toEqual(output);
+        const result = filterResults(
+          createMockFilterGet(filterPython39State),
+          input,
+        );
+        expect(result).toEqual(output);
       });
     });
   });
@@ -109,8 +115,8 @@ describe('filterResults()', () => {
         ['Operating System :: OS Independent'],
         ['Operating System :: POSIX :: Linux'],
       );
-      const { result } = renderHook(() => useFilterResults(results, state));
-      expect(result.current).toEqual(results);
+      const filtered = filterResults(jest.fn(), results);
+      expect(filtered).toEqual(results);
     });
 
     it('should allow OS Independent plugins', () => {
@@ -118,10 +124,13 @@ describe('filterResults()', () => {
         ['Operating System :: OS Independent'],
         ['Operating System :: POSIX :: Linux'],
       );
-      state.operatingSystems.mac = true;
 
-      const { result } = renderHook(() => useFilterResults(results, state));
-      expect(result.current).toEqual(
+      const filtered = filterResults(
+        createMockFilterGet(filterMacState),
+        results,
+      );
+
+      expect(filtered).toEqual(
         getOperatingSystemResults(['Operating System :: OS Independent']),
       );
     });
@@ -136,7 +145,7 @@ describe('filterResults()', () => {
 
       const testCases = [
         {
-          input: { mac: true },
+          input: filterMacState,
           output: getOperatingSystemResults(
             ['Environment :: MacOS X'],
             ['Environment :: MacOS X', 'Operating System :: POSIX :: Linux'],
@@ -144,7 +153,7 @@ describe('filterResults()', () => {
         },
 
         {
-          input: { linux: true },
+          input: filterLinuxState,
           output: getOperatingSystemResults(
             ['Operating System :: POSIX :: Linux'],
             ['Environment :: MacOS X', 'Operating System :: POSIX :: Linux'],
@@ -152,7 +161,7 @@ describe('filterResults()', () => {
         },
 
         {
-          input: { windows: true },
+          input: filterWindowsState,
           output: getOperatingSystemResults([
             'Operating System :: Microsoft :: Windows :: Windows 10',
           ]),
@@ -160,11 +169,8 @@ describe('filterResults()', () => {
       ];
 
       testCases.forEach(({ input, output }) => {
-        state = getDefaultState();
-        Object.assign(state.operatingSystems, input);
-
-        const { result } = renderHook(() => useFilterResults(results, state));
-        expect(result.current).toEqual(output);
+        const filtered = filterResults(createMockFilterGet(input), results);
+        expect(filtered).toEqual(output);
       });
     });
   });
@@ -179,19 +185,21 @@ describe('filterResults()', () => {
     );
 
     it('should allow all plugins when no filters are enabled', () => {
-      const { result } = renderHook(() => useFilterResults(results, state));
-      expect(result.current).toEqual(results);
+      const filtered = filterResults(jest.fn(), results);
+      expect(filtered).toEqual(results);
     });
 
     it('should filter stable plugins', () => {
-      state.developmentStatus.onlyStablePlugins = true;
       const expected = getDevStatusResults(
         ['Development Status :: 5 - Production/Stable'],
         ['Development Status :: 6 - Mature'],
       );
 
-      const { result } = renderHook(() => useFilterResults(results, state));
-      expect(result.current).toEqual(expected);
+      const filtered = filterResults(
+        createMockFilterGet(filterOnlyStablePluginsState),
+        results,
+      );
+      expect(filtered).toEqual(expected);
     });
   });
 
@@ -199,25 +207,25 @@ describe('filterResults()', () => {
     const results = getLicenseResults('valid', 'invalid');
 
     it('should allow all plugins when no filters are enabled', () => {
-      const { result } = renderHook(() => useFilterResults(results, state));
-      expect(result.current).toEqual(results);
+      const filtered = filterResults(jest.fn(), results);
+      expect(filtered).toEqual(results);
     });
 
     it('should filter plugins with open source licenses', () => {
-      type F = typeof useSpdx;
-      type P = Parameters<F>;
-      type R = ReturnType<F>;
+      const mockFilterGet = createMockFilterGet(
+        filterOnlyOpenSourcePluginsState,
+      );
+      const mockGet = jest.fn((state: WritableAtom<unknown, unknown>) => {
+        if (state === osiApprovedLicenseSetState) {
+          return new Set(['valid']);
+        }
 
-      (useSpdx as jest.Mock<R, P>).mockReturnValueOnce({
-        isOSIApproved: jest
-          .fn()
-          .mockImplementationOnce((license: string) => license === 'valid'),
-      });
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+        return mockFilterGet(state);
+      }) as unknown;
 
-      state.license.onlyOpenSourcePlugins = true;
-
-      const { result } = renderHook(() => useFilterResults(results, state));
-      expect(result.current).toEqual(getLicenseResults('valid'));
+      const filtered = filterResults(mockGet as Getter, results);
+      expect(filtered).toEqual(getLicenseResults('valid'));
     });
   });
 });

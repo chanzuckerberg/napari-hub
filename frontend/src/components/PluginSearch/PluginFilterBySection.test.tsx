@@ -1,4 +1,6 @@
 import { fireEvent, render } from '@testing-library/react';
+import { renderHook } from '@testing-library/react-hooks';
+import { atom, useAtom } from 'jotai';
 import { zip } from 'lodash';
 
 import { FilterItem, PluginFilterBySection } from './PluginFilterBySection';
@@ -9,13 +11,11 @@ describe('Plugin filter-by section', () => {
     const filters: FilterItem[] = [
       {
         label: 'one',
-        enabled: false,
-        setEnabled: (enabled: boolean) => enabled,
+        state: atom<boolean>(false),
       },
       {
         label: 'two',
-        enabled: true,
-        setEnabled: (enabled: boolean) => enabled,
+        state: atom<boolean>(true),
       },
     ];
 
@@ -33,21 +33,20 @@ describe('Plugin filter-by section', () => {
       [FilterItem, HTMLElement]
     >).forEach(([filter, input]) => {
       expect(input.lastElementChild?.innerHTML).toBe(filter.label);
-      expect(input.querySelector('input')?.checked).toBe(filter.enabled);
+      const { result: expected } = renderHook(() => useAtom(filter.state));
+      expect(input.querySelector('input')?.checked).toBe(expected.current[0]);
     });
   });
 
-  it('should call setEnabled when checked', () => {
+  it('should update state when checked', () => {
     const filters: FilterItem[] = [
       {
         label: 'one',
-        enabled: false,
-        setEnabled: jest.fn(),
+        state: atom<boolean>(false),
       },
       {
         label: 'two',
-        enabled: true,
-        setEnabled: jest.fn(),
+        state: atom<boolean>(false),
       },
     ];
 
@@ -65,7 +64,9 @@ describe('Plugin filter-by section', () => {
       const checkbox = input.querySelector('input');
       expect(checkbox).not.toBeUndefined();
       fireEvent.click(checkbox as HTMLElement);
-      expect(filter.setEnabled).toHaveBeenCalledWith(!filter.enabled);
+
+      const { result } = renderHook(() => useAtom(filter.state));
+      expect(result.current[0]).toBe(true);
     });
   });
 });

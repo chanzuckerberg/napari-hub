@@ -1,48 +1,32 @@
-import { render, screen } from '@testing-library/react';
-import { set } from 'lodash';
-import { NextRouter, useRouter } from 'next/router';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { Provider } from 'jotai';
+import { useRouter } from 'next/router';
 
-import {
-  PluginSearchProvider,
-  SearchQueryParams,
-  SearchSortType,
-} from '@/context/search';
-import { URLParameterStateProvider } from '@/context/urlParameters';
 import pluginIndex from '@/fixtures/index.json';
+import { pluginIndexState } from '@/store/search/search.state';
 
 import { PluginSearch } from './PluginSearch';
 
 function mockSearch(query = '') {
-  type Replace = NextRouter['replace'];
-  const replace = jest
-    .fn<ReturnType<Replace>, Parameters<Replace>>()
-    .mockReturnValue(Promise.resolve(true));
-
-  const params = [
-    [SearchQueryParams.Search, query],
-    [SearchQueryParams.Sort, SearchSortType.Relevance],
-  ];
-
-  (useRouter as jest.Mock).mockReturnValue({
-    asPath: `/?${new URLSearchParams(params).toString()}`,
-    pathname: '/',
-    query: params.reduce(
-      (result, [key, value]) => set(result, key, value),
-      {} as Record<string, string>,
-    ),
-    push: jest.fn(),
-    replace,
-  });
-
   const component = render(
-    <URLParameterStateProvider>
-      <PluginSearchProvider pluginIndex={pluginIndex}>
-        <PluginSearch />
-      </PluginSearchProvider>
-    </URLParameterStateProvider>,
+    <Provider initialValues={[[pluginIndexState, pluginIndex]]}>
+      <PluginSearch />
+    </Provider>,
   );
 
-  return { component, replace };
+  if (query) {
+    const input = component.getByTestId('searchBarInput') as HTMLInputElement;
+    const form = component.getByTestId('searchBarForm');
+
+    fireEvent.change(input, {
+      target: {
+        value: query,
+      },
+    });
+    fireEvent.submit(form);
+  }
+
+  return { component };
 }
 
 describe('<PluginSearch />', () => {
