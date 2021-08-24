@@ -53,7 +53,12 @@ module.exports = {
       https://kentcdodds.com/blog/how-to-write-a-react-component-in-typescript
     */
     {
-      files: ['./src/**/*.tsx', './src/**/*.hooks.ts', './src/hooks/*.ts'],
+      files: [
+        './src/**/*.tsx',
+        './src/**/*.hooks.ts',
+        './src/hooks/*.ts',
+        './src/**/hooks.ts',
+      ],
       rules: {
         '@typescript-eslint/explicit-module-boundary-types': 'off',
       },

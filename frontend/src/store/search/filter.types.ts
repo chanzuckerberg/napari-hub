@@ -21,6 +21,8 @@ export interface OperatingSystemFormState {
   windows: boolean;
 }
 
+export type PythonVersionFormState = Record<string, boolean>;
+
 /**
  * Root state object for the filter form. Each state object is a
  * string-to-boolean map that corresponds to the form checkbox state on the
@@ -30,7 +32,7 @@ export interface FilterFormState {
   developmentStatus: DevelopmentStatusFormState;
   license: LicenseFormState;
   operatingSystems: OperatingSystemFormState;
-  pythonVersions: Record<string, boolean>;
+  pythonVersions: PythonVersionFormState;
 }
 
 /**
