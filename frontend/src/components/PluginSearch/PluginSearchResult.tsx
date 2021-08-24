@@ -202,6 +202,9 @@ export function PluginSearchResult({ className, matches, plugin }: Props) {
             render={() =>
               items.map((item) => (
                 <li
+                  data-testid="searchResultMetadata"
+                  data-label={item.label}
+                  data-value={item.value}
                   key={`${item.label}-${item.value}`}
                   className="grid grid-cols-[auto,1fr]"
                 >

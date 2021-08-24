@@ -1,60 +1,40 @@
-import { Page } from 'playwright';
+/* eslint-disable jest/no-export */
 
-import { SEARCH_PAGE, SearchQueryParams } from '@/context/search';
+import { SearchQueryParams } from '@/store/search/constants';
 
-function getFirstSearchResultName() {
-  return page.$('[data-testid=searchResultName]');
-}
+import {
+  getFirstSearchResultName,
+  getQueryParameterValues,
+  getSearchUrl,
+  getSelectedSortByRadio,
+  submitQuery,
+} from './utils';
 
-function getSearchURL(query = '') {
-  const url = new URL(SEARCH_PAGE, 'http://localhost:8080');
-
-  if (query) {
-    url.searchParams.set(SearchQueryParams.Search, query);
-  }
-
-  return url.toString();
-}
-
-function hasSearchParam(page: Page, query: string) {
-  const param = `${SearchQueryParams.Search}=${query}`;
-  return page.url().includes(param);
-}
-
-async function submitQuery(query: string) {
-  await page.fill('[data-testid=searchBarInput]', query);
-  await page.press('[data-testid=searchBarInput]', 'Enter');
-}
-
-async function getSelectedSortByRadio() {
-  return page.$('[data-testid=sortByRadio][data-selected=true]');
-}
-
-describe('/ (Home page)', () => {
+describe('Plugin Search', () => {
   beforeEach(async () => {
     await jestPlaywright.resetPage();
   });
 
   it('should update URL parameter when entering query', async () => {
     const query = 'video';
-    await page.goto(getSearchURL());
+    await page.goto(getSearchUrl([SearchQueryParams.Search, query]));
     await submitQuery(query);
-    expect(hasSearchParam(page, query)).toBe(true);
+    expect(getQueryParameterValues(SearchQueryParams.Search)).toContain(query);
   });
 
   it('should render search results for query', async () => {
-    await page.goto(getSearchURL());
+    await page.goto(getSearchUrl());
     await submitQuery('video');
     await expect(await getFirstSearchResultName()).toHaveText('napari_video');
   });
 
   it('should render search results when opening URL with query', async () => {
-    await page.goto(getSearchURL('video'));
+    await page.goto(getSearchUrl([SearchQueryParams.Search, 'video']));
     await expect(await getFirstSearchResultName()).toHaveText('napari_video');
   });
 
   it('should render original list when query is cleared', async () => {
-    await page.goto(getSearchURL('video'));
+    await page.goto(getSearchUrl([SearchQueryParams.Search, 'video']));
     await page.click('[data-testid=clearQueryButton]');
     await expect(await getFirstSearchResultName()).not.toHaveText(
       'napari_video',
@@ -62,7 +42,7 @@ describe('/ (Home page)', () => {
   });
 
   it('should clear query when clicking on app bar home link', async () => {
-    await page.goto(getSearchURL('video'));
+    await page.goto(getSearchUrl([SearchQueryParams.Search, 'video']));
     await page.click('[data-testid=appBarHome]');
     await expect(await getFirstSearchResultName()).not.toHaveText(
       'napari_video',
@@ -74,13 +54,14 @@ describe('/ (Home page)', () => {
     await submitQuery('video');
     await page.waitForNavigation();
 
-    expect(page.url()).toEqual(getSearchURL('video'));
+    const expectedUrl = getSearchUrl([SearchQueryParams.Search, 'video']);
+    expect(page.url()).toEqual(expectedUrl);
     await expect(await getFirstSearchResultName()).toHaveText('napari_video');
   });
 
   it('should maintain search query when navigating back', async () => {
     const query = 'video';
-    await page.goto(getSearchURL());
+    await page.goto(getSearchUrl());
     await submitQuery(query);
     await page.click('[data-testid=searchResult]');
     await page.waitForNavigation();
@@ -88,12 +69,12 @@ describe('/ (Home page)', () => {
     await page.goBack();
     await page.waitForNavigation();
 
-    expect(hasSearchParam(page, query)).toBe(true);
+    expect(getQueryParameterValues(SearchQueryParams.Search)).toContain(query);
     await expect(await getFirstSearchResultName()).toHaveText('napari_video');
   });
 
   it('should switch to relevance sort type when searching', async () => {
-    await page.goto(getSearchURL());
+    await page.goto(getSearchUrl());
     await expect(await getSelectedSortByRadio()).toHaveText('Recently updated');
 
     await submitQuery('video');

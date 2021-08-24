@@ -80,6 +80,7 @@ function SortForm() {
             <FormControlLabel
               data-testid="sortByRadio"
               data-selected={currentSortType === sortType}
+              data-sort-type={currentSortType}
               value={currentSortType}
               control={
                 <Radio
