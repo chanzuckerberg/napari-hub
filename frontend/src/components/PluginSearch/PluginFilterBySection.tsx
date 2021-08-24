@@ -13,23 +13,31 @@ function getCheckboxId(label: string) {
   return `checkbox-${label}`;
 }
 
-function PluginFilterControl({ label, state }: FilterItem) {
+function PluginFilterCheckbox({ label, state }: FilterItem) {
   const [enabled, setEnabled] = useAtom(state);
   const checkboxId = getCheckboxId(label);
 
   return (
-    <div className="flex items-start" key={label} data-testid="filterCheckbox">
-      <Checkbox
-        id={checkboxId}
-        value={enabled}
-        checked={enabled}
-        onChange={(event) => setEnabled(event.target.checked)}
-        className="text-black fill-current -mt-1 -ml-2"
-        color="default"
-        icon={<CheckboxIcon className="w-4 h-4" />}
-        checkedIcon={<CheckboxIcon checked className="w-4 h-4" />}
-      />
+    <Checkbox
+      id={checkboxId}
+      value={enabled}
+      checked={enabled}
+      onChange={(event) => setEnabled(event.target.checked)}
+      className="text-black fill-current -mt-1 -ml-2"
+      color="default"
+      icon={<CheckboxIcon className="w-4 h-4" />}
+      checkedIcon={<CheckboxIcon checked className="w-4 h-4" />}
+    />
+  );
+}
 
+function PluginFilterControl(item: FilterItem) {
+  const { label } = item;
+  const checkboxId = getCheckboxId(label);
+
+  return (
+    <div className="flex items-start" key={label} data-testid="filterCheckbox">
+      <PluginFilterCheckbox {...item} />
       <label htmlFor={checkboxId}>{label}</label>
     </div>
   );

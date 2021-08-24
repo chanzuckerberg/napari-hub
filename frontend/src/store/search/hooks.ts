@@ -1,13 +1,10 @@
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
 
-import { setSkeletonResultCount } from '@/utils';
 import { Logger } from '@/utils/logger';
 import { measureExecution } from '@/utils/performance';
 
-import { SKELETON_RESULT_COUNT_BUFFER } from './constants';
 import { FuseSearchEngine } from './engines';
-import { searchResultsState } from './results.state';
 import { pluginIndexState, searchEngineState } from './search.state';
 import { SearchEngine } from './search.types';
 
@@ -15,17 +12,6 @@ const logger = new Logger('search.hooks.ts');
 
 function getDefaultSearchEngine() {
   return new FuseSearchEngine();
-}
-
-/**
- * Hook that runs effects that depend on search state.
- */
-function useSearchEffects() {
-  const [results] = useAtom(searchResultsState);
-
-  useEffect(() => {
-    setSkeletonResultCount(results.length + SKELETON_RESULT_COUNT_BUFFER);
-  }, [results]);
 }
 
 /**
@@ -38,8 +24,6 @@ export function useSearchEngine(
 ) {
   const [index] = useAtom(pluginIndexState);
   const [, setEngine] = useAtom(searchEngineState);
-
-  useSearchEffects();
 
   // Create new search engine whenever the index changes.
   useEffect(() => {

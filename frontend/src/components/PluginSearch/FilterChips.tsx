@@ -94,20 +94,18 @@ export function FilterChips({ className }: Props) {
   const [filterChips] = useAtom(filterChipState);
   const resetFilterChips = useResetAtom(filterChipState);
 
-  if (isEmpty(filterChips)) {
-    return null;
-  }
-
   return (
     <div className={className}>
       {/* Clear filters button */}
-      <Button
-        classes={{ label: 'underline' }}
-        className="inline-block mr-2"
-        onClick={resetFilterChips}
-      >
-        Clear all filters
-      </Button>
+      {!isEmpty(filterChips) && (
+        <Button
+          classes={{ label: 'underline' }}
+          className="inline-block mr-2"
+          onClick={resetFilterChips}
+        >
+          Clear all filters
+        </Button>
+      )}
 
       {/* Chip list */}
       <ul className="inline flex-wrap gap-2">

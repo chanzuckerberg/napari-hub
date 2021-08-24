@@ -1,8 +1,10 @@
 import { atom } from 'jotai';
 
+import { setSkeletonResultCount } from '@/utils';
 import { Logger } from '@/utils/logger';
 import { measureExecution } from '@/utils/performance';
 
+import { SKELETON_RESULT_COUNT_BUFFER } from './constants';
 import { filterResults } from './filters';
 import {
   pluginIndexState,
@@ -53,9 +55,16 @@ const filteredResultsState = atom<SearchResult[]>((get) =>
 /**
  * Search result list state after sorting and filtering results.
  */
-const sortedResultsState = atom<SearchResult[]>((get) =>
-  sortResults(get(sortTypeState), get(filteredResultsState)),
-);
+const sortedResultsState = atom<SearchResult[]>((get) => {
+  const results = sortResults(get(sortTypeState), get(filteredResultsState));
+
+  // Store skeleton result count for page loading the search page.
+  if (process.browser) {
+    setSkeletonResultCount(results.length + SKELETON_RESULT_COUNT_BUFFER);
+  }
+
+  return results;
+});
 
 /**
  * Export filtered and sorted results as primary search result state.

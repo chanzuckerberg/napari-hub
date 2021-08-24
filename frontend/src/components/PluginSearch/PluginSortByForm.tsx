@@ -9,7 +9,7 @@ import clsx from 'clsx';
 import { motion } from 'framer-motion';
 import { useAtom } from 'jotai';
 
-import { Accordion, SkeletonLoader } from '@/components/common';
+import { Accordion } from '@/components/common';
 import { Media, MediaFragment } from '@/components/common/media';
 import { SearchSortType } from '@/store/search/constants';
 import { searchQueryState } from '@/store/search/search.state';
@@ -108,15 +108,10 @@ export function PluginSortByForm() {
   return (
     <>
       <Media lessThan="screen-875">
-        <SkeletonLoader
-          className="h-12"
-          render={() => <Accordion title="Sort By">{form}</Accordion>}
-        />
+        <Accordion title="Sort By">{form}</Accordion>
       </Media>
 
-      <Media greaterThanOrEqual="screen-875">
-        <SkeletonLoader className="h-40" render={() => form} />
-      </Media>
+      <Media greaterThanOrEqual="screen-875">{form}</Media>
     </>
   );
 }
