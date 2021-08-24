@@ -1,14 +1,15 @@
 import { Button, Dialog, IconButton } from '@material-ui/core';
 import { CheckCircle } from '@material-ui/icons';
 import clsx from 'clsx';
+import { useAtom } from 'jotai';
 import Image from 'next/image';
 import { useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 
 import { Close, Copy } from '@/components/common/icons';
 import { Media } from '@/components/common/media';
-import { usePluginState } from '@/context/plugin';
 import { usePlausible } from '@/hooks';
+import { pluginState } from '@/store/plugin';
 
 import styles from './InstallModal.module.scss';
 
@@ -20,7 +21,7 @@ const COPY_FEEDBACK_DEBOUNCE_DURATION_MS = 2_000;
  */
 function CopyPluginNameButton() {
   const [clicked, setClicked] = useState(false);
-  const { plugin } = usePluginState();
+  const [plugin] = useAtom(pluginState);
   const plausible = usePlausible();
 
   const setClickDebounced = useDebouncedCallback(

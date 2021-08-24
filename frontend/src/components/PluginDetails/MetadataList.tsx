@@ -1,10 +1,11 @@
 import { Tooltip } from '@material-ui/core';
 import clsx from 'clsx';
+import { useAtom } from 'jotai';
 import { ReactNode } from 'react-markdown';
 
 import { Link } from '@/components/common';
-import { usePluginState } from '@/context/plugin';
 import { usePlausible } from '@/hooks';
+import { pluginState } from '@/store/plugin';
 
 import styles from './MetadataList.module.scss';
 import { MetadataItem, MetadataValueTypes } from './PluginDetails.types';
@@ -33,7 +34,7 @@ interface MetadataListItemProps extends CommonProps {
  * heading and metadata value.
  */
 function MetadataListItem({ inline, title, values }: MetadataListItemProps) {
-  const { plugin } = usePluginState();
+  const [plugin] = useAtom(pluginState);
   const plausible = usePlausible();
   const isEmpty = values.filter(Boolean).length === 0;
 

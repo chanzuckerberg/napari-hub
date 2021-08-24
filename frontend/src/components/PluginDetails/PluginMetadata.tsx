@@ -1,10 +1,11 @@
 import clsx from 'clsx';
+import { useAtom } from 'jotai';
 import { isArray } from 'lodash';
 import { ReactNode } from 'react-markdown';
 
 import { Divider, SkeletonLoader } from '@/components/common';
 import { MediaFragment } from '@/components/common/media';
-import { usePluginState } from '@/context/plugin';
+import { pluginState, repoFetchErrorState, repoState } from '@/store/plugin';
 import { formatDate } from '@/utils';
 
 import { MetadataList } from './MetadataList';
@@ -20,7 +21,8 @@ interface GithubMetadataItem {
  * TODO Replace this with actual GitHub data.
  */
 function PluginGithubData() {
-  const { repo, repoFetchError } = usePluginState();
+  const [repo] = useAtom(repoState);
+  const [repoFetchError] = useAtom(repoFetchErrorState);
   const items: GithubMetadataItem[] = [
     {
       title: 'Stars',
@@ -98,7 +100,7 @@ function PluginMetadataBase({
   divider,
   inline,
 }: PluginMetadataBaseProps) {
-  const { plugin } = usePluginState();
+  const [plugin] = useAtom(pluginState);
 
   const projectMetadata = (
     <SkeletonLoader

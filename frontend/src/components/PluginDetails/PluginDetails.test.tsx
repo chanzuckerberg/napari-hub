@@ -1,23 +1,22 @@
 import { render, screen } from '@testing-library/react';
+import { Provider } from 'jotai';
 
-import { PluginStateProvider } from '@/context/plugin';
 import napariPlugin from '@/fixtures/napari.json';
+import { DEFAULT_REPO_STATE, pluginState, repoState } from '@/store/plugin';
 
 import { PluginDetails } from './PluginDetails';
 
 describe('<PluginDetails />', () => {
   it('should match snapshot', () => {
     render(
-      <PluginStateProvider
-        plugin={napariPlugin}
-        repo={{
-          forks: 0,
-          issuesAndPRs: 0,
-          stars: 0,
-        }}
+      <Provider
+        initialValues={[
+          [pluginState, napariPlugin],
+          [repoState, DEFAULT_REPO_STATE],
+        ]}
       >
         <PluginDetails />
-      </PluginStateProvider>,
+      </Provider>,
     );
     expect(screen.getByTestId('pluginDetails')).toMatchSnapshot();
   });

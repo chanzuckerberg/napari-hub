@@ -1,9 +1,10 @@
 import clsx from 'clsx';
+import { useAtom } from 'jotai';
 
 import { ColumnLayout, Markdown, SkeletonLoader } from '@/components/common';
 import { Media, MediaFragment } from '@/components/common/media';
-import { usePluginState } from '@/context/plugin';
 import { usePlausible } from '@/hooks';
+import { pluginState } from '@/store/plugin';
 
 import { CallToActionButton } from './CallToActionButton';
 import { PluginMetadata } from './PluginMetadata';
@@ -18,7 +19,7 @@ function PluginLeftColumn() {
 }
 
 function PluginCenterColumn() {
-  const { plugin } = usePluginState();
+  const [plugin] = useAtom(pluginState);
 
   return (
     <article
@@ -113,7 +114,7 @@ function PluginCenterColumn() {
 }
 
 function PluginRightColumn() {
-  const { plugin } = usePluginState();
+  const [plugin] = useAtom(pluginState);
   const plausible = usePlausible();
 
   return (

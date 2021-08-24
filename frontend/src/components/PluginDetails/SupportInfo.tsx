@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import { useAtom } from 'jotai';
 
 import {
   GitHub,
@@ -9,7 +10,7 @@ import {
   Twitter,
 } from '@/components/common/icons';
 import { Media } from '@/components/common/media';
-import { usePluginState } from '@/context/plugin';
+import { pluginState } from '@/store/plugin';
 
 import { MetadataList } from './MetadataList';
 import { MetadataItem, MetadataItemLink } from './PluginDetails.types';
@@ -58,7 +59,7 @@ export function SupportInfoBase({
   horizontal,
   inline,
 }: SupportInfoBaseProps) {
-  const { plugin } = usePluginState();
+  const [plugin] = useAtom(pluginState);
 
   const items: MetadataItem[] = [
     {

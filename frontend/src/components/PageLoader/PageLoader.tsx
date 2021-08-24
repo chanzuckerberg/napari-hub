@@ -5,6 +5,12 @@ import { Layout } from '@/components/Layout';
 import { PluginDetails } from '@/components/PluginDetails';
 import { PluginSearch } from '@/components/PluginSearch';
 import { loadingState } from '@/store/loading';
+import {
+  DEFAULT_PLUGIN_STATE,
+  DEFAULT_REPO_STATE,
+  pluginState,
+  repoState,
+} from '@/store/plugin';
 import { isPluginPage, isSearchPage } from '@/utils';
 
 function SearchPageLoader() {
@@ -18,7 +24,13 @@ function SearchPageLoader() {
 function PluginPageLoader() {
   return (
     <Layout>
-      <Provider initialValues={[[loadingState, true]]}>
+      <Provider
+        initialValues={[
+          [loadingState, true],
+          [pluginState, DEFAULT_PLUGIN_STATE],
+          [repoState, DEFAULT_REPO_STATE],
+        ]}
+      >
         <PluginDetails />
       </Provider>
     </Layout>

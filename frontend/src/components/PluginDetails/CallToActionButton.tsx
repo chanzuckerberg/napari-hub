@@ -1,8 +1,9 @@
 import clsx from 'clsx';
+import { useAtom } from 'jotai';
 import { useState } from 'react';
 
-import { usePluginState } from '@/context/plugin';
 import { usePlausible } from '@/hooks';
+import { pluginState } from '@/store/plugin';
 
 import { SkeletonLoader } from '../common';
 import { InstallModal } from './InstallModal';
@@ -16,7 +17,7 @@ interface Props {
  * install button will render the modal visible.
  */
 export function CallToActionButton({ className }: Props) {
-  const { plugin } = usePluginState();
+  const [plugin] = useAtom(pluginState);
   const plausible = usePlausible();
   const [visible, setVisible] = useState(false);
 

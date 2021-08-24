@@ -1,6 +1,7 @@
 import type { Octokit as OctokitInstance } from '@octokit/rest';
 import type { RequestError as OctokitRequestError } from '@octokit/types';
 import { AxiosError } from 'axios';
+import { Provider } from 'jotai';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -9,7 +10,12 @@ import { ParsedUrlQuery } from 'node:querystring';
 import { hubAPI } from '@/axios';
 import { PluginDetails } from '@/components';
 import { ErrorMessage, PageMetadata } from '@/components/common';
-import { PluginStateProvider } from '@/context/plugin';
+import {
+  DEFAULT_REPO_STATE,
+  pluginState,
+  repoFetchErrorState,
+  repoState,
+} from '@/store/plugin';
 import { PluginData, PluginRepoData, PluginRepoFetchError } from '@/types';
 
 /**
@@ -152,12 +158,6 @@ export async function getServerSideProps({
   return { props };
 }
 
-const defaultRepoData: PluginRepoData = {
-  forks: 0,
-  issuesAndPRs: 0,
-  stars: 0,
-};
-
 /**
  * This page fetches plugin data from the hub API and renders it in the
  * PluginDetails component.
@@ -165,7 +165,7 @@ const defaultRepoData: PluginRepoData = {
 export default function PluginPage({
   error,
   plugin,
-  repo = defaultRepoData,
+  repo = DEFAULT_REPO_STATE,
   repoFetchError,
 }: Props) {
   const router = useRouter();
@@ -199,13 +199,15 @@ export default function PluginPage({
       ) : (
         <>
           {plugin ? (
-            <PluginStateProvider
-              plugin={plugin}
-              repo={repo}
-              repoFetchError={repoFetchError}
+            <Provider
+              initialValues={[
+                [pluginState, plugin],
+                [repoState, repo],
+                [repoFetchErrorState, repoFetchError],
+              ]}
             >
               <PluginDetails />
-            </PluginStateProvider>
+            </Provider>
           ) : (
             <ErrorMessage>Empty plugin data</ErrorMessage>
           )}
