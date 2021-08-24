@@ -49,10 +49,10 @@ function FilterForm() {
       states: [filterLinuxState, filterMacState, filterWindowsState],
     },
     // TODO Uncomment when we figure out what to do with the dev status filter
-    {
-      title: 'Development status',
-      states: [filterOnlyStablePluginsState],
-    },
+    // {
+    //   title: 'Development status',
+    //   states: [filterOnlyStablePluginsState],
+    // },
     {
       title: 'License',
       states: [filterOnlyOpenSourcePluginsState],
