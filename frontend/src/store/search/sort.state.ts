@@ -1,5 +1,7 @@
-import { atom } from 'jotai';
+import { atomWithQueryParameter } from '@/utils/state';
 
-import { DEFAULT_SORT_TYPE } from './constants';
+import { DEFAULT_SORT_TYPE, SearchQueryParams } from './constants';
 
-export const sortTypeState = atom(DEFAULT_SORT_TYPE);
+export const sortTypeState = atomWithQueryParameter(DEFAULT_SORT_TYPE, {
+  paramName: SearchQueryParams.Sort,
+});

@@ -1,8 +1,9 @@
 import { atom } from 'jotai';
-import { atomWithReset } from 'jotai/utils';
 
 import { PluginIndexData } from '@/types';
+import { atomWithQueryParameter } from '@/utils/state';
 
+import { SearchQueryParams } from './constants';
 import { SearchEngine } from './search.types';
 
 /**
@@ -14,7 +15,9 @@ export const pluginIndexState = atom<PluginIndexData[]>([]);
  * State for global search bar query. This state is used to derive other states
  * the search engine results state.
  */
-export const searchQueryState = atomWithReset('');
+export const searchQueryState = atomWithQueryParameter('', {
+  paramName: SearchQueryParams.Search,
+});
 
 /**
  * State for holding the instance of the search engine.

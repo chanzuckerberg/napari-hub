@@ -44,7 +44,6 @@ export function useSearchEngine(
   // Create new search engine whenever the index changes.
   useEffect(() => {
     const searchEngine = getSearchEngine();
-    logger.debug('plugin index:', index);
 
     const { duration } = measureExecution(() => searchEngine.index(index));
     logger.debug('search index duration:', duration);

@@ -1,21 +1,47 @@
 import { atom } from 'jotai';
-import { atomWithReset, RESET } from 'jotai/utils';
+import { RESET } from 'jotai/utils';
+
+import { atomWithQueryParameter } from '@/utils/state';
 
 // Development status filter state.
-export const filterOnlyStablePluginsState = atomWithReset(false);
+export const filterOnlyStablePluginsState = atomWithQueryParameter(false, {
+  paramName: 'devStatus',
+  paramValue: 'stable',
+});
 
 // License filter state.
-export const filterOnlyOpenSourcePluginsState = atomWithReset(false);
+export const filterOnlyOpenSourcePluginsState = atomWithQueryParameter(false, {
+  paramName: 'license',
+  paramValue: 'oss',
+});
 
 // Operating system filter state
-export const filterLinuxState = atomWithReset(false);
-export const filterMacState = atomWithReset(false);
-export const filterWindowsState = atomWithReset(false);
+export const filterLinuxState = atomWithQueryParameter(false, {
+  paramName: 'operatingSystem',
+  paramValue: 'linux',
+});
+export const filterMacState = atomWithQueryParameter(false, {
+  paramName: 'operatingSystem',
+  paramValue: 'macos',
+});
+export const filterWindowsState = atomWithQueryParameter(false, {
+  paramName: 'operatingSystem',
+  paramValue: 'windows',
+});
 
 // Python version filter state
-export const filterPython37State = atomWithReset(false);
-export const filterPython38State = atomWithReset(false);
-export const filterPython39State = atomWithReset(false);
+export const filterPython37State = atomWithQueryParameter(false, {
+  paramName: 'python',
+  paramValue: '3.7',
+});
+export const filterPython38State = atomWithQueryParameter(false, {
+  paramName: 'python',
+  paramValue: '3.8',
+});
+export const filterPython39State = atomWithQueryParameter(false, {
+  paramName: 'python',
+  paramValue: '3.9',
+});
 
 export const FILTER_STATES = [
   filterOnlyStablePluginsState,
