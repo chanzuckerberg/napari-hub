@@ -1,9 +1,10 @@
 import clsx from 'clsx';
+import { useAtom } from 'jotai';
 import { isEmpty } from 'lodash';
 
 import { ColumnLayout, SkeletonLoader } from '@/components/common';
-import { useLoadingState } from '@/context/loading';
 import { SearchResult, useSearchState } from '@/context/search';
+import { loadingState } from '@/store/loading';
 import { PluginIndexData } from '@/types';
 import { getSkeletonResultCount } from '@/utils';
 
@@ -23,7 +24,7 @@ function getSkeletonResults() {
 }
 
 export function PluginSearchResultList() {
-  const isLoading = useLoadingState();
+  const [isLoading] = useAtom(loadingState);
   const { filter, results = [] } = useSearchState() ?? {};
   const searchResults = isLoading ? getSkeletonResults() : results;
 

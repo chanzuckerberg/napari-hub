@@ -1,7 +1,8 @@
 import { Skeleton } from '@material-ui/lab';
+import { useAtom } from 'jotai';
 import { ReactNode } from 'react';
 
-import { useLoadingState } from '@/context/loading';
+import { loadingState } from '@/store/loading';
 
 interface Props {
   /**
@@ -21,7 +22,7 @@ interface Props {
  * Component that renders a skeleton loader when the global loading state is `true`.
  */
 export function SkeletonLoader({ className, render }: Props) {
-  const isLoading = useLoadingState();
+  const [isLoading] = useAtom(loadingState);
   if (!isLoading) return <>{render()}</>;
   return (
     <Skeleton

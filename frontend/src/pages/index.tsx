@@ -1,4 +1,5 @@
 import { AxiosError } from 'axios';
+import { useAtom } from 'jotai';
 import { debounce } from 'lodash';
 import Head from 'next/head';
 import { ReactNode, useEffect } from 'react';
@@ -6,7 +7,6 @@ import { ReactNode, useEffect } from 'react';
 import { hubAPI, spdxLicenseDataAPI } from '@/axios';
 import { ErrorMessage } from '@/components/common';
 import { PluginSearch } from '@/components/PluginSearch';
-import { useLoadingState } from '@/context/loading';
 import { PluginSearchProvider } from '@/context/search';
 import {
   SpdxLicenseData,
@@ -14,6 +14,7 @@ import {
   SpdxLicenseResponse,
 } from '@/context/spdx';
 import { URLParameterStateProvider } from '@/context/urlParameters';
+import { loadingState } from '@/store/loading';
 import { PluginIndexData } from '@/types';
 import { setSearchScrollY } from '@/utils/search';
 
@@ -43,7 +44,7 @@ export async function getServerSideProps() {
 }
 
 export default function Home({ error, index, licenses }: Props) {
-  const isLoading = useLoadingState();
+  const [isLoading] = useAtom(loadingState);
 
   useEffect(() => {
     function scrollHandler() {

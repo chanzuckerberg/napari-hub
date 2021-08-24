@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react';
+import { Provider } from 'jotai';
 
-import { LoadingStateProvider } from '@/context/loading';
+import { loadingState } from '@/store/loading';
 
 import { SkeletonLoader } from './SkeletonLoader';
 
@@ -11,19 +12,15 @@ describe('<SkeletonLoader />', () => {
     let component = render(<SkeletonLoader render={() => <h1>{text}</h1>} />);
     expect(component.asFragment()).toMatchSnapshot();
 
-    component = render(
-      <LoadingStateProvider loading={false}>
-        <SkeletonLoader render={() => <h1>{text}</h1>} />
-      </LoadingStateProvider>,
-    );
+    component = render(<SkeletonLoader render={() => <h1>{text}</h1>} />);
     expect(component.asFragment()).toMatchSnapshot();
   });
 
   it('should render skeleton when loading', () => {
     const component = render(
-      <LoadingStateProvider loading>
+      <Provider initialValues={[[loadingState, true]]}>
         <SkeletonLoader render={() => <h1>{text}</h1>} />
-      </LoadingStateProvider>,
+      </Provider>,
     );
 
     expect(component.getByTestId('skeleton-loader')).toBeDefined();

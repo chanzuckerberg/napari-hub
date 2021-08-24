@@ -1,9 +1,10 @@
 import clsx from 'clsx';
+import { useAtom } from 'jotai';
 import { isEmpty } from 'lodash';
 
 import { Link, SkeletonLoader, TextHighlighter } from '@/components/common';
-import { useLoadingState } from '@/context/loading';
 import { SearchResultMatch } from '@/context/search';
+import { loadingState } from '@/store/loading';
 import { PluginIndexData } from '@/types';
 import { formatDate, formatOperatingSystem } from '@/utils';
 
@@ -85,7 +86,7 @@ function getDescriptionPreview(
  * Component for rendering a plugin search result.
  */
 export function PluginSearchResult({ className, matches, plugin }: Props) {
-  const isLoading = useLoadingState();
+  const [isLoading] = useAtom(loadingState);
 
   // TODO consolidate with PluginGithubData component in PluginMetadata.tsx
   const items: SearchResultItem[] = isLoading

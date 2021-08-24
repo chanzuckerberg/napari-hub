@@ -116,10 +116,10 @@ export function usePageTransitions() {
       setLoading(false);
     }
 
-    const onError = (error: Error, url: string, event: RouteEvent) => {
+    function onError(error: Error, url: string, event: RouteEvent) {
       logger.error('Error loading route:', error);
       onFinishLoading(url, event);
-    };
+    }
 
     router.events.on('routeChangeStart', onLoading);
     router.events.on('routeChangeComplete', onFinishLoading);
