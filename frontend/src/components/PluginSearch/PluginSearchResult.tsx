@@ -3,8 +3,8 @@ import { useAtom } from 'jotai';
 import { isEmpty } from 'lodash';
 
 import { Link, SkeletonLoader, TextHighlighter } from '@/components/common';
-import { SearchResultMatch } from '@/context/search';
 import { loadingState } from '@/store/loading';
+import { SearchResultMatch } from '@/store/search/search.types';
 import { PluginIndexData } from '@/types';
 import { formatDate, formatOperatingSystem } from '@/utils';
 

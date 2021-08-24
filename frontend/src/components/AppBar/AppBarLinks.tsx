@@ -1,7 +1,8 @@
 import clsx from 'clsx';
+import { useResetAtom } from 'jotai/utils';
 
 import { Link } from '@/components/common';
-import { useSearchState } from '@/context/search';
+import { searchQueryState } from '@/store/search/search.state';
 import { LinkInfo } from '@/types';
 import { setSearchScrollY } from '@/utils';
 
@@ -41,7 +42,7 @@ interface Props extends CommonProps {
  * Component that includes site-wide navigational links.
  */
 export function AppBarLinks({ className, items, vertical }: Props) {
-  const { search } = useSearchState() ?? {};
+  const resetQuery = useResetAtom(searchQueryState);
 
   return (
     <nav className={clsx(className, 'flex', vertical && 'flex-col')}>
@@ -55,7 +56,7 @@ export function AppBarLinks({ className, items, vertical }: Props) {
           // on the search page. Without this, the `useQueryParameter()` hook
           // will re-set the query parameter with the current query in the
           // search bar.
-          search?.setQuery('');
+          resetQuery();
 
           // When navigating back to the home page from the home link, reset
           // `scrollY` so that the user starts from the top of the page.

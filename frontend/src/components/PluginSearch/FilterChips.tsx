@@ -1,38 +1,85 @@
 import { Button, Chip } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
+import { useAtom } from 'jotai';
+import { useResetAtom } from 'jotai/utils';
 import { isEmpty } from 'lodash';
 
-import { useSearchState } from '@/context/search';
-import { FilterFormState } from '@/context/search/filter.types';
+import {
+  OPERATING_SYSTEM_LABEL_ENTRIES,
+  PYTHON_LABEL_ENTRIES,
+} from '@/constants/filter';
+import {
+  filterChipState,
+  filterLinuxState,
+  filterMacState,
+  filterOnlyOpenSourcePluginsState,
+  filterOnlyStablePluginsState,
+  filterPython37State,
+  filterPython38State,
+  filterPython39State,
+  FilterStateType,
+  filterWindowsState,
+} from '@/store/search/filter.state';
+import { getStateLabelEntries } from '@/utils';
 
-/**
- * Labels to render for a particular state key.
- */
-const KEY_LABELS: Record<keyof FilterFormState, string> = {
-  developmentStatus: 'Development status',
-  license: 'License',
-  operatingSystems: 'Operating system',
-  pythonVersions: 'Python version',
-};
+const NAME_LABELS = getStateLabelEntries(
+  {
+    label: 'Python version',
+    state: [filterPython37State, filterPython38State, filterPython39State],
+  },
+  {
+    label: 'Operating system',
+    state: [filterLinuxState, filterMacState, filterWindowsState],
+  },
+  {
+    label: 'Development status',
+    state: [filterOnlyStablePluginsState],
+  },
+  {
+    label: 'License',
+    state: [filterOnlyOpenSourcePluginsState],
+  },
+);
 
-/**
- * Labels to render for a particular sub-state key.
- *
- * TODO Find a better way to add typing for this to prevent discrepancies
- * between the state data and the labels.
- */
-const SUBKEY_LABEL: Record<string, string | undefined> = {
-  // Dev Status labels
-  onlyStablePlugins: 'Stable',
+const VALUE_LABELS = getStateLabelEntries(
+  // Python version labels.
+  ...PYTHON_LABEL_ENTRIES,
 
-  // License labels
-  onlyOpenSourcePlugins: 'Open Source',
+  // Operating system labels.
+  ...OPERATING_SYSTEM_LABEL_ENTRIES,
 
-  // OS labels
-  linux: 'Linux',
-  mac: 'macOS',
-  windows: 'Windows',
-};
+  // Development status labels
+  { label: 'Stable', state: filterOnlyStablePluginsState },
+
+  // License status labels
+  { label: 'Open Source', state: filterOnlyOpenSourcePluginsState },
+);
+
+interface FilterChipProps {
+  name: string;
+  value: string;
+  state: FilterStateType;
+}
+
+function FilterChip({ name, value, state }: FilterChipProps) {
+  const resetState = useResetAtom(state);
+
+  return (
+    <li className="inline-block my-1 ml-1 text-black">
+      <Chip
+        className="pr-1 bg-napari-hover-gray"
+        label={
+          <>
+            <span>{name}</span>
+            <span className="font-bold ml-1">{value}</span>
+          </>
+        }
+        deleteIcon={<Close className="text-black fill-current w-4 h-4" />}
+        onDelete={resetState}
+      />
+    </li>
+  );
+}
 
 interface Props {
   className?: string;
@@ -44,9 +91,10 @@ interface Props {
  * filters by clicking the clear all filters button.
  */
 export function FilterChips({ className }: Props) {
-  const { filter } = useSearchState() ?? {};
+  const [filterChips] = useAtom(filterChipState);
+  const resetFilterChips = useResetAtom(filterChipState);
 
-  if (isEmpty(filter?.chips)) {
+  if (isEmpty(filterChips)) {
     return null;
   }
 
@@ -56,30 +104,26 @@ export function FilterChips({ className }: Props) {
       <Button
         classes={{ label: 'underline' }}
         className="inline-block mr-2"
-        onClick={() => filter?.clearAll()}
+        onClick={resetFilterChips}
       >
         Clear all filters
       </Button>
 
       {/* Chip list */}
       <ul className="inline flex-wrap gap-2">
-        {filter?.chips.map(({ id, key, subKey }) => (
-          <li className="inline-block my-1 ml-1 text-black" key={id}>
-            <Chip
-              className="pr-1 bg-napari-hover-gray"
-              label={
-                <>
-                  <span>{KEY_LABELS[key]}</span>
-                  <span className="font-bold ml-1">
-                    {SUBKEY_LABEL[subKey] ?? subKey}
-                  </span>
-                </>
-              }
-              deleteIcon={<Close className="text-black fill-current w-4 h-4" />}
-              onDelete={() => filter?.removeChip(key, subKey)}
+        {filterChips.map((state) => {
+          const name = NAME_LABELS.get(state) ?? '';
+          const value = VALUE_LABELS.get(state) ?? '';
+
+          return (
+            <FilterChip
+              key={`${name}-${value}`}
+              name={name}
+              value={value}
+              state={state}
             />
-          </li>
-        ))}
+          );
+        })}
       </ul>
     </div>
   );

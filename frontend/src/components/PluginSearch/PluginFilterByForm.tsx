@@ -1,50 +1,61 @@
-import { FormLabel } from '@material-ui/core';
-
 import { Accordion, SkeletonLoader } from '@/components/common';
 import { Media } from '@/components/common/media';
-import { useSearchState } from '@/context/search';
+import {
+  OPERATING_SYSTEM_LABEL_ENTRIES,
+  PYTHON_LABEL_ENTRIES,
+} from '@/constants/filter';
+import {
+  filterLinuxState,
+  filterMacState,
+  filterOnlyOpenSourcePluginsState,
+  filterOnlyStablePluginsState,
+  filterPython37State,
+  filterPython38State,
+  filterPython39State,
+  filterWindowsState,
+} from '@/store/search/filter.state';
+import { getStateLabelEntries } from '@/utils';
 
 import { PluginFilterBySection } from './PluginFilterBySection';
 
-const SECTION_LABELS: Record<string, string | undefined> = {
-  // Operating System
-  linux: 'Linux',
-  mac: 'macOS',
-  windows: 'Windows',
+export const SECTION_LABELS = getStateLabelEntries(
+  // Python version labels.
+  ...PYTHON_LABEL_ENTRIES,
 
-  // Development Status
-  onlyStablePlugins: 'Only show stable plugins',
+  // Operating system labels.
+  ...OPERATING_SYSTEM_LABEL_ENTRIES,
 
-  // License
-  onlyOpenSourcePlugins: 'Only show plugins with open source licenses',
-};
+  // Development status labels.
+  { label: 'Only show stable plugins', state: filterOnlyStablePluginsState },
+
+  // License labels.
+  {
+    label: 'Only show plugins with open source licenses',
+    state: filterOnlyOpenSourcePluginsState,
+  },
+);
 
 /**
  * Component for the form for selecting the plugin filter type.
  */
 function FilterForm() {
-  const { filter } = useSearchState() ?? {};
   const sections = [
     {
       title: 'Python versions',
-      state: filter?.state.pythonVersions,
-      setState: filter?.setPythonVersion,
+      states: [filterPython37State, filterPython38State, filterPython39State],
     },
     {
       title: 'Operating system',
-      state: filter?.state.operatingSystems,
-      setState: filter?.setOperatingSystem,
+      states: [filterLinuxState, filterMacState, filterWindowsState],
     },
     // TODO Uncomment when we figure out what to do with the dev status filter
-    // {
-    //   title: 'Development status',
-    //   state: filter?.state.developmentStatus,
-    //   setState: filter?.setDevelopmentStatus,
-    // },
+    {
+      title: 'Development status',
+      states: [filterOnlyStablePluginsState],
+    },
     {
       title: 'License',
-      state: filter?.state.license,
-      setState: filter?.setLicense,
+      states: [filterOnlyOpenSourcePluginsState],
     },
   ];
 
@@ -52,13 +63,9 @@ function FilterForm() {
     <div className="grid grid-cols-1 screen-600:grid-cols-2 screen-875:grid-cols-1">
       {/* Only show label on larger screens. This is because the Accordion already includes a title. */}
       <Media greaterThanOrEqual="screen-875">
-        <FormLabel
-          className="uppercase text-black font-semibold text-sm"
-          component="legend"
-          focused={false}
-        >
+        <legend className="uppercase text-black font-semibold text-sm">
           Filter By
-        </FormLabel>
+        </legend>
       </Media>
 
       {sections.map((section) => (
@@ -66,14 +73,10 @@ function FilterForm() {
           className="mt-6"
           key={section.title}
           title={section.title}
-          filters={Object.entries(section.state ?? {}).map(
-            ([key, enabled]: [string, boolean]) => ({
-              enabled,
-              label: SECTION_LABELS[key] ?? key,
-              setEnabled: (nextEnabled: boolean) =>
-                section.setState?.({ [key]: nextEnabled }),
-            }),
-          )}
+          filters={section.states.map((state) => ({
+            state,
+            label: SECTION_LABELS.get(state) ?? '',
+          }))}
         />
       ))}
     </div>

@@ -1,13 +1,21 @@
 import clsx from 'clsx';
+import { useAtom } from 'jotai';
+import { useResetAtom } from 'jotai/utils';
 import { useRouter } from 'next/router';
-import { HTMLProps, useState } from 'react';
+import { HTMLProps, useEffect, useState } from 'react';
 
 import { Close, Search } from '@/components/common/icons';
 import {
+  DEFAULT_SORT_TYPE,
   SEARCH_PAGE,
   SearchQueryParams,
-  useSearchState,
-} from '@/context/search';
+  SearchSortType,
+} from '@/store/search/constants';
+import {
+  searchEnabledState,
+  searchQueryState,
+} from '@/store/search/search.state';
+import { sortTypeState } from '@/store/search/sort.state';
 import { scrollToSearchBar, setSearchScrollY } from '@/utils';
 
 import styles from './SearchBar.module.scss';
@@ -33,15 +41,20 @@ interface Props extends HTMLProps<HTMLFormElement> {
  */
 export function SearchBar({ large, ...props }: Props) {
   const router = useRouter();
-  const {
-    results,
-    search: { query, setQuery, clearQuery },
-  } = useSearchState() ?? {
-    search: {},
-  };
+  const [isSearchEnabled] = useAtom(searchEnabledState);
+  const [query, setQuery] = useAtom(searchQueryState);
+  const [sortType, setSortType] = useAtom(sortTypeState);
+  const resetQuery = useResetAtom(searchQueryState);
 
   // Local state for query. This is used to store the current entered query string.
   const [localQuery, setLocalQuery] = useState(query ?? '');
+
+  // Ensure that local query is sync'd whenever the query changes. This is
+  // mostly useful for initial load when the `search` URL parameter populates
+  // the search query state.
+  useEffect(() => {
+    setLocalQuery(query);
+  }, [query]);
 
   const iconClassName = clsx(
     'h-5 w-5',
@@ -56,19 +69,21 @@ export function SearchBar({ large, ...props }: Props) {
    * redirects to the search page with the query added to the URL.
    */
   async function submitForm(searchQuery: string) {
-    // Search state is only available on search enabled pages.
-    const isSearchPage = results !== undefined;
-
     // Reset `scrollY` value so that the browser can scroll to the search
     // bar after searching.
     setSearchScrollY(0);
 
-    if (isSearchPage) {
+    if (isSearchEnabled) {
       if (searchQuery) {
-        setQuery?.(searchQuery);
+        setQuery(searchQuery);
         scrollToSearchBar({ behavior: 'smooth' });
+        setSortType(SearchSortType.Relevance);
       } else {
-        clearQuery?.();
+        resetQuery();
+
+        if (sortType === SearchSortType.Relevance) {
+          setSortType(DEFAULT_SORT_TYPE);
+        }
       }
     } else {
       const url = {

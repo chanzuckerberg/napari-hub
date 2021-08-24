@@ -3,8 +3,10 @@ import { useAtom } from 'jotai';
 import { isEmpty } from 'lodash';
 
 import { ColumnLayout, SkeletonLoader } from '@/components/common';
-import { SearchResult, useSearchState } from '@/context/search';
 import { loadingState } from '@/store/loading';
+import { filterChipState } from '@/store/search/filter.state';
+import { searchResultsState } from '@/store/search/results.state';
+import { SearchResult } from '@/store/search/search.types';
 import { PluginIndexData } from '@/types';
 import { getSkeletonResultCount } from '@/utils';
 
@@ -25,7 +27,8 @@ function getSkeletonResults() {
 
 export function PluginSearchResultList() {
   const [isLoading] = useAtom(loadingState);
-  const { filter, results = [] } = useSearchState() ?? {};
+  const [results] = useAtom(searchResultsState);
+  const [filterChips] = useAtom(filterChipState);
   const searchResults = isLoading ? getSkeletonResults() : results;
 
   return (
@@ -33,7 +36,7 @@ export function PluginSearchResultList() {
       <h3
         className={clsx(
           'flex items-center font-bold text-xl',
-          isEmpty(filter?.chips) && 'mb-5',
+          isEmpty(filterChips) && 'mb-5',
         )}
       >
         Browse plugins:{' '}

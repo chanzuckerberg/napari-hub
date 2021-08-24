@@ -1,5 +1,5 @@
 import { AxiosError } from 'axios';
-import { Provider, useAtom } from 'jotai';
+import { Provider } from 'jotai';
 import { debounce } from 'lodash';
 import Head from 'next/head';
 import { ReactNode, useEffect } from 'react';
@@ -7,9 +7,7 @@ import { ReactNode, useEffect } from 'react';
 import { hubAPI, spdxLicenseDataAPI } from '@/axios';
 import { ErrorMessage } from '@/components/common';
 import { PluginSearch } from '@/components/PluginSearch';
-import { PluginSearchProvider } from '@/context/search';
-import { URLParameterStateProvider } from '@/context/urlParameters';
-import { loadingState } from '@/store/loading';
+import { pluginIndexState } from '@/store/search/search.state';
 import {
   getOsiApprovedLicenseSet,
   osiApprovedLicenseSetState,
@@ -45,8 +43,6 @@ export async function getServerSideProps() {
 }
 
 export default function Home({ error, index, licenses }: Props) {
-  const [isLoading] = useAtom(loadingState);
-
   useEffect(() => {
     function scrollHandler() {
       setSearchScrollY(window.scrollY);
@@ -74,22 +70,10 @@ export default function Home({ error, index, licenses }: Props) {
           <Provider
             initialValues={[
               [osiApprovedLicenseSetState, getOsiApprovedLicenseSet(licenses)],
+              [pluginIndexState, index],
             ]}
           >
-            <URLParameterStateProvider>
-              {/*
-                Don't render PluginSearchProvider while loading. For some
-                reason, rendering while loading leads to a bug that freezes the
-                entire UI.
-              */}
-              {isLoading ? (
-                <PluginSearch />
-              ) : (
-                <PluginSearchProvider pluginIndex={index}>
-                  <PluginSearch />
-                </PluginSearchProvider>
-              )}
-            </URLParameterStateProvider>
+            <PluginSearch />
           </Provider>
         )
       )}

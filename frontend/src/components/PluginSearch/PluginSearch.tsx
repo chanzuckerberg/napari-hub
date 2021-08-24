@@ -1,6 +1,7 @@
 import { Footer, SignupForm } from '@/components';
 import { AppBarLanding } from '@/components/AppBar';
 import { ColumnLayout } from '@/components/common';
+import { useSearchEngine } from '@/store/search/hooks';
 
 import { PluginSearchBar } from './PluginSearchBar';
 import { PluginSearchControls } from './PluginSearchControls';
@@ -10,6 +11,8 @@ import { PluginSearchResultList } from './PluginSearchResultList';
  * Component for rendering the landing page and plugin search.
  */
 export function PluginSearch() {
+  useSearchEngine();
+
   return (
     <div className="flex flex-col">
       <AppBarLanding />

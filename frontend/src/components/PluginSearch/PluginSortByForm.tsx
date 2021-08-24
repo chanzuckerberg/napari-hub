@@ -7,10 +7,13 @@ import {
 } from '@material-ui/core';
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
+import { useAtom } from 'jotai';
 
 import { Accordion, SkeletonLoader } from '@/components/common';
 import { Media, MediaFragment } from '@/components/common/media';
-import { SearchSortType, useSearchState } from '@/context/search';
+import { SearchSortType } from '@/store/search/constants';
+import { searchQueryState } from '@/store/search/search.state';
+import { sortTypeState } from '@/store/search/sort.state';
 
 const DEFAULT_SORT_BY_RADIO_ORDER: SearchSortType[] = [
   SearchSortType.PluginName,
@@ -29,8 +32,9 @@ const SORT_BY_LABELS: Record<SearchSortType, string> = {
  * Component for the radio form for selecting the plugin sort type.
  */
 function SortForm() {
-  const { search, sort } = useSearchState() ?? {};
-  const isSearching = !!search?.query;
+  const [sortType, setSortType] = useAtom(sortTypeState);
+  const [searchQuery] = useAtom(searchQueryState);
+  const isSearching = !!searchQuery;
 
   const radios: SearchSortType[] = [];
 
@@ -57,15 +61,15 @@ function SortForm() {
       <RadioGroup
         aria-label="sort plugins by"
         name="sort-by"
-        value={sort?.sortType}
-        onChange={(event) => sort?.setSortType(event.target.value)}
+        value={sortType}
+        onChange={(event) => setSortType(event.target.value as SearchSortType)}
       >
-        {radios.map((sortType) => (
+        {radios.map((currentSortType) => (
           <motion.div
-            key={sortType}
+            key={currentSortType}
             layout
             // Only animate opacity on relevance
-            {...(sortType === SearchSortType.Relevance
+            {...(currentSortType === SearchSortType.Relevance
               ? {
                   initial: { opacity: 0 },
                   animate: { opacity: 1 },
@@ -75,15 +79,15 @@ function SortForm() {
           >
             <FormControlLabel
               data-testid="sortByRadio"
-              data-selected={sortType === sort?.sortType}
-              value={sortType}
+              data-selected={currentSortType === sortType}
+              value={currentSortType}
               control={
                 <Radio
                   className={clsx('text-black fill-current')}
                   color="default"
                 />
               }
-              label={SORT_BY_LABELS[sortType]}
+              label={SORT_BY_LABELS[currentSortType]}
             />
           </motion.div>
         ))}
