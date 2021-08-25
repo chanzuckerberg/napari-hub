@@ -146,10 +146,11 @@ def get_extra_metadata(download_url: str) -> dict:
     """
     Extract extra metadata from the github download url
 
-    :param download_url: github url to download from
+    :param download_url: github repo url to download from
     :return: extra metadata dictionary
     """
     extra_metadata = {}
+    visibility_list = ['public', 'disabled', 'hidden']
 
     github_license = get_license(download_url)
     if github_license is not None:
@@ -168,6 +169,13 @@ def get_extra_metadata(download_url: str) -> dict:
     citation_file = get_file(download_url, "CITATION.cff")
     if citation_file is not None:
         extra_metadata['citations'] = get_citations(citation_file)
+
+    if 'visibility' not in extra_metadata:
+        extra_metadata['visibility'] = 'public'
+    else:
+        visibility_match = len(set(extra_metadata['visibility']).intersection(visibility_list))
+        if not visibility_match:
+            extra_metadata['visibility'] = 'public'
 
     return extra_metadata
 
@@ -565,3 +573,6 @@ def cache(content: [dict, list], key: str) -> dict:
         fp.flush()
         s3_client.upload_file(fp.name, bucket, os.path.join(bucket_path, key))
     return content
+
+if __name__ == "__main__":
+    get_extra_metadata('https://github.com/DragaDoncila/example-plugin')
