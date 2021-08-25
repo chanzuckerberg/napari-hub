@@ -1,9 +1,12 @@
 import clsx from 'clsx';
 import { useAtom } from 'jotai';
+import { throttle } from 'lodash';
+import { useEffect } from 'react';
 
 import { ColumnLayout, Markdown, SkeletonLoader } from '@/components/common';
 import { Media, MediaFragment } from '@/components/common/media';
 import { usePlausible } from '@/hooks';
+import { loadingState } from '@/store/loading';
 import { pluginState } from '@/store/plugin';
 
 import { CallToActionButton } from './CallToActionButton';
@@ -147,10 +150,31 @@ function PluginRightColumn() {
   );
 }
 
+const SCROLL_HANDLER_THROTTLE_MS = 200;
+
+let userScrollY = 0;
+
+const scrollHandler = throttle(() => {
+  userScrollY = window.scrollY;
+}, SCROLL_HANDLER_THROTTLE_MS);
+
 /**
  * Component for rendering the plugin details page.
  */
 export function PluginDetails() {
+  const [loading] = useAtom(loadingState);
+
+  useEffect(() => {
+    if (loading) {
+      window.scroll(0, 0);
+      document.addEventListener('scroll', scrollHandler);
+    } else {
+      document.removeEventListener('scroll', scrollHandler);
+      window.scroll(0, userScrollY);
+      userScrollY = 0;
+    }
+  }, [loading]);
+
   return (
     <ColumnLayout className="p-6 md:p-12 2xl:px-0" data-testid="pluginDetails">
       <PluginLeftColumn />
