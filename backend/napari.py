@@ -309,6 +309,18 @@ def format_plugin(plugin: dict) -> dict:
 
 
 @app.route('/plugins')
+def get_plugins_filtered() -> dict:
+    """
+    Get all filtered plugins list such that only public plugins are returned
+
+    :param context: context for the run to raise alerts
+    :return: json of filtered plugins and their version
+    """
+    filtered_plugins = filter_excluded_plugin(get_plugins(), {})
+
+    return filtered_plugins
+
+
 def get_plugins() -> dict:
     """
     Get all valid plugins list. We would first try to see if there is a freshly
@@ -356,6 +368,7 @@ def get_plugin(plugin: str, version: str = None) -> dict:
     :return: plugin metadata dictionary
     """
     plugins = get_plugins()
+    plugins = filter_excluded_plugin(plugins, {'hidden'})
     if plugin not in plugins:
         return {}
     elif version is None:
@@ -402,19 +415,26 @@ def cache_available(key: str, ttl: [timedelta, None]) -> bool:
         return False
 
 
-def filter_excluded_plugin(packages: dict) -> dict:
+def filter_excluded_plugin(packages: dict, white_list: set) -> dict:
     """
     Filter excluded plugins from the plugins list
     :param packages: all plugins list
+    :param white_list: whitelisted plugins
     :return: only plugins not in the filtered list
     """
-    filtered = packages.copy()
-    exclusions = get_exclusion_list()
-    for exclusion, versions in exclusions.items():
-        if exclusion in packages and \
-                (versions is None or packages[exclusion] in versions):
-            filtered.pop(exclusion)
-    return filtered
+    valid_plugins = packages.copy()
+    excluded_plugins = get_exclusion_list()
+    hidden_set = set()
+    if len(white_list) > 0:
+        for k, v in excluded_plugins.items():
+            if v != 'hidden':
+                hidden_set.add(k)
+        excluded_plugins = dict((k, excluded_plugins[k]) for k in hidden_set if k in excluded_plugins)
+
+    difference = set(valid_plugins.keys()) ^ set(excluded_plugins.keys())
+    filtered_plugins = dict((k, valid_plugins[k]) for k in difference if k in valid_plugins)
+
+    return filtered_plugins
 
 
 @app.route('/plugins/excluded')
@@ -571,6 +591,3 @@ def cache(content: [dict, list], key: str) -> dict:
         fp.flush()
         s3_client.upload_file(fp.name, bucket, os.path.join(bucket_path, key))
     return content
-
-if __name__ == "__main__":
-    output = get_extra_metadata('https://github.com/DragaDoncila/example-plugin')
