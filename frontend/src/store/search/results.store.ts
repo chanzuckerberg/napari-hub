@@ -1,6 +1,6 @@
 import { derive } from 'valtio/utils';
 
-import { Logger, measureExecution } from '@/utils';
+import { Logger, measureExecution, setSkeletonResultCount } from '@/utils';
 
 import { filterResults } from './filters';
 import { searchFormStore } from './form.store';
@@ -35,6 +35,12 @@ export const searchResultsStore = derive({
     }
 
     results = filterResults(get, results);
-    return sortResults(state.sort, results);
+    results = sortResults(state.sort, results);
+
+    if (process.browser) {
+      setSkeletonResultCount(results.length);
+    }
+
+    return results;
   },
 });
