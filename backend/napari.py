@@ -338,7 +338,7 @@ def get_plugins() -> dict:
     packages = query_pypi()
 
     if packages:
-        packages = filter_excluded_plugin(packages)
+        packages = filter_excluded_plugin(packages, {})
         if zulip_credentials is not None and len(zulip_credentials.split(":")) == 2:
             notify_new_packages(get_cache(plugins_key), packages)
         return cache(packages, plugins_key)
