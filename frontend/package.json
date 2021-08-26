@@ -76,7 +76,8 @@
     "unified": "^9.2.1",
     "use-debounce": "^6.0.1",
     "use-query-params": "^1.2.2",
-    "utility-types": "^3.10.0"
+    "utility-types": "^3.10.0",
+    "valtio": "^1.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.13.15",
