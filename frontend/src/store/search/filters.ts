@@ -5,18 +5,20 @@
 import { satisfies } from '@renovate/pep440';
 import { flow, intersection, isEmpty, some } from 'lodash';
 
-import { useSpdx } from '@/context/spdx';
+import { DeriveGet } from '@/types';
 
-import { FilterFormState, OperatingSystemFormState } from './filter.types';
+import { searchFormStore } from './form.store';
 import { SearchResult } from './search.types';
 import { SearchResultTransformFunction } from './types';
 
-function useFilterByPythonVersion(
-  state: FilterFormState,
+function filterByPythonVersion(
+  get: DeriveGet,
   results: SearchResult[],
 ): SearchResult[] {
+  const state = get(searchFormStore).filters.pythonVersions;
+
   // Collect all versions selected on the filter form
-  const selectedVersions = Object.entries(state.pythonVersions)
+  const selectedVersions = Object.entries(state)
     .filter(([, enabled]) => enabled)
     .map(([version]) => version);
 
@@ -34,16 +36,18 @@ function useFilterByPythonVersion(
   );
 }
 
-const FILTER_OS_PATTERN: Record<keyof OperatingSystemFormState, RegExp> = {
+const FILTER_OS_PATTERN = {
   linux: /Linux/,
   mac: /MacOS/,
   windows: /Windows/,
 };
 
-function useFilterByOperatingSystem(
-  state: FilterFormState,
+function filterByOperatingSystem(
+  get: DeriveGet,
   results: SearchResult[],
 ): SearchResult[] {
+  const state = get(searchFormStore).filters.operatingSystems;
+
   return results.filter(({ plugin }) => {
     // Don't filter if plugin supports all operating systems
     if (plugin.operating_system.some((os) => os.includes('OS Independent'))) {
@@ -51,15 +55,15 @@ function useFilterByOperatingSystem(
     }
 
     // Don't filter if none of the checkboxes are enabled
-    if (!some(state.operatingSystems, (enabled) => enabled)) {
+    if (!some(state, (enabled) => enabled)) {
       return true;
     }
 
     return plugin.operating_system.some((os) =>
-      some(state.operatingSystems, (enabled, osKey) => {
+      some(state, (enabled, osKey) => {
         if (enabled) {
           const pattern =
-            FILTER_OS_PATTERN[osKey as keyof OperatingSystemFormState];
+            FILTER_OS_PATTERN[osKey as keyof typeof FILTER_OS_PATTERN];
 
           return !!pattern.exec(os);
         }
@@ -75,42 +79,43 @@ const STABLE_DEV_STATUS = [
   'Development Status :: 6 - Mature',
 ];
 
-function useFilterByDevelopmentStatus(
-  state: FilterFormState,
+function filterByDevelopmentStatus(
+  get: DeriveGet,
   results: SearchResult[],
 ): SearchResult[] {
-  if (!state.developmentStatus.onlyStablePlugins) {
-    return results;
+  const state = get(searchFormStore).filters.devStatus;
+
+  if (state.stable) {
+    // Filter plugins that include at least one of the stable dev statuses.
+    return results.filter(
+      ({ plugin }) =>
+        !isEmpty(intersection(STABLE_DEV_STATUS, plugin.development_status)),
+    );
   }
 
-  // Filter plugins that include at least one of the stable dev statuses.
-  return results.filter(
-    ({ plugin }) =>
-      !isEmpty(intersection(STABLE_DEV_STATUS, plugin.development_status)),
-  );
+  return results;
 }
 
-function useFilterByLicense(
-  state: FilterFormState,
+function filterByLicense(
+  get: DeriveGet,
   results: SearchResult[],
 ): SearchResult[] {
-  const { isOSIApproved } = useSpdx();
+  const state = get(searchFormStore).filters.license;
 
-  if (!state.license.onlyOpenSourcePlugins) {
-    return results;
+  if (state.openSource) {
+    return results.filter(({ plugin }) =>
+      state.osiApprovedLicenseSet.has(plugin.license),
+    );
   }
 
-  return results.filter(({ plugin }) => isOSIApproved(plugin.license));
+  return results;
 }
 
-/**
- * List of functions to include for filtering search results.
- */
 const FILTERS = [
-  useFilterByPythonVersion,
-  useFilterByOperatingSystem,
-  useFilterByDevelopmentStatus,
-  useFilterByLicense,
+  filterByPythonVersion,
+  filterByOperatingSystem,
+  filterByDevelopmentStatus,
+  filterByLicense,
 ];
 
 /**
@@ -121,16 +126,16 @@ const FILTERS = [
  * @param state The filter form state
  * @returns The filtered search results
  */
-export function useFilterResults(
+export function filterResults(
+  get: DeriveGet,
   results: SearchResult[],
-  state: FilterFormState,
 ): SearchResult[] {
   // `flow()` will execute a list of functions and provide successive results to
   // each function:
   // https://lodash.com/docs/4.17.15#flow
-  const useFilter: SearchResultTransformFunction = flow(
-    FILTERS.map((fn) => fn.bind(null, state)),
+  const filter: SearchResultTransformFunction = flow(
+    FILTERS.map((fn) => fn.bind(null, get)),
   );
 
-  return useFilter(results);
+  return filter(results);
 }

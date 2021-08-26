@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 
 import { Link } from '@/components/common';
-import { useSearchState } from '@/context/search';
+import { searchFormStore } from '@/store/search/form.store';
 import { LinkInfo } from '@/types';
 import { setSearchScrollY } from '@/utils';
 
@@ -41,8 +41,6 @@ interface Props extends CommonProps {
  * Component that includes site-wide navigational links.
  */
 export function AppBarLinks({ className, items, vertical }: Props) {
-  const { search } = useSearchState() ?? {};
-
   return (
     <nav className={clsx(className, 'flex', vertical && 'flex-col')}>
       <Link
@@ -55,7 +53,7 @@ export function AppBarLinks({ className, items, vertical }: Props) {
           // on the search page. Without this, the `useQueryParameter()` hook
           // will re-set the query parameter with the current query in the
           // search bar.
-          search?.setQuery('');
+          searchFormStore.search.query = '';
 
           // When navigating back to the home page from the home link, reset
           // `scrollY` so that the user starts from the top of the page.

@@ -66,3 +66,6 @@ export interface LinkInfo {
    */
   newTab?: boolean;
 }
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+export type DeriveGet = <T extends object>(proxyObject: T) => T;
