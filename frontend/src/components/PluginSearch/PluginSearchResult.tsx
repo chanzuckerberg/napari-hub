@@ -3,7 +3,7 @@ import { isEmpty } from 'lodash';
 
 import { Link, SkeletonLoader, TextHighlighter } from '@/components/common';
 import { useLoadingState } from '@/context/loading';
-import { SearchResultMatch } from '@/context/search';
+import { SearchResultMatch } from '@/store/search/search.types';
 import { PluginIndexData } from '@/types';
 import { formatDate, formatOperatingSystem } from '@/utils';
 

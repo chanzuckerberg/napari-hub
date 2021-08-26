@@ -1,39 +1,62 @@
 import { FormLabel } from '@material-ui/core';
+import { get, set } from 'lodash';
+import { useSnapshot } from 'valtio';
 
 import { Accordion, SkeletonLoader } from '@/components/common';
 import { Media } from '@/components/common/media';
-import { useSearchState } from '@/context/search';
+import { SearchFormStore, searchFormStore } from '@/store/search/form.store';
 
 import { PluginFilterBySection } from './PluginFilterBySection';
 
-const SECTION_LABELS: Record<string, string | undefined> = {
+const FILTER_LABELS: Record<string, string | undefined> = {
   // Operating System
   linux: 'Linux',
   mac: 'macOS',
   windows: 'Windows',
 
   // Development Status
-  onlyStablePlugins: 'Only show stable plugins',
+  stable: 'Only show stable plugins',
 
   // License
-  onlyOpenSourcePlugins: 'Only show plugins with open source licenses',
+  openSource: 'Only show plugins with open source licenses',
 };
+
+function getCheckboxFilters(
+  filterKey: keyof SearchFormStore['filters'],
+  stateKeys: string[],
+) {
+  return stateKeys.map((stateKey) => ({
+    label: FILTER_LABELS[stateKey] ?? stateKey,
+    filterKey,
+    stateKey,
+
+    useFilterState() {
+      const filterState = useSnapshot(searchFormStore).filters;
+      return get(filterState, [filterKey, stateKey]) as boolean;
+    },
+
+    setFilterState(checked: boolean) {
+      set(searchFormStore.filters, [filterKey, stateKey], checked);
+    },
+  }));
+}
 
 /**
  * Component for the form for selecting the plugin filter type.
  */
 function FilterForm() {
-  const { filter } = useSearchState() ?? {};
   const sections = [
     {
       title: 'Python versions',
-      state: filter?.state.pythonVersions,
-      setState: filter?.setPythonVersion,
+      filters: getCheckboxFilters('pythonVersions', ['3.7', '3.8', '3.9']),
     },
     {
       title: 'Operating system',
-      state: filter?.state.operatingSystems,
-      setState: filter?.setOperatingSystem,
+      filters: getCheckboxFilters('operatingSystems', [
+        'linux',
+        'mac',
+        'windows',
+      ]),
     },
     // TODO Uncomment when we figure out what to do with the dev status filter
     // {
@@ -43,8 +66,7 @@ function FilterForm() {
     // },
     {
       title: 'License',
-      state: filter?.state.license,
-      setState: filter?.setLicense,
+      filters: getCheckboxFilters('license', ['openSource']),
     },
   ];
 
@@ -66,14 +88,7 @@ function FilterForm() {
           className="mt-6"
           key={section.title}
           title={section.title}
-          filters={Object.entries(section.state ?? {}).map(
-            ([key, enabled]: [string, boolean]) => ({
-              enabled,
-              label: SECTION_LABELS[key] ?? key,
-              setEnabled: (nextEnabled: boolean) =>
-                section.setState?.({ [key]: nextEnabled }),
-            }),
-          )}
+          filters={section.filters}
         />
       ))}
     </div>

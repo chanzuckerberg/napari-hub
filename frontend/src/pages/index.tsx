@@ -6,15 +6,11 @@ import { ReactNode, useEffect } from 'react';
 import { hubAPI, spdxLicenseDataAPI } from '@/axios';
 import { ErrorMessage } from '@/components/common';
 import { PluginSearch } from '@/components/PluginSearch';
-import { useLoadingState } from '@/context/loading';
-import { PluginSearchProvider } from '@/context/search';
 import {
-  SpdxLicenseData,
-  SpdxLicenseProvider,
-  SpdxLicenseResponse,
-} from '@/context/spdx';
-import { URLParameterStateProvider } from '@/context/urlParameters';
-import { PluginIndexData } from '@/types';
+  initOsiApprovedLicenseSet,
+  initSearchEngine,
+} from '@/store/search/form.store';
+import { PluginIndexData, SpdxLicenseData, SpdxLicenseResponse } from '@/types';
 import { setSearchScrollY } from '@/utils/search';
 
 interface Props {
@@ -43,8 +39,6 @@ export async function getServerSideProps() {
 }
 
 export default function Home({ error, index, licenses }: Props) {
-  const isLoading = useLoadingState();
-
   useEffect(() => {
     function scrollHandler() {
       setSearchScrollY(window.scrollY);
@@ -58,6 +52,16 @@ export default function Home({ error, index, licenses }: Props) {
     return () => document.removeEventListener('scroll', debouncedScrollHandler);
   }, []);
 
+  useEffect(() => {
+    if (index) {
+      initSearchEngine(index);
+    }
+
+    if (licenses) {
+      initOsiApprovedLicenseSet(licenses);
+    }
+  }, [index, licenses]);
+
   return (
     <>
       <Head>
@@ -67,25 +71,7 @@ export default function Home({ error, index, licenses }: Props) {
       {error ? (
         <ErrorMessage error={error}>Unable to fetch plugin index</ErrorMessage>
       ) : (
-        index &&
-        licenses && (
-          <URLParameterStateProvider>
-            <SpdxLicenseProvider licenses={licenses}>
-              {/*
-                Don't render PluginSearchProvider while loading. For some
-                reason, rendering while loading leads to a bug that freezes the
-                entire UI.
-              */}
-              {isLoading ? (
-                <PluginSearch />
-              ) : (
-                <PluginSearchProvider pluginIndex={index}>
-                  <PluginSearch />
-                </PluginSearchProvider>
-              )}
-            </SpdxLicenseProvider>
-          </URLParameterStateProvider>
-        )
+        index && licenses && <PluginSearch />
       )}
     </>
   );

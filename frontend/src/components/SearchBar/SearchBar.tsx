@@ -1,14 +1,17 @@
 import clsx from 'clsx';
 import { useRouter } from 'next/router';
 import { HTMLProps, useState } from 'react';
+import { useSnapshot } from 'valtio';
 
 import { Close, Search } from '@/components/common/icons';
 import {
+  DEFAULT_SORT_TYPE,
   SEARCH_PAGE,
   SearchQueryParams,
-  useSearchState,
-} from '@/context/search';
-import { scrollToSearchBar, setSearchScrollY } from '@/utils';
+  SearchSortType,
+} from '@/store/search/constants';
+import { searchFormStore } from '@/store/search/form.store';
+import { isSearchPage, scrollToSearchBar, setSearchScrollY } from '@/utils';
 
 import styles from './SearchBar.module.scss';
 
@@ -33,12 +36,8 @@ interface Props extends HTMLProps<HTMLFormElement> {
  */
 export function SearchBar({ large, ...props }: Props) {
   const router = useRouter();
-  const {
-    results,
-    search: { query, setQuery, clearQuery },
-  } = useSearchState() ?? {
-    search: {},
-  };
+  const state = useSnapshot(searchFormStore);
+  const { query } = state.search;
 
   // Local state for query. This is used to store the current entered query string.
   const [localQuery, setLocalQuery] = useState(query ?? '');
@@ -56,19 +55,21 @@ export function SearchBar({ large, ...props }: Props) {
    * redirects to the search page with the query added to the URL.
    */
   async function submitForm(searchQuery: string) {
-    // Search state is only available on search enabled pages.
-    const isSearchPage = results !== undefined;
-
     // Reset `scrollY` value so that the browser can scroll to the search
     // bar after searching.
     setSearchScrollY(0);
 
-    if (isSearchPage) {
+    if (isSearchPage(window.location.pathname)) {
       if (searchQuery) {
-        setQuery?.(searchQuery);
         scrollToSearchBar({ behavior: 'smooth' });
+        searchFormStore.search.query = searchQuery;
+        searchFormStore.sort = SearchSortType.Relevance;
       } else {
-        clearQuery?.();
+        searchFormStore.search.query = '';
+
+        if (state.sort === SearchSortType.Relevance) {
+          searchFormStore.sort = DEFAULT_SORT_TYPE;
+        }
       }
     } else {
       const url = {
@@ -76,6 +77,7 @@ export function SearchBar({ large, ...props }: Props) {
         query: {
           // Params will be encoded automatically by Next.js.
           [SearchQueryParams.Search]: searchQuery,
+          [SearchQueryParams.Sort]: SearchSortType.Relevance,
         },
       };
       await router.push(url);
