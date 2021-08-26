@@ -10,7 +10,9 @@ import {
   initOsiApprovedLicenseSet,
   initSearchEngine,
 } from '@/store/search/form.store';
-import { PluginIndexData, SpdxLicenseData, SpdxLicenseResponse } from '@/types';
+import { initQueryParameterListener } from '@/store/search/queryParameters';
+import { SpdxLicenseData, SpdxLicenseResponse } from '@/store/search/types';
+import { PluginIndexData } from '@/types';
 import { setSearchScrollY } from '@/utils/search';
 
 interface Props {
@@ -60,6 +62,9 @@ export default function Home({ error, index, licenses }: Props) {
     if (licenses) {
       initOsiApprovedLicenseSet(licenses);
     }
+
+    const unsubscribe = initQueryParameterListener();
+    return unsubscribe;
   }, [index, licenses]);
 
   return (

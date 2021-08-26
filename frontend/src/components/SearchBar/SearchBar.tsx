@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { useRouter } from 'next/router';
-import { HTMLProps, useState } from 'react';
+import { HTMLProps, useEffect, useState } from 'react';
 import { useSnapshot } from 'valtio';
 
 import { Close, Search } from '@/components/common/icons';
@@ -48,6 +48,11 @@ export function SearchBar({ large, ...props }: Props) {
     // 22x22 pixels when root font-size is 16px
     large && 'h-[1.375rem] w-[1.375rem]',
   );
+
+  // Keep local query state in sync with global query state in case it's changed elsewhere.
+  useEffect(() => {
+    setLocalQuery(query);
+  }, [query]);
 
   /**
    * Performs a search query on form submission. If the user is on the search
