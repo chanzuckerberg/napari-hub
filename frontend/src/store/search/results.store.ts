@@ -9,6 +9,11 @@ import { sortResults } from './sorters';
 
 const logger = new Logger('results.store.ts');
 
+/**
+ * Valtio derived store for plugin search results. This store is used for
+ * executing the search engine query, and then filtering and sorting the
+ * results.
+ */
 export const searchResultsStore = derive({
   results(get) {
     const state = get(searchFormStore);
@@ -16,6 +21,7 @@ export const searchResultsStore = derive({
 
     let results: SearchResult[];
 
+    // Return full list of plugins if the engine or query aren't defined.
     if (!engine || !query) {
       results = index.map<SearchResult>((plugin, pluginIndex) => ({
         plugin,
@@ -37,6 +43,7 @@ export const searchResultsStore = derive({
     results = filterResults(get, results);
     results = sortResults(state.sort, results);
 
+    // Store result count in sessionStorage for the skeleton loader.
     if (process.browser) {
       setSkeletonResultCount(results.length);
     }
