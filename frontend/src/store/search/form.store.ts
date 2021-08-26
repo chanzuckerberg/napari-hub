@@ -8,7 +8,7 @@ import { FuseSearchEngine } from './engines';
 import { SearchEngine } from './search.types';
 import { FilterChipItem, SpdxLicenseData } from './types';
 
-export const searchFormStore = proxy({
+export const DEFAULT_STATE = {
   search: {
     index: [] as PluginIndexData[],
     engine: null as SearchEngine | null,
@@ -39,7 +39,9 @@ export const searchFormStore = proxy({
       3.9: false,
     },
   },
-});
+};
+
+export const searchFormStore = proxy(DEFAULT_STATE);
 
 export type SearchFormStore = typeof searchFormStore;
 
