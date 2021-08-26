@@ -150,7 +150,7 @@ def get_extra_metadata(download_url: str) -> dict:
     :return: extra metadata dictionary
     """
     extra_metadata = {}
-    visibility_list = ['public', 'disabled', 'hidden']
+    visibility_set = {'public', 'disabled', 'hidden'}
 
     github_license = get_license(download_url)
     if github_license is not None:
@@ -172,10 +172,8 @@ def get_extra_metadata(download_url: str) -> dict:
 
     if 'visibility' not in extra_metadata:
         extra_metadata['visibility'] = 'public'
-    else:
-        visibility_match = len(set(extra_metadata['visibility']).intersection(visibility_list))
-        if not visibility_match:
-            extra_metadata['visibility'] = 'public'
+    elif extra_metadata['visibility'] not in visibility_set:
+        extra_metadata['visibility'] = 'public'
 
     return extra_metadata
 
@@ -575,4 +573,4 @@ def cache(content: [dict, list], key: str) -> dict:
     return content
 
 if __name__ == "__main__":
-    get_extra_metadata('https://github.com/DragaDoncila/example-plugin')
+    output = get_extra_metadata('https://github.com/DragaDoncila/example-plugin')
