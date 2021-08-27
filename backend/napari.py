@@ -316,7 +316,7 @@ def get_plugins_filtered() -> dict:
     :param context: context for the run to raise alerts
     :return: json of filtered plugins and their version
     """
-    filtered_plugins = filter_excluded_plugin(get_plugins(), {})
+    filtered_plugins = filter_excluded_plugin(get_plugins())
 
     return filtered_plugins
 
@@ -338,7 +338,7 @@ def get_plugins() -> dict:
     packages = query_pypi()
 
     if packages:
-        packages = filter_excluded_plugin(packages, {})
+        packages = filter_excluded_plugin(packages)
         if zulip_credentials is not None and len(zulip_credentials.split(":")) == 2:
             notify_new_packages(get_cache(plugins_key), packages)
         return cache(packages, plugins_key)
@@ -415,7 +415,7 @@ def cache_available(key: str, ttl: [timedelta, None]) -> bool:
         return False
 
 
-def filter_excluded_plugin(packages: dict, white_list: set) -> dict:
+def filter_excluded_plugin(packages: dict, white_list: set = {}) -> dict:
     """
     Filter excluded plugins from the plugins list
     :param packages: all plugins list
