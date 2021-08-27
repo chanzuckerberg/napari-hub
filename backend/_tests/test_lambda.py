@@ -2,7 +2,7 @@ from unittest import mock
 import requests
 from requests.exceptions import HTTPError
 
-from backend.napari import get_plugin
+from backend.napari import get_plugin, get_shield
 from backend.napari import get_plugins
 from backend.napari import get_download_url
 from backend.napari import get_license
@@ -144,6 +144,14 @@ def test_get_plugin(mock_get, mock_plugins):
 )
 def test_get_invalid_plugin(mock_get, mock_plugins):
     assert({} == get_plugin("test"))
+
+
+@mock.patch(
+    'backend.napari.get_plugins', return_value=plugin_list
+)
+def test_get_shield(mock_get, mock_plugins):
+    result = get_shield('package1')
+    assert result == {'plugin': 'package1'}
 
 
 def test_github_get_url():

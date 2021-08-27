@@ -371,6 +371,15 @@ def get_plugin(plugin: str, version: str = None) -> dict:
         return {}
 
 
+@app.route('/shields/<plugin>')
+def get_shield(plugin: str):
+    plugins = get_plugins()
+    if plugin not in plugins:
+        return {}
+    else:
+        return {'plugin': plugin}
+
+
 def cache_available(key: str, ttl: [timedelta, None]) -> bool:
     """
     Check if cache is available for the key.
