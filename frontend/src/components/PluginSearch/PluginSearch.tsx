@@ -24,12 +24,6 @@ export function PluginSearch() {
   const loading = useLoadingState();
 
   useEffect(() => {
-    if (loading) {
-      document.addEventListener('scroll', scrollHandler);
-    } else {
-      document.removeEventListener('scroll', scrollHandler);
-    }
-
     const scrollY = getSearchScrollY();
     if (scrollY > 0) {
       const scrollToLastPosition = () => window.scroll(0, scrollY);
@@ -41,6 +35,9 @@ export function PluginSearch() {
         requestAnimationFrame(scrollToLastPosition);
       }
     }
+
+    document.addEventListener('scroll', scrollHandler);
+    return () => document.removeEventListener('scroll', scrollHandler);
   }, [loading]);
 
   return (
