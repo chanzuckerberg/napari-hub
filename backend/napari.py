@@ -316,9 +316,7 @@ def get_plugins_filtered() -> dict:
     :param context: context for the run to raise alerts
     :return: json of filtered plugins and their version
     """
-    filtered_plugins = filter_excluded_plugin(get_plugins())
-
-    return filtered_plugins
+    return filter_excluded_plugin(get_plugins())
 
 
 def get_plugins() -> dict:
@@ -424,17 +422,12 @@ def filter_excluded_plugin(packages: dict, white_list: set = {}) -> dict:
     """
     valid_plugins = packages.copy()
     excluded_plugins = get_exclusion_list()
-    hidden_set = set()
-    if len(white_list) > 0:
-        for k, v in excluded_plugins.items():
-            if v != 'hidden':
-                hidden_set.add(k)
-        excluded_plugins = dict((k, excluded_plugins[k]) for k in hidden_set if k in excluded_plugins)
 
-    difference = set(valid_plugins.keys()) ^ set(excluded_plugins.keys())
-    filtered_plugins = dict((k, valid_plugins[k]) for k in difference if k in valid_plugins)
+    for key, value in excluded_plugins.items():
+        if key in packages and value not in white_list:
+            del valid_plugins[key]
 
-    return filtered_plugins
+    return valid_plugins
 
 
 @app.route('/plugins/excluded')
@@ -591,3 +584,6 @@ def cache(content: [dict, list], key: str) -> dict:
         fp.flush()
         s3_client.upload_file(fp.name, bucket, os.path.join(bucket_path, key))
     return content
+
+if __name__ == "__main__":
+    get_plugins_filtered()
