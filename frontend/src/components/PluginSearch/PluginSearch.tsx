@@ -1,15 +1,45 @@
+import { throttle } from 'lodash';
+import { useEffect } from 'react';
+
 import { Footer, SignupForm } from '@/components';
 import { AppBarLanding } from '@/components/AppBar';
 import { ColumnLayout } from '@/components/common';
+import { useLoadingState } from '@/context/loading';
+import { getSearchScrollY, setSearchScrollY } from '@/utils';
 
 import { PluginSearchBar } from './PluginSearchBar';
 import { PluginSearchControls } from './PluginSearchControls';
 import { PluginSearchResultList } from './PluginSearchResultList';
 
+const SCROLL_HANDLER_THROTTLE_MS = 200;
+
+const scrollHandler = throttle(() => {
+  setSearchScrollY(window.scrollY);
+}, SCROLL_HANDLER_THROTTLE_MS);
+
 /**
  * Component for rendering the landing page and plugin search.
  */
 export function PluginSearch() {
+  const loading = useLoadingState();
+
+  useEffect(() => {
+    const scrollY = getSearchScrollY();
+    if (scrollY > 0) {
+      const scrollToLastPosition = () => window.scroll(0, scrollY);
+
+      if (loading) {
+        scrollToLastPosition();
+      } else {
+        // Schedule for later execution so that DOM has time to settle.
+        requestAnimationFrame(scrollToLastPosition);
+      }
+    }
+
+    document.addEventListener('scroll', scrollHandler);
+    return () => document.removeEventListener('scroll', scrollHandler);
+  }, [loading]);
+
   return (
     <div className="flex flex-col">
       <AppBarLanding />

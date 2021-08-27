@@ -105,7 +105,7 @@ export function getSearchBarDistanceFromTop(): number {
  */
 export function scrollToSearchBar(options: ScrollOptions = {}): void {
   const searchBar = getSearchBar();
-  searchBar?.scrollIntoView({
+  searchBar?.scrollIntoView?.({
     ...options,
     inline: 'nearest',
     block: 'start',
