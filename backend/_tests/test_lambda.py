@@ -149,7 +149,7 @@ def test_get_invalid_plugin(mock_get, mock_plugins):
 @mock.patch(
     'backend.napari.get_plugins', return_value=plugin_list
 )
-def test_get_shield(mock_get, mock_plugins):
+def test_get_shield(mock_plugins):
     result = get_shield('package1')
     assert result == {'plugin': 'package1'}
 
