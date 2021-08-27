@@ -146,10 +146,11 @@ def get_extra_metadata(download_url: str) -> dict:
     """
     Extract extra metadata from the github download url
 
-    :param download_url: github url to download from
+    :param download_url: github repo url to download from
     :return: extra metadata dictionary
     """
     extra_metadata = {}
+    visibility_set = {'public', 'disabled', 'hidden'}
 
     github_license = get_license(download_url)
     if github_license is not None:
@@ -168,6 +169,11 @@ def get_extra_metadata(download_url: str) -> dict:
     citation_file = get_file(download_url, "CITATION.cff")
     if citation_file is not None:
         extra_metadata['citations'] = get_citations(citation_file)
+
+    if 'visibility' not in extra_metadata:
+        extra_metadata['visibility'] = 'public'
+    elif extra_metadata['visibility'] not in visibility_set:
+        extra_metadata['visibility'] = 'public'
 
     return extra_metadata
 
@@ -303,6 +309,16 @@ def format_plugin(plugin: dict) -> dict:
 
 
 @app.route('/plugins')
+def get_plugins_filtered() -> dict:
+    """
+    Get all filtered plugins list such that only public plugins are returned
+
+    :param context: context for the run to raise alerts
+    :return: json of filtered plugins and their version
+    """
+    return filter_excluded_plugin(get_plugins())
+
+
 def get_plugins() -> dict:
     """
     Get all valid plugins list. We would first try to see if there is a freshly
@@ -350,6 +366,7 @@ def get_plugin(plugin: str, version: str = None) -> dict:
     :return: plugin metadata dictionary
     """
     plugins = get_plugins()
+    plugins = filter_excluded_plugin(plugins, {'hidden'})
     if plugin not in plugins:
         return {}
     elif version is None:
@@ -396,19 +413,21 @@ def cache_available(key: str, ttl: [timedelta, None]) -> bool:
         return False
 
 
-def filter_excluded_plugin(packages: dict) -> dict:
+def filter_excluded_plugin(packages: dict, white_list: set = {}) -> dict:
     """
     Filter excluded plugins from the plugins list
     :param packages: all plugins list
+    :param white_list: whitelisted plugins
     :return: only plugins not in the filtered list
     """
-    filtered = packages.copy()
-    exclusions = get_exclusion_list()
-    for exclusion, versions in exclusions.items():
-        if exclusion in packages and \
-                (versions is None or packages[exclusion] in versions):
-            filtered.pop(exclusion)
-    return filtered
+    valid_plugins = packages.copy()
+    excluded_plugins = get_exclusion_list()
+
+    for key, value in excluded_plugins.items():
+        if key in packages and value not in white_list:
+            del valid_plugins[key]
+
+    return valid_plugins
 
 
 @app.route('/plugins/excluded')
@@ -565,3 +584,6 @@ def cache(content: [dict, list], key: str) -> dict:
         fp.flush()
         s3_client.upload_file(fp.name, bucket, os.path.join(bucket_path, key))
     return content
+
+if __name__ == "__main__":
+    get_plugins_filtered()
