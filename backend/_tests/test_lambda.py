@@ -151,7 +151,7 @@ def test_get_invalid_plugin(mock_get, mock_plugins):
 )
 def test_get_shield(mock_plugins):
     result = get_shield('package1')
-    assert result == {'plugin': 'package1'}
+    assert result['message'] == 'package1'
 
 
 def test_github_get_url():
