@@ -385,7 +385,7 @@ def get_plugin(plugin: str, version: str = None) -> dict:
 def get_shield(plugin: str):
     plugins = get_plugins()
     if plugin not in plugins:
-        return {'message': f'{plugin} not found', 'plugins': plugins}
+        return {}
     else:
         plugin_shield_schema = copy.deepcopy(shield_schema)
         plugin_shield_schema['message'] = plugin
