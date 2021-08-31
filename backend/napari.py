@@ -117,6 +117,7 @@ def update_index() -> dict:
                    for k, v in get_plugins().items()]
     for future in concurrent.futures.as_completed(futures):
         results.append(future.result())
+    s3_client.upload_file("s3", endpoint_url=endpoint_url)
     return jsonify(cache(results, index_key))
 
 
@@ -144,7 +145,7 @@ def get_file(download_url: str, file: str) -> [dict, None]:
 
 def get_extra_metadata(download_url: str) -> dict:
     """
-    Extract extra metadata from the github download url
+    Extract extra metadata from the github download url.
 
     :param download_url: github repo url to download from
     :return: extra metadata dictionary
@@ -413,18 +414,18 @@ def cache_available(key: str, ttl: [timedelta, None]) -> bool:
         return False
 
 
-def filter_excluded_plugin(packages: dict, white_list: set = {}) -> dict:
+def filter_excluded_plugin(packages: dict, whitelisted_keyword: set = {}) -> dict:
     """
     Filter excluded plugins from the plugins list
     :param packages: all plugins list
-    :param white_list: whitelisted plugins
+    :param whitelisted_keyword: keyword reflects plugins to include
     :return: only plugins not in the filtered list
     """
     valid_plugins = packages.copy()
     excluded_plugins = get_exclusion_list()
 
     for key, value in excluded_plugins.items():
-        if key in packages and value not in white_list:
+        if key in packages and value not in whitelisted_keyword:
             del valid_plugins[key]
 
     return valid_plugins
