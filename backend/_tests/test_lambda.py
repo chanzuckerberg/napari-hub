@@ -152,6 +152,12 @@ def test_get_invalid_plugin(mock_get, mock_plugins):
 def test_get_shield(mock_plugins):
     result = get_shield('package1')
     assert result['message'] == 'package1'
+    assert 'label' in result
+    assert 'schema' in result
+    assert 'color' in result
+
+    result = get_shield('not-a-package')
+    assert result == {}
 
 
 def test_github_get_url():
