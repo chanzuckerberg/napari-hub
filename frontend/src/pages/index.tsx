@@ -1,21 +1,17 @@
 import { AxiosError } from 'axios';
-import { debounce } from 'lodash';
 import Head from 'next/head';
 import { ReactNode, useEffect } from 'react';
 
 import { hubAPI, spdxLicenseDataAPI } from '@/axios';
 import { ErrorMessage } from '@/components/common';
 import { PluginSearch } from '@/components/PluginSearch';
-import { useLoadingState } from '@/context/loading';
-import { PluginSearchProvider } from '@/context/search';
 import {
-  SpdxLicenseData,
-  SpdxLicenseProvider,
-  SpdxLicenseResponse,
-} from '@/context/spdx';
-import { URLParameterStateProvider } from '@/context/urlParameters';
+  initOsiApprovedLicenseSet,
+  initSearchEngine,
+} from '@/store/search/form.store';
+import { initQueryParameterListener } from '@/store/search/queryParameters';
+import { SpdxLicenseData, SpdxLicenseResponse } from '@/store/search/types';
 import { PluginIndexData } from '@/types';
-import { setSearchScrollY } from '@/utils/search';
 
 interface Props {
   licenses?: SpdxLicenseData[];
@@ -43,20 +39,18 @@ export async function getServerSideProps() {
 }
 
 export default function Home({ error, index, licenses }: Props) {
-  const isLoading = useLoadingState();
-
   useEffect(() => {
-    function scrollHandler() {
-      setSearchScrollY(window.scrollY);
+    if (index) {
+      initSearchEngine(index);
     }
 
-    // Debounce scroll handler so that we don't overrun the main thread with
-    // `localStorage.set()` calls.
-    const debouncedScrollHandler = debounce(scrollHandler, 300);
+    if (licenses) {
+      initOsiApprovedLicenseSet(licenses);
+    }
 
-    document.addEventListener('scroll', debouncedScrollHandler);
-    return () => document.removeEventListener('scroll', debouncedScrollHandler);
-  }, []);
+    const unsubscribe = initQueryParameterListener();
+    return unsubscribe;
+  }, [index, licenses]);
 
   return (
     <>
@@ -67,25 +61,7 @@ export default function Home({ error, index, licenses }: Props) {
       {error ? (
         <ErrorMessage error={error}>Unable to fetch plugin index</ErrorMessage>
       ) : (
-        index &&
-        licenses && (
-          <URLParameterStateProvider>
-            <SpdxLicenseProvider licenses={licenses}>
-              {/*
-                Don't render PluginSearchProvider while loading. For some
-                reason, rendering while loading leads to a bug that freezes the
-                entire UI.
-              */}
-              {isLoading ? (
-                <PluginSearch />
-              ) : (
-                <PluginSearchProvider pluginIndex={index}>
-                  <PluginSearch />
-                </PluginSearchProvider>
-              )}
-            </SpdxLicenseProvider>
-          </URLParameterStateProvider>
-        )
+        index && licenses && <PluginSearch />
       )}
     </>
   );

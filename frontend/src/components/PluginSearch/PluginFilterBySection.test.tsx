@@ -9,15 +9,23 @@ describe('Plugin filter-by section', () => {
     const filters: FilterItem[] = [
       {
         label: 'one',
-        enabled: false,
-        setEnabled: (enabled: boolean) => enabled,
+        filterKey: 'filter',
+        stateKey: 'state1',
+        useFilterState: jest.fn().mockReturnValue(true),
+        setFilterState: jest.fn(),
       },
       {
         label: 'two',
-        enabled: true,
-        setEnabled: (enabled: boolean) => enabled,
+        filterKey: 'filter',
+        stateKey: 'state2',
+        useFilterState: jest.fn().mockReturnValue(false),
+        setFilterState: jest.fn(),
       },
     ];
+    const expectedChecked: Record<string, boolean> = {
+      one: true,
+      two: false,
+    };
 
     const { getByTestId, getAllByTestId } = render(
       <PluginFilterBySection title={title} filters={filters} />,
@@ -33,7 +41,10 @@ describe('Plugin filter-by section', () => {
       [FilterItem, HTMLElement]
     >).forEach(([filter, input]) => {
       expect(input.lastElementChild?.innerHTML).toBe(filter.label);
-      expect(input.querySelector('input')?.checked).toBe(filter.enabled);
+      expect(filter.useFilterState).toHaveBeenLastCalledWith();
+      expect(input.querySelector('input')?.checked).toBe(
+        expectedChecked[filter.label],
+      );
     });
   });
 
@@ -41,15 +52,23 @@ describe('Plugin filter-by section', () => {
     const filters: FilterItem[] = [
       {
         label: 'one',
-        enabled: false,
-        setEnabled: jest.fn(),
+        filterKey: 'filter',
+        stateKey: 'state1',
+        useFilterState: jest.fn().mockReturnValue(false),
+        setFilterState: jest.fn(),
       },
       {
         label: 'two',
-        enabled: true,
-        setEnabled: jest.fn(),
+        filterKey: 'filter',
+        stateKey: 'state2',
+        useFilterState: jest.fn().mockReturnValue(true),
+        setFilterState: jest.fn(),
       },
     ];
+    const expectedChecked: Record<string, boolean> = {
+      one: true,
+      two: false,
+    };
 
     const { getAllByTestId } = render(
       <PluginFilterBySection title="test" filters={filters} />,
@@ -65,7 +84,9 @@ describe('Plugin filter-by section', () => {
       const checkbox = input.querySelector('input');
       expect(checkbox).not.toBeUndefined();
       fireEvent.click(checkbox as HTMLElement);
-      expect(filter.setEnabled).toHaveBeenCalledWith(!filter.enabled);
+      expect(filter.setFilterState).toHaveBeenCalledWith(
+        expectedChecked[filter.label],
+      );
     });
   });
 });

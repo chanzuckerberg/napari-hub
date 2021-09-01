@@ -19,7 +19,6 @@ export const DEFAULT_SORT_TYPE = SearchSortType.ReleaseDate;
  * Query parameters used for storing search form data.
  */
 export enum SearchQueryParams {
-  Filter = 'filter',
   Search = 'search',
   Sort = 'sort',
 }

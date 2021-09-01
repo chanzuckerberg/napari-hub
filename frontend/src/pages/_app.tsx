@@ -9,98 +9,25 @@ import '@/tailwind.scss';
 import '@/fonts.scss';
 import '@/global.scss';
 
-import { StylesProvider, ThemeProvider } from '@material-ui/styles';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import NextPlausibleProvider from 'next-plausible';
-import { ComponentType, ReactNode, useEffect, useRef } from 'react';
-import { QueryClient, QueryClientProvider } from 'react-query';
-import { ReactQueryDevtools } from 'react-query/devtools';
-import { Hydrate } from 'react-query/hydration';
+import { ComponentType, ReactNode } from 'react';
 
 import { Layout } from '@/components';
 import { PageMetadata } from '@/components/common';
-import { MediaContextProvider } from '@/components/common/media';
+import { ApplicationProvider } from '@/components/common/providers';
 import { LoadingStateProvider } from '@/context/loading';
 import { PROD } from '@/env';
 import { usePageTransitions } from '@/hooks';
 import SearchPage from '@/pages/index';
 import PluginPage from '@/pages/plugins/[name]';
-import { theme } from '@/theme';
 import { PluginData } from '@/types';
 import { isPluginPage, isSearchPage } from '@/utils';
 
 type GetLayoutComponent = ComponentType & {
   getLayout?(page: ReactNode): ReactNode;
 };
-
-interface QueryProviderProps {
-  children: ReactNode;
-  dehydratedState: unknown;
-}
-
-function ReactQueryProvider({ children, dehydratedState }: QueryProviderProps) {
-  const queryClientRef = useRef<QueryClient>();
-  if (!queryClientRef.current) {
-    queryClientRef.current = new QueryClient();
-  }
-
-  return (
-    <QueryClientProvider client={queryClientRef.current}>
-      <Hydrate state={dehydratedState}>
-        {children}
-        <ReactQueryDevtools />
-      </Hydrate>
-    </QueryClientProvider>
-  );
-}
-
-interface ProviderProps {
-  children: ReactNode;
-}
-
-function MaterialUIProvider({ children }: ProviderProps) {
-  useEffect(() => {
-    // Remove the server-side injected CSS.
-    const jssStyles = document.querySelector('#jss-server-side');
-    jssStyles?.parentElement?.removeChild?.(jssStyles);
-  }, []);
-
-  return (
-    <MediaContextProvider>
-      <ThemeProvider theme={theme}>
-        <StylesProvider
-          // By default, Material UI will inject styles at the bottom of the
-          // body so that it has higher priority over other CSS rules. This
-          // makes it harder to override CSS, so we use `injectFirst` to
-          // inject styles in the head element instead:
-          // https://material-ui.com/styles/advanced/#injectfirst
-          injectFirst
-        >
-          {children}
-        </StylesProvider>
-      </ThemeProvider>
-    </MediaContextProvider>
-  );
-}
-
-function PlausibleProvider({ children }: ProviderProps) {
-  const isUsingPlausible = process.env.PLAUSIBLE === 'true';
-  if (!isUsingPlausible) {
-    return <>{children}</>;
-  }
-
-  // Plausible doesn't actually do any domain checking, so the domain is used
-  // mostly an ID for which Plausible dashboard we want to send data to.
-  // https://github.com/plausible/analytics/discussions/183
-  const domain = PROD ? 'napari-hub.org' : 'dev.napari-hub.org';
-  return (
-    <NextPlausibleProvider domain={domain} enabled trackOutboundLinks>
-      {children}
-    </NextPlausibleProvider>
-  );
-}
 
 export default function App({ Component, pageProps }: AppProps) {
   const { loading, nextUrl } = usePageTransitions();
@@ -182,13 +109,9 @@ export default function App({ Component, pageProps }: AppProps) {
         }
       </Head>
 
-      <ReactQueryProvider dehydratedState={pageProps.dehydratedState}>
-        <MediaContextProvider>
-          <MaterialUIProvider>
-            <PlausibleProvider>{page}</PlausibleProvider>
-          </MaterialUIProvider>
-        </MediaContextProvider>
-      </ReactQueryProvider>
+      <ApplicationProvider dehydratedState={pageProps.dehydratedState}>
+        {page}
+      </ApplicationProvider>
     </>
   );
 }
