@@ -153,7 +153,7 @@ def test_get_shield(mock_plugins):
     result = get_shield('package1')
     assert result['message'] == 'package1'
     assert 'label' in result
-    assert 'schema' in result
+    assert 'schemaVersion' in result
     assert 'color' in result
 
     result = get_shield('not-a-package')
