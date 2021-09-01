@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 
 import { Link } from '@/components/common';
-import { searchFormStore } from '@/store/search/form.store';
+import { resetState } from '@/store/search/form.store';
 import { LinkInfo } from '@/types';
 import { setSearchScrollY } from '@/utils';
 
@@ -49,11 +49,8 @@ export function AppBarLinks({ className, items, vertical }: Props) {
         // Redirect to home page
         href="/"
         onClick={() => {
-          // Clear search related query parameter data if the user is currently
-          // on the search page. Without this, the `useQueryParameter()` hook
-          // will re-set the query parameter with the current query in the
-          // search bar.
-          searchFormStore.search.query = '';
+          // Clear query parameters and state when clicking on home link.
+          resetState();
 
           // When navigating back to the home page from the home link, reset
           // `scrollY` so that the user starts from the top of the page.

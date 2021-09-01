@@ -1,19 +1,11 @@
-import { Getter, WritableAtom } from 'jotai';
+import { defaultsDeep } from 'lodash';
+import { DeepPartial } from 'utility-types';
 
 import pluginIndex from '@/fixtures/index.json';
-import { PluginIndexData } from '@/types';
+import { DeriveGet, PluginIndexData } from '@/types';
 
-import { osiApprovedLicenseSetState } from '../spdx';
-import {
-  filterLinuxState,
-  filterMacState,
-  filterOnlyOpenSourcePluginsState,
-  filterOnlyStablePluginsState,
-  filterPython39State,
-  FilterStateType,
-  filterWindowsState,
-} from './filter.state';
 import { filterResults } from './filters';
+import { DEFAULT_STATE, SearchFormStore } from './form.store';
 import { SearchResult } from './search.types';
 
 function getResults(...plugins: PluginIndexData[]): SearchResult[] {
@@ -62,17 +54,20 @@ function getLicenseResults(...licenses: string[]): SearchResult[] {
   return getResults(...plugins);
 }
 
-function createMockFilterGet(...states: FilterStateType[]) {
-  return (jest.fn((state: FilterStateType) =>
-    states.includes(state),
-  ) as unknown) as Getter;
+function createMockFilterGet(
+  filters: DeepPartial<SearchFormStore['filters']> = {},
+) {
+  return (jest.fn(() =>
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    defaultsDeep({ filters }, DEFAULT_STATE),
+  ) as unknown) as DeriveGet;
 }
 
 describe('filterResults()', () => {
   describe('filter by python versions', () => {
     it('should allow all plugins when no filters are enabled', () => {
       const results = getVersionResults('>=3.10', '>=3.9');
-      expect(filterResults(jest.fn(), results)).toEqual(results);
+      expect(filterResults(createMockFilterGet(), results)).toEqual(results);
     });
 
     it("should filter plugins that don't match an exact version", () => {
@@ -101,7 +96,11 @@ describe('filterResults()', () => {
 
       testCases.forEach(({ input, output }) => {
         const result = filterResults(
-          createMockFilterGet(filterPython39State),
+          createMockFilterGet({
+            pythonVersions: {
+              3.9: true,
+            },
+          }),
           input,
         );
         expect(result).toEqual(output);
@@ -115,7 +114,7 @@ describe('filterResults()', () => {
         ['Operating System :: OS Independent'],
         ['Operating System :: POSIX :: Linux'],
       );
-      const filtered = filterResults(jest.fn(), results);
+      const filtered = filterResults(createMockFilterGet(), results);
       expect(filtered).toEqual(results);
     });
 
@@ -126,7 +125,11 @@ describe('filterResults()', () => {
       );
 
       const filtered = filterResults(
-        createMockFilterGet(filterMacState),
+        createMockFilterGet({
+          operatingSystems: {
+            mac: true,
+          },
+        }),
         results,
       );
 
@@ -143,9 +146,14 @@ describe('filterResults()', () => {
         ['Environment :: MacOS X', 'Operating System :: POSIX :: Linux'],
       );
 
-      const testCases = [
+      interface TestCase {
+        input: Partial<SearchFormStore['filters']['operatingSystems']>;
+        output: SearchResult[];
+      }
+
+      const testCases: TestCase[] = [
         {
-          input: filterMacState,
+          input: { mac: true },
           output: getOperatingSystemResults(
             ['Environment :: MacOS X'],
             ['Environment :: MacOS X', 'Operating System :: POSIX :: Linux'],
@@ -153,7 +161,7 @@ describe('filterResults()', () => {
         },
 
         {
-          input: filterLinuxState,
+          input: { linux: true },
           output: getOperatingSystemResults(
             ['Operating System :: POSIX :: Linux'],
             ['Environment :: MacOS X', 'Operating System :: POSIX :: Linux'],
@@ -161,7 +169,7 @@ describe('filterResults()', () => {
         },
 
         {
-          input: filterWindowsState,
+          input: { windows: true },
           output: getOperatingSystemResults([
             'Operating System :: Microsoft :: Windows :: Windows 10',
           ]),
@@ -169,7 +177,10 @@ describe('filterResults()', () => {
       ];
 
       testCases.forEach(({ input, output }) => {
-        const filtered = filterResults(createMockFilterGet(input), results);
+        const filtered = filterResults(
+          createMockFilterGet({ operatingSystems: input }),
+          results,
+        );
         expect(filtered).toEqual(output);
       });
     });
@@ -185,7 +196,7 @@ describe('filterResults()', () => {
     );
 
     it('should allow all plugins when no filters are enabled', () => {
-      const filtered = filterResults(jest.fn(), results);
+      const filtered = filterResults(createMockFilterGet(), results);
       expect(filtered).toEqual(results);
     });
 
@@ -196,7 +207,11 @@ describe('filterResults()', () => {
       );
 
       const filtered = filterResults(
-        createMockFilterGet(filterOnlyStablePluginsState),
+        createMockFilterGet({
+          devStatus: {
+            stable: true,
+          },
+        }),
         results,
       );
       expect(filtered).toEqual(expected);
@@ -207,24 +222,20 @@ describe('filterResults()', () => {
     const results = getLicenseResults('valid', 'invalid');
 
     it('should allow all plugins when no filters are enabled', () => {
-      const filtered = filterResults(jest.fn(), results);
+      const filtered = filterResults(createMockFilterGet(), results);
       expect(filtered).toEqual(results);
     });
 
     it('should filter plugins with open source licenses', () => {
-      const mockFilterGet = createMockFilterGet(
-        filterOnlyOpenSourcePluginsState,
+      const filtered = filterResults(
+        createMockFilterGet({
+          license: {
+            openSource: true,
+            osiApprovedLicenseSet: new Set(['valid']),
+          },
+        }),
+        results,
       );
-      const mockGet = jest.fn((state: WritableAtom<unknown, unknown>) => {
-        if (state === osiApprovedLicenseSetState) {
-          return new Set(['valid']);
-        }
-
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-        return mockFilterGet(state);
-      }) as unknown;
-
-      const filtered = filterResults(mockGet as Getter, results);
       expect(filtered).toEqual(getLicenseResults('valid'));
     });
   });

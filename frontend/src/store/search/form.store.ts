@@ -8,7 +8,10 @@ import { FuseSearchEngine } from './engines';
 import { SearchEngine } from './search.types';
 import { FilterChipItem, SpdxLicenseData } from './types';
 
-export const searchFormStore = proxy({
+/**
+ * Default state used for initializing and resetting the store.
+ */
+export const DEFAULT_STATE = {
   search: {
     index: [] as PluginIndexData[],
     engine: null as SearchEngine | null,
@@ -39,18 +42,28 @@ export const searchFormStore = proxy({
       3.9: false,
     },
   },
-});
+};
+
+/**
+ * Valtio store for UI form data on the search page. This includes the search
+ * bar, sort radio group, and all of the filter items.
+ */
+export const searchFormStore = proxy(DEFAULT_STATE);
 
 export type SearchFormStore = typeof searchFormStore;
 
+/**
+ * Derived store for filter chips. This returns a list of key-value pairs that
+ * correspond to each enabled filter.
+ */
 export const filterChipsStore = derive({
   filterChips(get) {
     const filterState = get(searchFormStore).filters;
     const filterChipItems: FilterChipItem[] = [];
 
     for (const [filterType, filters] of Object.entries(filterState)) {
-      for (const [filterKey, value] of Object.entries(filters)) {
-        if (typeof value === 'boolean' && value) {
+      for (const [filterKey, state] of Object.entries(filters)) {
+        if (typeof state === 'boolean' && state) {
           filterChipItems.push({
             key: filterType,
             value: filterKey,
@@ -67,6 +80,15 @@ function getDefaultSearchEngine() {
   return new FuseSearchEngine();
 }
 
+/**
+ * Creates a new set that includes all of the OSI approved licenses using the
+ * `isOsiApproved` property.
+ *
+ * https://git.io/JEEVd
+ *
+ * @param licenses The SPDX license data.
+ * @returns The set of approved license IDs.
+ */
 function getOsiApprovedLicenseSet(licenses: SpdxLicenseData[]): Set<string> {
   return new Set(
     licenses
@@ -79,6 +101,7 @@ export function initSearchEngine(index: PluginIndexData[]): void {
   const searchEngine = getDefaultSearchEngine();
   searchEngine.index(index);
 
+  // Store as ref so that changes to the search engine don't cause a re-render.
   searchFormStore.search.engine = ref(searchEngine);
   searchFormStore.search.index = index;
 }
@@ -98,4 +121,10 @@ export function resetFilters(): void {
       }
     }
   }
+}
+
+export function resetState(): void {
+  searchFormStore.search.query = DEFAULT_STATE.search.query;
+  searchFormStore.sort = DEFAULT_STATE.sort;
+  resetFilters();
 }

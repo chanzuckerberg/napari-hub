@@ -38,6 +38,8 @@ export function Accordion({
       }}
     >
       <AccordionSummary
+        data-testid="accordionSummary"
+        data-title={title}
         className={clsx('p-0 font-semibold', isDefault && 'flex-row-reverse')}
         classes={
           isFAQ

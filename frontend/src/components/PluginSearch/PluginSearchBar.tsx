@@ -1,5 +1,5 @@
 import { SearchBar } from '@/components';
-import { ColumnLayout, SkeletonLoader } from '@/components/common';
+import { ColumnLayout } from '@/components/common';
 import { SEARCH_BAR_ID } from '@/constants/search';
 
 /**
@@ -23,12 +23,7 @@ export function PluginSearchBar() {
           Search for a plugin by keyword or author
         </h2>
 
-        <SkeletonLoader
-          className="h-7"
-          render={() => (
-            <SearchBar aria-describedby="plugin-search-title" large />
-          )}
-        />
+        <SearchBar aria-describedby="plugin-search-title" large />
       </div>
     </ColumnLayout>
   );

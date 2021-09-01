@@ -76,7 +76,11 @@ export function SearchBar({ large, ...props }: Props) {
           searchFormStore.sort = DEFAULT_SORT_TYPE;
         }
       }
-    } else {
+    } else if (searchQuery) {
+      // Set query in global state so that the search bar shows the query while
+      // the search page is loading.
+      searchFormStore.search.query = searchQuery;
+
       const url = {
         pathname: SEARCH_PAGE,
         query: {
