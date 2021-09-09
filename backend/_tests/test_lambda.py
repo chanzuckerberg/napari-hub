@@ -8,6 +8,33 @@ from backend.napari import get_download_url
 from backend.napari import get_license
 from backend.napari import get_citations
 
+AFFINDER_SVG = ('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"' 
+                  ' width="139" height="20" role="img" aria-label="napari hub: affinder">'
+                  '<title>napari hub: affinder</title><g shape-rendering="crispEdges"><rect width="86" height="20" fill="#555"/>'
+                  '<rect x="86" width="53" height="20" fill="#0074b8"/></g><g fill="#fff" text-anchor="middle" '
+                  'font-family="Verdana,Geneva,DejaVu Sans,sans-serif" text-rendering="geometricPrecision" font-size="110">'
+                  '<image x="5" y="3" width="14" height="14" xlink:href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTEyIiBoZ'
+                  'WlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI'
+                  '+PGNpcmNsZSBjeD0iMjU2LjAzNiIgY3k9IjI1NiIgcj0iODUuMzMzMyIgZmlsbD0id2hpdGUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13a'
+                  'WR0aD0iNTYuODg4OSIvPjxjaXJjbGUgY3g9IjI1Ni4wMzYiIGN5PSI0Mi42NjY3IiByPSI0Mi42NjY3IiBmaWxsPSJ3aGl0ZSIvPjxjaXJ'
+                  'jbGUgY3g9IjI1Ni4wMzYiIGN5PSI0NjkuMzMzIiByPSI0Mi42NjY3IiBmaWxsPSJ3aGl0ZSIvPjxwYXRoIGQ9Ik0yNTYuMDM2IDI4LjQ0N'
+                  'DVMMjU2LjAzNiAxNDIuMjIyIiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjU2Ljg4ODkiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI'
+                  'gc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjxwYXRoIGQ9Ik0yNTYuMDM2IDM2OS43NzhMMjU2LjAzNiA0ODMuNTU2IiBzdHJva2U9Indoa'
+                  'XRlIiBzdHJva2Utd2lkdGg9IjU2Ljg4ODkiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjxjaXJ'
+                  'jbGUgY3g9IjcxLjI4MzgiIGN5PSIxNDkuMzMzIiByPSI0Mi42NjY3IiB0cmFuc2Zvcm09InJvdGF0ZSgtNjAgNzEuMjgzOCAxNDkuMzMzK'
+                  'SIgZmlsbD0id2hpdGUiLz48Y2lyY2xlIGN4PSI0NDAuNzg4IiBjeT0iMzYyLjY2NyIgcj0iNDIuNjY2NyIgdHJhbnNmb3JtPSJyb3RhdGU'
+                  'oLTYwIDQ0MC43ODggMzYyLjY2NykiIGZpbGw9IndoaXRlIi8+PHBhdGggZD0iTTU4Ljk2NyAxNDIuMjIyTDE1Ny41MDEgMTk5LjExMSIgc3'
+                  'Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSI1Ni44ODg5IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91b'
+                  'mQiLz48cGF0aCBkPSJNMzU0LjU3IDMxMi44ODlMNDUzLjEwNSAzNjkuNzc4IiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjU2Ljg4'
+                  'ODkiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjxjaXJjbGUgY3g9IjcxLjI4MzgiIGN5PSIzNjI'
+                  'uNjY3IiByPSI0Mi42NjY3IiB0cmFuc2Zvcm09InJvdGF0ZSgtMTIwIDcxLjI4MzggMzYyLjY2NykiIGZpbGw9IndoaXRlIi8+PGNpcmNsZSB'
+                  'jeD0iNDQwLjc4OCIgY3k9IjE0OS4zMzMiIHI9IjQyLjY2NjciIHRyYW5zZm9ybT0icm90YXRlKC0xMjAgNDQwLjc4OCAxNDkuMzMzKSIgZmls'
+                  'bD0id2hpdGUiLz48cGF0aCBkPSJNNTguOTY3IDM2OS43NzhMMTU3LjUwMSAzMTIuODg5IiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9I'
+                  'jU2Ljg4ODkiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjxwYXRoIGQ9Ik0zNTQuNTcgMTk5LjExMU'
+                  'w0NTMuMTA1IDE0Mi4yMjIiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iNTYuODg4OSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJv'
+                  'a2UtbGluZWpvaW49InJvdW5kIi8+PC9zdmc+"/><text x="525" y="140" transform="scale(.1)" fill="#fff" textLength="590">'
+                  'napari hub</text><text x="1115" y="140" transform="scale(.1)" fill="#fff" textLength="430">affinder</text></g></svg>')
+SHIELDS_URL = 'https://img.shields.io/endpoint?url='
 
 class FakeResponse:
     def __init__(self, *, data: str):
@@ -159,6 +186,13 @@ def test_get_shield(mock_plugins):
     result = get_shield('not-a-package')
     assert result == {}
 
+def test_shield_round_trip():
+    valid_plugin_api_url = 'https://api.napari-hub.org/shields/affinder'
+    valid_plugin_shield_url = SHIELDS_URL+valid_plugin_api_url
+
+    response = requests.get(valid_plugin_shield_url)
+    assert response.status_code == 200
+    assert response.text == AFFINDER_SVG
 
 def test_github_get_url():
     plugins = {"info": {"project_urls": {"Source Code": "test1"}}}
