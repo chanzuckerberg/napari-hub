@@ -157,7 +157,7 @@ def test_get_shield(mock_plugins):
     assert 'color' in result
 
     result = get_shield('not-a-package')
-    assert result['message'] == 'not a plugin'
+    assert result['message'] == 'plugin not found'
     assert 'label' in result
     assert 'schemaVersion' in result
     assert 'color' in result
