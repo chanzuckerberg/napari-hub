@@ -384,12 +384,12 @@ def get_plugin(plugin: str, version: str = None) -> dict:
 @app.route('/shields/<plugin>')
 def get_shield(plugin: str):
     plugins = get_plugins()
+    plugin_shield_schema = copy.deepcopy(shield_schema)
     if plugin not in plugins:
-        return {}
+        plugin_shield_schema['message'] = 'plugin not found'
     else:
-        plugin_shield_schema = copy.deepcopy(shield_schema)
         plugin_shield_schema['message'] = plugin
-        return plugin_shield_schema
+    return plugin_shield_schema
 
 
 def cache_available(key: str, ttl: [timedelta, None]) -> bool:
