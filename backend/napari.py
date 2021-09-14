@@ -347,7 +347,7 @@ def get_plugins() -> dict:
         packages = filter_excluded_plugin(packages)
         if zulip_credentials is not None and len(zulip_credentials.split(":")) == 2:
             notify_new_packages(get_cache(plugins_key), packages)
-        return get_cache(packages, plugins_key)
+        return cache(packages, plugins_key)
 
     send_alert(f"({datetime.now()})Actions Required! Failed to query pypi for "
                f"napari plugin packages, switching to backup analysis dump")
@@ -390,7 +390,7 @@ def get_plugin(plugin: str, version: str = None) -> dict:
         info = format_plugin(json.loads(response.text.strip()))
         if version is None:
             version = info['version']
-        return get_cache(info, f'cache/{plugin}/{version}.json')
+        return cache(info, f'cache/{plugin}/{version}.json')
     except HTTPError:
         return {}
 
