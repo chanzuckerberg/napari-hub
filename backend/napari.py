@@ -101,9 +101,10 @@ def get_index() -> dict:
     if cache_available(index_key, cache_ttl):
         return jsonify(get_cache(index_key))
     else:
-        return update_index()
+        return {}
 
 
+# only place where s3 write should happen (cache method call) and remove from everywhere else
 @app.route('/plugins/index/update')
 def update_index() -> dict:
     """
@@ -117,7 +118,15 @@ def update_index() -> dict:
                    for k, v in get_plugins().items()]
     for future in concurrent.futures.as_completed(futures):
         results.append(future.result())
-    s3_client.upload_file("s3", endpoint_url=endpoint_url)
+    print(results)
+    # TODO
+    # plugins = filter_excluded_plugin(get_plugins(), {'hidden'})
+    # recreate the exclusion list file and update if necessary
+    # previous s3 p1 hidden p2 admin
+    # exclusion list p1 disabled p2 disabled
+    # only update p1 disabled and p2 admin
+    # write it to s3
+    #filter_excluded_plugin(get_plugins())
     return jsonify(cache(results, index_key))
 
 
@@ -151,6 +160,9 @@ def get_extra_metadata(download_url: str) -> dict:
     :return: extra metadata dictionary
     """
     extra_metadata = {}
+    # public: fully visible (default)
+    # disabled: no plugin page created, does not show up in search listings
+    # hidden: plugin page exists, but doesn't show up in search listings
     visibility_set = {'public', 'disabled', 'hidden'}
 
     github_license = get_license(download_url)
@@ -310,16 +322,6 @@ def format_plugin(plugin: dict) -> dict:
 
 
 @app.route('/plugins')
-def get_plugins_filtered() -> dict:
-    """
-    Get all filtered plugins list such that only public plugins are returned
-
-    :param context: context for the run to raise alerts
-    :return: json of filtered plugins and their version
-    """
-    return filter_excluded_plugin(get_plugins())
-
-
 def get_plugins() -> dict:
     """
     Get all valid plugins list. We would first try to see if there is a freshly
@@ -367,7 +369,6 @@ def get_plugin(plugin: str, version: str = None) -> dict:
     :return: plugin metadata dictionary
     """
     plugins = get_plugins()
-    plugins = filter_excluded_plugin(plugins, {'hidden'})
     if plugin not in plugins:
         return {}
     elif version is None:
@@ -423,11 +424,9 @@ def filter_excluded_plugin(packages: dict, whitelisted_keyword: set = {}) -> dic
     """
     valid_plugins = packages.copy()
     excluded_plugins = get_exclusion_list()
-
     for key, value in excluded_plugins.items():
         if key in packages and value not in whitelisted_keyword:
             del valid_plugins[key]
-
     return valid_plugins
 
 
@@ -587,4 +586,4 @@ def cache(content: [dict, list], key: str) -> dict:
     return content
 
 if __name__ == "__main__":
-    get_plugins_filtered()
+    update_index()
