@@ -104,7 +104,6 @@ def get_index() -> dict:
         return {}
 
 
-# only place where s3 write should happen (cache method call) and remove from everywhere else
 @app.route('/plugins/index/update')
 def update_index() -> dict:
     """
@@ -118,15 +117,21 @@ def update_index() -> dict:
                    for k, v in get_plugins().items()]
     for future in concurrent.futures.as_completed(futures):
         results.append(future.result())
-    print(results)
-    # TODO
-    # plugins = filter_excluded_plugin(get_plugins(), {'hidden'})
-    # recreate the exclusion list file and update if necessary
-    # previous s3 p1 hidden p2 admin
-    # exclusion list p1 disabled p2 disabled
-    # only update p1 disabled and p2 admin
-    # write it to s3
-    #filter_excluded_plugin(get_plugins())
+    # read cache version of plugins.json
+    plugins = get_cache(plugins_key)
+    # include public and whitelisted plugins in updated_plugins
+    updated_plugins = filter_excluded_plugin(plugins, {'hidden'})
+    # read cache version of excluded_plugins.json
+    excluded_plugins = get_exclusion_list()
+    # Example: updated_plugins = {"p1": "hidden", "p2": "admin"} (cache version as previously stored in s3)
+    #          excluded_plugins = {"p1": "disabled", "p2" "disabled"}
+    # Outcome: excluded_plugins = {"p1": "hidden", "p2": "admin"}
+    for key, value in excluded_plugins.items():
+        if key in updated_plugins and updated_plugins[key] != "admin" and value != updated_plugins[key]:
+            excluded_plugins[key] = updated_plugins[key]
+    # write updated plugins.json and excluded_plugins.json to s3
+    cache(updated_plugins, plugins_key)
+    cache(excluded_plugins, exclusion_list)
     return jsonify(cache(results, index_key))
 
 
@@ -342,7 +347,7 @@ def get_plugins() -> dict:
         packages = filter_excluded_plugin(packages)
         if zulip_credentials is not None and len(zulip_credentials.split(":")) == 2:
             notify_new_packages(get_cache(plugins_key), packages)
-        return cache(packages, plugins_key)
+        return get_cache(packages, plugins_key)
 
     send_alert(f"({datetime.now()})Actions Required! Failed to query pypi for "
                f"napari plugin packages, switching to backup analysis dump")
@@ -350,7 +355,7 @@ def get_plugins() -> dict:
     packages = query_analysis_dump()
 
     if packages:
-        return cache(filter_excluded_plugin(packages), index_key)
+        return get_cache(filter_excluded_plugin(packages), index_key)
 
     send_alert(f"({datetime.now()}) Actions Required! Back up method also "
                f"failed! Immediate fix is required to bring the API back!")
@@ -385,7 +390,7 @@ def get_plugin(plugin: str, version: str = None) -> dict:
         info = format_plugin(json.loads(response.text.strip()))
         if version is None:
             version = info['version']
-        return cache(info, f'cache/{plugin}/{version}.json')
+        return get_cache(info, f'cache/{plugin}/{version}.json')
     except HTTPError:
         return {}
 
@@ -584,6 +589,3 @@ def cache(content: [dict, list], key: str) -> dict:
         fp.flush()
         s3_client.upload_file(fp.name, bucket, os.path.join(bucket_path, key))
     return content
-
-if __name__ == "__main__":
-    update_index()
