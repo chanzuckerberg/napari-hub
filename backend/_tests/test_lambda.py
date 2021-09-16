@@ -77,7 +77,7 @@ plugin = """
   "release_url":"https://pypi.org/project/test/0.0.1/",
   "requires_dist":null,"requires_python":">=3.6",
   "summary":"A test plugin",
-  "version":"0.0.1","yanked":false,"yanked_reason":null},
+  "visibility":"hidden","yanked":false,"yanked_reason":null},
   "last_serial":10229034,"releases":{"0.0.1":[{"comment_text":"",
   "downloads":-1,"filename":"test.tar.gz","has_sig":false,
   "md5_digest":"","packagetype":"sdist",
@@ -124,7 +124,7 @@ def test_get_plugin(mock_get, mock_plugins):
     assert(result["python_version"] == ">=3.6")
     assert(result["operating_system"] == ['Operating System :: OS Independent'])
     assert(result["release_date"] == '2020-04-13T03:37:20.169990Z')
-    assert(result["version"] == "hidden")
+    assert(result["visibility"] == "hidden")
     assert(result["first_released"] == "2020-04-13T03:37:20.169990Z")
     assert(result["development_status"] == ['Development Status :: 4 - Beta'])
     assert(result["requirements"] is None)
