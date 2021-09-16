@@ -98,10 +98,7 @@ def get_index() -> dict:
 
     :return: json for index page metadata
     """
-    if cache_available(index_key, cache_ttl):
-        return jsonify(get_cache(index_key))
-    else:
-        return {}
+    return jsonify(get_cache(index_key))
 
 
 @app.route('/plugins/index/update')
@@ -112,25 +109,32 @@ def update_index() -> dict:
     :return: json for index page metadata
     """
     results = []
+    plugins = get_plugins()
     with concurrent.futures.ThreadPoolExecutor(max_workers=32) as executor:
         futures = [executor.submit(filter_index, k, v)
-                   for k, v in get_plugins().items()]
+                   for k, v in plugins.items()]
     for future in concurrent.futures.as_completed(futures):
         results.append(future.result())
-    # read cache version of plugins.json
-    plugins = get_cache(plugins_key)
-    # include public and whitelisted plugins in updated_plugins
-    updated_plugins = filter_excluded_plugin(plugins, {'hidden'})
     # read cache version of excluded_plugins.json
     excluded_plugins = get_exclusion_list()
-    # Example: updated_plugins = {"p1": "hidden", "p2": "admin"} (cache version as previously stored in s3)
-    #          excluded_plugins = {"p1": "disabled", "p2" "disabled"}
-    # Outcome: excluded_plugins = {"p1": "hidden", "p2": "admin"}
+    # include public and whitelisted plugins in updated_plugins
+    updated_plugins = filter_excluded_plugin(plugins, excluded_plugins, {'hidden'})
+    packages = plugins.copy()
+    if packages:
+        if zulip_credentials is not None and len(zulip_credentials.split(":")) == 2:
+            notify_new_packages(plugins, updated_plugins)
+        return cache(updated_plugins, plugins_key)
+    send_alert(f"({datetime.now()})Actions Required! Failed to query pypi for "
+               f"napari plugin packages, switching to backup analysis dump")
+    packages = query_analysis_dump()
+    if packages:
+        return cache(filter_excluded_plugin(packages), index_key)
+    send_alert(f"({datetime.now()}) Actions Required! Back up method also "
+               f"failed! Immediate fix is required to bring the API back!")
     for key, value in excluded_plugins.items():
         if key in updated_plugins and updated_plugins[key] != "admin" and value != updated_plugins[key]:
             excluded_plugins[key] = updated_plugins[key]
-    # write updated plugins.json and excluded_plugins.json to s3
-    cache(updated_plugins, plugins_key)
+    # write excluded_plugins.json to s3
     cache(excluded_plugins, exclusion_list)
     return jsonify(cache(results, index_key))
 
@@ -338,29 +342,7 @@ def get_plugins() -> dict:
     :param context: context for the run to raise alerts
     :return: json of valid plugins and their version
     """
-    if cache_available(plugins_key, cache_ttl):
-        return get_cache(plugins_key)
-
-    packages = query_pypi()
-
-    if packages:
-        packages = filter_excluded_plugin(packages)
-        if zulip_credentials is not None and len(zulip_credentials.split(":")) == 2:
-            notify_new_packages(get_cache(plugins_key), packages)
-        return cache(packages, plugins_key)
-
-    send_alert(f"({datetime.now()})Actions Required! Failed to query pypi for "
-               f"napari plugin packages, switching to backup analysis dump")
-
-    packages = query_analysis_dump()
-
-    if packages:
-        return get_cache(filter_excluded_plugin(packages), index_key)
-
-    send_alert(f"({datetime.now()}) Actions Required! Back up method also "
-               f"failed! Immediate fix is required to bring the API back!")
-
-    return get_cache(index_key)
+    return get_cache(plugins_key)
 
 
 @app.route('/plugins/<plugin>', defaults={'version': None})
@@ -420,16 +402,17 @@ def cache_available(key: str, ttl: [timedelta, None]) -> bool:
         return False
 
 
-def filter_excluded_plugin(packages: dict, whitelisted_keyword: set = {}) -> dict:
+def filter_excluded_plugin(packages: dict, excluded_plugins: dict = None, whitelisted_keyword: set = {}) -> dict:
     """
     Filter excluded plugins from the plugins list
     :param packages: all plugins list
+    :param excluded_plugins: excluded plugin list
     :param whitelisted_keyword: keyword reflects plugins to include
     :return: only plugins not in the filtered list
     """
     valid_plugins = packages.copy()
-    excluded_plugins = get_exclusion_list()
-    for key, value in excluded_plugins.items():
+    exclusion = excluded_plugins
+    for key, value in exclusion.items():
         if key in packages and value not in whitelisted_keyword:
             del valid_plugins[key]
     return valid_plugins

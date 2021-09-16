@@ -103,14 +103,14 @@ plugin = """
 def test_get_plugins(mock_get):
     result = get_plugins()
     assert len(result) == 2
-    assert result['package1'] == "0.2.7"
-    assert result['package2'] == "0.1.0"
+    assert result['package1'] == "hidden"
+    assert result['package2'] == "admin"
 
 @mock.patch(
     'requests.get', return_value=FakeResponse(data=plugin)
 )
 @mock.patch(
-    'backend.napari.get_plugins', return_value={'test': '0.0.1'}
+    'backend.napari.get_plugins', return_value={'test': 'hidden'}
 )
 def test_get_plugin(mock_get, mock_plugins):
     result = get_plugin("test")
@@ -124,7 +124,7 @@ def test_get_plugin(mock_get, mock_plugins):
     assert(result["python_version"] == ">=3.6")
     assert(result["operating_system"] == ['Operating System :: OS Independent'])
     assert(result["release_date"] == '2020-04-13T03:37:20.169990Z')
-    assert(result["version"] == "0.0.1")
+    assert(result["version"] == "hidden")
     assert(result["first_released"] == "2020-04-13T03:37:20.169990Z")
     assert(result["development_status"] == ['Development Status :: 4 - Beta'])
     assert(result["requirements"] is None)
