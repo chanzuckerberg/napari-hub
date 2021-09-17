@@ -27,13 +27,7 @@ export function LayoutMDX({ toc, title, children }: Props) {
         <article
           className={clsx(
             styles.markdown,
-            /*
-          Use Tailwind prose for reasonable defaults on markdown styling. In
-          the future, we can fine tune the CSS by hand for each markdown
-          element.
-        */
             'prose',
-            // Disable max-width set by prose
             'max-w-none',
             'col-span-2',
             'screen-875:col-span-3',
