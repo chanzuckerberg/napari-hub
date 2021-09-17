@@ -5,9 +5,8 @@ import { ReactNode } from 'react';
 import { ColumnLayout, TableOfContents, TOCHeader } from '@/components/common';
 import { Media } from '@/components/common/media';
 
-import { useHeaders } from './LayoutMDX.hooks';
-
 import styles from '../common/Markdown/Markdown.module.scss';
+import { useHeaders } from './LayoutMDX.hooks';
 
 interface Props {
   toc?: boolean;
