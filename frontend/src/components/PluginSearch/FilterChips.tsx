@@ -1,14 +1,18 @@
 import { Button, Chip } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
-import { isEmpty } from 'lodash';
+import { isEmpty, set } from 'lodash';
+import { useSnapshot } from 'valtio';
 
-import { useSearchState } from '@/context/search';
-import { FilterFormState } from '@/context/search/filter.types';
+import {
+  filterChipsStore,
+  resetFilters,
+  searchFormStore,
+} from '@/store/search/form.store';
 
 /**
  * Labels to render for a particular state key.
  */
-const KEY_LABELS: Record<keyof FilterFormState, string> = {
+const KEY_LABELS: Record<string, string> = {
   developmentStatus: 'Development status',
   license: 'License',
   operatingSystems: 'Operating system',
@@ -21,12 +25,12 @@ const KEY_LABELS: Record<keyof FilterFormState, string> = {
  * TODO Find a better way to add typing for this to prevent discrepancies
  * between the state data and the labels.
  */
-const SUBKEY_LABEL: Record<string, string | undefined> = {
+const VALUE_LABEL: Record<string, string | undefined> = {
   // Dev Status labels
-  onlyStablePlugins: 'Stable',
+  stable: 'Stable',
 
   // License labels
-  onlyOpenSourcePlugins: 'Open Source',
+  openSource: 'Open Source',
 
   // OS labels
   linux: 'Linux',
@@ -38,48 +42,71 @@ interface Props {
   className?: string;
 }
 
+function ClearFiltersButton() {
+  const { filterChips } = useSnapshot(filterChipsStore);
+
+  if (isEmpty(filterChips)) {
+    return null;
+  }
+
+  return (
+    <Button
+      classes={{ label: 'underline' }}
+      className="inline-block mr-2"
+      onClick={resetFilters}
+    >
+      Clear all filters
+    </Button>
+  );
+}
+
+function FilterChipItems() {
+  const { filterChips } = useSnapshot(filterChipsStore);
+
+  if (isEmpty(filterChips)) {
+    return null;
+  }
+
+  return (
+    <>
+      {filterChips.map(({ key, value }) => (
+        <li
+          className="inline-block my-1 ml-1 text-black"
+          key={`${key}-${value}`}
+        >
+          <Chip
+            className="pr-1 bg-napari-hover-gray"
+            label={
+              <>
+                <span>{KEY_LABELS[key]}</span>
+                <span className="font-bold ml-1">
+                  {VALUE_LABEL[value] ?? value}
+                </span>
+              </>
+            }
+            deleteIcon={<Close className="text-black fill-current w-4 h-4" />}
+            onDelete={() => set(searchFormStore.filters, [key, value], false)}
+          />
+        </li>
+      ))}
+    </>
+  );
+}
+
 /**
  * Component that renders a list of chips for each enabled filter. Each chip
  * includes a button to disable the filter. It's also possible to clear all the
  * filters by clicking the clear all filters button.
  */
 export function FilterChips({ className }: Props) {
-  const { filter } = useSearchState() ?? {};
-
-  if (isEmpty(filter?.chips)) {
-    return null;
-  }
-
   return (
     <div className={className}>
       {/* Clear filters button */}
-      <Button
-        classes={{ label: 'underline' }}
-        className="inline-block mr-2"
-        onClick={() => filter?.clearAll()}
-      >
-        Clear all filters
-      </Button>
+      <ClearFiltersButton />
 
       {/* Chip list */}
       <ul className="inline flex-wrap gap-2">
-        {filter?.chips.map(({ id, key, subKey }) => (
-          <li className="inline-block my-1 ml-1 text-black" key={id}>
-            <Chip
-              className="pr-1 bg-napari-hover-gray"
-              label={
-                <>
-                  <span>{KEY_LABELS[key]}</span>
-                  <span className="font-bold ml-1">
-                    {SUBKEY_LABEL[subKey] ?? subKey}
-                  </span>
-                </>
-              }
-              deleteIcon={<Close className="text-black fill-current w-4 h-4" />}
-              onDelete={() => filter?.removeChip(key, subKey)}
-            />
-          </li>
-        ))}
+        <FilterChipItems />
       </ul>
     </div>
   );
