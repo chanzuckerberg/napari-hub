@@ -342,7 +342,10 @@ def get_plugins() -> dict:
     :param context: context for the run to raise alerts
     :return: json of valid plugins and their version
     """
-    return get_cache(plugins_key)
+    if cache_available(plugins_key, None):
+        return get_cache(plugins_key)
+    else:
+        return {}
 
 
 @app.route('/plugins/<plugin>', defaults={'version': None})
