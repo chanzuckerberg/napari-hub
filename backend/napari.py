@@ -333,14 +333,10 @@ def format_plugin(plugin: dict) -> dict:
 @app.route('/plugins')
 def get_plugins() -> dict:
     """
-    Get all valid plugins list. We would first try to see if there is a freshly
-    cached list, and return that if available, then we try to read from pypi,
-    and fail over to google bigquery analysis dump when pypi reading failed
-    as well. If every attempts failed, we return the cached version regardless
-    of freshness.
+    Get the list of plugins if cache is available.
 
     :param context: context for the run to raise alerts
-    :return: json of valid plugins and their version
+    :return: json of valid plugins and their visibility
     """
     if cache_available(plugins_key, None):
         return get_cache(plugins_key)
@@ -405,7 +401,7 @@ def cache_available(key: str, ttl: [timedelta, None]) -> bool:
         return False
 
 
-def filter_excluded_plugin(packages: dict, excluded_plugins: dict = None, whitelisted_keyword: set = {}) -> dict:
+def filter_excluded_plugin(packages: dict, excluded_plugins: dict, whitelisted_keyword: set = {}) -> dict:
     """
     Filter excluded plugins from the plugins list
     :param packages: all plugins list
@@ -414,8 +410,7 @@ def filter_excluded_plugin(packages: dict, excluded_plugins: dict = None, whitel
     :return: only plugins not in the filtered list
     """
     valid_plugins = packages.copy()
-    exclusion = excluded_plugins
-    for key, value in exclusion.items():
+    for key, value in excluded_plugins.items():
         if key in packages and value not in whitelisted_keyword:
             del valid_plugins[key]
     return valid_plugins
