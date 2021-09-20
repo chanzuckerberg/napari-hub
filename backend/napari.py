@@ -125,6 +125,9 @@ def update_index() -> dict:
                    for k, v in plugins.items()]
     for future in concurrent.futures.as_completed(futures):
         results.append(future.result())
+
+    # pull exclusion list directly from results
+
     # read cache version of excluded_plugins.json
     excluded_plugins = get_exclusion_list()
     # include public and whitelisted plugins in updated_plugins
@@ -346,14 +349,14 @@ def get_plugins() -> dict:
     Get the list of plugins if cache is available.
 
     :param context: context for the run to raise alerts
-    :return: json of valid plugins and their visibility
+    :return: json of valid plugins and their versions
     """
     if cache_available(plugins_key, None):
         return get_cache(plugins_key)
     else:
         return {}
 
-
+# TODO: two ways to get plugins - (1) public plugins (2) public and hidden plugins
 @app.route('/plugins/<plugin>', defaults={'version': None})
 @app.route('/plugins/<plugin>/versions/<version>')
 def get_plugin(plugin: str, version: str = None) -> dict:
