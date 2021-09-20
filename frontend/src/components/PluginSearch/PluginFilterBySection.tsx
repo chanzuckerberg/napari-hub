@@ -5,8 +5,10 @@ import { CheckboxIcon } from '@/components/common/icons';
 
 export interface FilterItem {
   label: string;
-  enabled: boolean;
-  setEnabled: (enabled: boolean) => void;
+  filterKey: string;
+  stateKey: string;
+  useFilterState(): boolean;
+  setFilterState(enabled: boolean): void;
 }
 
 interface Props {
@@ -15,8 +17,33 @@ interface Props {
   filters: FilterItem[];
 }
 
-function getCheckboxId(label: string) {
-  return `checkbox-${label}`;
+function getCheckboxId(filterKey: string, stateKey: string) {
+  return `checkbox-${filterKey}-${stateKey}`;
+}
+
+interface FilterCheckboxProps extends FilterItem {
+  checkboxId: string;
+}
+
+function FilterCheckbox({
+  checkboxId,
+  useFilterState,
+  setFilterState,
+}: FilterCheckboxProps) {
+  const enabled = useFilterState();
+
+  return (
+    <Checkbox
+      id={checkboxId}
+      value={enabled}
+      checked={enabled}
+      onChange={(event) => setFilterState(event.target.checked)}
+      className="text-black fill-current -mt-1 -ml-2"
+      color="default"
+      icon={<CheckboxIcon className="w-4 h-4" />}
+      checkedIcon={<CheckboxIcon checked className="w-4 h-4" />}
+    />
+  );
 }
 
 /**
@@ -32,26 +59,20 @@ export function PluginFilterBySection({ className, title, filters }: Props) {
         {title}
       </legend>
 
-      {filters.map((filter) => (
-        <div
-          className="flex items-start"
-          key={filter.label}
-          data-testid="filterCheckbox"
-        >
-          <Checkbox
-            id={getCheckboxId(filter.label)}
-            value={filter.enabled}
-            checked={filter.enabled}
-            onChange={(event) => filter.setEnabled(event.target.checked)}
-            className="text-black fill-current -mt-1 -ml-2"
-            color="default"
-            icon={<CheckboxIcon className="w-4 h-4" />}
-            checkedIcon={<CheckboxIcon checked className="w-4 h-4" />}
-          />
+      {filters.map((filter) => {
+        const checkboxId = getCheckboxId(filter.filterKey, filter.stateKey);
 
-          <label htmlFor={getCheckboxId(filter.label)}>{filter.label}</label>
-        </div>
-      ))}
+        return (
+          <div
+            className="flex items-start"
+            key={filter.label}
+            data-testid="filterCheckbox"
+          >
+            <FilterCheckbox checkboxId={checkboxId} {...filter} />
+            <label htmlFor={checkboxId}>{filter.label}</label>
+          </div>
+        );
+      })}
     </fieldset>
   );
 }

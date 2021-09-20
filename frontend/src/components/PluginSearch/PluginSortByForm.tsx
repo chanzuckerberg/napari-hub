@@ -1,16 +1,17 @@
 import {
   FormControl,
   FormControlLabel,
-  FormLabel,
   Radio,
   RadioGroup,
 } from '@material-ui/core';
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
+import { useSnapshot } from 'valtio';
 
-import { Accordion, SkeletonLoader } from '@/components/common';
+import { Accordion } from '@/components/common';
 import { Media, MediaFragment } from '@/components/common/media';
-import { SearchSortType, useSearchState } from '@/context/search';
+import { SearchSortType } from '@/store/search/constants';
+import { searchFormStore } from '@/store/search/form.store';
 
 const DEFAULT_SORT_BY_RADIO_ORDER: SearchSortType[] = [
   SearchSortType.PluginName,
@@ -29,8 +30,8 @@ const SORT_BY_LABELS: Record<SearchSortType, string> = {
  * Component for the radio form for selecting the plugin sort type.
  */
 function SortForm() {
-  const { search, sort } = useSearchState() ?? {};
-  const isSearching = !!search?.query;
+  const state = useSnapshot(searchFormStore);
+  const isSearching = state.search.query;
 
   const radios: SearchSortType[] = [];
 
@@ -45,20 +46,18 @@ function SortForm() {
     <FormControl component="fieldset">
       {/* Only show label on larger screens. This is because the Accordion already includes a title. */}
       <MediaFragment greaterThanOrEqual="screen-875">
-        <FormLabel
-          className="uppercase text-black font-semibold text-sm mb-2"
-          component="legend"
-          focused={false}
-        >
+        <legend className="uppercase text-black font-semibold text-sm mb-2">
           Sort By
-        </FormLabel>
+        </legend>
       </MediaFragment>
 
       <RadioGroup
         aria-label="sort plugins by"
         name="sort-by"
-        value={sort?.sortType}
-        onChange={(event) => sort?.setSortType(event.target.value)}
+        value={state.sort}
+        onChange={(event) => {
+          searchFormStore.sort = event.target.value as SearchSortType;
+        }}
       >
         {radios.map((sortType) => (
           <motion.div
@@ -75,7 +74,8 @@ function SortForm() {
           >
             <FormControlLabel
               data-testid="sortByRadio"
-              data-selected={sortType === sort?.sortType}
+              data-selected={sortType === state.sort}
+              data-sort-type={sortType}
               value={sortType}
               control={
                 <Radio
@@ -103,15 +103,10 @@ export function PluginSortByForm() {
   return (
     <>
       <Media lessThan="screen-875">
-        <SkeletonLoader
-          className="h-12"
-          render={() => <Accordion title="Sort By">{form}</Accordion>}
-        />
+        <Accordion title="Sort By">{form}</Accordion>
       </Media>
 
-      <Media greaterThanOrEqual="screen-875">
-        <SkeletonLoader className="h-40" render={() => form} />
-      </Media>
+      <Media greaterThanOrEqual="screen-875">{form}</Media>
     </>
   );
 }

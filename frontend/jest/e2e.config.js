@@ -1,3 +1,6 @@
+const { set } = require('lodash');
+const { breakpoints } = require('../src/theme');
+
 const isHeadful =
   process.env.HEADFUL === 'true' || process.env.HEADLESS === 'false';
 
@@ -14,41 +17,37 @@ const DEFAULT_CONTEXT_CONFIG = {
 const BROWSER = process.env.BROWSER || 'chromium';
 
 /**
+ * Subset of breakpoints to use for E2E testing because running tests for every
+ * breakpoint would be expensive and make PR checks super slow.
+ */
+const ALLOWED_SCREENS = new Set([
+  'screen-300',
+  'screen-600',
+  'screen-875',
+  'screen-1150',
+  'screen-1425',
+]);
+
+/**
  * Mapping of naapri hub breakpoints to devices that fit within the dimensions
  * of its associated breakpoint. We only need the devices for the viewport
  * widths so we can test functional and layout changes in the UI.
- *
  */
-const DEVICES = {
-  //  width = 320px > 300px = sm
-  xs: 'iPhone SE',
-
-  // width = 414px > 375px
-  sm: 'iPhone 11 Pro Max',
-
-  // width = 568px > 495px = md
-  md: 'iPhone SE landscape',
-
-  // width = 768px > 600px = lg
-  lg: 'iPad Mini',
-
-  // width = 104px > 875px = xl
-  xl: 'iPad Mini landscape',
-
-  // width = 1194px > 1150px = 2xl
-  '2xl': 'iPad Pro 11 landscape',
-
-  // width = 1920px > 1425px = 3xl
-  '3xl': {
-    name: 'Desktop',
-    viewport: { width: 1920, height: 1080 },
-  },
-};
+const DEVICES = Object.entries(breakpoints)
+  .filter(([name]) => ALLOWED_SCREENS.has(name))
+  .reduce(
+    (result, [name, width]) =>
+      set(result, name, {
+        name,
+        viewport: { width, height: 1440 },
+      }),
+    {},
+  );
 
 /**
- * Device specific environment variable. Use if you want to test using a specific device.
+ * Screen specific environment variable. Use if you want to test using a specific screen.
  */
-const { DEVICE } = process.env;
+const { SCREEN } = process.env;
 
 module.exports = {
   rootDir: '..',
@@ -69,7 +68,7 @@ module.exports = {
     'jest-playwright': {
       browsers: [BROWSER],
       browserContext: 'incognito',
-      devices: DEVICE ? [DEVICES[DEVICE]] : Object.values(DEVICES),
+      devices: SCREEN ? [DEVICES[`screen-${SCREEN}`]] : Object.values(DEVICES),
       contextOptions: DEFAULT_CONTEXT_CONFIG,
       launchOptions: DEFAULT_LAUNCH_CONFIG,
     },

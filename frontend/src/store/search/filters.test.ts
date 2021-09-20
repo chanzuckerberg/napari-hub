@@ -1,12 +1,11 @@
-import { renderHook } from '@testing-library/react-hooks';
+import { defaultsDeep } from 'lodash';
+import { DeepPartial } from 'utility-types';
 
-import { useSpdx } from '@/context/spdx';
 import pluginIndex from '@/fixtures/index.json';
-import { PluginIndexData } from '@/types';
+import { DeriveGet, PluginIndexData } from '@/types';
 
-import { FilterFormState } from './filter.types';
-import { getDefaultState } from './filter.utils';
-import { useFilterResults } from './filters';
+import { filterResults } from './filters';
+import { DEFAULT_STATE, SearchFormStore } from './form.store';
 import { SearchResult } from './search.types';
 
 function getResults(...plugins: PluginIndexData[]): SearchResult[] {
@@ -55,19 +54,20 @@ function getLicenseResults(...licenses: string[]): SearchResult[] {
   return getResults(...plugins);
 }
 
+function createMockFilterGet(
+  filters: DeepPartial<SearchFormStore['filters']> = {},
+) {
+  return (jest.fn(() =>
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    defaultsDeep({ filters }, DEFAULT_STATE),
+  ) as unknown) as DeriveGet;
+}
+
 describe('filterResults()', () => {
-  let state: FilterFormState;
-
-  beforeEach(() => {
-    state = getDefaultState();
-    (useSpdx as jest.Mock).mockClear();
-  });
-
   describe('filter by python versions', () => {
     it('should allow all plugins when no filters are enabled', () => {
       const results = getVersionResults('>=3.10', '>=3.9');
-      const { result } = renderHook(() => useFilterResults(results, state));
-      expect(result.current).toEqual(results);
+      expect(filterResults(createMockFilterGet(), results)).toEqual(results);
     });
 
     it("should filter plugins that don't match an exact version", () => {
@@ -94,11 +94,16 @@ describe('filterResults()', () => {
         },
       ];
 
-      state.pythonVersions['3.9'] = true;
-
       testCases.forEach(({ input, output }) => {
-        const { result } = renderHook(() => useFilterResults(input, state));
-        expect(result.current).toEqual(output);
+        const result = filterResults(
+          createMockFilterGet({
+            pythonVersions: {
+              3.9: true,
+            },
+          }),
+          input,
+        );
+        expect(result).toEqual(output);
       });
     });
   });
@@ -109,8 +114,8 @@ describe('filterResults()', () => {
         ['Operating System :: OS Independent'],
         ['Operating System :: POSIX :: Linux'],
       );
-      const { result } = renderHook(() => useFilterResults(results, state));
-      expect(result.current).toEqual(results);
+      const filtered = filterResults(createMockFilterGet(), results);
+      expect(filtered).toEqual(results);
     });
 
     it('should allow OS Independent plugins', () => {
@@ -118,10 +123,17 @@ describe('filterResults()', () => {
         ['Operating System :: OS Independent'],
         ['Operating System :: POSIX :: Linux'],
       );
-      state.operatingSystems.mac = true;
 
-      const { result } = renderHook(() => useFilterResults(results, state));
-      expect(result.current).toEqual(
+      const filtered = filterResults(
+        createMockFilterGet({
+          operatingSystems: {
+            mac: true,
+          },
+        }),
+        results,
+      );
+
+      expect(filtered).toEqual(
         getOperatingSystemResults(['Operating System :: OS Independent']),
       );
     });
@@ -134,7 +146,12 @@ describe('filterResults()', () => {
         ['Environment :: MacOS X', 'Operating System :: POSIX :: Linux'],
       );
 
-      const testCases = [
+      interface TestCase {
+        input: Partial<SearchFormStore['filters']['operatingSystems']>;
+        output: SearchResult[];
+      }
+
+      const testCases: TestCase[] = [
         {
           input: { mac: true },
           output: getOperatingSystemResults(
@@ -160,11 +177,11 @@ describe('filterResults()', () => {
       ];
 
       testCases.forEach(({ input, output }) => {
-        state = getDefaultState();
-        Object.assign(state.operatingSystems, input);
-
-        const { result } = renderHook(() => useFilterResults(results, state));
-        expect(result.current).toEqual(output);
+        const filtered = filterResults(
+          createMockFilterGet({ operatingSystems: input }),
+          results,
+        );
+        expect(filtered).toEqual(output);
       });
     });
   });
@@ -179,19 +196,25 @@ describe('filterResults()', () => {
     );
 
     it('should allow all plugins when no filters are enabled', () => {
-      const { result } = renderHook(() => useFilterResults(results, state));
-      expect(result.current).toEqual(results);
+      const filtered = filterResults(createMockFilterGet(), results);
+      expect(filtered).toEqual(results);
     });
 
     it('should filter stable plugins', () => {
-      state.developmentStatus.onlyStablePlugins = true;
       const expected = getDevStatusResults(
         ['Development Status :: 5 - Production/Stable'],
         ['Development Status :: 6 - Mature'],
       );
 
-      const { result } = renderHook(() => useFilterResults(results, state));
-      expect(result.current).toEqual(expected);
+      const filtered = filterResults(
+        createMockFilterGet({
+          devStatus: {
+            stable: true,
+          },
+        }),
+        results,
+      );
+      expect(filtered).toEqual(expected);
     });
   });
 
@@ -199,25 +222,21 @@ describe('filterResults()', () => {
     const results = getLicenseResults('valid', 'invalid');
 
     it('should allow all plugins when no filters are enabled', () => {
-      const { result } = renderHook(() => useFilterResults(results, state));
-      expect(result.current).toEqual(results);
+      const filtered = filterResults(createMockFilterGet(), results);
+      expect(filtered).toEqual(results);
     });
 
     it('should filter plugins with open source licenses', () => {
-      type F = typeof useSpdx;
-      type P = Parameters<F>;
-      type R = ReturnType<F>;
-
-      (useSpdx as jest.Mock<R, P>).mockReturnValueOnce({
-        isOSIApproved: jest
-          .fn()
-          .mockImplementationOnce((license: string) => license === 'valid'),
-      });
-
-      state.license.onlyOpenSourcePlugins = true;
-
-      const { result } = renderHook(() => useFilterResults(results, state));
-      expect(result.current).toEqual(getLicenseResults('valid'));
+      const filtered = filterResults(
+        createMockFilterGet({
+          license: {
+            openSource: true,
+            osiApprovedLicenseSet: new Set(['valid']),
+          },
+        }),
+        results,
+      );
+      expect(filtered).toEqual(getLicenseResults('valid'));
     });
   });
 });
