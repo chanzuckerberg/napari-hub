@@ -1,9 +1,9 @@
 import clsx from 'clsx';
 import Head from 'next/head';
 import { ReactNode } from 'react';
-import styles from 'src/components/common/Markdown/Markdown.module.scss';
 
 import { ColumnLayout, TableOfContents, TOCHeader } from '@/components/common';
+import styles from '@/components/common/Markdown/Markdown.module.scss';
 import { Media } from '@/components/common/media';
 
 import { useHeaders } from './LayoutMDX.hooks';
