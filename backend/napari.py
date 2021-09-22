@@ -423,7 +423,7 @@ def cache_available(key: str) -> bool:
     if bucket is None:
         return False
     try:
-        s3.head_object(Bucket=bucket, Key=os.path.join(bucket_path, key))
+        s3.Object(bucket, os.path.join(bucket_path, key)).load()
         return True
     except ClientError:
         print(f"Not cached: {key}")
