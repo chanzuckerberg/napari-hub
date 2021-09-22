@@ -3,7 +3,7 @@ import requests
 from requests.exceptions import HTTPError
 
 from backend.napari import get_plugin, get_shield
-from backend.napari import get_plugins
+from backend.napari import get_public_plugins
 from backend.napari import get_download_url
 from backend.napari import get_license
 from backend.napari import get_citations
@@ -102,8 +102,8 @@ plugin = """
     'backend.napari.get_plugins', return_value={'test2': '0.0.2'}
 )
 def test_get_plugins(mock_get):
-    result = get_plugins()
-    assert (len(result) == 0)
+    result = get_public_plugins()
+    assert (len(result) == 1)
 
 
 @mock.patch(

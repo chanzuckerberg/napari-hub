@@ -21,7 +21,6 @@ from requests.utils import requote_uri
 
 import boto3
 from botocore.exceptions import ClientError
-from google.cloud import bigquery
 from cffconvert.citation import Citation
 
 # Environment variable set through lambda terraform infra config
@@ -34,13 +33,13 @@ github_client_secret = os.environ.get('GITHUB_CLIENT_SECRET', None)
 cache_ttl = int(os.environ.get('TTL', "6"))
 endpoint_url = os.environ.get('BOTO_ENDPOINT_URL', None)
 
-plugins_key = 'cache/plugins.json'
 index_key = 'cache/index.json'
 exclusion_list = 'excluded_plugins.json'
 index_subset = {'name', 'summary', 'description_text', 'description_content_type',
                 'authors', 'license', 'python_version', 'operating_system',
                 'release_date', 'version', 'first_released',
                 'development_status'}
+visibility_set = {'public', 'disabled', 'hidden'}
 
 s3 = boto3.resource('s3', endpoint_url=endpoint_url)
 s3_client = boto3.client("s3", endpoint_url=endpoint_url)
@@ -89,16 +88,14 @@ def filter_prefix(str_list: List[str], prefix: str) -> list:
     return [string for string in str_list if string.startswith(prefix)]
 
 
-def filter_index(plugin: str, version: str) -> dict:
+def slice_metadata_to_index_columns(plugins_metadata: list) -> list:
     """
     Filter index based to only include specified entries.
 
-    :param plugin: name of the plugin
-    :param version: version of the plugin
+    :param plugins_metadata: plugin metadata dictionary
     :return: filtered json metadata for the plugin
     """
-    plugin_info = get_plugin(plugin, version)
-    return {k: plugin_info[k] for k in index_subset}
+    return [{k: plugin_metadata[k] for k in index_subset} for plugin_metadata in plugins_metadata]
 
 
 @app.route('/plugins/index')
@@ -111,45 +108,52 @@ def get_index() -> dict:
     return jsonify(get_cache(index_key))
 
 
-@app.route('/plugins/index/update')
-def update_index() -> dict:
+@app.route('/update', methods=['POST'])
+def update_index():
     """
     update the index page related metadata for all plugins.
 
     :return: json for index page metadata
     """
-    results = []
-    plugins = get_plugins()
+    plugins_metadata = {}
+    existing_plugins = get_public_plugins()
+    plugins = query_pypi()
     with concurrent.futures.ThreadPoolExecutor(max_workers=32) as executor:
-        futures = [executor.submit(filter_index, k, v)
+        futures = [executor.submit(get_plugin_metadata, k, v)
                    for k, v in plugins.items()]
     for future in concurrent.futures.as_completed(futures):
-        results.append(future.result())
+        plugins_metadata[future.result()[0]] = (future.result()[1])
 
-    # pull exclusion list directly from results
-
-    # read cache version of excluded_plugins.json
+    # update plugin exclusion
+    # public: fully visible (default)
+    # disabled: no plugin page created, does not show up in search listings
+    # hidden: plugin page exists, but doesn't show up in search listings
     excluded_plugins = get_exclusion_list()
-    # include public and whitelisted plugins in updated_plugins
-    updated_plugins = filter_excluded_plugin(plugins, excluded_plugins, {'hidden'})
-    packages = plugins.copy()
-    if packages:
-        if zulip_credentials is not None and len(zulip_credentials.split(":")) == 2:
-            notify_new_packages(plugins, updated_plugins)
-        return cache(updated_plugins, plugins_key)
-    send_alert(f"({datetime.now()})Actions Required! Failed to query pypi for "
-               f"napari plugin packages, switching to backup analysis dump")
-    packages = query_analysis_dump()
-    if packages:
-        return cache(filter_excluded_plugin(packages), index_key)
-    send_alert(f"({datetime.now()}) Actions Required! Back up method also "
-               f"failed! Immediate fix is required to bring the API back!")
-    for key, value in excluded_plugins.items():
-        if key in updated_plugins and updated_plugins[key] != "admin" and value != updated_plugins[key]:
-            excluded_plugins[key] = updated_plugins[key]
-    # write excluded_plugins.json to s3
+    for plugin, plugin_metadata in plugins_metadata.items():
+        if excluded_plugins[plugin] != 'admin':
+            excluded_plugins[plugin] = plugin_metadata['visibility']
+            if plugin_metadata['visibility'] == 'public':
+                del excluded_plugins[plugin]
+
+    visibility_plugins = {"public": {}, "hidden": {}}
+    for plugin, version in plugins.items():
+        if plugins_metadata[plugin]['visibility'] in visibility_plugins:
+            visibility_plugins[plugins_metadata[plugin]['visibility']][plugin] = version
+
+    for plugin, _ in excluded_plugins.items():
+        if plugin in plugins_metadata:
+            del(plugins_metadata[plugin])
+
     cache(excluded_plugins, exclusion_list)
-    return jsonify(cache(results, index_key))
+    cache(visibility_plugins['public'], 'cache/public-plugins.json')
+    cache(visibility_plugins['hidden'], 'cache/hidden-plugins.json')
+    cache(slice_metadata_to_index_columns(list(plugins_metadata.values())), index_key)
+
+    if visibility_plugins['public']:
+        notify_new_packages(existing_plugins, visibility_plugins['public'])
+    else:
+        send_alert(f"({datetime.now()})Actions Required! Failed to query pypi for "
+                   f"napari plugin packages, switching to backup analysis dump")
 
 
 def get_file(download_url: str, file: str) -> [dict, None]:
@@ -182,10 +186,6 @@ def get_extra_metadata(download_url: str) -> dict:
     :return: extra metadata dictionary
     """
     extra_metadata = {}
-    # public: fully visible (default)
-    # disabled: no plugin page created, does not show up in search listings
-    # hidden: plugin page exists, but doesn't show up in search listings
-    visibility_set = {'public', 'disabled', 'hidden'}
 
     github_license = get_license(download_url)
     if github_license is not None:
@@ -312,6 +312,7 @@ def format_plugin(plugin: dict) -> dict:
                                                    'email': get_attribute(plugin, ["info", "author_email"])}]),
         "license": extra_metadata.get('license', get_attribute(plugin, ["info", "license"])),
         "citations": extra_metadata.get('citations'),
+        "visibility": extra_metadata.get("visibility"),
         "python_version": get_attribute(plugin, ["info", "requires_python"]),
         "operating_system": filter_prefix(
             get_attribute(plugin, ["info", "classifiers"]),
@@ -344,19 +345,28 @@ def format_plugin(plugin: dict) -> dict:
 
 
 @app.route('/plugins')
-def get_plugins() -> dict:
+def get_public_plugins() -> dict:
     """
     Get the list of plugins if cache is available.
 
-    :param context: context for the run to raise alerts
     :return: json of valid plugins and their versions
     """
-    if cache_available(plugins_key, None):
-        return get_cache(plugins_key)
-    else:
-        return {}
+    return get_plugins(['public'])
 
-# TODO: two ways to get plugins - (1) public plugins (2) public and hidden plugins
+
+def get_plugins(visibilities: list) -> dict:
+    """
+    Get the dictionary of plugins and versions.
+
+    :return: json of valid plugins and their versions
+    """
+    ret = {}
+    for visibility in visibilities:
+        if visibility in cache_available(f'cache/{visibility}-plugins.json'):
+            ret.update(get_cache(f'cache/{visibility}-plugins.json'))
+    return ret
+
+
 @app.route('/plugins/<plugin>', defaults={'version': None})
 @app.route('/plugins/<plugin>/versions/<version>')
 def get_plugin(plugin: str, version: str = None) -> dict:
@@ -367,14 +377,17 @@ def get_plugin(plugin: str, version: str = None) -> dict:
     :param version: version of the plugin
     :return: plugin metadata dictionary
     """
-    plugins = get_plugins()
+    plugins = get_plugins(['public', 'hidden'])
     if plugin not in plugins:
         return {}
     elif version is None:
         version = plugins[plugin]
+    return get_cache(f'cache/{plugin}/{version}.json')
 
-    if cache_available(f'cache/{plugin}/{version}.json', None):
-        return get_cache(f'cache/{plugin}/{version}.json')
+
+def get_plugin_metadata(plugin: str, version: str = None) -> tuple:
+    if cache_available(f'cache/{plugin}/{version}.json'):
+        return plugin, get_cache(f'cache/{plugin}/{version}.json')
 
     url = f"https://pypi.org/pypi/{plugin}/{version}/json"
     try:
@@ -384,14 +397,14 @@ def get_plugin(plugin: str, version: str = None) -> dict:
         info = format_plugin(json.loads(response.text.strip()))
         if version is None:
             version = info['version']
-        return cache(info, f'cache/{plugin}/{version}.json')
+        return plugin, cache(info, f'cache/{plugin}/{version}.json')
     except HTTPError:
-        return {}
+        return plugin, {}
 
 
 @app.route('/shields/<plugin>')
 def get_shield(plugin: str):
-    plugins = get_plugins()
+    plugins = get_plugins(['public'])
     plugin_shield_schema = copy.deepcopy(shield_schema)
     if plugin not in plugins:
         plugin_shield_schema['message'] = 'plugin not found'
@@ -400,44 +413,21 @@ def get_shield(plugin: str):
     return plugin_shield_schema
 
 
-def cache_available(key: str, ttl: [timedelta, None]) -> bool:
+def cache_available(key: str) -> bool:
     """
     Check if cache is available for the key.
 
     :param key: key to check in s3
-    :param ttl: ttl for the cache, if None always consider the cache is valid
-    :return: True iff cache exists and is considered fresh
+    :return: True iff cache exists
     """
     if bucket is None:
         return False
     try:
-        last_modified = s3.Object(bucket, os.path.join(bucket_path, key)).last_modified
-        if ttl is None:
-            return True
-        if last_modified is None or \
-                datetime.now(timezone.utc) - last_modified > ttl:
-            print(f"Updated Cache: {key}")
-            return False
-        else:
-            return True
+        s3.head_object(Bucket=bucket, Key=os.path.join(bucket_path, key))
+        return True
     except ClientError:
         print(f"Not cached: {key}")
         return False
-
-
-def filter_excluded_plugin(packages: dict, excluded_plugins: dict, whitelisted_keyword: set = {}) -> dict:
-    """
-    Filter excluded plugins from the plugins list
-    :param packages: all plugins list
-    :param excluded_plugins: excluded plugin list
-    :param whitelisted_keyword: keyword reflects plugins to include
-    :return: only plugins not in the filtered list
-    """
-    valid_plugins = packages.copy()
-    for key, value in excluded_plugins.items():
-        if key in packages and value not in whitelisted_keyword:
-            del valid_plugins[key]
-    return valid_plugins
 
 
 @app.route('/plugins/excluded')
@@ -447,7 +437,7 @@ def get_exclusion_list() -> dict:
 
     :return: excluded plugin list
     """
-    if cache_available(exclusion_list, None):
+    if cache_available(exclusion_list):
         return get_cache(exclusion_list)
     else:
         return {}
@@ -507,20 +497,34 @@ def notify_new_packages(existing_packages: dict, new_packages: dict):
     :param existing_packages: existing packages in cache
     :param new_packages: new packages found
     """
-    username = zulip_credentials.split(":")[0]
-    key = zulip_credentials.split(":")[1]
+    username = None
+    key = None
+    if zulip_credentials is not None and len(zulip_credentials.split(":")) == 2:
+        username = zulip_credentials.split(":")[0]
+        key = zulip_credentials.split(":")[1]
     for package, version in new_packages.items():
         if package not in existing_packages:
-            send_zulip_message(username, key, package,
-                               f'A new plugin has been published on the napari hub! Check out [{package}](https://napari-hub.org/plugins/{package})!')
+            message = f'A new plugin has been published on the napari hub! ' \
+                      f'Check out [{package}](https://napari-hub.org/plugins/{package})!'
+            if username and key:
+                send_zulip_message(username, key, package, message)
+            else:
+                print(message)
         elif existing_packages[package] != version:
-            send_zulip_message(username, key, package,
-                               f'A new version of [{package}](https://napari-hub.org/plugins/{package}) is available on the napari hub! Check out [{version}](https://napari-hub.org/plugins/{package})!')
+            message = f'A new version of [{package}](https://napari-hub.org/plugins/{package}) is available on the ' \
+                      f'napari hub! Check out [{version}](https://napari-hub.org/plugins/{package})!'
+            if username and key:
+                send_zulip_message(username, key, package, message)
+            else:
+                print(message)
 
     for package, version in existing_packages.items():
         if package not in new_packages:
-            send_zulip_message(username, key, package,
-                               f'This plugin is no longer available on the [napari hub](https://napari-hub.org) :(')
+            message = f'This plugin is no longer available on the [napari hub](https://napari-hub.org) :('
+            if username and key:
+                send_zulip_message(username, key, package, message)
+            else:
+                print(message)
 
 
 def send_zulip_message(username: str, key: str, topic: str, message: str):
