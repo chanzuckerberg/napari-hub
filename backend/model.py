@@ -132,7 +132,6 @@ def update_cache():
     - cache/index.json (overwrite)
     - cache/{plugin}/{version}.json (skip if exists)
     """
-    existing_public_plugins = get_public_plugins()
     plugins = query_pypi()
     plugins_metadata = get_plugin_metadata_async(plugins)
     excluded_plugins = get_updated_plugin_exclusion(plugins_metadata)
@@ -147,12 +146,12 @@ def update_cache():
         if plugin in plugins_metadata:
             del (plugins_metadata[plugin])
 
-    cache(excluded_plugins, 'excluded_plugins.json')
-    cache(visibility_plugins['public'], 'cache/public-plugins.json')
-    cache(visibility_plugins['hidden'], 'cache/hidden-plugins.json')
-    cache(slice_metadata_to_index_columns(list(plugins_metadata.values())), 'cache/index.json')
-
     if visibility_plugins['public']:
+        existing_public_plugins = get_public_plugins()
+        cache(excluded_plugins, 'excluded_plugins.json')
+        cache(visibility_plugins['public'], 'cache/public-plugins.json')
+        cache(visibility_plugins['hidden'], 'cache/hidden-plugins.json')
+        cache(slice_metadata_to_index_columns(list(plugins_metadata.values())), 'cache/index.json')
         notify_new_packages(existing_public_plugins, visibility_plugins['public'])
     else:
         send_alert(f"({datetime.now()})Actions Required! Failed to query pypi for "

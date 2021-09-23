@@ -15,18 +15,18 @@ def get_attribute(obj: dict, path: list):
     Get attribute iteratively from a json object.
 
     :param obj: object to iterate on
-    :param path: list of string to get subpath within json
+    :param path: list of string to get sub path within json
     :return: the value if the path is accessible, empty string if not found
     """
-    part = obj
+    current_location = obj
     for token in path:
-        if isinstance(part, dict) and token in part:
-            part = part[token]
-        elif isinstance(part, list) and token < len(part):
-            part = part[token]
+        if isinstance(current_location, dict) and token in current_location:
+            current_location = current_location[token]
+        elif isinstance(current_location, list) and token < len(current_location):
+            current_location = current_location[token]
         else:
             return ""
-    return part
+    return current_location
 
 
 def filter_prefix(str_list: List[str], prefix: str) -> list:

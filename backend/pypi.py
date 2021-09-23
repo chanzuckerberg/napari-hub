@@ -30,7 +30,8 @@ def query_pypi() -> Dict[str, str]:
             html = response.text
             names = name_pattern.findall(html)
             versions = version_pattern.findall(html)
-            assert (len(names) == len(versions))
+            if len(names) != len(versions):
+                return {}
             for name, version in zip(names, versions):
                 packages[name] = version
             page += 1
