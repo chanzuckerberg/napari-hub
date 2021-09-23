@@ -362,7 +362,7 @@ def get_plugins(visibilities: list) -> dict:
     """
     ret = {}
     for visibility in visibilities:
-        if visibility in cache_available(f'cache/{visibility}-plugins.json'):
+        if visibility in visibility_set and cache_available(f'cache/{visibility}-plugins.json'):
             ret.update(get_cache(f'cache/{visibility}-plugins.json'))
     return ret
 
