@@ -1,6 +1,7 @@
-import { set } from 'lodash';
+import { inRange, set } from 'lodash';
 import { subscribe } from 'valtio';
 
+import { BEGINNING_PAGE, RESULTS_PER_PAGE } from '@/constants/search';
 import { isSearchPage } from '@/utils';
 
 import { SearchQueryParams, SearchSortType } from './constants';
@@ -73,16 +74,38 @@ function initStateFromQueryParameters() {
       set(searchFormStore.filters, [filterKey, stateKey], true);
     }
   });
+
+  // Set page value if page parameter is available. If the value is a
+  // non-number, use the initial page value.
+  const pageStr = params.get(SearchQueryParams.Page);
+  if (pageStr) {
+    const page = +pageStr;
+    const totalPages = Math.ceil(
+      searchFormStore.search.index.length / RESULTS_PER_PAGE,
+    );
+
+    searchFormStore.page =
+      Number.isNaN(page) || !inRange(page, BEGINNING_PAGE, totalPages)
+        ? BEGINNING_PAGE
+        : page;
+  }
 }
 
 /**
- * Updates the URL query parameters using the search form state.
+ * Updates the URL query parameters using the search form state.  On initial
+ * load, some query parameters (page, sort type) will not have the query
+ * parameters added (unless explicitly set by the user) because it looks nicer
+ * to land on `https://napari-hub.org` instead of
+ * `https://napari-hub.org/?sortType=recentlyUpdated&page=1`.
+ *
+ * @param initialLoad Whether this is the first time the page is loading.
  */
-function updateQueryParameters() {
+function updateQueryParameters(initialLoad?: boolean) {
   if (!isSearchPage(window.location.pathname)) {
     return;
   }
 
+  const fullUrl = new URL(window.location.href);
   const url = new URL(window.location.origin);
   const params = url.searchParams;
 
@@ -95,8 +118,11 @@ function updateQueryParameters() {
   }
 
   // Sort type
-  const { sort } = searchFormStore;
-  params.set(SearchQueryParams.Sort, sort);
+  // Don't set sort type on initial load unless a value is already specified.
+  if (!initialLoad || fullUrl.searchParams.get(SearchQueryParams.Sort)) {
+    const { sort } = searchFormStore;
+    params.set(SearchQueryParams.Sort, sort);
+  }
 
   // Filters
   forEachFilterParam(({ key, value, state }) => {
@@ -104,6 +130,12 @@ function updateQueryParameters() {
       params.append(key, value);
     }
   });
+
+  // Current page.
+  // Don't set query parameter on initial load unless a value is already specified.
+  if (!initialLoad || fullUrl.searchParams.get(SearchQueryParams.Page)) {
+    params.set(SearchQueryParams.Page, String(searchFormStore.page));
+  }
 
   const nextUrl = url.href;
   if (window.location.href !== nextUrl) {
@@ -130,6 +162,11 @@ function updateQueryParameters() {
  */
 export function initQueryParameterListener(): () => void {
   initStateFromQueryParameters();
-  const unsubscribe = subscribe(searchFormStore, updateQueryParameters);
+  updateQueryParameters(true);
+
+  const unsubscribe = subscribe(
+    searchFormStore,
+    updateQueryParameters.bind(null, false),
+  );
   return unsubscribe;
 }
