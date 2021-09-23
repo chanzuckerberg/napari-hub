@@ -161,6 +161,8 @@ def update_index():
         send_alert(f"({datetime.now()})Actions Required! Failed to query pypi for "
                    f"napari plugin packages, switching to backup analysis dump")
 
+    return "", 204
+
 
 def get_file(download_url: str, file: str) -> [dict, None]:
     """
