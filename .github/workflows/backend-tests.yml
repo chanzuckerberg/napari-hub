@@ -32,7 +32,6 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install -r requirements.txt
-          pip install cffconvert ruamel.yaml pykwalify[ruamel] --no-dependencies
           pip install pytest
 
       - name: Run tests

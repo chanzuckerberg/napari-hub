@@ -37,7 +37,7 @@ locals {
   frontend_alb_zone     = try(local.secret[local.alb_key]["frontend"]["zone_id"], "")
   frontend_alb_dns      = try(local.secret[local.alb_key]["frontend"]["dns_name"], "")
 
-  slack_url = try(local.secret["slack_url"], "")
+  slack_url = try(local.secret["slack"]["url"], "")
   zulip_credentials = try(local.secret["zulip"]["credentials"], "")
   github_client_id = try(local.secret["github"]["client_id"], "")
   github_client_secret = try(local.secret["github"]["client_secret"], "")
