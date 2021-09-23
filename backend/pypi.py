@@ -4,6 +4,7 @@ import requests
 from requests import HTTPError
 from requests.utils import requote_uri
 from utils import get_attribute, filter_prefix
+from github import get_github_repo_url
 
 
 def query_pypi() -> dict:
@@ -86,4 +87,5 @@ def format_plugin(plugin: dict) -> dict:
         "support": get_attribute(plugin, ["info", "project_urls", "User Support"]),
         "report_issues": get_attribute(plugin, ["info", "project_urls", "Bug Tracker"]),
         "twitter": get_attribute(plugin, ["info", "project_urls", "Twitter"]),
+        "code_repository": get_github_repo_url(get_attribute(plugin, ["info", "project_urls"]))
     }

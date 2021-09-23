@@ -111,10 +111,8 @@ def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
     :return: dict for aggregated plugin metadata
     """
     metadata = get_plugin_pypi_metadata(plugin, version)
-    project_urls = get_attribute(metadata, ["info", "project_urls"])
-    github_repo_url = get_github_repo_url(project_urls)
+    github_repo_url = metadata['code_repository']
     if github_repo_url:
-        metadata["code_repository"] = github_repo_url,
         metadata = {**metadata, **get_github_metadata(github_repo_url)}
     metadata['description_text'] = render_description(metadata.get('description'))
     cache(metadata, f'cache/{plugin}/{version}.json')
