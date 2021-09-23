@@ -10,7 +10,7 @@ from botocore.exceptions import ClientError
 
 from utils import send_alert
 
-# Environment variable set through lambda terraform infra config
+# Environment variable set through ecs stack terraform module
 bucket = os.environ.get('BUCKET')
 bucket_path = os.environ.get('BUCKET_PATH', '')
 endpoint_url = os.environ.get('BOTO_ENDPOINT_URL', None)

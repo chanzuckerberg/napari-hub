@@ -5,6 +5,7 @@ import requests
 from requests.auth import HTTPBasicAuth
 from requests.exceptions import HTTPError
 
+# Environment variable set through ecs stack terraform module
 zulip_credentials = os.environ.get('ZULIP_CREDENTIALS', "")
 
 

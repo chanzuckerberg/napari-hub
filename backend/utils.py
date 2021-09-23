@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 from markdown import markdown
 from requests import HTTPError
 
-# Environment variable set through lambda terraform infra config
+# Environment variable set through ecs stack terraform module
 slack_url = os.environ.get('SLACK_URL')
 
 
