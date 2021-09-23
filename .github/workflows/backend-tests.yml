@@ -36,4 +36,5 @@ jobs:
           pip install pytest
 
       - name: Run tests
+        working-directory: backend
         run : pytest

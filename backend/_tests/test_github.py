@@ -1,8 +1,7 @@
 import unittest
 from unittest.mock import patch
-from .util import FakeResponse
-from ..github import get_github_repo_url, get_license, get_citations
-from .util import license_response, no_license_response, citation_string
+from test_utils import FakeResponse, license_response, no_license_response, citation_string
+from github import get_github_repo_url, get_license, get_citations
 
 
 class TestGithub(unittest.TestCase):
