@@ -1,5 +1,6 @@
 import json
 import re
+from typing import Dict
 
 import requests
 from requests import HTTPError
@@ -9,7 +10,7 @@ from github import get_github_repo_url
 from utils import get_attribute, filter_prefix
 
 
-def query_pypi() -> dict:
+def query_pypi() -> Dict[str, str]:
     """
     Query pypi to get all plugins.
 
@@ -39,6 +40,13 @@ def query_pypi() -> dict:
 
 
 def get_plugin_pypi_metadata(plugin: str, version: str) -> dict:
+    """
+    Get plugin metadata through pypi API.
+
+    :param plugin: name of the plugin
+    :param version: version of the plugin
+    :return: metadata dict for the plugin, empty if not found
+    """
     url = f"https://pypi.org/pypi/{plugin}/{version}/json"
     try:
         response = requests.get(url)

@@ -41,6 +41,12 @@ def filter_prefix(str_list: List[str], prefix: str) -> list:
 
 
 def render_description(description: str) -> str:
+    """
+    Render description with beautiful soup to generate html format description text.
+
+    :param description: raw description to render
+    :return: rendered description html text
+    """
     if description != '':
         html = markdown(description)
         soup = BeautifulSoup(html, 'html.parser')

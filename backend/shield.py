@@ -2,6 +2,13 @@ from model import get_valid_plugins
 
 
 def get_shield(plugin: str) -> dict:
+    """
+    Generate shield json for napari plugin.
+    If the package is not a valid plugin, display 'plugin not found' instead.
+
+    :param plugin: name of the plugin
+    :return: shield json used in shields.io.
+    """
     shield_schema = {
         "color": "#0074B8",
         "label": "napari hub",

@@ -1,4 +1,5 @@
 import os
+from typing import Dict
 
 import requests
 from requests.auth import HTTPBasicAuth
@@ -7,7 +8,7 @@ from requests.exceptions import HTTPError
 zulip_credentials = os.environ.get('ZULIP_CREDENTIALS', "")
 
 
-def notify_new_packages(existing_packages: dict, new_packages: dict):
+def notify_new_packages(existing_packages: Dict[str, str], new_packages: Dict[str, str]):
     """
     Notify zulip about new packages.
 

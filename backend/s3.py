@@ -49,7 +49,7 @@ def get_cache(key: str) -> Union[dict, None]:
         return None
 
 
-def cache(content: [dict, list], key: str) -> dict:
+def cache(content: Union[dict, list], key: str) -> Union[dict, list]:
     """
     Cache the given content to the key location.
 

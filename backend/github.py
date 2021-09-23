@@ -1,6 +1,7 @@
 import json
 import os.path
 import re
+from typing import Dict
 
 import requests
 import yaml
@@ -63,7 +64,7 @@ def get_license(url: str) -> [str, None]:
         return None
 
 
-def get_github_repo_url(project_urls: dict) -> [str, None]:
+def get_github_repo_url(project_urls: Dict[str, str]) -> [str, None]:
     """
     Get repo url for github.
 
@@ -130,7 +131,7 @@ def get_github_metadata(repo_url: str) -> dict:
     return github_metadata
 
 
-def get_citations(citation_str: str) -> dict:
+def get_citations(citation_str: str) -> Dict[str, str]:
     """
     Get citation information from the string.
     :param citation_str: citation string to parse
