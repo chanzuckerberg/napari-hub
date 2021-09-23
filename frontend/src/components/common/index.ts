@@ -6,6 +6,7 @@ export * from './Link';
 export * from './Markdown';
 export * from './Overlay';
 export * from './PageMetadata';
+export * from './Pagination';
 export * from './SkeletonLoader';
 export * from './TableOfContents';
 export * from './TextHighlighter';

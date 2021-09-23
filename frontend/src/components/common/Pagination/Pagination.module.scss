@@ -1,0 +1,10 @@
+@import '@/utils/styles';
+
+.pageButton {
+  // Remove blue highlight on click for page buttons on webkit browsers.
+  -webkit-tap-highlight-color: transparent;
+}
+
+.value {
+  font-size: max(13px, 1rem);
+}
