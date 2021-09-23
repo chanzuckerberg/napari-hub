@@ -116,7 +116,7 @@ def get_github_metadata(repo_url: str) -> dict:
     elif github_metadata['visibility'] not in visibility_set:
         github_metadata['visibility'] = 'public'
 
-    project_urls = github_metadata['project_urls']
+    project_urls = github_metadata.get('project_urls', {})
     if 'Project Site' in project_urls:
         github_metadata['project_site'] = project_urls['Project Site']
     if 'Documentation' in project_urls:

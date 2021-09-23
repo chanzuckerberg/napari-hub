@@ -107,10 +107,13 @@ def get_excluded_plugins() -> Dict[str, str]:
 
 def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
     """
-    Build plugin metadata from multiple sources.
+    Build plugin metadata from multiple sources, reuse cached ones if available.
 
     :return: dict for aggregated plugin metadata
     """
+    cached_plugin = get_cache(f'cache/{plugin}/{version}.json')
+    if cached_plugin:
+        return plugin, cached_plugin
     metadata = get_plugin_pypi_metadata(plugin, version)
     github_repo_url = metadata['code_repository']
     if github_repo_url:
