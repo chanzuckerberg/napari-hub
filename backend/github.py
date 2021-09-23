@@ -14,10 +14,6 @@ from utils import get_attribute
 # Environment variable set through lambda terraform infra config
 github_client_id = os.environ.get('GITHUB_CLIENT_ID', None)
 github_client_secret = os.environ.get('GITHUB_CLIENT_SECRET', None)
-index_subset = {'name', 'summary', 'description_text', 'description_content_type',
-                'authors', 'license', 'python_version', 'operating_system',
-                'release_date', 'version', 'first_released',
-                'development_status'}
 visibility_set = {'public', 'disabled', 'hidden'}
 
 github_pattern = re.compile("https://github\\.com/([^/]+)/([^/]+)")
