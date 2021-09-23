@@ -225,7 +225,10 @@ export function PluginSearchResult({ className, matches, plugin }: Props) {
     );
   }
 
-  const resultClassName = clsx(className, 'py-5 border-t-2 border-black');
+  const resultClassName = clsx(
+    className,
+    'py-5 border-black border-t-2 last:border-b-2',
+  );
 
   // Convert to link when loading so that user can't click on result.
   if (isLoading) {
