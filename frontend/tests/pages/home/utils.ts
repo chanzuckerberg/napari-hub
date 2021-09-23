@@ -8,6 +8,10 @@ export function getFirstSearchResultName() {
   return page.$('[data-testid=searchResultName]');
 }
 
+export function getSearchResultNames() {
+  return page.$$('[data-testid=searchResultName]');
+}
+
 /**
  * Creates a URL to the home page with query parameters if provided. Each query
  * parameter should be a tuple containing the key and value.
