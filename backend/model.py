@@ -117,6 +117,7 @@ def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
         metadata["code_repository"] = github_repo_url,
         metadata = {**metadata, **get_github_metadata(github_repo_url)}
     metadata['description_text'] = render_description(metadata.get('description'))
+    cache(metadata, f'cache/{plugin}/{version}.json')
     return plugin, metadata
 
 
