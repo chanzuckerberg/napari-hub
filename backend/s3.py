@@ -7,6 +7,7 @@ from typing import Union
 
 import boto3
 from botocore.exceptions import ClientError
+from botocore.client import Config
 
 from utils import send_alert
 
@@ -15,8 +16,7 @@ bucket = os.environ.get('BUCKET')
 bucket_path = os.environ.get('BUCKET_PATH', '')
 endpoint_url = os.environ.get('BOTO_ENDPOINT_URL', None)
 
-s3 = boto3.resource('s3', endpoint_url=endpoint_url)
-s3_client = boto3.client("s3", endpoint_url=endpoint_url)
+s3_client = boto3.client("s3", endpoint_url=endpoint_url, config=Config(max_pool_connections=50))
 
 
 def cache_available(key: str) -> bool:
@@ -29,7 +29,7 @@ def cache_available(key: str) -> bool:
     if bucket is None:
         return False
     try:
-        s3.Object(bucket, os.path.join(bucket_path, key)).load()
+        s3_client.head_object(bucket=bucket, key=os.path.join(bucket_path, key))
         return True
     except ClientError:
         return False
@@ -43,7 +43,7 @@ def get_cache(key: str) -> Union[dict, None]:
     :return: file content for the key if exists, None otherwise
     """
     if cache_available(key):
-        return json.loads(s3.Object(bucket, os.path.join(bucket_path, key)).get()['Body'].read())
+        return json.loads(s3_client.get_object(bucket, os.path.join(bucket_path, key))['Body'].read())
     else:
         print(f"Not cached: {key}")
         return None
