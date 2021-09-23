@@ -122,7 +122,12 @@ def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
 
 def update_cache():
     """
-    Update existing caches to reflect new/updated plugins.
+    Update existing caches to reflect new/updated plugins. Files updated:
+    - excluded_plugins.json (overwrite)
+    - cache/public-plugins.json (overwrite)
+    - cache/hidden-plugins.json (overwrite)
+    - cache/index.json (overwrite)
+    - cache/{plugin}/{version}.json (skip if exists)
     """
     existing_public_plugins = get_public_plugins()
     plugins = query_pypi()
