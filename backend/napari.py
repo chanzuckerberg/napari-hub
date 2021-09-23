@@ -130,6 +130,8 @@ def update_index():
     # hidden: plugin page exists, but doesn't show up in search listings
     excluded_plugins = get_exclusion_list()
     for plugin, plugin_metadata in plugins_metadata.items():
+        if 'visibility' not in plugin_metadata:
+            continue
         if plugin in excluded_plugins and excluded_plugins[plugin] != "admin":
             if plugin_metadata['visibility'] == 'public':
                 del excluded_plugins[plugin]
@@ -140,8 +142,9 @@ def update_index():
 
     visibility_plugins = {"public": {}, "hidden": {}}
     for plugin, version in plugins.items():
-        if plugins_metadata[plugin]['visibility'] in visibility_plugins:
-            visibility_plugins[plugins_metadata[plugin]['visibility']][plugin] = version
+        visibility = plugins_metadata[plugin].get('visibility', 'public')
+        if visibility in visibility_plugins:
+            visibility_plugins[visibility][plugin] = version
 
     for plugin, _ in excluded_plugins.items():
         if plugin in plugins_metadata:
