@@ -4,6 +4,7 @@ import { HTMLProps, useEffect, useState } from 'react';
 import { useSnapshot } from 'valtio';
 
 import { Close, Search } from '@/components/common/icons';
+import { BEGINNING_PAGE } from '@/constants/search';
 import {
   DEFAULT_SORT_TYPE,
   SEARCH_PAGE,
@@ -91,6 +92,9 @@ export function SearchBar({ large, ...props }: Props) {
       };
       await router.push(url);
     }
+
+    // Reset pagination when searching with a new query.
+    searchFormStore.page = BEGINNING_PAGE;
   }
 
   return (

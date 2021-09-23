@@ -5,6 +5,7 @@ import { ReactNode, useEffect } from 'react';
 import { hubAPI, spdxLicenseDataAPI } from '@/axios';
 import { ErrorMessage } from '@/components/common';
 import { PluginSearch } from '@/components/PluginSearch';
+import { useLoadingState } from '@/context/loading';
 import {
   initOsiApprovedLicenseSet,
   initSearchEngine,
@@ -39,7 +40,13 @@ export async function getServerSideProps() {
 }
 
 export default function Home({ error, index, licenses }: Props) {
+  const isLoading = useLoadingState();
   useEffect(() => {
+    // Skip indexing while the search page is loading.
+    if (isLoading) {
+      return () => {};
+    }
+
     if (index) {
       initSearchEngine(index);
     }
@@ -50,7 +57,7 @@ export default function Home({ error, index, licenses }: Props) {
 
     const unsubscribe = initQueryParameterListener();
     return unsubscribe;
-  }, [index, licenses]);
+  }, [index, isLoading, licenses]);
 
   return (
     <>

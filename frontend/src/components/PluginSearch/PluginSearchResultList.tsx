@@ -2,11 +2,11 @@ import clsx from 'clsx';
 import { useSnapshot } from 'valtio';
 
 import { ColumnLayout, SkeletonLoader } from '@/components/common';
+import { RESULTS_PER_PAGE } from '@/constants/search';
 import { useLoadingState } from '@/context/loading';
 import { searchResultsStore } from '@/store/search/results.store';
 import { SearchResult } from '@/store/search/search.types';
 import { PluginIndexData } from '@/types';
-import { getSkeletonResultCount } from '@/utils';
 
 import { FilterChips } from './FilterChips';
 import { PluginSearchResult } from './PluginSearchResult';
@@ -15,8 +15,7 @@ import { PluginSearchResult } from './PluginSearchResult';
  * Returns a constant array of fake search results for loading purposes.
  */
 function getSkeletonResults() {
-  const count = getSkeletonResultCount();
-  return [...Array<SearchResult>(count)].map((_, idx) => ({
+  return [...Array<SearchResult>(RESULTS_PER_PAGE)].map((_, idx) => ({
     matches: {},
     index: 0,
     plugin: { name: `fake-plugin-${idx}` } as PluginIndexData,
@@ -24,20 +23,24 @@ function getSkeletonResults() {
 }
 
 function SearchResultCount() {
-  const { results } = useSnapshot(searchResultsStore);
+  const {
+    results: { totalPlugins },
+  } = useSnapshot(searchResultsStore);
 
   return (
     <SkeletonLoader
       className="ml-2 w-6 inline-block"
-      render={() => results.length}
+      render={() => totalPlugins}
     />
   );
 }
 
 function SearchResultItems() {
-  const { results } = useSnapshot(searchResultsStore);
+  const {
+    results: { paginatedResults },
+  } = useSnapshot(searchResultsStore);
   const isLoading = useLoadingState();
-  const searchResults = isLoading ? getSkeletonResults() : results;
+  const searchResults = isLoading ? getSkeletonResults() : paginatedResults;
 
   return (
     <>
