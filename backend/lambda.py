@@ -1,5 +1,6 @@
 from apig_wsgi import make_lambda_handler
 from flask import Flask, Response, jsonify
+
 from model import get_public_plugins, get_index, get_plugin, get_excluded_plugins, update_cache
 from shield import get_shield
 

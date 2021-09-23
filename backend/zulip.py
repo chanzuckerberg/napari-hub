@@ -1,4 +1,5 @@
 import os
+
 import requests
 from requests.auth import HTTPBasicAuth
 from requests.exceptions import HTTPError

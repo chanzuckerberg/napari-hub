@@ -49,9 +49,6 @@ plugin_list = """
   </li>
 """
 
-
-
-
 plugin = """
 {"info":{"author":"Test Author","author_email":"test@test.com",
 "bugtrack_url":null,"classifiers":["Development Status :: 4 - Beta",

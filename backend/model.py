@@ -1,11 +1,12 @@
-from datetime import datetime
 from concurrent import futures
+from datetime import datetime
 from typing import Tuple
-from s3 import get_cache, cache
+
+from github import get_github_metadata
 from pypi import query_pypi, get_plugin_pypi_metadata
-from github import get_github_repo_url, get_github_metadata
+from s3 import get_cache, cache
+from utils import render_description, send_alert
 from zulip import notify_new_packages
-from utils import get_attribute, render_description, send_alert
 
 index_subset = {'name', 'summary', 'description_text', 'description_content_type',
                 'authors', 'license', 'python_version', 'operating_system',
@@ -156,7 +157,7 @@ def update_cache():
 
     for plugin, _ in excluded_plugins.items():
         if plugin in plugins_metadata:
-            del(plugins_metadata[plugin])
+            del (plugins_metadata[plugin])
 
     cache(excluded_plugins, 'excluded_plugins.json')
     cache(visibility_plugins['public'], 'cache/public-plugins.json')

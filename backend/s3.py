@@ -1,11 +1,13 @@
+import json
 import os
 import os.path
-from datetime import datetime
 import tempfile
-import json
+from datetime import datetime
 from typing import Union
+
 import boto3
 from botocore.exceptions import ClientError
+
 from utils import send_alert
 
 # Environment variable set through lambda terraform infra config

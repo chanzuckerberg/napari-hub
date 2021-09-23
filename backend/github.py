@@ -1,11 +1,13 @@
+import json
 import os.path
 import re
-import json
-import yaml
+
 import requests
+import yaml
+from cffconvert.citation import Citation
 from requests.auth import HTTPBasicAuth
 from requests.exceptions import HTTPError
-from cffconvert.citation import Citation
+
 from utils import get_attribute
 
 # Environment variable set through lambda terraform infra config
