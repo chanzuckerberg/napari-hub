@@ -11,7 +11,7 @@ html {
 
     https://blog.logrocket.com/the-elements-of-responsive-typography
   */
-  font-size: viewport-clamp(11px, 100%);
+  font-size: viewport-clamp($min-font-size, 100%);
 
   /*
     Awful hack to get clamp resizing working in Safari 14:

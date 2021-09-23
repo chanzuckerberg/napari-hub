@@ -1,6 +1,7 @@
 /* stylelint-disable at-rule-no-unknown */
 
 $min-content: strip(theme('screens.screen-300'));
+$min-font-size: 11px;
 
 /**
  * Function for clamping a min and max value scaled based on the ratio between
