@@ -237,6 +237,7 @@ export function PluginSearchResult({ className, matches, plugin }: Props) {
 
   return (
     <Link
+      data-testid="pluginSearchResult"
       className={clsx(resultClassName, 'hover:bg-napari-hover-gray')}
       href={`/plugins/${plugin.name}`}
     >
