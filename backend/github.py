@@ -6,7 +6,7 @@ import requests
 from requests.auth import HTTPBasicAuth
 from requests.exceptions import HTTPError
 from cffconvert.citation import Citation
-from backend.util import get_attribute
+from .util import get_attribute
 
 # Environment variable set through lambda terraform infra config
 github_client_id = os.environ.get('GITHUB_CLIENT_ID', None)

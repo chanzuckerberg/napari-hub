@@ -1,4 +1,4 @@
-from backend.model import get_valid_plugins
+from .model import get_valid_plugins
 
 
 def get_shield(plugin: str) -> dict:

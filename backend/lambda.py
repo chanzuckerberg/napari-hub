@@ -1,7 +1,7 @@
 from apig_wsgi import make_lambda_handler
 from flask import Flask, Response, jsonify
-from backend.model import get_public_plugins, get_index, get_plugin, get_excluded_plugins, update_cache
-from backend.shield import get_shield
+from .model import get_public_plugins, get_index, get_plugin, get_excluded_plugins, update_cache
+from .shield import get_shield
 
 app = Flask(__name__)
 handler = make_lambda_handler(app.wsgi_app)

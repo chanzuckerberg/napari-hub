@@ -1,11 +1,11 @@
 from datetime import datetime
 from concurrent import futures
 from typing import Tuple
-from backend.s3 import get_cache, cache
-from backend.pypi import query_pypi, get_plugin_pypi_metadata
-from backend.github import get_github_repo_url, get_github_metadata
-from backend.zulip import notify_new_packages
-from backend.util import get_attribute, render_description, send_alert
+from .s3 import get_cache, cache
+from .pypi import query_pypi, get_plugin_pypi_metadata
+from .github import get_github_repo_url, get_github_metadata
+from .zulip import notify_new_packages
+from .util import get_attribute, render_description, send_alert
 
 index_subset = {'name', 'summary', 'description_text', 'description_content_type',
                 'authors', 'license', 'python_version', 'operating_system',

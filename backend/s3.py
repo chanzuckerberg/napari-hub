@@ -6,7 +6,7 @@ import json
 from typing import Union
 import boto3
 from botocore.exceptions import ClientError
-from backend.util import send_alert
+from .util import send_alert
 
 # Environment variable set through lambda terraform infra config
 bucket = os.environ.get('BUCKET')

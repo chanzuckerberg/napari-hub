@@ -3,7 +3,7 @@ import json
 import requests
 from requests import HTTPError
 from requests.utils import requote_uri
-from backend.util import get_attribute, filter_prefix
+from .util import get_attribute, filter_prefix
 
 
 def query_pypi() -> dict:

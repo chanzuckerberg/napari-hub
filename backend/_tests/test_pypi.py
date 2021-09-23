@@ -1,8 +1,8 @@
 import unittest
 from unittest.mock import patch
 from requests import HTTPError
-from backend._tests.util import FakeResponse, plugin, plugin_list
-from backend.pypi import query_pypi, get_plugin_pypi_metadata
+from .util import FakeResponse, plugin, plugin_list
+from ..pypi import query_pypi, get_plugin_pypi_metadata
 
 
 class TestPypi(unittest.TestCase):
