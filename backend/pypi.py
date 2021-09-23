@@ -55,7 +55,6 @@ def format_plugin(plugin: dict) -> dict:
     :return: formatted plugin dictionary
     """
     version = get_attribute(plugin, ["info", "version"])
-    project_urls = get_attribute(plugin, ["info", "project_urls"])
 
     return {
         "name": get_attribute(plugin, ["info", "name"]),
@@ -82,14 +81,9 @@ def format_plugin(plugin: dict) -> dict:
 
         # below are plugin details
         "requirements": get_attribute(plugin, ["info", "requires_dist"]),
-        "project_site": project_urls.get('Project Site', get_attribute(
-            plugin, ["info", "home_page"])),
-        "documentation": project_urls.get('Documentation', get_attribute(
-            plugin, ["info", "project_urls", "Documentation"])),
-        "support": project_urls.get('User Support', get_attribute(
-            plugin, ["info", "project_urls", "User Support"])),
-        "report_issues": project_urls.get('Report Issues', get_attribute(
-            plugin, ["info", "project_urls", "Bug Tracker"])),
-        "twitter": project_urls.get('Twitter', get_attribute(
-            plugin, ["info", "project_urls", "Twitter"])),
+        "project_site": get_attribute(plugin, ["info", "home_page"]),
+        "documentation": get_attribute(plugin, ["info", "project_urls", "Documentation"]),
+        "support": get_attribute(plugin, ["info", "project_urls", "User Support"]),
+        "report_issues": get_attribute(plugin, ["info", "project_urls", "Bug Tracker"]),
+        "twitter": get_attribute(plugin, ["info", "project_urls", "Twitter"]),
     }
