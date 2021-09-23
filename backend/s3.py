@@ -29,7 +29,7 @@ def cache_available(key: str) -> bool:
     if bucket is None:
         return False
     try:
-        s3_client.head_object(bucket=bucket, key=os.path.join(bucket_path, key))
+        s3_client.head_object(Bucket=bucket, Key=os.path.join(bucket_path, key))
         return True
     except ClientError:
         return False
@@ -43,7 +43,7 @@ def get_cache(key: str) -> Union[dict, None]:
     :return: file content for the key if exists, None otherwise
     """
     if cache_available(key):
-        return json.loads(s3_client.get_object(bucket, os.path.join(bucket_path, key))['Body'].read())
+        return json.loads(s3_client.get_object(Bucket=bucket, Key=os.path.join(bucket_path, key))['Body'].read())
     else:
         print(f"Not cached: {key}")
         return None
@@ -66,5 +66,5 @@ def cache(content: Union[dict, list], key: str) -> Union[dict, list]:
     with tempfile.NamedTemporaryFile(mode="w") as fp:
         fp.write(json.dumps(content))
         fp.flush()
-        s3_client.upload_file(fp.name, bucket, os.path.join(bucket_path, key))
+        s3_client.upload_file(Fileobj=fp.name, Bucket=bucket, Key=os.path.join(bucket_path, key))
     return content
