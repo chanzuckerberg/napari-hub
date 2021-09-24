@@ -66,5 +66,5 @@ def cache(content: Union[dict, list], key: str) -> Union[dict, list]:
     with tempfile.NamedTemporaryFile(mode="w") as fp:
         fp.write(json.dumps(content))
         fp.flush()
-        s3_client.upload_file(Fileobj=fp.name, Bucket=bucket, Key=os.path.join(bucket_path, key))
+        s3_client.upload_file(Filename=fp.name, Bucket=bucket, Key=os.path.join(bucket_path, key))
     return content
