@@ -7,4 +7,3 @@ pyyaml
 requests
 markdown
 bs4
-cffconvert
