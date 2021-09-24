@@ -12,10 +12,18 @@ import { FilterChips } from './FilterChips';
 import { PluginSearchResult } from './PluginSearchResult';
 
 /**
+ * Buffer to add to search results in case the search results content is taller
+ * than the skeleton result height.
+ */
+const RESULTS_PER_PAGE_BUFFER = 5;
+
+/**
  * Returns a constant array of fake search results for loading purposes.
  */
 function getSkeletonResults() {
-  return [...Array<SearchResult>(RESULTS_PER_PAGE)].map((_, idx) => ({
+  return [
+    ...Array<SearchResult>(RESULTS_PER_PAGE + RESULTS_PER_PAGE_BUFFER),
+  ].map((_, idx) => ({
     matches: {},
     index: 0,
     plugin: { name: `fake-plugin-${idx}` } as PluginIndexData,

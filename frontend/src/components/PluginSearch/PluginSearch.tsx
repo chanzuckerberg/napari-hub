@@ -43,14 +43,8 @@ export function PluginSearch() {
   useEffect(() => {
     const scrollY = getSearchScrollY();
     if (scrollY > 0) {
-      const scrollToLastPosition = () => window.scroll(0, scrollY);
-
-      if (loading) {
-        scrollToLastPosition();
-      } else {
-        // Schedule for later execution so that DOM has time to settle.
-        requestAnimationFrame(scrollToLastPosition);
-      }
+      // Schedule for later execution so that DOM has time to settle.
+      requestAnimationFrame(() => window.scroll(0, scrollY));
     }
 
     document.addEventListener('scroll', scrollHandler);
