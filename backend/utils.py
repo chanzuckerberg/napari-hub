@@ -65,7 +65,7 @@ def send_alert(message: str):
         "text": message
     }
     if not slack_url:
-        print("Unable to send alert because slack URL is not set")
+        print(f"Unable to send alert because slack URL is not set: {message}")
     else:
         try:
             requests.post(slack_url, json=payload)

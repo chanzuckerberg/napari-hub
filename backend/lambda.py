@@ -3,6 +3,7 @@ from flask import Flask, Response, jsonify
 
 from model import get_public_plugins, get_index, get_plugin, get_excluded_plugins, update_cache
 from shield import get_shield
+from utils import send_alert
 
 app = Flask(__name__)
 handler = make_lambda_handler(app.wsgi_app)
@@ -38,3 +39,9 @@ def shield(plugin: str) -> Response:
 @app.route('/plugins/excluded')
 def get_exclusion_list() -> Response:
     return jsonify(get_excluded_plugins())
+
+
+@app.errorhandler(Exception)
+def handle_exception(e) -> Response:
+    send_alert(f"An unexpected error has occurred in napari hub: {e}")
+    return app.make_response(("Internal Server Error", 500))
