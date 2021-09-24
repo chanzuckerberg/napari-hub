@@ -64,7 +64,7 @@ def send_alert(message: str):
     payload = {
         "text": message
     }
-    if slack_url is None:
+    if not slack_url:
         print("Unable to send alert because slack URL is not set")
     else:
         try:
