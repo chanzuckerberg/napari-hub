@@ -1,7 +1,7 @@
 import json
 import os.path
 import re
-from typing import Dict
+from typing import Dict, Union
 
 import requests
 import yaml
@@ -127,23 +127,20 @@ def get_github_metadata(repo_url: str) -> dict:
     return github_metadata
 
 
-def get_citations(citation_str: str) -> Dict[str, str]:
+def get_citations(citation_str: str) -> Dict[str, Union[str, None]]:
     """
     Get citation information from the string.
     :param citation_str: citation string to parse
     :return: citation dictionary with parsed citation of different formats
     """
-    citations = {}
     try:
         citation = Citation(cffstr=citation_str)
-        citations['citation'] = citation_str
-        citations['RIS'] = citation.as_ris()
-        citations['BibTex'] = citation.as_bibtex()
-        citations['APA'] = citation.as_apalike()
+        return {
+            'citation': citation_str,
+            'RIS': citation.as_ris(),
+            'BibTex': citation.as_bibtex(),
+            'APA': citation.as_apalike()
+        }
     except ValueError:
         # invalid CITATION.cff content
-        citations['citation'] = None
-        citations['RIS'] = None
-        citations['BibTex'] = None
-        citations['APA'] = None
-    return citations
+        return dict.fromkeys(['citation', 'RIS', 'BibTex', 'APA'], None)
