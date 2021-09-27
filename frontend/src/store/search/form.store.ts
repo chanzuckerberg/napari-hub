@@ -127,6 +127,7 @@ export function resetFilters(): void {
 }
 
 export function resetState(): void {
+  searchFormStore.page = BEGINNING_PAGE;
   searchFormStore.search.query = DEFAULT_STATE.search.query;
   searchFormStore.sort = DEFAULT_STATE.sort;
   resetFilters();
