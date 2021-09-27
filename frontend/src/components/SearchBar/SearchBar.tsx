@@ -5,7 +5,7 @@ import { useSnapshot } from 'valtio';
 
 import { Close, Search } from '@/components/common/icons';
 import { BEGINNING_PAGE } from '@/constants/search';
-import { loadingStore, resetLoadingState } from '@/store/loading';
+import { resetLoadingState } from '@/store/loading';
 import {
   DEFAULT_SORT_TYPE,
   SEARCH_PAGE,
