@@ -1,14 +1,13 @@
 import { throttle } from 'lodash';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useSnapshot } from 'valtio';
 
 import { Footer, SignupForm } from '@/components';
 import { AppBarLanding } from '@/components/AppBar';
 import { ColumnLayout, Pagination } from '@/components/common';
-import { useLoadingState } from '@/context/loading';
+import { loadingStore } from '@/store/loading';
 import { searchFormStore } from '@/store/search/form.store';
 import { searchResultsStore } from '@/store/search/results.store';
-import { getSearchScrollY, setSearchScrollY } from '@/utils';
 
 import { PluginSearchBar } from './PluginSearchBar';
 import { PluginSearchControls } from './PluginSearchControls';
@@ -17,7 +16,7 @@ import { PluginSearchResultList } from './PluginSearchResultList';
 const SCROLL_HANDLER_THROTTLE_MS = 200;
 
 const scrollHandler = throttle(() => {
-  setSearchScrollY(window.scrollY);
+  loadingStore.searchScrollY = window.scrollY;
 }, SCROLL_HANDLER_THROTTLE_MS);
 
 /**
@@ -38,18 +37,26 @@ function updatePage(value: number) {
  * Component for rendering the landing page and plugin search.
  */
 export function PluginSearch() {
-  const loading = useLoadingState();
+  const initialLoadRef = useRef(true);
+  const { searchScrollY } = useSnapshot(loadingStore);
 
   useEffect(() => {
-    const scrollY = getSearchScrollY();
-    if (scrollY > 0) {
-      // Schedule for later execution so that DOM has time to settle.
-      requestAnimationFrame(() => window.scroll(0, scrollY));
+    if (!initialLoadRef.current) {
+      return;
     }
 
+    initialLoadRef.current = false;
+
+    if (searchScrollY > 0) {
+      // Schedule for later execution so that DOM has time to settle.
+      requestAnimationFrame(() => window.scroll(0, searchScrollY));
+    }
+  }, [searchScrollY]);
+
+  useEffect(() => {
     document.addEventListener('scroll', scrollHandler);
     return () => document.removeEventListener('scroll', scrollHandler);
-  }, [loading]);
+  }, []);
 
   const { page } = useSnapshot(searchFormStore);
   const {

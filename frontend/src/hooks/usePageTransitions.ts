@@ -1,7 +1,8 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import { Logger, setSearchScrollY } from '@/utils';
+import { loadingStore } from '@/store/loading';
+import { Logger } from '@/utils';
 import { isSearchPage } from '@/utils/page';
 
 const logger = new Logger('usePageTransitions.ts');
@@ -32,9 +33,17 @@ export function usePageTransitions() {
     function onLoading(url: string, { shallow }: RouteEvent) {
       if (shallow) return;
 
-      // Save `scrollY` if navigating away from the search page.
+      // If user is navigating away from the search page.
       if (isSearchPage(router) && !isSearchPage(url)) {
-        setSearchScrollY(window.scrollY);
+        // Save `scrollY` if navigating away from the search page.
+        loadingStore.searchScrollY = window.scrollY;
+
+        const searchResults = Array.from(
+          document.querySelectorAll('.searchResult'),
+        );
+        loadingStore.skeleton.resultHeights = searchResults.map(
+          (result) => (result as HTMLElement).offsetHeight,
+        );
       }
 
       setNextUrl(url);

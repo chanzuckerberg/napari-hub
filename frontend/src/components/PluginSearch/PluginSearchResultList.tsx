@@ -4,6 +4,7 @@ import { useSnapshot } from 'valtio';
 import { ColumnLayout, SkeletonLoader } from '@/components/common';
 import { RESULTS_PER_PAGE } from '@/constants/search';
 import { useLoadingState } from '@/context/loading';
+import { loadingStore } from '@/store/loading';
 import { searchResultsStore } from '@/store/search/results.store';
 import { SearchResult } from '@/store/search/search.types';
 import { PluginIndexData } from '@/types';
@@ -12,18 +13,15 @@ import { FilterChips } from './FilterChips';
 import { PluginSearchResult } from './PluginSearchResult';
 
 /**
- * Buffer to add to search results in case the search results content is taller
- * than the skeleton result height.
+ * Returns an array of fake search results for loading purposes.
+ *
+ * @param count The number of results to render.
+ *
  */
-const RESULTS_PER_PAGE_BUFFER = 5;
+function getSkeletonResults(count: number) {
+  const resultLength = count > 0 ? count : RESULTS_PER_PAGE;
 
-/**
- * Returns a constant array of fake search results for loading purposes.
- */
-function getSkeletonResults() {
-  return [
-    ...Array<SearchResult>(RESULTS_PER_PAGE + RESULTS_PER_PAGE_BUFFER),
-  ].map((_, idx) => ({
+  return [...Array<SearchResult>(resultLength)].map((_, idx) => ({
     matches: {},
     index: 0,
     plugin: { name: `fake-plugin-${idx}` } as PluginIndexData,
@@ -47,17 +45,27 @@ function SearchResultItems() {
   const {
     results: { paginatedResults },
   } = useSnapshot(searchResultsStore);
+  const {
+    skeleton: { resultHeights },
+  } = useSnapshot(loadingStore);
   const isLoading = useLoadingState();
-  const searchResults = isLoading ? getSkeletonResults() : paginatedResults;
+  const searchResults = isLoading
+    ? getSkeletonResults(resultHeights.length)
+    : paginatedResults;
 
   return (
     <>
-      {searchResults.map(({ plugin, matches }) => (
+      {searchResults.map(({ plugin, matches }, index) => (
         <PluginSearchResult
           className="col-span-2 screen-1425:col-span-3"
           key={plugin.name}
           plugin={plugin}
           matches={matches}
+          style={
+            isLoading && resultHeights[index]
+              ? { height: `${resultHeights[index]}px` }
+              : {}
+          }
         />
       ))}
     </>
