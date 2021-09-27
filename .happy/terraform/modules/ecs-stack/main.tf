@@ -37,7 +37,7 @@ locals {
   frontend_alb_zone     = try(local.secret[local.alb_key]["frontend"]["zone_id"], "")
   frontend_alb_dns      = try(local.secret[local.alb_key]["frontend"]["dns_name"], "")
 
-  slack_url = try(local.secret["slack_url"], "")
+  slack_url = try(local.secret["slack"]["url"], "")
   zulip_credentials = try(local.secret["zulip"]["credentials"], "")
   github_client_id = try(local.secret["github"]["client_id"], "")
   github_client_secret = try(local.secret["github"]["client_secret"], "")
@@ -94,7 +94,7 @@ module backend_lambda {
 
   environment = {
     "BUCKET" = local.data_bucket_name
-    "BUCKET_PATH" = ""
+    "BUCKET_PATH" = var.env == "dev" ? local.custom_stack_name : ""
     "GOOGLE_APPLICATION_CREDENTIALS" = "./credentials.json"
     "SLACK_URL" = local.slack_url
     "ZULIP_CREDENTIALS" = local.zulip_credentials
@@ -129,7 +129,7 @@ resource "aws_cloudwatch_event_target" "update_target" {
     rule = aws_cloudwatch_event_rule.update_rule.name
     arn = module.backend_lambda.function_arn
     input_transformer {
-        input_template = jsonencode({path = "/plugins/index/update", httpMethod = "GET"})
+        input_template = jsonencode({path = "/update", httpMethod = "POST"})
     }
 }
 
