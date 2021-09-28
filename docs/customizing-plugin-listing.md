@@ -56,6 +56,7 @@ Fields that can be defined through the napari config include...
 - [Support](#support)
 - [Report Issues](#report-issues)
 - [Twitter](#twitter)
+- [Visibility](#visibility)
 
 Fields that come from the GitHub API
 - [License](#license)
@@ -83,7 +84,7 @@ For each of the fields in a plugin's listing, we outline below how the field is 
 | Twitter              |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://pypi.org/static/images/logo-small.svg" height="20">) |
 | Source Code          |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://pypi.org/static/images/logo-small.svg" height="20"> |
 | Release Date         |     ✅      |     ✅      |     ⛔      |      ✅       |    ⛔    |    <img src="https://pypi.org/static/images/logo-small.svg" height="20"> |
-| First Released       |     ✅      |     ⛔      |     ⛔      |      ✅       |    ⛔    |    <img src="https://pypi.org/static/images/logo-small.svg" height="20"> |
+| Visibility       |           |            |            |              |         |    <img src="https://github.com/favicon.ico" height="20"> |
 
 ### Name
 
@@ -572,5 +573,21 @@ project_urls =
     Documentation = https://spacetx-starfish.readthedocs.io/en/latest/
     Source Code = https://github.com/spacetx/starfish
     User Support = https://forum.image.sc/tag/starfish
+# ...
+```
+
+### Visibility
+
+This field lets you control the visibility of your plugin on the napari hub. We support three levels of visibility:
+
+- `public` (default): plugin is available through search and plugin listings
+- `hidden`: plugin details page is available, but the plugin does not show up in search
+- `disabled`: plugin does not show up on the napari hub
+
+``` YAML
+# .napari/config.yml
+# ...
+visibility: public
+
 # ...
 ```
