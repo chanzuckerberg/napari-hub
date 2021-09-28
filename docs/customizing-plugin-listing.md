@@ -67,23 +67,23 @@ For each of the fields in a plugin's listing, we outline below how the field is 
 
 | Metadata             | Full view   |  List view  | Filterable  | Sortable      | Searched  | Source (Backup)  |
 |----------------------|:-----------:|:-----------:|:-----------:|:-------------:|:---------:|:---------:|
-| Name                 |     ✅      |     ✅      |     ⛔      |      ✅       |    ✅    |    <img src="https://pypi.org/static/images/logo-small.svg" height="20"> |
-| Summary              |     ✅      |     ✅      |     ⛔      |      ⛔       |    ✅    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://pypi.org/static/images/logo-small.svg" height="20">) |
-| Description          |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ✅    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://pypi.org/static/images/logo-small.svg" height="20">) |
-| Authors              |     ✅      |     ✅      |     ⛔      |      ⛔       |    ✅    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://pypi.org/static/images/logo-small.svg" height="20">) |
-| License              |     ✅      |     ✅      |     ✅      |      ⛔       |    ⛔    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://pypi.org/static/images/logo-small.svg" height="20">) |
-| Version              |     ✅      |     ✅      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://pypi.org/static/images/logo-small.svg" height="20"> |
-| Development Status   |     ✅      |     ⛔      |     ✅      |      ⛔       |    ⛔    |    <img src="https://pypi.org/static/images/logo-small.svg" height="20"> |
-| Python Version       |     ✅      |     ⛔      |     ✅      |      ⛔       |    ⛔    |    <img src="https://pypi.org/static/images/logo-small.svg" height="20"> |
-| Operating System     |     ✅      |     ⛔      |     ✅      |      ⛔       |    ⛔    |    <img src="https://pypi.org/static/images/logo-small.svg" height="20"> |
-| Requirements         |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://pypi.org/static/images/logo-small.svg" height="20"> |
-| Project Site         |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://pypi.org/static/images/logo-small.svg" height="20">) |
-| Documentation        |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://pypi.org/static/images/logo-small.svg" height="20">) |
-| Support              |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://pypi.org/static/images/logo-small.svg" height="20">) |
-| Report Issues        |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://pypi.org/static/images/logo-small.svg" height="20">) |
-| Twitter              |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://pypi.org/static/images/logo-small.svg" height="20">) |
-| Source Code          |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://pypi.org/static/images/logo-small.svg" height="20"> |
-| Release Date         |     ✅      |     ✅      |     ⛔      |      ✅       |    ⛔    |    <img src="https://pypi.org/static/images/logo-small.svg" height="20"> |
+| Name                 |     ✅      |     ✅      |     ⛔      |      ✅       |    ✅    |    <img src="https://raw.githubusercontent.com/chanzuckerberg/napari-hub/main/docs/Python-logo-notext.svg" height="20"> |
+| Summary              |     ✅      |     ✅      |     ⛔      |      ⛔       |    ✅    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://raw.githubusercontent.com/chanzuckerberg/napari-hub/main/docs/Python-logo-notext.svg" height="20">) |
+| Description          |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ✅    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://raw.githubusercontent.com/chanzuckerberg/napari-hub/main/docs/Python-logo-notext.svg" height="20">) |
+| Authors              |     ✅      |     ✅      |     ⛔      |      ⛔       |    ✅    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://raw.githubusercontent.com/chanzuckerberg/napari-hub/main/docs/Python-logo-notext.svg" height="20">) |
+| License              |     ✅      |     ✅      |     ✅      |      ⛔       |    ⛔    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://raw.githubusercontent.com/chanzuckerberg/napari-hub/main/docs/Python-logo-notext.svg" height="20">) |
+| Version              |     ✅      |     ✅      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://raw.githubusercontent.com/chanzuckerberg/napari-hub/main/docs/Python-logo-notext.svg" height="20"> |
+| Development Status   |     ✅      |     ⛔      |     ✅      |      ⛔       |    ⛔    |    <img src="https://raw.githubusercontent.com/chanzuckerberg/napari-hub/main/docs/Python-logo-notext.svg" height="20"> |
+| Python Version       |     ✅      |     ⛔      |     ✅      |      ⛔       |    ⛔    |    <img src="https://raw.githubusercontent.com/chanzuckerberg/napari-hub/main/docs/Python-logo-notext.svg" height="20"> |
+| Operating System     |     ✅      |     ⛔      |     ✅      |      ⛔       |    ⛔    |    <img src="https://raw.githubusercontent.com/chanzuckerberg/napari-hub/main/docs/Python-logo-notext.svg" height="20"> |
+| Requirements         |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://raw.githubusercontent.com/chanzuckerberg/napari-hub/main/docs/Python-logo-notext.svg" height="20"> |
+| Project Site         |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://raw.githubusercontent.com/chanzuckerberg/napari-hub/main/docs/Python-logo-notext.svg" height="20">) |
+| Documentation        |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://raw.githubusercontent.com/chanzuckerberg/napari-hub/main/docs/Python-logo-notext.svg" height="20">) |
+| Support              |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://raw.githubusercontent.com/chanzuckerberg/napari-hub/main/docs/Python-logo-notext.svg" height="20">) |
+| Report Issues        |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://raw.githubusercontent.com/chanzuckerberg/napari-hub/main/docs/Python-logo-notext.svg" height="20">) |
+| Twitter              |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://raw.githubusercontent.com/chanzuckerberg/napari-hub/main/docs/Python-logo-notext.svg" height="20">) |
+| Source Code          |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://raw.githubusercontent.com/chanzuckerberg/napari-hub/main/docs/Python-logo-notext.svg" height="20"> |
+| Release Date         |     ✅      |     ✅      |     ⛔      |      ✅       |    ⛔    |    <img src="https://raw.githubusercontent.com/chanzuckerberg/napari-hub/main/docs/Python-logo-notext.svg" height="20"> |
 | Visibility       |           |            |            |              |         |    <img src="https://github.com/favicon.ico" height="20"> |
 
 ### Name
@@ -214,7 +214,7 @@ Authors listed in your napari config file will take precedence over the `author`
 
 This is the [SPDX Identifier](https://spdx.org/licenses/) for the license that the plugin is distributed under.
 
-We display this on the detailed plugin page and the plugin listings. 
+We display this on the detailed plugin page and the plugin listings.
 
 We support filtering plugins based on whether the plugin is released under an [OSI-approved](https://opensource.org/licenses) open source license.
 
@@ -262,9 +262,9 @@ We support the 7 levels of ["Development Status"](https://pypi.org/classifiers/)
 - `6 - Mature`
 - `7 - Inactive`
 
-We display this on the detailed plugin page and the plugin listings. 
+We display this on the detailed plugin page and the plugin listings.
 
-We support filtering plugins that are "stable" based on this value. 
+We support filtering plugins that are "stable" based on this value.
 Plugins that are labeled as "5" (Production/Stable) or "6" (Mature) will be considered "stable".
 
 We source this from the list of classifiers in the `["info"]["classifiers"]` field of the JSON returned by the PyPI API.
@@ -286,7 +286,7 @@ classifier =
 
 These are the Python versions your plugin supports.
 
-We display this on the detailed plugin page and the plugin listings. 
+We display this on the detailed plugin page and the plugin listings.
 
 We support filtering plugins according to the minor versions of Python they support, based on this field.
 For example, if a plugin developer notes that a plugin supports, Python ">=3.8", then the plugin will be tagged with Python versions `3.8` and `3.9`.
