@@ -161,7 +161,7 @@ def update_cache():
 def get_updated_plugin_exclusion(plugins_metadata):
     """
     Update plugin visibility information with latest metadata.
-    Override existing visibility information if existing entry is not 'admin' (disabled by hub admin)
+    Override existing visibility information if existing entry is not 'blocked' (disabled by hub admin)
 
     public: fully visible (default)
     hidden: plugin page exists, but doesn't show up in search listings
@@ -174,7 +174,7 @@ def get_updated_plugin_exclusion(plugins_metadata):
     for plugin, plugin_metadata in plugins_metadata.items():
         if 'visibility' not in plugin_metadata:
             continue
-        if plugin in excluded_plugins and excluded_plugins[plugin] != "admin":
+        if plugin in excluded_plugins and excluded_plugins[plugin] != "blocked":
             if plugin_metadata['visibility'] == 'public':
                 del excluded_plugins[plugin]
             else:
