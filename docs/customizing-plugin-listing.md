@@ -67,23 +67,23 @@ For each of the fields in a plugin's listing, we outline below how the field is 
 
 | Metadata             | Full view   |  List view  | Filterable  | Sortable      | Searched  | Source (Backup)  |
 |----------------------|:-----------:|:-----------:|:-----------:|:-------------:|:---------:|:---------:|
-| Name                 |     ✅      |     ✅      |     ⛔      |      ✅       |    ✅    |    <img src="https://raw.githubusercontent.com/chanzuckerberg/napari-hub/main/docs/Python-logo-notext.svg" height="20"> |
-| Summary              |     ✅      |     ✅      |     ⛔      |      ⛔       |    ✅    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://raw.githubusercontent.com/chanzuckerberg/napari-hub/main/docs/Python-logo-notext.svg" height="20">) |
-| Description          |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ✅    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://raw.githubusercontent.com/chanzuckerberg/napari-hub/main/docs/Python-logo-notext.svg" height="20">) |
-| Authors              |     ✅      |     ✅      |     ⛔      |      ⛔       |    ✅    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://raw.githubusercontent.com/chanzuckerberg/napari-hub/main/docs/Python-logo-notext.svg" height="20">) |
-| License              |     ✅      |     ✅      |     ✅      |      ⛔       |    ⛔    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://raw.githubusercontent.com/chanzuckerberg/napari-hub/main/docs/Python-logo-notext.svg" height="20">) |
-| Version              |     ✅      |     ✅      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://raw.githubusercontent.com/chanzuckerberg/napari-hub/main/docs/Python-logo-notext.svg" height="20"> |
-| Development Status   |     ✅      |     ⛔      |     ✅      |      ⛔       |    ⛔    |    <img src="https://raw.githubusercontent.com/chanzuckerberg/napari-hub/main/docs/Python-logo-notext.svg" height="20"> |
-| Python Version       |     ✅      |     ⛔      |     ✅      |      ⛔       |    ⛔    |    <img src="https://raw.githubusercontent.com/chanzuckerberg/napari-hub/main/docs/Python-logo-notext.svg" height="20"> |
-| Operating System     |     ✅      |     ⛔      |     ✅      |      ⛔       |    ⛔    |    <img src="https://raw.githubusercontent.com/chanzuckerberg/napari-hub/main/docs/Python-logo-notext.svg" height="20"> |
-| Requirements         |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://raw.githubusercontent.com/chanzuckerberg/napari-hub/main/docs/Python-logo-notext.svg" height="20"> |
-| Project Site         |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://raw.githubusercontent.com/chanzuckerberg/napari-hub/main/docs/Python-logo-notext.svg" height="20">) |
-| Documentation        |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://raw.githubusercontent.com/chanzuckerberg/napari-hub/main/docs/Python-logo-notext.svg" height="20">) |
-| Support              |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://raw.githubusercontent.com/chanzuckerberg/napari-hub/main/docs/Python-logo-notext.svg" height="20">) |
-| Report Issues        |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://raw.githubusercontent.com/chanzuckerberg/napari-hub/main/docs/Python-logo-notext.svg" height="20">) |
-| Twitter              |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://raw.githubusercontent.com/chanzuckerberg/napari-hub/main/docs/Python-logo-notext.svg" height="20">) |
-| Source Code          |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://raw.githubusercontent.com/chanzuckerberg/napari-hub/main/docs/Python-logo-notext.svg" height="20"> |
-| Release Date         |     ✅      |     ✅      |     ⛔      |      ✅       |    ⛔    |    <img src="https://raw.githubusercontent.com/chanzuckerberg/napari-hub/main/docs/Python-logo-notext.svg" height="20"> |
+| Name                 |     ✅      |     ✅      |     ⛔      |      ✅       |    ✅    |    <img src="/Python-logo-notext.svg" height="20"> |
+| Summary              |     ✅      |     ✅      |     ⛔      |      ⛔       |    ✅    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="/Python-logo-notext.svg" height="20">) |
+| Description          |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ✅    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="/Python-logo-notext.svg" height="20">) |
+| Authors              |     ✅      |     ✅      |     ⛔      |      ⛔       |    ✅    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="/Python-logo-notext.svg" height="20">) |
+| License              |     ✅      |     ✅      |     ✅      |      ⛔       |    ⛔    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="/Python-logo-notext.svg" height="20">) |
+| Version              |     ✅      |     ✅      |     ⛔      |      ⛔       |    ⛔    |    <img src="/Python-logo-notext.svg" height="20"> |
+| Development Status   |     ✅      |     ⛔      |     ✅      |      ⛔       |    ⛔    |    <img src="/Python-logo-notext.svg" height="20"> |
+| Python Version       |     ✅      |     ⛔      |     ✅      |      ⛔       |    ⛔    |    <img src="/Python-logo-notext.svg" height="20"> |
+| Operating System     |     ✅      |     ⛔      |     ✅      |      ⛔       |    ⛔    |    <img src="/Python-logo-notext.svg" height="20"> |
+| Requirements         |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="/Python-logo-notext.svg" height="20"> |
+| Project Site         |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="/Python-logo-notext.svg" height="20">) |
+| Documentation        |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="/Python-logo-notext.svg" height="20">) |
+| Support              |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="/Python-logo-notext.svg" height="20">) |
+| Report Issues        |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="/Python-logo-notext.svg" height="20">) |
+| Twitter              |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="/Python-logo-notext.svg" height="20">) |
+| Source Code          |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="/Python-logo-notext.svg" height="20"> |
+| Release Date         |     ✅      |     ✅      |     ⛔      |      ✅       |    ⛔    |    <img src="/Python-logo-notext.svg" height="20"> |
 | Visibility       |           |            |            |              |         |    <img src="https://github.com/favicon.ico" height="20"> |
 
 ### Name
