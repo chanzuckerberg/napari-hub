@@ -1,6 +1,6 @@
 import { throttle } from 'lodash';
-import { useEffect, useRef } from 'react';
-import { useSnapshot } from 'valtio';
+import { useEffect } from 'react';
+import { snapshot, useSnapshot } from 'valtio';
 
 import { Footer, SignupForm } from '@/components';
 import { AppBarLanding } from '@/components/AppBar';
@@ -34,34 +34,44 @@ function updatePage(value: number) {
 }
 
 /**
+ * Pagination component using search form and result state for determining the
+ * current page and the total pages.
+ */
+function SearchPagination() {
+  const { page } = useSnapshot(searchFormStore);
+  const {
+    results: { totalPages },
+  } = useSnapshot(searchResultsStore);
+
+  return (
+    <Pagination
+      className="my-6 screen-495:my-12"
+      onNextPage={() => updatePage(1)}
+      onPrevPage={() => updatePage(-1)}
+      page={page}
+      totalPages={totalPages}
+    />
+  );
+}
+
+/**
  * Component for rendering the landing page and plugin search.
  */
 export function PluginSearch() {
-  const initialLoadRef = useRef(true);
-  const { searchScrollY } = useSnapshot(loadingStore);
-
+  // Scroll to last scroll location on initial load.
   useEffect(() => {
-    if (!initialLoadRef.current) {
-      return;
-    }
-
-    initialLoadRef.current = false;
+    const { searchScrollY } = snapshot(loadingStore);
 
     if (searchScrollY > 0) {
       // Schedule for later execution so that DOM has time to settle.
       requestAnimationFrame(() => window.scroll(0, searchScrollY));
     }
-  }, [searchScrollY]);
+  }, []);
 
   useEffect(() => {
     document.addEventListener('scroll', scrollHandler);
     return () => document.removeEventListener('scroll', scrollHandler);
   }, []);
-
-  const { page } = useSnapshot(searchFormStore);
-  const {
-    results: { totalPages },
-  } = useSnapshot(searchResultsStore);
 
   return (
     <div className="flex flex-col">
@@ -82,13 +92,7 @@ export function PluginSearch() {
         </ColumnLayout>
       </div>
 
-      <Pagination
-        className="my-6 screen-495:my-12"
-        onNextPage={() => updatePage(1)}
-        onPrevPage={() => updatePage(-1)}
-        page={page}
-        totalPages={totalPages}
-      />
+      <SearchPagination />
 
       <SignupForm variant="home" />
       <Footer />
