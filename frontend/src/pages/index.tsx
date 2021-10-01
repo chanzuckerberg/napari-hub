@@ -1,4 +1,5 @@
 import { AxiosError } from 'axios';
+import { over } from 'lodash';
 import Head from 'next/head';
 import { ReactNode, useEffect } from 'react';
 
@@ -8,6 +9,7 @@ import { PluginSearch } from '@/components/PluginSearch';
 import { useLoadingState } from '@/context/loading';
 import {
   initOsiApprovedLicenseSet,
+  initPageResetListener,
   initSearchEngine,
 } from '@/store/search/form.store';
 import { initQueryParameterListener } from '@/store/search/queryParameters';
@@ -55,8 +57,12 @@ export default function Home({ error, index, licenses }: Props) {
       initOsiApprovedLicenseSet(licenses);
     }
 
-    const unsubscribe = initQueryParameterListener();
-    return unsubscribe;
+    const unsubscribe = over([
+      initQueryParameterListener(),
+      initPageResetListener(),
+    ]);
+
+    return unsubscribe as () => void;
   }, [index, isLoading, licenses]);
 
   return (

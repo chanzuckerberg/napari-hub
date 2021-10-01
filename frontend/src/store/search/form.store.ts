@@ -1,5 +1,6 @@
+import { over } from 'lodash';
 import { proxy, ref } from 'valtio';
-import { derive } from 'valtio/utils';
+import { derive, subscribeKey } from 'valtio/utils';
 
 import { BEGINNING_PAGE } from '@/constants/search';
 import { PluginIndexData } from '@/types';
@@ -52,6 +53,10 @@ export const DEFAULT_STATE = {
  * bar, sort radio group, and all of the filter items.
  */
 export const searchFormStore = proxy(DEFAULT_STATE);
+
+if (process.browser) {
+  (window as any).searchFormStore = searchFormStore;
+}
 
 export type SearchFormStore = typeof searchFormStore;
 
@@ -131,4 +136,22 @@ export function resetState(): void {
   searchFormStore.search.query = DEFAULT_STATE.search.query;
   searchFormStore.sort = DEFAULT_STATE.sort;
   resetFilters();
+}
+
+/**
+ * Sets up a state subscriber that resets the page whenever the search, sort
+ * type, or filters change.
+ */
+export function initPageResetListener(): () => void {
+  function resetPage() {
+    searchFormStore.page = BEGINNING_PAGE;
+  }
+
+  const unsubscribe = over([
+    subscribeKey(searchFormStore, 'search', resetPage),
+    subscribeKey(searchFormStore, 'sort', resetPage),
+    subscribeKey(searchFormStore, 'filters', resetPage),
+  ]);
+
+  return unsubscribe;
 }
