@@ -54,10 +54,6 @@ export const DEFAULT_STATE = {
  */
 export const searchFormStore = proxy(DEFAULT_STATE);
 
-if (process.browser) {
-  (window as any).searchFormStore = searchFormStore;
-}
-
 export type SearchFormStore = typeof searchFormStore;
 
 /**
