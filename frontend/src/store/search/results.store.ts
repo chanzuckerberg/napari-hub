@@ -1,6 +1,7 @@
 import { derive } from 'valtio/utils';
 
-import { Logger, measureExecution, setSkeletonResultCount } from '@/utils';
+import { RESULTS_PER_PAGE } from '@/constants/search';
+import { Logger, measureExecution } from '@/utils';
 
 import { filterResults } from './filters';
 import { searchFormStore } from './form.store';
@@ -8,6 +9,19 @@ import { SearchResult } from './search.types';
 import { sortResults } from './sorters';
 
 const logger = new Logger('results.store.ts');
+
+/**
+ * Helper for getting a paginated slice of the results.
+ *
+ * @param results The search results.
+ * @param page The current page.
+ * @returns The paginated results.
+ */
+function getPaginationResults(results: SearchResult[], page: number) {
+  const startIndex = (page - 1) * RESULTS_PER_PAGE;
+  const endIndex = Math.min(results.length, page * RESULTS_PER_PAGE);
+  return results.slice(startIndex, endIndex);
+}
 
 /**
  * Valtio derived store for plugin search results. This store is used for
@@ -43,11 +57,13 @@ export const searchResultsStore = derive({
     results = filterResults(get, results);
     results = sortResults(state.sort, results);
 
-    // Store result count in sessionStorage for the skeleton loader.
-    if (process.browser) {
-      setSkeletonResultCount(results.length);
-    }
+    const totalPlugins = results.length;
+    const totalPages = Math.ceil(totalPlugins / RESULTS_PER_PAGE);
 
-    return results;
+    return {
+      totalPlugins,
+      totalPages,
+      paginatedResults: getPaginationResults(results, state.page),
+    };
   },
 });

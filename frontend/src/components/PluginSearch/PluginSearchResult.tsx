@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import { isEmpty } from 'lodash';
+import { CSSProperties } from 'react';
 
 import { Link, SkeletonLoader, TextHighlighter } from '@/components/common';
 import { useLoadingState } from '@/context/loading';
@@ -22,6 +23,8 @@ interface Props {
    * Search engine matches for text highlighting.
    */
   matches: Partial<Record<string, SearchResultMatch>>;
+
+  style?: CSSProperties;
 }
 
 interface SearchResultItem {
@@ -84,7 +87,12 @@ function getDescriptionPreview(
 /**
  * Component for rendering a plugin search result.
  */
-export function PluginSearchResult({ className, matches, plugin }: Props) {
+export function PluginSearchResult({
+  className,
+  matches,
+  plugin,
+  style,
+}: Props) {
   const isLoading = useLoadingState();
 
   // TODO consolidate with PluginGithubData component in PluginMetadata.tsx
@@ -225,17 +233,27 @@ export function PluginSearchResult({ className, matches, plugin }: Props) {
     );
   }
 
-  const resultClassName = clsx(className, 'py-5 border-t-2 border-black');
+  const resultClassName = clsx(
+    className,
+    'searchResult',
+    'py-5 border-black border-t-2 last:border-b-2',
+  );
 
   // Convert to link when loading so that user can't click on result.
   if (isLoading) {
-    return <div className={resultClassName}>{renderResult()}</div>;
+    return (
+      <div className={resultClassName} style={style}>
+        {renderResult()}
+      </div>
+    );
   }
 
   return (
     <Link
+      data-testid="pluginSearchResult"
       className={clsx(resultClassName, 'hover:bg-napari-hover-gray')}
       href={`/plugins/${plugin.name}`}
+      style={style}
     >
       {renderResult()}
     </Link>

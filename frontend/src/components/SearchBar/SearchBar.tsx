@@ -4,6 +4,8 @@ import { HTMLProps, useEffect, useState } from 'react';
 import { useSnapshot } from 'valtio';
 
 import { Close, Search } from '@/components/common/icons';
+import { BEGINNING_PAGE } from '@/constants/search';
+import { resetLoadingState } from '@/store/loading';
 import {
   DEFAULT_SORT_TYPE,
   SEARCH_PAGE,
@@ -11,7 +13,7 @@ import {
   SearchSortType,
 } from '@/store/search/constants';
 import { searchFormStore } from '@/store/search/form.store';
-import { isSearchPage, scrollToSearchBar, setSearchScrollY } from '@/utils';
+import { isSearchPage, scrollToSearchBar } from '@/utils';
 
 import styles from './SearchBar.module.scss';
 
@@ -60,9 +62,8 @@ export function SearchBar({ large, ...props }: Props) {
    * redirects to the search page with the query added to the URL.
    */
   async function submitForm(searchQuery: string) {
-    // Reset `scrollY` value so that the browser can scroll to the search
-    // bar after searching.
-    setSearchScrollY(0);
+    // Reset loading state when navigating to the search page.
+    resetLoadingState();
 
     if (isSearchPage(window.location.pathname)) {
       if (searchQuery) {
@@ -91,6 +92,9 @@ export function SearchBar({ large, ...props }: Props) {
       };
       await router.push(url);
     }
+
+    // Reset pagination when searching with a new query.
+    searchFormStore.page = BEGINNING_PAGE;
   }
 
   return (
