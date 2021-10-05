@@ -1,9 +1,11 @@
 import fs from 'fs-extra';
 import { GetStaticPropsResult } from 'next';
+import DefaultErrorPage from 'next/error';
 
 import { PluginDetails } from '@/components';
 import { DEFAULT_PLUGIN_DATA, DEFAULT_REPO_DATA } from '@/constants/plugin';
 import { PluginStateProvider } from '@/context/plugin';
+import { PROD } from '@/env';
 import { PluginData } from '@/types';
 import { fetchRepoData, FetchRepoDataResult } from '@/utils';
 
@@ -11,10 +13,11 @@ interface Props extends FetchRepoDataResult {
   plugin: PluginData;
 }
 
-export async function getStaticProps(): Promise<GetStaticPropsResult<Props>> {
-  const pluginPath = process.env.PREVIEW;
+const PLUGIN_PATH = process.env.PREVIEW;
 
-  if (!pluginPath) {
+export async function getStaticProps(): Promise<GetStaticPropsResult<Props>> {
+  // Return default data to prevent Next.js error if the plugin path is not defined.
+  if (!PLUGIN_PATH) {
     return {
       props: {
         plugin: DEFAULT_PLUGIN_DATA,
@@ -23,7 +26,7 @@ export async function getStaticProps(): Promise<GetStaticPropsResult<Props>> {
     };
   }
 
-  const pluginData = await fs.readFile(pluginPath, 'utf-8');
+  const pluginData = await fs.readFile(PLUGIN_PATH, 'utf-8');
   const plugin = JSON.parse(pluginData) as PluginData;
   const repoFetchResult = await fetchRepoData(plugin.code_repository);
 
@@ -36,6 +39,11 @@ export async function getStaticProps(): Promise<GetStaticPropsResult<Props>> {
 }
 
 export default function PreviewPage({ plugin, repo, repoFetchError }: Props) {
+  // Return 404 page in production or if the plugin path is not defined.
+  if (PROD || !PLUGIN_PATH) {
+    return <DefaultErrorPage statusCode={404} />;
+  }
+
   return (
     <PluginStateProvider
       plugin={plugin}

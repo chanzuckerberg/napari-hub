@@ -63,22 +63,6 @@ module.exports = withMDX({
     webpack5: true,
   },
 
-  async redirects() {
-    const redirects = [];
-
-    // Redirect the preview page to the home page in production so that users
-    // can't visit the page directly.
-    if (PROD && !PREVIEW) {
-      redirects.push({
-        source: '/preview',
-        destination: '/',
-        permanent: true,
-      });
-    }
-
-    return redirects;
-  },
-
   webpack(config, { isServer }) {
     // Sets BABEL_ENV to `client` or `server` depending on the Next.js build.
     // This is required for the Material UI + babel import plugin to work.
