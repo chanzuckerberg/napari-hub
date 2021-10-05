@@ -12,6 +12,9 @@ const colors = {
   gray: '#6f6f6f',
   light: '#d2efff',
   error: '#eb1000',
+  previewGray: '#ededed',
+  previewOrange: '#d85e38',
+  previewOrangeOverlay: 'rgba(216, 94, 56, 0.1)',
 };
 
 const breakpoints = {
