@@ -1,4 +1,4 @@
-import { inRange, set } from 'lodash';
+import { set } from 'lodash';
 import { subscribe } from 'valtio';
 
 import { BEGINNING_PAGE, RESULTS_PER_PAGE } from '@/constants/search';
@@ -84,10 +84,15 @@ function initStateFromQueryParameters() {
       searchFormStore.search.index.length / RESULTS_PER_PAGE,
     );
 
-    searchFormStore.page =
-      Number.isNaN(page) || !inRange(page, BEGINNING_PAGE, totalPages + 1)
-        ? BEGINNING_PAGE
-        : page;
+    // If the page number is not a number or not in range, then set it to the
+    // beginning or ending page depending on which is closer.
+    if (Number.isNaN(page) || page < BEGINNING_PAGE) {
+      searchFormStore.page = BEGINNING_PAGE;
+    } else if (page > totalPages) {
+      searchFormStore.page = totalPages;
+    } else {
+      searchFormStore.page = page;
+    }
   }
 }
 
