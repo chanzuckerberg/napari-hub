@@ -8,6 +8,7 @@ import { ColumnLayout, Pagination } from '@/components/common';
 import { loadingStore } from '@/store/loading';
 import { searchFormStore } from '@/store/search/form.store';
 import { searchResultsStore } from '@/store/search/results.store';
+import { scrollToSearchBar } from '@/utils';
 
 import { PluginSearchBar } from './PluginSearchBar';
 import { PluginSearchControls } from './PluginSearchControls';
@@ -29,8 +30,9 @@ function updatePage(value: number) {
   // Update page value.
   searchFormStore.page += value;
 
-  // Schedule scroll for later execution. Wrap in `raf()` to remove scroll flicker.
-  requestAnimationFrame(() => window.scroll(0, document.body.scrollHeight));
+  // Scroll to top of results so that the user will see the most relevant for
+  // the current page.
+  scrollToSearchBar();
 }
 
 /**
