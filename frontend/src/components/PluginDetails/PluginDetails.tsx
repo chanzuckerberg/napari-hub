@@ -3,6 +3,7 @@ import { throttle } from 'lodash';
 import Head from 'next/head';
 import { useEffect } from 'react';
 
+import { AppBarPreview } from '@/components/AppBar';
 import {
   ColumnLayout,
   Markdown,
@@ -12,7 +13,7 @@ import {
 import { Media, MediaFragment } from '@/components/common/media';
 import { useLoadingState } from '@/context/loading';
 import { usePluginState } from '@/context/plugin';
-import { usePlausible } from '@/hooks';
+import { useIsPreview, usePlausible } from '@/hooks';
 
 import { CallToActionButton } from './CallToActionButton';
 import { PluginMetadata } from './PluginMetadata';
@@ -169,6 +170,7 @@ const scrollHandler = throttle(() => {
 export function PluginDetails() {
   const loading = useLoadingState();
   const { plugin } = usePluginState();
+  const isPreview = useIsPreview();
 
   useEffect(() => {
     if (loading) {
@@ -200,6 +202,8 @@ export function PluginDetails() {
         <title>{title}</title>
         <PageMetadata keywords={keywords} description={plugin?.summary} />
       </Head>
+
+      {isPreview && <AppBarPreview />}
 
       <ColumnLayout
         className="p-6 md:p-12 2xl:px-0"
