@@ -59,7 +59,16 @@ export function Pagination({
   }
 
   return (
-    <nav className={clsx(className, 'flex items-center justify-center')}>
+    <nav
+      className={clsx(
+        className,
+        'flex items-center justify-center',
+
+        // Disable user selection so that the cursor doesn't flicker between the
+        // default and select pointers.
+        'select-none',
+      )}
+    >
       {renderPageButton('left')}
 
       <span className={styles.value} data-testid="paginationValue">
