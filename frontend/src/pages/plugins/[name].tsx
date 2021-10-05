@@ -187,11 +187,7 @@ export default function PluginPage({
     <>
       <Head>
         <title>{title}</title>
-        <PageMetadata
-          keywords={keywords}
-          description={plugin?.summary}
-          pathname={router.pathname}
-        />
+        <PageMetadata keywords={keywords} description={plugin?.summary} />
       </Head>
 
       {error ? (
