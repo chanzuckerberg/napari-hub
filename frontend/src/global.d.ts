@@ -8,5 +8,6 @@ declare namespace NodeJS {
     readonly GITHUB_CLIENT_SECRET: string;
     readonly PLAUSIBLE: 'true' | 'false';
     readonly PREVIEW: string;
+    readonly PREVIEW_PULL_REQUEST: string;
   }
 }
