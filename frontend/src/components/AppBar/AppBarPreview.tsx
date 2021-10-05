@@ -1,6 +1,7 @@
 import { Collapse, IconButton } from '@material-ui/core';
 import clsx from 'clsx';
 import { useState } from 'react';
+import { ReactNode } from 'react-markdown';
 
 import { Link } from '@/components/common';
 import {
@@ -11,6 +12,7 @@ import {
 import { Media } from '@/components/common/media';
 
 import styles from './AppBarPreview.module.scss';
+import { useMetadataSections } from './metadataPreview.hooks';
 import { MetadataStatus } from './MetadataStatus';
 import { PreviewMetadataPanel } from './PreviewMetadataPanel';
 
@@ -18,14 +20,23 @@ const HUB_WIKI_LINK =
   'https://github.com/chanzuckerberg/napari-hub/blob/main/docs/customizing-plugin-listing.md';
 
 function MetadataStatusBar() {
-  // TODO replace with form state
-  const states = ['a', 'b', 'c'];
+  const sections = useMetadataSections();
 
   return (
     <div className="flex space-x-px">
-      {states.map((stateName, index) => (
-        <MetadataStatus key={stateName} hasValue={index % 2 === 0} />
-      ))}
+      {sections.reduce(
+        (result, section) =>
+          result.concat(
+            section.fields.map((field) => (
+              <MetadataStatus
+                key={field.name}
+                hasValue={field.hasValue}
+                variant="small"
+              />
+            )),
+          ),
+        [] as ReactNode[],
+      )}
     </div>
   );
 }
@@ -47,15 +58,29 @@ function AppBarPreviewLeftColumn() {
 }
 
 function AppBarPreviewCenterColumn() {
+  const sections = useMetadataSections();
+  let missingFieldsCount = 0;
+
+  for (const section of sections) {
+    for (const field of section.fields) {
+      if (!field.hasValue) {
+        missingFieldsCount += 1;
+      }
+    }
+  }
+
   return (
     <>
       <span
         className={clsx(
           styles.fieldInfo,
           'font-bold bg-napari-primary whitespace-nowrap',
+          missingFieldsCount > 0 && 'bg-napari-preview-orange text-white',
         )}
       >
-        All fields complete!
+        {missingFieldsCount > 0
+          ? `${missingFieldsCount} fields need attention`
+          : 'All fields complete!'}
       </span>
 
       <Media className="text-sm font-semibold" greaterThanOrEqual="screen-875">
@@ -79,8 +104,14 @@ function AppBarPreviewRightColumn({
 }: AppBarPreviewRightColumnProps) {
   return (
     <>
-      <Media greaterThanOrEqual="screen-1150">
-        {!expanded && <MetadataStatusBar />}
+      <Media
+        className={clsx(
+          'opacity-0 transition-opacity',
+          !expanded && 'opacity-100',
+        )}
+        greaterThanOrEqual="screen-1150"
+      >
+        <MetadataStatusBar />
       </Media>
 
       <IconButton
