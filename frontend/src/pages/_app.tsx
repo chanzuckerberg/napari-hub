@@ -17,12 +17,12 @@ import { ComponentType, ReactNode } from 'react';
 import { Layout } from '@/components';
 import { PageMetadata } from '@/components/common';
 import { ApplicationProvider } from '@/components/common/providers';
+import { DEFAULT_PLUGIN_DATA, DEFAULT_REPO_DATA } from '@/constants/plugin';
 import { LoadingStateProvider } from '@/context/loading';
 import { PROD } from '@/env';
 import { usePageTransitions } from '@/hooks';
 import SearchPage from '@/pages/index';
 import PluginPage from '@/pages/plugins/[name]';
-import { PluginData } from '@/types';
 import { isPluginPage, isSearchPage } from '@/utils';
 
 type GetLayoutComponent = ComponentType & {
@@ -57,7 +57,7 @@ export default function App({ Component, pageProps }: AppProps) {
     const pluginPageLoader = isPluginPage(nextUrl) && (
       <Layout key="/plugins">
         <LoadingStateProvider loading>
-          <PluginPage plugin={{} as PluginData} />
+          <PluginPage plugin={DEFAULT_PLUGIN_DATA} repo={DEFAULT_REPO_DATA} />
         </LoadingStateProvider>
       </Layout>
     );
