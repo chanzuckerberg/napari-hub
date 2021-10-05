@@ -3,10 +3,10 @@
 exports[`<Pagination /> should match snapshot 1`] = `
 <DocumentFragment>
   <nav
-    class="flex items-center justify-center"
+    class="flex items-center justify-center select-none"
   >
     <button
-      class="pageButton focus-visible:bg-napari-hover-gray hover:bg-napari-hover-gray opacity-0 mr-2"
+      class="pageButton focus-visible:bg-napari-hover-gray hover:bg-napari-hover-gray opacity-0 hover:cursor-default mr-2"
       data-testid="paginationLeft"
       disabled=""
       type="button"
