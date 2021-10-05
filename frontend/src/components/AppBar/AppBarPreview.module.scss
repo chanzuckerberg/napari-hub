@@ -1,0 +1,6 @@
+@import '@/utils/styles';
+
+.fieldInfo {
+  font-size: viewport-clamp(14px, calculate-rem(17px));
+  padding: calculate-rem(6px);
+}
