@@ -45,7 +45,7 @@ export function Pagination({
           styles.pageButton,
           'focus-visible:bg-napari-hover-gray hover:bg-napari-hover-gray',
 
-          isDisabled && 'opacity-0 hover:cursor-default',
+          isDisabled && 'opacity-0 cursor-default',
           type === 'left' ? 'mr-2' : 'ml-2',
         )}
         data-testid={`pagination${upperFirst(type)}`}

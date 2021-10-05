@@ -6,7 +6,7 @@ exports[`<Pagination /> should match snapshot 1`] = `
     class="flex items-center justify-center select-none"
   >
     <button
-      class="pageButton focus-visible:bg-napari-hover-gray hover:bg-napari-hover-gray opacity-0 hover:cursor-default mr-2"
+      class="pageButton focus-visible:bg-napari-hover-gray hover:bg-napari-hover-gray opacity-0 cursor-default mr-2"
       data-testid="paginationLeft"
       disabled=""
       type="button"
