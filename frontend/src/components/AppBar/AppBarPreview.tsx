@@ -102,6 +102,24 @@ function AppBarPreviewRightColumn({
   expanded,
   setExpanded,
 }: AppBarPreviewRightColumnProps) {
+  const sections = useMetadataSections();
+  const hasMissingFields = sections.some((section) =>
+    section.fields.some((field) => !field.hasValue),
+  );
+
+  const renderExpandButton = () => (
+    <IconButton
+      className="rounded-none px-px"
+      onClick={() => setExpanded((prevExpanded) => !prevExpanded)}
+    >
+      {expanded ? (
+        <ChevronUp className="h-6 w-6" />
+      ) : (
+        <ChevronDown className="h-6 w-6" />
+      )}
+    </IconButton>
+  );
+
   return (
     <>
       <Media
@@ -114,16 +132,13 @@ function AppBarPreviewRightColumn({
         <MetadataStatusBar />
       </Media>
 
-      <IconButton
-        className="rounded-none px-px"
-        onClick={() => setExpanded((prevExpanded) => !prevExpanded)}
-      >
-        {expanded ? (
-          <ChevronUp className="h-6 w-6" />
-        ) : (
-          <ChevronDown className="h-6 w-6" />
-        )}
-      </IconButton>
+      {/* Always render expand button on larger screens. */}
+      <Media greaterThanOrEqual="screen-495">{renderExpandButton()}</Media>
+
+      {/* Only render expand button if there are missing fields. */}
+      <Media lessThan="screen-495">
+        {hasMissingFields && renderExpandButton()}
+      </Media>
     </>
   );
 }
@@ -189,8 +204,14 @@ export function AppBarPreview() {
         </Media>
       </header>
 
-      <Collapse in={expanded}>
-        <PreviewMetadataPanel />
+      <Collapse in={expanded} unmountOnExit>
+        <Media lessThan="screen-495">
+          <PreviewMetadataPanel missingFieldsOnly />
+        </Media>
+
+        <Media greaterThanOrEqual="screen-495">
+          <PreviewMetadataPanel />
+        </Media>
       </Collapse>
 
       <div

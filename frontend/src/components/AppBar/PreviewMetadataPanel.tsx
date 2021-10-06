@@ -22,12 +22,26 @@ function getOrderedFields(fields: MetadataSectionField[]) {
   ];
 }
 
-export function PreviewMetadataPanel() {
+interface Props {
+  missingFieldsOnly?: boolean;
+}
+
+export function PreviewMetadataPanel({ missingFieldsOnly }: Props) {
   const sections = useMetadataSections();
 
   const renderSections = () => (
     <>
       {sections.map((section) => {
+        if (missingFieldsOnly) {
+          const hasMissingFields = section.fields.some(
+            (field) => !field.hasValue,
+          );
+
+          if (!hasMissingFields) {
+            return null;
+          }
+        }
+
         return (
           <section
             className={clsx(
@@ -48,19 +62,22 @@ export function PreviewMetadataPanel() {
             <p className={clsx('text-xs')}>{section.description}</p>
 
             <ul className="space-y-3">
-              {getOrderedFields(section.fields).map((field) => (
-                <li className="flex items-center space-x-3" key={field.name}>
-                  <MetadataStatus hasValue={field.hasValue} />
-                  <span
-                    className={clsx(
-                      'text-sm',
-                      !field.hasValue && 'font-semibold leading-[17.5px]',
-                    )}
-                  >
-                    {field.name}
-                  </span>
-                </li>
-              ))}
+              {getOrderedFields(section.fields)
+                // Allow all fields if `missingFieldsOnly` is disabled, Otherwise, filter out values that have a value.
+                .filter((field) => !missingFieldsOnly || !field.hasValue)
+                .map((field) => (
+                  <li className="flex items-center space-x-3" key={field.name}>
+                    <MetadataStatus hasValue={field.hasValue} />
+                    <span
+                      className={clsx(
+                        'text-sm',
+                        !field.hasValue && 'font-semibold leading-[17.5px]',
+                      )}
+                    >
+                      {field.name}
+                    </span>
+                  </li>
+                ))}
             </ul>
           </section>
         );
