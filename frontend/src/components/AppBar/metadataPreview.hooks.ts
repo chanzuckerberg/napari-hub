@@ -2,9 +2,19 @@ import { isEmpty } from 'lodash';
 
 import { usePluginState } from '@/context/plugin';
 
-export function useMetadataSections() {
-  const { plugin } = usePluginState();
+export interface MetadataSectionField {
+  name: string;
+  hasValue: boolean;
+}
 
+export interface MetadataSection {
+  title: string;
+  description: string;
+  fields: MetadataSectionField[];
+}
+
+export function useMetadataSections(): MetadataSection[] {
+  const { plugin } = usePluginState();
   return [
     {
       title: 'Name + descriptions',

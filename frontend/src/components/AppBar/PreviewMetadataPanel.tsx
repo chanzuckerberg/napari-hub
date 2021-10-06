@@ -2,8 +2,25 @@ import clsx from 'clsx';
 
 import { Media } from '@/components/common/media';
 
-import { useMetadataSections } from './metadataPreview.hooks';
+import {
+  MetadataSectionField,
+  useMetadataSections,
+} from './metadataPreview.hooks';
 import { MetadataStatus } from './MetadataStatus';
+
+/**
+ * Creates a new array of metadata fields that have the missing metadata ordered
+ * at the top.
+ *
+ * @param fields Fields for the current metadata section.
+ * @returns The ordered fields.
+ */
+function getOrderedFields(fields: MetadataSectionField[]) {
+  return [
+    ...fields.filter((field) => !field.hasValue),
+    ...fields.filter((field) => field.hasValue),
+  ];
+}
 
 export function PreviewMetadataPanel() {
   const sections = useMetadataSections();
@@ -31,10 +48,17 @@ export function PreviewMetadataPanel() {
             <p className={clsx('text-xs')}>{section.description}</p>
 
             <ul className="space-y-3">
-              {section.fields.map((field) => (
-                <li className="flex items-center space-x-4" key={field.name}>
+              {getOrderedFields(section.fields).map((field) => (
+                <li className="flex items-center space-x-3" key={field.name}>
                   <MetadataStatus hasValue={field.hasValue} />
-                  <span>{field.name}</span>
+                  <span
+                    className={clsx(
+                      'text-sm',
+                      !field.hasValue && 'font-semibold leading-[17.5px]',
+                    )}
+                  >
+                    {field.name}
+                  </span>
                 </li>
               ))}
             </ul>
