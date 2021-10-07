@@ -8,7 +8,7 @@ import glob
 import os
 import json
 
-from backend.napari import github_pattern, get_extra_metadata
+from backend.github import github_pattern, get_github_metadata
 
 def get_plugin_preview(github_url: str, dest_dir: str) -> dict:
     """Get plugin preview metadata from github_url.
@@ -30,7 +30,7 @@ def get_plugin_preview(github_url: str, dest_dir: str) -> dict:
     meta = parse_meta(wheel_pth)
 
     # parse additional metadata from URL
-    extra_meta = get_extra_metadata(github_url)
+    extra_meta = get_github_metadata(github_url)
     meta.update(extra_meta)
 
     # write json
