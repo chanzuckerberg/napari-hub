@@ -33,16 +33,15 @@ export function useMetadataSections(): MetadataSection[] {
           name: 'Plugin description using hub-specific template',
           hasValue: !!plugin.description,
         },
-        {
-          name: 'Supported data',
-          // TODO find out what this value should be
-          hasValue: true,
-        },
-        {
-          name: 'Plugin type',
-          // TODO find out what this value should be
-          hasValue: true,
-        },
+        // TODO Future categories, disable this for now until the data is ready.
+        // {
+        //   name: 'Supported data',
+        //   hasValue: true,
+        // },
+        // {
+        //   name: 'Plugin type',
+        //   hasValue: true,
+        // },
       ],
     },
     {
