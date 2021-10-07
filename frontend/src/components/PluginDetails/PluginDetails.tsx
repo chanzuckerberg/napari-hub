@@ -1,8 +1,14 @@
 import clsx from 'clsx';
 import { throttle } from 'lodash';
+import Head from 'next/head';
 import { useEffect } from 'react';
 
-import { ColumnLayout, Markdown, SkeletonLoader } from '@/components/common';
+import {
+  ColumnLayout,
+  Markdown,
+  PageMetadata,
+  SkeletonLoader,
+} from '@/components/common';
 import { Media, MediaFragment } from '@/components/common/media';
 import { useLoadingState } from '@/context/loading';
 import { usePluginState } from '@/context/plugin';
@@ -162,6 +168,7 @@ const scrollHandler = throttle(() => {
  */
 export function PluginDetails() {
   const loading = useLoadingState();
+  const { plugin } = usePluginState();
 
   useEffect(() => {
     if (loading) {
@@ -174,10 +181,32 @@ export function PluginDetails() {
     }
   }, [loading]);
 
+  const keywords: string[] = [];
+  let title = 'napari hub | plugins';
+  if (plugin?.name && plugin?.authors) {
+    title = `${title} | ${plugin.name}`;
+
+    const authors = plugin.authors.map(({ name }) => name).join(', ');
+    if (authors) {
+      title = `${title} by ${authors}`;
+    }
+
+    keywords.push(plugin.name, ...plugin.authors.map(({ name }) => name));
+  }
+
   return (
-    <ColumnLayout className="p-6 md:p-12 2xl:px-0" data-testid="pluginDetails">
-      <PluginLeftColumn />
-      {/*
+    <>
+      <Head>
+        <title>{title}</title>
+        <PageMetadata keywords={keywords} description={plugin?.summary} />
+      </Head>
+
+      <ColumnLayout
+        className="p-6 md:p-12 2xl:px-0"
+        data-testid="pluginDetails"
+      >
+        <PluginLeftColumn />
+        {/*
         The markup for the right column is placed before the center column so
         that keyboard navigation focuses on the right column before the main
         column since the main column can be very long.
@@ -186,8 +215,9 @@ export function PluginDetails() {
         https://www.w3.org/WAI/tutorials/menus/flyout. When tabbing through the
         site, it focuses on the table of contents before the main content.
       */}
-      <PluginRightColumn />
-      <PluginCenterColumn />
-    </ColumnLayout>
+        <PluginRightColumn />
+        <PluginCenterColumn />
+      </ColumnLayout>
+    </>
   );
 }
