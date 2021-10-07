@@ -2,7 +2,7 @@ import os
 import pytest
 import pkginfo
 
-from backend.parse_preview_meta import clone_repo, build_dist, parse_meta
+from parse_preview_meta import clone_repo, build_dist, parse_meta
 
 plugin_url = "https://github.com/DragaDoncila/example-plugin"
 
