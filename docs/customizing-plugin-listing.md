@@ -56,6 +56,7 @@ Fields that can be defined through the napari config include...
 - [Support](#support)
 - [Report Issues](#report-issues)
 - [Twitter](#twitter)
+- [Visibility](#visibility)
 
 Fields that come from the GitHub API
 - [License](#license)
@@ -66,24 +67,24 @@ For each of the fields in a plugin's listing, we outline below how the field is 
 
 | Metadata             | Full view   |  List view  | Filterable  | Sortable      | Searched  | Source (Backup)  |
 |----------------------|:-----------:|:-----------:|:-----------:|:-------------:|:---------:|:---------:|
-| Name                 |     ✅      |     ✅      |     ⛔      |      ✅       |    ✅    |    <img src="https://pypi.org/static/images/logo-small.svg" height="20"> |
-| Summary              |     ✅      |     ✅      |     ⛔      |      ⛔       |    ✅    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://pypi.org/static/images/logo-small.svg" height="20">) |
-| Description          |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ✅    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://pypi.org/static/images/logo-small.svg" height="20">) |
-| Authors              |     ✅      |     ✅      |     ⛔      |      ⛔       |    ✅    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://pypi.org/static/images/logo-small.svg" height="20">) |
-| License              |     ✅      |     ✅      |     ✅      |      ⛔       |    ⛔    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://pypi.org/static/images/logo-small.svg" height="20">) |
-| Version              |     ✅      |     ✅      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://pypi.org/static/images/logo-small.svg" height="20"> |
-| Development Status   |     ✅      |     ⛔      |     ✅      |      ⛔       |    ⛔    |    <img src="https://pypi.org/static/images/logo-small.svg" height="20"> |
-| Python Version       |     ✅      |     ⛔      |     ✅      |      ⛔       |    ⛔    |    <img src="https://pypi.org/static/images/logo-small.svg" height="20"> |
-| Operating System     |     ✅      |     ⛔      |     ✅      |      ⛔       |    ⛔    |    <img src="https://pypi.org/static/images/logo-small.svg" height="20"> |
-| Requirements         |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://pypi.org/static/images/logo-small.svg" height="20"> |
-| Project Site         |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://pypi.org/static/images/logo-small.svg" height="20">) |
-| Documentation        |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://pypi.org/static/images/logo-small.svg" height="20">) |
-| Support              |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://pypi.org/static/images/logo-small.svg" height="20">) |
-| Report Issues        |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://pypi.org/static/images/logo-small.svg" height="20">) |
-| Twitter              |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="https://pypi.org/static/images/logo-small.svg" height="20">) |
-| Source Code          |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://pypi.org/static/images/logo-small.svg" height="20"> |
-| Release Date         |     ✅      |     ✅      |     ⛔      |      ✅       |    ⛔    |    <img src="https://pypi.org/static/images/logo-small.svg" height="20"> |
-| First Released       |     ✅      |     ⛔      |     ⛔      |      ✅       |    ⛔    |    <img src="https://pypi.org/static/images/logo-small.svg" height="20"> |
+| Name                 |     ✅      |     ✅      |     ⛔      |      ✅       |    ✅    |    <img src="PyPI-logo.svg" height="20"> |
+| Summary              |     ✅      |     ✅      |     ⛔      |      ⛔       |    ✅    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="PyPI-logo.svg" height="20">) |
+| Description          |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ✅    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="PyPI-logo.svg" height="20">) |
+| Authors              |     ✅      |     ✅      |     ⛔      |      ⛔       |    ✅    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="PyPI-logo.svg" height="20">) |
+| License              |     ✅      |     ✅      |     ✅      |      ⛔       |    ⛔    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="PyPI-logo.svg" height="20">) |
+| Version              |     ✅      |     ✅      |     ⛔      |      ⛔       |    ⛔    |    <img src="PyPI-logo.svg" height="20"> |
+| Development Status   |     ✅      |     ⛔      |     ✅      |      ⛔       |    ⛔    |    <img src="PyPI-logo.svg" height="20"> |
+| Python Version       |     ✅      |     ⛔      |     ✅      |      ⛔       |    ⛔    |    <img src="PyPI-logo.svg" height="20"> |
+| Operating System     |     ✅      |     ⛔      |     ✅      |      ⛔       |    ⛔    |    <img src="PyPI-logo.svg" height="20"> |
+| Requirements         |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="PyPI-logo.svg" height="20"> |
+| Project Site         |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="PyPI-logo.svg" height="20">) |
+| Documentation        |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="PyPI-logo.svg" height="20">) |
+| Support              |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="PyPI-logo.svg" height="20">) |
+| Report Issues        |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="PyPI-logo.svg" height="20">) |
+| Twitter              |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="https://github.com/favicon.ico" height="20"> (<img src="PyPI-logo.svg" height="20">) |
+| Source Code          |     ✅      |     ⛔      |     ⛔      |      ⛔       |    ⛔    |    <img src="PyPI-logo.svg" height="20"> |
+| Release Date         |     ✅      |     ✅      |     ⛔      |      ✅       |    ⛔    |    <img src="PyPI-logo.svg" height="20"> |
+| Visibility       |           |            |            |              |         |    <img src="https://github.com/favicon.ico" height="20"> |
 
 ### Name
 
@@ -113,24 +114,22 @@ We display this on the detailed plugin page and the plugin listings.
 
 We index this field for searching.
 
-We source this from the `["info"]["summary"]` field of the JSON returned by the PyPI API.
+We source this from the `summary` value defined in your napari configuration file.
 
-You can set this by setting the `summary` value in your package metadata.
+``` YAML
+# .napari/config.yml
+# ...
+summary:  Build scalable pipelines that localize and quantify RNA transcripts in image data generated by any FISH method
+# ...
+```
+
+If you have not defined this in `.napari/config.yml`, we will source this from the `["info"]["summary"]` field of the JSON returned by the PyPI API, which is set in the `summary` value in your package metadata.
 
 ``` INI
 # setup.cfg
 [metadata]
 # ...
 summary = Pipelines and pipeline components for the analysis of image-based transcriptomics data
-# ...
-```
-
-If you wish to customize this field with a napari-specific summary, you can also set this field by setting a `summary` value in your napari configuration file.
-
-``` YAML
-# .napari/config.yml
-# ...
-summary:  Build scalable pipelines that localize and quantify RNA transcripts in image data generated by any FISH method
 # ...
 ```
 
@@ -142,10 +141,9 @@ We display this on the detailed plugin page only.
 
 We index this field for searching.
 
-We source this from the `["info"]["description"]` field of the JSON returned by the PyPI API.
-If the `["info"]["description_content_type"]` field denotes Markdown, then this field will be rendered as HTML.
+You can also set this field by adding a Markdown file to your GitHub repository at `.napari/DESCRIPTION.md`.
 
-You can set this by setting the `long_description` value in your package metadata.
+If we do not find a napari-specific description at `.napari/DESCRIPTION.md`, we will source this from the `["info"]["description"]` field of the JSON returned by the PyPI API, which can be set by setting the `long_description` and `long_description_content_type` values in your package metadata.
 
 ``` INI
 # setup.cfg
@@ -160,8 +158,6 @@ You can denote sections your plugin description by adding Level 2 Headings (e.g.
 We will automatically generate sidebar navigation for your plugin from the Level 2 Headings present in your plugin description.
 If your `description` begins with a Level 1 Heading, we will assume that this is a title (e.g. for your README) and drop it from the description.
 
-If you wish to customize this field with a napari-specific description which is different from the Python package description shown in PyPI, you can also set this field by adding a Markdown file to your GitHub repository at `.napari/DESCRIPTION.md`.
-This file will take precedence over the `description` in your Python package.
 
 ### Authors
 
@@ -171,19 +167,7 @@ We display this on the detailed plugin page and the plugin listings.
 
 We index this field for searching.
 
-We source this from the `["info"]["author"]` field of the JSON returned by the PyPI API.
-
-You can set this by setting the `author` value in your package metadata.
-
-``` INI
-# setup.cfg
-[metadata]
-# ...
-author=Deep Ganguli
-# ...
-```
-
-If you wish to customize this field with a full list of authors, you can also set this field by adding authors, along with an optional [ORCID ID](https://orcid.org/) for each author, to your napari configuration file.
+You can set this field by adding authors, along with an optional [ORCID ID](https://orcid.org/) for each author, to your napari configuration file at `.napari/config.yml`.
 
 ``` YAML
 # .napari/config.yml
@@ -207,19 +191,26 @@ authors:
 # ...
 ```
 
-Authors listed in your napari config file will take precedence over the `author` specified in your Python package.
+If you have not set this in `.napari/config.yml`, we will source this from the `["info"]["author"]` field of the JSON returned by the PyPI API, which can set by setting the `author` value in your package metadata.
+
+``` INI
+# setup.cfg
+[metadata]
+# ...
+author=Deep Ganguli
+# ...
+```
+
 
 ### License
 
 This is the [SPDX Identifier](https://spdx.org/licenses/) for the license that the plugin is distributed under.
 
-We display this on the detailed plugin page and the plugin listings. 
+We display this on the detailed plugin page and the plugin listings.
 
 We support filtering plugins based on whether the plugin is released under an [OSI-approved](https://opensource.org/licenses) open source license.
 
-We source this from the GitHub license API, if we cannot find one, we would source from `["info"]["license"]` field of the JSON returned by the PyPI API.
-
-You can set this by setting the `license` value in your package metadata.
+We source this from the [GitHub Licenses API](https://docs.github.com/en/rest/reference/licenses). If we cannot find one, we will source from `["info"]["license"]` field of the JSON returned by the PyPI API, which can be set this by setting the `license` value in your package metadata.
 
 > **_NOTE:_**  You must use either a valid SPDX Identifier or "Other".
 > If you specify a license here which is not an SPDX Identifier, we will display "Other".
@@ -261,10 +252,7 @@ We support the 7 levels of ["Development Status"](https://pypi.org/classifiers/)
 - `6 - Mature`
 - `7 - Inactive`
 
-We display this on the detailed plugin page and the plugin listings. 
-
-We support filtering plugins that are "stable" based on this value. 
-Plugins that are labeled as "5" (Production/Stable) or "6" (Mature) will be considered "stable".
+We display this on the detailed plugin page and the plugin listings.
 
 We source this from the list of classifiers in the `["info"]["classifiers"]` field of the JSON returned by the PyPI API.
 If multiple "Development Status" classifiers are listed, we will use the one with the highest value.
@@ -285,7 +273,7 @@ classifier =
 
 These are the Python versions your plugin supports.
 
-We display this on the detailed plugin page and the plugin listings. 
+We display this on the detailed plugin page and the plugin listings.
 
 We support filtering plugins according to the minor versions of Python they support, based on this field.
 For example, if a plugin developer notes that a plugin supports, Python ">=3.8", then the plugin will be tagged with Python versions `3.8` and `3.9`.
@@ -376,9 +364,21 @@ This is a link to the main project site for your plugin.
 
 We display this on the detailed plugin page.
 
-We source this from `["info"]["home_page"]` field of the JSON returned by the PyPI API.
+You can set this field by setting a value for `Project Site` in the `project_urls` section of your napari configuration file.
 
-You can set this by setting the `url` value for your Python package in your package metadata.
+``` YAML
+# .napari/config.yml
+# ...
+project_urls:
+    Project Site: https://spacetx-starfish.readthedocs.io/en/latest/
+    Report Issues: https://github.com/spacetx/starfish/issues
+    Documentation: https://spacetx-starfish.readthedocs.io/en/latest/
+    User Support: https://forum.image.sc/tag/starfish
+    Twitter: https://twitter.com/cziscience
+# ...
+```
+
+If we cannot find a value for this in `.napari/config.yml`, we source this from `["info"]["home_page"]` field of the JSON returned by the PyPI API, which can be set by setting the `url` value for your Python package in your package metadata.
 
 ``` INI
 # setup.cfg
@@ -394,7 +394,13 @@ project_urls =
 
 > **_NOTE:_**  If we detect that a Github repository is the target of the `url` value, we will assign this URL to the "[Source Code](#source-code)" field instead of the Project Site field.
 
-Alternatively, you can also set this field by setting a value for `Project Site` in the `project_urls` section of your napari configuration file.
+### Documentation
+
+This is a link to further documentation for your plugin.
+
+We display this on the detailed plugin page.
+
+You can set this field by setting a value for `Documentation` in the `project_urls` section of your napari configuration file.
 
 ``` YAML
 # .napari/config.yml
@@ -408,15 +414,7 @@ project_urls:
 # ...
 ```
 
-### Documentation
-
-This is a link to further documentation for your plugin.
-
-We display this on the detailed plugin page.
-
-We source this from `["info"]["project_urls"]["Documentation"]` field of the JSON returned by the PyPI API.
-
-You can set this by adding a `Documentation` link to the `project_urls` value for your Python package in your package metadata.
+If we do not find this field in `.napari/config.yml`, we source this from `["info"]["project_urls"]["Documentation"]` field of the JSON returned by the PyPI API, which can be set by adding a `Documentation` link to the `project_urls` value for your Python package in your package metadata.
 
 ``` INI
 # setup.cfg
@@ -428,20 +426,6 @@ project_urls =
     Documentation = https://spacetx-starfish.readthedocs.io/en/latest/
     Source Code = https://github.com/spacetx/starfish
     User Support = https://forum.image.sc/tag/starfish
-# ...
-```
-
-Alternatively, you can also set this field by setting a value for `Documentation` in the `project_urls` section of your napari configuration file.
-
-``` YAML
-# .napari/config.yml
-# ...
-project_urls:
-    Project Site: https://spacetx-starfish.readthedocs.io/en/latest/
-    Report Issues: https://github.com/spacetx/starfish/issues
-    Documentation: https://spacetx-starfish.readthedocs.io/en/latest/
-    User Support: https://forum.image.sc/tag/starfish
-    Twitter: https://twitter.com/cziscience
 # ...
 ```
 
@@ -451,9 +435,21 @@ This is a link to user support for your plugin.
 
 We display this on the detailed plugin page.
 
-We source this from `["info"]["project_urls"]["User Support"]` field of the JSON returned by the PyPI API.
+You can set this field by setting a value for `User Support` in the `project_urls` section of your napari configuration file.
 
-You can set this by adding a `User Support` link to the `project_urls` value for your Python package in your package metadata.
+``` YAML
+# .napari/config.yml
+# ...
+project_urls:
+    Project Site: https://spacetx-starfish.readthedocs.io/en/latest/
+    Report Issues: https://github.com/spacetx/starfish/issues
+    Documentation: https://spacetx-starfish.readthedocs.io/en/latest/
+    User Support: https://forum.image.sc/tag/starfish
+    Twitter: https://twitter.com/cziscience
+# ...
+```
+
+If we do not find this field in `.napari/config.yml`, we source this from `["info"]["project_urls"]["User Support"]` field of the JSON returned by the PyPI API, which can be set by adding a `User Support` link to the `project_urls` value for your Python package in your package metadata.
 
 ``` INI
 # setup.cfg
@@ -468,19 +464,6 @@ project_urls =
 # ...
 ```
 
-Alternatively, you can also set this field by setting a value for `User Support` in the `project_urls` section of your napari configuration file.
-
-``` YAML
-# .napari/config.yml
-# ...
-project_urls:
-    Project Site: https://spacetx-starfish.readthedocs.io/en/latest/
-    Report Issues: https://github.com/spacetx/starfish/issues
-    Documentation: https://spacetx-starfish.readthedocs.io/en/latest/
-    User Support: https://forum.image.sc/tag/starfish
-    Twitter: https://twitter.com/cziscience
-# ...
-```
 
 ### Report Issues
 
@@ -488,9 +471,21 @@ This is a link to where users can report issues with your plugin.
 
 We display this on the detailed plugin page.
 
-We source this from `["info"]["project_urls"]["Bug Tracker"]` field of the JSON returned by the PyPI API.
+You can set this field by setting a value for `Report Issues` in the `project_urls` section of your napari configuration file.
 
-You can set this by adding a `Bug Tracker` link to the `project_urls` value for your Python package in your package metadata.
+``` YAML
+# .napari/config.yml
+# ...
+project_urls:
+    Project Site: https://spacetx-starfish.readthedocs.io/en/latest/
+    Report Issues: https://github.com/spacetx/starfish/issues
+    Documentation: https://spacetx-starfish.readthedocs.io/en/latest/
+    User Support: https://forum.image.sc/tag/starfish
+    Twitter: https://twitter.com/cziscience
+# ...
+```
+
+If we do not find this field in `.napari/config.yml`, we source this from `["info"]["project_urls"]["Bug Tracker"]` field of the JSON returned by the PyPI API, which can be set by adding a `Bug Tracker` link to the `project_urls` value for your Python package in your package metadata.
 
 ``` INI
 # setup.cfg
@@ -502,20 +497,6 @@ project_urls =
     Documentation = https://spacetx-starfish.readthedocs.io/en/latest/
     Source Code = https://github.com/spacetx/starfish
     User Support = https://forum.image.sc/tag/starfish
-# ...
-```
-
-Alternatively, you can also set this field by setting a value for `Report Issues` in the `project_urls` section of your napari configuration file.
-
-``` YAML
-# .napari/config.yml
-# ...
-project_urls:
-    Project Site: https://spacetx-starfish.readthedocs.io/en/latest/
-    Report Issues: https://github.com/spacetx/starfish/issues
-    Documentation: https://spacetx-starfish.readthedocs.io/en/latest/
-    User Support: https://forum.image.sc/tag/starfish
-    Twitter: https://twitter.com/cziscience
 # ...
 ```
 
@@ -525,20 +506,7 @@ This is a link to the Twitter feed for your plugin.
 
 We display this on the detailed plugin page.
 
-We source this from `["info"]["project_urls"]["Twitter"]` field of the JSON returned by the PyPI API.
-
-You can set this by adding a `Twitter` link to the `project_urls` value for your Python package in your package metadata.
-
-``` INI
-# setup.cfg
-[metadata]
-# ...
-project_urls =
-  Twitter = https://twitter.com/napari_imaging
-# ...
-```
-
-Alternatively, you can also set this field by setting a value for `Twitter` in the `project_urls` section of your napari configuration file.
+You can set this field by setting a value for `Twitter` in the `project_urls` section of your napari configuration file.
 
 ``` YAML
 # .napari/config.yml
@@ -549,6 +517,17 @@ project_urls:
     Documentation: https://spacetx-starfish.readthedocs.io/en/latest/
     User Support: https://forum.image.sc/tag/starfish
     Twitter: https://twitter.com/cziscience
+# ...
+```
+
+If we do not find this field in `.napari/config.yml`, we source this from `["info"]["project_urls"]["Twitter"]` field of the JSON returned by the PyPI API, which you can set by adding a `Twitter` link to the `project_urls` value for your Python package in your package metadata.
+
+``` INI
+# setup.cfg
+[metadata]
+# ...
+project_urls =
+  Twitter = https://twitter.com/napari_imaging
 # ...
 ```
 
@@ -572,5 +551,21 @@ project_urls =
     Documentation = https://spacetx-starfish.readthedocs.io/en/latest/
     Source Code = https://github.com/spacetx/starfish
     User Support = https://forum.image.sc/tag/starfish
+# ...
+```
+
+### Visibility
+
+This field lets you control the visibility of your plugin on the napari hub. We support three levels of visibility:
+
+- `public` (default): plugin is available through search and plugin listings
+- `hidden`: plugin details page is available, but the plugin does not show up in search
+- `disabled`: plugin does not show up on the napari hub
+
+``` YAML
+# .napari/config.yml
+# ...
+visibility: public
+
 # ...
 ```
