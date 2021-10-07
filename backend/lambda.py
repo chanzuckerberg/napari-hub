@@ -41,6 +41,13 @@ def get_exclusion_list() -> Response:
     return jsonify(get_excluded_plugins())
 
 
+@app.errorhandler(404)
+def handle_exception(e) -> Response:
+    links = [rule.rule for rule in app.url_map.iter_rules() if 'GET' in rule.methods
+             and (rule.rule.startswith("/plugins") or rule.rule.startswith("/shields"))]
+    return app.make_response((f"Invalid Endpoint, valid endpoints are {links}", 404))
+
+
 @app.errorhandler(Exception)
 def handle_exception(e) -> Response:
     send_alert(f"An unexpected error has occurred in napari hub: {e}")
