@@ -1,6 +1,8 @@
+import { over } from 'lodash';
 import { proxy, ref } from 'valtio';
-import { derive } from 'valtio/utils';
+import { derive, subscribeKey } from 'valtio/utils';
 
+import { BEGINNING_PAGE } from '@/constants/search';
 import { PluginIndexData } from '@/types';
 
 import { DEFAULT_SORT_TYPE } from './constants';
@@ -12,6 +14,8 @@ import { FilterChipItem, SpdxLicenseData } from './types';
  * Default state used for initializing and resetting the store.
  */
 export const DEFAULT_STATE = {
+  page: BEGINNING_PAGE,
+
   search: {
     index: [] as PluginIndexData[],
     engine: null as SearchEngine | null,
@@ -124,7 +128,26 @@ export function resetFilters(): void {
 }
 
 export function resetState(): void {
+  searchFormStore.page = BEGINNING_PAGE;
   searchFormStore.search.query = DEFAULT_STATE.search.query;
   searchFormStore.sort = DEFAULT_STATE.sort;
   resetFilters();
+}
+
+/**
+ * Sets up a state subscriber that resets the page whenever the search, sort
+ * type, or filters change.
+ */
+export function initPageResetListener(): () => void {
+  function resetPage() {
+    searchFormStore.page = BEGINNING_PAGE;
+  }
+
+  const unsubscribe = over([
+    subscribeKey(searchFormStore, 'search', resetPage),
+    subscribeKey(searchFormStore, 'sort', resetPage),
+    subscribeKey(searchFormStore, 'filters', resetPage),
+  ]);
+
+  return unsubscribe;
 }

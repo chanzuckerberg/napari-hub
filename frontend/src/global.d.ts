@@ -1,11 +1,13 @@
 declare namespace NodeJS {
   interface ProcessEnv {
-    readonly FRONTEND_URL: string;
-    readonly API_URL: string;
     readonly API_URL_HOST: string;
+    readonly API_URL: string;
     readonly ENV: 'local' | 'dev' | 'staging' | 'prod';
-    readonly PLAUSIBLE: 'true' | 'false';
+    readonly FRONTEND_URL: string;
     readonly GITHUB_CLIENT_ID: string;
     readonly GITHUB_CLIENT_SECRET: string;
+    readonly PLAUSIBLE: 'true' | 'false';
+    readonly PREVIEW: string;
+    readonly PREVIEW_PULL_REQUEST: string;
   }
 }

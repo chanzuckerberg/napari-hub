@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Pagination /> should match snapshot 1`] = `
+<DocumentFragment>
+  <nav
+    class="flex items-center justify-center select-none"
+  >
+    <button
+      class="pageButton focus-visible:bg-napari-hover-gray hover:bg-napari-hover-gray opacity-0 cursor-default mr-2"
+      data-testid="paginationLeft"
+      disabled=""
+      type="button"
+    >
+      <svg
+        fill="none"
+        height="36"
+        viewBox="0 0 36 36"
+        width="36"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M21.071 11L14 18.0711L21.071 25.1421"
+          stroke="black"
+          stroke-width="2"
+        />
+      </svg>
+    </button>
+    <span
+      class="value"
+      data-testid="paginationValue"
+    >
+      <span
+        class="inline-block text-center w-4"
+      >
+        1
+      </span>
+      <span
+        class="mx-4"
+      >
+        /
+      </span>
+      <span
+        class="inline-block text-center w-4"
+      >
+        10
+      </span>
+    </span>
+    <button
+      class="pageButton focus-visible:bg-napari-hover-gray hover:bg-napari-hover-gray ml-2"
+      data-testid="paginationRight"
+      type="button"
+    >
+      <svg
+        fill="none"
+        height="36"
+        viewBox="0 0 36 36"
+        width="36"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M15.071 25.1422L22.1421 18.0711L15.071 11"
+          stroke="black"
+          stroke-width="2"
+        />
+      </svg>
+    </button>
+  </nav>
+</DocumentFragment>
+`;

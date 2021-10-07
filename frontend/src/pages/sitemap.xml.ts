@@ -23,7 +23,20 @@ interface SitemapEntry {
   lastmod?: string;
 }
 
-const HUB_URL_IGNORE_REGEX = /\/(_app|_error|next|sitemap.xml|robots.txt|plugins\/\[name\])/;
+// URLs to exclude from the sitemap.xml file.
+const HUB_URL_IGNORE_PATTERNS = [
+  // Next.js internal pages
+  /\/_app|_error|next/,
+
+  // sitemap.xml and robots.txt files
+  /\/sitemap\.xml|robots\.txt/,
+
+  // Plugin pages
+  /\/plugins\/\[name\]/,
+
+  // Plugin preview page
+  /\/preview/,
+];
 
 /**
  * @returns a list of non-plugin page hub sitemap entries.
@@ -36,7 +49,10 @@ async function getHubEntries(): Promise<SitemapEntry[]> {
 
     if (manifest) {
       return Object.keys(manifest.pages)
-        .filter((url) => !HUB_URL_IGNORE_REGEX.exec(url))
+        .filter(
+          (url) =>
+            !HUB_URL_IGNORE_PATTERNS.some((pattern) => pattern.exec(url)),
+        )
         .map((url) => ({ url }));
     }
   } catch (err) {

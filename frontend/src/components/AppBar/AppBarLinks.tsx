@@ -1,9 +1,9 @@
 import clsx from 'clsx';
 
 import { Link } from '@/components/common';
+import { resetLoadingState } from '@/store/loading';
 import { resetState } from '@/store/search/form.store';
 import { LinkInfo } from '@/types';
-import { setSearchScrollY } from '@/utils';
 
 interface CommonProps {
   vertical?: boolean;
@@ -49,12 +49,9 @@ export function AppBarLinks({ className, items, vertical }: Props) {
         // Redirect to home page
         href="/"
         onClick={() => {
-          // Clear query parameters and state when clicking on home link.
+          // Reset states when navigating back to home page.
           resetState();
-
-          // When navigating back to the home page from the home link, reset
-          // `scrollY` so that the user starts from the top of the page.
-          setSearchScrollY(0);
+          resetLoadingState();
         }}
       >
         napari <strong>hub</strong>

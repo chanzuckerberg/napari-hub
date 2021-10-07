@@ -1,12 +1,5 @@
-from unittest import mock
 import requests
 from requests.exceptions import HTTPError
-
-from backend.napari import get_plugin, get_shield
-from backend.napari import get_plugins
-from backend.napari import get_download_url
-from backend.napari import get_license
-from backend.napari import get_citations
 
 
 class FakeResponse:
@@ -97,83 +90,6 @@ plugin = """
   "upload_time_iso_8601":"2020-04-20T15:28:53.386281Z",
   "url":"","yanked":false,"yanked_reason":null}]}}"""
 
-@mock.patch(
-    'requests.get', return_value=FakeResponse(data=plugin_list)
-)
-def test_get_plugins(mock_get):
-    result = get_plugins()
-    assert len(result) == 2
-    assert result['package1'] == "0.2.7"
-    assert result['package2'] == "0.1.0"
-
-@mock.patch(
-    'requests.get', return_value=FakeResponse(data=plugin)
-)
-@mock.patch(
-    'backend.napari.get_plugins', return_value={'test': '0.0.1'}
-)
-def test_get_plugin(mock_get, mock_plugins):
-    result = get_plugin("test")
-    assert(result["name"] == "test")
-    assert(result["summary"] == "A test plugin")
-    assert(result["description"] == "# description [example](http://example.com)")
-    assert(result["description_text"] == "description example")
-    assert(result["description_content_type"] == "")
-    assert(result["authors"] == [{'email': 'test@test.com', 'name': 'Test Author'}])
-    assert(result["license"] == "BSD-3")
-    assert(result["python_version"] == ">=3.6")
-    assert(result["operating_system"] == ['Operating System :: OS Independent'])
-    assert(result["release_date"] == '2020-04-13T03:37:20.169990Z')
-    assert(result["version"] == "0.0.1")
-    assert(result["first_released"] == "2020-04-13T03:37:20.169990Z")
-    assert(result["development_status"] == ['Development Status :: 4 - Beta'])
-    assert(result["requirements"] is None)
-    assert(result["project_site"] == "https://github.com/test/test")
-    assert(result["documentation"] == "")
-    assert(result["support"] == "")
-    assert(result["report_issues"] == "")
-    assert(result["twitter"] == "")
-    assert(result["code_repository"] == "https://github.com/test/test")
-
-
-@mock.patch(
-    'requests.get', return_value=FakeResponse(data=plugin)
-)
-@mock.patch(
-    'backend.napari.get_plugins', return_value={'not_test': '0.0.1'}
-)
-def test_get_invalid_plugin(mock_get, mock_plugins):
-    assert({} == get_plugin("test"))
-
-
-@mock.patch(
-    'backend.napari.get_plugins', return_value=plugin_list
-)
-def test_get_shield(mock_plugins):
-    result = get_shield('package1')
-    assert result['message'] == 'package1'
-    assert 'label' in result
-    assert 'schemaVersion' in result
-    assert 'color' in result
-
-    result = get_shield('not-a-package')
-    assert result == {}
-
-
-def test_github_get_url():
-    plugins = {"info": {"project_urls": {"Source Code": "test1"}}}
-    assert("test1" == get_download_url(plugins))
-
-    plugins = {"info": {"project_urls": {"Random": "https://random.com"}}}
-    assert(get_download_url(plugins) is None)
-
-    plugins = {"info": {"project_urls": {"Random": "https://github.com/org"}}}
-    assert(get_download_url(plugins) is None)
-
-    plugins = {"info": {"project_urls": {"Random": "https://github.com/org/repo/random"}}}
-    assert("https://github.com/org/repo" == get_download_url(plugins))
-
-
 license_response = """
 {
   "name": "LICENSE",
@@ -186,15 +102,6 @@ license_response = """
   }
 }
 """
-
-
-@mock.patch(
-    'requests.get', return_value=FakeResponse(data=license_response)
-)
-def test_github_license(mock_get):
-    result = get_license("test_website")
-    assert result == "BSD-3-Clause"
-
 
 no_license_response = """
 {
@@ -209,17 +116,7 @@ no_license_response = """
 }
 """
 
-
-@mock.patch(
-    'requests.get', return_value=FakeResponse(data=no_license_response)
-)
-def test_github_no_assertion_license(mock_get):
-    result = get_license("test_website")
-    assert result is None
-
-
-def test_valid_citation():
-    citation_string = """# YAML 1.2
+citation_string = """# YAML 1.2
 ---
 abstract: "Test"
 authors:
@@ -246,39 +143,3 @@ repository-code: "https://example.com/example"
 title: testing
 version: "0.0.0"
 """
-    citation = get_citations(citation_string)
-    assert citation['citation'] == citation_string
-    assert citation['RIS'] == """TY  - COMP
-AU  - Fa, Gi N.
-AU  - Family, Given
-DO  - 10.0000/something.0000000
-KW  - citation
-KW  - test
-KW  - cff
-KW  - CITATION.cff
-M3  - software
-PB  - GitHub Inc.
-PP  - San Francisco, USA
-PY  - 2019/11/12
-T1  - testing
-UR  - https://example.com/example
-ER  -
-"""
-    assert citation['BibTex'] == """@misc{YourReferenceHere,
-author = {
-            Gi N. Fa and
-            Given Family
-         },
-title  = {testing},
-month  = {11},
-year   = {2019},
-doi    = {10.0000/something.0000000},
-url    = {https://example.com/example}
-}
-"""
-
-
-def test_invalid_citation():
-    citation_str = """Ha? What is this?"""
-    citations = get_citations(citation_str)
-    assert citations['citation'] is None
