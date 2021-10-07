@@ -8,7 +8,7 @@ import glob
 import os
 import json
 
-from backend.github import github_pattern, get_github_metadata
+from github import github_pattern, get_github_metadata
 
 def get_plugin_preview(github_url: str, dest_dir: str) -> dict:
     """Get plugin preview metadata from github_url.
