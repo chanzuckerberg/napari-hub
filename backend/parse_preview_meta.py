@@ -9,6 +9,7 @@ import os
 import json
 
 from github import github_pattern, get_github_metadata
+from utils import render_description
 
 def get_plugin_preview(github_url: str, dest_dir: str) -> dict:
     """Get plugin preview metadata from github_url.
@@ -21,10 +22,10 @@ def get_plugin_preview(github_url: str, dest_dir: str) -> dict:
     :return: dictionary of metadata
     """
     # clone repository from URL
-    repo_pth = clone_repo(github_url, '../repositories')
+    repo_pth = clone_repo(github_url, dest_dir)
 
     # build distribution for plugin repository
-    wheel_pth = build_dist(repo_pth, '../repositories')
+    wheel_pth = build_dist(repo_pth, dest_dir)
 
     # parse metadata from wheel
     meta = parse_meta(wheel_pth)
@@ -32,6 +33,9 @@ def get_plugin_preview(github_url: str, dest_dir: str) -> dict:
     # parse additional metadata from URL
     extra_meta = get_github_metadata(github_url)
     meta.update(extra_meta)
+
+    # render description into description text
+    meta['description_text'] = render_description(meta['description'])
 
     # write json
     with open(os.path.join(dest_dir, 'preview_meta.json'), 'w') as f:
@@ -107,9 +111,7 @@ def parse_meta(pkg_pth):
     meta_needed = {        
         "name": 'name',
         "summary": 'summary',
-        #TODO: what is the difference between these?
         "description": 'description',
-        "description_text": 'description',
         "description_content_type" : 'description_content_type',
         "authors" : 'author',
         "license" : 'license',
@@ -154,11 +156,9 @@ def parse_meta(pkg_pth):
         # we need to strip the 'extra' requirements because pkginfo parses them as well
         elif attr == 'requires_dist':
             reqs = getattr(pkg_info, attr)
-            #TODO: do we need to actually include them or just filter them out?
-            for i, req in enumerate(reqs):
-                if '; extra ==' in req:
-                    reqs[i] = req.split('; extra ==')[0].strip()
-            meta[field] = reqs
+            # remove any requirements declared as `extras` because hub doesn't show them
+            reqs_no_extras = list(filter(lambda req: '; extra == ' not in req, reqs))
+            meta[field] = reqs_no_extras
         else:
             meta[field] = getattr(pkg_info, attr)
     return meta
