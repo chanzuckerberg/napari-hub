@@ -1,8 +1,10 @@
+import json
 import os
 import pytest
 import pkginfo
+import requests
 
-from parse_preview_meta import clone_repo, build_dist, parse_meta
+from parse_preview_meta import clone_repo, build_dist, parse_meta, get_plugin_preview
 
 plugin_url = "https://github.com/DragaDoncila/example-plugin"
 
@@ -49,4 +51,18 @@ def test_parse_meta(tmpdir):
     assert meta['name'] == 'example-plugin'
 
 def test_parse_preview_matches_hub(tmpdir):
-    pass
+    dest_dir = tmpdir.mkdir('preview')
+    # get hub metadata for example-plugin
+    hub_metadata = requests.get('https://api.napari-hub.org/plugins/example-plugin')
+
+    # get preview metadata for example-plugin
+    get_plugin_preview(plugin_url, dest_dir)
+    with open(os.path.join(dest_dir, 'preview_meta.json')) as f:
+        preview_meta = json.load(f)
+
+    # for each shared field, assert they're the same
+    for field in hub_metadata.keys():
+        if field in preview_meta:
+            assert preview_meta[field] == hub_metadata[field]
+    # exceptions are version, first_released and release_date which either
+    # are not present or not in sync

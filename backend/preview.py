@@ -163,4 +163,4 @@ def parse_meta(pkg_pth):
             meta[field] = getattr(pkg_info, attr)
     return meta
 
-
+    
