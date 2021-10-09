@@ -10,7 +10,8 @@ import Document, {
 import { mediaStyles } from '@/components/common/media';
 import { theme } from '@/theme';
 
-const FAVICON = '/icons/favicon';
+const FAVICON = `${process.env.BASE_PATH}/icons/favicon`;
+
 export default class HubDocument extends Document {
   static async getInitialProps(context: DocumentContext) {
     // Render app and page and get the context of the page with collected side effects.
