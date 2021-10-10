@@ -118,7 +118,8 @@ def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
     github_repo_url = metadata.get('code_repository')
     if github_repo_url:
         metadata = {**metadata, **get_github_metadata(github_repo_url)}
-    metadata['description_text'] = render_description(metadata.get('description'))
+    if 'description' in metadata:
+        metadata['description_text'] = render_description(metadata.get('description'))
     cache(metadata, f'cache/{plugin}/{version}.json')
     return plugin, metadata
 
@@ -198,6 +199,3 @@ def get_plugin_metadata_async(plugins: Dict[str, str]) -> dict:
     for future in futures.as_completed(plugin_futures):
         plugins_metadata[future.result()[0]] = (future.result()[1])
     return plugins_metadata
-
-
-print(build_plugin_metadata("napari-roifile", "0.0.2"))
