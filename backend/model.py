@@ -173,6 +173,8 @@ def get_updated_plugin_exclusion(plugins_metadata):
     """
     excluded_plugins = get_excluded_plugins()
     for plugin, plugin_metadata in plugins_metadata.items():
+        if not plugin_metadata:
+            excluded_plugins[plugin] = 'invalid'
         if 'visibility' not in plugin_metadata:
             continue
         if plugin in excluded_plugins and excluded_plugins[plugin] != "blocked":
