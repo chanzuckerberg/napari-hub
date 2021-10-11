@@ -80,12 +80,13 @@ module frontend_service {
 }
 
 module backend_lambda {
-  source            = "../lambda-container"
-  custom_stack_name = local.custom_stack_name
-  app_name          = "backend"
-  image             = "${local.backend_image_repo}:${local.image_tag}"
-  cmd               = local.backend_cmd
-  tags              = var.tags
+  source             = "../lambda-container"
+  custom_stack_name  = local.custom_stack_name
+  app_name           = "backend"
+  image              = "${local.backend_image_repo}:${local.image_tag}"
+  cmd                = local.backend_cmd
+  tags               = var.tags
+  provisioned_lambda = var.env == "prod" ? 1 : 0
 
   vpc_config = {
     subnet_ids         = local.cloud_env.private_subnets

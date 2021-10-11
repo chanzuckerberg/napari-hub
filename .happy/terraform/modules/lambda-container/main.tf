@@ -26,5 +26,6 @@ module lambda {
   cloudwatch_logs_retention_in_days = var.log_retention_in_days
   attach_network_policy             = true
   reserved_concurrent_executions    = var.reserved_concurrent_executions
+  provisioned_concurrent_executions = var.provisioned_lambda
   allowed_triggers                  = var.allowed_triggers
 }
