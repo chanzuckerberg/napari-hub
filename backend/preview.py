@@ -32,10 +32,7 @@ def get_plugin_preview(github_url: str, dest_dir: str) -> dict:
 
     # parse additional metadata from URL
     extra_meta = get_github_metadata(github_url)
-    meta.update(extra_meta)
-
-    # render description into description text
-    meta['description_text'] = render_description(meta['description'])    
+    meta.update(extra_meta)  
 
     # write json
     with open(os.path.join(dest_dir, 'preview_meta.json'), 'w') as f:
