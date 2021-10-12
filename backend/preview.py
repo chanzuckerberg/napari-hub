@@ -35,7 +35,7 @@ def get_plugin_preview(github_url: str, dest_dir: str) -> dict:
     meta.update(extra_meta)
 
     # render description into description text
-    meta['description_text'] = render_description(meta['description'])
+    meta['description_text'] = render_description(meta['description'])    
 
     # write json
     with open(os.path.join(dest_dir, 'preview_meta.json'), 'w') as f:
@@ -121,11 +121,13 @@ def parse_meta(pkg_pth):
         "development_status": 'classifiers',
         "requirements" : 'requires_dist',
         "project_site": 'home_page',
-        "documentation": 'project_urls',
-        "support": 'project_urls',
-        "report_issues": 'project_urls',
-        "twitter": 'project_urls',
-        "code_repository": 'download_url'
+    }
+    project_url_meta = {
+        "documentation": 'Documentation',
+        "support": 'User Support',
+        "report_issues": 'Report Issues',
+        "twitter": 'Twitter',
+        "code_repository": 'Source Code'
     }
 
     meta = defaultdict()
@@ -136,14 +138,16 @@ def parse_meta(pkg_pth):
     if proj_urls:
         proj_urls = [[val.strip() for val in url_str.split(',')] for url_str in proj_urls]
         proj_urls = dict(zip([url[0] for url in proj_urls], [url[1] for url in proj_urls]))
-        pkg_info.project_urls = proj_urls
+        
+        for key, val in project_url_meta.items():
+            if val in proj_urls:
+                meta[key] = proj_urls[val]
 
-    for field, attr  in meta_needed.items():
+    for field, attr in meta_needed.items():
         val = getattr(pkg_info, attr)
-        # project_urls is a dictionary, so we try to find each individual url
-        if attr == 'project_urls':
-            if field in val:
-                meta[field] = val[field]
+        # author also needs email
+        if attr == 'author':
+            meta[field] = [{'name': val, 'email': getattr(pkg_info, 'author_email')}]
         # classifiers is one big list so we need to search through it for relevant ones
         elif attr == 'classifiers':
             if val:
@@ -153,12 +157,6 @@ def parse_meta(pkg_pth):
                     meta[field] = list(filter(lambda x: x.startswith('Development Status'), val))
             else:
                 meta[field] = None
-        # we need to strip the 'extra' requirements because pkginfo parses them as well
-        elif attr == 'requires_dist':
-            reqs = getattr(pkg_info, attr)
-            # remove any requirements declared as `extras` because hub doesn't show them
-            reqs_no_extras = list(filter(lambda req: '; extra == ' not in req, reqs))
-            meta[field] = reqs_no_extras
         else:
             meta[field] = getattr(pkg_info, attr)
     return meta

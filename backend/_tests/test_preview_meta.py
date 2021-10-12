@@ -4,13 +4,14 @@ import pytest
 import pkginfo
 import requests
 
-from parse_preview_meta import clone_repo, build_dist, parse_meta, get_plugin_preview
+from preview import clone_repo, build_dist, parse_meta, get_plugin_preview
 
-plugin_url = "https://github.com/DragaDoncila/example-plugin"
+code_plugin_url = "https://github.com/DragaDoncila/example-plugin"
+hub_plugin_url = "https://api.napari-hub.org/plugins/example-plugin"
 
 def test_clone_existing_plugin(tmpdir):
     dest_dir = tmpdir.mkdir("repo")
-    repo_pth = clone_repo(plugin_url, dest_dir)
+    repo_pth = clone_repo(code_plugin_url, dest_dir)
     
     # a git repository
     assert os.path.exists(os.path.join(dest_dir, 'example-plugin', '.git/'))
@@ -27,7 +28,7 @@ def test_clone_invalid_plugin(tmpdir):
 
 def test_build_dist(tmpdir):
     dest_dir = tmpdir.mkdir("repo")
-    repo_pth = clone_repo(plugin_url, dest_dir)
+    repo_pth = clone_repo(code_plugin_url, dest_dir)
 
     wheel_pth = build_dist(repo_pth, dest_dir)
     assert wheel_pth.endswith('.whl')
@@ -45,7 +46,7 @@ def test_build_dist_fail(tmpdir):
 
 def test_parse_meta(tmpdir):
     repo_dir = tmpdir.mkdir("repo")
-    repo_pth = clone_repo(plugin_url, repo_dir)
+    repo_pth = clone_repo(code_plugin_url, repo_dir)
     wheel_pth = build_dist(repo_pth, repo_dir)
     meta = parse_meta(wheel_pth)
     assert meta['name'] == 'example-plugin'
@@ -53,16 +54,15 @@ def test_parse_meta(tmpdir):
 def test_parse_preview_matches_hub(tmpdir):
     dest_dir = tmpdir.mkdir('preview')
     # get hub metadata for example-plugin
-    hub_metadata = requests.get('https://api.napari-hub.org/plugins/example-plugin')
+    hub_metadata = json.loads(requests.get(hub_plugin_url).text)
 
     # get preview metadata for example-plugin
-    get_plugin_preview(plugin_url, dest_dir)
+    get_plugin_preview(code_plugin_url, dest_dir)
     with open(os.path.join(dest_dir, 'preview_meta.json')) as f:
         preview_meta = json.load(f)
 
     # for each shared field, assert they're the same
     for field in hub_metadata.keys():
         if field in preview_meta:
+            print(field)
             assert preview_meta[field] == hub_metadata[field]
-    # exceptions are version, first_released and release_date which either
-    # are not present or not in sync
