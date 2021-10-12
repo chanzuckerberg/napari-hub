@@ -7,7 +7,8 @@ interface Props {
   children?: ReactNode;
 }
 
-const ALLOWED_VIDEO_REGEX = /https:\/\/(user-images\.githubusercontent)\.com.*(mp4|mov)/;
+const ALLOWED_VIDEO_REGEX =
+  /https:\/\/(user-images\.githubusercontent)\.com.*(mp4|mov)/;
 
 /**
  * Component for rendering a paragraph element, or a video element if the
