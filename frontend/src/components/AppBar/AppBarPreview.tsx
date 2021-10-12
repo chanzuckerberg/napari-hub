@@ -1,7 +1,6 @@
 import { Collapse, IconButton } from '@material-ui/core';
 import clsx from 'clsx';
-import { useState } from 'react';
-import { ReactNode } from 'react-markdown';
+import { ReactNode, useState } from 'react';
 
 import { Link } from '@/components/common';
 import {
@@ -22,21 +21,29 @@ const HUB_WIKI_LINK =
 function MetadataStatusBar() {
   const sections = useMetadataSections();
 
+  const missingStatusNodes: ReactNode[] = [];
+  const completeStatusNodes: ReactNode[] = [];
+
+  for (const section of sections) {
+    for (const field of section.fields) {
+      const nodeList = field.hasValue
+        ? completeStatusNodes
+        : missingStatusNodes;
+
+      nodeList.push(
+        <MetadataStatus
+          key={field.name}
+          hasValue={field.hasValue}
+          variant="small"
+        />,
+      );
+    }
+  }
+
   return (
     <div className="flex space-x-px">
-      {sections.reduce(
-        (result, section) =>
-          result.concat(
-            section.fields.map((field) => (
-              <MetadataStatus
-                key={field.name}
-                hasValue={field.hasValue}
-                variant="small"
-              />
-            )),
-          ),
-        [] as ReactNode[],
-      )}
+      {completeStatusNodes}
+      {missingStatusNodes}
     </div>
   );
 }
