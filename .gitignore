@@ -131,6 +131,3 @@ dmypy.json
 .DS_Store
 .env.ecr
 .idea
-
-# vs code files
-.vscode/
