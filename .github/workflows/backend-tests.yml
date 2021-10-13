@@ -33,7 +33,8 @@ jobs:
       - name: Install dependencies
         run: |
           pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install -r backend/requirements.txt
+          pip install -r preview/requirements.txt
           pip install pytest
 
       - name: Run tests
