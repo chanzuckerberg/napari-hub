@@ -162,6 +162,14 @@ def parse_meta(pkg_pth):
                 meta[field] = None
         else:
             meta[field] = getattr(pkg_info, attr)
+
+    # try to github pattern match home page if code_repository still hasn't been found
+    if not meta.get("code_repository"):
+        proj_site = meta['project_site']
+        match = github_pattern.match(proj_site)
+        if match:
+            meta["code_repository"] = match.group(0)
+
     return meta
 
     
