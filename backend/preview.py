@@ -8,21 +8,24 @@ import glob
 import os
 import json
 
-from github import github_pattern, get_github_metadata
-from utils import render_description
+from github import github_pattern, get_github_metadata, get_github_repo_url
 
-def get_plugin_preview(github_url: str, dest_dir: str) -> dict:
-    """Get plugin preview metadata from github_url.
+def get_plugin_preview(repo_pth: str, dest_dir: str, is_local: bool=False) -> dict:
+    """Get plugin preview metadata of package at repo_pth.
 
-    Clone repository at github_url, build distribution and
-    parse package metadata. Parse extra metadata and return
-    dictionary.
+    If is_local is not True, first clone the repository from GitHub
+    URL repo_pth. Once repository is present locally, build distribution
+    and parse metadata. Reuses backend functions for parsing additional
+    hub specific metadata. Parsed metadata is saved to JSON file in dest_dir
+    alongside the repository itself (if cloned) and the built distribution.
 
-    :param github_url: url to plugin repository
-    :return: dictionary of metadata
+    :param repo_pth: path to plugin repository (URL unless is_local is True)
+    :param dest_dir: path to destination directory (must exist)
+    :param is_local: True if repo_pth is to local directory, otherwise False
     """
-    # clone repository from URL
-    repo_pth = clone_repo(github_url, dest_dir)
+    # clone repository from URL (if repo is not local)
+    if not is_local:
+        repo_pth = clone_repo(repo_pth, dest_dir)
 
     # build distribution for plugin repository
     wheel_pth = build_dist(repo_pth, dest_dir)
@@ -31,8 +34,9 @@ def get_plugin_preview(github_url: str, dest_dir: str) -> dict:
     meta = parse_meta(wheel_pth)
 
     # parse additional metadata from URL
-    extra_meta = get_github_metadata(github_url)
-    meta.update(extra_meta)  
+    if meta.get("code_repository"):
+        extra_meta = get_github_metadata(meta["code_repository"])
+        meta.update(extra_meta)
 
     # write json
     with open(os.path.join(dest_dir, 'preview_meta.json'), 'w') as f:
@@ -139,6 +143,8 @@ def parse_meta(pkg_pth):
         for key, val in project_url_meta.items():
             if val in proj_urls:
                 meta[key] = proj_urls[val]
+        if meta["code_repository"] is None:
+            meta["code_repository"] = get_github_repo_url(proj_urls)
 
     for field, attr in meta_needed.items():
         val = getattr(pkg_info, attr)
