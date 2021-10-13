@@ -6,6 +6,7 @@ import { Link } from '@/components/common/Link';
 import { MetadataStatus } from '@/components/MetadataStatus';
 import { usePluginState } from '@/context/plugin';
 import { usePlausible } from '@/hooks';
+import { isExternalUrl } from '@/utils/url';
 
 import styles from './MetadataList.module.scss';
 import { MetadataItem, MetadataValueTypes } from './PluginDetails.types';
@@ -93,6 +94,8 @@ function MetadataListItem({ inline, title, values }: MetadataListItemProps) {
               const icon = (!hasLink && value.missingIcon) || value.icon;
               const iconNode = icon && <span className="min-w-4">{icon}</span>;
 
+              const internalLink = !isExternalUrl(value.href);
+
               const linkNode = hasLink && (
                 <>
                   {iconNode}
@@ -100,16 +103,20 @@ function MetadataListItem({ inline, title, values }: MetadataListItemProps) {
                   <Link
                     className="ml-2 underline inline -mt-1"
                     href={value.href}
-                    newTab
-                    onClick={() => {
-                      const url = new URL(value.href);
-                      plausible('Links', {
-                        host: url.host,
-                        link: value.text,
-                        plugin: plugin.name,
-                        url: value.href,
-                      });
-                    }}
+                    newTab={!internalLink}
+                    onClick={
+                      internalLink
+                        ? undefined
+                        : () => {
+                            const url = new URL(value.href);
+                            plausible('Links', {
+                              host: url.host,
+                              link: value.text,
+                              plugin: plugin.name,
+                              url: value.href,
+                            });
+                          }
+                    }
                   >
                     {value.text}
                   </Link>

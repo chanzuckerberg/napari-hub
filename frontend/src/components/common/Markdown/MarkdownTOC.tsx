@@ -1,4 +1,11 @@
-import { TableOfContents } from '@/components/common/TableOfContents';
+import {
+  TableOfContents,
+  TOCHeader,
+} from '@/components/common/TableOfContents';
+import {
+  ANCHOR,
+  TITLE,
+} from '@/components/PluginDetails/CitationInfo.constants';
 
 import { getHeadersFromMarkdown } from './Markdown.utils';
 
@@ -6,8 +13,14 @@ interface Props {
   className?: string;
   onClick?(heading: string): void;
   markdown: string;
+  hasCitationInfo?: boolean;
   free?: boolean;
 }
+
+const CITATION_HEADER: TOCHeader = {
+  id: ANCHOR,
+  text: TITLE,
+};
 
 /**
  * Component for rendering TOC from a markdown string.  The TOC will generate
@@ -17,8 +30,15 @@ interface Props {
  * For this to work, there needs to be a corresponding `<Markdown />` component
  * somewhere with the same markdown content.
  */
-export function MarkdownTOC({ className, markdown, ...props }: Props) {
+export function MarkdownTOC({
+  className,
+  markdown,
+  hasCitationInfo,
+  ...props
+}: Props) {
   const headers = getHeadersFromMarkdown(markdown);
+
+  if (hasCitationInfo) headers.push(CITATION_HEADER);
 
   return <TableOfContents className={className} headers={headers} {...props} />;
 }

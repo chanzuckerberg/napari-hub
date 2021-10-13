@@ -11,6 +11,7 @@ import {
 import { Media } from '@/components/common/media';
 import { usePluginState } from '@/context/plugin';
 
+import { ANCHOR } from './CitationInfo.constants';
 import { MetadataList } from './MetadataList';
 import { MetadataItem, MetadataItemLink } from './PluginDetails.types';
 import styles from './SupportInfo.module.scss';
@@ -110,6 +111,14 @@ export function SupportInfoBase({
               text: formatTwitter(plugin.twitter),
             }
           : [],
+
+        plugin.citations
+          ? {
+              href: `${plugin.name}#${ANCHOR}`,
+              icon: <ProjectSite />,
+              text: 'Citation information',
+            }
+          : [],
       ),
     },
 
@@ -125,7 +134,7 @@ export function SupportInfoBase({
 
   return (
     <MetadataList
-      className={clsx('text-black bg-gray-100 p-5', className)}
+      className={clsx('text-black bg-napari-hover-gray p-5', className)}
       horizontal={horizontal}
       inline={inline}
       items={items}
