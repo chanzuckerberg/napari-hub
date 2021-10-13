@@ -53,18 +53,20 @@ export function useMetadataSections(): MetadataSection[] {
           name: 'Authors',
           hasValue: !isEmpty(plugin.authors),
         },
-        {
-          name: 'Project site',
-          hasValue: !!plugin.project_site,
-        },
+        // TODO Add when design for optional metadata is ready
+        // {
+        //   name: 'Project site',
+        //   hasValue: !!plugin.project_site,
+        // },
         {
           name: 'Report issues site',
           hasValue: !!plugin.report_issues,
         },
-        {
-          name: 'Twitter handle',
-          hasValue: !!plugin.twitter,
-        },
+        // TODO Add when design for optional metadata is ready
+        // {
+        //   name: 'Twitter handle',
+        //   hasValue: !!plugin.twitter,
+        // },
         {
           name: 'Source code',
           hasValue: !!plugin.code_repository,
