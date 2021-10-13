@@ -7,16 +7,16 @@ on:
     branches:
       - main
     paths:
-      - 'backend/**'
+      - 'src/**'
   pull_request:
     branches:
       - '**'
     paths:
-      - 'backend/**'
+      - 'src/**'
 
 defaults:
   run:
-    working-directory: backend/
+    working-directory: src
 
 jobs:
   # Runs pytest for backend code
@@ -35,5 +35,5 @@ jobs:
           pip install pytest
 
       - name: Run tests
-        working-directory: backend
+        working-directory: src
         run : python -m pytest
