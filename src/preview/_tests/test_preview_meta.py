@@ -4,7 +4,7 @@ import pytest
 import pkginfo
 import requests
 
-from preview import clone_repo, build_dist, parse_meta, get_plugin_preview
+from ..preview import clone_repo, build_dist, parse_meta, get_plugin_preview
 
 code_plugin_url = "https://github.com/DragaDoncila/example-plugin"
 hub_plugin_url = "https://api.napari-hub.org/plugins/example-plugin"

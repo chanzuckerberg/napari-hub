@@ -1,0 +1,6 @@
+GitPython
+setuptools
+wheel
+pkginfo
+requests
+cffconvert

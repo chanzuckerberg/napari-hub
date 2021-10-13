@@ -6,8 +6,4 @@ pyyaml
 requests
 markdown
 bs4
-GitPython
-setuptools
-wheel
-pkginfo
 cffconvert
