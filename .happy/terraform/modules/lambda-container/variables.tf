@@ -55,6 +55,12 @@ variable reserved_concurrent_executions {
   default     = -1 // aws default
 }
 
+variable provisioned_lambda {
+  type        = number
+  description = "Set provisioned_concurrent_executions for this function. See [docs](https://docs.aws.amazon.com/lambda/latest/dg/configuration-concurrency.html)."
+  default     = -1 // aws default
+}
+
 variable vpc_config {
   type = object({
     subnet_ids         = list(string),
