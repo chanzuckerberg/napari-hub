@@ -7,12 +7,14 @@ on:
     branches:
       - main
     paths:
-      - 'src/**'
+      - 'src/backend/**'
+      - 'src/preview/**'
   pull_request:
     branches:
       - '**'
     paths:
-      - 'src/**'
+      - 'src/backend/**'
+      - 'src/preview/**'
 
 defaults:
   run:
