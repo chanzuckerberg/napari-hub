@@ -76,7 +76,7 @@ services:
     # This entrypoint only used for local dev; in cloud we deploy as a Lambda container
     entrypoint: gunicorn --worker-class gevent --workers 4 --bind 0.0.0.0:5000 napari:app --max-requests 10000 --timeout 5 --keep-alive 5 --log-level info --reload
     volumes:
-      - ./backend/api:/var/task
+      - ./backend:/var/task
     networks:
       naparinet:
         aliases:
