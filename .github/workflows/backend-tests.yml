@@ -37,4 +37,5 @@ jobs:
 
       - name: Run tests
         working-directory: backend
-        run : python -m pytest
+        run : |
+          python -m pytest utils api preview
