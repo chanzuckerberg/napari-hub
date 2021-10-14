@@ -3,6 +3,7 @@ from unittest.mock import patch
 
 from .. import model
 
+
 @patch.object(
     model, 'get_valid_plugins', return_value={"package1": "0.0.1"}
 )
