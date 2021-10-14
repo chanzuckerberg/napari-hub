@@ -16,7 +16,7 @@ on:
 
 defaults:
   run:
-    working-directory: backend
+    working-directory: backend/
 
 jobs:
   # Runs pytest for backend code
