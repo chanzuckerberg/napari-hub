@@ -4,7 +4,7 @@ from unittest.mock import patch
 from requests import HTTPError
 
 from ..pypi import query_pypi, get_plugin_pypi_metadata
-from .test_utils import FakeResponse, plugin, plugin_list
+from ...utils._tests.test_utils import FakeResponse, plugin, plugin_list
 
 
 class TestPypi(unittest.TestCase):

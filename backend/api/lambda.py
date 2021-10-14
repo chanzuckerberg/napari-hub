@@ -3,7 +3,7 @@ from flask import Flask, Response, jsonify
 
 from .model import get_public_plugins, get_index, get_plugin, get_excluded_plugins, update_cache
 from .shield import get_shield
-from .utils import send_alert
+from ..utils.utils import send_alert
 
 app = Flask(__name__)
 handler = make_lambda_handler(app.wsgi_app)
