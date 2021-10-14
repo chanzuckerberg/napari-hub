@@ -115,10 +115,11 @@ def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
     if cached_plugin:
         return plugin, cached_plugin
     metadata = get_plugin_pypi_metadata(plugin, version)
-    github_repo_url = metadata['code_repository']
+    github_repo_url = metadata.get('code_repository')
     if github_repo_url:
         metadata = {**metadata, **get_github_metadata(github_repo_url)}
-    metadata['description_text'] = render_description(metadata.get('description'))
+    if 'description' in metadata:
+        metadata['description_text'] = render_description(metadata.get('description'))
     cache(metadata, f'cache/{plugin}/{version}.json')
     return plugin, metadata
 
@@ -172,6 +173,8 @@ def get_updated_plugin_exclusion(plugins_metadata):
     """
     excluded_plugins = get_excluded_plugins()
     for plugin, plugin_metadata in plugins_metadata.items():
+        if not plugin_metadata:
+            excluded_plugins[plugin] = 'invalid'
         if 'visibility' not in plugin_metadata:
             continue
         if plugin in excluded_plugins and excluded_plugins[plugin] != "blocked":

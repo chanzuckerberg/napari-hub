@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import { throttle } from 'lodash';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
 import { AppBarPreview } from '@/components/AppBar';
@@ -170,6 +171,7 @@ const scrollHandler = throttle(() => {
 export function PluginDetails() {
   const loading = useLoadingState();
   const { plugin } = usePluginState();
+  const router = useRouter();
   const isPreview = useIsPreview();
 
   useEffect(() => {
@@ -200,7 +202,11 @@ export function PluginDetails() {
     <>
       <Head>
         <title>{title}</title>
-        <PageMetadata keywords={keywords} description={plugin?.summary} />
+        <PageMetadata
+          keywords={keywords}
+          description={plugin?.summary}
+          pathname={router.pathname}
+        />
       </Head>
 
       {isPreview && <AppBarPreview />}
