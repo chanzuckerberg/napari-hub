@@ -1,5 +1,5 @@
 import os
-from preview import get_plugin_preview
+from .preview import get_plugin_preview
 import argparse
 
 parser = argparse.ArgumentParser(description='Write preview metadata to JSON.')
