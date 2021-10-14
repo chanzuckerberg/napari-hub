@@ -4,6 +4,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
+import { AppBarPreview } from '@/components/AppBar';
 import {
   ColumnLayout,
   Markdown,
@@ -13,7 +14,7 @@ import {
 import { Media, MediaFragment } from '@/components/common/media';
 import { useLoadingState } from '@/context/loading';
 import { usePluginState } from '@/context/plugin';
-import { usePlausible } from '@/hooks';
+import { useIsPreview, usePlausible } from '@/hooks';
 
 import { CallToActionButton } from './CallToActionButton';
 import { PluginMetadata } from './PluginMetadata';
@@ -171,6 +172,7 @@ export function PluginDetails() {
   const loading = useLoadingState();
   const { plugin } = usePluginState();
   const router = useRouter();
+  const isPreview = useIsPreview();
 
   useEffect(() => {
     if (loading) {
@@ -206,6 +208,8 @@ export function PluginDetails() {
           pathname={router.pathname}
         />
       </Head>
+
+      {isPreview && <AppBarPreview />}
 
       <ColumnLayout
         className="p-6 md:p-12 2xl:px-0"

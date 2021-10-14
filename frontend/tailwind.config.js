@@ -42,11 +42,14 @@ module.exports = {
         'napari-light': colors.light,
         'napari-error': colors.error,
         'napari-gray': colors.gray,
+        'napari-preview-gray': colors.previewGray,
+        'napari-preview-orange': colors.previewOrange,
+        'napari-preview-orange-overlay': colors.previewOrangeOverlay,
       },
 
       width: (theme) => ({
         'napari-xs': theme('screens.xs'),
-        'napari-col': '225px',
+        'napari-col': pixelsToRem(225),
       }),
 
       height: {
