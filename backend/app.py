@@ -1,11 +1,20 @@
 from apig_wsgi import make_lambda_handler
+from werkzeug.middleware.dispatcher import DispatcherMiddleware
 from flask import Flask, Response, jsonify
+from flask_githubapp.core import GitHubApp
 
 from model import get_public_plugins, get_index, get_plugin, get_excluded_plugins, update_cache
 from shield import get_shield
 from utils import send_alert
 
+preview_app = Flask("Preview")
+preview_app.config['GITHUBAPP_ID'] = 'test'
+preview_app.config['GITHUBAPP_KEY'] = 'test'
+preview_app.config['GITHUBAPP_SECRET'] = False
+github_app = GitHubApp(preview_app)
+
 app = Flask(__name__)
+app.wsgi_app = DispatcherMiddleware(app.wsgi_app, {'/github': preview_app})
 handler = make_lambda_handler(app.wsgi_app)
 
 
@@ -52,3 +61,8 @@ def handle_exception(e) -> Response:
 def handle_exception(e) -> Response:
     send_alert(f"An unexpected error has occurred in napari hub: {e}")
     return app.make_response(("Internal Server Error", 500))
+
+
+@github_app.on("completed")
+def preview_app():
+    print("!!!!!!!!!!!!!!!")
