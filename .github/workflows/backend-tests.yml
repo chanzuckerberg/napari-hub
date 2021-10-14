@@ -7,8 +7,7 @@ on:
     branches:
       - main
     paths:
-      - 'src/backend/**'
-      - 'src/preview/**'
+      - 'backend/**'
   pull_request:
     branches:
       - '**'
