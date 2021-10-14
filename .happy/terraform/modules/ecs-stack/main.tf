@@ -86,7 +86,7 @@ module backend_lambda {
   image              = "${local.backend_image_repo}:${local.image_tag}"
   cmd                = local.backend_cmd
   tags               = var.tags
-  provisioned_lambda = var.env == "prod" ? 1 : 0
+  provisioned_lambda = var.env == "prod" ? 1 : -1
 
   vpc_config = {
     subnet_ids         = local.cloud_env.private_subnets
