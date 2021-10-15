@@ -1,5 +1,5 @@
-import { SearchBar } from '@/components';
-import { ColumnLayout } from '@/components/common';
+import { ColumnLayout } from '@/components/common/ColumnLayout';
+import { SearchBar } from '@/components/SearchBar';
 import { SEARCH_BAR_ID } from '@/constants/search';
 
 /**

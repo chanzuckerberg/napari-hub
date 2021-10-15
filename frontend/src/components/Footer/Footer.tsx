@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 import { ComponentType } from 'react';
 
-import { Link } from '@/components/common';
 import { CZI, GitHub, IconProps, NapariLogo } from '@/components/common/icons';
+import { Link } from '@/components/common/Link';
 import { LINKS } from '@/constants';
 import { LinkInfo } from '@/types';
 

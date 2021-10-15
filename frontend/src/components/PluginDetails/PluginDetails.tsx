@@ -5,13 +5,11 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
 import { AppBarPreview } from '@/components/AppBar';
-import {
-  ColumnLayout,
-  Markdown,
-  PageMetadata,
-  SkeletonLoader,
-} from '@/components/common';
+import { ColumnLayout } from '@/components/common/ColumnLayout';
+import { Markdown } from '@/components/common/Markdown';
 import { Media, MediaFragment } from '@/components/common/media';
+import { PageMetadata } from '@/components/common/PageMetadata';
+import { SkeletonLoader } from '@/components/common/SkeletonLoader';
 import { useLoadingState } from '@/context/loading';
 import { usePluginState } from '@/context/plugin';
 import { useIsPreview, usePlausible } from '@/hooks';

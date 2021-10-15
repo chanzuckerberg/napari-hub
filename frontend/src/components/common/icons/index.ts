@@ -10,7 +10,6 @@ export * from './CZI';
 export * from './Expand';
 export * from './GitHub';
 export * from './Hub';
-export * from './icons.type';
 export * from './Menu';
 export * from './NapariLogo';
 export * from './PriorityHigh';

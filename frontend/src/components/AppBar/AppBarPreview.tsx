@@ -2,12 +2,12 @@ import { Collapse, IconButton } from '@material-ui/core';
 import clsx from 'clsx';
 import { ReactNode, useState } from 'react';
 
-import { Link } from '@/components/common';
 import {
   ChevronDown,
   ChevronUp,
   ViewPullRequest,
 } from '@/components/common/icons';
+import { Link } from '@/components/common/Link';
 import { Media } from '@/components/common/media';
 
 import styles from './AppBarPreview.module.scss';

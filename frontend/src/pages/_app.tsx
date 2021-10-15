@@ -14,8 +14,8 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { ComponentType, ReactNode } from 'react';
 
-import { Layout } from '@/components';
-import { PageMetadata } from '@/components/common';
+import { Layout } from '@/components/Layout';
+import { PageMetadata } from '@/components/common/PageMetadata';
 import { ApplicationProvider } from '@/components/common/providers';
 import { DEFAULT_PLUGIN_DATA, DEFAULT_REPO_DATA } from '@/constants/plugin';
 import { LoadingStateProvider } from '@/context/loading';

@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { ReactNode } from 'react-markdown';
 
-import { ColumnLayout } from '@/components/common';
+import { ColumnLayout } from '@/components/common/ColumnLayout';
 import { Hub } from '@/components/common/icons';
 
 import { Media, MediaFragment } from '../common/media';

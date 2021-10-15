@@ -1,6 +1,8 @@
 import { ReactNode } from 'react';
 
-import { AppBar, Footer, SignupForm } from '@/components';
+import { AppBar } from '@/components/AppBar';
+import { Footer } from '@/components/Footer';
+import { SignupForm } from '@/components/SignupForm';
 import { useIsPreview } from '@/hooks';
 
 interface Props {

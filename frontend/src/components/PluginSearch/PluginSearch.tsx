@@ -2,9 +2,11 @@ import { throttle } from 'lodash';
 import { useEffect } from 'react';
 import { snapshot, useSnapshot } from 'valtio';
 
-import { Footer, SignupForm } from '@/components';
+import { Footer } from '@/components/Footer';
+import { SignupForm } from '@/components/SignupForm';
 import { AppBarLanding } from '@/components/AppBar';
-import { ColumnLayout, Pagination } from '@/components/common';
+import { ColumnLayout } from '@/components/common/ColumnLayout';
+import { Pagination } from '@/components/common/Pagination';
 import { loadingStore } from '@/store/loading';
 import { searchFormStore } from '@/store/search/form.store';
 import { searchResultsStore } from '@/store/search/results.store';

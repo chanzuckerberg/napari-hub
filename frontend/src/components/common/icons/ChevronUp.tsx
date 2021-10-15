@@ -1,4 +1,4 @@
-import { IconColorProps } from '@/components/common/icons';
+import { IconColorProps } from './icons.type';
 
 export function ChevronUp({ alt, className, color = 'black' }: IconColorProps) {
   return (

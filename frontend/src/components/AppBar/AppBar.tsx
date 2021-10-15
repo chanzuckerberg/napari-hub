@@ -1,10 +1,11 @@
 import clsx from 'clsx';
 import { useState } from 'react';
 
-import { MenuDrawer, SearchBar } from '@/components';
-import { ColumnLayout } from '@/components/common';
+import { ColumnLayout } from '@/components/common/ColumnLayout';
 import { Menu } from '@/components/common/icons';
 import { Media } from '@/components/common/media';
+import { MenuDrawer } from '@/components/MenuDrawer';
+import { SearchBar } from '@/components/SearchBar';
 
 import { APP_LINKS } from './AppBar.constants';
 import { AppBarLinks } from './AppBarLinks';
