@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { isArray } from 'lodash';
-import { ReactNode } from 'react-markdown';
+import { ReactNode } from 'react';
 
 import { Divider } from '@/components/common/Divider';
 import { MediaFragment } from '@/components/common/media';

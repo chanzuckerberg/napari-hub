@@ -1,6 +1,6 @@
 import { Tooltip } from '@material-ui/core';
 import clsx from 'clsx';
-import { ReactNode } from 'react-markdown';
+import { ReactNode } from 'react';
 
 import { Link } from '@/components/common/Link';
 import { usePluginState } from '@/context/plugin';

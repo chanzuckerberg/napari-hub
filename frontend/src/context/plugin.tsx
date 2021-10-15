@@ -1,5 +1,4 @@
-import { createContext, useContext } from 'react';
-import { ReactNode } from 'react-markdown';
+import { createContext, ReactNode, useContext } from 'react';
 
 import { PluginData, PluginRepoData, PluginRepoFetchError } from '@/types';
 

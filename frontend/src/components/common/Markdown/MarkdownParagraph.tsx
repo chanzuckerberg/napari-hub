@@ -4,7 +4,7 @@ import { isReactElement } from '@/utils';
 
 interface Props {
   className?: string;
-  children?: ReactNode;
+  children?: ReactNode | ReactNode[];
 }
 
 const ALLOWED_VIDEO_REGEX =

@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { ReactNode } from 'react-markdown';
+import { ReactNode } from 'react';
 
 import { ColumnLayout } from '@/components/common/ColumnLayout';
 import { Hub } from '@/components/common/icons';
