@@ -82,7 +82,7 @@ describe('Plugin filter-by section', () => {
       zip(filters, filterCheckboxes) as Array<[FilterItem, HTMLElement]>
     ).forEach(([filter, input]) => {
       const checkbox = input.querySelector('input');
-      expect(checkbox).not.toBeUndefined();
+      expect(checkbox).toBeDefined();
       fireEvent.click(checkbox as HTMLElement);
       expect(filter.setFilterState).toHaveBeenCalledWith(
         expectedChecked[filter.label],
