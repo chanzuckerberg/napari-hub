@@ -7,4 +7,4 @@ RUN ["pip", "install", "-r", "requirements.txt"]
 RUN ["pip", "install", "cffconvert", "ruamel.yaml", "pykwalify[ruamel]", "--no-dependencies"]
 
 COPY . .
-CMD ["lambda.handler"]
+CMD ["app.handler"]
