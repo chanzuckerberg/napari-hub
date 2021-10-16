@@ -1,20 +1,21 @@
+import os
 from apig_wsgi import make_lambda_handler
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
 from flask import Flask, Response, jsonify
 from flask_githubapp.core import GitHubApp
 
-from model import get_public_plugins, get_index, get_plugin, get_excluded_plugins, update_cache
+from model import get_public_plugins, get_index, get_plugin, get_excluded_plugins, update_cache, move_artifact_to_s3
 from shield import get_shield
 from utils import send_alert
 
 preview_app = Flask("Preview")
-preview_app.config['GITHUBAPP_ID'] = 'test'
-preview_app.config['GITHUBAPP_KEY'] = 'test'
-preview_app.config['GITHUBAPP_SECRET'] = False
+preview_app.config['GITHUBAPP_ID'] = os.getenv('GITHUBAPP_ID', 0)
+preview_app.config['GITHUBAPP_KEY'] = os.getenv('GITHUBAPP_KEY', False)
+preview_app.config['GITHUBAPP_SECRET'] = os.getenv('GITHUBAPP_SECRET', False)
 github_app = GitHubApp(preview_app)
 
 app = Flask(__name__)
-app.wsgi_app = DispatcherMiddleware(app.wsgi_app, {'/github': preview_app})
+app.wsgi_app = DispatcherMiddleware(app.wsgi_app, {'/preview': preview_app})
 handler = make_lambda_handler(app.wsgi_app)
 
 
@@ -54,7 +55,8 @@ def get_exclusion_list() -> Response:
 def handle_exception(e) -> Response:
     links = [rule.rule for rule in app.url_map.iter_rules() if 'GET' in rule.methods
              and (rule.rule.startswith("/plugins") or rule.rule.startswith("/shields"))]
-    return app.make_response((f"Invalid Endpoint, valid endpoints are {links}", 404))
+    return app.make_response((f"Invalid Endpoint, valid endpoints are {links}", 404,
+                              {'Content-Type': 'text/plain; charset=utf-8'}))
 
 
 @app.errorhandler(Exception)
@@ -63,6 +65,6 @@ def handle_exception(e) -> Response:
     return app.make_response(("Internal Server Error", 500))
 
 
-@github_app.on("completed")
-def preview_app():
-    print("!!!!!!!!!!!!!!!")
+@github_app.on("workflow_run.completed")
+def preview():
+    move_artifact_to_s3(github_app.payload, github_app.key, github_app.secret)

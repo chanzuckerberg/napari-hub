@@ -1,11 +1,13 @@
 from concurrent import futures
 from datetime import datetime
 from typing import Tuple, Dict, List
+from zipfile import ZipFile
+from io import BytesIO
 
-from github import get_github_metadata
+from github import get_github_metadata, get_artifact
 from pypi import query_pypi, get_plugin_pypi_metadata
 from s3 import get_cache, cache
-from utils import render_description, send_alert
+from utils import get_attribute, render_description, send_alert
 from zulip import notify_new_packages
 
 index_subset = {'name', 'summary', 'description_text', 'description_content_type',
@@ -201,3 +203,17 @@ def get_plugin_metadata_async(plugins: Dict[str, str]) -> dict:
     for future in futures.as_completed(plugin_futures):
         plugins_metadata[future.result()[0]] = (future.result()[1])
     return plugins_metadata
+
+
+def move_artifact_to_s3(payload, github_app_key, github_app_secret):
+    repo = get_attribute(payload, ["repository", "full_name"])
+    workflow_run_id = get_attribute(payload, ["workflow_run", "id"])
+
+    artifact_url = get_attribute(payload, ["workflow_run", "artifacts_url"])
+    if artifact_url:
+        artifact = get_artifact(artifact_url, github_app_key, github_app_secret)
+        if artifact:
+            zipfile = ZipFile(BytesIO(artifact.read()))
+            for name in zipfile.namelist():
+                with zipfile.open(name) as file:
+                    cache(file, f'preview/{repo}/{workflow_run_id}/{name}')
