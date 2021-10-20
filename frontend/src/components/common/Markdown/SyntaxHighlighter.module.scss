@@ -1,12 +1,13 @@
-.code:hover .copyButton {
-  @apply block;
-}
-
 /*
   stylelint-disable
     selector-class-pattern,
+    selector-max-compound-selectors,
     selector-no-qualifying-type,
 */
+
+.code:hover .copyButton {
+  @apply block;
+}
 
 $code-theme-palette: (
   background: #f7f7f7,
