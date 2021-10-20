@@ -36,15 +36,17 @@ function getMUIImportsPlugin(name) {
   ];
 }
 
+const clientConfig = {
+  plugins: [getMUIImportsPlugin('client')],
+};
+
 module.exports = {
   presets: ['next/babel'],
 
   env: {
-    client: {
-      plugins: [getMUIImportsPlugin('client')],
-    },
-
-    server: {
+    'client-dev': clientConfig,
+    'client-prod': clientConfig,
+    'server-dev': {
       plugins: [getMUIImportsPlugin('server')],
     },
   },

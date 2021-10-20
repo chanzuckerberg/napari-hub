@@ -61,9 +61,10 @@ module.exports = withMDX({
   },
 
   webpack(config, { isServer }) {
-    // Sets BABEL_ENV to `client` or `server` depending on the Next.js build.
-    // This is required for the Material UI + babel import plugin to work.
-    process.env.BABEL_ENV = config.name;
+    // Sets BABEL_ENV to `<[server|client]-[dev|prod]>` depending on the Next.js
+    // build.  This is required for the Material UI + babel import plugin to work.
+    const env = PROD ? 'prod' : 'dev';
+    process.env.BABEL_ENV = `${config.name}-${env}`;
 
     if (!isServer) {
       config.resolve.alias.lodash = require.resolve('lodash-es');
