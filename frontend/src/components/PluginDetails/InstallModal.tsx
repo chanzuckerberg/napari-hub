@@ -37,7 +37,7 @@ function CopyPluginNameButton() {
           : 'bg-napari-light hover:bg-napari-primary',
 
         // Dimensions
-        'h-6',
+        'min-h-6',
 
         // Show button inline with text.
         'inline-flex items-center',
