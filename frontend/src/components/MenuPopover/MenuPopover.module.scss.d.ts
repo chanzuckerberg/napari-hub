@@ -1,5 +1,5 @@
 export type Styles = {
-  item: string;
+  menuPopover: string;
 };
 
 export type ClassNames = keyof Styles;
