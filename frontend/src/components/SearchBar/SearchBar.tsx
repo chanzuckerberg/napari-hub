@@ -13,7 +13,7 @@ import {
   SearchSortType,
 } from '@/store/search/constants';
 import { searchFormStore } from '@/store/search/form.store';
-import { isSearchPage, scrollToSearchBar } from '@/utils';
+import { createUrl, isSearchPage, scrollToSearchBar } from '@/utils';
 
 import styles from './SearchBar.module.scss';
 
@@ -40,6 +40,7 @@ export function SearchBar({ large, ...props }: Props) {
   const router = useRouter();
   const state = useSnapshot(searchFormStore);
   const { query } = state.search;
+  const currentPathname = createUrl(router.asPath).pathname;
 
   // Local state for query. This is used to store the current entered query string.
   const [localQuery, setLocalQuery] = useState(query ?? '');
@@ -163,7 +164,7 @@ export function SearchBar({ large, ...props }: Props) {
         type="button"
       >
         {/* Render close button if the user submitted a query. */}
-        {query ? (
+        {query && isSearchPage(currentPathname) ? (
           <Close className={clsx(iconClassName, styles.closeIcon)} />
         ) : (
           <Search className={iconClassName} />
