@@ -109,9 +109,9 @@ function InstallModalHeader({ onClose }: Closeable) {
  */
 function InstallModalBody() {
   return (
-    <ol className="list-decimal list-inside font-bold px-6 screen-495:px-12">
+    <ol className="list-decimal font-bold px-6 screen-495:px-12 leading-normal">
       <li>
-        <p className="font-normal inline leading-8">
+        <p className="font-normal inline">
           From the “Plugins” menu within the napari application, select
           “Install/Uninstall Package(s)...”.
         </p>
@@ -127,7 +127,7 @@ function InstallModalBody() {
       </li>
 
       <li>
-        <p className="font-normal inline leading-8">
+        <p className="font-normal inline">
           Copy <CopyPluginNameButton /> and paste it where it says “Install by
           name/url…”
         </p>
