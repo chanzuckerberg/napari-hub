@@ -70,20 +70,7 @@ export function Markdown({ className, children, disableHeader }: Props) {
 
   return (
     <ReactMarkdown
-      className={clsx(
-        className,
-        styles.markdown,
-
-        /*
-          Use Tailwind prose for reasonable defaults on markdown styling. In
-          the future, we can fine tune the CSS by hand for each markdown
-          element.
-        */
-        'prose',
-
-        // Disable max-width set by prose
-        'max-w-none',
-      )}
+      className={clsx(className, styles.markdown)}
       components={components}
       remarkPlugins={REMARK_PLUGINS}
       rehypePlugins={REHYPE_PLUGINS}

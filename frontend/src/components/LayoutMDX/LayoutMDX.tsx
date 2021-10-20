@@ -33,8 +33,6 @@ export function LayoutMDX({ toc, title, children }: Props) {
           className={clsx(
             styles.markdown,
             syntaxHighlightingStyles.code,
-            'prose',
-            'max-w-none',
             'col-span-2',
             'screen-875:col-span-3',
             'screen-1425:col-start-2',
