@@ -6,11 +6,11 @@
   "description_content_type": "text/markdown",
   "authors": [
     {
-      "name": "Draga Doncila",
+      "name": "",
       "email": "ddoncila@gmail.com"
     }
   ],
-  "license": "MIT",
+  "license": "",
   "python_version": ">=3.6",
   "operating_system": ["Operating System :: OS Independent"],
   "release_date": "2021-03-03T20:41:59.257726Z",
@@ -24,7 +24,7 @@
     "dask[complete]"
   ],
   "project_site": "https://pypi.org/project/napari-compressed-labels-io",
-  "documentation": "https://github.com/DragaDoncila/napari-compressed-labels-io",
+  "documentation": "",
   "support": "https://github.com/DragaDoncila/napari-compressed-labels-io/issues",
   "report_issues": "https://github.com/DragaDoncila/napari-compressed-labels-io/issues",
   "twitter": "https://twitter.com/DragaDoncila",

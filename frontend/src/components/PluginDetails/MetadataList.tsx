@@ -55,7 +55,7 @@ function MetadataListItem({ inline, title, values }: MetadataListItemProps) {
         {isEmpty && (
           <li
             className={clsx(
-              'text-napari-gray font-normal',
+              'text-napari-gray font-normal bg-napari-preview-orange-overlay',
               inline ? 'inline' : 'block leading-8',
             )}
           >
@@ -68,13 +68,17 @@ function MetadataListItem({ inline, title, values }: MetadataListItemProps) {
             let node: ReactNode;
             let key: string;
 
+            let isValueEmpty = false;
+
             if (typeof value === 'string') {
               key = value;
               node = value;
+              isValueEmpty = !value;
             } else {
               // If metadata value is link, render icon and anchor tag.
               key = `${value.text}-${value.href}`;
               const hasLink = !!value.href;
+              isValueEmpty = !hasLink;
 
               const linkNode = hasLink && (
                 <>
@@ -137,6 +141,9 @@ function MetadataListItem({ inline, title, values }: MetadataListItemProps) {
                   // Render as comma list if inline
                   // https://markheath.net/post/css-comma-separated-list
                   inline && ['inline', styles.commaList],
+
+                  // Preview orange overlay if isValueEmpty is true
+                  isValueEmpty && 'bg-napari-preview-orange-overlay',
                 )}
                 key={key}
               >
