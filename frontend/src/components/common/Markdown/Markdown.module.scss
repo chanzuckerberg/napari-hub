@@ -49,4 +49,8 @@
     // Remove extra margin added by prose.
     @apply m-0;
   }
+
+  ul > li::before {
+    @apply bg-black;
+  }
 }
