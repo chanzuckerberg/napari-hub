@@ -8,14 +8,22 @@ from model import get_public_plugins, get_index, get_plugin, get_excluded_plugin
 from shield import get_shield
 from utils import send_alert
 
-preview_app = Flask("Preview")
-preview_app.config['GITHUBAPP_ID'] = os.getenv('GITHUBAPP_ID', 0)
-preview_app.config['GITHUBAPP_KEY'] = os.getenv('GITHUBAPP_KEY', False)
-preview_app.config['GITHUBAPP_SECRET'] = os.getenv('GITHUBAPP_SECRET', False)
-github_app = GitHubApp(preview_app)
+GITHUB_APP_ID = os.getenv('GITHUBAPP_ID')
+GITHUB_APP_SECRET = os.getenv('GITHUBAPP_SECRET')
 
 app = Flask(__name__)
-app.wsgi_app = DispatcherMiddleware(app.wsgi_app, {'/preview': preview_app})
+preview_app = Flask("Preview")
+preview_app.config['GITHUBAPP_KEY'] = None
+
+if GITHUB_APP_ID and GITHUB_APP_SECRET:
+    preview_app.config['GITHUBAPP_ID'] = GITHUB_APP_ID
+    preview_app.config['GITHUBAPP_SECRET'] = GITHUB_APP_SECRET
+    app.wsgi_app = DispatcherMiddleware(app.wsgi_app, {'/preview': preview_app})
+else:
+    preview_app.config['GITHUBAPP_ID'] = 0
+    preview_app.config['GITHUBAPP_SECRET'] = False
+
+github_app = GitHubApp(preview_app)
 handler = make_lambda_handler(app.wsgi_app)
 
 
