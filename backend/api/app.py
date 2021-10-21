@@ -4,9 +4,9 @@ from werkzeug.middleware.dispatcher import DispatcherMiddleware
 from flask import Flask, Response, jsonify
 from flask_githubapp.core import GitHubApp
 
-from model import get_public_plugins, get_index, get_plugin, get_excluded_plugins, update_cache, move_artifact_to_s3
-from shield import get_shield
-from utils import send_alert, reformat_ssh_key_to_pem_bytes
+from api.model import get_public_plugins, get_index, get_plugin, get_excluded_plugins, update_cache, move_artifact_to_s3
+from api.shield import get_shield
+from utils.utils import send_alert, reformat_ssh_key_to_pem_bytes
 
 GITHUB_APP_ID = os.getenv('GITHUBAPP_ID')
 GITHUB_APP_KEY = os.getenv("GITHUBAPP_KEY")
