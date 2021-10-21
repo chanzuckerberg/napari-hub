@@ -4,6 +4,7 @@ import os
 import os.path
 from datetime import datetime
 from typing import Union, IO
+import mimetypes
 
 import boto3
 from botocore.exceptions import ClientError
@@ -58,6 +59,11 @@ def cache(content: Union[dict, list, IO[bytes]], key: str, cache_bucket: str = b
     :param cache_bucket: bucket to save the files to, by default use the global bucket
     :param extra_args: extra argument for the uploaded object
     """
+    if extra_args is None:
+        extra_args = {}
+    mime = mimetypes.guess_extension(key)
+    if mime:
+        extra_args['ContentType'] = mime
     if bucket is None:
         send_alert(f"({datetime.now()}) Unable to find bucket for lambda "
                    f"configuration, skipping caching for napari hub."
