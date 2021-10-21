@@ -10,7 +10,7 @@
       "email": "ddoncila@gmail.com"
     }
   ],
-  "license": "",
+  "license": "MIT",
   "python_version": ">=3.6",
   "operating_system": ["Operating System :: OS Independent"],
   "release_date": "2021-03-03T20:41:59.257726Z",
