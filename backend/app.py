@@ -77,4 +77,4 @@ def handle_exception(e) -> Response:
 
 @github_app.on("workflow_run.completed")
 def preview():
-    move_artifact_to_s3(github_app.payload, github_app.installation_client.session.auth.token)
+    move_artifact_to_s3(github_app.payload, github_app.installation_client)

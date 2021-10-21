@@ -205,20 +205,29 @@ def get_plugin_metadata_async(plugins: Dict[str, str]) -> dict:
     return plugins_metadata
 
 
-def move_artifact_to_s3(payload, token):
+def move_artifact_to_s3(payload, client):
     """
     move preview page build artifact zip to public s3.
 
     :param payload: json body from the github webhook
-    :param token: installation client access token to query GitHub API
+    :param client: installation client to query GitHub API
     """
-    repo = get_attribute(payload, ["repository", "full_name"])
+    if get_attribute(payload, ["workflow_run", "name"]) != "Preview Page":
+        return
+
+    owner = get_attribute(payload, ['repository', 'owner', 'login'])
+    repo = get_attribute(payload, ["repository", "name"])
     workflow_run_id = get_attribute(payload, ["workflow_run", "id"])
     artifact_url = get_attribute(payload, ["workflow_run", "artifacts_url"])
     if artifact_url:
-        artifact = get_artifact(artifact_url, token)
+        artifact = get_artifact(artifact_url, client.session.auth.token)
         if artifact:
             zipfile = ZipFile(BytesIO(artifact.read()))
             for name in zipfile.namelist():
                 with zipfile.open(name) as file:
-                    cache(file, f'preview/{repo}/{workflow_run_id}/{name}')
+                    cache(file, f'preview/{owner}/{repo}/{workflow_run_id}/{name}')
+
+            num = get_attribute(payload, ['workflow_run', 'pull_requests', 'number'])
+            pull_request = client.pull_request(owner, repo, num)
+            pull_request.create_comment('Preview page for your plugin is ready here:\n'
+                                        f'https://preview.napari-hub.org/{owner}/{repo}/{workflow_run_id}/index.html')
