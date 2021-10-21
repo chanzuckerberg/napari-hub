@@ -50,19 +50,17 @@ def get_cache(key: str) -> Union[dict, None]:
         return None
 
 
-def cache(content: Union[dict, list, IO[bytes]], key: str, extra_args: dict = None):
+def cache(content: Union[dict, list, IO[bytes]], key: str):
     """
     Cache the given content to the key location.
 
     :param content: content to cache
     :param key: key path in s3
-    :param extra_args: extra argument for the uploaded object
     """
-    if extra_args is None:
-        extra_args = {}
+    extra_args = None
     mime = mimetypes.guess_type(key)[0]
     if mime:
-        extra_args['ContentType'] = mime
+        extra_args = {'ContentType': mime}
     if bucket is None:
         send_alert(f"({datetime.now()}) Unable to find bucket for lambda "
                    f"configuration, skipping caching for napari hub."

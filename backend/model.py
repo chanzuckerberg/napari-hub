@@ -221,4 +221,4 @@ def move_artifact_to_s3(payload, token):
             zipfile = ZipFile(BytesIO(artifact.read()))
             for name in zipfile.namelist():
                 with zipfile.open(name) as file:
-                    cache(file, f'preview/{repo}/{workflow_run_id}/{name}', {'ACL': 'public-read'})
+                    cache(file, f'preview/{repo}/{workflow_run_id}/{name}')
