@@ -61,7 +61,7 @@ def cache(content: Union[dict, list, IO[bytes]], key: str, cache_bucket: str = b
     """
     if extra_args is None:
         extra_args = {}
-    mime = mimetypes.guess_extension(key)
+    mime = mimetypes.guess_type(key)[0]
     if mime:
         extra_args['ContentType'] = mime
     if bucket is None:
