@@ -15,7 +15,7 @@ GITHUB_APP_SECRET = os.getenv('GITHUBAPP_SECRET')
 app = Flask(__name__)
 preview_app = Flask("Preview")
 
-if GITHUB_APP_ID and GITHUB_APP_KEY:
+if GITHUB_APP_ID and GITHUB_APP_KEY and GITHUB_APP_SECRET:
     preview_app.config['GITHUBAPP_ID'] = int(GITHUB_APP_ID)
     preview_app.config['GITHUBAPP_KEY'] = reformat_ssh_key_to_pem_bytes(GITHUB_APP_KEY)
     preview_app.config['GITHUBAPP_SECRET'] = GITHUB_APP_SECRET

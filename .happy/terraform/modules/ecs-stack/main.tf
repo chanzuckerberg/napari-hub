@@ -175,7 +175,7 @@ data aws_iam_policy_document backend_policy {
       "s3:GetObject",
     ]
 
-    resources = ["${local.data_bucket_arn}/*"]
+    resources = ["${local.data_bucket_arn}/*", "arn:aws:s3:::napari-hub-preview-public/*""]
   }
 }
 
