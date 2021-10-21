@@ -205,13 +205,12 @@ def get_plugin_metadata_async(plugins: Dict[str, str]) -> dict:
     return plugins_metadata
 
 
-def move_artifact_to_s3(payload, github_app_key, github_app_secret):
+def move_artifact_to_s3(payload, github_client):
     repo = get_attribute(payload, ["repository", "full_name"])
     workflow_run_id = get_attribute(payload, ["workflow_run", "id"])
-
     artifact_url = get_attribute(payload, ["workflow_run", "artifacts_url"])
     if artifact_url:
-        artifact = get_artifact(artifact_url, github_app_key, github_app_secret)
+        artifact = get_artifact(artifact_url, github_client.session.auth.token)
         if artifact:
             zipfile = ZipFile(BytesIO(artifact.read()))
             for name in zipfile.namelist():

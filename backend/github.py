@@ -146,9 +146,8 @@ def get_citations(citation_str: str) -> Dict[str, Union[str, None]]:
         return dict.fromkeys(['citation', 'RIS', 'BibTex', 'APA'], None)
 
 
-def get_artifact(url: str, github_app_key: str, github_app_secret: str) -> Union[IO[bytes], None]:
-    auth = HTTPBasicAuth(github_app_key, github_app_secret)
-    response = requests.get(url, auth=auth)
+def get_artifact(url: str, token: str) -> Union[IO[bytes], None]:
+    response = requests.get(url, headers={'Authorization': f'Bearer {token}'})
     if response.status_code != requests.codes.ok:
         return None
 
@@ -157,7 +156,7 @@ def get_artifact(url: str, github_app_key: str, github_app_secret: str) -> Union
     if not download_url:
         return None
 
-    response = requests.get(download_url, stream=True, auth=auth)
+    response = requests.get(download_url, stream=True, headers={'Authorization': f'Bearer {token}'})
     if response.status_code != requests.codes.ok:
         return None
 
