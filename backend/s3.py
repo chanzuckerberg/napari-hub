@@ -49,12 +49,13 @@ def get_cache(key: str) -> Union[dict, None]:
         return None
 
 
-def cache(content: Union[dict, list, IO[bytes]], key: str):
+def cache(content: Union[dict, list, IO[bytes]], key: str, cache_bucket: str = bucket):
     """
     Cache the given content to the key location.
 
     :param content: content to cache
     :param key: key path in s3
+    :param cache_bucket: bucket to save the files to, by default use the global bucket
     """
     if bucket is None:
         send_alert(f"({datetime.now()}) Unable to find bucket for lambda "
@@ -63,7 +64,7 @@ def cache(content: Union[dict, list, IO[bytes]], key: str):
                    f"napari hub lambda")
         return content
     if isinstance(content, io.IOBase):
-        s3_client.upload_fileobj(Fileobj=content, Bucket=bucket, Key=os.path.join(bucket_path, key))
+        s3_client.upload_fileobj(Fileobj=content, Bucket=cache_bucket, Key=os.path.join(bucket_path, key))
     else:
         with io.BytesIO(json.dumps(content).encode('utf8')) as stream:
-            s3_client.upload_fileobj(Fileobj=stream, Bucket=bucket, Key=os.path.join(bucket_path, key))
+            s3_client.upload_fileobj(Fileobj=stream, Bucket=cache_bucket, Key=os.path.join(bucket_path, key))

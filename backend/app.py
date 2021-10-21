@@ -6,7 +6,7 @@ from flask_githubapp.core import GitHubApp
 
 from model import get_public_plugins, get_index, get_plugin, get_excluded_plugins, update_cache, move_artifact_to_s3
 from shield import get_shield
-from utils import send_alert
+from utils import send_alert, reformat_ssh_key_to_pem_bytes
 
 GITHUB_APP_ID = os.getenv('GITHUBAPP_ID')
 GITHUB_APP_KEY = os.getenv("GITHUBAPP_KEY")
@@ -17,12 +17,9 @@ preview_app = Flask("Preview")
 
 if GITHUB_APP_ID and GITHUB_APP_KEY:
     preview_app.config['GITHUBAPP_ID'] = int(GITHUB_APP_ID)
-    chunked = '\n'.join(GITHUB_APP_KEY[i:i+64] for i in range(0, len(GITHUB_APP_KEY), 64))
-    GITHUB_APP_KEY = f"-----BEGIN RSA PRIVATE KEY-----\n{chunked}\n-----END RSA PRIVATE KEY-----\n"
-    preview_app.config['GITHUBAPP_KEY'] = GITHUB_APP_KEY.encode("utf-8")
-    preview_app.config['GITHUBAPP_SECRET'] = False
+    preview_app.config['GITHUBAPP_KEY'] = reformat_ssh_key_to_pem_bytes(GITHUB_APP_KEY)
+    preview_app.config['GITHUBAPP_SECRET'] = GITHUB_APP_SECRET
     app.wsgi_app = DispatcherMiddleware(app.wsgi_app, {'/preview': preview_app})
-    print("Initialized Github Preview App endpoint at /preview")
 else:
     preview_app.config['GITHUBAPP_ID'] = 0
     preview_app.config['GITHUBAPP_KEY'] = None
@@ -80,4 +77,4 @@ def handle_exception(e) -> Response:
 
 @github_app.on("workflow_run.completed")
 def preview():
-    move_artifact_to_s3(github_app.payload, github_app.installation_client)
+    move_artifact_to_s3(github_app.payload, github_app.installation_client.session.auth, 'napari-hub-preview-public')
