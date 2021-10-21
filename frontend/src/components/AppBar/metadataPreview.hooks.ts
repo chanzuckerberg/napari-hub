@@ -91,14 +91,6 @@ export function useMetadataSections(): MetadataSection[] {
           hasValue: !!plugin.version,
         },
         {
-          name: 'Release date',
-          hasValue: !!plugin.release_date,
-        },
-        {
-          name: 'First released',
-          hasValue: !!plugin.first_released,
-        },
-        {
           name: 'Development Status',
           hasValue: !!plugin.development_status,
         },
