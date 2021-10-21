@@ -216,10 +216,12 @@ def move_artifact_to_s3(payload, token, bucket):
     repo = get_attribute(payload, ["repository", "full_name"])
     workflow_run_id = get_attribute(payload, ["workflow_run", "id"])
     artifact_url = get_attribute(payload, ["workflow_run", "artifacts_url"])
+    print(f"repo {repo}\nworkflow_run_id {workflow_run_id}\nartifact_url {artifact_url}")
     if artifact_url:
         artifact = get_artifact(artifact_url, token)
         if artifact:
             zipfile = ZipFile(BytesIO(artifact.read()))
             for name in zipfile.namelist():
                 with zipfile.open(name) as file:
+                    print(name)
                     cache(file, f'preview/{repo}/{workflow_run_id}/{name}', bucket)
