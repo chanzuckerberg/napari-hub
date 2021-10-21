@@ -104,9 +104,9 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
             class="list-none block"
           >
             <li
-              class="my-2 first:mt-0 last:mb-0 leading-8"
+              class="text-napari-gray font-normal bg-napari-preview-orange-overlay block leading-8"
             >
-              MIT
+              information not submitted
             </li>
           </ul>
         </li>
@@ -403,9 +403,9 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
             class="list-none block"
           >
             <li
-              class="my-2 first:mt-0 last:mb-0 leading-8"
+              class="text-napari-gray font-normal bg-napari-preview-orange-overlay block leading-8"
             >
-              Draga Doncila
+              information not submitted
             </li>
           </ul>
         </li>
@@ -463,12 +463,13 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
               </span>
             </li>
             <li
-              class="my-2 first:mt-0 last:mb-0 leading-8"
+              class="my-2 first:mt-0 last:mb-0 leading-8 bg-napari-preview-orange-overlay"
             >
               <span
-                class="flex items-center"
+                class="flex items-center text-napari-gray"
               >
                 <svg
+                  class="missingDocumentation"
                   fill="none"
                   height="15"
                   viewBox="0 0 12 15"
@@ -489,14 +490,12 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
                     stroke="black"
                   />
                 </svg>
-                <a
-                  class="ml-2 underline"
-                  href="https://github.com/DragaDoncila/napari-compressed-labels-io"
-                  rel="noreferrer"
-                  target="_blank"
+                <span
+                  class="ml-2 cursor-not-allowed"
+                  title="Information not submitted"
                 >
                   Documentation
-                </a>
+                </span>
               </span>
             </li>
             <li
@@ -691,9 +690,9 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
             class="list-none inline"
           >
             <li
-              class="my-2 first:mt-0 last:mb-0 leading-8 inline commaList"
+              class="text-napari-gray font-normal bg-napari-preview-orange-overlay inline"
             >
-              Draga Doncila
+              information not submitted
             </li>
           </ul>
         </li>
@@ -751,12 +750,13 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
               </span>
             </li>
             <li
-              class="my-2 first:mt-0 last:mb-0 leading-8 inline commaList"
+              class="my-2 first:mt-0 last:mb-0 leading-8 inline commaList bg-napari-preview-orange-overlay"
             >
               <span
-                class="inline-flex items-center"
+                class="inline-flex items-center text-napari-gray"
               >
                 <svg
+                  class="missingDocumentation"
                   fill="none"
                   height="15"
                   viewBox="0 0 12 15"
@@ -777,14 +777,12 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
                     stroke="black"
                   />
                 </svg>
-                <a
-                  class="ml-2 underline"
-                  href="https://github.com/DragaDoncila/napari-compressed-labels-io"
-                  rel="noreferrer"
-                  target="_blank"
+                <span
+                  class="ml-2 cursor-not-allowed"
+                  title="Information not submitted"
                 >
                   Documentation
-                </a>
+                </span>
               </span>
             </li>
             <li
@@ -1471,9 +1469,9 @@ the coverage at least stays the same before you submit a pull request.
             class="list-none inline"
           >
             <li
-              class="my-2 first:mt-0 last:mb-0 leading-8 inline commaList"
+              class="text-napari-gray font-normal bg-napari-preview-orange-overlay inline"
             >
-              MIT
+              information not submitted
             </li>
           </ul>
         </li>
