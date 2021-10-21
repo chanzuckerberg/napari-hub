@@ -29,10 +29,7 @@ const previewOptions =
     ? {
         // The Image API doesn't work for exported apps, so we need to use a
         // different image loader to supplement it. The workaround is to use imgix
-        // with a root path for Next.js v10: https://git.io/J0k6G. For v11, a new
-        // `custom` loader was added to support this behavior directly:
-        // https://git.io/J0k6R
-        // TODO Refactor to use `custom` loader when Next.js is upgraded to v11
+        // with a root path for Next.js v10: https://git.io/J0k6G.
         images: {
           loader: 'imgix',
           path: '/',
@@ -57,16 +54,17 @@ module.exports = withMDX({
 
   pageExtensions: ['ts', 'tsx', 'mdx'],
 
-  // Enable webpack 5 support for faster builds :)
-  // https://nextjs.org/docs/messages/webpack5
-  future: {
-    webpack5: true,
+  // Enable support for importing native ESM modules.
+  // https://nextjs.org/blog/next-11-1#es-modules-support
+  experimental: {
+    esmExternals: true,
   },
 
   webpack(config, { isServer }) {
-    // Sets BABEL_ENV to `client` or `server` depending on the Next.js build.
-    // This is required for the Material UI + babel import plugin to work.
-    process.env.BABEL_ENV = config.name;
+    // Sets BABEL_ENV to `<[server|client]-[dev|prod]>` depending on the Next.js
+    // build.  This is required for the Material UI + babel import plugin to work.
+    const env = PROD ? 'prod' : 'dev';
+    process.env.BABEL_ENV = `${config.name}-${env}`;
 
     if (!isServer) {
       config.resolve.alias.lodash = require.resolve('lodash-es');

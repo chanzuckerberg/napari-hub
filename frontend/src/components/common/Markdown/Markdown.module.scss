@@ -1,3 +1,6 @@
+/* stylelint-disable-next-line at-rule-no-unknown */
+@use 'sass:math';
+
 .markdown {
   code {
     @apply text-base font-normal p-1;
@@ -18,7 +21,7 @@
       implement a solution in TypeScript.
       https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-margin-top
     */
-    scroll-margin-top: #{(35px / 16px)}rem;
+    scroll-margin-top: #{math.div(35px, 16px)}rem;
   }
 
   pre {

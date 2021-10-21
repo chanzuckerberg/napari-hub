@@ -1,4 +1,4 @@
-import { TableOfContents } from '@/components/common';
+import { TableOfContents } from '@/components/common/TableOfContents';
 
 import { getHeadersFromMarkdown } from './Markdown.utils';
 

@@ -1,10 +1,10 @@
 import clsx from 'clsx';
 import { useState } from 'react';
 
+import { SkeletonLoader } from '@/components/common/SkeletonLoader';
 import { usePluginState } from '@/context/plugin';
 import { usePlausible } from '@/hooks';
 
-import { SkeletonLoader } from '../common';
 import { InstallModal } from './InstallModal';
 
 interface Props {

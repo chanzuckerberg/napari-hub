@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 
-import { Link } from '@/components/common';
+import { Link } from '@/components/common/Link';
 import { resetLoadingState } from '@/store/loading';
 import { resetState } from '@/store/search/form.store';
 import { LinkInfo } from '@/types';

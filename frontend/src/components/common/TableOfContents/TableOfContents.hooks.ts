@@ -75,11 +75,8 @@ export function useActiveHeader(headers: TOCHeader[]) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const findActiveHeader = useCallback(
     throttle(() => {
-      const {
-        firstHeader,
-        firstHeaderIndex,
-        firstHeaderTop,
-      } = firstHeaderInViewport(headers);
+      const { firstHeader, firstHeaderIndex, firstHeaderTop } =
+        firstHeaderInViewport(headers);
 
       if (!firstHeader) {
         return;

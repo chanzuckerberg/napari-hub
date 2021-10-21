@@ -57,10 +57,10 @@ function getLicenseResults(...licenses: string[]): SearchResult[] {
 function createMockFilterGet(
   filters: DeepPartial<SearchFormStore['filters']> = {},
 ) {
-  return (jest.fn(() =>
+  return jest.fn(() =>
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     defaultsDeep({ filters }, DEFAULT_STATE),
-  ) as unknown) as DeriveGet;
+  ) as unknown as DeriveGet;
 }
 
 describe('filterResults()', () => {

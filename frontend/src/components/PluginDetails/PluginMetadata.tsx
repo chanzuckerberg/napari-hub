@@ -1,9 +1,10 @@
 import clsx from 'clsx';
 import { isArray } from 'lodash';
-import { ReactNode } from 'react-markdown';
+import { ReactNode } from 'react';
 
-import { Divider, SkeletonLoader } from '@/components/common';
+import { Divider } from '@/components/common/Divider';
 import { MediaFragment } from '@/components/common/media';
+import { SkeletonLoader } from '@/components/common/SkeletonLoader';
 import { usePluginState } from '@/context/plugin';
 import { formatDate } from '@/utils';
 

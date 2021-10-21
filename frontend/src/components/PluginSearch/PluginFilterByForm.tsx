@@ -2,7 +2,7 @@ import { FormLabel } from '@material-ui/core';
 import { get, set } from 'lodash';
 import { useSnapshot } from 'valtio';
 
-import { Accordion } from '@/components/common';
+import { Accordion } from '@/components/common/Accordion';
 import { Media } from '@/components/common/media';
 import { SearchFormStore, searchFormStore } from '@/store/search/form.store';
 

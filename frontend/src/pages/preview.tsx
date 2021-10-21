@@ -2,7 +2,7 @@ import fs from 'fs-extra';
 import { GetStaticPropsResult } from 'next';
 import DefaultErrorPage from 'next/error';
 
-import { PluginDetails } from '@/components';
+import { PluginDetails } from '@/components/PluginDetails';
 import { DEFAULT_PLUGIN_DATA, DEFAULT_REPO_DATA } from '@/constants/plugin';
 import { PluginStateProvider } from '@/context/plugin';
 import { PROD } from '@/env';

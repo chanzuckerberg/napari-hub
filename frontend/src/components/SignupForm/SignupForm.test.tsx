@@ -33,7 +33,7 @@ describe('<SignupForm />', () => {
     });
     fireEvent.click(getByTestId('submitButton'));
 
-    expect(getByTestId('emailError').textContent).not.toEqual('');
+    expect(getByTestId('emailError').textContent).not.toBe('');
     expect(onSubmit).not.toHaveBeenCalled();
   });
 
@@ -47,7 +47,7 @@ describe('<SignupForm />', () => {
     });
     fireEvent.click(getByTestId('submitButton'));
 
-    expect(getByTestId('emailError').textContent).not.toEqual('');
+    expect(getByTestId('emailError').textContent).not.toBe('');
     expect(onSubmit).not.toHaveBeenCalled();
   });
 });

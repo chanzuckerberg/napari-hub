@@ -4,7 +4,7 @@ import Head from 'next/head';
 import { ReactNode, useEffect } from 'react';
 
 import { hubAPI, spdxLicenseDataAPI } from '@/axios';
-import { ErrorMessage } from '@/components/common';
+import { ErrorMessage } from '@/components/common/ErrorMessage';
 import { PluginSearch } from '@/components/PluginSearch';
 import { useLoadingState } from '@/context/loading';
 import {

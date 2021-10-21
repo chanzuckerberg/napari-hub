@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { TOC_HEADER_TAG, TOCHeader } from '@/components/common';
+import { TOC_HEADER_TAG, TOCHeader } from '@/components/common/TableOfContents';
 
 export function useHeaders() {
   const [headers, setHeaders] = useState<TOCHeader[]>([]);

@@ -1,7 +1,7 @@
 import { IconButton, SwipeableDrawer } from '@material-ui/core';
 
-import { Link } from '@/components/common';
 import { Close } from '@/components/common/icons';
+import { Link } from '@/components/common/Link';
 import { LinkInfo } from '@/types';
 
 interface Props {
