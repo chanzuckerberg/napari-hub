@@ -107,6 +107,28 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
               class="text-napari-gray font-normal bg-napari-preview-orange-overlay block leading-8"
             >
               information not submitted
+              <div
+                class="flex items-center justify-center bg-napari-preview-orange"
+              >
+                <svg
+                  fill="none"
+                  height="15"
+                  viewBox="0 0 15 15"
+                  width="15"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle
+                    cx="7.5"
+                    cy="11"
+                    fill="#fff"
+                    r="1"
+                  />
+                  <path
+                    d="M6.5 2H8.5V8H6.5V2Z"
+                    fill="#fff"
+                  />
+                </svg>
+              </div>
             </li>
           </ul>
         </li>
@@ -406,6 +428,28 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
               class="text-napari-gray font-normal bg-napari-preview-orange-overlay block leading-8"
             >
               information not submitted
+              <div
+                class="flex items-center justify-center bg-napari-preview-orange"
+              >
+                <svg
+                  fill="none"
+                  height="15"
+                  viewBox="0 0 15 15"
+                  width="15"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle
+                    cx="7.5"
+                    cy="11"
+                    fill="#fff"
+                    r="1"
+                  />
+                  <path
+                    d="M6.5 2H8.5V8H6.5V2Z"
+                    fill="#fff"
+                  />
+                </svg>
+              </div>
             </li>
           </ul>
         </li>
@@ -497,6 +541,28 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
                   Documentation
                 </span>
               </span>
+              <div
+                class="flex items-center justify-center bg-napari-preview-orange"
+              >
+                <svg
+                  fill="none"
+                  height="15"
+                  viewBox="0 0 15 15"
+                  width="15"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle
+                    cx="7.5"
+                    cy="11"
+                    fill="#fff"
+                    r="1"
+                  />
+                  <path
+                    d="M6.5 2H8.5V8H6.5V2Z"
+                    fill="#fff"
+                  />
+                </svg>
+              </div>
             </li>
             <li
               class="my-2 first:mt-0 last:mb-0 leading-8"
@@ -693,6 +759,28 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
               class="text-napari-gray font-normal bg-napari-preview-orange-overlay inline"
             >
               information not submitted
+              <div
+                class="flex items-center justify-center bg-napari-preview-orange"
+              >
+                <svg
+                  fill="none"
+                  height="15"
+                  viewBox="0 0 15 15"
+                  width="15"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle
+                    cx="7.5"
+                    cy="11"
+                    fill="#fff"
+                    r="1"
+                  />
+                  <path
+                    d="M6.5 2H8.5V8H6.5V2Z"
+                    fill="#fff"
+                  />
+                </svg>
+              </div>
             </li>
           </ul>
         </li>
@@ -784,6 +872,28 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
                   Documentation
                 </span>
               </span>
+              <div
+                class="flex items-center justify-center bg-napari-preview-orange"
+              >
+                <svg
+                  fill="none"
+                  height="15"
+                  viewBox="0 0 15 15"
+                  width="15"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle
+                    cx="7.5"
+                    cy="11"
+                    fill="#fff"
+                    r="1"
+                  />
+                  <path
+                    d="M6.5 2H8.5V8H6.5V2Z"
+                    fill="#fff"
+                  />
+                </svg>
+              </div>
             </li>
             <li
               class="my-2 first:mt-0 last:mb-0 leading-8 inline commaList"
@@ -1472,6 +1582,28 @@ the coverage at least stays the same before you submit a pull request.
               class="text-napari-gray font-normal bg-napari-preview-orange-overlay inline"
             >
               information not submitted
+              <div
+                class="flex items-center justify-center bg-napari-preview-orange"
+              >
+                <svg
+                  fill="none"
+                  height="15"
+                  viewBox="0 0 15 15"
+                  width="15"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle
+                    cx="7.5"
+                    cy="11"
+                    fill="#fff"
+                    r="1"
+                  />
+                  <path
+                    d="M6.5 2H8.5V8H6.5V2Z"
+                    fill="#fff"
+                  />
+                </svg>
+              </div>
             </li>
           </ul>
         </li>

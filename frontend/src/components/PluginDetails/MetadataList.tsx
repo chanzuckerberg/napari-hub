@@ -6,9 +6,9 @@ import { Link } from '@/components/common';
 import { usePluginState } from '@/context/plugin';
 import { usePlausible } from '@/hooks';
 
+import { MetadataStatus } from '../AppBar/MetadataStatus';
 import styles from './MetadataList.module.scss';
 import { MetadataItem, MetadataValueTypes } from './PluginDetails.types';
-import { MetadataStatus } from '../AppBar/MetadataStatus';
 
 interface CommonProps {
   /**
