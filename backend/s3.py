@@ -50,13 +50,12 @@ def get_cache(key: str) -> Union[dict, None]:
         return None
 
 
-def cache(content: Union[dict, list, IO[bytes]], key: str, cache_bucket: str = bucket, extra_args: dict = None):
+def cache(content: Union[dict, list, IO[bytes]], key: str, extra_args: dict = None):
     """
     Cache the given content to the key location.
 
     :param content: content to cache
     :param key: key path in s3
-    :param cache_bucket: bucket to save the files to, by default use the global bucket
     :param extra_args: extra argument for the uploaded object
     """
     if extra_args is None:
@@ -71,9 +70,9 @@ def cache(content: Union[dict, list, IO[bytes]], key: str, cache_bucket: str = b
                    f"napari hub lambda")
         return content
     if isinstance(content, io.IOBase):
-        s3_client.upload_fileobj(Fileobj=content, Bucket=cache_bucket,
+        s3_client.upload_fileobj(Fileobj=content, Bucket=bucket,
                                  Key=os.path.join(bucket_path, key), ExtraArgs=extra_args)
     else:
         with io.BytesIO(json.dumps(content).encode('utf8')) as stream:
-            s3_client.upload_fileobj(Fileobj=stream, Bucket=cache_bucket,
+            s3_client.upload_fileobj(Fileobj=stream, Bucket=bucket,
                                      Key=os.path.join(bucket_path, key), ExtraArgs=extra_args)

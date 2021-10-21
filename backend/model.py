@@ -205,13 +205,12 @@ def get_plugin_metadata_async(plugins: Dict[str, str]) -> dict:
     return plugins_metadata
 
 
-def move_artifact_to_s3(payload, token, bucket):
+def move_artifact_to_s3(payload, token):
     """
     move preview page build artifact zip to public s3.
 
     :param payload: json body from the github webhook
     :param token: installation client access token to query GitHub API
-    :param bucket: name of the public s3 bucket
     """
     repo = get_attribute(payload, ["repository", "full_name"])
     workflow_run_id = get_attribute(payload, ["workflow_run", "id"])
@@ -222,4 +221,4 @@ def move_artifact_to_s3(payload, token, bucket):
             zipfile = ZipFile(BytesIO(artifact.read()))
             for name in zipfile.namelist():
                 with zipfile.open(name) as file:
-                    cache(file, f'preview/{repo}/{workflow_run_id}/{name}', bucket, {'ACL': 'public-read'})
+                    cache(file, f'preview/{repo}/{workflow_run_id}/{name}', {'ACL': 'public-read'})
