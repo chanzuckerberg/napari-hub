@@ -122,6 +122,7 @@
     "playwright": "^1.16.0",
     "plop": "^2.7.6",
     "postcss": "^8.3.11",
+    "postcss-scss": "^4.0.1",
     "postcss-strip-units": "^2.0.1",
     "prettier": "^2.4.1",
     "sass": "^1.43.2",
