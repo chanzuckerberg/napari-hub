@@ -6,7 +6,7 @@
   "description_content_type": "text/markdown",
   "authors": [
     {
-      "name": "",
+      "name": "Draga Doncila",
       "email": "ddoncila@gmail.com"
     }
   ],
@@ -24,7 +24,7 @@
     "dask[complete]"
   ],
   "project_site": "https://pypi.org/project/napari-compressed-labels-io",
-  "documentation": "",
+  "documentation": "https://github.com/DragaDoncila/napari-compressed-labels-io",
   "support": "https://github.com/DragaDoncila/napari-compressed-labels-io/issues",
   "report_issues": "https://github.com/DragaDoncila/napari-compressed-labels-io/issues",
   "twitter": "https://twitter.com/DragaDoncila",
