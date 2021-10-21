@@ -8,6 +8,7 @@ import { usePlausible } from '@/hooks';
 
 import styles from './MetadataList.module.scss';
 import { MetadataItem, MetadataValueTypes } from './PluginDetails.types';
+import { MetadataStatus } from '../AppBar/MetadataStatus';
 
 interface CommonProps {
   /**
@@ -60,6 +61,7 @@ function MetadataListItem({ inline, title, values }: MetadataListItemProps) {
             )}
           >
             information not submitted
+            <MetadataStatus hasValue={false} />
           </li>
         )}
 
@@ -148,6 +150,7 @@ function MetadataListItem({ inline, title, values }: MetadataListItemProps) {
                 key={key}
               >
                 {node}
+                {isValueEmpty && <MetadataStatus hasValue={false} />}
               </li>
             );
           })}
