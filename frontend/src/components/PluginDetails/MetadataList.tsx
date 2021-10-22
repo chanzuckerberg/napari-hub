@@ -42,7 +42,7 @@ function MetadataListItem({ inline, title, values }: MetadataListItemProps) {
       <h4
         className={clsx(
           // Inline styles
-          inline ? 'inline mr-2' : 'block',
+          inline ? 'inline mr-2' : 'block mb-2',
 
           // Font
           'font-bold whitespace-nowrap',
@@ -51,12 +51,12 @@ function MetadataListItem({ inline, title, values }: MetadataListItemProps) {
         {title}:
       </h4>
 
-      <ul className={clsx('list-none', inline ? 'inline' : 'block')}>
+      <ul className={clsx('list-none space-y-5', inline ? 'inline' : 'block')}>
         {isEmpty && (
           <li
             className={clsx(
               'text-napari-gray font-normal',
-              inline ? 'inline' : 'block leading-8',
+              inline ? 'inline' : 'block',
             )}
           >
             information not submitted
@@ -76,12 +76,15 @@ function MetadataListItem({ inline, title, values }: MetadataListItemProps) {
               key = `${value.text}-${value.href}`;
               const hasLink = !!value.href;
 
+              const icon = (!hasLink && value.missingIcon) || value.icon;
+              const iconNode = icon && <span className="min-w-4">{icon}</span>;
+
               const linkNode = hasLink && (
                 <>
-                  {value.icon}
+                  {iconNode}
 
                   <Link
-                    className="ml-2 underline"
+                    className="ml-2 underline inline -mt-1"
                     href={value.href}
                     newTab
                     onClick={() => {
@@ -101,10 +104,10 @@ function MetadataListItem({ inline, title, values }: MetadataListItemProps) {
 
               const emptyLinkNode = !hasLink && (
                 <>
-                  {value.missingIcon || value.icon}
+                  {iconNode}
 
                   <Tooltip placement="right" title="Information not submitted">
-                    <span className="ml-2 cursor-not-allowed">
+                    <span className="ml-2 cursor-not-allowed -mt-1">
                       {value.text}
                     </span>
                   </Tooltip>
@@ -115,7 +118,6 @@ function MetadataListItem({ inline, title, values }: MetadataListItemProps) {
                 <span
                   className={clsx(
                     inline ? 'inline-flex' : 'flex',
-                    'items-center',
                     !value.href && 'text-napari-gray',
                   )}
                 >
@@ -128,11 +130,8 @@ function MetadataListItem({ inline, title, values }: MetadataListItemProps) {
             return (
               <li
                 className={clsx(
-                  // Margins
-                  'my-2 first:mt-0 last:mb-0',
-
                   // Line height
-                  'leading-8',
+                  'leading-normal',
 
                   // Render as comma list if inline
                   // https://markheath.net/post/css-comma-separated-list
