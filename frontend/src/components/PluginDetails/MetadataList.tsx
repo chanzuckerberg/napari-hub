@@ -3,10 +3,10 @@ import clsx from 'clsx';
 import { ReactNode } from 'react-markdown';
 
 import { Link } from '@/components/common';
+import { MetadataStatus } from '@/components/MetadataStatus';
 import { usePluginState } from '@/context/plugin';
 import { usePlausible } from '@/hooks';
 
-import { MetadataStatus } from '../AppBar/MetadataStatus';
 import styles from './MetadataList.module.scss';
 import { MetadataItem, MetadataValueTypes } from './PluginDetails.types';
 
