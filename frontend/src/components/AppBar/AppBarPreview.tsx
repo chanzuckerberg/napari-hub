@@ -233,6 +233,9 @@ export function AppBarPreview() {
 
           // Bottom border
           'border-napari-preview-orange border-b-2',
+
+          // Increase z-index so that it overlays over plugin page content.
+          'z-20',
         )}
       >
         <p className="text-napari-preview-orange">This is a preview</p>
