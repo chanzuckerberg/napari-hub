@@ -47,6 +47,9 @@ function MetadataListItem({ inline, title, values }: MetadataListItemProps) {
 
           // Font
           'font-bold whitespace-nowrap',
+
+          // Preview orange overlay
+          isEmpty && 'bg-napari-preview-orange-overlay',
         )}
       >
         {title}:
@@ -56,7 +59,7 @@ function MetadataListItem({ inline, title, values }: MetadataListItemProps) {
         {isEmpty && (
           <li
             className={clsx(
-              'text-napari-gray font-normal bg-napari-preview-orange-overlay',
+              'text-napari-gray font-normal bg-napari-preview-orange-overlay flex justify-between items-center',
               inline ? 'inline' : 'block leading-8',
             )}
           >
