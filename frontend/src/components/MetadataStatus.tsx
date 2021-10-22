@@ -16,7 +16,7 @@ export function MetadataStatus({
       className={clsx(
         'flex items-center justify-center',
         hasValue ? 'bg-napari-primary' : 'bg-napari-preview-orange',
-        variant === 'small' ? 'w-2 h-2' : 'w-[0.9375rem] h-[0.9375rem]',
+        variant === 'small' && 'w-2 h-2',
       )}
     >
       {hasValue ? <Check /> : <PriorityHigh color="#fff" />}
