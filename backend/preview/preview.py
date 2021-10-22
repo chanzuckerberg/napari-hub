@@ -2,15 +2,19 @@ from typing import Union
 from git import Repo
 from pkginfo import Wheel
 from collections import defaultdict
+import datetime
 import subprocess
 import sys
 import glob
 import os
 import json
+import requests
 
 from utils.github import github_pattern, get_github_metadata, get_github_repo_url
+from utils.utils import get_attribute
 
-def get_plugin_preview(repo_pth: str, dest_dir: str, is_local: bool=False) -> dict:
+
+def get_plugin_preview(repo_pth: str, dest_dir: str, is_local: bool = False) -> dict:
     """Get plugin preview metadata of package at repo_pth.
 
     If is_local is not True, first clone the repository from GitHub
@@ -38,8 +42,11 @@ def get_plugin_preview(repo_pth: str, dest_dir: str, is_local: bool=False) -> di
         extra_meta = get_github_metadata(meta["code_repository"])
         meta.update(extra_meta)
 
+    # get release date and first released
+    get_pypi_release_date(meta)
+
     # write json
-    with open(os.path.join(dest_dir, 'preview_meta.json'), 'w') as f:
+    with open(os.path.join(dest_dir, "preview_meta.json"), "w") as f:
         json.dump(meta, f)
 
 
@@ -57,7 +64,7 @@ def clone_repo(code_url: str, dest_dir: str) -> Union[str, None]:
     try:
         plugin_name = github_match.group(2)
     except IndexError:
-        plugin_name = 'plugin'
+        plugin_name = "plugin"
 
     try:
         repo = Repo.clone_from(code_url, os.path.join(dest_dir, plugin_name))
@@ -66,11 +73,12 @@ def clone_repo(code_url: str, dest_dir: str) -> Union[str, None]:
 
     return repo.working_tree_dir
 
+
 def build_dist(pth: str, dest_dir: str) -> str:
     """Builds wheel for package found at `pth` and returns path to wheel.
 
     Using the currently executing python interpreter, attempts to build a wheel
-    from the package at `pth` and place it in dest_dir. 
+    from the package at `pth` and place it in dest_dir.
     If wheel build fails raises RuntimeError.
 
     :param pth: path to root of python package
@@ -90,18 +98,25 @@ def build_dist(pth: str, dest_dir: str) -> str:
     # change into plugin directory because building from outside has caused errors before
     full_pth = os.path.abspath(pth)
     current_dir = os.getcwd()
-    os.chdir(full_pth)    
+    os.chdir(full_pth)
 
     try:
-        subprocess.run([PYTHON_BIN, 'setup.py', 'bdist_wheel', '--dist-dir', dest_dir], check=True, capture_output=True)
+        subprocess.run(
+            [PYTHON_BIN, "setup.py", "bdist_wheel", "--dist-dir", dest_dir],
+            check=True,
+            capture_output=True,
+        )
     except subprocess.CalledProcessError as e:
         os.chdir(current_dir)
-        raise RuntimeError(f'Could not build distribution for package at {full_pth}.\n{e.stderr}')
+        raise RuntimeError(
+            f"Could not build distribution for package at {full_pth}.\n{e.stderr}"
+        )
 
-    wheel_path = glob.glob(os.path.join(dest_dir, '*.whl'))[0]
+    wheel_path = glob.glob(os.path.join(dest_dir, "*.whl"))[0]
     os.chdir(current_dir)
 
     return wheel_path
+
 
 def parse_meta(pkg_pth):
     """Parses and returns metadata of the wheel at pkg_pth.
@@ -109,37 +124,41 @@ def parse_meta(pkg_pth):
     :param pkg_pth: path to wheel
     :return: dictionary matching fields to the parsed values
     """
-    meta_needed = {        
-        "name": 'name',
-        "summary": 'summary',
-        "description": 'description',
-        "description_content_type" : 'description_content_type',
-        "authors" : 'author',
-        "license" : 'license',
-        "python_version": 'requires_python',
-        "operating_system" : 'classifiers',
-        "version": 'version',
-        "development_status": 'classifiers',
-        "requirements" : 'requires_dist',
-        "project_site": 'home_page',
+    meta_needed = {
+        "name": "name",
+        "summary": "summary",
+        "description": "description",
+        "description_content_type": "description_content_type",
+        "authors": "author",
+        "license": "license",
+        "python_version": "requires_python",
+        "operating_system": "classifiers",
+        "version": "version",
+        "development_status": "classifiers",
+        "requirements": "requires_dist",
+        "project_site": "home_page",
     }
     project_url_meta = {
-        "documentation": 'Documentation',
-        "support": 'User Support',
-        "report_issues": 'Report Issues',
-        "twitter": 'Twitter',
-        "code_repository": 'Source Code'
+        "documentation": "Documentation",
+        "support": "User Support",
+        "report_issues": "Report Issues",
+        "twitter": "Twitter",
+        "code_repository": "Source Code",
     }
 
     meta = defaultdict()
     pkg_info = Wheel(pkg_pth)
 
-    # split project URLS into dict 
+    # split project URLS into dict
     proj_urls = pkg_info.project_urls
     if proj_urls:
-        proj_urls = [[val.strip() for val in url_str.split(',')] for url_str in proj_urls]
-        proj_urls = dict(zip([url[0] for url in proj_urls], [url[1] for url in proj_urls]))
-        
+        proj_urls = [
+            [val.strip() for val in url_str.split(",")] for url_str in proj_urls
+        ]
+        proj_urls = dict(
+            zip([url[0] for url in proj_urls], [url[1] for url in proj_urls])
+        )
+
         for key, val in project_url_meta.items():
             if val in proj_urls:
                 meta[key] = proj_urls[val]
@@ -149,15 +168,19 @@ def parse_meta(pkg_pth):
     for field, attr in meta_needed.items():
         val = getattr(pkg_info, attr)
         # author also needs email
-        if attr == 'author':
-            meta[field] = [{'name': val, 'email': getattr(pkg_info, 'author_email')}]
+        if attr == "author":
+            meta[field] = [{"name": val, "email": getattr(pkg_info, "author_email")}]
         # classifiers is one big list so we need to search through it for relevant ones
-        elif attr == 'classifiers':
+        elif attr == "classifiers":
             if val:
-                if field == 'operating_system':
-                    meta[field] = list(filter(lambda x: x.startswith('Operating System'), val))
-                elif field == 'development_status':
-                    meta[field] = list(filter(lambda x: x.startswith('Development Status'), val))
+                if field == "operating_system":
+                    meta[field] = list(
+                        filter(lambda x: x.startswith("Operating System"), val)
+                    )
+                elif field == "development_status":
+                    meta[field] = list(
+                        filter(lambda x: x.startswith("Development Status"), val)
+                    )
             else:
                 meta[field] = None
         else:
@@ -165,11 +188,58 @@ def parse_meta(pkg_pth):
 
     # try to github pattern match home page if code_repository still hasn't been found
     if not meta.get("code_repository"):
-        proj_site = meta['project_site']
+        proj_site = meta["project_site"]
         match = github_pattern.match(proj_site)
         if match:
             meta["code_repository"] = match.group(0)
 
     return meta
 
-    
+
+def get_pypi_release_date(meta):
+    """Get `first_released` & `release_date` by comparing PyPI and GitHub info
+
+    Compare GitHub package version to PyPI package version and:
+        - if plugin is not on PyPI, mock today's date for `first_released`
+            and `release_date`
+        - else if GitHub version is newer than PyPI, use PyPI `first_released`
+            and today's date for `release_date`
+        - else use PyPI `first_released` and `release_date`
+
+    :param meta: dictionary of GitHub repository metadata
+    """
+    name = meta.get("name")
+    gh_version = meta.get("version")
+
+    current_date = datetime.datetime.utcnow().isoformat()
+    release_date = None
+    first_released = None
+    if name:
+        response = requests.get(f"https://pypi.python.org/pypi/{name}/json")
+        # plugin has already been released to PyPI
+        if response.ok:
+            plugin_pypi = json.loads(response.text)
+            pypi_version = get_attribute(plugin_pypi, ["info", "version"])
+            first_released_pypi = min(
+                get_attribute(release, [0, "upload_time_iso_8601"])
+                for _, release in get_attribute(plugin_pypi, ["releases"]).items()
+                if get_attribute(release, [0, "upload_time_iso_8601"])
+            )
+            release_date_pypi = get_attribute(
+                plugin_pypi, ["releases", pypi_version, 0, "upload_time_iso_8601"]
+            )
+            # this will be a new version on pypi, keep first_released but mock new release_date
+            if gh_version > pypi_version:
+                first_released = first_released_pypi
+                release_date = current_date
+            # versions are the same, or gh version is younger, we just keep pypi data
+            else:
+                first_released = first_released_pypi
+                release_date = release_date_pypi
+        # plugin not yet released to PyPI, we mock it being released today
+        else:
+            # assuming UTC
+            release_date = first_released = current_date
+
+    meta["release_date"] = release_date
+    meta["first_released"] = first_released
