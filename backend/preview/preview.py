@@ -43,7 +43,7 @@ def get_plugin_preview(repo_pth: str, dest_dir: str, is_local: bool = False) -> 
         meta.update(extra_meta)
 
     # get release date and first released
-    get_pypi_release_date(meta)
+    get_pypi_date_meta(meta)
 
     # write json
     with open(os.path.join(dest_dir, "preview_meta.json"), "w") as f:
@@ -196,7 +196,7 @@ def parse_meta(pkg_pth):
     return meta
 
 
-def get_pypi_release_date(meta):
+def get_pypi_date_meta(meta):
     """Get `first_released` & `release_date` by comparing PyPI and GitHub info
 
     Compare GitHub package version to PyPI package version and:
@@ -218,16 +218,7 @@ def get_pypi_release_date(meta):
         response = requests.get(f"https://pypi.python.org/pypi/{name}/json")
         # plugin has already been released to PyPI
         if response.ok:
-            plugin_pypi = json.loads(response.text)
-            pypi_version = get_attribute(plugin_pypi, ["info", "version"])
-            first_released_pypi = min(
-                get_attribute(release, [0, "upload_time_iso_8601"])
-                for _, release in get_attribute(plugin_pypi, ["releases"]).items()
-                if get_attribute(release, [0, "upload_time_iso_8601"])
-            )
-            release_date_pypi = get_attribute(
-                plugin_pypi, ["releases", pypi_version, 0, "upload_time_iso_8601"]
-            )
+            pypi_version, first_released_pypi, release_date_pypi = get_release_dates_from_pypi_info(name)
             # this will be a new version on pypi, keep first_released but mock new release_date
             if gh_version > pypi_version:
                 first_released = first_released_pypi
@@ -243,3 +234,24 @@ def get_pypi_release_date(meta):
 
     meta["release_date"] = release_date
     meta["first_released"] = first_released
+
+
+def get_release_dates_from_pypi_info(plugin_name):
+    """Get latest version, first released and latest released date from PyPI
+
+    :param plugin_name: plugin name to get information for
+    :return: tuple pypi version, first released, latest released dates
+    """
+    response = requests.get(f"https://pypi.python.org/pypi/{plugin_name}/json")
+    if response.ok:
+        plugin_pypi = json.loads(response.text)
+        pypi_version = get_attribute(plugin_pypi, ["info", "version"])
+        first_released_pypi = min(
+            get_attribute(release, [0, "upload_time_iso_8601"])
+            for _, release in get_attribute(plugin_pypi, ["releases"]).items()
+            if get_attribute(release, [0, "upload_time_iso_8601"])
+        )
+        release_date_pypi = get_attribute(
+            plugin_pypi, ["releases", pypi_version, 0, "upload_time_iso_8601"]
+        )
+    return pypi_version, first_released_pypi, release_date_pypi
