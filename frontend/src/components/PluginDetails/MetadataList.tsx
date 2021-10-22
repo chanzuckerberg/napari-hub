@@ -3,10 +3,10 @@ import clsx from 'clsx';
 import { ReactNode } from 'react-markdown';
 
 import { Link } from '@/components/common';
-import { MetadataStatus } from '@/components/MetadataStatus';
 import { usePluginState } from '@/context/plugin';
 import { usePlausible } from '@/hooks';
 
+import { MetadataStatus } from '../AppBar/MetadataStatus';
 import styles from './MetadataList.module.scss';
 import { MetadataItem, MetadataValueTypes } from './PluginDetails.types';
 
@@ -47,6 +47,9 @@ function MetadataListItem({ inline, title, values }: MetadataListItemProps) {
 
           // Font
           'font-bold whitespace-nowrap',
+
+          // Preview orange overlay
+          isEmpty && 'bg-napari-preview-orange-overlay',
         )}
       >
         {title}:
@@ -56,7 +59,7 @@ function MetadataListItem({ inline, title, values }: MetadataListItemProps) {
         {isEmpty && (
           <li
             className={clsx(
-              'text-napari-gray font-normal bg-napari-preview-orange-overlay',
+              'text-napari-gray font-normal bg-napari-preview-orange-overlay flex justify-between items-center',
               inline ? 'inline' : 'block leading-8',
             )}
           >
