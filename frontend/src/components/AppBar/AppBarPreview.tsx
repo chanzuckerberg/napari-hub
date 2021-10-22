@@ -12,7 +12,7 @@ import { Media } from '@/components/common/media';
 
 import styles from './AppBarPreview.module.scss';
 import { useMetadataSections } from './metadataPreview.hooks';
-import { MetadataStatus } from './MetadataStatus';
+import { MetadataStatus } from '@/components/MetadataStatus';
 import { PreviewMetadataPanel } from './PreviewMetadataPanel';
 
 const HUB_WIKI_LINK =
