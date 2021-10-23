@@ -64,7 +64,11 @@ function MetadataListItem({ inline, title, values }: MetadataListItemProps) {
             )}
           >
             information not submitted
-            <MetadataStatus hasValue={false} />
+            <Tooltip placement="right" title="MetadataStatus Text Placeholder">
+              <div>
+                <MetadataStatus hasValue={false} />
+              </div>
+            </Tooltip>
           </li>
         )}
 
@@ -148,12 +152,22 @@ function MetadataListItem({ inline, title, values }: MetadataListItemProps) {
                   inline && ['inline', styles.commaList],
 
                   // Preview orange overlay if isValueEmpty is true
-                  isValueEmpty && 'bg-napari-preview-orange-overlay',
+                  isValueEmpty &&
+                    'bg-napari-preview-orange-overlay flex justify-between items-center',
                 )}
                 key={key}
               >
                 {node}
-                {isValueEmpty && <MetadataStatus hasValue={false} />}
+                {isValueEmpty && (
+                  <Tooltip
+                    placement="right"
+                    title="MetadataStatus Text Placeholder"
+                  >
+                    <div>
+                      <MetadataStatus hasValue={false} />
+                    </div>
+                  </Tooltip>
+                )}
               </li>
             );
           })}
