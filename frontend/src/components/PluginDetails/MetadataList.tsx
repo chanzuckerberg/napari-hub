@@ -58,6 +58,7 @@ function MetadataListItem({ inline, title, values }: MetadataListItemProps) {
       <ul className={clsx('list-none', inline ? 'inline' : 'block')}>
         {isEmpty && (
           <li
+            // Preview orange overlay if isValueEmpty is true
             className={clsx(
               'text-napari-gray font-normal bg-napari-preview-orange-overlay flex justify-between items-center',
               inline ? 'inline' : 'block leading-8',
