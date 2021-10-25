@@ -9,10 +9,10 @@ import {
   ViewPullRequest,
 } from '@/components/common/icons';
 import { Media } from '@/components/common/media';
+import { MetadataStatus } from '@/components/MetadataStatus';
 
 import styles from './AppBarPreview.module.scss';
 import { useMetadataSections } from './metadataPreview.hooks';
-import { MetadataStatus } from './MetadataStatus';
 import { PreviewMetadataPanel } from './PreviewMetadataPanel';
 
 const HUB_WIKI_LINK =
