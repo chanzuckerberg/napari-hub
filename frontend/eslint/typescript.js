@@ -7,11 +7,30 @@ module.exports = {
   },
 
   extends: [
+    'airbnb',
     'airbnb-typescript',
+    'airbnb/hooks',
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
     'plugin:prettier/recommended',
+    'plugin:@next/next/recommended',
   ],
+
+  settings: {
+    'import/parsers': {
+      '@typescript-eslint/parser': ['.ts', '.tsx'],
+    },
+
+    'import/resolver': {
+      typescript: {
+        alwaysTryTypes: true,
+        project: [
+          resolve(__dirname, '../tsconfig.json'),
+          resolve(__dirname, '../tsconfig.jest.json'),
+        ],
+      },
+    },
+  },
 
   plugins: ['simple-import-sort'],
 

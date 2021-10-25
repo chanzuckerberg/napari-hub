@@ -1,9 +1,14 @@
 apig-wsgi
 boto3
 flask
+flask-githubapp
 gunicorn[gevent]
 pyyaml
 requests
 markdown
 bs4
 cffconvert
+GitPython
+setuptools
+wheel
+pkginfo

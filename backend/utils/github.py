@@ -1,7 +1,7 @@
 import json
 import os.path
 import re
-from typing import Dict, Union
+from typing import Dict, Union, IO
 
 import requests
 import yaml
@@ -9,7 +9,7 @@ from cffconvert.citation import Citation
 from requests.auth import HTTPBasicAuth
 from requests.exceptions import HTTPError
 
-from utils import get_attribute
+from utils.utils import get_attribute
 
 # Environment variable set through ecs stack terraform module
 github_client_id = os.environ.get('GITHUB_CLIENT_ID', None)
@@ -144,3 +144,19 @@ def get_citations(citation_str: str) -> Dict[str, Union[str, None]]:
     except ValueError:
         # invalid CITATION.cff content
         return dict.fromkeys(['citation', 'RIS', 'BibTex', 'APA'], None)
+
+
+def get_artifact(url: str, token: str) -> Union[IO[bytes], None]:
+    response = requests.get(url, headers={'Authorization': f'Bearer {token}'})
+    if response.status_code != requests.codes.ok:
+        return None
+
+    download_url = get_attribute(json.loads(response.text.strip()), ['artifacts', 0, 'archive_download_url'])
+    if not download_url:
+        return None
+
+    response = requests.get(download_url, stream=True, headers={'Authorization': f'Bearer {token}'})
+    if response.status_code != requests.codes.ok:
+        return None
+
+    return response.raw

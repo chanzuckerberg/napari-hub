@@ -1,3 +1,5 @@
+customSyntax: postcss-scss
+
 extends:
   - stylelint-config-recommended
   - stylelint-config-sass-guidelines

@@ -2,7 +2,7 @@ import { Button, FormHelperTextProps, TextField } from '@material-ui/core';
 import clsx from 'clsx';
 import React, { useRef, useState } from 'react';
 
-import { ColumnLayout } from '@/components/common';
+import { ColumnLayout } from '@/components/common/ColumnLayout';
 import { usePlausible } from '@/hooks';
 
 // MailChimp form target

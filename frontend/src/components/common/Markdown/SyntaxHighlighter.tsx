@@ -40,10 +40,7 @@ export function SyntaxHighlighter({
   return (
     <>
       <Head>
-        {/*
-          TODO Upgrade to Next.js 10.2+ for auto font optimization:
-          https://nextjs.org/docs/basic-features/font-optimization
-        */}
+        {/* eslint-disable-next-line @next/next/no-page-custom-font */}
         <link
           href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap"
           rel="stylesheet"

@@ -3,8 +3,8 @@ import { GetServerSidePropsContext } from 'next';
 import { ParsedUrlQuery } from 'node:querystring';
 
 import { hubAPI } from '@/axios';
-import { PluginDetails } from '@/components';
-import { ErrorMessage } from '@/components/common';
+import { ErrorMessage } from '@/components/common/ErrorMessage';
+import { PluginDetails } from '@/components/PluginDetails';
 import { PluginStateProvider } from '@/context/plugin';
 import { PluginData } from '@/types';
 import { fetchRepoData, FetchRepoDataResult } from '@/utils';

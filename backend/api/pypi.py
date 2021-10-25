@@ -6,8 +6,8 @@ import requests
 from requests import HTTPError
 from requests.utils import requote_uri
 
-from github import get_github_repo_url
-from utils import get_attribute, filter_prefix
+from utils.github import get_github_repo_url
+from utils.utils import get_attribute, filter_prefix
 
 
 def query_pypi() -> Dict[str, str]:

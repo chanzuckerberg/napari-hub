@@ -111,9 +111,8 @@ export function initSearchEngine(index: PluginIndexData[]): void {
 }
 
 export function initOsiApprovedLicenseSet(licenses: SpdxLicenseData[]): void {
-  searchFormStore.filters.license.osiApprovedLicenseSet = getOsiApprovedLicenseSet(
-    licenses,
-  );
+  searchFormStore.filters.license.osiApprovedLicenseSet =
+    getOsiApprovedLicenseSet(licenses);
 }
 
 export function resetFilters(): void {

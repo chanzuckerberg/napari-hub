@@ -1,7 +1,8 @@
 import clsx from 'clsx';
 import { useSnapshot } from 'valtio';
 
-import { ColumnLayout, SkeletonLoader } from '@/components/common';
+import { ColumnLayout } from '@/components/common/ColumnLayout';
+import { SkeletonLoader } from '@/components/common/SkeletonLoader';
 import { RESULTS_PER_PAGE } from '@/constants/search';
 import { useLoadingState } from '@/context/loading';
 import { loadingStore } from '@/store/loading';

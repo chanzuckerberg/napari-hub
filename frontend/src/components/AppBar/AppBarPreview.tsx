@@ -2,12 +2,12 @@ import { Collapse, IconButton } from '@material-ui/core';
 import clsx from 'clsx';
 import { ReactNode, useState } from 'react';
 
-import { Link } from '@/components/common';
 import {
   ChevronDown,
   ChevronUp,
   ViewPullRequest,
 } from '@/components/common/icons';
+import { Link } from '@/components/common/Link';
 import { Media } from '@/components/common/media';
 import { MetadataStatus } from '@/components/MetadataStatus';
 
@@ -233,6 +233,9 @@ export function AppBarPreview() {
 
           // Bottom border
           'border-napari-preview-orange border-b-2',
+
+          // Increase z-index so that it overlays over plugin page content.
+          'z-20',
         )}
       >
         <p className="text-napari-preview-orange">This is a preview</p>

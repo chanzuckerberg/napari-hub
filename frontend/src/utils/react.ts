@@ -1,5 +1,4 @@
-import { ReactNode } from 'react';
-import { ReactElement } from 'react-markdown';
+import { ReactElement, ReactNode } from 'react';
 
 /**
  * Checks if a React node is an element. An element is an instantiated

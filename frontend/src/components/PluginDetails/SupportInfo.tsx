@@ -23,9 +23,10 @@ import styles from './SupportInfo.module.scss';
  * @returns Username from Twitter URL, or empty string if not found
  */
 function formatTwitter(url: string): string {
-  const match = /^https?:\/\/(www\.)?twitter\.com\/(#!\/)?(?<name>[^/]+)(\/\w+)*$/.exec(
-    url,
-  );
+  const match =
+    /^https?:\/\/(www\.)?twitter\.com\/(#!\/)?(?<name>[^/]+)(\/\w+)*$/.exec(
+      url,
+    );
 
   if (match) {
     return `@${String(match.groups?.name)}`;

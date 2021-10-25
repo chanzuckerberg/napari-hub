@@ -1,4 +1,14 @@
+/* stylelint-disable-next-line at-rule-no-unknown */
+@use 'sass:math';
+
+/* stylelint-disable-next-line no-invalid-position-at-import-rule */
+@import '@/utils/styles';
+
 .markdown {
+  @apply prose text-black max-w-none;
+
+  font-size: calculate-rem(17px);
+
   code {
     @apply text-base font-normal p-1;
     background: #f7f7f7;
@@ -18,7 +28,7 @@
       implement a solution in TypeScript.
       https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-margin-top
     */
-    scroll-margin-top: #{(35px / 16px)}rem;
+    scroll-margin-top: #{math.div(35px, 16px)}rem;
   }
 
   pre {
@@ -45,5 +55,13 @@
 
     // Remove extra margin added by prose.
     @apply m-0;
+  }
+
+  ul > li::before {
+    @apply bg-black;
+  }
+
+  a {
+    @apply text-black font-normal;
   }
 }

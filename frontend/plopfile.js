@@ -51,20 +51,17 @@ function componentGenerator(plop) {
       },
       {
         type: 'add',
-        path:
-          'src/components/{{ pascalCase name }}/{{ pascalCase name }}.test.tsx',
+        path: 'src/components/{{ pascalCase name }}/{{ pascalCase name }}.test.tsx',
         templateFile: 'plop-templates/component/Component.test.tsx.hbs',
       },
       {
         type: 'add',
-        path:
-          'src/components/{{ pascalCase name }}/{{ pascalCase name }}.module.scss',
+        path: 'src/components/{{ pascalCase name }}/{{ pascalCase name }}.module.scss',
         templateFile: 'plop-templates/component/Component.module.scss.hbs',
       },
       {
         type: 'add',
-        path:
-          'src/components/{{ pascalCase name }}/{{ pascalCase name }}.module.scss.d.ts',
+        path: 'src/components/{{ pascalCase name }}/{{ pascalCase name }}.module.scss.d.ts',
         templateFile: 'plop-templates/component/Component.module.scss.d.ts.hbs',
       },
       addComponentExport,
