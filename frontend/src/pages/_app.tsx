@@ -6,7 +6,6 @@
 
 import '@/axios';
 import '@/tailwind.scss';
-import '@/fonts.scss';
 import '@/global.scss';
 
 import { AppProps } from 'next/app';
@@ -93,20 +92,6 @@ export default function App({ Component, pageProps }: AppProps) {
           https://developers.google.com/search/docs/advanced/crawling/block-indexing
         */}
         {!PROD && <meta name="robots" content="noindex" />}
-
-        {
-          // Preload Barlow fonts. See fonts.scss for more info.
-          ['regular', '600', '700'].map((size) => (
-            <link
-              key={size}
-              rel="preload"
-              as="font"
-              type="font/woff2"
-              href={`/fonts/barlow-v5-latin-${size}.woff2`}
-              crossOrigin=""
-            />
-          ))
-        }
       </Head>
 
       <ApplicationProvider dehydratedState={pageProps.dehydratedState}>

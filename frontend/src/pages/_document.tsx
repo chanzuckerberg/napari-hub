@@ -71,6 +71,15 @@ export default class HubDocument extends Document {
             // eslint-disable-next-line react/no-danger
             dangerouslySetInnerHTML={{ __html: mediaStyles }}
           />
+
+          {/*
+            Fonts are optimized using Next.js:
+            https://nextjs.org/docs/basic-features/font-optimization
+          */}
+          <link
+            href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700&display=swap"
+            rel="stylesheet"
+          />
         </Head>
         <body>
           <Main />
