@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import { ReactNode } from 'react';
 
 import { Link } from '@/components/common/Link';
+import { MetadataStatus } from '@/components/MetadataStatus';
 import { usePluginState } from '@/context/plugin';
 import { usePlausible } from '@/hooks';
 
@@ -46,6 +47,9 @@ function MetadataListItem({ inline, title, values }: MetadataListItemProps) {
 
           // Font
           'font-bold whitespace-nowrap',
+
+          // Preview orange overlay
+          isEmpty && 'bg-napari-preview-orange-overlay',
         )}
       >
         {title}:
@@ -54,12 +58,18 @@ function MetadataListItem({ inline, title, values }: MetadataListItemProps) {
       <ul className={clsx('list-none space-y-5', inline ? 'inline' : 'block')}>
         {isEmpty && (
           <li
+            // Preview orange overlay if isValueEmpty is true
             className={clsx(
-              'text-napari-gray font-normal',
-              inline ? 'inline' : 'block',
+              'text-napari-gray font-normal bg-napari-preview-orange-overlay flex justify-between items-center',
+              inline ? 'inline' : 'block leading-8',
             )}
           >
             information not submitted
+            <Tooltip placement="right" title="MetadataStatus Text Placeholder">
+              <div>
+                <MetadataStatus hasValue={false} />
+              </div>
+            </Tooltip>
           </li>
         )}
 
@@ -68,13 +78,17 @@ function MetadataListItem({ inline, title, values }: MetadataListItemProps) {
             let node: ReactNode;
             let key: string;
 
+            let isValueEmpty = false;
+
             if (typeof value === 'string') {
               key = value;
               node = value;
+              isValueEmpty = !value;
             } else {
               // If metadata value is link, render icon and anchor tag.
               key = `${value.text}-${value.href}`;
               const hasLink = !!value.href;
+              isValueEmpty = !hasLink;
 
               const icon = (!hasLink && value.missingIcon) || value.icon;
               const iconNode = icon && <span className="min-w-4">{icon}</span>;
@@ -136,10 +150,24 @@ function MetadataListItem({ inline, title, values }: MetadataListItemProps) {
                   // Render as comma list if inline
                   // https://markheath.net/post/css-comma-separated-list
                   inline && ['inline', styles.commaList],
+
+                  // Preview orange overlay if isValueEmpty is true
+                  isValueEmpty &&
+                    'bg-napari-preview-orange-overlay flex justify-between items-center',
                 )}
                 key={key}
               >
                 {node}
+                {isValueEmpty && (
+                  <Tooltip
+                    placement="right"
+                    title="MetadataStatus Text Placeholder"
+                  >
+                    <div>
+                      <MetadataStatus hasValue={false} />
+                    </div>
+                  </Tooltip>
+                )}
               </li>
             );
           })}

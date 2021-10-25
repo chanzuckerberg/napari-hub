@@ -1,12 +1,12 @@
 import clsx from 'clsx';
 
 import { Media } from '@/components/common/media';
+import { MetadataStatus } from '@/components/MetadataStatus';
 
 import {
   MetadataSectionField,
   useMetadataSections,
 } from './metadataPreview.hooks';
-import { MetadataStatus } from './MetadataStatus';
 
 /**
  * Creates a new array of metadata fields that have the missing metadata ordered
