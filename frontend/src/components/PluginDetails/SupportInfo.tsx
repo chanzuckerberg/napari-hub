@@ -6,6 +6,7 @@ import {
   ProjectIssues,
   ProjectSite,
   ProjectSupport,
+  Quotes,
   Twitter,
 } from '@/components/common/icons';
 import { Media } from '@/components/common/media';
@@ -115,7 +116,7 @@ export function SupportInfoBase({
         plugin.citations
           ? {
               href: `${plugin.name}#${ANCHOR}`,
-              icon: <ProjectSite />,
+              icon: <Quotes />,
               text: 'Citation information',
             }
           : [],
