@@ -4,7 +4,10 @@
   "private": true,
   "scripts": {
     "build": "next build",
-    "build:preview": "next build && next export -o preview",
+    "build:preview": "run-s build:preview:*",
+    "build:preview:next": "next build",
+    "build:preview:export": "next export -o preview",
+    "build:preview:rename-files": "mv preview/preview.html preview/index.html",
     "dev": "nodemon -x 'run-p dev:*' -w tailwind.config.js",
     "dev:api": "node mock-server",
     "dev:next": "next dev -p 8080",
