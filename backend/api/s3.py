@@ -50,15 +50,16 @@ def get_cache(key: str) -> Union[dict, None]:
         return None
 
 
-def cache(content: Union[dict, list, IO[bytes]], key: str):
+def cache(content: Union[dict, list, IO[bytes]], key: str, mime: str = None):
     """
     Cache the given content to the key location.
 
     :param content: content to cache
     :param key: key path in s3
+    :param mime: type of the file
     """
     extra_args = None
-    mime = mimetypes.guess_type(key)[0]
+    mime = mime or mimetypes.guess_type(key)[0]
     if mime:
         extra_args = {'ContentType': mime}
     if bucket is None:

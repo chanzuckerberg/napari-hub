@@ -229,7 +229,7 @@ def move_artifact_to_s3(payload, client):
             for name in zipfile.namelist():
                 with zipfile.open(name) as file:
                     if name == "index.html":
-                        cache(file, f'preview/{owner}/{repo}/{pull_request_number}')
+                        cache(file, f'preview/{owner}/{repo}/{pull_request_number}', "text/html")
                     else:
                         cache(file, f'preview/{owner}/{repo}/{pull_request_number}/{name}')
 
