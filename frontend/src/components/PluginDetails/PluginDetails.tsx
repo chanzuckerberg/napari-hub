@@ -51,8 +51,6 @@ function PluginCenterColumn() {
         )}
       />
 
-      <p>{JSON.stringify(plugin.citations)}</p>
-
       <Media
         className={clsx(
           // Layout

@@ -388,7 +388,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
       class="fresnel-container fresnel-greaterThanOrEqual-xl "
     >
       <ul
-        class="text-black bg-gray-100 p-5 mb-6 screen-495:mb-12 list-none grid grid-cols-3"
+        class="text-black bg-napari-hover-gray p-5 mb-6 screen-495:mb-12 list-none grid grid-cols-3"
       >
         <li
           class="mb-4 text-sm"
@@ -700,7 +700,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
       class="fresnel-container fresnel-lessThan-xl "
     >
       <ul
-        class="text-black bg-gray-100 p-5 mb-6 screen-495:mb-12 list-none"
+        class="text-black bg-napari-hover-gray p-5 mb-6 screen-495:mb-12 list-none"
       >
         <li
           class="mb-4 text-sm"
