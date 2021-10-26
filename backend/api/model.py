@@ -217,7 +217,7 @@ def move_artifact_to_s3(payload, client):
 
     owner = get_attribute(payload, ['repository', 'owner', 'login'])
     repo = get_attribute(payload, ["repository", "name"])
-    workflow_run_id = get_attribute(payload, ["workflow_run", "id"])
+    pull_request_number = get_attribute(payload, ['workflow_run', 'pull_requests', 0, 'number'])
     artifact_url = get_attribute(payload, ["workflow_run", "artifacts_url"])
     if artifact_url:
         artifact = get_artifact(artifact_url, client.session.auth.token)
@@ -225,9 +225,11 @@ def move_artifact_to_s3(payload, client):
             zipfile = ZipFile(BytesIO(artifact.read()))
             for name in zipfile.namelist():
                 with zipfile.open(name) as file:
-                    cache(file, f'preview/{owner}/{repo}/{workflow_run_id}/{name}')
+                    if name == "index.html":
+                        cache(file, f'preview/{owner}/{repo}/{pull_request_number}')
+                    else:
+                        cache(file, f'preview/{owner}/{repo}/{pull_request_number}/{name}')
 
-            num = get_attribute(payload, ['workflow_run', 'pull_requests', 0, 'number'])
-            pull_request = client.pull_request(owner, repo, num)
+            pull_request = client.pull_request(owner, repo, pull_request_number)
             pull_request.create_comment('Preview page for your plugin is ready here:\n'
-                                        f'https://preview.napari-hub.org/{owner}/{repo}/{workflow_run_id}/preview.html')
+                                        f'https://preview.napari-hub.org/{owner}/{repo}/{pull_request_number}')
