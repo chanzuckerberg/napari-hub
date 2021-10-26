@@ -218,6 +218,9 @@ def move_artifact_to_s3(payload, client):
     owner = get_attribute(payload, ['repository', 'owner', 'login'])
     repo = get_attribute(payload, ["repository", "name"])
     pull_request_number = get_attribute(payload, ['workflow_run', 'pull_requests', 0, 'number'])
+    if not pull_request_number:
+        return
+
     artifact_url = get_attribute(payload, ["workflow_run", "artifacts_url"])
     if artifact_url:
         artifact = get_artifact(artifact_url, client.session.auth.token)
