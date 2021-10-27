@@ -11,8 +11,7 @@ import json
 import requests
 
 from utils.github import github_pattern, get_github_metadata, get_github_repo_url
-from utils.utils import get_attribute
-
+from api.pypi import get_plugin_pypi_metadata
 
 def get_plugin_preview(repo_pth: str, dest_dir: str, is_local: bool = False) -> dict:
     """Get plugin preview metadata of package at repo_pth.
@@ -215,10 +214,12 @@ def get_pypi_date_meta(meta):
     release_date = None
     first_released = None
     if name:
-        response = requests.get(f"https://pypi.python.org/pypi/{name}/json")
+        pypi_info = get_plugin_pypi_metadata(name)
         # plugin has already been released to PyPI
-        if response.ok:
-            pypi_version, first_released_pypi, release_date_pypi = get_release_dates_from_pypi_info(name)
+        if pypi_info:
+            pypi_version = pypi_info['version']
+            first_released_pypi = pypi_info['first_released']
+            release_date_pypi = pypi_info['release_date']
             # this will be a new version on pypi, keep first_released but mock new release_date
             if gh_version > pypi_version:
                 first_released = first_released_pypi
@@ -235,23 +236,3 @@ def get_pypi_date_meta(meta):
     meta["release_date"] = release_date
     meta["first_released"] = first_released
 
-
-def get_release_dates_from_pypi_info(plugin_name):
-    """Get latest version, first released and latest released date from PyPI
-
-    :param plugin_name: plugin name to get information for
-    :return: tuple pypi version, first released, latest released dates
-    """
-    response = requests.get(f"https://pypi.python.org/pypi/{plugin_name}/json")
-    if response.ok:
-        plugin_pypi = json.loads(response.text)
-        pypi_version = get_attribute(plugin_pypi, ["info", "version"])
-        first_released_pypi = min(
-            get_attribute(release, [0, "upload_time_iso_8601"])
-            for _, release in get_attribute(plugin_pypi, ["releases"]).items()
-            if get_attribute(release, [0, "upload_time_iso_8601"])
-        )
-        release_date_pypi = get_attribute(
-            plugin_pypi, ["releases", pypi_version, 0, "upload_time_iso_8601"]
-        )
-    return pypi_version, first_released_pypi, release_date_pypi
