@@ -39,6 +39,7 @@ const EMPTY_DESCRIPTION_PLACEHOLDER =
 
 function PluginCenterColumn() {
   const { plugin } = usePluginState();
+  const isPreview = useIsPreview();
 
   // Check if body is an empty string or if it's set to the cookiecutter text.
   const isEmptyDescription =
@@ -60,7 +61,10 @@ function PluginCenterColumn() {
           <h1
             className={clsx(
               'font-bold text-4xl',
-              !plugin?.name && 'text-napari-dark-gray',
+              !plugin?.name && [
+                'text-napari-dark-gray',
+                isPreview && 'bg-napari-preview-orange-overlay',
+              ],
             )}
           >
             {plugin?.name ?? 'Plugin name'}
@@ -74,7 +78,10 @@ function PluginCenterColumn() {
           <h2
             className={clsx(
               'font-semibold my-6 text-lg',
-              !plugin?.summary && '!text-napari-dark-gray',
+              !plugin?.summary && [
+                '!text-napari-dark-gray',
+                isPreview && 'bg-napari-preview-orange-overlay',
+              ],
             )}
           >
             {plugin?.summary ?? 'Brief description'}
@@ -137,7 +144,12 @@ function PluginCenterColumn() {
         className="h-[600px] mb-10"
         render={() => (
           <Markdown
-            className={clsx('mb-10')}
+            className={clsx(
+              'mb-10',
+              isPreview &&
+                isEmptyDescription &&
+                'bg-napari-preview-orange-overlay',
+            )}
             disableHeader
             placeholder={isEmptyDescription}
           >
