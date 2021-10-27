@@ -42,7 +42,7 @@ export function CitationInfo({ className }: Props) {
     COPY_FEEDBACK_DEBOUNCE_DURATION_MS,
   );
 
-  const citation = plugin.citations ? plugin.citations[tab] : '';
+  const citation = plugin?.citations ? plugin.citations[tab] : '';
 
   const handleChange = (_: unknown, changedTab: CitationKeys) => {
     setTab(changedTab);
@@ -87,7 +87,7 @@ export function CitationInfo({ className }: Props) {
                 className="py-4 px-6 mt-6 bg-napari-hover-gray"
               >
                 <div className="whitespace-pre-wrap overflow-y-auto max-h-32">
-                  {plugin.citations?.[item]}
+                  {plugin?.citations?.[item]}
                 </div>
               </TabPanel>
             );
@@ -99,7 +99,9 @@ export function CitationInfo({ className }: Props) {
             className={BUTTON_STYLES}
             variant="outlined"
             onClick={async () => {
-              await navigator.clipboard?.writeText?.(citation);
+              if (citation) {
+                await navigator.clipboard?.writeText?.(citation);
+              }
 
               // Set `copied` to true immediately when the user clicks
               if (!copied) {

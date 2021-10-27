@@ -84,13 +84,6 @@ export function SupportInfoBase({ className, inline }: SupportInfoBaseProps) {
   }
 
   learnMoreItems.push(
-    // plugin.citations
-    //   ? {
-    //       href: `${plugin.name}#${ANCHOR}`,
-    //       icon: <Quotes />,
-    //       text: 'Citation information',
-    //     }
-    //   : [],
     {
       ...getLink('documentationSite'),
       icon: <ProjectDocumentation />,

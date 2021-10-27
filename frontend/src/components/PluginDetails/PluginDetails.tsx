@@ -11,6 +11,7 @@ import { Media, MediaFragment } from '@/components/common/media';
 import { PageMetadata } from '@/components/common/PageMetadata';
 import { SkeletonLoader } from '@/components/common/SkeletonLoader';
 import { TOCHeader } from '@/components/common/TableOfContents';
+import { MetadataStatus } from '@/components/MetadataStatus';
 import { useLoadingState } from '@/context/loading';
 import { usePluginState } from '@/context/plugin';
 import { useIsPreview, usePlausible } from '@/hooks';
@@ -58,34 +59,52 @@ function PluginCenterColumn() {
       <SkeletonLoader
         className="h-12"
         render={() => (
-          <h1
+          <div
             className={clsx(
-              'font-bold text-4xl',
-              !plugin?.name && [
-                'text-napari-dark-gray',
-                isPreview && 'bg-napari-preview-orange-overlay',
-              ],
+              'flex justify-between',
+              !plugin?.name && isPreview && 'bg-napari-preview-orange-overlay',
             )}
           >
-            {plugin?.name ?? 'Plugin name'}
-          </h1>
+            <h1
+              className={clsx(
+                'font-bold text-4xl',
+                !plugin?.name && 'text-napari-dark-gray',
+              )}
+            >
+              {plugin?.name ?? 'Plugin name'}
+            </h1>
+
+            {isPreview && !plugin?.name && (
+              <MetadataStatus className="self-end" hasValue={false} />
+            )}
+          </div>
         )}
       />
 
       <SkeletonLoader
         className="h-6 my-6"
         render={() => (
-          <h2
+          <div
             className={clsx(
-              'font-semibold my-6 text-lg',
-              !plugin?.summary && [
-                '!text-napari-dark-gray',
-                isPreview && 'bg-napari-preview-orange-overlay',
-              ],
+              'flex justify-between items-center mt-6',
+              !plugin?.summary &&
+                isPreview &&
+                'bg-napari-preview-orange-overlay',
             )}
           >
-            {plugin?.summary ?? 'Brief description'}
-          </h2>
+            <h2
+              className={clsx(
+                'font-semibold text-lg',
+                !plugin?.summary && 'text-napari-dark-gray',
+              )}
+            >
+              {plugin?.summary ?? 'Brief description'}
+            </h2>
+
+            {isPreview && !plugin?.summary && (
+              <MetadataStatus hasValue={false} />
+            )}
+          </div>
         )}
       />
 
@@ -143,24 +162,28 @@ function PluginCenterColumn() {
       <SkeletonLoader
         className="h-[600px] mb-10"
         render={() => (
-          <Markdown
+          <div
             className={clsx(
-              'mb-10',
+              'flex items-center justify-between mb-10',
               isPreview &&
                 isEmptyDescription &&
                 'bg-napari-preview-orange-overlay',
             )}
-            disableHeader
-            placeholder={isEmptyDescription}
           >
-            {plugin?.description ?? EMPTY_DESCRIPTION_PLACEHOLDER}
-          </Markdown>
+            <Markdown disableHeader placeholder={isEmptyDescription}>
+              {plugin?.description ?? EMPTY_DESCRIPTION_PLACEHOLDER}
+            </Markdown>
+
+            {isPreview && isEmptyDescription && (
+              <MetadataStatus hasValue={false} />
+            )}
+          </div>
         )}
       />
 
       <div className="mb-6 screen-495:mb-12 screen-1150:mb-20">
         <CallToActionButton />
-        {plugin.citations && <CitationInfo className="mt-10" />}
+        {plugin?.citations && <CitationInfo className="mt-10" />}
       </div>
 
       <MediaFragment lessThan="3xl">
@@ -198,7 +221,7 @@ function PluginRightColumn() {
                 }
               }}
               free
-              extraHeaders={plugin.citations ? [CITATION_HEADER] : undefined}
+              extraHeaders={plugin?.citations ? [CITATION_HEADER] : undefined}
             />
           )}
         />
