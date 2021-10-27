@@ -59,4 +59,4 @@ class TestGithub(unittest.TestCase):
     def test_invalid_citation(self):
         citation_str = """Ha? What is this?"""
         citations = get_citations(citation_str)
-        assert citations['citation'] is None
+        assert citations is None

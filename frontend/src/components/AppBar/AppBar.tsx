@@ -1,10 +1,11 @@
+import { IconButton } from '@material-ui/core';
 import clsx from 'clsx';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 import { ColumnLayout } from '@/components/common/ColumnLayout';
 import { Menu } from '@/components/common/icons';
 import { Media } from '@/components/common/media';
-import { MenuDrawer } from '@/components/MenuDrawer';
+import { MenuPopover } from '@/components/MenuPopover';
 import { SearchBar } from '@/components/SearchBar';
 
 import { APP_LINKS } from './AppBar.constants';
@@ -14,16 +15,19 @@ import { AppBarLinks } from './AppBarLinks';
  * App bar component that renders the home link, search bar, and menu.
  */
 export function AppBar() {
+  const anchorElRef = useRef<HTMLButtonElement | null>(null);
   const [visible, setVisible] = useState(false);
 
   return (
     <>
-      <MenuDrawer
-        items={APP_LINKS}
-        onClose={() => setVisible(false)}
-        onOpen={() => setVisible(true)}
-        visible={visible}
-      />
+      <Media lessThan="screen-600">
+        <MenuPopover
+          anchorEl={anchorElRef.current}
+          items={APP_LINKS}
+          onClose={() => setVisible(false)}
+          visible={visible}
+        />
+      </Media>
 
       <ColumnLayout
         className={clsx(
@@ -34,7 +38,7 @@ export function AppBar() {
           'justify-center items-center',
 
           // Padding
-          'px-6 md:px-12 2xl:p-0',
+          'px-6 screen-495:px-12 screen-1150:p-0',
 
           // Grid layout for smaller screens. This allows the search bar to
           // extend to its max width to the left. The `zero:` modifier is used
@@ -43,11 +47,11 @@ export function AppBar() {
         )}
         component="header"
       >
-        <Media greaterThanOrEqual="lg">
+        <Media greaterThanOrEqual="screen-600">
           <AppBarLinks items={APP_LINKS} />
         </Media>
 
-        <Media lessThan="lg">
+        <Media lessThan="screen-600">
           <AppBarLinks />
         </Media>
 
@@ -63,20 +67,17 @@ export function AppBar() {
             'justify-self-end',
 
             // Use more columns on larger screens
-            'xl:col-span-2 2xl:col-span-3',
+            'screen-875:col-span-2 screen-1150:col-span-3',
           )}
         >
           <SearchBar />
 
           {/* Menu button */}
-          <button
-            // Show menu button on smaller layouts
-            className="ml-6 flex lg:hidden"
-            onClick={() => setVisible(true)}
-            type="button"
-          >
-            <Menu alt="Icon for opening side menu." />
-          </button>
+          <Media className="ml-6 flex" lessThan="screen-600">
+            <IconButton onClick={() => setVisible(true)} ref={anchorElRef}>
+              <Menu alt="Icon for opening side menu." />
+            </IconButton>
+          </Media>
         </div>
       </ColumnLayout>
     </>

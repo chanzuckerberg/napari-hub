@@ -1,6 +1,7 @@
 apig-wsgi
 boto3
 flask
+flask-githubapp
 gunicorn[gevent]
 pyyaml
 requests

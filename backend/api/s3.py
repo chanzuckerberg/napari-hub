@@ -1,9 +1,10 @@
+import io
 import json
 import os
 import os.path
-import tempfile
 from datetime import datetime
-from typing import Union
+from typing import Union, IO
+import mimetypes
 
 import boto3
 from botocore.exceptions import ClientError
@@ -49,22 +50,28 @@ def get_cache(key: str) -> Union[dict, None]:
         return None
 
 
-def cache(content: Union[dict, list], key: str) -> Union[dict, list]:
+def cache(content: Union[dict, list, IO[bytes]], key: str, mime: str = None):
     """
     Cache the given content to the key location.
 
     :param content: content to cache
     :param key: key path in s3
-    :return: content that is cached
+    :param mime: type of the file
     """
+    extra_args = None
+    mime = mime or mimetypes.guess_type(key)[0]
+    if mime:
+        extra_args = {'ContentType': mime}
     if bucket is None:
         send_alert(f"({datetime.now()}) Unable to find bucket for lambda "
                    f"configuration, skipping caching for napari hub."
                    f"Check terraform setup to add environment variable for "
                    f"napari hub lambda")
         return content
-    with tempfile.NamedTemporaryFile(mode="w") as fp:
-        fp.write(json.dumps(content))
-        fp.flush()
-        s3_client.upload_file(Filename=fp.name, Bucket=bucket, Key=os.path.join(bucket_path, key))
-    return content
+    if isinstance(content, io.IOBase):
+        s3_client.upload_fileobj(Fileobj=content, Bucket=bucket,
+                                 Key=os.path.join(bucket_path, key), ExtraArgs=extra_args)
+    else:
+        with io.BytesIO(json.dumps(content).encode('utf8')) as stream:
+            s3_client.upload_fileobj(Fileobj=stream, Bucket=bucket,
+                                     Key=os.path.join(bucket_path, key), ExtraArgs=extra_args)

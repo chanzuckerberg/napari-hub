@@ -1,12 +1,13 @@
-.code:hover .copyButton {
-  @apply block;
-}
-
 /*
   stylelint-disable
     selector-class-pattern,
+    selector-max-compound-selectors,
     selector-no-qualifying-type,
 */
+
+.code:hover .copyButton {
+  @apply block;
+}
 
 $code-theme-palette: (
   background: #f7f7f7,
@@ -27,7 +28,8 @@ $code-theme-palette: (
   color: map-get($code-theme-palette, 'comments');
 }
 
-pre.code {
+pre.code,
+article.code pre {
   @apply text-base m-0 p-4 rounded-none;
   @apply overflow-auto relative break-words;
 

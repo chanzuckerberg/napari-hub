@@ -10,7 +10,8 @@ import Document, {
 import { mediaStyles } from '@/components/common/media';
 import { theme } from '@/theme';
 
-const FAVICON = '/icons/favicon';
+const FAVICON = `${process.env.BASE_PATH}/icons/favicon`;
+
 export default class HubDocument extends Document {
   static async getInitialProps(context: DocumentContext) {
     // Render app and page and get the context of the page with collected side effects.
@@ -69,6 +70,15 @@ export default class HubDocument extends Document {
             type="text/css"
             // eslint-disable-next-line react/no-danger
             dangerouslySetInnerHTML={{ __html: mediaStyles }}
+          />
+
+          {/*
+            Fonts are optimized using Next.js:
+            https://nextjs.org/docs/basic-features/font-optimization
+          */}
+          <link
+            href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700&display=swap"
+            rel="stylesheet"
           />
         </Head>
         <body>

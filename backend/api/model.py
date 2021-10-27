@@ -1,11 +1,13 @@
 from concurrent import futures
 from datetime import datetime
 from typing import Tuple, Dict, List
+from zipfile import ZipFile
+from io import BytesIO
 
-from utils.github import get_github_metadata
+from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
 from api.s3 import get_cache, cache
-from utils.utils import render_description, send_alert
+from utils.utils import render_description, send_alert, get_attribute
 from api.zulip import notify_new_packages
 
 index_subset = {'name', 'summary', 'description_text', 'description_content_type',
@@ -201,3 +203,36 @@ def get_plugin_metadata_async(plugins: Dict[str, str]) -> dict:
     for future in futures.as_completed(plugin_futures):
         plugins_metadata[future.result()[0]] = (future.result()[1])
     return plugins_metadata
+
+
+def move_artifact_to_s3(payload, client):
+    """
+    move preview page build artifact zip to public s3.
+
+    :param payload: json body from the github webhook
+    :param client: installation client to query GitHub API
+    """
+    if get_attribute(payload, ["workflow_run", "name"]) != "Preview Page":
+        return
+
+    owner = get_attribute(payload, ['repository', 'owner', 'login'])
+    repo = get_attribute(payload, ["repository", "name"])
+    pull_request_number = get_attribute(payload, ['workflow_run', 'pull_requests', 0, 'number'])
+    if not pull_request_number:
+        return
+
+    artifact_url = get_attribute(payload, ["workflow_run", "artifacts_url"])
+    if artifact_url:
+        artifact = get_artifact(artifact_url, client.session.auth.token)
+        if artifact:
+            zipfile = ZipFile(BytesIO(artifact.read()))
+            for name in zipfile.namelist():
+                with zipfile.open(name) as file:
+                    if name == "index.html":
+                        cache(file, f'preview/{owner}/{repo}/{pull_request_number}', "text/html")
+                    else:
+                        cache(file, f'preview/{owner}/{repo}/{pull_request_number}/{name}')
+
+            pull_request = client.pull_request(owner, repo, pull_request_number)
+            pull_request.create_comment('Preview page for your plugin is ready here:\n'
+                                        f'https://preview.napari-hub.org/{owner}/{repo}/{pull_request_number}')

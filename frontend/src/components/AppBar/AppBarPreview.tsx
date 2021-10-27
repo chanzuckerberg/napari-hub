@@ -9,10 +9,10 @@ import {
 } from '@/components/common/icons';
 import { Link } from '@/components/common/Link';
 import { Media } from '@/components/common/media';
+import { MetadataStatus } from '@/components/MetadataStatus';
 
 import styles from './AppBarPreview.module.scss';
 import { useMetadataSections } from './metadataPreview.hooks';
-import { MetadataStatus } from './MetadataStatus';
 import { PreviewMetadataPanel } from './PreviewMetadataPanel';
 
 const HUB_WIKI_LINK =
@@ -233,6 +233,9 @@ export function AppBarPreview() {
 
           // Bottom border
           'border-napari-preview-orange border-b-2',
+
+          // Increase z-index so that it overlays over plugin page content.
+          'z-20',
         )}
       >
         <p className="text-napari-preview-orange">This is a preview</p>

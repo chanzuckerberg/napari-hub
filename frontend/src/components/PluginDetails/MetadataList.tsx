@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import { ReactNode } from 'react';
 
 import { Link } from '@/components/common/Link';
+import { MetadataStatus } from '@/components/MetadataStatus';
 import { usePluginState } from '@/context/plugin';
 import { usePlausible } from '@/hooks';
 
@@ -42,24 +43,33 @@ function MetadataListItem({ inline, title, values }: MetadataListItemProps) {
       <h4
         className={clsx(
           // Inline styles
-          inline ? 'inline mr-2' : 'block',
+          inline ? 'inline mr-2' : 'block mb-2',
 
           // Font
           'font-bold whitespace-nowrap',
+
+          // Preview orange overlay
+          isEmpty && 'bg-napari-preview-orange-overlay',
         )}
       >
         {title}:
       </h4>
 
-      <ul className={clsx('list-none', inline ? 'inline' : 'block')}>
+      <ul className={clsx('list-none space-y-5', inline ? 'inline' : 'block')}>
         {isEmpty && (
           <li
+            // Preview orange overlay if isValueEmpty is true
             className={clsx(
-              'text-napari-gray font-normal',
+              'text-napari-gray font-normal bg-napari-preview-orange-overlay flex justify-between items-center',
               inline ? 'inline' : 'block leading-8',
             )}
           >
             information not submitted
+            <Tooltip placement="right" title="MetadataStatus Text Placeholder">
+              <div>
+                <MetadataStatus hasValue={false} />
+              </div>
+            </Tooltip>
           </li>
         )}
 
@@ -68,20 +78,27 @@ function MetadataListItem({ inline, title, values }: MetadataListItemProps) {
             let node: ReactNode;
             let key: string;
 
+            let isValueEmpty = false;
+
             if (typeof value === 'string') {
               key = value;
               node = value;
+              isValueEmpty = !value;
             } else {
               // If metadata value is link, render icon and anchor tag.
               key = `${value.text}-${value.href}`;
               const hasLink = !!value.href;
+              isValueEmpty = !hasLink;
+
+              const icon = (!hasLink && value.missingIcon) || value.icon;
+              const iconNode = icon && <span className="min-w-4">{icon}</span>;
 
               const linkNode = hasLink && (
                 <>
-                  {value.icon}
+                  {iconNode}
 
                   <Link
-                    className="ml-2 underline"
+                    className="ml-2 underline inline -mt-1"
                     href={value.href}
                     newTab
                     onClick={() => {
@@ -101,10 +118,10 @@ function MetadataListItem({ inline, title, values }: MetadataListItemProps) {
 
               const emptyLinkNode = !hasLink && (
                 <>
-                  {value.missingIcon || value.icon}
+                  {iconNode}
 
                   <Tooltip placement="right" title="Information not submitted">
-                    <span className="ml-2 cursor-not-allowed">
+                    <span className="ml-2 cursor-not-allowed -mt-1">
                       {value.text}
                     </span>
                   </Tooltip>
@@ -115,7 +132,6 @@ function MetadataListItem({ inline, title, values }: MetadataListItemProps) {
                 <span
                   className={clsx(
                     inline ? 'inline-flex' : 'flex',
-                    'items-center',
                     !value.href && 'text-napari-gray',
                   )}
                 >
@@ -128,19 +144,30 @@ function MetadataListItem({ inline, title, values }: MetadataListItemProps) {
             return (
               <li
                 className={clsx(
-                  // Margins
-                  'my-2 first:mt-0 last:mb-0',
-
                   // Line height
-                  'leading-8',
+                  'leading-normal',
 
                   // Render as comma list if inline
                   // https://markheath.net/post/css-comma-separated-list
                   inline && ['inline', styles.commaList],
+
+                  // Preview orange overlay if isValueEmpty is true
+                  isValueEmpty &&
+                    'bg-napari-preview-orange-overlay flex justify-between items-center',
                 )}
                 key={key}
               >
                 {node}
+                {isValueEmpty && (
+                  <Tooltip
+                    placement="right"
+                    title="MetadataStatus Text Placeholder"
+                  >
+                    <div>
+                      <MetadataStatus hasValue={false} />
+                    </div>
+                  </Tooltip>
+                )}
               </li>
             );
           })}
