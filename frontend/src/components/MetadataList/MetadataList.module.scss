@@ -1,0 +1,23 @@
+.inlineList {
+  .textItem,
+  .linkItem {
+    @apply inline;
+
+    &:not(:last-child)::after {
+      @apply mr-1;
+      content: ', ';
+    }
+
+    // Make icons inline.
+    svg {
+      @apply inline;
+    }
+  }
+
+  // If there are multiple items in the list, use inline flex so that
+  // links and icons can:
+  // https://stackoverflow.com/a/18738114
+  .linkItem + .linkItem {
+    @apply inline-flex items-end;
+  }
+}

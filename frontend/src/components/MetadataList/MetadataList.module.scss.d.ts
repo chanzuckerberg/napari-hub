@@ -1,5 +1,7 @@
 export type Styles = {
-  commaList: string;
+  inlineList: string;
+  linkItem: string;
+  textItem: string;
 };
 
 export type ClassNames = keyof Styles;
