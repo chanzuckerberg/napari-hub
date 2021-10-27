@@ -8,7 +8,6 @@ import sys
 import glob
 import os
 import json
-import requests
 
 from utils.github import github_pattern, get_github_metadata, get_github_repo_url
 from api.pypi import get_plugin_pypi_metadata
