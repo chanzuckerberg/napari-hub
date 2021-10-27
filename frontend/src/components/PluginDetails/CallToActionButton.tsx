@@ -41,9 +41,12 @@ export function CallToActionButton({ className }: Props) {
             )}
             onClick={() => {
               setVisible(true);
-              plausible('Install', {
-                plugin: plugin.name,
-              });
+
+              if (plugin?.name) {
+                plausible('Install', {
+                  plugin: plugin.name,
+                });
+              }
             }}
             type="button"
           >

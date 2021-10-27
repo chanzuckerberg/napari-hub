@@ -110,25 +110,33 @@ function PluginMetadataBase({
           items={[
             {
               title: 'Version',
-              value: plugin.version,
+              value: plugin?.version ?? '',
             },
             {
               title: 'Release date',
-              value: formatDate(plugin.release_date),
+              value: plugin?.release_date
+                ? formatDate(plugin.release_date)
+                : '',
             },
             {
               title: 'First released',
-              value: formatDate(plugin.first_released),
+              value: plugin?.first_released
+                ? formatDate(plugin.first_released)
+                : '',
             },
             {
               title: 'Development status',
-              value: plugin.development_status.map((status) =>
-                status.replace('Development Status :: ', ''),
-              ),
+              value:
+                plugin?.development_status
+                  ?.map(
+                    (status) =>
+                      status?.replace('Development Status :: ', '') ?? '',
+                  )
+                  .filter((value): value is string => !!value) ?? [],
             },
             {
               title: 'License',
-              value: plugin.license,
+              value: plugin?.license ?? '',
             },
           ]}
         />
@@ -145,21 +153,26 @@ function PluginMetadataBase({
           items={[
             {
               title: 'Python versions supported',
-              value: plugin.python_version,
+              value: plugin?.python_version ?? '',
             },
             {
               title: 'Operating system',
-              value: plugin.operating_system.map((operatingSystem) =>
-                operatingSystem.replace('Operating System :: ', ''),
-              ),
+              value: plugin?.operating_system
+                ? plugin.operating_system
+                    .map((operatingSystem) =>
+                      operatingSystem?.replace('Operating System :: ', ''),
+                    )
+                    .filter((value): value is string => !!value)
+                : '',
             },
             {
               title: 'Requirements',
-              value: isArray(plugin.requirements)
-                ? plugin.requirements.filter(
-                    (req) => !req.includes('; extra == '),
-                  )
-                : '',
+              value:
+                plugin?.requirements && isArray(plugin.requirements)
+                  ? plugin.requirements.filter(
+                      (req): req is string => !req?.includes('; extra == '),
+                    )
+                  : '',
             },
           ]}
         />

@@ -48,13 +48,19 @@ function PluginCenterColumn() {
     >
       <SkeletonLoader
         className="h-12"
-        render={() => <h1 className="font-bold text-4xl">{plugin.name}</h1>}
+        render={() => (
+          <h1 className="font-bold text-4xl">
+            {plugin?.name ?? 'Plugin name'}
+          </h1>
+        )}
       />
 
       <SkeletonLoader
         className="h-6 my-6"
         render={() => (
-          <h2 className="font-semibold my-6 text-lg">{plugin.summary}</h2>
+          <h2 className="font-semibold my-6 text-lg">
+            {plugin?.summary ?? 'Brief description'}
+          </h2>
         )}
       />
 
@@ -112,8 +118,8 @@ function PluginCenterColumn() {
       <SkeletonLoader
         className="h-[600px] mb-10"
         render={() => (
-          <Markdown className="mb-10" disableHeader>
-            {plugin.description}
+          <Markdown className={clsx('mb-10')} disableHeader>
+            {plugin?.description ?? ''}
           </Markdown>
         )}
       />
@@ -148,12 +154,14 @@ function PluginRightColumn() {
           render={() => (
             <Markdown.TOC
               className="mt-9"
-              markdown={plugin.description}
+              markdown={plugin?.description ?? ''}
               onClick={(section) => {
-                plausible('Description Nav', {
-                  section,
-                  plugin: plugin.name,
-                });
+                if (plugin?.name) {
+                  plausible('Description Nav', {
+                    section,
+                    plugin: plugin.name,
+                  });
+                }
               }}
               free
               extraHeaders={plugin.citations ? [CITATION_HEADER] : undefined}
@@ -203,7 +211,11 @@ export function PluginDetails() {
       title = `${title} by ${authors}`;
     }
 
-    keywords.push(plugin.name, ...plugin.authors.map(({ name }) => name));
+    for (const { name } of plugin.authors ?? []) {
+      if (name) {
+        keywords.push(plugin.name, name);
+      }
+    }
   }
 
   return (

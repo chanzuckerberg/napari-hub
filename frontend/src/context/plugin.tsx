@@ -1,4 +1,5 @@
 import { createContext, ReactNode, useContext } from 'react';
+import { DeepPartial } from 'utility-types';
 
 import { PluginData, PluginRepoData, PluginRepoFetchError } from '@/types';
 
@@ -6,7 +7,7 @@ import { PluginData, PluginRepoData, PluginRepoFetchError } from '@/types';
  * Shared state for plugin data.
  */
 interface PluginState {
-  plugin: PluginData;
+  plugin?: DeepPartial<PluginData>;
   repo: PluginRepoData;
   repoFetchError?: PluginRepoFetchError;
 }

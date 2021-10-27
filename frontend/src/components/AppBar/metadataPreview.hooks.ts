@@ -15,6 +15,7 @@ export interface MetadataSection {
 
 export function useMetadataSections(): MetadataSection[] {
   const { plugin } = usePluginState();
+
   return [
     {
       title: 'Name + descriptions',
@@ -23,15 +24,15 @@ export function useMetadataSections(): MetadataSection[] {
       fields: [
         {
           name: 'Plugin name',
-          hasValue: !!plugin.name,
+          hasValue: !!plugin?.name,
         },
         {
           name: 'Brief description',
-          hasValue: !!plugin.summary,
+          hasValue: !!plugin?.summary,
         },
         {
           name: 'Plugin description using hub-specific template',
-          hasValue: !!plugin.description,
+          hasValue: !!plugin?.description,
         },
         // TODO Future categories, disable this for now until the data is ready.
         // {
@@ -51,7 +52,7 @@ export function useMetadataSections(): MetadataSection[] {
       fields: [
         {
           name: 'Authors',
-          hasValue: !isEmpty(plugin.authors),
+          hasValue: !isEmpty(plugin?.authors),
         },
         // TODO Add when design for optional metadata is ready
         // {
@@ -60,7 +61,7 @@ export function useMetadataSections(): MetadataSection[] {
         // },
         {
           name: 'Report issues site',
-          hasValue: !!plugin.report_issues,
+          hasValue: !!plugin?.report_issues,
         },
         // TODO Add when design for optional metadata is ready
         // {
@@ -69,15 +70,15 @@ export function useMetadataSections(): MetadataSection[] {
         // },
         {
           name: 'Source code',
-          hasValue: !!plugin.code_repository,
+          hasValue: !!plugin?.code_repository,
         },
         {
           name: 'Documentation site',
-          hasValue: !!plugin.documentation,
+          hasValue: !!plugin?.documentation,
         },
         {
           name: 'Support site',
-          hasValue: !!plugin.support,
+          hasValue: !!plugin?.support,
         },
       ],
     },
@@ -88,15 +89,15 @@ export function useMetadataSections(): MetadataSection[] {
       fields: [
         {
           name: 'Version',
-          hasValue: !!plugin.version,
+          hasValue: !!plugin?.version,
         },
         {
           name: 'Development Status',
-          hasValue: !!plugin.development_status,
+          hasValue: !!plugin?.development_status,
         },
         {
           name: 'License',
-          hasValue: !!plugin.license,
+          hasValue: !!plugin?.license,
         },
       ],
     },
@@ -107,15 +108,15 @@ export function useMetadataSections(): MetadataSection[] {
       fields: [
         {
           name: 'Python versions supported',
-          hasValue: !isEmpty(plugin.python_version),
+          hasValue: !isEmpty(plugin?.python_version),
         },
         {
           name: 'Operating system',
-          hasValue: !isEmpty(plugin.operating_system),
+          hasValue: !isEmpty(plugin?.operating_system),
         },
         {
           name: 'Requirements',
-          hasValue: !!plugin.requirements,
+          hasValue: !!plugin?.requirements,
         },
       ],
     },
