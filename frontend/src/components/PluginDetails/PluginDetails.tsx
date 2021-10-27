@@ -34,8 +34,16 @@ function PluginLeftColumn() {
   );
 }
 
+const EMPTY_DESCRIPTION_PLACEHOLDER =
+  'The developer has not yet provided a napari-hub specific description.';
+
 function PluginCenterColumn() {
   const { plugin } = usePluginState();
+
+  // Check if body is an empty string or if it's set to the cookiecutter text.
+  const isEmptyDescription =
+    !plugin?.description ||
+    plugin.description.includes(EMPTY_DESCRIPTION_PLACEHOLDER);
 
   return (
     <article
@@ -49,7 +57,12 @@ function PluginCenterColumn() {
       <SkeletonLoader
         className="h-12"
         render={() => (
-          <h1 className="font-bold text-4xl">
+          <h1
+            className={clsx(
+              'font-bold text-4xl',
+              !plugin?.name && 'text-napari-dark-gray',
+            )}
+          >
             {plugin?.name ?? 'Plugin name'}
           </h1>
         )}
@@ -58,7 +71,12 @@ function PluginCenterColumn() {
       <SkeletonLoader
         className="h-6 my-6"
         render={() => (
-          <h2 className="font-semibold my-6 text-lg">
+          <h2
+            className={clsx(
+              'font-semibold my-6 text-lg',
+              !plugin?.summary && '!text-napari-dark-gray',
+            )}
+          >
             {plugin?.summary ?? 'Brief description'}
           </h2>
         )}
@@ -118,8 +136,12 @@ function PluginCenterColumn() {
       <SkeletonLoader
         className="h-[600px] mb-10"
         render={() => (
-          <Markdown className={clsx('mb-10')} disableHeader>
-            {plugin?.description ?? ''}
+          <Markdown
+            className={clsx('mb-10')}
+            disableHeader
+            placeholder={isEmptyDescription}
+          >
+            {plugin?.description ?? EMPTY_DESCRIPTION_PLACEHOLDER}
           </Markdown>
         )}
       />
