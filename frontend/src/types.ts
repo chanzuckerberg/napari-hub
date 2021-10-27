@@ -20,15 +20,15 @@ export interface CitationData {
  * Plugin data used for indexing. This is a subset of the full plugin data.
  */
 export interface PluginIndexData {
-  authors: PluginAuthor[];
+  authors: PluginAuthor[] | '';
   description_content_type: string;
   description: string;
   description_text: string;
-  development_status: string[];
+  development_status: string[] | '';
   first_released: string;
   license: string;
   name: string;
-  operating_system: string[];
+  operating_system: string[] | '';
   python_version: string;
   release_date: string;
   summary: string;

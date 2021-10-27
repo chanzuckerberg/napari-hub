@@ -3,7 +3,7 @@
  */
 
 import { satisfies } from '@renovate/pep440';
-import { flow, intersection, isEmpty, some } from 'lodash';
+import { flow, intersection, isArray, isEmpty, some } from 'lodash';
 
 import { DeriveGet } from '@/types';
 
@@ -50,7 +50,10 @@ function filterByOperatingSystem(
 
   return results.filter(({ plugin }) => {
     // Don't filter if plugin supports all operating systems
-    if (plugin.operating_system.some((os) => os.includes('OS Independent'))) {
+    if (
+      isArray(plugin.operating_system) &&
+      plugin.operating_system.some((os) => os.includes('OS Independent'))
+    ) {
       return true;
     }
 
@@ -59,17 +62,20 @@ function filterByOperatingSystem(
       return true;
     }
 
-    return plugin.operating_system.some((os) =>
-      some(state, (enabled, osKey) => {
-        if (enabled) {
-          const pattern =
-            FILTER_OS_PATTERN[osKey as keyof typeof FILTER_OS_PATTERN];
+    return (
+      isArray(plugin.operating_system) &&
+      plugin.operating_system.some((os) =>
+        some(state, (enabled, osKey) => {
+          if (enabled) {
+            const pattern =
+              FILTER_OS_PATTERN[osKey as keyof typeof FILTER_OS_PATTERN];
 
-          return !!pattern.exec(os);
-        }
+            return !!pattern.exec(os);
+          }
 
-        return false;
-      }),
+          return false;
+        }),
+      )
     );
   });
 }
