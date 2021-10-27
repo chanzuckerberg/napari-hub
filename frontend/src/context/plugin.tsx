@@ -169,6 +169,11 @@ export function usePluginMetadata() {
             )
           : [],
     },
+
+    citations: {
+      name: 'Citation information',
+      value: plugin?.citations,
+    },
   };
 }
 
