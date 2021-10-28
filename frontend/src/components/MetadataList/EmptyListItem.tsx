@@ -1,15 +1,17 @@
-import { Tooltip } from '@material-ui/core';
 import clsx from 'clsx';
-
-import { MetadataStatus } from '@/components/MetadataStatus';
+import { ReactNode } from 'react';
 
 import { useMetadataContext } from './metadata.context';
+
+interface Props {
+  children?: ReactNode;
+}
 
 /**
  * Renders a special list item informing the user that the metadata has no
  * supplied value.
  */
-export function EmptyListItem() {
+export function EmptyListItem({ children }: Props) {
   const { inline } = useMetadataContext();
 
   return (
@@ -23,11 +25,7 @@ export function EmptyListItem() {
         information not submitted
       </span>
 
-      <Tooltip placement="right" title="MetadataStatus Text Placeholder">
-        <div>
-          <MetadataStatus hasValue={false} />
-        </div>
-      </Tooltip>
+      {children}
     </li>
   );
 }

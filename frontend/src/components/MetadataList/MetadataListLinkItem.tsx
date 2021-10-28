@@ -1,16 +1,13 @@
 import clsx from 'clsx';
 import { ReactNode } from 'react-markdown';
-import { useSnapshot } from 'valtio';
 
 import { Link } from '@/components/common/Link/Link';
-import { MetadataStatus } from '@/components/MetadataStatus';
+import { MetadataHighlighter } from '@/components/MetadataHighlighter';
 import { MetadataKeys, usePluginState } from '@/context/plugin';
-import { useIsPreview, usePlausible } from '@/hooks';
+import { usePlausible } from '@/hooks';
 import { usePreviewClickAway } from '@/hooks/usePreviewClickAway';
-import { previewStore } from '@/store/preview';
 import { isExternalUrl } from '@/utils';
 
-import { useMetadataContext } from './metadata.context';
 import styles from './MetadataList.module.scss';
 
 interface Props {
@@ -35,27 +32,16 @@ export function MetadataListLinkItem({
   usePreviewClickAway(id);
   const plausible = usePlausible();
   const { plugin } = usePluginState();
-  const { inline } = useMetadataContext();
-  const isPreview = useIsPreview();
-  const snap = useSnapshot(previewStore);
 
   const itemClassName = 'ml-2 -mt-1 flex-grow';
   const internalLink = !isExternalUrl(href);
 
   return (
-    <li
-      className={clsx(
-        'flex',
-        styles.linkItem,
-        isPreview &&
-          !href && [
-            'bg-napari-preview-orange-overlay border-2',
-            id === snap.activeMetadataField
-              ? 'border-napari-preview-orange'
-              : 'border-transparent',
-          ],
-      )}
+    <MetadataHighlighter
       id={id}
+      component="li"
+      className={clsx('flex', styles.linkItem)}
+      highlight={!href}
     >
       <span className="min-w-4">{href ? icon : missingIcon || icon}</span>
 
@@ -88,13 +74,6 @@ export function MetadataListLinkItem({
           {children}
         </span>
       )}
-
-      {isPreview && !href && (
-        <MetadataStatus
-          hasValue={false}
-          variant={inline ? 'small' : 'regular'}
-        />
-      )}
-    </li>
+    </MetadataHighlighter>
   );
 }

@@ -3,7 +3,6 @@ import { throttle } from 'lodash';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { useSnapshot } from 'valtio';
 
 import { AppBarPreview } from '@/components/AppBar';
 import { ColumnLayout } from '@/components/common/ColumnLayout';
@@ -12,12 +11,11 @@ import { Media, MediaFragment } from '@/components/common/media';
 import { PageMetadata } from '@/components/common/PageMetadata';
 import { SkeletonLoader } from '@/components/common/SkeletonLoader';
 import { TOCHeader } from '@/components/common/TableOfContents';
-import { MetadataStatus } from '@/components/MetadataStatus';
+import { MetadataHighlighter } from '@/components/MetadataHighlighter';
 import { useLoadingState } from '@/context/loading';
 import { usePluginState } from '@/context/plugin';
 import { useIsPreview, usePlausible } from '@/hooks';
 import { usePreviewClickAway } from '@/hooks/usePreviewClickAway';
-import { previewStore } from '@/store/preview';
 
 import { CallToActionButton } from './CallToActionButton';
 import { CitationInfo } from './CitationInfo';
@@ -43,8 +41,6 @@ const EMPTY_DESCRIPTION_PLACEHOLDER =
 
 function PluginCenterColumn() {
   const { plugin } = usePluginState();
-  const isPreview = useIsPreview();
-  const snap = useSnapshot(previewStore);
 
   usePreviewClickAway('name');
   usePreviewClickAway('summary');
@@ -67,18 +63,11 @@ function PluginCenterColumn() {
       <SkeletonLoader
         className="h-12"
         render={() => (
-          <div
+          <MetadataHighlighter
             id="name"
-            className={clsx(
-              'flex justify-between',
-              !plugin?.name &&
-                isPreview && [
-                  'bg-napari-preview-orange-overlay border-2',
-                  snap.activeMetadataField === 'name'
-                    ? 'border-napari-preview-orange'
-                    : 'border-transparent',
-                ],
-            )}
+            className="flex justify-between"
+            highlight={!plugin?.name}
+            tooltipClassName="self-end"
           >
             <h1
               className={clsx(
@@ -88,29 +77,17 @@ function PluginCenterColumn() {
             >
               {plugin?.name ?? 'Plugin name'}
             </h1>
-
-            {isPreview && !plugin?.name && (
-              <MetadataStatus className="self-end" hasValue={false} />
-            )}
-          </div>
+          </MetadataHighlighter>
         )}
       />
 
       <SkeletonLoader
         className="h-6 my-6"
         render={() => (
-          <div
+          <MetadataHighlighter
             id="summary"
-            className={clsx(
-              'flex justify-between items-center my-6',
-              !plugin?.summary &&
-                isPreview && [
-                  'bg-napari-preview-orange-overlay border-2',
-                  snap.activeMetadataField === 'summary'
-                    ? 'border-napari-preview-orange'
-                    : 'border-transparent',
-                ],
-            )}
+            className="flex justify-between items-center my-6"
+            highlight={!plugin?.summary}
           >
             <h2
               className={clsx(
@@ -120,11 +97,7 @@ function PluginCenterColumn() {
             >
               {plugin?.summary ?? 'Brief description'}
             </h2>
-
-            {isPreview && !plugin?.summary && (
-              <MetadataStatus hasValue={false} />
-            )}
-          </div>
+          </MetadataHighlighter>
         )}
       />
 
@@ -182,27 +155,15 @@ function PluginCenterColumn() {
       <SkeletonLoader
         className="h-[600px] mb-10"
         render={() => (
-          <div
+          <MetadataHighlighter
             id="description"
-            className={clsx(
-              'flex items-center justify-between mb-10',
-              isPreview &&
-                isEmptyDescription && [
-                  'bg-napari-preview-orange-overlay border-2',
-                  snap.activeMetadataField === 'description'
-                    ? 'border-napari-preview-orange'
-                    : 'border-transparent',
-                ],
-            )}
+            className="flex items-center justify-between mb-10"
+            highlight={isEmptyDescription}
           >
             <Markdown disableHeader placeholder={isEmptyDescription}>
               {plugin?.description ?? EMPTY_DESCRIPTION_PLACEHOLDER}
             </Markdown>
-
-            {isPreview && isEmptyDescription && (
-              <MetadataStatus hasValue={false} />
-            )}
-          </div>
+          </MetadataHighlighter>
         )}
       />
 

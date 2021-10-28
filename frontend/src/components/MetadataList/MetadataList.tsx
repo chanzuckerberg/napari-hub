@@ -1,11 +1,9 @@
 import clsx from 'clsx';
 import { ReactNode } from 'react';
-import { useSnapshot } from 'valtio';
 
+import { MetadataHighlighter } from '@/components/MetadataHighlighter';
 import { MetadataKeys } from '@/context/plugin';
-import { useIsPreview } from '@/hooks';
 import { usePreviewClickAway } from '@/hooks/usePreviewClickAway';
-import { previewStore } from '@/store/preview';
 
 import { EmptyListItem } from './EmptyListItem';
 import { MetadataContextProvider } from './metadata.context';
@@ -34,8 +32,6 @@ export function MetadataList({
   title,
 }: Props) {
   usePreviewClickAway(id);
-  const isPreview = useIsPreview();
-  const snap = useSnapshot(previewStore);
 
   return (
     // Pass list props in context so that list items can render differently
@@ -47,50 +43,48 @@ export function MetadataList({
        */}
       <div id={id} className={clsx('text-sm', className)}>
         {/* List container */}
-        <div
+        <MetadataHighlighter
           className={clsx(
-            // Render overlay if the list is empty.
-            isPreview &&
-              empty && [
-                'bg-napari-preview-orange-overlay border-2',
-                snap.activeMetadataField === id
-                  ? 'border-napari-preview-orange'
-                  : 'border-transparent',
-              ],
             // Item spacing for inline lists.
             inline && 'space-x-2',
 
             // Vertical spacing.
             'space-y-2',
           )}
+          highlight={empty}
+          id={id}
         >
-          {/* List title */}
-          <h4
-            className={clsx(
-              // Font
-              'font-bold whitespace-nowrap',
+          {(tooltip) => (
+            <>
+              {/* List title */}
+              <h4
+                className={clsx(
+                  // Font
+                  'font-bold whitespace-nowrap',
 
-              // Render title inline with values.
-              inline && 'inline',
-            )}
-          >
-            {title}:
-          </h4>
+                  // Render title inline with values.
+                  inline && 'inline',
+                )}
+              >
+                {title}:
+              </h4>
 
-          {/* List values */}
-          <ul
-            className={clsx(
-              'list-none text-sm leading-normal',
+              {/* List values */}
+              <ul
+                className={clsx(
+                  'list-none text-sm leading-normal',
 
-              // Vertical and horizontal spacing.
-              inline
-                ? ['inline space-y-2', styles.inlineList]
-                : [compact ? 'space-y-2' : 'space-y-5'],
-            )}
-          >
-            {empty ? <EmptyListItem /> : children}
-          </ul>
-        </div>
+                  // Vertical and horizontal spacing.
+                  inline
+                    ? ['inline space-y-2', styles.inlineList]
+                    : [compact ? 'space-y-2' : 'space-y-5'],
+                )}
+              >
+                {empty ? <EmptyListItem>{tooltip}</EmptyListItem> : children}
+              </ul>
+            </>
+          )}
+        </MetadataHighlighter>
       </div>
     </MetadataContextProvider>
   );
