@@ -2,7 +2,7 @@ import { set } from 'lodash';
 import { snapshot, subscribe } from 'valtio';
 
 import { BEGINNING_PAGE, RESULTS_PER_PAGE } from '@/constants/search';
-import { isSearchPage } from '@/utils';
+import { isSearchPage, replaceUrlState } from '@/utils';
 
 import { SearchQueryParams, SearchSortType } from './constants';
 import { searchFormStore } from './form.store';
@@ -189,20 +189,8 @@ function updateQueryParameters(initialLoad?: boolean) {
     params.set(SearchQueryParams.Page, String(searchFormStore.page));
   }
 
-  const nextUrl = url.href;
-  if (window.location.href !== nextUrl) {
-    window.history.replaceState(
-      {
-        // Pass existing history state because next.js stores data in here.
-        // Without, the back / forward functionality will be broken:
-        // https://github.com/vercel/next.js/discussions/18072
-        ...window.history.state,
-        as: nextUrl,
-        url: nextUrl,
-      },
-      '',
-      nextUrl,
-    );
+  if (window.location.href !== url.href) {
+    replaceUrlState(url);
   }
 }
 
