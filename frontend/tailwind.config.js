@@ -46,6 +46,8 @@ module.exports = {
         'napari-preview-gray': colors.previewGray,
         'napari-preview-orange': colors.previewOrange,
         'napari-preview-orange-overlay': colors.previewOrangeOverlay,
+        'napari-preview-orange-overlay-active':
+          colors.previewOrangeOverlayActive,
       },
 
       width: (theme) => ({
