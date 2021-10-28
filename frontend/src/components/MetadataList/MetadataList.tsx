@@ -1,8 +1,10 @@
 import clsx from 'clsx';
 import { ReactNode } from 'react';
+import { useSnapshot } from 'valtio';
 
 import { MetadataKeys } from '@/context/plugin';
 import { useIsPreview } from '@/hooks';
+import { previewStore } from '@/store/preview';
 
 import { EmptyListItem } from './EmptyListItem';
 import { MetadataContextProvider } from './metadata.context';
@@ -31,6 +33,7 @@ export function MetadataList({
   title,
 }: Props) {
   const isPreview = useIsPreview();
+  const snap = useSnapshot(previewStore);
 
   return (
     // Pass list props in context so that list items can render differently
@@ -45,8 +48,13 @@ export function MetadataList({
         <div
           className={clsx(
             // Render overlay if the list is empty.
-            isPreview && empty && 'bg-napari-preview-orange-overlay',
-
+            isPreview &&
+              empty && [
+                'bg-napari-preview-orange-overlay border-2',
+                snap.activeMetadataField === id
+                  ? 'border-napari-preview-orange'
+                  : 'border-transparent',
+              ],
             // Item spacing for inline lists.
             inline && 'space-x-2',
 

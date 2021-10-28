@@ -4,6 +4,7 @@ import { createElement } from 'react';
 
 import { Media } from '@/components/common/media';
 import { MetadataStatus } from '@/components/MetadataStatus';
+import { previewStore } from '@/store/preview';
 import { setUrlHash } from '@/utils';
 
 import {
@@ -61,6 +62,8 @@ function MetadataField({ field }: MetadataFieldProps) {
             ? {}
             : {
                 onClick() {
+                  previewStore.activeMetadataField = field.id;
+
                   // Scroll to the active metadata field.
                   const element = document.getElementById(field.id);
                   element?.scrollIntoView();

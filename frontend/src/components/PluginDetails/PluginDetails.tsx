@@ -3,6 +3,7 @@ import { throttle } from 'lodash';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+import { useSnapshot } from 'valtio';
 
 import { AppBarPreview } from '@/components/AppBar';
 import { ColumnLayout } from '@/components/common/ColumnLayout';
@@ -15,6 +16,7 @@ import { MetadataStatus } from '@/components/MetadataStatus';
 import { useLoadingState } from '@/context/loading';
 import { usePluginState } from '@/context/plugin';
 import { useIsPreview, usePlausible } from '@/hooks';
+import { previewStore } from '@/store/preview';
 
 import { CallToActionButton } from './CallToActionButton';
 import { CitationInfo } from './CitationInfo';
@@ -41,6 +43,7 @@ const EMPTY_DESCRIPTION_PLACEHOLDER =
 function PluginCenterColumn() {
   const { plugin } = usePluginState();
   const isPreview = useIsPreview();
+  const snap = useSnapshot(previewStore);
 
   // Check if body is an empty string or if it's set to the cookiecutter text.
   const isEmptyDescription =
@@ -63,7 +66,13 @@ function PluginCenterColumn() {
             id="name"
             className={clsx(
               'flex justify-between',
-              !plugin?.name && isPreview && 'bg-napari-preview-orange-overlay',
+              !plugin?.name &&
+                isPreview && [
+                  'bg-napari-preview-orange-overlay border-2',
+                  snap.activeMetadataField === 'name'
+                    ? 'border-napari-preview-orange'
+                    : 'border-transparent',
+                ],
             )}
           >
             <h1
@@ -90,8 +99,12 @@ function PluginCenterColumn() {
             className={clsx(
               'flex justify-between items-center my-6',
               !plugin?.summary &&
-                isPreview &&
-                'bg-napari-preview-orange-overlay',
+                isPreview && [
+                  'bg-napari-preview-orange-overlay border-2',
+                  snap.activeMetadataField === 'summary'
+                    ? 'border-napari-preview-orange'
+                    : 'border-transparent',
+                ],
             )}
           >
             <h2
@@ -169,8 +182,12 @@ function PluginCenterColumn() {
             className={clsx(
               'flex items-center justify-between mb-10',
               isPreview &&
-                isEmptyDescription &&
-                'bg-napari-preview-orange-overlay',
+                isEmptyDescription && [
+                  'bg-napari-preview-orange-overlay border-2',
+                  snap.activeMetadataField === 'description'
+                    ? 'border-napari-preview-orange'
+                    : 'border-transparent',
+                ],
             )}
           >
             <Markdown disableHeader placeholder={isEmptyDescription}>

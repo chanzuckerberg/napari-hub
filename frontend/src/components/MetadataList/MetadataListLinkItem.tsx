@@ -1,10 +1,12 @@
 import clsx from 'clsx';
 import { ReactNode } from 'react-markdown';
+import { useSnapshot } from 'valtio';
 
 import { Link } from '@/components/common/Link/Link';
 import { MetadataStatus } from '@/components/MetadataStatus';
 import { MetadataKeys, usePluginState } from '@/context/plugin';
 import { useIsPreview, usePlausible } from '@/hooks';
+import { previewStore } from '@/store/preview';
 import { isExternalUrl } from '@/utils';
 
 import { useMetadataContext } from './metadata.context';
@@ -33,6 +35,8 @@ export function MetadataListLinkItem({
   const { plugin } = usePluginState();
   const { inline } = useMetadataContext();
   const isPreview = useIsPreview();
+  const snap = useSnapshot(previewStore);
+
   const itemClassName = 'ml-2 -mt-1 flex-grow';
   const internalLink = !isExternalUrl(href);
 
@@ -41,7 +45,13 @@ export function MetadataListLinkItem({
       className={clsx(
         'flex',
         styles.linkItem,
-        isPreview && !href && 'bg-napari-preview-orange-overlay',
+        isPreview &&
+          !href && [
+            'bg-napari-preview-orange-overlay border-2',
+            id === snap.activeMetadataField
+              ? 'border-napari-preview-orange'
+              : 'border-transparent',
+          ],
       )}
       id={id}
     >
