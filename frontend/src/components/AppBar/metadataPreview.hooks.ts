@@ -3,6 +3,7 @@ import { isEmpty } from 'lodash';
 import { MetadataKeys, usePluginMetadata } from '@/context/plugin';
 
 export interface MetadataSectionField {
+  id: MetadataKeys;
   name: string;
   hasValue: boolean;
 }
@@ -23,12 +24,15 @@ export function useMetadataSections(): MetadataSection[] {
   const metadata = usePluginMetadata();
 
   function getFields(...keys: MetadataKeys[]) {
-    return keys
-      .map((key) => metadata[key])
-      .map((data) => ({
+    return keys.map((key) => {
+      const data = metadata[key];
+
+      return {
+        id: key,
         name: hasPreviewName(data) ? data.previewName : data.name,
         hasValue: !isEmpty(data.value),
-      }));
+      };
+    });
   }
 
   return [

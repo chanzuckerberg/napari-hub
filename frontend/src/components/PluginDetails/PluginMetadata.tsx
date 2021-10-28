@@ -103,7 +103,7 @@ function PluginMetadataBase({
     const { name, value } = metadata[key];
 
     return (
-      <MetadataList inline={inline} title={name} empty={!value}>
+      <MetadataList id={key} inline={inline} title={name} empty={!value}>
         <MetadataListTextItem>{value}</MetadataListTextItem>
       </MetadataList>
     );
@@ -113,7 +113,12 @@ function PluginMetadataBase({
     const { name, value: values } = metadata[key];
 
     return (
-      <MetadataList inline={inline} title={name} empty={isEmpty(values)}>
+      <MetadataList
+        id={key}
+        inline={inline}
+        title={name}
+        empty={isEmpty(values)}
+      >
         {values.map((value) => (
           <MetadataListTextItem key={value}>{value}</MetadataListTextItem>
         ))}

@@ -60,6 +60,7 @@ function PluginCenterColumn() {
         className="h-12"
         render={() => (
           <div
+            id="name"
             className={clsx(
               'flex justify-between',
               !plugin?.name && isPreview && 'bg-napari-preview-orange-overlay',
@@ -85,8 +86,9 @@ function PluginCenterColumn() {
         className="h-6 my-6"
         render={() => (
           <div
+            id="summary"
             className={clsx(
-              'flex justify-between items-center mt-6',
+              'flex justify-between items-center my-6',
               !plugin?.summary &&
                 isPreview &&
                 'bg-napari-preview-orange-overlay',
@@ -163,6 +165,7 @@ function PluginCenterColumn() {
         className="h-[600px] mb-10"
         render={() => (
           <div
+            id="description"
             className={clsx(
               'flex items-center justify-between mb-10',
               isPreview &&

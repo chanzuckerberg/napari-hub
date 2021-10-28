@@ -50,6 +50,7 @@ interface CommonProps {
 }
 
 interface MetadataLinkItem {
+  id: MetadataKeys;
   text: string;
   href: string;
   icon?: ReactNode;
@@ -71,6 +72,7 @@ export function SupportInfoBase({ className, inline }: SupportInfoBaseProps) {
     const data = metadata[key];
 
     return {
+      id: key,
       text: data.name,
       href: data.value as string,
     };
@@ -104,9 +106,10 @@ export function SupportInfoBase({ className, inline }: SupportInfoBaseProps) {
   );
 
   if (metadata.twitter.value) {
-    const { href } = getLink('twitter');
+    const { id, href } = getLink('twitter');
 
     learnMoreItems.push({
+      id,
       href,
       text: formatTwitter(href),
       icon: <Twitter />,
@@ -136,6 +139,7 @@ export function SupportInfoBase({ className, inline }: SupportInfoBaseProps) {
       )}
     >
       <MetadataList
+        id="authors"
         title={metadata.authors.name}
         empty={isEmpty(metadata.authors.value)}
         inline={inline}
@@ -146,14 +150,19 @@ export function SupportInfoBase({ className, inline }: SupportInfoBaseProps) {
       </MetadataList>
 
       <MetadataList title="Learn more" inline={inline}>
-        {learnMoreItems.map(({ text, ...linkProps }) => (
-          <MetadataListLinkItem key={linkProps.href} {...linkProps}>
+        {learnMoreItems.map(({ text, id, ...linkProps }) => (
+          <MetadataListLinkItem
+            key={linkProps.href + text}
+            id={id}
+            {...linkProps}
+          >
             {text}
           </MetadataListLinkItem>
         ))}
       </MetadataList>
 
       <MetadataList
+        id="sourceCode"
         title={metadata.sourceCode.name}
         empty={!metadata.sourceCode.value}
         inline={inline}

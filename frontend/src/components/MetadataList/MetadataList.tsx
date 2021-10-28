@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import { ReactNode } from 'react';
 
+import { MetadataKeys } from '@/context/plugin';
 import { useIsPreview } from '@/hooks';
 
 import { EmptyListItem } from './EmptyListItem';
@@ -10,10 +11,11 @@ import styles from './MetadataList.module.scss';
 interface Props {
   children: ReactNode;
   className?: string;
-  title: string;
-  inline?: boolean;
   compact?: boolean;
   empty?: boolean;
+  id?: MetadataKeys;
+  inline?: boolean;
+  title: string;
 }
 
 /**
@@ -24,8 +26,9 @@ export function MetadataList({
   className,
   compact,
   empty,
-  title,
+  id,
   inline,
+  title,
 }: Props) {
   const isPreview = useIsPreview();
 
@@ -37,7 +40,7 @@ export function MetadataList({
         Use list wrapper so that the preview highlight overlay only renders as
         tall as the content.
        */}
-      <div className={clsx('text-sm', className)}>
+      <div id={id} className={clsx('text-sm', className)}>
         {/* List container */}
         <div
           className={clsx(

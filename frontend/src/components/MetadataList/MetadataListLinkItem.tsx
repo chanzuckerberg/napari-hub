@@ -3,8 +3,8 @@ import { ReactNode } from 'react-markdown';
 
 import { Link } from '@/components/common/Link/Link';
 import { MetadataStatus } from '@/components/MetadataStatus';
-import { usePluginState } from '@/context/plugin';
-import { usePlausible } from '@/hooks';
+import { MetadataKeys, usePluginState } from '@/context/plugin';
+import { useIsPreview, usePlausible } from '@/hooks';
 import { isExternalUrl } from '@/utils';
 
 import { useMetadataContext } from './metadata.context';
@@ -14,6 +14,7 @@ interface Props {
   children: string;
   href: string;
   icon?: ReactNode;
+  id?: MetadataKeys;
   missingIcon?: ReactNode;
 }
 
@@ -25,12 +26,13 @@ export function MetadataListLinkItem({
   children,
   href,
   icon,
+  id,
   missingIcon,
 }: Props) {
   const plausible = usePlausible();
   const { plugin } = usePluginState();
   const { inline } = useMetadataContext();
-  const isPreview = !!process.env.PREVIEW;
+  const isPreview = useIsPreview();
   const itemClassName = 'ml-2 -mt-1 flex-grow';
   const internalLink = !isExternalUrl(href);
 
@@ -41,6 +43,7 @@ export function MetadataListLinkItem({
         styles.linkItem,
         isPreview && !href && 'bg-napari-preview-orange-overlay',
       )}
+      id={id}
     >
       <span className="min-w-4">{href ? icon : missingIcon || icon}</span>
 
@@ -77,7 +80,7 @@ export function MetadataListLinkItem({
       {isPreview && !href && (
         <MetadataStatus
           hasValue={false}
-          variant={inline ? 'inline' : 'regular'}
+          variant={inline ? 'small' : 'regular'}
         />
       )}
     </li>
