@@ -16,6 +16,7 @@ import { MetadataStatus } from '@/components/MetadataStatus';
 import { useLoadingState } from '@/context/loading';
 import { usePluginState } from '@/context/plugin';
 import { useIsPreview, usePlausible } from '@/hooks';
+import { usePreviewClickAway } from '@/hooks/usePreviewClickAway';
 import { previewStore } from '@/store/preview';
 
 import { CallToActionButton } from './CallToActionButton';
@@ -44,6 +45,10 @@ function PluginCenterColumn() {
   const { plugin } = usePluginState();
   const isPreview = useIsPreview();
   const snap = useSnapshot(previewStore);
+
+  usePreviewClickAway('name');
+  usePreviewClickAway('summary');
+  usePreviewClickAway('description');
 
   // Check if body is an empty string or if it's set to the cookiecutter text.
   const isEmptyDescription =

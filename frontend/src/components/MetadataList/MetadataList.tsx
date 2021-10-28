@@ -4,6 +4,7 @@ import { useSnapshot } from 'valtio';
 
 import { MetadataKeys } from '@/context/plugin';
 import { useIsPreview } from '@/hooks';
+import { usePreviewClickAway } from '@/hooks/usePreviewClickAway';
 import { previewStore } from '@/store/preview';
 
 import { EmptyListItem } from './EmptyListItem';
@@ -32,6 +33,7 @@ export function MetadataList({
   inline,
   title,
 }: Props) {
+  usePreviewClickAway(id);
   const isPreview = useIsPreview();
   const snap = useSnapshot(previewStore);
 

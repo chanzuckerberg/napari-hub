@@ -6,6 +6,7 @@ import { Link } from '@/components/common/Link/Link';
 import { MetadataStatus } from '@/components/MetadataStatus';
 import { MetadataKeys, usePluginState } from '@/context/plugin';
 import { useIsPreview, usePlausible } from '@/hooks';
+import { usePreviewClickAway } from '@/hooks/usePreviewClickAway';
 import { previewStore } from '@/store/preview';
 import { isExternalUrl } from '@/utils';
 
@@ -31,6 +32,7 @@ export function MetadataListLinkItem({
   id,
   missingIcon,
 }: Props) {
+  usePreviewClickAway(id);
   const plausible = usePlausible();
   const { plugin } = usePluginState();
   const { inline } = useMetadataContext();
