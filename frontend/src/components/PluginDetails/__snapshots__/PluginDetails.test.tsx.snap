@@ -23,9 +23,11 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
         >
           <div
             class="text-sm"
+            id="version"
           >
             <div
               class="space-y-2"
+              id="version"
             >
               <h4
                 class="font-bold whitespace-nowrap"
@@ -46,9 +48,11 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
           </div>
           <div
             class="text-sm"
+            id="releaseDate"
           >
             <div
               class="space-y-2"
+              id="releaseDate"
             >
               <h4
                 class="font-bold whitespace-nowrap"
@@ -69,9 +73,11 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
           </div>
           <div
             class="text-sm"
+            id="firstReleased"
           >
             <div
               class="space-y-2"
+              id="firstReleased"
             >
               <h4
                 class="font-bold whitespace-nowrap"
@@ -92,9 +98,11 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
           </div>
           <div
             class="text-sm"
+            id="developmentStatus"
           >
             <div
               class="space-y-2"
+              id="developmentStatus"
             >
               <h4
                 class="font-bold whitespace-nowrap"
@@ -115,9 +123,11 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
           </div>
           <div
             class="text-sm"
+            id="license"
           >
             <div
               class="space-y-2"
+              id="license"
             >
               <h4
                 class="font-bold whitespace-nowrap"
@@ -213,9 +223,11 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
         >
           <div
             class="text-sm"
+            id="pythonVersion"
           >
             <div
               class="space-y-2"
+              id="pythonVersion"
             >
               <h4
                 class="font-bold whitespace-nowrap"
@@ -236,9 +248,11 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
           </div>
           <div
             class="text-sm"
+            id="operatingSystems"
           >
             <div
               class="space-y-2"
+              id="operatingSystems"
             >
               <h4
                 class="font-bold whitespace-nowrap"
@@ -259,9 +273,11 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
           </div>
           <div
             class="text-sm"
+            id="requirements"
           >
             <div
               class="space-y-2"
+              id="requirements"
             >
               <h4
                 class="font-bold whitespace-nowrap"
@@ -418,6 +434,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
   >
     <div
       class="flex justify-between"
+      id="name"
     >
       <h1
         class="font-bold text-4xl"
@@ -426,7 +443,8 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
       </h1>
     </div>
     <div
-      class="flex justify-between items-center mt-6"
+      class="flex justify-between items-center my-6"
+      id="summary"
     >
       <h2
         class="font-semibold text-lg"
@@ -458,9 +476,11 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
       >
         <div
           class="text-sm"
+          id="authors"
         >
           <div
             class="space-y-2"
+            id="authors"
           >
             <h4
               class="font-bold whitespace-nowrap"
@@ -496,6 +516,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
             >
               <li
                 class="flex linkItem"
+                id="projectSite"
               >
                 <span
                   class="min-w-4"
@@ -537,6 +558,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
               </li>
               <li
                 class="flex linkItem"
+                id="documentationSite"
               >
                 <span
                   class="min-w-4"
@@ -574,6 +596,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
               </li>
               <li
                 class="flex linkItem"
+                id="supportSite"
               >
                 <span
                   class="min-w-4"
@@ -631,6 +654,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
               </li>
               <li
                 class="flex linkItem"
+                id="reportIssues"
               >
                 <span
                   class="min-w-4"
@@ -673,6 +697,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
               </li>
               <li
                 class="flex linkItem"
+                id="twitter"
               >
                 <span
                   class="min-w-4"
@@ -704,9 +729,11 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
         </div>
         <div
           class="text-sm"
+          id="sourceCode"
         >
           <div
             class="space-y-2"
+            id="sourceCode"
           >
             <h4
               class="font-bold whitespace-nowrap"
@@ -758,9 +785,11 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
       >
         <div
           class="text-sm"
+          id="authors"
         >
           <div
             class="space-x-2 space-y-2"
+            id="authors"
           >
             <h4
               class="font-bold whitespace-nowrap inline"
@@ -796,6 +825,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
             >
               <li
                 class="flex linkItem"
+                id="projectSite"
               >
                 <span
                   class="min-w-4"
@@ -837,6 +867,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
               </li>
               <li
                 class="flex linkItem"
+                id="documentationSite"
               >
                 <span
                   class="min-w-4"
@@ -874,6 +905,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
               </li>
               <li
                 class="flex linkItem"
+                id="supportSite"
               >
                 <span
                   class="min-w-4"
@@ -931,6 +963,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
               </li>
               <li
                 class="flex linkItem"
+                id="reportIssues"
               >
                 <span
                   class="min-w-4"
@@ -973,6 +1006,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
               </li>
               <li
                 class="flex linkItem"
+                id="twitter"
               >
                 <span
                   class="min-w-4"
@@ -1004,9 +1038,11 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
         </div>
         <div
           class="text-sm"
+          id="sourceCode"
         >
           <div
             class="space-x-2 space-y-2"
+            id="sourceCode"
           >
             <h4
               class="font-bold whitespace-nowrap inline"
@@ -1052,6 +1088,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
     </div>
     <div
       class="flex items-center justify-between mb-10"
+      id="description"
     >
       <div
         class="markdown"
@@ -1481,9 +1518,11 @@ the coverage at least stays the same before you submit a pull request.
         >
           <div
             class="text-sm"
+            id="version"
           >
             <div
               class="space-x-2 space-y-2"
+              id="version"
             >
               <h4
                 class="font-bold whitespace-nowrap inline"
@@ -1504,9 +1543,11 @@ the coverage at least stays the same before you submit a pull request.
           </div>
           <div
             class="text-sm"
+            id="releaseDate"
           >
             <div
               class="space-x-2 space-y-2"
+              id="releaseDate"
             >
               <h4
                 class="font-bold whitespace-nowrap inline"
@@ -1527,9 +1568,11 @@ the coverage at least stays the same before you submit a pull request.
           </div>
           <div
             class="text-sm"
+            id="firstReleased"
           >
             <div
               class="space-x-2 space-y-2"
+              id="firstReleased"
             >
               <h4
                 class="font-bold whitespace-nowrap inline"
@@ -1550,9 +1593,11 @@ the coverage at least stays the same before you submit a pull request.
           </div>
           <div
             class="text-sm"
+            id="developmentStatus"
           >
             <div
               class="space-x-2 space-y-2"
+              id="developmentStatus"
             >
               <h4
                 class="font-bold whitespace-nowrap inline"
@@ -1573,9 +1618,11 @@ the coverage at least stays the same before you submit a pull request.
           </div>
           <div
             class="text-sm"
+            id="license"
           >
             <div
               class="space-x-2 space-y-2"
+              id="license"
             >
               <h4
                 class="font-bold whitespace-nowrap inline"
@@ -1671,9 +1718,11 @@ the coverage at least stays the same before you submit a pull request.
         >
           <div
             class="text-sm"
+            id="pythonVersion"
           >
             <div
               class="space-x-2 space-y-2"
+              id="pythonVersion"
             >
               <h4
                 class="font-bold whitespace-nowrap inline"
@@ -1694,9 +1743,11 @@ the coverage at least stays the same before you submit a pull request.
           </div>
           <div
             class="text-sm"
+            id="operatingSystems"
           >
             <div
               class="space-x-2 space-y-2"
+              id="operatingSystems"
             >
               <h4
                 class="font-bold whitespace-nowrap inline"
@@ -1717,9 +1768,11 @@ the coverage at least stays the same before you submit a pull request.
           </div>
           <div
             class="text-sm"
+            id="requirements"
           >
             <div
               class="space-x-2 space-y-2"
+              id="requirements"
             >
               <h4
                 class="font-bold whitespace-nowrap inline"
@@ -1768,9 +1821,11 @@ the coverage at least stays the same before you submit a pull request.
         >
           <div
             class="text-sm"
+            id="version"
           >
             <div
               class="space-y-2"
+              id="version"
             >
               <h4
                 class="font-bold whitespace-nowrap"
@@ -1791,9 +1846,11 @@ the coverage at least stays the same before you submit a pull request.
           </div>
           <div
             class="text-sm"
+            id="releaseDate"
           >
             <div
               class="space-y-2"
+              id="releaseDate"
             >
               <h4
                 class="font-bold whitespace-nowrap"
@@ -1814,9 +1871,11 @@ the coverage at least stays the same before you submit a pull request.
           </div>
           <div
             class="text-sm"
+            id="firstReleased"
           >
             <div
               class="space-y-2"
+              id="firstReleased"
             >
               <h4
                 class="font-bold whitespace-nowrap"
@@ -1837,9 +1896,11 @@ the coverage at least stays the same before you submit a pull request.
           </div>
           <div
             class="text-sm"
+            id="developmentStatus"
           >
             <div
               class="space-y-2"
+              id="developmentStatus"
             >
               <h4
                 class="font-bold whitespace-nowrap"
@@ -1860,9 +1921,11 @@ the coverage at least stays the same before you submit a pull request.
           </div>
           <div
             class="text-sm"
+            id="license"
           >
             <div
               class="space-y-2"
+              id="license"
             >
               <h4
                 class="font-bold whitespace-nowrap"
@@ -1958,9 +2021,11 @@ the coverage at least stays the same before you submit a pull request.
         >
           <div
             class="text-sm"
+            id="pythonVersion"
           >
             <div
               class="space-y-2"
+              id="pythonVersion"
             >
               <h4
                 class="font-bold whitespace-nowrap"
@@ -1981,9 +2046,11 @@ the coverage at least stays the same before you submit a pull request.
           </div>
           <div
             class="text-sm"
+            id="operatingSystems"
           >
             <div
               class="space-y-2"
+              id="operatingSystems"
             >
               <h4
                 class="font-bold whitespace-nowrap"
@@ -2004,9 +2071,11 @@ the coverage at least stays the same before you submit a pull request.
           </div>
           <div
             class="text-sm"
+            id="requirements"
           >
             <div
               class="space-y-2"
+              id="requirements"
             >
               <h4
                 class="font-bold whitespace-nowrap"
