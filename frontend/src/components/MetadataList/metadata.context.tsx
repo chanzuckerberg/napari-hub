@@ -1,3 +1,8 @@
+/**
+ * This module provides global access to metadata list data so that internal
+ * list components can access it.
+ */
+
 import { createContext, ReactNode, useContext } from 'react';
 
 interface MetadataContextValue {

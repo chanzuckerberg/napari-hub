@@ -49,6 +49,16 @@ export function usePluginState(): PluginState {
   return context;
 }
 
+/**
+ * Hook for accessing plugin metadata and related information. This serves as a
+ * single-source of truth for plugin metadata so that multiple features can
+ * reference the same data, and therefore allow us to colocate extra information
+ * in this same object.
+ *
+ * TODO Refactor usages `usePluginState()` to use this hook.
+ *
+ * @returns The plugin metadata.
+ */
 export function usePluginMetadata() {
   const { plugin } = usePluginState();
 

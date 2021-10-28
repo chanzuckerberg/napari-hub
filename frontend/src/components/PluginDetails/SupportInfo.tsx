@@ -125,7 +125,12 @@ export function SupportInfoBase({ className, inline }: SupportInfoBaseProps) {
     <div
       className={clsx(
         className,
-        'text-black bg-gray-100 p-5 overflow-x-auto',
+        'text-black bg-gray-100 p-5',
+
+        // Overflow on x-axis in case of really long twitter names.
+        'overflow-x-auto',
+
+        // Grid layout.
         'grid',
         inline ? 'grid-cols-1 gap-4' : 'grid-cols-3',
       )}

@@ -17,6 +17,10 @@ interface Props {
   missingIcon?: ReactNode;
 }
 
+/**
+ * Component for rendering link items in metadata lists. A link item can also
+ * include an icon, or a missing icon if the URL is empty.
+ */
 export function MetadataListLinkItem({
   children,
   href,

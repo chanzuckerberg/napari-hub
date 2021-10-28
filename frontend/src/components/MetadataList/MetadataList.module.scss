@@ -1,8 +1,10 @@
+// Styles to apply to inline lists and their list items.
 .inlineList {
   .textItem,
   .linkItem {
     @apply inline;
 
+    // Add commas for every item except the last.
     &:not(:last-child)::after {
       @apply mr-1;
       content: ', ';
@@ -14,8 +16,8 @@
     }
   }
 
-  // If there are multiple items in the list, use inline flex so that
-  // links and icons can:
+  // If there are multiple link items in the list, use inline flex so that links
+  // and icons do not break on separate lines:
   // https://stackoverflow.com/a/18738114
   .linkItem + .linkItem {
     @apply inline-flex items-end;

@@ -6,8 +6,8 @@ import { MetadataStatus } from '@/components/MetadataStatus';
 import { useMetadataContext } from './metadata.context';
 
 /**
- * Renders a special list item indicating to inform the user that the metadata
- * has no supplied value.
+ * Renders a special list item informing the user that the metadata has no
+ * supplied value.
  */
 export function EmptyListItem() {
   const { inline } = useMetadataContext();

@@ -17,7 +17,7 @@ interface Props {
 }
 
 /**
- * Component for rendering a plugin metadata values as a titled list.
+ * Component for rendering plugin metadata values as a titled list.
  */
 export function MetadataList({
   children,
