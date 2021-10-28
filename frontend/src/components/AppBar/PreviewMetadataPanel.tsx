@@ -1,7 +1,10 @@
+import { Button } from '@material-ui/core';
 import clsx from 'clsx';
+import { createElement } from 'react';
 
 import { Media } from '@/components/common/media';
 import { MetadataStatus } from '@/components/MetadataStatus';
+import { setUrlHash } from '@/utils';
 
 import {
   MetadataSectionField,
@@ -20,6 +23,57 @@ function getOrderedFields(fields: MetadataSectionField[]) {
     ...fields.filter((field) => !field.hasValue),
     ...fields.filter((field) => field.hasValue),
   ];
+}
+
+interface MetadataFieldProps {
+  field: MetadataSectionField;
+}
+
+function MetadataField({ field }: MetadataFieldProps) {
+  const fieldBody = (
+    <>
+      <MetadataStatus hasValue={field.hasValue} />
+
+      <span
+        className={clsx(
+          'text-sm ml-3',
+          !field.hasValue && 'font-semibold leading-[17.5px]',
+        )}
+      >
+        {field.name}
+      </span>
+    </>
+  );
+
+  return (
+    <li className="flex">
+      {createElement(
+        // Use buttons for missing fields so that the user can click to scroll to the missing field.
+        field.hasValue ? 'span' : Button,
+        {
+          key: field.name,
+
+          className:
+            'flex items-center justify-start text-left m-0 p-1 flex-grow',
+
+          // Attach click listener if field is a button.
+          ...(field.hasValue
+            ? {}
+            : {
+                onClick() {
+                  // Scroll to the active metadata field.
+                  const element = document.getElementById(field.id);
+                  element?.scrollIntoView();
+
+                  // Replace current URL hash with selected metadata ID.
+                  setUrlHash(field.id);
+                },
+              }),
+        },
+        fieldBody,
+      )}
+    </li>
+  );
 }
 
 interface Props {
@@ -66,17 +120,7 @@ export function PreviewMetadataPanel({ missingFieldsOnly }: Props) {
                 // Allow all fields if `missingFieldsOnly` is disabled, Otherwise, filter out values that have a value.
                 .filter((field) => !missingFieldsOnly || !field.hasValue)
                 .map((field) => (
-                  <li className="flex items-center space-x-3" key={field.name}>
-                    <MetadataStatus hasValue={field.hasValue} />
-                    <span
-                      className={clsx(
-                        'text-sm',
-                        !field.hasValue && 'font-semibold leading-[17.5px]',
-                      )}
-                    >
-                      {field.name}
-                    </span>
-                  </li>
+                  <MetadataField field={field} />
                 ))}
             </ul>
           </section>
