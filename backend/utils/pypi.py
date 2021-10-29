@@ -40,7 +40,7 @@ def query_pypi() -> Dict[str, str]:
     return packages
 
 
-def get_plugin_pypi_metadata(plugin: str, version: str=None) -> dict:
+def get_plugin_pypi_metadata(plugin: str, version: str) -> dict:
     """
     Get plugin metadata through pypi API.
 

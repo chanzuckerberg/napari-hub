@@ -213,7 +213,8 @@ def get_pypi_date_meta(meta):
     release_date = None
     first_released = None
     if name:
-        pypi_info = get_plugin_pypi_metadata(name)
+        # don't pass in version in case package version is later than released version
+        pypi_info = get_plugin_pypi_metadata(name, version=None)
         # plugin has already been released to PyPI
         if pypi_info:
             pypi_version = pypi_info['version']
