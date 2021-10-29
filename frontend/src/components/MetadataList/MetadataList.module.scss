@@ -2,13 +2,18 @@
 .inlineList {
   .textItem,
   .linkItem {
-    @apply inline;
+    @apply inline-flex items-center;
 
     // Add commas for every item except the last.
     &:not(:last-child)::after {
       @apply mr-1;
       content: ', ';
     }
+  }
+
+  .linkItem {
+    // Limit inline link items to be as long as the content.
+    @apply w-max space-x-2;
 
     // Make icons inline.
     svg {

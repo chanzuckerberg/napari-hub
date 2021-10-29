@@ -42,10 +42,14 @@ export function MetadataHighlighter<T extends HTMLKey>({
     <>
       {children}
 
-      {tooltip !== undefined ? (
-        tooltip
-      ) : (
-        <>{highlightEnabled && <EmptyMetadataTooltip metadataId={id} />}</>
+      {highlightEnabled && (
+        <>
+          {tooltip !== undefined ? (
+            tooltip
+          ) : (
+            <EmptyMetadataTooltip metadataId={id} />
+          )}
+        </>
       )}
     </>
   );
@@ -65,6 +69,14 @@ export function MetadataHighlighter<T extends HTMLKey>({
         highlightEnabled && [
           // Override button styles.
           'text-left w-full',
+
+          // I can't believe this works, but it does and it's amazing. The
+          // designs ask for the highlight boxes to flow outside of the grid
+          // layout. This is tricky to do and my initial impression was to use
+          // negative margins. However, CSS transforms do not affect the box
+          // model, so if we simply scale the highlighter a little bit and use
+          // padding for alignment, we can achieve the overflow effect.
+          'p-2 scale-[1.03]',
 
           // Give button border initially so that the space is reserved.
           'border-2',

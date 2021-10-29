@@ -45,7 +45,7 @@ function PluginGithubData() {
 
   return (
     <MetadataList
-      className="screen-875:justify-self-center screen-1150:justify-self-start"
+      className="screen-875:justify-self-center screen-1425:justify-self-start"
       title="GitHub activity"
       compact
     >

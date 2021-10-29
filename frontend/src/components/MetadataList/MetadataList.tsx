@@ -47,10 +47,9 @@ export function MetadataList({
         <MetadataHighlighter
           className={clsx(
             // Item spacing for inline lists.
-            inline && 'space-x-2',
-
-            // Vertical spacing.
-            'space-y-2',
+            inline && [
+              empty ? 'flex items-center screen-875:inline' : 'inline',
+            ],
           )}
           highlight={empty}
           tooltip={null}
@@ -63,7 +62,7 @@ export function MetadataList({
               'font-bold whitespace-nowrap',
 
               // Render title inline with values.
-              inline && 'inline',
+              inline && 'inline mr-2',
             )}
           >
             {title}:
@@ -76,7 +75,7 @@ export function MetadataList({
 
               // Vertical and horizontal spacing.
               inline
-                ? ['inline space-y-2', styles.inlineList]
+                ? ['inline space-y-2', empty && 'flex-grow', styles.inlineList]
                 : [compact ? 'space-y-2' : 'space-y-5'],
             )}
           >
