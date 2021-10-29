@@ -1,4 +1,3 @@
-import { debounce } from 'lodash';
 import { useEffect, useRef } from 'react';
 import { useSnapshot } from 'valtio';
 
@@ -7,8 +6,6 @@ import { previewStore } from '@/store/preview';
 import { setUrlHash } from '@/utils';
 
 import { useIsPreview } from './useIsPreview';
-
-const CLICK_AWAY_DEBOUNCE_MS = 200;
 
 /**
  * Hook that registers a click away listener for a particular metadata field.
@@ -21,15 +18,13 @@ const CLICK_AWAY_DEBOUNCE_MS = 200;
 export function usePreviewClickAway(id: MetadataKeys | undefined) {
   const isPreview = useIsPreview();
   const snap = useSnapshot(previewStore);
-  const handleClickAwayRef = useRef(
-    debounce(() => {
-      // Clear active metadata field for the current metadata if the IDs match.
-      if (previewStore.activeMetadataField === id) {
-        previewStore.activeMetadataField = '';
-        setUrlHash('');
-      }
-    }, CLICK_AWAY_DEBOUNCE_MS),
-  );
+  const handleClickAwayRef = useRef(() => {
+    // Clear active metadata field for the current metadata if the IDs match.
+    if (previewStore.activeMetadataField === id) {
+      previewStore.activeMetadataField = '';
+      setUrlHash('');
+    }
+  });
 
   useEffect(() => {
     const handleClickAway = handleClickAwayRef.current;
