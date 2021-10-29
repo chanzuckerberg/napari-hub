@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import { ReactNode } from 'react';
 
 import { MetadataHighlighter } from '@/components/MetadataHighlighter';
+import { EmptyMetadataTooltip } from '@/components/MetadataHighlighter/EmptyMetadataTooltip';
 import { MetadataKeys } from '@/context/plugin';
 import { usePreviewClickAway } from '@/hooks/usePreviewClickAway';
 
@@ -52,38 +53,41 @@ export function MetadataList({
             'space-y-2',
           )}
           highlight={empty}
+          tooltip={null}
           id={id}
         >
-          {(tooltip) => (
-            <>
-              {/* List title */}
-              <h4
-                className={clsx(
-                  // Font
-                  'font-bold whitespace-nowrap',
+          {/* List title */}
+          <h4
+            className={clsx(
+              // Font
+              'font-bold whitespace-nowrap',
 
-                  // Render title inline with values.
-                  inline && 'inline',
-                )}
-              >
-                {title}:
-              </h4>
+              // Render title inline with values.
+              inline && 'inline',
+            )}
+          >
+            {title}:
+          </h4>
 
-              {/* List values */}
-              <ul
-                className={clsx(
-                  'list-none text-sm leading-normal',
+          {/* List values */}
+          <ul
+            className={clsx(
+              'list-none text-sm leading-normal',
 
-                  // Vertical and horizontal spacing.
-                  inline
-                    ? ['inline space-y-2', styles.inlineList]
-                    : [compact ? 'space-y-2' : 'space-y-5'],
-                )}
-              >
-                {empty ? <EmptyListItem>{tooltip}</EmptyListItem> : children}
-              </ul>
-            </>
-          )}
+              // Vertical and horizontal spacing.
+              inline
+                ? ['inline space-y-2', styles.inlineList]
+                : [compact ? 'space-y-2' : 'space-y-5'],
+            )}
+          >
+            {empty ? (
+              <EmptyListItem>
+                <EmptyMetadataTooltip metadataId={id} />
+              </EmptyListItem>
+            ) : (
+              children
+            )}
+          </ul>
         </MetadataHighlighter>
       </div>
     </MetadataContextProvider>

@@ -1,5 +1,4 @@
 import clsx from 'clsx';
-import { isFunction } from 'lodash';
 import { createElement, HTMLProps, ReactHTML, ReactNode } from 'react';
 import { useSnapshot } from 'valtio';
 
@@ -11,15 +10,14 @@ import { setUrlHash } from '@/utils';
 import { EmptyMetadataTooltip } from './EmptyMetadataTooltip';
 
 type HTMLKey = keyof ReactHTML;
-type RenderFn = (tooltip: ReactNode) => ReactNode;
 
 interface Props<T extends HTMLKey> extends HTMLProps<ReactHTML[T]> {
-  children: ReactNode | RenderFn;
+  children: ReactNode;
   className?: string;
-  tooltipClassName?: string;
   component?: T;
   highlight?: boolean;
   id?: MetadataKeys;
+  tooltip?: ReactNode;
 }
 
 /**
@@ -32,33 +30,30 @@ export function MetadataHighlighter<T extends HTMLKey>({
   component,
   highlight = false,
   id,
-  tooltipClassName,
+  tooltip,
   ...props
 }: Props<T>) {
   const isPreview = useIsPreview();
   const snap = useSnapshot(previewStore);
   const isActive = snap.activeMetadataField === id;
+  const highlightEnabled = isPreview && highlight;
 
-  const tooltipNode = (
-    <>
-      {isPreview && highlight && (
-        <EmptyMetadataTooltip className={tooltipClassName} metadataId={id} />
-      )}
-    </>
-  );
-  const childNode = isFunction(children) ? (
-    children(tooltipNode)
-  ) : (
+  const childNode = (
     <>
       {children}
-      {tooltipNode}
+
+      {tooltip !== undefined ? (
+        tooltip
+      ) : (
+        <>{highlightEnabled && <EmptyMetadataTooltip metadataId={id} />}</>
+      )}
     </>
   );
 
   return createElement(
     // Use `button` when metadata is missing so that users can click on the
     // metadata field to show / hide the tooltip.
-    isPreview && highlight ? 'button' : component ?? 'div',
+    highlightEnabled ? 'button' : component ?? 'div',
     {
       ...props,
 
@@ -66,43 +61,48 @@ export function MetadataHighlighter<T extends HTMLKey>({
 
       className: clsx(
         className,
-        isPreview &&
-          highlight && [
-            // Override button styles.
-            'text-left w-full',
 
-            // Give button border initially so that the space is reserved.
-            'border-2',
+        highlightEnabled && [
+          // Override button styles.
+          'text-left w-full',
 
-            isActive
-              ? [
-                  // Render button with orange border and darker overlay color when active.
-                  'border-napari-preview-orange',
-                  'bg-napari-preview-orange-overlay-active',
-                ]
-              : [
-                  // Render border transparent and only show darker overlay color
-                  // when hovering.
-                  'border-transparent',
-                  'bg-napari-preview-orange-overlay',
-                  'hover:bg-napari-preview-orange-overlay-active',
-                ],
-          ],
+          // Give button border initially so that the space is reserved.
+          'border-2',
+
+          isActive
+            ? [
+                // Render button with orange border and darker overlay color when active.
+                'border-napari-preview-orange',
+                'bg-napari-preview-orange-overlay-active',
+              ]
+            : [
+                // Render border transparent and only show darker overlay color
+                // when hovering.
+                'border-transparent',
+                'bg-napari-preview-orange-overlay',
+                'hover:bg-napari-preview-orange-overlay-active',
+              ],
+        ],
       ),
 
-      onClick(event: MouseEvent) {
-        // Stop propogation so that the event doesn't bubble up to
-        // `usePreviewClickAway()` event listeners.
-        event.stopPropagation();
+      // Attach click listener when the component is a button.
+      ...(highlightEnabled
+        ? {
+            onClick(event: MouseEvent) {
+              // Stop propogation so that the event doesn't bubble up to
+              // `usePreviewClickAway()` event listeners.
+              event.stopPropagation();
 
-        // If the clicked metadata ID matches the active ID, then clear the
-        // active ID state. Otherwise, set it to the clicked metadata ID.
-        const nextId = id && id !== snap.activeMetadataField ? id : '';
-        previewStore.activeMetadataField = nextId;
+              // If the clicked metadata ID matches the active ID, then clear the
+              // active ID state. Otherwise, set it to the clicked metadata ID.
+              const nextId = id && id !== snap.activeMetadataField ? id : '';
+              previewStore.activeMetadataField = nextId;
 
-        // Replace current URL with active metadata ID.
-        setUrlHash(nextId);
-      },
+              // Replace current URL with active metadata ID.
+              setUrlHash(nextId);
+            },
+          }
+        : {}),
     },
     childNode,
   );

@@ -12,6 +12,7 @@ import { PageMetadata } from '@/components/common/PageMetadata';
 import { SkeletonLoader } from '@/components/common/SkeletonLoader';
 import { TOCHeader } from '@/components/common/TableOfContents';
 import { MetadataHighlighter } from '@/components/MetadataHighlighter';
+import { EmptyMetadataTooltip } from '@/components/MetadataHighlighter/EmptyMetadataTooltip';
 import { useLoadingState } from '@/context/loading';
 import { usePluginState } from '@/context/plugin';
 import { useIsPreview, usePlausible } from '@/hooks';
@@ -67,7 +68,9 @@ function PluginCenterColumn() {
             id="name"
             className="flex justify-between"
             highlight={!plugin?.name}
-            tooltipClassName="self-end"
+            tooltip={
+              <EmptyMetadataTooltip className="self-end" metadataId="name" />
+            }
           >
             <h1
               className={clsx(
