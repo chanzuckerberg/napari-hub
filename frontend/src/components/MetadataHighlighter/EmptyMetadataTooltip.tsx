@@ -1,4 +1,12 @@
-import { Tooltip } from '@material-ui/core';
+import { Tooltip, useMediaQuery } from '@material-ui/core';
+import useTheme from '@material-ui/core/styles/useTheme';
+import clsx from 'clsx';
+import { useEffect } from 'react';
+import { usePrevious } from 'react-use';
+import {
+  parse as parseTransformStr,
+  stringify as stringifyTransformStr,
+} from 'transform-parser';
 import { useSnapshot } from 'valtio';
 
 import { Link } from '@/components/common/Link';
@@ -59,6 +67,8 @@ const TOOLTIP_TEXT: Record<MetadataKeys, string> = {
   firstReleased: '',
 };
 
+const TOOLTIP_CLASS_NAME = 'metadata-tooltip';
+
 /**
  * Renders a tooltip and metadata status icon for with information for the
  * metadata specified by `metadataId`.
@@ -66,6 +76,46 @@ const TOOLTIP_TEXT: Record<MetadataKeys, string> = {
 export function EmptyMetadataTooltip({ className, metadataId }: Props) {
   const snap = useSnapshot(previewStore);
   const metadata = usePluginMetadata();
+  const tooltipId = metadataId ? `${metadataId}-tooltip` : '';
+  const prevActiveId = usePrevious(snap.activeMetadataField);
+  const theme = useTheme();
+  const isFullWidth = useMediaQuery(theme.breakpoints.down(495));
+
+  // Effect to make tooltip full width on smaller screens.
+  useEffect(() => {
+    // Skip tooltip transform if the tooltip is not currently open.
+    if (snap.activeMetadataField !== metadataId) {
+      return;
+    }
+
+    setTimeout(() => {
+      const tooltipContainer = document.getElementById(tooltipId);
+      const tooltip = tooltipContainer?.getElementsByClassName(
+        TOOLTIP_CLASS_NAME,
+      )?.[0] as HTMLElement | null;
+
+      if (!tooltipContainer || !tooltip || !isFullWidth) {
+        return;
+      }
+
+      // Remove transform-x for tooltip.
+      const transformData = parseTransformStr(tooltipContainer.style.transform);
+      const translateY = (transformData.translate3d as number[])?.[1] ?? 0;
+      transformData.translate3d = [0, translateY, 0];
+      tooltipContainer.style.transform = stringifyTransformStr(transformData);
+
+      // Set tooltip and container to full width with padding.
+      tooltipContainer.style.width = '100vw';
+      tooltip.style.maxWidth = '100vw';
+      tooltipContainer.style.padding = `0 ${25 / 16}rem`;
+    });
+  }, [
+    isFullWidth,
+    metadataId,
+    prevActiveId,
+    snap.activeMetadataField,
+    tooltipId,
+  ]);
 
   if (!metadataId) {
     return null;
@@ -73,9 +123,14 @@ export function EmptyMetadataTooltip({ className, metadataId }: Props) {
 
   return (
     <Tooltip
+      id={tooltipId}
       classes={{
-        tooltip:
-          'bg-white text-black text-sm border-2 border-napari-gray relative',
+        tooltip: clsx(
+          TOOLTIP_CLASS_NAME,
+          'bg-white',
+          'text-black text-sm',
+          'border-2 border-napari-gray',
+        ),
       }}
       placement="bottom"
       title={
@@ -97,18 +152,11 @@ export function EmptyMetadataTooltip({ className, metadataId }: Props) {
           </p>
         </>
       }
-      // The `open` prop is not fully reactive when using controlled components
-      // for some reason, so we need to use `key` to force unmount / remount of
-      // the Tooltip component so that it can react to the tooltip correctly.
       key={snap.activeMetadataField}
-      open={
-        snap.activeMetadataField
-          ? snap.activeMetadataField === metadataId
-          : undefined
-      }
+      open={snap.activeMetadataField === metadataId}
     >
       <div className={className}>
-        <MetadataStatus hasValue={false} />
+        <MetadataStatus className={className} hasValue={false} />
       </div>
     </Tooltip>
   );

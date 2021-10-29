@@ -78,6 +78,7 @@
     "remark-slug": "^6.0.0",
     "sitemap": "^7.0.0",
     "string-similarity": "^4.0.4",
+    "transform-parser": "^1.0.1",
     "unified": "^9.2.1",
     "use-debounce": "^7.0.0",
     "utility-types": "^3.10.0",
