@@ -1,7 +1,7 @@
 import json
 import os.path
 import re
-from typing import Dict, Union
+from typing import Dict, Union, IO
 
 import requests
 import yaml
@@ -105,7 +105,9 @@ def get_github_metadata(repo_url: str) -> dict:
 
     citation_file = get_file(repo_url, "CITATION.cff")
     if citation_file is not None:
-        github_metadata['citations'] = get_citations(citation_file)
+        citation = get_citations(citation_file)
+        if citation:
+            github_metadata['citations'] = citation
 
     if 'visibility' not in github_metadata:
         github_metadata['visibility'] = 'public'
@@ -127,11 +129,11 @@ def get_github_metadata(repo_url: str) -> dict:
     return github_metadata
 
 
-def get_citations(citation_str: str) -> Dict[str, Union[str, None]]:
+def get_citations(citation_str: str) -> Union[Dict[str, str], None]:
     """
     Get citation information from the string.
     :param citation_str: citation string to parse
-    :return: citation dictionary with parsed citation of different formats
+    :return: citation dictionary with parsed citation of different formats, None if not valid citation
     """
     try:
         citation = Citation(cffstr=citation_str)
@@ -143,4 +145,20 @@ def get_citations(citation_str: str) -> Dict[str, Union[str, None]]:
         }
     except ValueError:
         # invalid CITATION.cff content
-        return dict.fromkeys(['citation', 'RIS', 'BibTex', 'APA'], None)
+        return None
+
+
+def get_artifact(url: str, token: str) -> Union[IO[bytes], None]:
+    response = requests.get(url, headers={'Authorization': f'Bearer {token}'})
+    if response.status_code != requests.codes.ok:
+        return None
+
+    download_url = get_attribute(json.loads(response.text.strip()), ['artifacts', 0, 'archive_download_url'])
+    if not download_url:
+        return None
+
+    response = requests.get(download_url, stream=True, headers={'Authorization': f'Bearer {token}'})
+    if response.status_code != requests.codes.ok:
+        return None
+
+    return response.raw

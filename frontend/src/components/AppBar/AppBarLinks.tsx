@@ -13,6 +13,12 @@ interface LinkListProps extends CommonProps {
   items: LinkInfo[];
 }
 
+function resetStateClickHandler() {
+  // Reset states when opening app bar links.
+  resetState();
+  resetLoadingState();
+}
+
 /**
  * Link bar for rendering menu links. This only shows up on lg+ screens.
  */
@@ -24,6 +30,7 @@ function LinkList({ items, vertical }: LinkListProps) {
           className={clsx(vertical ? 'mt-4' : 'ml-6')}
           key={item.link}
           href={item.link}
+          onClick={resetStateClickHandler}
         >
           {item.title}
         </Link>
@@ -48,11 +55,7 @@ export function AppBarLinks({ className, items, vertical }: Props) {
         className="whitespace-nowrap"
         // Redirect to home page
         href="/"
-        onClick={() => {
-          // Reset states when navigating back to home page.
-          resetState();
-          resetLoadingState();
-        }}
+        onClick={resetStateClickHandler}
       >
         napari <strong>hub</strong>
       </Link>

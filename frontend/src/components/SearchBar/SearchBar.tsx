@@ -1,3 +1,4 @@
+import { IconButton } from '@material-ui/core';
 import clsx from 'clsx';
 import { useRouter } from 'next/router';
 import { HTMLProps, useEffect, useState } from 'react';
@@ -13,7 +14,7 @@ import {
   SearchSortType,
 } from '@/store/search/constants';
 import { searchFormStore } from '@/store/search/form.store';
-import { isSearchPage, scrollToSearchBar } from '@/utils';
+import { createUrl, isSearchPage, scrollToSearchBar } from '@/utils';
 
 import styles from './SearchBar.module.scss';
 
@@ -40,6 +41,7 @@ export function SearchBar({ large, ...props }: Props) {
   const router = useRouter();
   const state = useSnapshot(searchFormStore);
   const { query } = state.search;
+  const currentPathname = createUrl(router.asPath).pathname;
 
   // Local state for query. This is used to store the current entered query string.
   const [localQuery, setLocalQuery] = useState(query ?? '');
@@ -142,7 +144,7 @@ export function SearchBar({ large, ...props }: Props) {
         value={localQuery}
       />
 
-      <button
+      <IconButton
         aria-label={query ? 'Clear search bar text' : 'Submit search query'}
         data-testid={query ? 'clearQueryButton' : 'submitQueryButton'}
         onClick={async () => {
@@ -157,18 +159,14 @@ export function SearchBar({ large, ...props }: Props) {
 
           await submitForm(searchQuery);
         }}
-        // We use `type="button"` because `type="submit"` will first call the
-        // `onClick()` handler and then the `onSubmit()` handler, regardless of
-        // whether the user clicked on the button or not.
-        type="button"
       >
         {/* Render close button if the user submitted a query. */}
-        {query ? (
+        {query && isSearchPage(currentPathname) ? (
           <Close className={clsx(iconClassName, styles.closeIcon)} />
         ) : (
           <Search className={iconClassName} />
         )}
-      </button>
+      </IconButton>
     </form>
   );
 }
