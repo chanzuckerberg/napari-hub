@@ -133,6 +133,7 @@ export function EmptyMetadataTooltip({ className, metadataId }: Props) {
         ),
       }}
       placement="bottom"
+      interactive
       title={
         <>
           <h2 className="font-semibold">{metadata[metadataId].name}</h2>
