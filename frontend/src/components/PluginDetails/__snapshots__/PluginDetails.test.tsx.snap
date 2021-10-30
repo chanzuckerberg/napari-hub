@@ -26,7 +26,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
             id="version"
           >
             <div
-              class="space-y-2"
+              class=""
               id="version"
             >
               <h4
@@ -51,7 +51,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
             id="releaseDate"
           >
             <div
-              class="space-y-2"
+              class=""
               id="releaseDate"
             >
               <h4
@@ -76,7 +76,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
             id="firstReleased"
           >
             <div
-              class="space-y-2"
+              class=""
               id="firstReleased"
             >
               <h4
@@ -101,7 +101,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
             id="developmentStatus"
           >
             <div
-              class="space-y-2"
+              class=""
               id="developmentStatus"
             >
               <h4
@@ -126,7 +126,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
             id="license"
           >
             <div
-              class="space-y-2"
+              class=""
               id="license"
             >
               <h4
@@ -158,10 +158,10 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
           class="fresnel-container fresnel-lessThan-screen-875 "
         />
         <div
-          class="text-sm screen-875:justify-self-center screen-1150:justify-self-start"
+          class="text-sm screen-875:justify-self-center screen-1425:justify-self-start"
         >
           <div
-            class="space-y-2"
+            class=""
           >
             <h4
               class="font-bold whitespace-nowrap"
@@ -226,7 +226,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
             id="pythonVersion"
           >
             <div
-              class="space-y-2"
+              class=""
               id="pythonVersion"
             >
               <h4
@@ -251,7 +251,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
             id="operatingSystems"
           >
             <div
-              class="space-y-2"
+              class=""
               id="operatingSystems"
             >
               <h4
@@ -276,7 +276,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
             id="requirements"
           >
             <div
-              class="space-y-2"
+              class=""
               id="requirements"
             >
               <h4
@@ -441,32 +441,6 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
       >
         napari-compressed-labels-io
       </h1>
-      <div
-        class="self-end"
-      >
-        <div
-          class="flex items-center justify-center bg-napari-preview-orange w-[0.9375rem] h-[0.9375rem]"
-        >
-          <svg
-            fill="none"
-            height="15"
-            viewBox="0 0 15 15"
-            width="15"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <circle
-              cx="7.5"
-              cy="11"
-              fill="#fff"
-              r="1"
-            />
-            <path
-              d="M6.5 2H8.5V8H6.5V2Z"
-              fill="#fff"
-            />
-          </svg>
-        </div>
-      </div>
     </div>
     <div
       class="flex justify-between items-center my-6"
@@ -498,14 +472,14 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
       class="fresnel-container fresnel-greaterThanOrEqual-xl "
     >
       <div
-        class="mb-6 screen-495:mb-12 text-black bg-gray-100 p-5 overflow-x-auto grid grid-cols-3"
+        class="mb-6 screen-495:mb-12 text-black bg-gray-100 p-5 overflow-x-auto grid grid-cols-3 gap-12"
       >
         <div
           class="text-sm"
           id="authors"
         >
           <div
-            class="space-y-2"
+            class=""
             id="authors"
           >
             <h4
@@ -529,7 +503,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
           class="text-sm"
         >
           <div
-            class="space-y-2"
+            class=""
           >
             <h4
               class="font-bold whitespace-nowrap"
@@ -758,7 +732,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
           id="sourceCode"
         >
           <div
-            class="space-y-2"
+            class=""
             id="sourceCode"
           >
             <h4
@@ -814,11 +788,11 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
           id="authors"
         >
           <div
-            class="space-x-2 space-y-2"
+            class="inline"
             id="authors"
           >
             <h4
-              class="font-bold whitespace-nowrap inline"
+              class="font-bold whitespace-nowrap inline mr-2"
             >
               Authors
               :
@@ -838,10 +812,10 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
           class="text-sm"
         >
           <div
-            class="space-x-2 space-y-2"
+            class="inline"
           >
             <h4
-              class="font-bold whitespace-nowrap inline"
+              class="font-bold whitespace-nowrap inline mr-2"
             >
               Learn more
               :
@@ -1067,11 +1041,11 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
           id="sourceCode"
         >
           <div
-            class="space-x-2 space-y-2"
+            class="inline"
             id="sourceCode"
           >
             <h4
-              class="font-bold whitespace-nowrap inline"
+              class="font-bold whitespace-nowrap inline mr-2"
             >
               Source code
               :
@@ -1547,11 +1521,11 @@ the coverage at least stays the same before you submit a pull request.
             id="version"
           >
             <div
-              class="space-x-2 space-y-2"
+              class="inline"
               id="version"
             >
               <h4
-                class="font-bold whitespace-nowrap inline"
+                class="font-bold whitespace-nowrap inline mr-2"
               >
                 Version
                 :
@@ -1572,11 +1546,11 @@ the coverage at least stays the same before you submit a pull request.
             id="releaseDate"
           >
             <div
-              class="space-x-2 space-y-2"
+              class="inline"
               id="releaseDate"
             >
               <h4
-                class="font-bold whitespace-nowrap inline"
+                class="font-bold whitespace-nowrap inline mr-2"
               >
                 Release date
                 :
@@ -1597,11 +1571,11 @@ the coverage at least stays the same before you submit a pull request.
             id="firstReleased"
           >
             <div
-              class="space-x-2 space-y-2"
+              class="inline"
               id="firstReleased"
             >
               <h4
-                class="font-bold whitespace-nowrap inline"
+                class="font-bold whitespace-nowrap inline mr-2"
               >
                 First released
                 :
@@ -1622,11 +1596,11 @@ the coverage at least stays the same before you submit a pull request.
             id="developmentStatus"
           >
             <div
-              class="space-x-2 space-y-2"
+              class="inline"
               id="developmentStatus"
             >
               <h4
-                class="font-bold whitespace-nowrap inline"
+                class="font-bold whitespace-nowrap inline mr-2"
               >
                 Development status
                 :
@@ -1647,11 +1621,11 @@ the coverage at least stays the same before you submit a pull request.
             id="license"
           >
             <div
-              class="space-x-2 space-y-2"
+              class="inline"
               id="license"
             >
               <h4
-                class="font-bold whitespace-nowrap inline"
+                class="font-bold whitespace-nowrap inline mr-2"
               >
                 License
                 :
@@ -1679,10 +1653,10 @@ the coverage at least stays the same before you submit a pull request.
           />
         </div>
         <div
-          class="text-sm screen-875:justify-self-center screen-1150:justify-self-start"
+          class="text-sm screen-875:justify-self-center screen-1425:justify-self-start"
         >
           <div
-            class="space-y-2"
+            class=""
           >
             <h4
               class="font-bold whitespace-nowrap"
@@ -1747,11 +1721,11 @@ the coverage at least stays the same before you submit a pull request.
             id="pythonVersion"
           >
             <div
-              class="space-x-2 space-y-2"
+              class="inline"
               id="pythonVersion"
             >
               <h4
-                class="font-bold whitespace-nowrap inline"
+                class="font-bold whitespace-nowrap inline mr-2"
               >
                 Python versions supported
                 :
@@ -1772,11 +1746,11 @@ the coverage at least stays the same before you submit a pull request.
             id="operatingSystems"
           >
             <div
-              class="space-x-2 space-y-2"
+              class="inline"
               id="operatingSystems"
             >
               <h4
-                class="font-bold whitespace-nowrap inline"
+                class="font-bold whitespace-nowrap inline mr-2"
               >
                 Operating system
                 :
@@ -1797,11 +1771,11 @@ the coverage at least stays the same before you submit a pull request.
             id="requirements"
           >
             <div
-              class="space-x-2 space-y-2"
+              class="inline"
               id="requirements"
             >
               <h4
-                class="font-bold whitespace-nowrap inline"
+                class="font-bold whitespace-nowrap inline mr-2"
               >
                 Requirements
                 :
@@ -1850,7 +1824,7 @@ the coverage at least stays the same before you submit a pull request.
             id="version"
           >
             <div
-              class="space-y-2"
+              class=""
               id="version"
             >
               <h4
@@ -1875,7 +1849,7 @@ the coverage at least stays the same before you submit a pull request.
             id="releaseDate"
           >
             <div
-              class="space-y-2"
+              class=""
               id="releaseDate"
             >
               <h4
@@ -1900,7 +1874,7 @@ the coverage at least stays the same before you submit a pull request.
             id="firstReleased"
           >
             <div
-              class="space-y-2"
+              class=""
               id="firstReleased"
             >
               <h4
@@ -1925,7 +1899,7 @@ the coverage at least stays the same before you submit a pull request.
             id="developmentStatus"
           >
             <div
-              class="space-y-2"
+              class=""
               id="developmentStatus"
             >
               <h4
@@ -1950,7 +1924,7 @@ the coverage at least stays the same before you submit a pull request.
             id="license"
           >
             <div
-              class="space-y-2"
+              class=""
               id="license"
             >
               <h4
@@ -1982,10 +1956,10 @@ the coverage at least stays the same before you submit a pull request.
           class="fresnel-container fresnel-lessThan-screen-875 "
         />
         <div
-          class="text-sm screen-875:justify-self-center screen-1150:justify-self-start"
+          class="text-sm screen-875:justify-self-center screen-1425:justify-self-start"
         >
           <div
-            class="space-y-2"
+            class=""
           >
             <h4
               class="font-bold whitespace-nowrap"
@@ -2050,7 +2024,7 @@ the coverage at least stays the same before you submit a pull request.
             id="pythonVersion"
           >
             <div
-              class="space-y-2"
+              class=""
               id="pythonVersion"
             >
               <h4
@@ -2075,7 +2049,7 @@ the coverage at least stays the same before you submit a pull request.
             id="operatingSystems"
           >
             <div
-              class="space-y-2"
+              class=""
               id="operatingSystems"
             >
               <h4
@@ -2100,7 +2074,7 @@ the coverage at least stays the same before you submit a pull request.
             id="requirements"
           >
             <div
-              class="space-y-2"
+              class=""
               id="requirements"
             >
               <h4
