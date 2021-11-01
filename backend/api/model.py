@@ -5,7 +5,7 @@ from zipfile import ZipFile
 from io import BytesIO
 
 from utils.github import get_github_metadata, get_artifact
-from api.pypi import query_pypi, get_plugin_pypi_metadata
+from utils.pypi import query_pypi, get_plugin_pypi_metadata
 from api.s3 import get_cache, cache
 from utils.utils import render_description, send_alert, get_attribute
 from api.zulip import notify_new_packages

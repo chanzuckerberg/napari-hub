@@ -3,11 +3,15 @@ import os
 import pytest
 import pkginfo
 import requests
+import dateutil.parser
+from datetime import datetime
 
-from ..preview import clone_repo, build_dist, parse_meta, get_plugin_preview
+from ..preview import clone_repo, build_dist, parse_meta, get_plugin_preview, get_pypi_date_meta
 
 code_plugin_url = "https://github.com/DragaDoncila/example-plugin"
 hub_plugin_url = "https://api.napari-hub.org/plugins/example-plugin"
+example_plugin_first_released = "2021-07-12T21:30:25.936203Z"
+example_plugin_release_date = "2021-10-08T00:49:53.706510Z"
 
 def test_clone_existing_plugin(tmpdir):
     dest_dir = tmpdir.mkdir("repo")
@@ -63,5 +67,24 @@ def test_parse_preview_matches_hub(tmpdir):
 
     # for each shared field, assert they're the same
     for field in hub_metadata.keys():
-        if field in preview_meta:
+        if field in preview_meta and field not in ['first_released', 'release_date', 'version']:
             assert preview_meta[field] == hub_metadata[field]
+
+
+def test_release_date_logic():
+    # plugin not on PyPI gives today's date
+    meta = {'name': 'not-a-real-napari-plugin', 'version': '0.0.1'}
+    get_pypi_date_meta(meta)
+    assert dateutil.parser.isoparse(meta['first_released']).date() == dateutil.parser.isoparse(meta['release_date']).date() == datetime.utcnow().date()
+
+    # plugin on PyPI, version on GitHub is later
+    meta = {'name': 'example-plugin', 'version': '0.0.8'}
+    get_pypi_date_meta(meta)
+    assert dateutil.parser.isoparse(meta['first_released']).date() == dateutil.parser.isoparse(example_plugin_first_released).date()
+    assert dateutil.parser.isoparse(meta['release_date']).date() == datetime.utcnow().date()
+
+    # plugin on PyPI, version on GitHub matches PyPI or is earlier
+    meta = {'name': 'example-plugin', 'version': '0.0.7'}
+    get_pypi_date_meta(meta)
+    assert dateutil.parser.isoparse(meta['first_released']).date() == dateutil.parser.isoparse(example_plugin_first_released).date()
+    assert dateutil.parser.isoparse(meta['release_date']).date() == dateutil.parser.isoparse(example_plugin_release_date).date()

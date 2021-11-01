@@ -48,7 +48,11 @@ def get_plugin_pypi_metadata(plugin: str, version: str) -> dict:
     :param version: version of the plugin
     :return: metadata dict for the plugin, empty if not found
     """
-    url = f"https://pypi.org/pypi/{plugin}/{version}/json"
+    if version:
+        url = f"https://pypi.org/pypi/{plugin}/{version}/json"
+    else:
+        url = f"https://pypi.org/pypi/{plugin}/json"
+        
     try:
         response = requests.get(url)
         if response.status_code != requests.codes.ok:
