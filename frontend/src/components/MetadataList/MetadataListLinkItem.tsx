@@ -59,6 +59,7 @@ export function MetadataListLinkItem({
           ],
       )}
       highlight={!href}
+      variant="small"
     >
       <span className="min-w-4">{href ? icon : missingIcon || icon}</span>
 

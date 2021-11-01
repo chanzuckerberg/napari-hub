@@ -26,7 +26,6 @@ interface Props {
 export function MetadataList({
   children,
   className,
-  compact,
   empty,
   id,
   inline,
@@ -62,7 +61,7 @@ export function MetadataList({
               'font-bold whitespace-nowrap',
 
               // Render title inline with values.
-              inline && 'inline mr-2',
+              inline ? 'inline mr-2' : 'mb-3',
             )}
           >
             {title}:
@@ -76,7 +75,7 @@ export function MetadataList({
               // Vertical and horizontal spacing.
               inline
                 ? ['inline space-y-2', empty && 'flex-grow', styles.inlineList]
-                : [compact ? 'space-y-2' : 'space-y-5'],
+                : 'space-y-3',
             )}
           >
             {empty ? (

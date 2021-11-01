@@ -11,9 +11,10 @@ import { Link } from '@/components/common/Link';
 import { Media } from '@/components/common/media';
 import { MetadataStatus } from '@/components/MetadataStatus';
 import { HUB_WIKI_LINK } from '@/constants/preview';
+import { usePluginMetadata } from '@/context/plugin';
 
 import styles from './AppBarPreview.module.scss';
-import { useMetadataSections } from './metadataPreview.hooks';
+import { MetadataSection, useMetadataSections } from './metadataPreview.hooks';
 import { PreviewMetadataPanel } from './PreviewMetadataPanel';
 
 function MetadataStatusBar() {
@@ -51,7 +52,7 @@ function AppBarPreviewLeftColumn() {
 
   return (
     <Link
-      className="flex items-center whitespace-nowrap underline"
+      className="flex items-center whitespace-nowrap underline space-x-[0.625rem]"
       href={prLink}
       newTab
     >
@@ -103,18 +104,21 @@ interface AppBarPreviewRightColumnProps {
   setExpanded(value: boolean | ((prev: boolean) => boolean)): void;
 }
 
+function hasMissingFields(sections: MetadataSection[]): boolean {
+  return sections.some((section) =>
+    section.fields.some((field) => !field.hasValue),
+  );
+}
+
 function AppBarPreviewRightColumn({
   expanded,
   setExpanded,
 }: AppBarPreviewRightColumnProps) {
   const sections = useMetadataSections();
-  const hasMissingFields = sections.some((section) =>
-    section.fields.some((field) => !field.hasValue),
-  );
 
   const renderExpandButton = () => (
     <IconButton
-      className="rounded-none px-px"
+      className="rounded-none"
       onClick={() => setExpanded((prevExpanded) => !prevExpanded)}
     >
       {expanded ? (
@@ -142,14 +146,24 @@ function AppBarPreviewRightColumn({
 
       {/* Only render expand button if there are missing fields. */}
       <Media lessThan="screen-495">
-        {hasMissingFields && renderExpandButton()}
+        {hasMissingFields(sections) && renderExpandButton()}
       </Media>
     </>
   );
 }
 
+const GITHUB_URL_REGEX = /\w+:\/\/(.+@)*[\w\d.]+(:[\d]+){0,1}\/*([^?&]*)/;
+const PR_LINK = process.env.PREVIEW_PULL_REQUEST;
+
+const repoPath = GITHUB_URL_REGEX.exec(PR_LINK)?.[3];
+const [ORG_NAME = '', REPO_NAME = '', , PR_NUMBER = ''] =
+  repoPath?.split('/') ?? [];
+const PREVIEW_LINK_TEXT = `${ORG_NAME}/${REPO_NAME}#${PR_NUMBER}`;
+
 export function AppBarPreview() {
-  const [expanded, setExpanded] = useState(false);
+  const metadata = usePluginMetadata();
+  const sections = useMetadataSections();
+  const [expanded, setExpanded] = useState(hasMissingFields(sections));
 
   const renderRightColumn = () => (
     <AppBarPreviewRightColumn expanded={expanded} setExpanded={setExpanded} />
@@ -236,7 +250,17 @@ export function AppBarPreview() {
           'z-20',
         )}
       >
-        <p className="text-napari-preview-orange">This is a preview</p>
+        <p className="text-napari-preview-orange text-center px-6 screen-495:px-12">
+          This preview of{' '}
+          <span className="font-semibold">
+            {metadata.name.value || 'Plugin name'}
+          </span>{' '}
+          was generated from{' '}
+          <Link className="underline" href={PR_LINK} newTab>
+            {PREVIEW_LINK_TEXT}
+          </Link>{' '}
+          and is not live on the napari hub
+        </p>
       </div>
     </>
   );

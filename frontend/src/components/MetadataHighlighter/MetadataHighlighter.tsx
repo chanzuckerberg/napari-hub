@@ -18,6 +18,7 @@ interface Props<T extends HTMLKey> extends HTMLProps<ReactHTML[T]> {
   highlight?: boolean;
   id?: MetadataKeys;
   tooltip?: ReactNode;
+  variant?: 'regular' | 'small';
 }
 
 /**
@@ -31,6 +32,7 @@ export function MetadataHighlighter<T extends HTMLKey>({
   highlight = false,
   id,
   tooltip,
+  variant,
   ...props
 }: Props<T>) {
   const isPreview = useIsPreview();
@@ -76,7 +78,8 @@ export function MetadataHighlighter<T extends HTMLKey>({
           // negative margins. However, CSS transforms do not affect the box
           // model, so if we simply scale the highlighter a little bit and use
           // padding for alignment, we can achieve the overflow effect.
-          'p-2 scale-[1.03]',
+          variant === 'small' ? 'p-1' : 'p-2',
+          'scale-[1.03]',
 
           // Give button border initially so that the space is reserved.
           'border-2',

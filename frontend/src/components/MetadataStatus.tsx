@@ -19,7 +19,9 @@ export function MetadataStatus({
         'flex items-center justify-center',
         className,
         hasValue ? 'bg-napari-primary' : 'bg-napari-preview-orange',
-        variant === 'small' ? 'w-2 h-2' : 'w-[0.9375rem] h-[0.9375rem]',
+        variant === 'small'
+          ? 'w-[0.625rem] h-[0.625rem]'
+          : 'w-[0.9375rem] h-[0.9375rem]',
       )}
     >
       {hasValue ? <Check /> : <PriorityHigh color="#fff" />}
