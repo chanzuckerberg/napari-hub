@@ -12,7 +12,6 @@ import {
   usePluginMetadata,
   usePluginState,
 } from '@/context/plugin';
-import { useIsPreview } from '@/hooks';
 
 interface GithubMetadataItem {
   title: string;
@@ -98,7 +97,6 @@ function PluginMetadataBase({
   inline,
 }: PluginMetadataBaseProps) {
   const metadata = usePluginMetadata();
-  const isPreview = useIsPreview();
 
   function renderSingleItemList(key: PickMetadataKeys<string>) {
     const { name, value } = metadata[key];
@@ -155,7 +153,7 @@ function PluginMetadataBase({
     />
   );
 
-  const listClassName = clsx(isPreview ? 'space-y-2' : 'space-y-5');
+  const listClassName = clsx(process.env.PREVIEW ? 'space-y-2' : 'space-y-5');
 
   return (
     <div

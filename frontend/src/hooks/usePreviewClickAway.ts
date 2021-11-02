@@ -5,8 +5,6 @@ import { MetadataKeys } from '@/context/plugin';
 import { previewStore } from '@/store/preview';
 import { setUrlHash } from '@/utils';
 
-import { useIsPreview } from './useIsPreview';
-
 /**
  * Hook that registers a click away listener for a particular metadata field.
  * The handler is only registered if the `id` matches the current active
@@ -16,7 +14,6 @@ import { useIsPreview } from './useIsPreview';
  * @param id The ID of the field to check for in the click away handler.
  */
 export function usePreviewClickAway(id: MetadataKeys | undefined) {
-  const isPreview = useIsPreview();
   const snap = useSnapshot(previewStore);
   const handleClickAwayRef = useRef(() => {
     // Clear active metadata field for the current metadata if the IDs match.
@@ -30,7 +27,7 @@ export function usePreviewClickAway(id: MetadataKeys | undefined) {
     const handleClickAway = handleClickAwayRef.current;
 
     if (
-      isPreview &&
+      process.env.PREVIEW &&
       snap.activeMetadataField &&
       id === snap.activeMetadataField
     ) {
@@ -40,5 +37,5 @@ export function usePreviewClickAway(id: MetadataKeys | undefined) {
     }
 
     return () => document.removeEventListener('click', handleClickAway);
-  }, [id, isPreview, snap.activeMetadataField]);
+  }, [id, snap.activeMetadataField]);
 }

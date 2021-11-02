@@ -12,7 +12,7 @@ import { MetadataHighlighter } from '@/components/MetadataHighlighter';
 import { EmptyMetadataTooltip } from '@/components/MetadataHighlighter/EmptyMetadataTooltip';
 import { useLoadingState } from '@/context/loading';
 import { usePluginState } from '@/context/plugin';
-import { useIsPreview, usePlausible } from '@/hooks';
+import { usePlausible } from '@/hooks';
 import { usePreviewClickAway } from '@/hooks/usePreviewClickAway';
 
 import { CallToActionButton } from './CallToActionButton';
@@ -229,7 +229,6 @@ const scrollHandler = throttle(() => {
  */
 export function PluginDetails() {
   const loading = useLoadingState();
-  const isPreview = useIsPreview();
 
   useEffect(() => {
     if (loading) {
@@ -244,7 +243,7 @@ export function PluginDetails() {
 
   return (
     <>
-      {isPreview && <AppBarPreview />}
+      {process.env.PREVIEW && <AppBarPreview />}
 
       <ColumnLayout
         className="p-6 md:p-12 2xl:px-0"

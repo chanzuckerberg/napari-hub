@@ -3,7 +3,6 @@ import { createElement, HTMLProps, ReactHTML, ReactNode } from 'react';
 import { useSnapshot } from 'valtio';
 
 import { MetadataKeys } from '@/context/plugin';
-import { useIsPreview } from '@/hooks';
 import { previewStore } from '@/store/preview';
 import { setUrlHash } from '@/utils';
 
@@ -35,10 +34,9 @@ export function MetadataHighlighter<T extends HTMLKey>({
   variant,
   ...props
 }: Props<T>) {
-  const isPreview = useIsPreview();
   const snap = useSnapshot(previewStore);
   const isActive = snap.activeMetadataField === id;
-  const highlightEnabled = isPreview && highlight;
+  const highlightEnabled = process.env.PREVIEW && highlight;
 
   const childNode = (
     <>

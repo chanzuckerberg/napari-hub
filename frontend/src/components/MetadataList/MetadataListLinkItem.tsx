@@ -4,7 +4,7 @@ import { ReactNode } from 'react-markdown';
 import { Link } from '@/components/common/Link/Link';
 import { MetadataHighlighter } from '@/components/MetadataHighlighter';
 import { MetadataKeys, usePluginState } from '@/context/plugin';
-import { useIsPreview, usePlausible } from '@/hooks';
+import { usePlausible } from '@/hooks';
 import { usePreviewClickAway } from '@/hooks/usePreviewClickAway';
 import { isExternalUrl } from '@/utils';
 
@@ -34,7 +34,6 @@ export function MetadataListLinkItem({
   const plausible = usePlausible();
   const { plugin } = usePluginState();
   const { inline } = useMetadataContext();
-  const isPreview = useIsPreview();
 
   const itemClassName = 'ml-2 -mt-1 flex-grow';
   const internalLink = !isExternalUrl(href);
@@ -49,7 +48,7 @@ export function MetadataListLinkItem({
 
         // Add extra margins when highlighting links so that the highlight boxes
         // do not overlap.
-        isPreview && [
+        process.env.PREVIEW && [
           !href && styles.empty,
 
           inline && [
