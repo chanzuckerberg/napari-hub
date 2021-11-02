@@ -4,6 +4,7 @@ import { ReactNode } from 'react';
 import { MetadataHighlighter } from '@/components/MetadataHighlighter';
 import { EmptyMetadataTooltip } from '@/components/MetadataHighlighter/EmptyMetadataTooltip';
 import { MetadataKeys } from '@/context/plugin';
+import { useIsPreview } from '@/hooks';
 import { usePreviewClickAway } from '@/hooks/usePreviewClickAway';
 
 import { EmptyListItem } from './EmptyListItem';
@@ -13,7 +14,6 @@ import styles from './MetadataList.module.scss';
 interface Props {
   children: ReactNode;
   className?: string;
-  compact?: boolean;
   empty?: boolean;
   id?: MetadataKeys;
   inline?: boolean;
@@ -32,6 +32,7 @@ export function MetadataList({
   title,
 }: Props) {
   usePreviewClickAway(id);
+  const isPreview = useIsPreview();
 
   return (
     // Pass list props in context so that list items can render differently
@@ -70,12 +71,16 @@ export function MetadataList({
           {/* List values */}
           <ul
             className={clsx(
+              styles.list,
               'list-none text-sm leading-normal',
+              isPreview && styles.preview,
 
               // Vertical and horizontal spacing.
-              inline
-                ? ['inline space-y-2', empty && 'flex-grow', styles.inlineList]
-                : 'space-y-3',
+              inline && [
+                'inline space-y-2',
+                empty && 'flex-grow',
+                styles.inline,
+              ],
             )}
           >
             {empty ? (

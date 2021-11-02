@@ -1,5 +1,17 @@
-// Styles to apply to inline lists and their list items.
-.inlineList {
+.list {
+  .textItem,
+  .linkItem {
+    &:not(:first-child) {
+      @apply mt-3;
+    }
+  }
+
+  &.preview .linkItem:not(:first-child) {
+    @apply mt-1;
+  }
+}
+
+.list.inline {
   .textItem,
   .linkItem {
     @apply inline-flex items-center;
@@ -19,12 +31,5 @@
     svg {
       @apply inline;
     }
-  }
-
-  // If there are multiple link items in the list, use inline flex so that links
-  // and icons do not break on separate lines:
-  // https://stackoverflow.com/a/18738114
-  .linkItem + .linkItem {
-    @apply inline-flex items-end;
   }
 }
