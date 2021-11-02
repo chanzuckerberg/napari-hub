@@ -17,28 +17,41 @@ interface Props {
  */
 const TOOLTIP_TEXT: Record<MetadataKeys, string> = {
   // Plugin content
-  name: 'the name of the plugin',
-  description: 'long description of the plugin',
-  summary: 'short description of the plugin',
+  name: 'There can be only one. This is also the name of your Python package. Learn how to set this.',
+  description:
+    'Focus on what’s relevant to users who might want to try your plugin. Learn how to set this.',
+  summary:
+    'Stand out with a concise summary of what your plugin does. Learn how to set this.',
 
   // Plugin metadata
-  developmentStatus: 'the current development status of the plugin',
-  license: 'the license of the plugin',
-  operatingSystems: 'list of supported operating systems',
-  pythonVersion: 'indicates which version of Python the user should install',
-  requirements: 'list of Python requirements for the plugin',
-  version: 'the current version of the plugin',
+  developmentStatus:
+    'Tell users what level of stability they should expect. Learn how to set this.',
+  license:
+    'Help users know how they can modify or redistribute your code. Learn how to set this.',
+  operatingSystems:
+    'Tell your users which operating systems you support. Learn how to set this.',
+  pythonVersion:
+    'Let users know which Python versions you support. Learn how to set this.',
+  requirements:
+    'If your plugin has dependencies on other Python libraries, make sure to add them. Learn how to set this.',
+  version:
+    'Semantic versioning gives users quick insight into breaking changes. Learn how to set this.',
 
   // Plugin support info
-  authors: 'lists authors of the plugin',
-  documentationSite: 'link to the documentation site',
-  reportIssues: 'link to site for users to report issues',
-  sourceCode: 'link to the source code of the plugin',
-  supportSite: 'link to a plugin support site',
+  authors:
+    'Make sure folks know who’s behind the magic. Learn how to set this.',
+  documentationSite:
+    'Show your users where to go to learn about all the awesome things your plugin can do. Learn how to set this.',
+  reportIssues:
+    'Let users know where to go to request features or report bugs. Learn how to set this.',
+  sourceCode:
+    'Link to the source code to help build trust in your hard work. Learn how to set this.',
+  supportSite:
+    'Make sure your users can find someone to help when they need a hand. Learn how to set this.',
 
   // Currently not used in the preview UI
-  twitter: "link to the author's twitter",
-  projectSite: 'link to the project site of the plugin',
+  twitter: "Link to the Author's Twitter. Learn how to set this.",
+  projectSite: 'Link to the Project Site of the Plugin. Learn how to set this.',
 
   // Unused
   citations: '',
