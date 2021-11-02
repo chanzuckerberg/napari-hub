@@ -1,6 +1,7 @@
 import fs from 'fs-extra';
 import { GetStaticPropsResult } from 'next';
 import DefaultErrorPage from 'next/error';
+import Head from 'next/head';
 import { useEffect } from 'react';
 import { DeepPartial } from 'utility-types';
 
@@ -57,12 +58,18 @@ export default function PreviewPage({ plugin, repo, repoFetchError }: Props) {
   }
 
   return (
-    <PluginStateProvider
-      plugin={plugin}
-      repo={repo}
-      repoFetchError={repoFetchError}
-    >
-      <PluginDetails />
-    </PluginStateProvider>
+    <>
+      <Head>
+        <title>napari hub | preview | {plugin.name || 'Plugin name'}</title>
+      </Head>
+
+      <PluginStateProvider
+        plugin={plugin}
+        repo={repo}
+        repoFetchError={repoFetchError}
+      >
+        <PluginDetails />
+      </PluginStateProvider>
+    </>
   );
 }

@@ -1,14 +1,11 @@
 import clsx from 'clsx';
 import { throttle } from 'lodash';
-import Head from 'next/head';
-import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
 import { AppBarPreview } from '@/components/AppBar';
 import { ColumnLayout } from '@/components/common/ColumnLayout';
 import { Markdown } from '@/components/common/Markdown';
 import { Media, MediaFragment } from '@/components/common/media';
-import { PageMetadata } from '@/components/common/PageMetadata';
 import { SkeletonLoader } from '@/components/common/SkeletonLoader';
 import { TOCHeader } from '@/components/common/TableOfContents';
 import { MetadataHighlighter } from '@/components/MetadataHighlighter';
@@ -232,8 +229,6 @@ const scrollHandler = throttle(() => {
  */
 export function PluginDetails() {
   const loading = useLoadingState();
-  const { plugin } = usePluginState();
-  const router = useRouter();
   const isPreview = useIsPreview();
 
   useEffect(() => {
@@ -247,34 +242,8 @@ export function PluginDetails() {
     }
   }, [loading]);
 
-  const keywords: string[] = [];
-  let title = 'napari hub | plugins';
-  if (plugin?.name && plugin?.authors) {
-    title = `${title} | ${plugin.name}`;
-
-    const authors = plugin.authors.map(({ name }) => name).join(', ');
-    if (authors) {
-      title = `${title} by ${authors}`;
-    }
-
-    for (const { name } of plugin.authors ?? []) {
-      if (name) {
-        keywords.push(plugin.name, name);
-      }
-    }
-  }
-
   return (
     <>
-      <Head>
-        <title>{title}</title>
-        <PageMetadata
-          keywords={keywords}
-          description={plugin?.summary}
-          pathname={router.pathname}
-        />
-      </Head>
-
       {isPreview && <AppBarPreview />}
 
       <ColumnLayout
