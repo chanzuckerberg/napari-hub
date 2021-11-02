@@ -49,7 +49,9 @@ export function MetadataListLinkItem({
 
         // Add extra margins when highlighting links so that the highlight boxes
         // do not overlap.
-        isPreview &&
+        isPreview && [
+          !href && styles.empty,
+
           inline && [
             'first:ml-0',
 
@@ -57,6 +59,7 @@ export function MetadataListLinkItem({
             // overlap with highlighted boxes.
             href ? 'ml-3' : 'ml-2',
           ],
+        ],
       )}
       highlight={!href}
       variant="small"

@@ -29,7 +29,7 @@
     }
   }
 
-  &.preview .linkItem:not(:first-child) {
+  &.preview .linkItem.empty:not(:first-child) {
     @apply mt-1;
   }
 }

@@ -123,7 +123,7 @@ export function PreviewMetadataPanel({ missingFieldsOnly }: Props) {
                 // Allow all fields if `missingFieldsOnly` is disabled, Otherwise, filter out values that have a value.
                 .filter((field) => !missingFieldsOnly || !field.hasValue)
                 .map((field) => (
-                  <MetadataField field={field} />
+                  <MetadataField key={field.id} field={field} />
                 ))}
             </ul>
           </section>
