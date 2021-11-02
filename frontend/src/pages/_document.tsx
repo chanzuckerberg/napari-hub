@@ -1,4 +1,5 @@
 import { ServerStyleSheets } from '@material-ui/styles';
+import clsx from 'clsx';
 import Document, {
   DocumentContext,
   Head,
@@ -10,7 +11,7 @@ import Document, {
 import { mediaStyles } from '@/components/common/media';
 import { theme } from '@/theme';
 
-const FAVICON = `${process.env.BASE_PATH}/icons/favicon`;
+const FAVICON = `${process.env.BASE_PATH || ''}/icons/favicon`;
 
 export default class HubDocument extends Document {
   static async getInitialProps(context: DocumentContext) {
@@ -37,8 +38,10 @@ export default class HubDocument extends Document {
   }
 
   render() {
+    const isPreview = !!process.env.PREVIEW;
+
     return (
-      <Html lang="en">
+      <Html className={clsx(isPreview && 'preview')} lang="en">
         <Head>
           <meta name="theme-color" content={theme.palette.primary.main} />
           <link

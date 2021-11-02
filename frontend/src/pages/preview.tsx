@@ -1,12 +1,14 @@
 import fs from 'fs-extra';
 import { GetStaticPropsResult } from 'next';
 import DefaultErrorPage from 'next/error';
+import { useEffect } from 'react';
 import { DeepPartial } from 'utility-types';
 
 import { PluginDetails } from '@/components/PluginDetails';
 import { DEFAULT_PLUGIN_DATA, DEFAULT_REPO_DATA } from '@/constants/plugin';
-import { PluginStateProvider } from '@/context/plugin';
+import { MetadataKeys, PluginStateProvider } from '@/context/plugin';
 import { PROD } from '@/env';
+import { previewStore } from '@/store/preview';
 import { PluginData } from '@/types';
 import { fetchRepoData, FetchRepoDataResult } from '@/utils';
 
@@ -41,6 +43,14 @@ export async function getStaticProps(): Promise<GetStaticPropsResult<Props>> {
 }
 
 export default function PreviewPage({ plugin, repo, repoFetchError }: Props) {
+  // Set active metadata ID on initial load if the hash is already set.
+  useEffect(() => {
+    const id = window.location.hash.replace('#', '');
+    if (id) {
+      previewStore.activeMetadataField = id as MetadataKeys;
+    }
+  }, []);
+
   // Return 404 page in production or if the plugin path is not defined.
   if (PROD || !PLUGIN_PATH) {
     return <DefaultErrorPage statusCode={404} />;

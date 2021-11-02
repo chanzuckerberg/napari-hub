@@ -11,10 +11,12 @@ import { Media, MediaFragment } from '@/components/common/media';
 import { PageMetadata } from '@/components/common/PageMetadata';
 import { SkeletonLoader } from '@/components/common/SkeletonLoader';
 import { TOCHeader } from '@/components/common/TableOfContents';
-import { MetadataStatus } from '@/components/MetadataStatus';
+import { MetadataHighlighter } from '@/components/MetadataHighlighter';
+import { EmptyMetadataTooltip } from '@/components/MetadataHighlighter/EmptyMetadataTooltip';
 import { useLoadingState } from '@/context/loading';
 import { usePluginState } from '@/context/plugin';
 import { useIsPreview, usePlausible } from '@/hooks';
+import { usePreviewClickAway } from '@/hooks/usePreviewClickAway';
 
 import { CallToActionButton } from './CallToActionButton';
 import { CitationInfo } from './CitationInfo';
@@ -40,7 +42,10 @@ const EMPTY_DESCRIPTION_PLACEHOLDER =
 
 function PluginCenterColumn() {
   const { plugin } = usePluginState();
-  const isPreview = useIsPreview();
+
+  usePreviewClickAway('name');
+  usePreviewClickAway('summary');
+  usePreviewClickAway('description');
 
   // Check if body is an empty string or if it's set to the cookiecutter text.
   const isEmptyDescription =
@@ -59,11 +64,13 @@ function PluginCenterColumn() {
       <SkeletonLoader
         className="h-12"
         render={() => (
-          <div
-            className={clsx(
-              'flex justify-between',
-              !plugin?.name && isPreview && 'bg-napari-preview-orange-overlay',
-            )}
+          <MetadataHighlighter
+            id="name"
+            className="flex justify-between"
+            highlight={!plugin?.name}
+            tooltip={
+              <EmptyMetadataTooltip className="self-end" metadataId="name" />
+            }
           >
             <h1
               className={clsx(
@@ -73,24 +80,17 @@ function PluginCenterColumn() {
             >
               {plugin?.name ?? 'Plugin name'}
             </h1>
-
-            {isPreview && !plugin?.name && (
-              <MetadataStatus className="self-end" hasValue={false} />
-            )}
-          </div>
+          </MetadataHighlighter>
         )}
       />
 
       <SkeletonLoader
         className="h-6 my-6"
         render={() => (
-          <div
-            className={clsx(
-              'flex justify-between items-center mt-6',
-              !plugin?.summary &&
-                isPreview &&
-                'bg-napari-preview-orange-overlay',
-            )}
+          <MetadataHighlighter
+            id="summary"
+            className="flex justify-between items-center my-6"
+            highlight={!plugin?.summary}
           >
             <h2
               className={clsx(
@@ -100,11 +100,7 @@ function PluginCenterColumn() {
             >
               {plugin?.summary ?? 'Brief description'}
             </h2>
-
-            {isPreview && !plugin?.summary && (
-              <MetadataStatus hasValue={false} />
-            )}
-          </div>
+          </MetadataHighlighter>
         )}
       />
 
@@ -162,22 +158,15 @@ function PluginCenterColumn() {
       <SkeletonLoader
         className="h-[600px] mb-10"
         render={() => (
-          <div
-            className={clsx(
-              'flex items-center justify-between mb-10',
-              isPreview &&
-                isEmptyDescription &&
-                'bg-napari-preview-orange-overlay',
-            )}
+          <MetadataHighlighter
+            id="description"
+            className="flex items-center justify-between mb-10"
+            highlight={isEmptyDescription}
           >
             <Markdown disableHeader placeholder={isEmptyDescription}>
               {plugin?.description ?? EMPTY_DESCRIPTION_PLACEHOLDER}
             </Markdown>
-
-            {isPreview && isEmptyDescription && (
-              <MetadataStatus hasValue={false} />
-            )}
-          </div>
+          </MetadataHighlighter>
         )}
       />
 

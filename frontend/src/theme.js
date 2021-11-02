@@ -16,6 +16,7 @@ const colors = {
   previewGray: '#ededed',
   previewOrange: '#d85e38',
   previewOrangeOverlay: 'rgba(216, 94, 56, 0.1)',
+  previewOrangeOverlayActive: 'rgba(216, 94, 56, 0.15)',
 };
 
 const breakpoints = {

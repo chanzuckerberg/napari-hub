@@ -5,7 +5,7 @@ import { Check, PriorityHigh } from '@/components/common/icons';
 interface MetadataStatusProps {
   className?: string;
   hasValue: boolean;
-  variant?: 'regular' | 'small' | 'inline';
+  variant?: 'regular' | 'small';
 }
 
 export function MetadataStatus({
@@ -20,7 +20,6 @@ export function MetadataStatus({
         className,
         hasValue ? 'bg-napari-primary' : 'bg-napari-preview-orange',
         variant === 'small' ? 'w-2 h-2' : 'w-[0.9375rem] h-[0.9375rem]',
-        variant === 'inline' && 'inline-flex',
       )}
     >
       {hasValue ? <Check /> : <PriorityHigh color="#fff" />}

@@ -1,7 +1,10 @@
 import clsx from 'clsx';
 import { ReactNode } from 'react';
 
-import { useIsPreview } from '@/hooks';
+import { MetadataHighlighter } from '@/components/MetadataHighlighter';
+import { EmptyMetadataTooltip } from '@/components/MetadataHighlighter/EmptyMetadataTooltip';
+import { MetadataKeys } from '@/context/plugin';
+import { usePreviewClickAway } from '@/hooks/usePreviewClickAway';
 
 import { EmptyListItem } from './EmptyListItem';
 import { MetadataContextProvider } from './metadata.context';
@@ -10,10 +13,11 @@ import styles from './MetadataList.module.scss';
 interface Props {
   children: ReactNode;
   className?: string;
-  title: string;
-  inline?: boolean;
   compact?: boolean;
   empty?: boolean;
+  id?: MetadataKeys;
+  inline?: boolean;
+  title: string;
 }
 
 /**
@@ -24,10 +28,11 @@ export function MetadataList({
   className,
   compact,
   empty,
-  title,
+  id,
   inline,
+  title,
 }: Props) {
-  const isPreview = useIsPreview();
+  usePreviewClickAway(id);
 
   return (
     // Pass list props in context so that list items can render differently
@@ -37,19 +42,19 @@ export function MetadataList({
         Use list wrapper so that the preview highlight overlay only renders as
         tall as the content.
        */}
-      <div className={clsx('text-sm', className)}>
+      <div id={id} className={clsx('text-sm', className)}>
         {/* List container */}
-        <div
+        <MetadataHighlighter
           className={clsx(
-            // Render overlay if the list is empty.
-            isPreview && empty && 'bg-napari-preview-orange-overlay',
-
             // Item spacing for inline lists.
             inline && 'space-x-2',
 
             // Vertical spacing.
             'space-y-2',
           )}
+          highlight={empty}
+          tooltip={null}
+          id={id}
         >
           {/* List title */}
           <h4
@@ -75,9 +80,15 @@ export function MetadataList({
                 : [compact ? 'space-y-2' : 'space-y-5'],
             )}
           >
-            {empty ? <EmptyListItem /> : children}
+            {empty ? (
+              <EmptyListItem>
+                <EmptyMetadataTooltip metadataId={id} />
+              </EmptyListItem>
+            ) : (
+              children
+            )}
           </ul>
-        </div>
+        </MetadataHighlighter>
       </div>
     </MetadataContextProvider>
   );

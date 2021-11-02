@@ -1,3 +1,5 @@
+import { isString } from 'lodash';
+
 /**
  * Checks if the string is an external URL. This works by using the value to
  * create a URL object. URL objects will throw errors for relative URLs if a
@@ -33,4 +35,37 @@ export function createUrl(urlOrPath: string, baseUrl?: string): URL {
   }
 
   return new URL(urlOrPath, base);
+}
+
+/**
+ * Wrapper over `history.replaceState()` that also includes history data
+ * required for the Next.js router to function correctly.
+ * https://github.com/vercel/next.js/discussions/18072
+ *
+ * @param nextUrl The next URL to replace the current one.
+ */
+export function replaceUrlState(nextUrl: string | URL) {
+  const url = isString(nextUrl) ? nextUrl : nextUrl.href;
+
+  window.history.replaceState(
+    {
+      ...window.history.state,
+      url,
+      as: url,
+    },
+    '',
+    url,
+  );
+}
+
+/**
+ * Replaces the current URL with a new URL with the hash updated to the value of `hash`.
+ *
+ * @param hash The new URL hash.
+ */
+export function setUrlHash(hash: string | undefined | null) {
+  // Replace current URL with selected key.
+  const nextUrl = createUrl(window.location.href);
+  nextUrl.hash = hash ?? '';
+  replaceUrlState(nextUrl);
 }

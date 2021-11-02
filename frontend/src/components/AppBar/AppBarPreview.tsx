@@ -10,13 +10,11 @@ import {
 import { Link } from '@/components/common/Link';
 import { Media } from '@/components/common/media';
 import { MetadataStatus } from '@/components/MetadataStatus';
+import { HUB_WIKI_LINK } from '@/constants/preview';
 
 import styles from './AppBarPreview.module.scss';
 import { useMetadataSections } from './metadataPreview.hooks';
 import { PreviewMetadataPanel } from './PreviewMetadataPanel';
-
-const HUB_WIKI_LINK =
-  'https://github.com/chanzuckerberg/napari-hub/blob/main/docs/customizing-plugin-listing.md';
 
 function MetadataStatusBar() {
   const sections = useMetadataSections();
