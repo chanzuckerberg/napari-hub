@@ -252,14 +252,14 @@ export function AppBarPreview() {
       >
         <p className="text-napari-preview-orange text-center px-6 screen-495:px-12">
           This preview of{' '}
-          <span className="font-semibold">
+          <span className="font-bold">
             {metadata.name.value || 'Plugin name'}
           </span>{' '}
           was generated from{' '}
           <Link className="underline" href={PR_LINK} newTab>
             {PREVIEW_LINK_TEXT}
           </Link>{' '}
-          and is not live on the napari hub
+          . It is not live on the napari hub.
         </p>
       </div>
     </>
