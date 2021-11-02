@@ -15,11 +15,11 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
       class="fresnel-container fresnel-greaterThanOrEqual-screen-1425 "
     >
       <div
-        class="grid space-y-6 screen-875:grid-cols-3 screen-875:space-y-0 screen-1425:grid-cols-1 screen-1425:space-y-6"
+        class="grid space-y-5 screen-875:grid-cols-3 screen-875:space-y-0 screen-1425:grid-cols-1 screen-1425:space-y-5"
         id="pluginMetadata"
       >
         <div
-          class="space-y-6"
+          class="space-y-5"
         >
           <div
             class="text-sm"
@@ -30,13 +30,13 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
               id="version"
             >
               <h4
-                class="font-bold whitespace-nowrap"
+                class="font-bold whitespace-nowrap mb-3"
               >
                 Version
                 :
               </h4>
               <ul
-                class="list-none text-sm leading-normal space-y-5"
+                class="list list-none text-sm leading-normal"
               >
                 <li
                   class="textItem"
@@ -55,13 +55,13 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
               id="releaseDate"
             >
               <h4
-                class="font-bold whitespace-nowrap"
+                class="font-bold whitespace-nowrap mb-3"
               >
                 Release date
                 :
               </h4>
               <ul
-                class="list-none text-sm leading-normal space-y-5"
+                class="list list-none text-sm leading-normal"
               >
                 <li
                   class="textItem"
@@ -80,13 +80,13 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
               id="firstReleased"
             >
               <h4
-                class="font-bold whitespace-nowrap"
+                class="font-bold whitespace-nowrap mb-3"
               >
                 First released
                 :
               </h4>
               <ul
-                class="list-none text-sm leading-normal space-y-5"
+                class="list list-none text-sm leading-normal"
               >
                 <li
                   class="textItem"
@@ -105,13 +105,13 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
               id="developmentStatus"
             >
               <h4
-                class="font-bold whitespace-nowrap"
+                class="font-bold whitespace-nowrap mb-3"
               >
                 Development status
                 :
               </h4>
               <ul
-                class="list-none text-sm leading-normal space-y-5"
+                class="list list-none text-sm leading-normal"
               >
                 <li
                   class="textItem"
@@ -130,13 +130,13 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
               id="license"
             >
               <h4
-                class="font-bold whitespace-nowrap"
+                class="font-bold whitespace-nowrap mb-3"
               >
                 License
                 :
               </h4>
               <ul
-                class="list-none text-sm leading-normal space-y-5"
+                class="list list-none text-sm leading-normal"
               >
                 <li
                   class="textItem"
@@ -151,7 +151,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
           class="fresnel-container fresnel-greaterThanOrEqual-screen-1425 "
         >
           <div
-            class="my-6 h-px bg-black border-none"
+            class="mb-2 h-px bg-black border-none"
           />
         </div>
         <div
@@ -164,13 +164,13 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
             class=""
           >
             <h4
-              class="font-bold whitespace-nowrap"
+              class="font-bold whitespace-nowrap mb-3"
             >
               GitHub activity
               :
             </h4>
             <ul
-              class="list-none text-sm leading-normal space-y-2"
+              class="list list-none text-sm leading-normal"
             >
               <li
                 class="textItem"
@@ -212,14 +212,14 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
           class="fresnel-container fresnel-greaterThanOrEqual-screen-1425 "
         >
           <div
-            class="my-6 h-px bg-black border-none"
+            class="mb-2 h-px bg-black border-none"
           />
         </div>
         <div
           class="fresnel-container fresnel-lessThan-screen-875 "
         />
         <div
-          class="space-y-6"
+          class="space-y-5"
         >
           <div
             class="text-sm"
@@ -230,13 +230,13 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
               id="pythonVersion"
             >
               <h4
-                class="font-bold whitespace-nowrap"
+                class="font-bold whitespace-nowrap mb-3"
               >
                 Python versions supported
                 :
               </h4>
               <ul
-                class="list-none text-sm leading-normal space-y-5"
+                class="list list-none text-sm leading-normal"
               >
                 <li
                   class="textItem"
@@ -255,13 +255,13 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
               id="operatingSystems"
             >
               <h4
-                class="font-bold whitespace-nowrap"
+                class="font-bold whitespace-nowrap mb-3"
               >
                 Operating system
                 :
               </h4>
               <ul
-                class="list-none text-sm leading-normal space-y-5"
+                class="list list-none text-sm leading-normal"
               >
                 <li
                   class="textItem"
@@ -280,13 +280,13 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
               id="requirements"
             >
               <h4
-                class="font-bold whitespace-nowrap"
+                class="font-bold whitespace-nowrap mb-3"
               >
                 Requirements
                 :
               </h4>
               <ul
-                class="list-none text-sm leading-normal space-y-5"
+                class="list list-none text-sm leading-normal"
               >
                 <li
                   class="textItem"
@@ -483,13 +483,13 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
             id="authors"
           >
             <h4
-              class="font-bold whitespace-nowrap"
+              class="font-bold whitespace-nowrap mb-3"
             >
               Authors
               :
             </h4>
             <ul
-              class="list-none text-sm leading-normal space-y-5"
+              class="list list-none text-sm leading-normal"
             >
               <li
                 class="textItem"
@@ -506,13 +506,13 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
             class=""
           >
             <h4
-              class="font-bold whitespace-nowrap"
+              class="font-bold whitespace-nowrap mb-3"
             >
               Learn more
               :
             </h4>
             <ul
-              class="list-none text-sm leading-normal space-y-5"
+              class="list list-none text-sm leading-normal"
             >
               <li
                 class="flex linkItem"
@@ -736,13 +736,13 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
             id="sourceCode"
           >
             <h4
-              class="font-bold whitespace-nowrap"
+              class="font-bold whitespace-nowrap mb-3"
             >
               Source code
               :
             </h4>
             <ul
-              class="list-none text-sm leading-normal space-y-5"
+              class="list list-none text-sm leading-normal"
             >
               <li
                 class="flex linkItem"
@@ -798,7 +798,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
               :
             </h4>
             <ul
-              class="list-none text-sm leading-normal inline space-y-2 inlineList"
+              class="list list-none text-sm leading-normal inline space-y-2 inline"
             >
               <li
                 class="textItem"
@@ -821,7 +821,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
               :
             </h4>
             <ul
-              class="list-none text-sm leading-normal inline space-y-2 inlineList"
+              class="list list-none text-sm leading-normal inline space-y-2 inline"
             >
               <li
                 class="flex linkItem"
@@ -1051,7 +1051,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
               :
             </h4>
             <ul
-              class="list-none text-sm leading-normal inline space-y-2 inlineList"
+              class="list list-none text-sm leading-normal inline space-y-2 inline"
             >
               <li
                 class="flex linkItem"
@@ -1510,11 +1510,11 @@ the coverage at least stays the same before you submit a pull request.
       class="fresnel-container fresnel-lessThan-screen-1425 "
     >
       <div
-        class="fresnel-lessThan-3xl grid space-y-6 screen-875:grid-cols-3 screen-875:space-y-0 screen-1425:grid-cols-1 screen-1425:space-y-6"
+        class="fresnel-lessThan-3xl grid space-y-5 screen-875:grid-cols-3 screen-875:space-y-0 screen-1425:grid-cols-1 screen-1425:space-y-5"
         id="pluginMetadata"
       >
         <div
-          class="space-y-6"
+          class="space-y-5"
         >
           <div
             class="text-sm"
@@ -1531,7 +1531,7 @@ the coverage at least stays the same before you submit a pull request.
                 :
               </h4>
               <ul
-                class="list-none text-sm leading-normal inline space-y-2 inlineList"
+                class="list list-none text-sm leading-normal inline space-y-2 inline"
               >
                 <li
                   class="textItem"
@@ -1556,7 +1556,7 @@ the coverage at least stays the same before you submit a pull request.
                 :
               </h4>
               <ul
-                class="list-none text-sm leading-normal inline space-y-2 inlineList"
+                class="list list-none text-sm leading-normal inline space-y-2 inline"
               >
                 <li
                   class="textItem"
@@ -1581,7 +1581,7 @@ the coverage at least stays the same before you submit a pull request.
                 :
               </h4>
               <ul
-                class="list-none text-sm leading-normal inline space-y-2 inlineList"
+                class="list list-none text-sm leading-normal inline space-y-2 inline"
               >
                 <li
                   class="textItem"
@@ -1606,7 +1606,7 @@ the coverage at least stays the same before you submit a pull request.
                 :
               </h4>
               <ul
-                class="list-none text-sm leading-normal inline space-y-2 inlineList"
+                class="list list-none text-sm leading-normal inline space-y-2 inline"
               >
                 <li
                   class="textItem"
@@ -1631,7 +1631,7 @@ the coverage at least stays the same before you submit a pull request.
                 :
               </h4>
               <ul
-                class="list-none text-sm leading-normal inline space-y-2 inlineList"
+                class="list list-none text-sm leading-normal inline space-y-2 inline"
               >
                 <li
                   class="textItem"
@@ -1649,7 +1649,7 @@ the coverage at least stays the same before you submit a pull request.
           class="fresnel-container fresnel-lessThan-screen-875 "
         >
           <div
-            class="my-6 h-px bg-black border-none"
+            class="mb-2 h-px bg-black border-none"
           />
         </div>
         <div
@@ -1659,13 +1659,13 @@ the coverage at least stays the same before you submit a pull request.
             class=""
           >
             <h4
-              class="font-bold whitespace-nowrap"
+              class="font-bold whitespace-nowrap mb-3"
             >
               GitHub activity
               :
             </h4>
             <ul
-              class="list-none text-sm leading-normal space-y-2"
+              class="list list-none text-sm leading-normal"
             >
               <li
                 class="textItem"
@@ -1710,11 +1710,11 @@ the coverage at least stays the same before you submit a pull request.
           class="fresnel-container fresnel-lessThan-screen-875 "
         >
           <div
-            class="my-6 h-px bg-black border-none"
+            class="mb-2 h-px bg-black border-none"
           />
         </div>
         <div
-          class="space-y-6"
+          class="space-y-5"
         >
           <div
             class="text-sm"
@@ -1731,7 +1731,7 @@ the coverage at least stays the same before you submit a pull request.
                 :
               </h4>
               <ul
-                class="list-none text-sm leading-normal inline space-y-2 inlineList"
+                class="list list-none text-sm leading-normal inline space-y-2 inline"
               >
                 <li
                   class="textItem"
@@ -1756,7 +1756,7 @@ the coverage at least stays the same before you submit a pull request.
                 :
               </h4>
               <ul
-                class="list-none text-sm leading-normal inline space-y-2 inlineList"
+                class="list list-none text-sm leading-normal inline space-y-2 inline"
               >
                 <li
                   class="textItem"
@@ -1781,7 +1781,7 @@ the coverage at least stays the same before you submit a pull request.
                 :
               </h4>
               <ul
-                class="list-none text-sm leading-normal inline space-y-2 inlineList"
+                class="list list-none text-sm leading-normal inline space-y-2 inline"
               >
                 <li
                   class="textItem"
@@ -1813,11 +1813,11 @@ the coverage at least stays the same before you submit a pull request.
       class="fresnel-container fresnel-greaterThanOrEqual-screen-1425 "
     >
       <div
-        class="fresnel-lessThan-3xl grid space-y-6 screen-875:grid-cols-3 screen-875:space-y-0 screen-1425:grid-cols-1 screen-1425:space-y-6"
+        class="fresnel-lessThan-3xl grid space-y-5 screen-875:grid-cols-3 screen-875:space-y-0 screen-1425:grid-cols-1 screen-1425:space-y-5"
         id="pluginMetadata"
       >
         <div
-          class="space-y-6"
+          class="space-y-5"
         >
           <div
             class="text-sm"
@@ -1828,13 +1828,13 @@ the coverage at least stays the same before you submit a pull request.
               id="version"
             >
               <h4
-                class="font-bold whitespace-nowrap"
+                class="font-bold whitespace-nowrap mb-3"
               >
                 Version
                 :
               </h4>
               <ul
-                class="list-none text-sm leading-normal space-y-5"
+                class="list list-none text-sm leading-normal"
               >
                 <li
                   class="textItem"
@@ -1853,13 +1853,13 @@ the coverage at least stays the same before you submit a pull request.
               id="releaseDate"
             >
               <h4
-                class="font-bold whitespace-nowrap"
+                class="font-bold whitespace-nowrap mb-3"
               >
                 Release date
                 :
               </h4>
               <ul
-                class="list-none text-sm leading-normal space-y-5"
+                class="list list-none text-sm leading-normal"
               >
                 <li
                   class="textItem"
@@ -1878,13 +1878,13 @@ the coverage at least stays the same before you submit a pull request.
               id="firstReleased"
             >
               <h4
-                class="font-bold whitespace-nowrap"
+                class="font-bold whitespace-nowrap mb-3"
               >
                 First released
                 :
               </h4>
               <ul
-                class="list-none text-sm leading-normal space-y-5"
+                class="list list-none text-sm leading-normal"
               >
                 <li
                   class="textItem"
@@ -1903,13 +1903,13 @@ the coverage at least stays the same before you submit a pull request.
               id="developmentStatus"
             >
               <h4
-                class="font-bold whitespace-nowrap"
+                class="font-bold whitespace-nowrap mb-3"
               >
                 Development status
                 :
               </h4>
               <ul
-                class="list-none text-sm leading-normal space-y-5"
+                class="list list-none text-sm leading-normal"
               >
                 <li
                   class="textItem"
@@ -1928,13 +1928,13 @@ the coverage at least stays the same before you submit a pull request.
               id="license"
             >
               <h4
-                class="font-bold whitespace-nowrap"
+                class="font-bold whitespace-nowrap mb-3"
               >
                 License
                 :
               </h4>
               <ul
-                class="list-none text-sm leading-normal space-y-5"
+                class="list list-none text-sm leading-normal"
               >
                 <li
                   class="textItem"
@@ -1949,7 +1949,7 @@ the coverage at least stays the same before you submit a pull request.
           class="fresnel-container fresnel-greaterThanOrEqual-screen-1425 "
         >
           <div
-            class="my-6 h-px bg-black border-none"
+            class="mb-2 h-px bg-black border-none"
           />
         </div>
         <div
@@ -1962,13 +1962,13 @@ the coverage at least stays the same before you submit a pull request.
             class=""
           >
             <h4
-              class="font-bold whitespace-nowrap"
+              class="font-bold whitespace-nowrap mb-3"
             >
               GitHub activity
               :
             </h4>
             <ul
-              class="list-none text-sm leading-normal space-y-2"
+              class="list list-none text-sm leading-normal"
             >
               <li
                 class="textItem"
@@ -2010,14 +2010,14 @@ the coverage at least stays the same before you submit a pull request.
           class="fresnel-container fresnel-greaterThanOrEqual-screen-1425 "
         >
           <div
-            class="my-6 h-px bg-black border-none"
+            class="mb-2 h-px bg-black border-none"
           />
         </div>
         <div
           class="fresnel-container fresnel-lessThan-screen-875 "
         />
         <div
-          class="space-y-6"
+          class="space-y-5"
         >
           <div
             class="text-sm"
@@ -2028,13 +2028,13 @@ the coverage at least stays the same before you submit a pull request.
               id="pythonVersion"
             >
               <h4
-                class="font-bold whitespace-nowrap"
+                class="font-bold whitespace-nowrap mb-3"
               >
                 Python versions supported
                 :
               </h4>
               <ul
-                class="list-none text-sm leading-normal space-y-5"
+                class="list list-none text-sm leading-normal"
               >
                 <li
                   class="textItem"
@@ -2053,13 +2053,13 @@ the coverage at least stays the same before you submit a pull request.
               id="operatingSystems"
             >
               <h4
-                class="font-bold whitespace-nowrap"
+                class="font-bold whitespace-nowrap mb-3"
               >
                 Operating system
                 :
               </h4>
               <ul
-                class="list-none text-sm leading-normal space-y-5"
+                class="list list-none text-sm leading-normal"
               >
                 <li
                   class="textItem"
@@ -2078,13 +2078,13 @@ the coverage at least stays the same before you submit a pull request.
               id="requirements"
             >
               <h4
-                class="font-bold whitespace-nowrap"
+                class="font-bold whitespace-nowrap mb-3"
               >
                 Requirements
                 :
               </h4>
               <ul
-                class="list-none text-sm leading-normal space-y-5"
+                class="list list-none text-sm leading-normal"
               >
                 <li
                   class="textItem"
