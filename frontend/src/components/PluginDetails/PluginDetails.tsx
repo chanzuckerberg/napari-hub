@@ -10,13 +10,21 @@ import { Markdown } from '@/components/common/Markdown';
 import { Media, MediaFragment } from '@/components/common/media';
 import { PageMetadata } from '@/components/common/PageMetadata';
 import { SkeletonLoader } from '@/components/common/SkeletonLoader';
+import { TOCHeader } from '@/components/common/TableOfContents';
 import { useLoadingState } from '@/context/loading';
 import { usePluginState } from '@/context/plugin';
 import { useIsPreview, usePlausible } from '@/hooks';
 
 import { CallToActionButton } from './CallToActionButton';
+import { CitationInfo } from './CitationInfo';
+import { ANCHOR, TITLE } from './CitationInfo.constants';
 import { PluginMetadata } from './PluginMetadata';
 import { SupportInfo } from './SupportInfo';
+
+const CITATION_HEADER: TOCHeader = {
+  id: ANCHOR,
+  text: TITLE,
+};
 
 function PluginLeftColumn() {
   return (
@@ -112,6 +120,7 @@ function PluginCenterColumn() {
 
       <div className="mb-6 screen-495:mb-12 screen-1150:mb-20">
         <CallToActionButton />
+        {plugin.citations && <CitationInfo className="mt-10" />}
       </div>
 
       <MediaFragment lessThan="3xl">
@@ -147,6 +156,7 @@ function PluginRightColumn() {
                 });
               }}
               free
+              extraHeaders={plugin.citations ? [CITATION_HEADER] : undefined}
             />
           )}
         />

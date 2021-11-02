@@ -6,6 +6,17 @@ export interface PluginAuthor {
 }
 
 /**
+ * Citation formats.
+ * */
+
+export interface CitationData {
+  citation: string;
+  RIS: string;
+  BibTex: string;
+  APA: string;
+}
+
+/**
  * Plugin data used for indexing. This is a subset of the full plugin data.
  */
 export interface PluginIndexData {
@@ -28,6 +39,7 @@ export interface PluginIndexData {
  * Interface for plugin data response from backend.
  */
 export interface PluginData extends PluginIndexData {
+  citations?: CitationData | null;
   code_repository: string;
   documentation: string;
   project_site: string;

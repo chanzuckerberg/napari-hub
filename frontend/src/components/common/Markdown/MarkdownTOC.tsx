@@ -1,4 +1,7 @@
-import { TableOfContents } from '@/components/common/TableOfContents';
+import {
+  TableOfContents,
+  TOCHeader,
+} from '@/components/common/TableOfContents';
 
 import { getHeadersFromMarkdown } from './Markdown.utils';
 
@@ -6,6 +9,7 @@ interface Props {
   className?: string;
   onClick?(heading: string): void;
   markdown: string;
+  extraHeaders?: TOCHeader[];
   free?: boolean;
 }
 
@@ -17,8 +21,15 @@ interface Props {
  * For this to work, there needs to be a corresponding `<Markdown />` component
  * somewhere with the same markdown content.
  */
-export function MarkdownTOC({ className, markdown, ...props }: Props) {
+export function MarkdownTOC({
+  className,
+  markdown,
+  extraHeaders,
+  ...props
+}: Props) {
   const headers = getHeadersFromMarkdown(markdown);
+
+  if (extraHeaders) headers.push(...extraHeaders);
 
   return <TableOfContents className={className} headers={headers} {...props} />;
 }

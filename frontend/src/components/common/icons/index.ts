@@ -17,6 +17,7 @@ export * from './ProjectDocumentation';
 export * from './ProjectIssues';
 export * from './ProjectSite';
 export * from './ProjectSupport';
+export * from './Quotes';
 export * from './Search';
 export * from './Twitter';
 export * from './ViewPullRequest';
