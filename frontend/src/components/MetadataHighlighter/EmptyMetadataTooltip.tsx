@@ -41,6 +41,7 @@ const TOOLTIP_TEXT: Record<MetadataKeys, string> = {
   projectSite: 'link to the project site of the plugin',
 
   // Unused
+  citations: '',
   releaseDate: '',
   firstReleased: '',
 };
