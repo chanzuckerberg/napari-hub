@@ -42,6 +42,7 @@ module.exports = {
         'napari-light': colors.light,
         'napari-error': colors.error,
         'napari-gray': colors.gray,
+        'napari-dark-gray': colors.darkGray,
         'napari-preview-gray': colors.previewGray,
         'napari-preview-orange': colors.previewOrange,
         'napari-preview-orange-overlay': colors.previewOrangeOverlay,

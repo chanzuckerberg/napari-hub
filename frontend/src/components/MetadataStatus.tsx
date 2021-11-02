@@ -3,11 +3,13 @@ import clsx from 'clsx';
 import { Check, PriorityHigh } from '@/components/common/icons';
 
 interface MetadataStatusProps {
+  className?: string;
   hasValue: boolean;
-  variant?: 'regular' | 'small';
+  variant?: 'regular' | 'small' | 'inline';
 }
 
 export function MetadataStatus({
+  className,
   hasValue,
   variant = 'regular',
 }: MetadataStatusProps) {
@@ -15,8 +17,10 @@ export function MetadataStatus({
     <div
       className={clsx(
         'flex items-center justify-center',
+        className,
         hasValue ? 'bg-napari-primary' : 'bg-napari-preview-orange',
         variant === 'small' ? 'w-2 h-2' : 'w-[0.9375rem] h-[0.9375rem]',
+        variant === 'inline' && 'inline-flex',
       )}
     >
       {hasValue ? <Check /> : <PriorityHigh color="#fff" />}

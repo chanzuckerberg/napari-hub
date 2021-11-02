@@ -1,5 +1,6 @@
 export type Styles = {
   missingDocumentation: string;
+  missingGithub: string;
   missingProjectIssues: string;
   missingProjectSupport: string;
 };

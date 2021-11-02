@@ -11,6 +11,7 @@ import { Media, MediaFragment } from '@/components/common/media';
 import { PageMetadata } from '@/components/common/PageMetadata';
 import { SkeletonLoader } from '@/components/common/SkeletonLoader';
 import { TOCHeader } from '@/components/common/TableOfContents';
+import { MetadataStatus } from '@/components/MetadataStatus';
 import { useLoadingState } from '@/context/loading';
 import { usePluginState } from '@/context/plugin';
 import { useIsPreview, usePlausible } from '@/hooks';
@@ -34,8 +35,17 @@ function PluginLeftColumn() {
   );
 }
 
+const EMPTY_DESCRIPTION_PLACEHOLDER =
+  'The developer has not yet provided a napari-hub specific description.';
+
 function PluginCenterColumn() {
   const { plugin } = usePluginState();
+  const isPreview = useIsPreview();
+
+  // Check if body is an empty string or if it's set to the cookiecutter text.
+  const isEmptyDescription =
+    !plugin?.description ||
+    plugin.description.includes(EMPTY_DESCRIPTION_PLACEHOLDER);
 
   return (
     <article
@@ -48,13 +58,53 @@ function PluginCenterColumn() {
     >
       <SkeletonLoader
         className="h-12"
-        render={() => <h1 className="font-bold text-4xl">{plugin.name}</h1>}
+        render={() => (
+          <div
+            className={clsx(
+              'flex justify-between',
+              !plugin?.name && isPreview && 'bg-napari-preview-orange-overlay',
+            )}
+          >
+            <h1
+              className={clsx(
+                'font-bold text-4xl',
+                !plugin?.name && 'text-napari-dark-gray',
+              )}
+            >
+              {plugin?.name ?? 'Plugin name'}
+            </h1>
+
+            {isPreview && !plugin?.name && (
+              <MetadataStatus className="self-end" hasValue={false} />
+            )}
+          </div>
+        )}
       />
 
       <SkeletonLoader
         className="h-6 my-6"
         render={() => (
-          <h2 className="font-semibold my-6 text-lg">{plugin.summary}</h2>
+          <div
+            className={clsx(
+              'flex justify-between items-center mt-6',
+              !plugin?.summary &&
+                isPreview &&
+                'bg-napari-preview-orange-overlay',
+            )}
+          >
+            <h2
+              className={clsx(
+                'font-semibold text-lg',
+                !plugin?.summary && 'text-napari-dark-gray',
+              )}
+            >
+              {plugin?.summary ?? 'Brief description'}
+            </h2>
+
+            {isPreview && !plugin?.summary && (
+              <MetadataStatus hasValue={false} />
+            )}
+          </div>
         )}
       />
 
@@ -112,15 +162,28 @@ function PluginCenterColumn() {
       <SkeletonLoader
         className="h-[600px] mb-10"
         render={() => (
-          <Markdown className="mb-10" disableHeader>
-            {plugin.description}
-          </Markdown>
+          <div
+            className={clsx(
+              'flex items-center justify-between mb-10',
+              isPreview &&
+                isEmptyDescription &&
+                'bg-napari-preview-orange-overlay',
+            )}
+          >
+            <Markdown disableHeader placeholder={isEmptyDescription}>
+              {plugin?.description ?? EMPTY_DESCRIPTION_PLACEHOLDER}
+            </Markdown>
+
+            {isPreview && isEmptyDescription && (
+              <MetadataStatus hasValue={false} />
+            )}
+          </div>
         )}
       />
 
       <div className="mb-6 screen-495:mb-12 screen-1150:mb-20">
         <CallToActionButton />
-        {plugin.citations && <CitationInfo className="mt-10" />}
+        {plugin?.citations && <CitationInfo className="mt-10" />}
       </div>
 
       <MediaFragment lessThan="3xl">
@@ -148,15 +211,17 @@ function PluginRightColumn() {
           render={() => (
             <Markdown.TOC
               className="mt-9"
-              markdown={plugin.description}
+              markdown={plugin?.description ?? ''}
               onClick={(section) => {
-                plausible('Description Nav', {
-                  section,
-                  plugin: plugin.name,
-                });
+                if (plugin?.name) {
+                  plausible('Description Nav', {
+                    section,
+                    plugin: plugin.name,
+                  });
+                }
               }}
               free
-              extraHeaders={plugin.citations ? [CITATION_HEADER] : undefined}
+              extraHeaders={plugin?.citations ? [CITATION_HEADER] : undefined}
             />
           )}
         />
@@ -203,7 +268,11 @@ export function PluginDetails() {
       title = `${title} by ${authors}`;
     }
 
-    keywords.push(plugin.name, ...plugin.authors.map(({ name }) => name));
+    for (const { name } of plugin.authors ?? []) {
+      if (name) {
+        keywords.push(plugin.name, name);
+      }
+    }
   }
 
   return (

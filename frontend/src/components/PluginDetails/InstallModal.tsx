@@ -50,8 +50,6 @@ function CopyPluginNameButton() {
         'transition-colors',
       )}
       onClick={async () => {
-        await navigator.clipboard?.writeText?.(plugin.name);
-
         // Set `clicked` to true immediately when the user clicks
         if (!clicked) {
           setClicked(true);
@@ -61,12 +59,16 @@ function CopyPluginNameButton() {
         // so if the user clicks on the button again, it'll reset the timeout.
         setClickDebounced(false);
 
-        plausible('Copy Package', {
-          plugin: plugin.name,
-        });
+        if (plugin?.name) {
+          await navigator.clipboard?.writeText?.(plugin.name);
+
+          plausible('Copy Package', {
+            plugin: plugin.name,
+          });
+        }
       }}
     >
-      {plugin.name}{' '}
+      {plugin?.name}{' '}
       <span className="ml-2 inline-flex">
         {clicked ? (
           <CheckCircle className="w-4" />

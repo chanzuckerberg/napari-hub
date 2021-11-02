@@ -9,236 +9,294 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
     class="fresnel-container fresnel-greaterThanOrEqual-3xl "
   >
     <div
-      class="fresnel-greaterThanOrEqual-3xl grid xl:grid-cols-3 3xl:grid-cols-1"
-      id="pluginMetadata"
+      class="fresnel-container fresnel-lessThan-screen-1425 "
+    />
+    <div
+      class="fresnel-container fresnel-greaterThanOrEqual-screen-1425 "
     >
-      <ul
-        class="list-none"
-      >
-        <li
-          class="mb-4 text-sm"
-        >
-          <h4
-            class="block mb-2 font-bold whitespace-nowrap"
-          >
-            Version
-            :
-          </h4>
-          <ul
-            class="list-none space-y-5 block"
-          >
-            <li
-              class="leading-normal"
-            >
-              0.0.2
-            </li>
-          </ul>
-        </li>
-        <li
-          class="mb-4 text-sm"
-        >
-          <h4
-            class="block mb-2 font-bold whitespace-nowrap"
-          >
-            Release date
-            :
-          </h4>
-          <ul
-            class="list-none space-y-5 block"
-          >
-            <li
-              class="leading-normal"
-            >
-              03 March 2021
-            </li>
-          </ul>
-        </li>
-        <li
-          class="mb-4 text-sm"
-        >
-          <h4
-            class="block mb-2 font-bold whitespace-nowrap"
-          >
-            First released
-            :
-          </h4>
-          <ul
-            class="list-none space-y-5 block"
-          >
-            <li
-              class="leading-normal"
-            >
-              22 February 2021
-            </li>
-          </ul>
-        </li>
-        <li
-          class="mb-4 text-sm"
-        >
-          <h4
-            class="block mb-2 font-bold whitespace-nowrap"
-          >
-            Development status
-            :
-          </h4>
-          <ul
-            class="list-none space-y-5 block"
-          >
-            <li
-              class="leading-normal"
-            >
-              4 - Beta
-            </li>
-          </ul>
-        </li>
-        <li
-          class="mb-4 text-sm"
-        >
-          <h4
-            class="block mb-2 font-bold whitespace-nowrap"
-          >
-            License
-            :
-          </h4>
-          <ul
-            class="list-none space-y-5 block"
-          >
-            <li
-              class="leading-normal"
-            >
-              MIT
-            </li>
-          </ul>
-        </li>
-      </ul>
       <div
-        class="fresnel-greaterThanOrEqual-3xl my-6 h-px bg-black border-none"
-      />
-      <div
-        class="flex flex-col items-start xl:items-center 2xl:items-start text-sm"
+        class="grid space-y-6 screen-875:grid-cols-3 screen-875:space-y-0 screen-1425:grid-cols-1 screen-1425:space-y-6"
+        id="pluginMetadata"
       >
-        <h4
-          class="font-bold"
+        <div
+          class="space-y-6"
         >
-          Github Activity
-        </h4>
-        <ul
-          class="list-none"
+          <div
+            class="text-sm"
+          >
+            <div
+              class="space-y-2"
+            >
+              <h4
+                class="font-bold whitespace-nowrap"
+              >
+                Version
+                :
+              </h4>
+              <ul
+                class="list-none text-sm leading-normal space-y-5"
+              >
+                <li
+                  class="textItem"
+                >
+                  0.0.2
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div
+            class="text-sm"
+          >
+            <div
+              class="space-y-2"
+            >
+              <h4
+                class="font-bold whitespace-nowrap"
+              >
+                Release date
+                :
+              </h4>
+              <ul
+                class="list-none text-sm leading-normal space-y-5"
+              >
+                <li
+                  class="textItem"
+                >
+                  03 March 2021
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div
+            class="text-sm"
+          >
+            <div
+              class="space-y-2"
+            >
+              <h4
+                class="font-bold whitespace-nowrap"
+              >
+                First released
+                :
+              </h4>
+              <ul
+                class="list-none text-sm leading-normal space-y-5"
+              >
+                <li
+                  class="textItem"
+                >
+                  22 February 2021
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div
+            class="text-sm"
+          >
+            <div
+              class="space-y-2"
+            >
+              <h4
+                class="font-bold whitespace-nowrap"
+              >
+                Development status
+                :
+              </h4>
+              <ul
+                class="list-none text-sm leading-normal space-y-5"
+              >
+                <li
+                  class="textItem"
+                >
+                  4 - Beta
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div
+            class="text-sm"
+          >
+            <div
+              class="space-y-2"
+            >
+              <h4
+                class="font-bold whitespace-nowrap"
+              >
+                License
+                :
+              </h4>
+              <ul
+                class="list-none text-sm leading-normal space-y-5"
+              >
+                <li
+                  class="textItem"
+                >
+                  MIT
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div
+          class="fresnel-container fresnel-greaterThanOrEqual-screen-1425 "
         >
-          <li
-            class="my-2"
+          <div
+            class="my-6 h-px bg-black border-none"
+          />
+        </div>
+        <div
+          class="fresnel-container fresnel-lessThan-screen-875 "
+        />
+        <div
+          class="text-sm screen-875:justify-self-center screen-1150:justify-self-start"
+        >
+          <div
+            class="space-y-2"
           >
-            Stars
-            : 
-            <span
-              class="font-bold"
+            <h4
+              class="font-bold whitespace-nowrap"
             >
-              0
-            </span>
-          </li>
-          <li
-            class="my-2"
+              GitHub activity
+              :
+            </h4>
+            <ul
+              class="list-none text-sm leading-normal space-y-2"
+            >
+              <li
+                class="textItem"
+              >
+                Stars
+                : 
+                <span
+                  class="font-bold"
+                >
+                  0
+                </span>
+              </li>
+              <li
+                class="textItem"
+              >
+                Forks
+                : 
+                <span
+                  class="font-bold"
+                >
+                  0
+                </span>
+              </li>
+              <li
+                class="textItem"
+              >
+                Issues + PRs
+                : 
+                <span
+                  class="font-bold"
+                >
+                  0
+                </span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div
+          class="fresnel-container fresnel-greaterThanOrEqual-screen-1425 "
+        >
+          <div
+            class="my-6 h-px bg-black border-none"
+          />
+        </div>
+        <div
+          class="fresnel-container fresnel-lessThan-screen-875 "
+        />
+        <div
+          class="space-y-6"
+        >
+          <div
+            class="text-sm"
           >
-            Forks
-            : 
-            <span
-              class="font-bold"
+            <div
+              class="space-y-2"
             >
-              0
-            </span>
-          </li>
-          <li
-            class="my-2"
+              <h4
+                class="font-bold whitespace-nowrap"
+              >
+                Python versions supported
+                :
+              </h4>
+              <ul
+                class="list-none text-sm leading-normal space-y-5"
+              >
+                <li
+                  class="textItem"
+                >
+                  &gt;=3.6
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div
+            class="text-sm"
           >
-            Issues + PRs
-            : 
-            <span
-              class="font-bold"
+            <div
+              class="space-y-2"
             >
-              0
-            </span>
-          </li>
-        </ul>
+              <h4
+                class="font-bold whitespace-nowrap"
+              >
+                Operating system
+                :
+              </h4>
+              <ul
+                class="list-none text-sm leading-normal space-y-5"
+              >
+                <li
+                  class="textItem"
+                >
+                  OS Independent
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div
+            class="text-sm"
+          >
+            <div
+              class="space-y-2"
+            >
+              <h4
+                class="font-bold whitespace-nowrap"
+              >
+                Requirements
+                :
+              </h4>
+              <ul
+                class="list-none text-sm leading-normal space-y-5"
+              >
+                <li
+                  class="textItem"
+                >
+                  napari-plugin-engine (&gt;=0.1.4)
+                </li>
+                <li
+                  class="textItem"
+                >
+                  numpy
+                </li>
+                <li
+                  class="textItem"
+                >
+                  zarr
+                </li>
+                <li
+                  class="textItem"
+                >
+                  dask[complete]
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
-      <div
-        class="fresnel-greaterThanOrEqual-3xl my-6 h-px bg-black border-none"
-      />
-      <ul
-        class="list-none"
-      >
-        <li
-          class="mb-4 text-sm"
-        >
-          <h4
-            class="block mb-2 font-bold whitespace-nowrap"
-          >
-            Python versions supported
-            :
-          </h4>
-          <ul
-            class="list-none space-y-5 block"
-          >
-            <li
-              class="leading-normal"
-            >
-              &gt;=3.6
-            </li>
-          </ul>
-        </li>
-        <li
-          class="mb-4 text-sm"
-        >
-          <h4
-            class="block mb-2 font-bold whitespace-nowrap"
-          >
-            Operating system
-            :
-          </h4>
-          <ul
-            class="list-none space-y-5 block"
-          >
-            <li
-              class="leading-normal"
-            >
-              OS Independent
-            </li>
-          </ul>
-        </li>
-        <li
-          class="mb-4 text-sm"
-        >
-          <h4
-            class="block mb-2 font-bold whitespace-nowrap"
-          >
-            Requirements
-            :
-          </h4>
-          <ul
-            class="list-none space-y-5 block"
-          >
-            <li
-              class="leading-normal"
-            >
-              napari-plugin-engine (&gt;=0.1.4)
-            </li>
-            <li
-              class="leading-normal"
-            >
-              numpy
-            </li>
-            <li
-              class="leading-normal"
-            >
-              zarr
-            </li>
-            <li
-              class="leading-normal"
-            >
-              dask[complete]
-            </li>
-          </ul>
-        </li>
-      </ul>
     </div>
   </div>
   <div
@@ -358,16 +416,24 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
   <article
     class="w-full col-span-2 row-start-1 screen-875:col-span-3 screen-1150:col-start-1 screen-1425:col-start-2"
   >
-    <h1
-      class="font-bold text-4xl"
+    <div
+      class="flex justify-between"
     >
-      napari-compressed-labels-io
-    </h1>
-    <h2
-      class="font-semibold my-6 text-lg"
+      <h1
+        class="font-bold text-4xl"
+      >
+        napari-compressed-labels-io
+      </h1>
+    </div>
+    <div
+      class="flex justify-between items-center mt-6"
     >
-      Plugin exploring different options for reading and writing compressed and portable labels layers in napari.
-    </h2>
+      <h2
+        class="font-semibold text-lg"
+      >
+        Plugin exploring different options for reading and writing compressed and portable labels layers in napari.
+      </h2>
+    </div>
     <div
       class="fresnel-container fresnel-lessThan-3xl flex flex-col lg:flex-row lg:items-center my-6 screen-495:mt-30 screen-600:mb-12"
     >
@@ -387,45 +453,49 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
     <div
       class="fresnel-container fresnel-greaterThanOrEqual-xl "
     >
-      <ul
-        class="text-black bg-napari-hover-gray p-5 mb-6 screen-495:mb-12 list-none grid grid-cols-3"
+      <div
+        class="mb-6 screen-495:mb-12 text-black bg-gray-100 p-5 overflow-x-auto grid grid-cols-3"
       >
-        <li
-          class="mb-4 text-sm"
+        <div
+          class="text-sm"
         >
-          <h4
-            class="block mb-2 font-bold whitespace-nowrap"
+          <div
+            class="space-y-2"
           >
-            Authors
-            :
-          </h4>
-          <ul
-            class="list-none space-y-5 block"
-          >
-            <li
-              class="leading-normal"
+            <h4
+              class="font-bold whitespace-nowrap"
             >
-              Draga Doncila
-            </li>
-          </ul>
-        </li>
-        <li
-          class="mb-4 text-sm"
+              Authors
+              :
+            </h4>
+            <ul
+              class="list-none text-sm leading-normal space-y-5"
+            >
+              <li
+                class="textItem"
+              >
+                Draga Doncila
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div
+          class="text-sm"
         >
-          <h4
-            class="block mb-2 font-bold whitespace-nowrap"
+          <div
+            class="space-y-2"
           >
-            Learn more
-            :
-          </h4>
-          <ul
-            class="list-none space-y-5 block"
-          >
-            <li
-              class="leading-normal"
+            <h4
+              class="font-bold whitespace-nowrap"
             >
-              <span
-                class="flex"
+              Learn more
+              :
+            </h4>
+            <ul
+              class="list-none text-sm leading-normal space-y-5"
+            >
+              <li
+                class="flex linkItem"
               >
                 <span
                   class="min-w-4"
@@ -457,20 +527,16 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
                   </svg>
                 </span>
                 <a
-                  class="ml-2 underline inline -mt-1"
+                  class="ml-2 -mt-1 flex-grow underline"
                   href="https://pypi.org/project/napari-compressed-labels-io"
                   rel="noreferrer"
                   target="_blank"
                 >
                   Project site
                 </a>
-              </span>
-            </li>
-            <li
-              class="leading-normal"
-            >
-              <span
-                class="flex"
+              </li>
+              <li
+                class="flex linkItem"
               >
                 <span
                   class="min-w-4"
@@ -498,20 +564,16 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
                   </svg>
                 </span>
                 <a
-                  class="ml-2 underline inline -mt-1"
+                  class="ml-2 -mt-1 flex-grow underline"
                   href="https://github.com/DragaDoncila/napari-compressed-labels-io"
                   rel="noreferrer"
                   target="_blank"
                 >
                   Documentation
                 </a>
-              </span>
-            </li>
-            <li
-              class="leading-normal"
-            >
-              <span
-                class="flex"
+              </li>
+              <li
+                class="flex linkItem"
               >
                 <span
                   class="min-w-4"
@@ -559,20 +621,16 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
                   </svg>
                 </span>
                 <a
-                  class="ml-2 underline inline -mt-1"
+                  class="ml-2 -mt-1 flex-grow underline"
                   href="https://github.com/DragaDoncila/napari-compressed-labels-io/issues"
                   rel="noreferrer"
                   target="_blank"
                 >
-                  Support
+                  Support site
                 </a>
-              </span>
-            </li>
-            <li
-              class="leading-normal"
-            >
-              <span
-                class="flex"
+              </li>
+              <li
+                class="flex linkItem"
               >
                 <span
                   class="min-w-4"
@@ -605,20 +663,16 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
                   </svg>
                 </span>
                 <a
-                  class="ml-2 underline inline -mt-1"
+                  class="ml-2 -mt-1 flex-grow underline"
                   href="https://github.com/DragaDoncila/napari-compressed-labels-io/issues"
                   rel="noreferrer"
                   target="_blank"
                 >
                   Report issues
                 </a>
-              </span>
-            </li>
-            <li
-              class="leading-normal"
-            >
-              <span
-                class="flex"
+              </li>
+              <li
+                class="flex linkItem"
               >
                 <span
                   class="min-w-4"
@@ -637,34 +691,34 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
                   </svg>
                 </span>
                 <a
-                  class="ml-2 underline inline -mt-1"
+                  class="ml-2 -mt-1 flex-grow underline"
                   href="https://twitter.com/DragaDoncila"
                   rel="noreferrer"
                   target="_blank"
                 >
                   @DragaDoncila
                 </a>
-              </span>
-            </li>
-          </ul>
-        </li>
-        <li
-          class="mb-4 text-sm"
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div
+          class="text-sm"
         >
-          <h4
-            class="block mb-2 font-bold whitespace-nowrap"
+          <div
+            class="space-y-2"
           >
-            Source code
-            :
-          </h4>
-          <ul
-            class="list-none space-y-5 block"
-          >
-            <li
-              class="leading-normal"
+            <h4
+              class="font-bold whitespace-nowrap"
             >
-              <span
-                class="flex"
+              Source code
+              :
+            </h4>
+            <ul
+              class="list-none text-sm leading-normal space-y-5"
+            >
+              <li
+                class="flex linkItem"
               >
                 <span
                   class="min-w-4"
@@ -683,61 +737,65 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
                   </svg>
                 </span>
                 <a
-                  class="ml-2 underline inline -mt-1"
+                  class="ml-2 -mt-1 flex-grow underline"
                   href="https://github.com/DragaDoncila/napari-compressed-labels-io"
                   rel="noreferrer"
                   target="_blank"
                 >
                   napari-compressed-labels-io
                 </a>
-              </span>
-            </li>
-          </ul>
-        </li>
-      </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
     <div
       class="fresnel-container fresnel-lessThan-xl "
     >
-      <ul
-        class="text-black bg-napari-hover-gray p-5 mb-6 screen-495:mb-12 list-none"
+      <div
+        class="mb-6 screen-495:mb-12 text-black bg-gray-100 p-5 overflow-x-auto grid grid-cols-1 gap-4"
       >
-        <li
-          class="mb-4 text-sm"
+        <div
+          class="text-sm"
         >
-          <h4
-            class="inline mr-2 font-bold whitespace-nowrap"
+          <div
+            class="space-x-2 space-y-2"
           >
-            Authors
-            :
-          </h4>
-          <ul
-            class="list-none space-y-5 inline"
-          >
-            <li
-              class="leading-normal inline commaList"
+            <h4
+              class="font-bold whitespace-nowrap inline"
             >
-              Draga Doncila
-            </li>
-          </ul>
-        </li>
-        <li
-          class="mb-4 text-sm"
+              Authors
+              :
+            </h4>
+            <ul
+              class="list-none text-sm leading-normal inline space-y-2 inlineList"
+            >
+              <li
+                class="textItem"
+              >
+                Draga Doncila
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div
+          class="text-sm"
         >
-          <h4
-            class="inline mr-2 font-bold whitespace-nowrap"
+          <div
+            class="space-x-2 space-y-2"
           >
-            Learn more
-            :
-          </h4>
-          <ul
-            class="list-none space-y-5 inline"
-          >
-            <li
-              class="leading-normal inline commaList"
+            <h4
+              class="font-bold whitespace-nowrap inline"
             >
-              <span
-                class="inline-flex"
+              Learn more
+              :
+            </h4>
+            <ul
+              class="list-none text-sm leading-normal inline space-y-2 inlineList"
+            >
+              <li
+                class="flex linkItem"
               >
                 <span
                   class="min-w-4"
@@ -769,20 +827,16 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
                   </svg>
                 </span>
                 <a
-                  class="ml-2 underline inline -mt-1"
+                  class="ml-2 -mt-1 flex-grow underline"
                   href="https://pypi.org/project/napari-compressed-labels-io"
                   rel="noreferrer"
                   target="_blank"
                 >
                   Project site
                 </a>
-              </span>
-            </li>
-            <li
-              class="leading-normal inline commaList"
-            >
-              <span
-                class="inline-flex"
+              </li>
+              <li
+                class="flex linkItem"
               >
                 <span
                   class="min-w-4"
@@ -810,20 +864,16 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
                   </svg>
                 </span>
                 <a
-                  class="ml-2 underline inline -mt-1"
+                  class="ml-2 -mt-1 flex-grow underline"
                   href="https://github.com/DragaDoncila/napari-compressed-labels-io"
                   rel="noreferrer"
                   target="_blank"
                 >
                   Documentation
                 </a>
-              </span>
-            </li>
-            <li
-              class="leading-normal inline commaList"
-            >
-              <span
-                class="inline-flex"
+              </li>
+              <li
+                class="flex linkItem"
               >
                 <span
                   class="min-w-4"
@@ -871,20 +921,16 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
                   </svg>
                 </span>
                 <a
-                  class="ml-2 underline inline -mt-1"
+                  class="ml-2 -mt-1 flex-grow underline"
                   href="https://github.com/DragaDoncila/napari-compressed-labels-io/issues"
                   rel="noreferrer"
                   target="_blank"
                 >
-                  Support
+                  Support site
                 </a>
-              </span>
-            </li>
-            <li
-              class="leading-normal inline commaList"
-            >
-              <span
-                class="inline-flex"
+              </li>
+              <li
+                class="flex linkItem"
               >
                 <span
                   class="min-w-4"
@@ -917,20 +963,16 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
                   </svg>
                 </span>
                 <a
-                  class="ml-2 underline inline -mt-1"
+                  class="ml-2 -mt-1 flex-grow underline"
                   href="https://github.com/DragaDoncila/napari-compressed-labels-io/issues"
                   rel="noreferrer"
                   target="_blank"
                 >
                   Report issues
                 </a>
-              </span>
-            </li>
-            <li
-              class="leading-normal inline commaList"
-            >
-              <span
-                class="inline-flex"
+              </li>
+              <li
+                class="flex linkItem"
               >
                 <span
                   class="min-w-4"
@@ -949,34 +991,34 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
                   </svg>
                 </span>
                 <a
-                  class="ml-2 underline inline -mt-1"
+                  class="ml-2 -mt-1 flex-grow underline"
                   href="https://twitter.com/DragaDoncila"
                   rel="noreferrer"
                   target="_blank"
                 >
                   @DragaDoncila
                 </a>
-              </span>
-            </li>
-          </ul>
-        </li>
-        <li
-          class="mb-4 text-sm"
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div
+          class="text-sm"
         >
-          <h4
-            class="inline mr-2 font-bold whitespace-nowrap"
+          <div
+            class="space-x-2 space-y-2"
           >
-            Source code
-            :
-          </h4>
-          <ul
-            class="list-none space-y-5 inline"
-          >
-            <li
-              class="leading-normal inline commaList"
+            <h4
+              class="font-bold whitespace-nowrap inline"
             >
-              <span
-                class="inline-flex"
+              Source code
+              :
+            </h4>
+            <ul
+              class="list-none text-sm leading-normal inline space-y-2 inlineList"
+            >
+              <li
+                class="flex linkItem"
               >
                 <span
                   class="min-w-4"
@@ -995,256 +1037,259 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
                   </svg>
                 </span>
                 <a
-                  class="ml-2 underline inline -mt-1"
+                  class="ml-2 -mt-1 flex-grow underline"
                   href="https://github.com/DragaDoncila/napari-compressed-labels-io"
                   rel="noreferrer"
                   target="_blank"
                 >
                   napari-compressed-labels-io
                 </a>
-              </span>
-            </li>
-          </ul>
-        </li>
-      </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
     <div
-      class="mb-10 markdown"
+      class="flex items-center justify-between mb-10"
     >
-      
-
-      <p>
-        <a
-          href="https://github.com/DragaDoncila/napari-compressed-labels-io/raw/master/LICENSE"
-          rel="noreferrer"
-          target="_blank"
-        >
-          <img
-            alt="License"
-            src="https://img.shields.io/pypi/l/napari-compressed-labels-io.svg?color=green"
-          />
-        </a>
+      <div
+        class="markdown"
+      >
         
 
-        <a
-          href="https://pypi.org/project/napari-compressed-labels-io"
-          rel="noreferrer"
-          target="_blank"
-        >
-          <img
-            alt="PyPI"
-            src="https://img.shields.io/pypi/v/napari-compressed-labels-io.svg?color=green"
-          />
-        </a>
+        <p>
+          <a
+            href="https://github.com/DragaDoncila/napari-compressed-labels-io/raw/master/LICENSE"
+            rel="noreferrer"
+            target="_blank"
+          >
+            <img
+              alt="License"
+              src="https://img.shields.io/pypi/l/napari-compressed-labels-io.svg?color=green"
+            />
+          </a>
+          
+
+          <a
+            href="https://pypi.org/project/napari-compressed-labels-io"
+            rel="noreferrer"
+            target="_blank"
+          >
+            <img
+              alt="PyPI"
+              src="https://img.shields.io/pypi/v/napari-compressed-labels-io.svg?color=green"
+            />
+          </a>
+          
+
+          <a
+            href="https://python.org"
+            rel="noreferrer"
+            target="_blank"
+          >
+            <img
+              alt="Python Version"
+              src="https://img.shields.io/pypi/pyversions/napari-compressed-labels-io.svg?color=green"
+            />
+          </a>
+          
+
+          <a
+            href="https://github.com/DragaDoncila/napari-compressed-labels-io/actions"
+            rel="noreferrer"
+            target="_blank"
+          >
+            <img
+              alt="tests"
+              src="https://github.com/DragaDoncila/napari-compressed-labels-io/workflows/tests/badge.svg"
+            />
+          </a>
+          
+
+          <a
+            href="https://codecov.io/gh/DragaDoncila/napari-compressed-labels-io"
+            rel="noreferrer"
+            target="_blank"
+          >
+            <img
+              alt="codecov"
+              src="https://codecov.io/gh/DragaDoncila/napari-compressed-labels-io/branch/master/graph/badge.svg"
+            />
+          </a>
+        </p>
         
 
-        <a
-          href="https://python.org"
-          rel="noreferrer"
-          target="_blank"
+        <h2
+          id="description"
         >
-          <img
-            alt="Python Version"
-            src="https://img.shields.io/pypi/pyversions/napari-compressed-labels-io.svg?color=green"
-          />
-        </a>
+          Description
+        </h2>
         
 
-        <a
-          href="https://github.com/DragaDoncila/napari-compressed-labels-io/actions"
-          rel="noreferrer"
-          target="_blank"
-        >
-          <img
-            alt="tests"
-            src="https://github.com/DragaDoncila/napari-compressed-labels-io/workflows/tests/badge.svg"
-          />
-        </a>
+        <p>
+          This napari plugin provides readers and writers for labels and their corresponding image layers into zarr format for compression and portability. Each reader/writer pair supports a round trip of saving and loading image and labels layers.
+        </p>
         
 
-        <a
-          href="https://codecov.io/gh/DragaDoncila/napari-compressed-labels-io"
-          rel="noreferrer"
-          target="_blank"
+        <h2
+          id="writers"
         >
-          <img
-            alt="codecov"
-            src="https://codecov.io/gh/DragaDoncila/napari-compressed-labels-io/branch/master/graph/badge.svg"
-          />
-        </a>
-      </p>
-      
+          Writers
+        </h2>
+        
 
-      <h2
-        id="description"
-      >
-        Description
-      </h2>
-      
+        <p>
+          Two writers are provided by this plugin, each with its own reader.
+        </p>
+        
 
-      <p>
-        This napari plugin provides readers and writers for labels and their corresponding image layers into zarr format for compression and portability. Each reader/writer pair supports a round trip of saving and loading image and labels layers.
-      </p>
-      
-
-      <h2
-        id="writers"
-      >
-        Writers
-      </h2>
-      
-
-      <p>
-        Two writers are provided by this plugin, each with its own reader.
-      </p>
-      
-
-      <h3
-        id="labels_to_zarr"
-      >
-        <code
-          node="[object Object]"
+        <h3
+          id="labels_to_zarr"
         >
-          labels_to_zarr
-        </code>
-      </h3>
-      
+          <code
+            node="[object Object]"
+          >
+            labels_to_zarr
+          </code>
+        </h3>
+        
 
-      <p>
-        This writer is an alternative to napari's default label writer and will write an entire labels layer, regardless of its dimensions, into a single zarr file. This writer provides the best compression option and its associated reader 
-        <code
-          node="[object Object]"
+        <p>
+          This writer is an alternative to napari's default label writer and will write an entire labels layer, regardless of its dimensions, into a single zarr file. This writer provides the best compression option and its associated reader 
+          <code
+            node="[object Object]"
+          >
+            get_zarr_labels
+          </code>
+           will read the layer back into napari.
+        </p>
+        
+
+        <p>
+          This writer will be called when the user tries to save a selected labels layer into a path ending with .zarr
+        </p>
+        
+
+        <h3
+          id="label_image_pairs_to_zarr"
         >
-          get_zarr_labels
-        </code>
-         will read the layer back into napari.
-      </p>
-      
+          <code
+            node="[object Object]"
+          >
+            label_image_pairs_to_zarr
+          </code>
+        </h3>
+        
 
-      <p>
-        This writer will be called when the user tries to save a selected labels layer into a path ending with .zarr
-      </p>
-      
+        <p>
+          This writer will save 3-dimensional labels and image layers from the viewer into individual zarrs for portability and convenience. For example, given one labels and one image layer of the shape (10, 200, 200) saved to my_stacks.zarr, 10 subdirectories will be created, each with two zarrs inside of shape (200, 200) corresponding to the labels and image layer.
+        </p>
+        
 
-      <h3
-        id="label_image_pairs_to_zarr"
-      >
-        <code
-          node="[object Object]"
+        <p>
+          This writer allows users to load stacks of associated images, label them, and then quickly save these stacks out into individual slices for easy loading, viewing and interaction. Its associated reader supports the loading into napari of the whole stack, all layers at one slice of the stack, and an individual layer of a given slice of the stack.
+        </p>
+        
+
+        <p>
+          The writer currently supports only 3D layers, with the exception of RGB images of the form (z, y, x, 3), which are also supported.
+        </p>
+        
+
+        <h2
+          id="readers"
         >
-          label_image_pairs_to_zarr
-        </code>
-      </h3>
-      
+          Readers
+        </h2>
+        
 
-      <p>
-        This writer will save 3-dimensional labels and image layers from the viewer into individual zarrs for portability and convenience. For example, given one labels and one image layer of the shape (10, 200, 200) saved to my_stacks.zarr, 10 subdirectories will be created, each with two zarrs inside of shape (200, 200) corresponding to the labels and image layer.
-      </p>
-      
+        <p>
+          Two readers are provided by this plugin for loading the formats saved by each writer. These are detailed below.
+        </p>
+        
 
-      <p>
-        This writer allows users to load stacks of associated images, label them, and then quickly save these stacks out into individual slices for easy loading, viewing and interaction. Its associated reader supports the loading into napari of the whole stack, all layers at one slice of the stack, and an individual layer of a given slice of the stack.
-      </p>
-      
-
-      <p>
-        The writer currently supports only 3D layers, with the exception of RGB images of the form (z, y, x, 3), which are also supported.
-      </p>
-      
-
-      <h2
-        id="readers"
-      >
-        Readers
-      </h2>
-      
-
-      <p>
-        Two readers are provided by this plugin for loading the formats saved by each writer. These are detailed below.
-      </p>
-      
-
-      <h3
-        id="get_zarr_labels"
-      >
-        <code
-          node="[object Object]"
+        <h3
+          id="get_zarr_labels"
         >
-          get_zarr_labels
-        </code>
-      </h3>
-      
+          <code
+            node="[object Object]"
+          >
+            get_zarr_labels
+          </code>
+        </h3>
+        
 
-      <p>
-        This reader will open any zarr file with a .zarray at the top level in 
-        <code
-          node="[object Object]"
-        >
-          path
-        </code>
-         as a labels layer. This is to be used in conjunction with 
-        <code
-          node="[object Object]"
-        >
-          labels_to_zarr
-        </code>
-        .
-      </p>
-      
+        <p>
+          This reader will open any zarr file with a .zarray at the top level in 
+          <code
+            node="[object Object]"
+          >
+            path
+          </code>
+           as a labels layer. This is to be used in conjunction with 
+          <code
+            node="[object Object]"
+          >
+            labels_to_zarr
+          </code>
+          .
+        </p>
+        
 
-      <h3
-        id="get_label_image_stack"
-      >
-        <code
-          node="[object Object]"
+        <h3
+          id="get_label_image_stack"
         >
-          get_label_image_stack
-        </code>
-      </h3>
-      
+          <code
+            node="[object Object]"
+          >
+            get_label_image_stack
+          </code>
+        </h3>
+        
 
-      <p>
-        This reader will open any zarr containing a 
-        <code
-          node="[object Object]"
+        <p>
+          This reader will open any zarr containing a 
+          <code
+            node="[object Object]"
+          >
+            .zmeta
+          </code>
+           file as layers into napari. Depending on what is being opened, the reader will either load a full stack of labels and images, one slice of a stack of images and labels or an individual layer within a slice. This is to be used in conjunction with 
+          <code
+            node="[object Object]"
+          >
+            label_image_pairs_to_zarr
+          </code>
+          .
+        </p>
+        
+
+        <h2
+          id="zmeta"
         >
           .zmeta
-        </code>
-         file as layers into napari. Depending on what is being opened, the reader will either load a full stack of labels and images, one slice of a stack of images and labels or an individual layer within a slice. This is to be used in conjunction with 
-        <code
-          node="[object Object]"
+        </h2>
+        
+
+        <p>
+          This metadata file contains information about the layer types in the stack and in each individual slice, as well as the number of image/label slices. This allows the reader plugin to load the correct layer types with appropriate names both at a stack level and at the individual slice level.
+        </p>
+        
+
+        <h3
+          id="an-example-zmeta-specification"
         >
-          label_image_pairs_to_zarr
-        </code>
-        .
-      </p>
-      
+          An example .zmeta specification
+        </h3>
+        
 
-      <h2
-        id="zmeta"
-      >
-        .zmeta
-      </h2>
-      
-
-      <p>
-        This metadata file contains information about the layer types in the stack and in each individual slice, as well as the number of image/label slices. This allows the reader plugin to load the correct layer types with appropriate names both at a stack level and at the individual slice level.
-      </p>
-      
-
-      <h3
-        id="an-example-zmeta-specification"
-      >
-        An example .zmeta specification
-      </h3>
-      
-
-      <pre>
-        <code
-          language="json"
-          node="[object Object]"
-        >
-          {
+        <pre>
+          <code
+            language="json"
+            node="[object Object]"
+          >
+            {
     "meta": {
         "stack": 7                               # number of slices in the entire stack (1 for an individual slice, 0 for a layer within a slice)
     },
@@ -1272,146 +1317,147 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
     }
 }
 
-        </code>
-      </pre>
-      
+          </code>
+        </pre>
+        
 
-      <hr />
-      
+        <hr />
+        
 
-      <p>
-        This 
-        <a
-          href="https://github.com/napari/napari"
-          rel="noreferrer"
-          target="_blank"
-        >
-          napari
-        </a>
-         plugin was generated with 
-        <a
-          href="https://github.com/audreyr/cookiecutter"
-          rel="noreferrer"
-          target="_blank"
-        >
-          Cookiecutter
-        </a>
-         using with 
-        <a
-          href="https://github.com/napari"
-          rel="noreferrer"
-          target="_blank"
-        >
-          @napari
-        </a>
-        's 
-        <a
-          href="https://github.com/napari/cookiecutter-napari-plugin"
-          rel="noreferrer"
-          target="_blank"
-        >
-          cookiecutter-napari-plugin
-        </a>
-         template.
-      </p>
-      
+        <p>
+          This 
+          <a
+            href="https://github.com/napari/napari"
+            rel="noreferrer"
+            target="_blank"
+          >
+            napari
+          </a>
+           plugin was generated with 
+          <a
+            href="https://github.com/audreyr/cookiecutter"
+            rel="noreferrer"
+            target="_blank"
+          >
+            Cookiecutter
+          </a>
+           using with 
+          <a
+            href="https://github.com/napari"
+            rel="noreferrer"
+            target="_blank"
+          >
+            @napari
+          </a>
+          's 
+          <a
+            href="https://github.com/napari/cookiecutter-napari-plugin"
+            rel="noreferrer"
+            target="_blank"
+          >
+            cookiecutter-napari-plugin
+          </a>
+           template.
+        </p>
+        
 
-      <h2
-        id="installation"
-      >
-        Installation
-      </h2>
-      
-
-      <p>
-        You can install 
-        <code
-          node="[object Object]"
+        <h2
+          id="installation"
         >
-          napari-compressed-labels-io
-        </code>
-         via 
-        <a
-          href="https://pypi.org/project/pip/"
-          rel="noreferrer"
-          target="_blank"
-        >
-          pip
-        </a>
-        :
-      </p>
-      
+          Installation
+        </h2>
+        
 
-      <pre>
-        <code
-          language=""
-          node="[object Object]"
-        >
-          pip install napari-compressed-labels-io
-        </code>
-      </pre>
-      
+        <p>
+          You can install 
+          <code
+            node="[object Object]"
+          >
+            napari-compressed-labels-io
+          </code>
+           via 
+          <a
+            href="https://pypi.org/project/pip/"
+            rel="noreferrer"
+            target="_blank"
+          >
+            pip
+          </a>
+          :
+        </p>
+        
 
-      <h2
-        id="contributing"
-      >
-        Contributing
-      </h2>
-      
+        <pre>
+          <code
+            language=""
+            node="[object Object]"
+          >
+            pip install napari-compressed-labels-io
+          </code>
+        </pre>
+        
 
-      <p>
-        Contributions are very welcome. Tests can be run with 
-        <a
-          href="https://tox.readthedocs.io/en/latest/"
-          rel="noreferrer"
-          target="_blank"
+        <h2
+          id="contributing"
         >
-          tox
-        </a>
-        , please ensure
+          Contributing
+        </h2>
+        
+
+        <p>
+          Contributions are very welcome. Tests can be run with 
+          <a
+            href="https://tox.readthedocs.io/en/latest/"
+            rel="noreferrer"
+            target="_blank"
+          >
+            tox
+          </a>
+          , please ensure
 the coverage at least stays the same before you submit a pull request.
-      </p>
-      
+        </p>
+        
 
-      <h2
-        id="license"
-      >
-        License
-      </h2>
-      
-
-      <p>
-        Distributed under the terms of the 
-        <a
-          href="http://opensource.org/licenses/MIT"
-          rel="noreferrer"
-          target="_blank"
+        <h2
+          id="license"
         >
-          MIT
-        </a>
-         license,
+          License
+        </h2>
+        
+
+        <p>
+          Distributed under the terms of the 
+          <a
+            href="http://opensource.org/licenses/MIT"
+            rel="noreferrer"
+            target="_blank"
+          >
+            MIT
+          </a>
+           license,
 "napari-compressed-labels-io" is free and open source software
-      </p>
-      
+        </p>
+        
 
-      <h2
-        id="issues"
-      >
-        Issues
-      </h2>
-      
-
-      <p>
-        If you encounter any problems, please 
-        <a
-          href="https://github.com/DragaDoncila/napari-compressed-labels-io/issues"
-          rel="noreferrer"
-          target="_blank"
+        <h2
+          id="issues"
         >
-          file an issue
-        </a>
-         along with a detailed description.
-      </p>
+          Issues
+        </h2>
+        
+
+        <p>
+          If you encounter any problems, please 
+          <a
+            href="https://github.com/DragaDoncila/napari-compressed-labels-io/issues"
+            rel="noreferrer"
+            target="_blank"
+          >
+            file an issue
+          </a>
+           along with a detailed description.
+        </p>
+      </div>
     </div>
     <div
       class="mb-6 screen-495:mb-12 screen-1150:mb-20"
@@ -1424,236 +1470,578 @@ the coverage at least stays the same before you submit a pull request.
       </button>
     </div>
     <div
-      class="fresnel-lessThan-3xl fresnel-lessThan-3xl grid xl:grid-cols-3 3xl:grid-cols-1"
-      id="pluginMetadata"
+      class="fresnel-container fresnel-lessThan-screen-1425 "
     >
-      <ul
-        class="list-none"
-      >
-        <li
-          class="mb-4 text-sm"
-        >
-          <h4
-            class="inline mr-2 font-bold whitespace-nowrap"
-          >
-            Version
-            :
-          </h4>
-          <ul
-            class="list-none space-y-5 inline"
-          >
-            <li
-              class="leading-normal inline commaList"
-            >
-              0.0.2
-            </li>
-          </ul>
-        </li>
-        <li
-          class="mb-4 text-sm"
-        >
-          <h4
-            class="inline mr-2 font-bold whitespace-nowrap"
-          >
-            Release date
-            :
-          </h4>
-          <ul
-            class="list-none space-y-5 inline"
-          >
-            <li
-              class="leading-normal inline commaList"
-            >
-              03 March 2021
-            </li>
-          </ul>
-        </li>
-        <li
-          class="mb-4 text-sm"
-        >
-          <h4
-            class="inline mr-2 font-bold whitespace-nowrap"
-          >
-            First released
-            :
-          </h4>
-          <ul
-            class="list-none space-y-5 inline"
-          >
-            <li
-              class="leading-normal inline commaList"
-            >
-              22 February 2021
-            </li>
-          </ul>
-        </li>
-        <li
-          class="mb-4 text-sm"
-        >
-          <h4
-            class="inline mr-2 font-bold whitespace-nowrap"
-          >
-            Development status
-            :
-          </h4>
-          <ul
-            class="list-none space-y-5 inline"
-          >
-            <li
-              class="leading-normal inline commaList"
-            >
-              4 - Beta
-            </li>
-          </ul>
-        </li>
-        <li
-          class="mb-4 text-sm"
-        >
-          <h4
-            class="inline mr-2 font-bold whitespace-nowrap"
-          >
-            License
-            :
-          </h4>
-          <ul
-            class="list-none space-y-5 inline"
-          >
-            <li
-              class="leading-normal inline commaList"
-            >
-              MIT
-            </li>
-          </ul>
-        </li>
-      </ul>
       <div
-        class="fresnel-lessThan-xl my-6 h-px bg-black border-none"
-      />
-      <div
-        class="flex flex-col items-start xl:items-center 2xl:items-start text-sm"
+        class="fresnel-lessThan-3xl grid space-y-6 screen-875:grid-cols-3 screen-875:space-y-0 screen-1425:grid-cols-1 screen-1425:space-y-6"
+        id="pluginMetadata"
       >
-        <h4
-          class="font-bold"
+        <div
+          class="space-y-6"
         >
-          Github Activity
-        </h4>
-        <ul
-          class="list-none"
+          <div
+            class="text-sm"
+          >
+            <div
+              class="space-x-2 space-y-2"
+            >
+              <h4
+                class="font-bold whitespace-nowrap inline"
+              >
+                Version
+                :
+              </h4>
+              <ul
+                class="list-none text-sm leading-normal inline space-y-2 inlineList"
+              >
+                <li
+                  class="textItem"
+                >
+                  0.0.2
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div
+            class="text-sm"
+          >
+            <div
+              class="space-x-2 space-y-2"
+            >
+              <h4
+                class="font-bold whitespace-nowrap inline"
+              >
+                Release date
+                :
+              </h4>
+              <ul
+                class="list-none text-sm leading-normal inline space-y-2 inlineList"
+              >
+                <li
+                  class="textItem"
+                >
+                  03 March 2021
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div
+            class="text-sm"
+          >
+            <div
+              class="space-x-2 space-y-2"
+            >
+              <h4
+                class="font-bold whitespace-nowrap inline"
+              >
+                First released
+                :
+              </h4>
+              <ul
+                class="list-none text-sm leading-normal inline space-y-2 inlineList"
+              >
+                <li
+                  class="textItem"
+                >
+                  22 February 2021
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div
+            class="text-sm"
+          >
+            <div
+              class="space-x-2 space-y-2"
+            >
+              <h4
+                class="font-bold whitespace-nowrap inline"
+              >
+                Development status
+                :
+              </h4>
+              <ul
+                class="list-none text-sm leading-normal inline space-y-2 inlineList"
+              >
+                <li
+                  class="textItem"
+                >
+                  4 - Beta
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div
+            class="text-sm"
+          >
+            <div
+              class="space-x-2 space-y-2"
+            >
+              <h4
+                class="font-bold whitespace-nowrap inline"
+              >
+                License
+                :
+              </h4>
+              <ul
+                class="list-none text-sm leading-normal inline space-y-2 inlineList"
+              >
+                <li
+                  class="textItem"
+                >
+                  MIT
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div
+          class="fresnel-container fresnel-greaterThanOrEqual-screen-1425 "
+        />
+        <div
+          class="fresnel-container fresnel-lessThan-screen-875 "
         >
-          <li
-            class="my-2"
+          <div
+            class="my-6 h-px bg-black border-none"
+          />
+        </div>
+        <div
+          class="text-sm screen-875:justify-self-center screen-1150:justify-self-start"
+        >
+          <div
+            class="space-y-2"
           >
-            Stars
-            : 
-            <span
-              class="font-bold"
+            <h4
+              class="font-bold whitespace-nowrap"
             >
-              0
-            </span>
-          </li>
-          <li
-            class="my-2"
+              GitHub activity
+              :
+            </h4>
+            <ul
+              class="list-none text-sm leading-normal space-y-2"
+            >
+              <li
+                class="textItem"
+              >
+                Stars
+                : 
+                <span
+                  class="font-bold"
+                >
+                  0
+                </span>
+              </li>
+              <li
+                class="textItem"
+              >
+                Forks
+                : 
+                <span
+                  class="font-bold"
+                >
+                  0
+                </span>
+              </li>
+              <li
+                class="textItem"
+              >
+                Issues + PRs
+                : 
+                <span
+                  class="font-bold"
+                >
+                  0
+                </span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div
+          class="fresnel-container fresnel-greaterThanOrEqual-screen-1425 "
+        />
+        <div
+          class="fresnel-container fresnel-lessThan-screen-875 "
+        >
+          <div
+            class="my-6 h-px bg-black border-none"
+          />
+        </div>
+        <div
+          class="space-y-6"
+        >
+          <div
+            class="text-sm"
           >
-            Forks
-            : 
-            <span
-              class="font-bold"
+            <div
+              class="space-x-2 space-y-2"
             >
-              0
-            </span>
-          </li>
-          <li
-            class="my-2"
+              <h4
+                class="font-bold whitespace-nowrap inline"
+              >
+                Python versions supported
+                :
+              </h4>
+              <ul
+                class="list-none text-sm leading-normal inline space-y-2 inlineList"
+              >
+                <li
+                  class="textItem"
+                >
+                  &gt;=3.6
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div
+            class="text-sm"
           >
-            Issues + PRs
-            : 
-            <span
-              class="font-bold"
+            <div
+              class="space-x-2 space-y-2"
             >
-              0
-            </span>
-          </li>
-        </ul>
+              <h4
+                class="font-bold whitespace-nowrap inline"
+              >
+                Operating system
+                :
+              </h4>
+              <ul
+                class="list-none text-sm leading-normal inline space-y-2 inlineList"
+              >
+                <li
+                  class="textItem"
+                >
+                  OS Independent
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div
+            class="text-sm"
+          >
+            <div
+              class="space-x-2 space-y-2"
+            >
+              <h4
+                class="font-bold whitespace-nowrap inline"
+              >
+                Requirements
+                :
+              </h4>
+              <ul
+                class="list-none text-sm leading-normal inline space-y-2 inlineList"
+              >
+                <li
+                  class="textItem"
+                >
+                  napari-plugin-engine (&gt;=0.1.4)
+                </li>
+                <li
+                  class="textItem"
+                >
+                  numpy
+                </li>
+                <li
+                  class="textItem"
+                >
+                  zarr
+                </li>
+                <li
+                  class="textItem"
+                >
+                  dask[complete]
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
+    </div>
+    <div
+      class="fresnel-container fresnel-greaterThanOrEqual-screen-1425 "
+    >
       <div
-        class="fresnel-lessThan-xl my-6 h-px bg-black border-none"
-      />
-      <ul
-        class="list-none"
+        class="fresnel-lessThan-3xl grid space-y-6 screen-875:grid-cols-3 screen-875:space-y-0 screen-1425:grid-cols-1 screen-1425:space-y-6"
+        id="pluginMetadata"
       >
-        <li
-          class="mb-4 text-sm"
+        <div
+          class="space-y-6"
         >
-          <h4
-            class="inline mr-2 font-bold whitespace-nowrap"
+          <div
+            class="text-sm"
           >
-            Python versions supported
-            :
-          </h4>
-          <ul
-            class="list-none space-y-5 inline"
-          >
-            <li
-              class="leading-normal inline commaList"
+            <div
+              class="space-y-2"
             >
-              &gt;=3.6
-            </li>
-          </ul>
-        </li>
-        <li
-          class="mb-4 text-sm"
+              <h4
+                class="font-bold whitespace-nowrap"
+              >
+                Version
+                :
+              </h4>
+              <ul
+                class="list-none text-sm leading-normal space-y-5"
+              >
+                <li
+                  class="textItem"
+                >
+                  0.0.2
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div
+            class="text-sm"
+          >
+            <div
+              class="space-y-2"
+            >
+              <h4
+                class="font-bold whitespace-nowrap"
+              >
+                Release date
+                :
+              </h4>
+              <ul
+                class="list-none text-sm leading-normal space-y-5"
+              >
+                <li
+                  class="textItem"
+                >
+                  03 March 2021
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div
+            class="text-sm"
+          >
+            <div
+              class="space-y-2"
+            >
+              <h4
+                class="font-bold whitespace-nowrap"
+              >
+                First released
+                :
+              </h4>
+              <ul
+                class="list-none text-sm leading-normal space-y-5"
+              >
+                <li
+                  class="textItem"
+                >
+                  22 February 2021
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div
+            class="text-sm"
+          >
+            <div
+              class="space-y-2"
+            >
+              <h4
+                class="font-bold whitespace-nowrap"
+              >
+                Development status
+                :
+              </h4>
+              <ul
+                class="list-none text-sm leading-normal space-y-5"
+              >
+                <li
+                  class="textItem"
+                >
+                  4 - Beta
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div
+            class="text-sm"
+          >
+            <div
+              class="space-y-2"
+            >
+              <h4
+                class="font-bold whitespace-nowrap"
+              >
+                License
+                :
+              </h4>
+              <ul
+                class="list-none text-sm leading-normal space-y-5"
+              >
+                <li
+                  class="textItem"
+                >
+                  MIT
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div
+          class="fresnel-container fresnel-greaterThanOrEqual-screen-1425 "
         >
-          <h4
-            class="inline mr-2 font-bold whitespace-nowrap"
-          >
-            Operating system
-            :
-          </h4>
-          <ul
-            class="list-none space-y-5 inline"
-          >
-            <li
-              class="leading-normal inline commaList"
-            >
-              OS Independent
-            </li>
-          </ul>
-        </li>
-        <li
-          class="mb-4 text-sm"
+          <div
+            class="my-6 h-px bg-black border-none"
+          />
+        </div>
+        <div
+          class="fresnel-container fresnel-lessThan-screen-875 "
+        />
+        <div
+          class="text-sm screen-875:justify-self-center screen-1150:justify-self-start"
         >
-          <h4
-            class="inline mr-2 font-bold whitespace-nowrap"
+          <div
+            class="space-y-2"
           >
-            Requirements
-            :
-          </h4>
-          <ul
-            class="list-none space-y-5 inline"
+            <h4
+              class="font-bold whitespace-nowrap"
+            >
+              GitHub activity
+              :
+            </h4>
+            <ul
+              class="list-none text-sm leading-normal space-y-2"
+            >
+              <li
+                class="textItem"
+              >
+                Stars
+                : 
+                <span
+                  class="font-bold"
+                >
+                  0
+                </span>
+              </li>
+              <li
+                class="textItem"
+              >
+                Forks
+                : 
+                <span
+                  class="font-bold"
+                >
+                  0
+                </span>
+              </li>
+              <li
+                class="textItem"
+              >
+                Issues + PRs
+                : 
+                <span
+                  class="font-bold"
+                >
+                  0
+                </span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div
+          class="fresnel-container fresnel-greaterThanOrEqual-screen-1425 "
+        >
+          <div
+            class="my-6 h-px bg-black border-none"
+          />
+        </div>
+        <div
+          class="fresnel-container fresnel-lessThan-screen-875 "
+        />
+        <div
+          class="space-y-6"
+        >
+          <div
+            class="text-sm"
           >
-            <li
-              class="leading-normal inline commaList"
+            <div
+              class="space-y-2"
             >
-              napari-plugin-engine (&gt;=0.1.4)
-            </li>
-            <li
-              class="leading-normal inline commaList"
+              <h4
+                class="font-bold whitespace-nowrap"
+              >
+                Python versions supported
+                :
+              </h4>
+              <ul
+                class="list-none text-sm leading-normal space-y-5"
+              >
+                <li
+                  class="textItem"
+                >
+                  &gt;=3.6
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div
+            class="text-sm"
+          >
+            <div
+              class="space-y-2"
             >
-              numpy
-            </li>
-            <li
-              class="leading-normal inline commaList"
+              <h4
+                class="font-bold whitespace-nowrap"
+              >
+                Operating system
+                :
+              </h4>
+              <ul
+                class="list-none text-sm leading-normal space-y-5"
+              >
+                <li
+                  class="textItem"
+                >
+                  OS Independent
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div
+            class="text-sm"
+          >
+            <div
+              class="space-y-2"
             >
-              zarr
-            </li>
-            <li
-              class="leading-normal inline commaList"
-            >
-              dask[complete]
-            </li>
-          </ul>
-        </li>
-      </ul>
+              <h4
+                class="font-bold whitespace-nowrap"
+              >
+                Requirements
+                :
+              </h4>
+              <ul
+                class="list-none text-sm leading-normal space-y-5"
+              >
+                <li
+                  class="textItem"
+                >
+                  napari-plugin-engine (&gt;=0.1.4)
+                </li>
+                <li
+                  class="textItem"
+                >
+                  numpy
+                </li>
+                <li
+                  class="textItem"
+                >
+                  zarr
+                </li>
+                <li
+                  class="textItem"
+                >
+                  dask[complete]
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </article>
 </div>

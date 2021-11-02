@@ -1,14 +1,17 @@
 import clsx from 'clsx';
-import { isArray } from 'lodash';
+import { isEmpty } from 'lodash';
 import { ReactNode } from 'react';
 
 import { Divider } from '@/components/common/Divider';
-import { MediaFragment } from '@/components/common/media';
+import { Media } from '@/components/common/media';
 import { SkeletonLoader } from '@/components/common/SkeletonLoader';
-import { usePluginState } from '@/context/plugin';
-import { formatDate } from '@/utils';
-
-import { MetadataList } from './MetadataList';
+import { MetadataList, MetadataListTextItem } from '@/components/MetadataList';
+import {
+  Metadata,
+  MetadataKeys,
+  usePluginMetadata,
+  usePluginState,
+} from '@/context/plugin';
 
 interface GithubMetadataItem {
   title: string;
@@ -41,31 +44,23 @@ function PluginGithubData() {
     `We're having trouble loading the GitHub stats: ${repoFetchError.status}`;
 
   return (
-    <div
-      className={clsx(
-        // Layout
-        'flex flex-col',
-
-        // Centering only for xl layout
-        'items-start xl:items-center 2xl:items-start',
-
-        // Font
-        'text-sm',
-      )}
+    <MetadataList
+      className="screen-875:justify-self-center screen-1150:justify-self-start"
+      title="GitHub activity"
+      compact
     >
-      <h4 className="font-bold">Github Activity</h4>
       {error ? (
-        <p className="text-napari-error mt-2">{error}</p>
+        <li>
+          <p className="text-napari-error mt-2">{error}</p>
+        </li>
       ) : (
-        <ul className="list-none">
-          {items.map((item) => (
-            <li className="my-2" key={item.title}>
-              {item.title}: <span className="font-bold">{item.count}</span>
-            </li>
-          ))}
-        </ul>
+        items.map((item) => (
+          <MetadataListTextItem key={item.title}>
+            {item.title}: <span className="font-bold">{item.count}</span>
+          </MetadataListTextItem>
+        ))
       )}
-    </div>
+    </MetadataList>
   );
 }
 
@@ -77,61 +72,66 @@ interface CommonProps {
 }
 
 interface PluginMetadataBaseProps extends CommonProps {
-  /**
-   * Divider to render between metadata lists.
-   */
-  divider?: ReactNode;
-
-  /**
-   * Render metadata lists inline.
-   */
+  divider: ReactNode;
   inline?: boolean;
 }
 
 /**
- * Component for rendering plugin metadata sidebar in the plugin details page.
- *
- * TODO Replace with actual plugin data.
+ * Utility type for picking keys that have a value that is a specific type. For
+ * example, `PickMetadataKeys<string>` will return `'name' | 'summary' | ...`
+ * because those metadata keys have strings as their value, while
+ * `PickMetadataKeys<string[]>` will return `'operatingSystems' | 'requirements' | ...`,
+ * because those metadata keys have string arrays as their values.
  */
+type PickMetadataKeys<T> = {
+  [Key in MetadataKeys]: Metadata[Key]['value'] extends T ? Key : never;
+}[MetadataKeys];
 
+/**
+ * Component for rendering plugin metadata responsively.  This handles
+ * rendering the divider for vertical layouts and rendering headers / values
+ * inline for smaller screens.
+ */
 function PluginMetadataBase({
   className,
   divider,
   inline,
 }: PluginMetadataBaseProps) {
-  const { plugin } = usePluginState();
+  const metadata = usePluginMetadata();
+
+  function renderSingleItemList(key: PickMetadataKeys<string>) {
+    const { name, value } = metadata[key];
+
+    return (
+      <MetadataList inline={inline} title={name} empty={!value}>
+        <MetadataListTextItem>{value}</MetadataListTextItem>
+      </MetadataList>
+    );
+  }
+
+  function renderItemList(key: PickMetadataKeys<string[]>) {
+    const { name, value: values } = metadata[key];
+
+    return (
+      <MetadataList inline={inline} title={name} empty={isEmpty(values)}>
+        {values.map((value) => (
+          <MetadataListTextItem key={value}>{value}</MetadataListTextItem>
+        ))}
+      </MetadataList>
+    );
+  }
 
   const projectMetadata = (
     <SkeletonLoader
       className="h-56"
       render={() => (
-        <MetadataList
-          inline={inline}
-          items={[
-            {
-              title: 'Version',
-              value: plugin.version,
-            },
-            {
-              title: 'Release date',
-              value: formatDate(plugin.release_date),
-            },
-            {
-              title: 'First released',
-              value: formatDate(plugin.first_released),
-            },
-            {
-              title: 'Development status',
-              value: plugin.development_status.map((status) =>
-                status.replace('Development Status :: ', ''),
-              ),
-            },
-            {
-              title: 'License',
-              value: plugin.license,
-            },
-          ]}
-        />
+        <>
+          {renderSingleItemList('version')}
+          {renderSingleItemList('releaseDate')}
+          {renderSingleItemList('firstReleased')}
+          {renderItemList('developmentStatus')}
+          {renderSingleItemList('license')}
+        </>
       )}
     />
   );
@@ -140,29 +140,11 @@ function PluginMetadataBase({
     <SkeletonLoader
       className="h-56"
       render={() => (
-        <MetadataList
-          inline={inline}
-          items={[
-            {
-              title: 'Python versions supported',
-              value: plugin.python_version,
-            },
-            {
-              title: 'Operating system',
-              value: plugin.operating_system.map((operatingSystem) =>
-                operatingSystem.replace('Operating System :: ', ''),
-              ),
-            },
-            {
-              title: 'Requirements',
-              value: isArray(plugin.requirements)
-                ? plugin.requirements.filter(
-                    (req) => !req.includes('; extra == '),
-                  )
-                : '',
-            },
-          ]}
-        />
+        <>
+          {renderSingleItemList('pythonVersion')}
+          {renderItemList('operatingSystems')}
+          {renderItemList('requirements')}
+        </>
       )}
     />
   );
@@ -175,17 +157,19 @@ function PluginMetadataBase({
         className,
 
         // Vertical 1-column grid layout for < xl
-        'grid',
+        'grid space-y-6',
 
         // Horizontal layout with 3-column grid for xl+
-        'xl:grid-cols-3',
+        'screen-875:grid-cols-3 screen-875:space-y-0',
 
         // Back to 1-column vertical layout for 3xl+
-        '3xl:grid-cols-1',
+        'screen-1425:grid-cols-1 screen-1425:space-y-6',
       )}
     >
-      {projectMetadata}
+      <div className="space-y-6">{projectMetadata}</div>
+
       {divider}
+
       <SkeletonLoader
         className={clsx(
           'h-40',
@@ -194,8 +178,10 @@ function PluginMetadataBase({
         )}
         render={() => <PluginGithubData />}
       />
+
       {divider}
-      {requirementMetadata}
+
+      <div className="space-y-6">{requirementMetadata}</div>
     </div>
   );
 }
@@ -209,20 +195,20 @@ export function PluginMetadata(props: CommonProps) {
   let divider = <Divider className="my-6" />;
   divider = (
     <>
-      <MediaFragment greaterThanOrEqual="3xl">{divider}</MediaFragment>
-      <MediaFragment lessThan="xl">{divider}</MediaFragment>
+      <Media greaterThanOrEqual="screen-1425">{divider}</Media>
+      <Media lessThan="screen-875">{divider}</Media>
     </>
   );
 
   return (
     <>
-      <MediaFragment lessThan="3xl">
+      <Media lessThan="screen-1425">
         <PluginMetadataBase {...props} divider={divider} inline />
-      </MediaFragment>
+      </Media>
 
-      <MediaFragment greaterThanOrEqual="3xl">
+      <Media greaterThanOrEqual="screen-1425">
         <PluginMetadataBase {...props} divider={divider} />
-      </MediaFragment>
+      </Media>
     </>
   );
 }

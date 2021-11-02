@@ -22,6 +22,9 @@ interface Props {
 
   // Disable H1 headers when rendering markdown.
   disableHeader?: boolean;
+
+  // Render markdown with placeholder styles.
+  placeholder?: boolean;
 }
 
 const REMARK_PLUGINS: PluggableList = [
@@ -58,7 +61,12 @@ const REHYPE_PLUGINS: PluggableList = [
 /**
  * Component for rendering Markdown consistently in napari hub.
  */
-export function Markdown({ className, children, disableHeader }: Props) {
+export function Markdown({
+  className,
+  children,
+  disableHeader,
+  placeholder,
+}: Props) {
   const components: TransformOptions['components'] = {
     code: MarkdownCode,
     p: MarkdownParagraph,
@@ -70,7 +78,11 @@ export function Markdown({ className, children, disableHeader }: Props) {
 
   return (
     <ReactMarkdown
-      className={clsx(className, styles.markdown)}
+      className={clsx(
+        className,
+        styles.markdown,
+        placeholder && styles.placeholder,
+      )}
       components={components}
       remarkPlugins={REMARK_PLUGINS}
       rehypePlugins={REHYPE_PLUGINS}

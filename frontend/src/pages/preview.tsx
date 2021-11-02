@@ -1,6 +1,7 @@
 import fs from 'fs-extra';
 import { GetStaticPropsResult } from 'next';
 import DefaultErrorPage from 'next/error';
+import { DeepPartial } from 'utility-types';
 
 import { PluginDetails } from '@/components/PluginDetails';
 import { DEFAULT_PLUGIN_DATA, DEFAULT_REPO_DATA } from '@/constants/plugin';
@@ -10,7 +11,7 @@ import { PluginData } from '@/types';
 import { fetchRepoData, FetchRepoDataResult } from '@/utils';
 
 interface Props extends FetchRepoDataResult {
-  plugin: PluginData;
+  plugin: DeepPartial<PluginData>;
 }
 
 const PLUGIN_PATH = process.env.PREVIEW;
@@ -27,13 +28,14 @@ export async function getStaticProps(): Promise<GetStaticPropsResult<Props>> {
   }
 
   const pluginData = await fs.readFile(PLUGIN_PATH, 'utf-8');
-  const plugin = JSON.parse(pluginData) as PluginData;
-  const repoFetchResult = await fetchRepoData(plugin.code_repository);
+  const plugin = JSON.parse(pluginData) as DeepPartial<PluginData>;
+  const repoFetchResult =
+    plugin.code_repository && (await fetchRepoData(plugin.code_repository));
 
   return {
     props: {
       plugin,
-      ...repoFetchResult,
+      ...(repoFetchResult || { repo: DEFAULT_REPO_DATA }),
     },
   };
 }

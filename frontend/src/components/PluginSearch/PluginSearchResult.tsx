@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { isEmpty } from 'lodash';
+import { isArray, isEmpty } from 'lodash';
 import { CSSProperties } from 'react';
 
 import { Link } from '@/components/common/Link';
@@ -119,7 +119,9 @@ export function PluginSearchResult({
         },
         {
           label: 'operating system',
-          value: plugin.operating_system.map(formatOperatingSystem).join(', '),
+          value: isArray(plugin.operating_system)
+            ? plugin.operating_system.map(formatOperatingSystem).join(', ')
+            : '',
         },
       ];
 
@@ -177,6 +179,7 @@ export function PluginSearchResult({
           <ul className="mt-5 text-xs">
             <SkeletonLoader
               render={() =>
+                isArray(plugin.authors) &&
                 plugin.authors.map((author) => (
                   <li
                     className="my-2 font-bold"

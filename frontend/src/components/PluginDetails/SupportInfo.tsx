@@ -1,4 +1,6 @@
 import clsx from 'clsx';
+import { isEmpty } from 'lodash';
+import { ReactNode } from 'react';
 
 import {
   GitHub,
@@ -10,11 +12,14 @@ import {
   Twitter,
 } from '@/components/common/icons';
 import { Media } from '@/components/common/media';
-import { usePluginState } from '@/context/plugin';
+import {
+  MetadataList,
+  MetadataListLinkItem,
+  MetadataListTextItem,
+} from '@/components/MetadataList';
+import { MetadataKeys, usePluginMetadata } from '@/context/plugin';
 
 import { ANCHOR } from './CitationInfo.constants';
-import { MetadataList } from './MetadataList';
-import { MetadataItem, MetadataItemLink } from './PluginDetails.types';
 import styles from './SupportInfo.module.scss';
 
 /**
@@ -44,102 +49,126 @@ interface CommonProps {
   className?: string;
 }
 
-interface SupportInfoBaseProps extends CommonProps {
-  /**
-   * Render the support info metadata list horizontally.
-   */
-  horizontal?: boolean;
+interface MetadataLinkItem {
+  text: string;
+  href: string;
+  icon?: ReactNode;
+  missingIcon?: ReactNode;
+}
 
+interface SupportInfoBaseProps extends CommonProps {
   /**
    * Render the support info metadata list items inline.
    */
   inline?: boolean;
 }
 
-export function SupportInfoBase({
-  className,
-  horizontal,
-  inline,
-}: SupportInfoBaseProps) {
-  const { plugin } = usePluginState();
+export function SupportInfoBase({ className, inline }: SupportInfoBaseProps) {
+  const metadata = usePluginMetadata();
+  const learnMoreItems: MetadataLinkItem[] = [];
 
-  const items: MetadataItem[] = [
+  function getLink(key: MetadataKeys) {
+    const data = metadata[key];
+
+    return {
+      text: data.name,
+      href: data.value as string,
+    };
+  }
+
+  if (metadata.projectSite.value) {
+    learnMoreItems.push({
+      ...getLink('projectSite'),
+      icon: <ProjectSite />,
+    });
+  }
+
+  learnMoreItems.push(
     {
-      title: 'Authors',
-      value: plugin.authors.map((author) => author.name),
-    },
-
-    {
-      title: 'Learn more',
-      value: ([] as MetadataItemLink[]).concat(
-        plugin.project_site
-          ? {
-              href: plugin.project_site,
-              icon: <ProjectSite />,
-              text: 'Project site',
-            }
-          : [],
-
-        {
-          href: plugin.documentation,
-          icon: <ProjectDocumentation />,
-          missingIcon: (
-            <ProjectDocumentation className={styles.missingDocumentation} />
-          ),
-          text: 'Documentation',
-        },
-        {
-          href: plugin.support,
-          icon: <ProjectSupport />,
-          missingIcon: (
-            <ProjectSupport className={styles.missingProjectSupport} />
-          ),
-          text: 'Support',
-        },
-        {
-          href: plugin.report_issues,
-          icon: <ProjectIssues />,
-          missingIcon: (
-            <ProjectIssues className={styles.missingProjectIssues} />
-          ),
-          text: 'Report issues',
-        },
-
-        plugin.twitter
-          ? {
-              href: plugin.twitter,
-              icon: <Twitter />,
-              text: formatTwitter(plugin.twitter),
-            }
-          : [],
-
-        plugin.citations
-          ? {
-              href: `${plugin.name}#${ANCHOR}`,
-              icon: <Quotes />,
-              text: 'Citation information',
-            }
-          : [],
+      ...getLink('documentationSite'),
+      icon: <ProjectDocumentation />,
+      missingIcon: (
+        <ProjectDocumentation className={styles.missingDocumentation} />
       ),
     },
-
     {
-      title: 'Source code',
-      value: plugin.code_repository && {
-        href: plugin.code_repository,
-        icon: <GitHub />,
-        text: plugin.name,
-      },
+      ...getLink('supportSite'),
+      icon: <ProjectSupport />,
+      missingIcon: <ProjectSupport className={styles.missingProjectSupport} />,
     },
-  ];
+    {
+      ...getLink('reportIssues'),
+      icon: <ProjectIssues />,
+      missingIcon: <ProjectIssues className={styles.missingProjectIssues} />,
+    },
+  );
+
+  if (metadata.twitter.value) {
+    const { href } = getLink('twitter');
+
+    learnMoreItems.push({
+      href,
+      text: formatTwitter(href),
+      icon: <Twitter />,
+    });
+  }
+
+  if (metadata.citations.value) {
+    learnMoreItems.push({
+      href: `${metadata.name.value}#${ANCHOR}`,
+      text: metadata.citations.name,
+      icon: <Quotes />,
+    });
+  }
 
   return (
-    <MetadataList
-      className={clsx('text-black bg-napari-hover-gray p-5', className)}
-      horizontal={horizontal}
-      inline={inline}
-      items={items}
-    />
+    <div
+      className={clsx(
+        className,
+        'text-black bg-gray-100 p-5',
+
+        // Overflow on x-axis in case of really long twitter names.
+        'overflow-x-auto',
+
+        // Grid layout.
+        'grid',
+        inline ? 'grid-cols-1 gap-4' : 'grid-cols-3',
+      )}
+    >
+      <MetadataList
+        title={metadata.authors.name}
+        empty={isEmpty(metadata.authors.value)}
+        inline={inline}
+      >
+        {metadata.authors.value.map((author) => (
+          <MetadataListTextItem key={author}>{author}</MetadataListTextItem>
+        ))}
+      </MetadataList>
+
+      <MetadataList title="Learn more" inline={inline}>
+        {learnMoreItems.map(({ text, ...linkProps }) => (
+          <MetadataListLinkItem key={linkProps.href} {...linkProps}>
+            {text}
+          </MetadataListLinkItem>
+        ))}
+      </MetadataList>
+
+      <MetadataList
+        title={metadata.sourceCode.name}
+        empty={!metadata.sourceCode.value}
+        inline={inline}
+      >
+        {metadata.sourceCode.value && (
+          <MetadataListLinkItem
+            href={metadata.sourceCode.value}
+            icon={<GitHub />}
+            missingIcon={<GitHub className={styles.missingGithub} />}
+          >
+            {metadata.name.value}
+          </MetadataListLinkItem>
+        )}
+      </MetadataList>
+    </div>
   );
 }
 
@@ -152,7 +181,7 @@ export function SupportInfo(props: CommonProps) {
   return (
     <>
       <Media greaterThanOrEqual="xl">
-        <SupportInfoBase {...props} horizontal />
+        <SupportInfoBase {...props} />
       </Media>
 
       <Media lessThan="xl">
