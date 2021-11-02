@@ -10,14 +10,21 @@ import { Markdown } from '@/components/common/Markdown';
 import { Media, MediaFragment } from '@/components/common/media';
 import { PageMetadata } from '@/components/common/PageMetadata';
 import { SkeletonLoader } from '@/components/common/SkeletonLoader';
+import { TOCHeader } from '@/components/common/TableOfContents';
 import { useLoadingState } from '@/context/loading';
 import { usePluginState } from '@/context/plugin';
 import { useIsPreview, usePlausible } from '@/hooks';
 
 import { CallToActionButton } from './CallToActionButton';
 import { CitationInfo } from './CitationInfo';
+import { ANCHOR, TITLE } from './CitationInfo.constants';
 import { PluginMetadata } from './PluginMetadata';
 import { SupportInfo } from './SupportInfo';
+
+const CITATION_HEADER: TOCHeader = {
+  id: ANCHOR,
+  text: TITLE,
+};
 
 function PluginLeftColumn() {
   return (
@@ -149,7 +156,7 @@ function PluginRightColumn() {
                 });
               }}
               free
-              hasCitationInfo={Boolean(plugin.citations)}
+              extraHeaders={plugin.citations ? [CITATION_HEADER] : undefined}
             />
           )}
         />

@@ -2,10 +2,6 @@ import {
   TableOfContents,
   TOCHeader,
 } from '@/components/common/TableOfContents';
-import {
-  ANCHOR,
-  TITLE,
-} from '@/components/PluginDetails/CitationInfo.constants';
 
 import { getHeadersFromMarkdown } from './Markdown.utils';
 
@@ -13,14 +9,9 @@ interface Props {
   className?: string;
   onClick?(heading: string): void;
   markdown: string;
-  hasCitationInfo?: boolean;
+  extraHeaders?: TOCHeader[];
   free?: boolean;
 }
-
-const CITATION_HEADER: TOCHeader = {
-  id: ANCHOR,
-  text: TITLE,
-};
 
 /**
  * Component for rendering TOC from a markdown string.  The TOC will generate
@@ -33,12 +24,12 @@ const CITATION_HEADER: TOCHeader = {
 export function MarkdownTOC({
   className,
   markdown,
-  hasCitationInfo,
+  extraHeaders,
   ...props
 }: Props) {
   const headers = getHeadersFromMarkdown(markdown);
 
-  if (hasCitationInfo) headers.push(CITATION_HEADER);
+  if (extraHeaders) headers.push(...extraHeaders);
 
   return <TableOfContents className={className} headers={headers} {...props} />;
 }
