@@ -115,16 +115,19 @@ export function CitationInfo({ className }: Props) {
           >
             {copied ? <>Copied!</> : <>Copy</>}
           </Button>
-          <Button
-            className={clsx(BUTTON_STYLES)}
-            variant="outlined"
-            download={`${plugin.name}.${CITATION_EXTS[tab]}`}
-            href={`data:text/plain;charset=utf-8,${encodeURIComponent(
-              citation,
-            )}`}
-          >
-            Download
-          </Button>
+
+          {plugin?.name && citation && (
+            <Button
+              className={clsx(BUTTON_STYLES)}
+              variant="outlined"
+              download={`${plugin.name}.${CITATION_EXTS[tab]}`}
+              href={`data:text/plain;charset=utf-8,${encodeURIComponent(
+                citation,
+              )}`}
+            >
+              Download
+            </Button>
+          )}
         </div>
       </div>
     </div>
