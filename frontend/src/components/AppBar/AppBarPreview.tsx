@@ -258,7 +258,7 @@ export function AppBarPreview() {
           was generated from{' '}
           <Link className="underline" href={PR_LINK} newTab>
             {PREVIEW_LINK_TEXT}
-          </Link>{' '}
+          </Link>
           . It is not live on the napari hub.
         </p>
       </div>
