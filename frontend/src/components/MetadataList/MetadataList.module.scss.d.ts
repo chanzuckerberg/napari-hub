@@ -1,6 +1,9 @@
 export type Styles = {
-  inlineList: string;
+  empty: string;
+  inline: string;
   linkItem: string;
+  list: string;
+  preview: string;
   textItem: string;
 };
 

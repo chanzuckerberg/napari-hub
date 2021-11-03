@@ -45,9 +45,8 @@ function PluginGithubData() {
 
   return (
     <MetadataList
-      className="screen-875:justify-self-center screen-1150:justify-self-start"
+      className="screen-875:justify-self-center screen-1425:justify-self-start"
       title="GitHub activity"
-      compact
     >
       {error ? (
         <li>
@@ -154,6 +153,8 @@ function PluginMetadataBase({
     />
   );
 
+  const listClassName = clsx(process.env.PREVIEW ? 'space-y-2' : 'space-y-5');
+
   return (
     <div
       // ID is used to navigate to metadata using `View project data` link
@@ -162,16 +163,16 @@ function PluginMetadataBase({
         className,
 
         // Vertical 1-column grid layout for < xl
-        'grid space-y-6',
+        'grid space-y-5',
 
         // Horizontal layout with 3-column grid for xl+
         'screen-875:grid-cols-3 screen-875:space-y-0',
 
         // Back to 1-column vertical layout for 3xl+
-        'screen-1425:grid-cols-1 screen-1425:space-y-6',
+        'screen-1425:grid-cols-1 screen-1425:space-y-5',
       )}
     >
-      <div className="space-y-6">{projectMetadata}</div>
+      <div className={listClassName}>{projectMetadata}</div>
 
       {divider}
 
@@ -186,7 +187,7 @@ function PluginMetadataBase({
 
       {divider}
 
-      <div className="space-y-6">{requirementMetadata}</div>
+      <div className={listClassName}>{requirementMetadata}</div>
     </div>
   );
 }
@@ -197,7 +198,7 @@ function PluginMetadataBase({
  * inline for smaller screens.
  */
 export function PluginMetadata(props: CommonProps) {
-  let divider = <Divider className="my-6" />;
+  let divider = <Divider className="mb-2" />;
   divider = (
     <>
       <Media greaterThanOrEqual="screen-1425">{divider}</Media>

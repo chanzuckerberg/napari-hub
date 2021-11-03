@@ -3,7 +3,6 @@ import { createElement, HTMLProps, ReactHTML, ReactNode } from 'react';
 import { useSnapshot } from 'valtio';
 
 import { MetadataKeys } from '@/context/plugin';
-import { useIsPreview } from '@/hooks';
 import { previewStore } from '@/store/preview';
 import { setUrlHash } from '@/utils';
 
@@ -18,6 +17,7 @@ interface Props<T extends HTMLKey> extends HTMLProps<ReactHTML[T]> {
   highlight?: boolean;
   id?: MetadataKeys;
   tooltip?: ReactNode;
+  variant?: 'regular' | 'small';
 }
 
 /**
@@ -31,21 +31,25 @@ export function MetadataHighlighter<T extends HTMLKey>({
   highlight = false,
   id,
   tooltip,
+  variant,
   ...props
 }: Props<T>) {
-  const isPreview = useIsPreview();
   const snap = useSnapshot(previewStore);
   const isActive = snap.activeMetadataField === id;
-  const highlightEnabled = isPreview && highlight;
+  const highlightEnabled = process.env.PREVIEW && highlight;
 
   const childNode = (
     <>
       {children}
 
-      {tooltip !== undefined ? (
-        tooltip
-      ) : (
-        <>{highlightEnabled && <EmptyMetadataTooltip metadataId={id} />}</>
+      {highlightEnabled && (
+        <>
+          {tooltip !== undefined ? (
+            tooltip
+          ) : (
+            <EmptyMetadataTooltip metadataId={id} />
+          )}
+        </>
       )}
     </>
   );
@@ -65,6 +69,15 @@ export function MetadataHighlighter<T extends HTMLKey>({
         highlightEnabled && [
           // Override button styles.
           'text-left w-full',
+
+          // I can't believe this works, but it does and it's amazing. The
+          // designs ask for the highlight boxes to flow outside of the grid
+          // layout. This is tricky to do and my initial impression was to use
+          // negative margins. However, CSS transforms do not affect the box
+          // model, so if we simply scale the highlighter a little bit and use
+          // padding for alignment, we can achieve the overflow effect.
+          variant === 'small' ? 'p-1' : 'p-2',
+          'scale-[1.03]',
 
           // Give button border initially so that the space is reserved.
           'border-2',

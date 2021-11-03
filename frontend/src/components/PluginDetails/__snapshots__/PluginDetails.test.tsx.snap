@@ -15,28 +15,28 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
       class="fresnel-container fresnel-greaterThanOrEqual-screen-1425 "
     >
       <div
-        class="grid space-y-6 screen-875:grid-cols-3 screen-875:space-y-0 screen-1425:grid-cols-1 screen-1425:space-y-6"
+        class="grid space-y-5 screen-875:grid-cols-3 screen-875:space-y-0 screen-1425:grid-cols-1 screen-1425:space-y-5"
         id="pluginMetadata"
       >
         <div
-          class="space-y-6"
+          class="space-y-5"
         >
           <div
             class="text-sm"
             id="version"
           >
             <div
-              class="space-y-2"
+              class=""
               id="version"
             >
               <h4
-                class="font-bold whitespace-nowrap"
+                class="font-bold whitespace-nowrap mb-3"
               >
                 Version
                 :
               </h4>
               <ul
-                class="list-none text-sm leading-normal space-y-5"
+                class="list list-none text-sm leading-normal"
               >
                 <li
                   class="textItem"
@@ -51,17 +51,17 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
             id="releaseDate"
           >
             <div
-              class="space-y-2"
+              class=""
               id="releaseDate"
             >
               <h4
-                class="font-bold whitespace-nowrap"
+                class="font-bold whitespace-nowrap mb-3"
               >
                 Release date
                 :
               </h4>
               <ul
-                class="list-none text-sm leading-normal space-y-5"
+                class="list list-none text-sm leading-normal"
               >
                 <li
                   class="textItem"
@@ -76,17 +76,17 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
             id="firstReleased"
           >
             <div
-              class="space-y-2"
+              class=""
               id="firstReleased"
             >
               <h4
-                class="font-bold whitespace-nowrap"
+                class="font-bold whitespace-nowrap mb-3"
               >
                 First released
                 :
               </h4>
               <ul
-                class="list-none text-sm leading-normal space-y-5"
+                class="list list-none text-sm leading-normal"
               >
                 <li
                   class="textItem"
@@ -101,17 +101,17 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
             id="developmentStatus"
           >
             <div
-              class="space-y-2"
+              class=""
               id="developmentStatus"
             >
               <h4
-                class="font-bold whitespace-nowrap"
+                class="font-bold whitespace-nowrap mb-3"
               >
                 Development status
                 :
               </h4>
               <ul
-                class="list-none text-sm leading-normal space-y-5"
+                class="list list-none text-sm leading-normal"
               >
                 <li
                   class="textItem"
@@ -126,17 +126,17 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
             id="license"
           >
             <div
-              class="space-y-2"
+              class=""
               id="license"
             >
               <h4
-                class="font-bold whitespace-nowrap"
+                class="font-bold whitespace-nowrap mb-3"
               >
                 License
                 :
               </h4>
               <ul
-                class="list-none text-sm leading-normal space-y-5"
+                class="list list-none text-sm leading-normal"
               >
                 <li
                   class="textItem"
@@ -151,26 +151,26 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
           class="fresnel-container fresnel-greaterThanOrEqual-screen-1425 "
         >
           <div
-            class="my-6 h-px bg-black border-none"
+            class="mb-2 h-px bg-black border-none"
           />
         </div>
         <div
           class="fresnel-container fresnel-lessThan-screen-875 "
         />
         <div
-          class="text-sm screen-875:justify-self-center screen-1150:justify-self-start"
+          class="text-sm screen-875:justify-self-center screen-1425:justify-self-start"
         >
           <div
-            class="space-y-2"
+            class=""
           >
             <h4
-              class="font-bold whitespace-nowrap"
+              class="font-bold whitespace-nowrap mb-3"
             >
               GitHub activity
               :
             </h4>
             <ul
-              class="list-none text-sm leading-normal space-y-2"
+              class="list list-none text-sm leading-normal"
             >
               <li
                 class="textItem"
@@ -212,31 +212,31 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
           class="fresnel-container fresnel-greaterThanOrEqual-screen-1425 "
         >
           <div
-            class="my-6 h-px bg-black border-none"
+            class="mb-2 h-px bg-black border-none"
           />
         </div>
         <div
           class="fresnel-container fresnel-lessThan-screen-875 "
         />
         <div
-          class="space-y-6"
+          class="space-y-5"
         >
           <div
             class="text-sm"
             id="pythonVersion"
           >
             <div
-              class="space-y-2"
+              class=""
               id="pythonVersion"
             >
               <h4
-                class="font-bold whitespace-nowrap"
+                class="font-bold whitespace-nowrap mb-3"
               >
                 Python versions supported
                 :
               </h4>
               <ul
-                class="list-none text-sm leading-normal space-y-5"
+                class="list list-none text-sm leading-normal"
               >
                 <li
                   class="textItem"
@@ -251,17 +251,17 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
             id="operatingSystems"
           >
             <div
-              class="space-y-2"
+              class=""
               id="operatingSystems"
             >
               <h4
-                class="font-bold whitespace-nowrap"
+                class="font-bold whitespace-nowrap mb-3"
               >
                 Operating system
                 :
               </h4>
               <ul
-                class="list-none text-sm leading-normal space-y-5"
+                class="list list-none text-sm leading-normal"
               >
                 <li
                   class="textItem"
@@ -276,17 +276,17 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
             id="requirements"
           >
             <div
-              class="space-y-2"
+              class=""
               id="requirements"
             >
               <h4
-                class="font-bold whitespace-nowrap"
+                class="font-bold whitespace-nowrap mb-3"
               >
                 Requirements
                 :
               </h4>
               <ul
-                class="list-none text-sm leading-normal space-y-5"
+                class="list list-none text-sm leading-normal"
               >
                 <li
                   class="textItem"
@@ -329,104 +329,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
       </button>
       <ul
         class="mt-9 flex flex-col border-l border-black"
-      >
-        <li
-          class="flex pl-6 border-l-4 min-h-6 h-auto my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-black"
-          data-active="true"
-          data-testid="tocItem"
-        >
-          <a
-            class="font-bold"
-            href="#description"
-          >
-            Description
-          </a>
-        </li>
-        <li
-          class="flex pl-6 border-l-4 min-h-6 h-auto my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
-          data-active="false"
-          data-testid="tocItem"
-        >
-          <a
-            class=""
-            href="#writers"
-          >
-            Writers
-          </a>
-        </li>
-        <li
-          class="flex pl-6 border-l-4 min-h-6 h-auto my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
-          data-active="false"
-          data-testid="tocItem"
-        >
-          <a
-            class=""
-            href="#readers"
-          >
-            Readers
-          </a>
-        </li>
-        <li
-          class="flex pl-6 border-l-4 min-h-6 h-auto my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
-          data-active="false"
-          data-testid="tocItem"
-        >
-          <a
-            class=""
-            href="#zmeta"
-          >
-            .zmeta
-          </a>
-        </li>
-        <li
-          class="flex pl-6 border-l-4 min-h-6 h-auto my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
-          data-active="false"
-          data-testid="tocItem"
-        >
-          <a
-            class=""
-            href="#installation"
-          >
-            Installation
-          </a>
-        </li>
-        <li
-          class="flex pl-6 border-l-4 min-h-6 h-auto my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
-          data-active="false"
-          data-testid="tocItem"
-        >
-          <a
-            class=""
-            href="#contributing"
-          >
-            Contributing
-          </a>
-        </li>
-        <li
-          class="flex pl-6 border-l-4 min-h-6 h-auto my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
-          data-active="false"
-          data-testid="tocItem"
-        >
-          <a
-            class=""
-            href="#license"
-          >
-            License
-          </a>
-        </li>
-        <li
-          class="flex pl-6 border-l-4 min-h-6 h-auto my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
-          data-active="false"
-          data-testid="tocItem"
-        >
-          <a
-            class=""
-            href="#issues"
-          >
-            Issues
-          </a>
-        </li>
-      </ul>
+      />
     </div>
   </div>
   <article
@@ -439,34 +342,8 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
       <h1
         class="font-bold text-4xl"
       >
-        napari-compressed-labels-io
+        napari-demo
       </h1>
-      <div
-        class="self-end"
-      >
-        <div
-          class="flex items-center justify-center bg-napari-preview-orange w-[0.9375rem] h-[0.9375rem]"
-        >
-          <svg
-            fill="none"
-            height="15"
-            viewBox="0 0 15 15"
-            width="15"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <circle
-              cx="7.5"
-              cy="11"
-              fill="#fff"
-              r="1"
-            />
-            <path
-              d="M6.5 2H8.5V8H6.5V2Z"
-              fill="#fff"
-            />
-          </svg>
-        </div>
-      </div>
     </div>
     <div
       class="flex justify-between items-center my-6"
@@ -475,7 +352,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
       <h2
         class="font-semibold text-lg"
       >
-        Plugin exploring different options for reading and writing compressed and portable labels layers in napari.
+        Cool plugin for demos
       </h2>
     </div>
     <div
@@ -498,29 +375,29 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
       class="fresnel-container fresnel-greaterThanOrEqual-xl "
     >
       <div
-        class="mb-6 screen-495:mb-12 text-black bg-gray-100 p-5 overflow-x-auto grid grid-cols-3"
+        class="mb-6 screen-495:mb-12 text-black bg-gray-100 p-5 overflow-x-auto grid grid-cols-3 gap-12"
       >
         <div
           class="text-sm"
           id="authors"
         >
           <div
-            class="space-y-2"
+            class=""
             id="authors"
           >
             <h4
-              class="font-bold whitespace-nowrap"
+              class="font-bold whitespace-nowrap mb-3"
             >
               Authors
               :
             </h4>
             <ul
-              class="list-none text-sm leading-normal space-y-5"
+              class="list list-none text-sm leading-normal"
             >
               <li
                 class="textItem"
               >
-                Draga Doncila
+                Ziyang Liu
               </li>
             </ul>
           </div>
@@ -529,16 +406,16 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
           class="text-sm"
         >
           <div
-            class="space-y-2"
+            class=""
           >
             <h4
-              class="font-bold whitespace-nowrap"
+              class="font-bold whitespace-nowrap mb-3"
             >
               Learn more
               :
             </h4>
             <ul
-              class="list-none text-sm leading-normal space-y-5"
+              class="list list-none text-sm leading-normal"
             >
               <li
                 class="flex linkItem"
@@ -575,7 +452,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
                 </span>
                 <a
                   class="ml-2 -mt-1 flex-grow underline"
-                  href="https://pypi.org/project/napari-compressed-labels-io"
+                  href="https://github.com/potating-potato/napari-demo"
                   rel="noreferrer"
                   target="_blank"
                 >
@@ -613,7 +490,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
                 </span>
                 <a
                   class="ml-2 -mt-1 flex-grow underline"
-                  href="https://github.com/DragaDoncila/napari-compressed-labels-io"
+                  href="https://github.com/potating-potato/napari-demo"
                   rel="noreferrer"
                   target="_blank"
                 >
@@ -671,7 +548,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
                 </span>
                 <a
                   class="ml-2 -mt-1 flex-grow underline"
-                  href="https://github.com/DragaDoncila/napari-compressed-labels-io/issues"
+                  href="https://github.com/potating-potato/napari-demo/issues"
                   rel="noreferrer"
                   target="_blank"
                 >
@@ -714,7 +591,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
                 </span>
                 <a
                   class="ml-2 -mt-1 flex-grow underline"
-                  href="https://github.com/DragaDoncila/napari-compressed-labels-io/issues"
+                  href="https://github.com/potating-potato/napari-demo/issues"
                   rel="noreferrer"
                   target="_blank"
                 >
@@ -743,11 +620,11 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
                 </span>
                 <a
                   class="ml-2 -mt-1 flex-grow underline"
-                  href="https://twitter.com/DragaDoncila"
+                  href="https://twitter.com/PotatingPotato"
                   rel="noreferrer"
                   target="_blank"
                 >
-                  @DragaDoncila
+                  @PotatingPotato
                 </a>
               </li>
             </ul>
@@ -758,17 +635,17 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
           id="sourceCode"
         >
           <div
-            class="space-y-2"
+            class=""
             id="sourceCode"
           >
             <h4
-              class="font-bold whitespace-nowrap"
+              class="font-bold whitespace-nowrap mb-3"
             >
               Source code
               :
             </h4>
             <ul
-              class="list-none text-sm leading-normal space-y-5"
+              class="list list-none text-sm leading-normal"
             >
               <li
                 class="flex linkItem"
@@ -791,11 +668,11 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
                 </span>
                 <a
                   class="ml-2 -mt-1 flex-grow underline"
-                  href="https://github.com/DragaDoncila/napari-compressed-labels-io"
+                  href="https://github.com/potating-potato/napari-demo"
                   rel="noreferrer"
                   target="_blank"
                 >
-                  napari-compressed-labels-io
+                  napari-demo
                 </a>
               </li>
             </ul>
@@ -814,22 +691,22 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
           id="authors"
         >
           <div
-            class="space-x-2 space-y-2"
+            class="inline"
             id="authors"
           >
             <h4
-              class="font-bold whitespace-nowrap inline"
+              class="font-bold whitespace-nowrap inline mr-2"
             >
               Authors
               :
             </h4>
             <ul
-              class="list-none text-sm leading-normal inline space-y-2 inlineList"
+              class="list list-none text-sm leading-normal inline space-y-2 inline"
             >
               <li
                 class="textItem"
               >
-                Draga Doncila
+                Ziyang Liu
               </li>
             </ul>
           </div>
@@ -838,16 +715,16 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
           class="text-sm"
         >
           <div
-            class="space-x-2 space-y-2"
+            class="inline"
           >
             <h4
-              class="font-bold whitespace-nowrap inline"
+              class="font-bold whitespace-nowrap inline mr-2"
             >
               Learn more
               :
             </h4>
             <ul
-              class="list-none text-sm leading-normal inline space-y-2 inlineList"
+              class="list list-none text-sm leading-normal inline space-y-2 inline"
             >
               <li
                 class="flex linkItem"
@@ -884,7 +761,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
                 </span>
                 <a
                   class="ml-2 -mt-1 flex-grow underline"
-                  href="https://pypi.org/project/napari-compressed-labels-io"
+                  href="https://github.com/potating-potato/napari-demo"
                   rel="noreferrer"
                   target="_blank"
                 >
@@ -922,7 +799,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
                 </span>
                 <a
                   class="ml-2 -mt-1 flex-grow underline"
-                  href="https://github.com/DragaDoncila/napari-compressed-labels-io"
+                  href="https://github.com/potating-potato/napari-demo"
                   rel="noreferrer"
                   target="_blank"
                 >
@@ -980,7 +857,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
                 </span>
                 <a
                   class="ml-2 -mt-1 flex-grow underline"
-                  href="https://github.com/DragaDoncila/napari-compressed-labels-io/issues"
+                  href="https://github.com/potating-potato/napari-demo/issues"
                   rel="noreferrer"
                   target="_blank"
                 >
@@ -1023,7 +900,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
                 </span>
                 <a
                   class="ml-2 -mt-1 flex-grow underline"
-                  href="https://github.com/DragaDoncila/napari-compressed-labels-io/issues"
+                  href="https://github.com/potating-potato/napari-demo/issues"
                   rel="noreferrer"
                   target="_blank"
                 >
@@ -1052,11 +929,11 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
                 </span>
                 <a
                   class="ml-2 -mt-1 flex-grow underline"
-                  href="https://twitter.com/DragaDoncila"
+                  href="https://twitter.com/PotatingPotato"
                   rel="noreferrer"
                   target="_blank"
                 >
-                  @DragaDoncila
+                  @PotatingPotato
                 </a>
               </li>
             </ul>
@@ -1067,17 +944,17 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
           id="sourceCode"
         >
           <div
-            class="space-x-2 space-y-2"
+            class="inline"
             id="sourceCode"
           >
             <h4
-              class="font-bold whitespace-nowrap inline"
+              class="font-bold whitespace-nowrap inline mr-2"
             >
               Source code
               :
             </h4>
             <ul
-              class="list-none text-sm leading-normal inline space-y-2 inlineList"
+              class="list list-none text-sm leading-normal inline space-y-2 inline"
             >
               <li
                 class="flex linkItem"
@@ -1100,11 +977,11 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
                 </span>
                 <a
                   class="ml-2 -mt-1 flex-grow underline"
-                  href="https://github.com/DragaDoncila/napari-compressed-labels-io"
+                  href="https://github.com/potating-potato/napari-demo"
                   rel="noreferrer"
                   target="_blank"
                 >
-                  napari-compressed-labels-io
+                  napari-demo
                 </a>
               </li>
             </ul>
@@ -1122,403 +999,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
         
 
         <p>
-          <a
-            href="https://github.com/DragaDoncila/napari-compressed-labels-io/raw/master/LICENSE"
-            rel="noreferrer"
-            target="_blank"
-          >
-            <img
-              alt="License"
-              src="https://img.shields.io/pypi/l/napari-compressed-labels-io.svg?color=green"
-            />
-          </a>
-          
-
-          <a
-            href="https://pypi.org/project/napari-compressed-labels-io"
-            rel="noreferrer"
-            target="_blank"
-          >
-            <img
-              alt="PyPI"
-              src="https://img.shields.io/pypi/v/napari-compressed-labels-io.svg?color=green"
-            />
-          </a>
-          
-
-          <a
-            href="https://python.org"
-            rel="noreferrer"
-            target="_blank"
-          >
-            <img
-              alt="Python Version"
-              src="https://img.shields.io/pypi/pyversions/napari-compressed-labels-io.svg?color=green"
-            />
-          </a>
-          
-
-          <a
-            href="https://github.com/DragaDoncila/napari-compressed-labels-io/actions"
-            rel="noreferrer"
-            target="_blank"
-          >
-            <img
-              alt="tests"
-              src="https://github.com/DragaDoncila/napari-compressed-labels-io/workflows/tests/badge.svg"
-            />
-          </a>
-          
-
-          <a
-            href="https://codecov.io/gh/DragaDoncila/napari-compressed-labels-io"
-            rel="noreferrer"
-            target="_blank"
-          >
-            <img
-              alt="codecov"
-              src="https://codecov.io/gh/DragaDoncila/napari-compressed-labels-io/branch/master/graph/badge.svg"
-            />
-          </a>
-        </p>
-        
-
-        <h2
-          id="description"
-        >
-          Description
-        </h2>
-        
-
-        <p>
-          This napari plugin provides readers and writers for labels and their corresponding image layers into zarr format for compression and portability. Each reader/writer pair supports a round trip of saving and loading image and labels layers.
-        </p>
-        
-
-        <h2
-          id="writers"
-        >
-          Writers
-        </h2>
-        
-
-        <p>
-          Two writers are provided by this plugin, each with its own reader.
-        </p>
-        
-
-        <h3
-          id="labels_to_zarr"
-        >
-          <code
-            node="[object Object]"
-          >
-            labels_to_zarr
-          </code>
-        </h3>
-        
-
-        <p>
-          This writer is an alternative to napari's default label writer and will write an entire labels layer, regardless of its dimensions, into a single zarr file. This writer provides the best compression option and its associated reader 
-          <code
-            node="[object Object]"
-          >
-            get_zarr_labels
-          </code>
-           will read the layer back into napari.
-        </p>
-        
-
-        <p>
-          This writer will be called when the user tries to save a selected labels layer into a path ending with .zarr
-        </p>
-        
-
-        <h3
-          id="label_image_pairs_to_zarr"
-        >
-          <code
-            node="[object Object]"
-          >
-            label_image_pairs_to_zarr
-          </code>
-        </h3>
-        
-
-        <p>
-          This writer will save 3-dimensional labels and image layers from the viewer into individual zarrs for portability and convenience. For example, given one labels and one image layer of the shape (10, 200, 200) saved to my_stacks.zarr, 10 subdirectories will be created, each with two zarrs inside of shape (200, 200) corresponding to the labels and image layer.
-        </p>
-        
-
-        <p>
-          This writer allows users to load stacks of associated images, label them, and then quickly save these stacks out into individual slices for easy loading, viewing and interaction. Its associated reader supports the loading into napari of the whole stack, all layers at one slice of the stack, and an individual layer of a given slice of the stack.
-        </p>
-        
-
-        <p>
-          The writer currently supports only 3D layers, with the exception of RGB images of the form (z, y, x, 3), which are also supported.
-        </p>
-        
-
-        <h2
-          id="readers"
-        >
-          Readers
-        </h2>
-        
-
-        <p>
-          Two readers are provided by this plugin for loading the formats saved by each writer. These are detailed below.
-        </p>
-        
-
-        <h3
-          id="get_zarr_labels"
-        >
-          <code
-            node="[object Object]"
-          >
-            get_zarr_labels
-          </code>
-        </h3>
-        
-
-        <p>
-          This reader will open any zarr file with a .zarray at the top level in 
-          <code
-            node="[object Object]"
-          >
-            path
-          </code>
-           as a labels layer. This is to be used in conjunction with 
-          <code
-            node="[object Object]"
-          >
-            labels_to_zarr
-          </code>
-          .
-        </p>
-        
-
-        <h3
-          id="get_label_image_stack"
-        >
-          <code
-            node="[object Object]"
-          >
-            get_label_image_stack
-          </code>
-        </h3>
-        
-
-        <p>
-          This reader will open any zarr containing a 
-          <code
-            node="[object Object]"
-          >
-            .zmeta
-          </code>
-           file as layers into napari. Depending on what is being opened, the reader will either load a full stack of labels and images, one slice of a stack of images and labels or an individual layer within a slice. This is to be used in conjunction with 
-          <code
-            node="[object Object]"
-          >
-            label_image_pairs_to_zarr
-          </code>
-          .
-        </p>
-        
-
-        <h2
-          id="zmeta"
-        >
-          .zmeta
-        </h2>
-        
-
-        <p>
-          This metadata file contains information about the layer types in the stack and in each individual slice, as well as the number of image/label slices. This allows the reader plugin to load the correct layer types with appropriate names both at a stack level and at the individual slice level.
-        </p>
-        
-
-        <h3
-          id="an-example-zmeta-specification"
-        >
-          An example .zmeta specification
-        </h3>
-        
-
-        <pre>
-          <code
-            language="json"
-            node="[object Object]"
-          >
-            {
-    "meta": {
-        "stack": 7                               # number of slices in the entire stack (1 for an individual slice, 0 for a layer within a slice)
-    },
-    "data": {
-        "image" : [                              # all image layers must be listed here
-            {
-                "name": "leaves_example_data",
-                "shape": [790, 790, 3],
-                "dtype": "uint8",
-                "rgb": true                      # where rgb is false the image will be loaded as greyscale (colormap support has not yet been implemented)
-            }
-        ],
-        "labels" : [
-            {
-                "name": "oak",
-                "shape": [790, 790],
-                "dtype": "int64"
-            },
-            {
-                "name": "bg",
-                "shape": [790, 790],
-                "dtype": "int64"
-            }
-        ]
-    }
-}
-
-          </code>
-        </pre>
-        
-
-        <hr />
-        
-
-        <p>
-          This 
-          <a
-            href="https://github.com/napari/napari"
-            rel="noreferrer"
-            target="_blank"
-          >
-            napari
-          </a>
-           plugin was generated with 
-          <a
-            href="https://github.com/audreyr/cookiecutter"
-            rel="noreferrer"
-            target="_blank"
-          >
-            Cookiecutter
-          </a>
-           using with 
-          <a
-            href="https://github.com/napari"
-            rel="noreferrer"
-            target="_blank"
-          >
-            @napari
-          </a>
-          's 
-          <a
-            href="https://github.com/napari/cookiecutter-napari-plugin"
-            rel="noreferrer"
-            target="_blank"
-          >
-            cookiecutter-napari-plugin
-          </a>
-           template.
-        </p>
-        
-
-        <h2
-          id="installation"
-        >
-          Installation
-        </h2>
-        
-
-        <p>
-          You can install 
-          <code
-            node="[object Object]"
-          >
-            napari-compressed-labels-io
-          </code>
-           via 
-          <a
-            href="https://pypi.org/project/pip/"
-            rel="noreferrer"
-            target="_blank"
-          >
-            pip
-          </a>
-          :
-        </p>
-        
-
-        <pre>
-          <code
-            language=""
-            node="[object Object]"
-          >
-            pip install napari-compressed-labels-io
-          </code>
-        </pre>
-        
-
-        <h2
-          id="contributing"
-        >
-          Contributing
-        </h2>
-        
-
-        <p>
-          Contributions are very welcome. Tests can be run with 
-          <a
-            href="https://tox.readthedocs.io/en/latest/"
-            rel="noreferrer"
-            target="_blank"
-          >
-            tox
-          </a>
-          , please ensure
-the coverage at least stays the same before you submit a pull request.
-        </p>
-        
-
-        <h2
-          id="license"
-        >
-          License
-        </h2>
-        
-
-        <p>
-          Distributed under the terms of the 
-          <a
-            href="http://opensource.org/licenses/MIT"
-            rel="noreferrer"
-            target="_blank"
-          >
-            MIT
-          </a>
-           license,
-"napari-compressed-labels-io" is free and open source software
-        </p>
-        
-
-        <h2
-          id="issues"
-        >
-          Issues
-        </h2>
-        
-
-        <p>
-          If you encounter any problems, please 
-          <a
-            href="https://github.com/DragaDoncila/napari-compressed-labels-io/issues"
-            rel="noreferrer"
-            target="_blank"
-          >
-            file an issue
-          </a>
-           along with a detailed description.
+          The coolest plugin for demos.
         </p>
       </div>
     </div>
@@ -1536,28 +1017,28 @@ the coverage at least stays the same before you submit a pull request.
       class="fresnel-container fresnel-lessThan-screen-1425 "
     >
       <div
-        class="fresnel-lessThan-3xl grid space-y-6 screen-875:grid-cols-3 screen-875:space-y-0 screen-1425:grid-cols-1 screen-1425:space-y-6"
+        class="fresnel-lessThan-3xl grid space-y-5 screen-875:grid-cols-3 screen-875:space-y-0 screen-1425:grid-cols-1 screen-1425:space-y-5"
         id="pluginMetadata"
       >
         <div
-          class="space-y-6"
+          class="space-y-5"
         >
           <div
             class="text-sm"
             id="version"
           >
             <div
-              class="space-x-2 space-y-2"
+              class="inline"
               id="version"
             >
               <h4
-                class="font-bold whitespace-nowrap inline"
+                class="font-bold whitespace-nowrap inline mr-2"
               >
                 Version
                 :
               </h4>
               <ul
-                class="list-none text-sm leading-normal inline space-y-2 inlineList"
+                class="list list-none text-sm leading-normal inline space-y-2 inline"
               >
                 <li
                   class="textItem"
@@ -1572,17 +1053,17 @@ the coverage at least stays the same before you submit a pull request.
             id="releaseDate"
           >
             <div
-              class="space-x-2 space-y-2"
+              class="inline"
               id="releaseDate"
             >
               <h4
-                class="font-bold whitespace-nowrap inline"
+                class="font-bold whitespace-nowrap inline mr-2"
               >
                 Release date
                 :
               </h4>
               <ul
-                class="list-none text-sm leading-normal inline space-y-2 inlineList"
+                class="list list-none text-sm leading-normal inline space-y-2 inline"
               >
                 <li
                   class="textItem"
@@ -1597,17 +1078,17 @@ the coverage at least stays the same before you submit a pull request.
             id="firstReleased"
           >
             <div
-              class="space-x-2 space-y-2"
+              class="inline"
               id="firstReleased"
             >
               <h4
-                class="font-bold whitespace-nowrap inline"
+                class="font-bold whitespace-nowrap inline mr-2"
               >
                 First released
                 :
               </h4>
               <ul
-                class="list-none text-sm leading-normal inline space-y-2 inlineList"
+                class="list list-none text-sm leading-normal inline space-y-2 inline"
               >
                 <li
                   class="textItem"
@@ -1622,17 +1103,17 @@ the coverage at least stays the same before you submit a pull request.
             id="developmentStatus"
           >
             <div
-              class="space-x-2 space-y-2"
+              class="inline"
               id="developmentStatus"
             >
               <h4
-                class="font-bold whitespace-nowrap inline"
+                class="font-bold whitespace-nowrap inline mr-2"
               >
                 Development status
                 :
               </h4>
               <ul
-                class="list-none text-sm leading-normal inline space-y-2 inlineList"
+                class="list list-none text-sm leading-normal inline space-y-2 inline"
               >
                 <li
                   class="textItem"
@@ -1647,17 +1128,17 @@ the coverage at least stays the same before you submit a pull request.
             id="license"
           >
             <div
-              class="space-x-2 space-y-2"
+              class="inline"
               id="license"
             >
               <h4
-                class="font-bold whitespace-nowrap inline"
+                class="font-bold whitespace-nowrap inline mr-2"
               >
                 License
                 :
               </h4>
               <ul
-                class="list-none text-sm leading-normal inline space-y-2 inlineList"
+                class="list list-none text-sm leading-normal inline space-y-2 inline"
               >
                 <li
                   class="textItem"
@@ -1675,23 +1156,23 @@ the coverage at least stays the same before you submit a pull request.
           class="fresnel-container fresnel-lessThan-screen-875 "
         >
           <div
-            class="my-6 h-px bg-black border-none"
+            class="mb-2 h-px bg-black border-none"
           />
         </div>
         <div
-          class="text-sm screen-875:justify-self-center screen-1150:justify-self-start"
+          class="text-sm screen-875:justify-self-center screen-1425:justify-self-start"
         >
           <div
-            class="space-y-2"
+            class=""
           >
             <h4
-              class="font-bold whitespace-nowrap"
+              class="font-bold whitespace-nowrap mb-3"
             >
               GitHub activity
               :
             </h4>
             <ul
-              class="list-none text-sm leading-normal space-y-2"
+              class="list list-none text-sm leading-normal"
             >
               <li
                 class="textItem"
@@ -1736,28 +1217,28 @@ the coverage at least stays the same before you submit a pull request.
           class="fresnel-container fresnel-lessThan-screen-875 "
         >
           <div
-            class="my-6 h-px bg-black border-none"
+            class="mb-2 h-px bg-black border-none"
           />
         </div>
         <div
-          class="space-y-6"
+          class="space-y-5"
         >
           <div
             class="text-sm"
             id="pythonVersion"
           >
             <div
-              class="space-x-2 space-y-2"
+              class="inline"
               id="pythonVersion"
             >
               <h4
-                class="font-bold whitespace-nowrap inline"
+                class="font-bold whitespace-nowrap inline mr-2"
               >
                 Python versions supported
                 :
               </h4>
               <ul
-                class="list-none text-sm leading-normal inline space-y-2 inlineList"
+                class="list list-none text-sm leading-normal inline space-y-2 inline"
               >
                 <li
                   class="textItem"
@@ -1772,17 +1253,17 @@ the coverage at least stays the same before you submit a pull request.
             id="operatingSystems"
           >
             <div
-              class="space-x-2 space-y-2"
+              class="inline"
               id="operatingSystems"
             >
               <h4
-                class="font-bold whitespace-nowrap inline"
+                class="font-bold whitespace-nowrap inline mr-2"
               >
                 Operating system
                 :
               </h4>
               <ul
-                class="list-none text-sm leading-normal inline space-y-2 inlineList"
+                class="list list-none text-sm leading-normal inline space-y-2 inline"
               >
                 <li
                   class="textItem"
@@ -1797,17 +1278,17 @@ the coverage at least stays the same before you submit a pull request.
             id="requirements"
           >
             <div
-              class="space-x-2 space-y-2"
+              class="inline"
               id="requirements"
             >
               <h4
-                class="font-bold whitespace-nowrap inline"
+                class="font-bold whitespace-nowrap inline mr-2"
               >
                 Requirements
                 :
               </h4>
               <ul
-                class="list-none text-sm leading-normal inline space-y-2 inlineList"
+                class="list list-none text-sm leading-normal inline space-y-2 inline"
               >
                 <li
                   class="textItem"
@@ -1839,28 +1320,28 @@ the coverage at least stays the same before you submit a pull request.
       class="fresnel-container fresnel-greaterThanOrEqual-screen-1425 "
     >
       <div
-        class="fresnel-lessThan-3xl grid space-y-6 screen-875:grid-cols-3 screen-875:space-y-0 screen-1425:grid-cols-1 screen-1425:space-y-6"
+        class="fresnel-lessThan-3xl grid space-y-5 screen-875:grid-cols-3 screen-875:space-y-0 screen-1425:grid-cols-1 screen-1425:space-y-5"
         id="pluginMetadata"
       >
         <div
-          class="space-y-6"
+          class="space-y-5"
         >
           <div
             class="text-sm"
             id="version"
           >
             <div
-              class="space-y-2"
+              class=""
               id="version"
             >
               <h4
-                class="font-bold whitespace-nowrap"
+                class="font-bold whitespace-nowrap mb-3"
               >
                 Version
                 :
               </h4>
               <ul
-                class="list-none text-sm leading-normal space-y-5"
+                class="list list-none text-sm leading-normal"
               >
                 <li
                   class="textItem"
@@ -1875,17 +1356,17 @@ the coverage at least stays the same before you submit a pull request.
             id="releaseDate"
           >
             <div
-              class="space-y-2"
+              class=""
               id="releaseDate"
             >
               <h4
-                class="font-bold whitespace-nowrap"
+                class="font-bold whitespace-nowrap mb-3"
               >
                 Release date
                 :
               </h4>
               <ul
-                class="list-none text-sm leading-normal space-y-5"
+                class="list list-none text-sm leading-normal"
               >
                 <li
                   class="textItem"
@@ -1900,17 +1381,17 @@ the coverage at least stays the same before you submit a pull request.
             id="firstReleased"
           >
             <div
-              class="space-y-2"
+              class=""
               id="firstReleased"
             >
               <h4
-                class="font-bold whitespace-nowrap"
+                class="font-bold whitespace-nowrap mb-3"
               >
                 First released
                 :
               </h4>
               <ul
-                class="list-none text-sm leading-normal space-y-5"
+                class="list list-none text-sm leading-normal"
               >
                 <li
                   class="textItem"
@@ -1925,17 +1406,17 @@ the coverage at least stays the same before you submit a pull request.
             id="developmentStatus"
           >
             <div
-              class="space-y-2"
+              class=""
               id="developmentStatus"
             >
               <h4
-                class="font-bold whitespace-nowrap"
+                class="font-bold whitespace-nowrap mb-3"
               >
                 Development status
                 :
               </h4>
               <ul
-                class="list-none text-sm leading-normal space-y-5"
+                class="list list-none text-sm leading-normal"
               >
                 <li
                   class="textItem"
@@ -1950,17 +1431,17 @@ the coverage at least stays the same before you submit a pull request.
             id="license"
           >
             <div
-              class="space-y-2"
+              class=""
               id="license"
             >
               <h4
-                class="font-bold whitespace-nowrap"
+                class="font-bold whitespace-nowrap mb-3"
               >
                 License
                 :
               </h4>
               <ul
-                class="list-none text-sm leading-normal space-y-5"
+                class="list list-none text-sm leading-normal"
               >
                 <li
                   class="textItem"
@@ -1975,26 +1456,26 @@ the coverage at least stays the same before you submit a pull request.
           class="fresnel-container fresnel-greaterThanOrEqual-screen-1425 "
         >
           <div
-            class="my-6 h-px bg-black border-none"
+            class="mb-2 h-px bg-black border-none"
           />
         </div>
         <div
           class="fresnel-container fresnel-lessThan-screen-875 "
         />
         <div
-          class="text-sm screen-875:justify-self-center screen-1150:justify-self-start"
+          class="text-sm screen-875:justify-self-center screen-1425:justify-self-start"
         >
           <div
-            class="space-y-2"
+            class=""
           >
             <h4
-              class="font-bold whitespace-nowrap"
+              class="font-bold whitespace-nowrap mb-3"
             >
               GitHub activity
               :
             </h4>
             <ul
-              class="list-none text-sm leading-normal space-y-2"
+              class="list list-none text-sm leading-normal"
             >
               <li
                 class="textItem"
@@ -2036,31 +1517,31 @@ the coverage at least stays the same before you submit a pull request.
           class="fresnel-container fresnel-greaterThanOrEqual-screen-1425 "
         >
           <div
-            class="my-6 h-px bg-black border-none"
+            class="mb-2 h-px bg-black border-none"
           />
         </div>
         <div
           class="fresnel-container fresnel-lessThan-screen-875 "
         />
         <div
-          class="space-y-6"
+          class="space-y-5"
         >
           <div
             class="text-sm"
             id="pythonVersion"
           >
             <div
-              class="space-y-2"
+              class=""
               id="pythonVersion"
             >
               <h4
-                class="font-bold whitespace-nowrap"
+                class="font-bold whitespace-nowrap mb-3"
               >
                 Python versions supported
                 :
               </h4>
               <ul
-                class="list-none text-sm leading-normal space-y-5"
+                class="list list-none text-sm leading-normal"
               >
                 <li
                   class="textItem"
@@ -2075,17 +1556,17 @@ the coverage at least stays the same before you submit a pull request.
             id="operatingSystems"
           >
             <div
-              class="space-y-2"
+              class=""
               id="operatingSystems"
             >
               <h4
-                class="font-bold whitespace-nowrap"
+                class="font-bold whitespace-nowrap mb-3"
               >
                 Operating system
                 :
               </h4>
               <ul
-                class="list-none text-sm leading-normal space-y-5"
+                class="list list-none text-sm leading-normal"
               >
                 <li
                   class="textItem"
@@ -2100,17 +1581,17 @@ the coverage at least stays the same before you submit a pull request.
             id="requirements"
           >
             <div
-              class="space-y-2"
+              class=""
               id="requirements"
             >
               <h4
-                class="font-bold whitespace-nowrap"
+                class="font-bold whitespace-nowrap mb-3"
               >
                 Requirements
                 :
               </h4>
               <ul
-                class="list-none text-sm leading-normal space-y-5"
+                class="list list-none text-sm leading-normal"
               >
                 <li
                   class="textItem"

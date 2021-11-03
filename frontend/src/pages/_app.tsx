@@ -91,7 +91,9 @@ export default function App({ Component, pageProps }: AppProps) {
           Disable indexing for non-production deployments.
           https://developers.google.com/search/docs/advanced/crawling/block-indexing
         */}
-        {!PROD && <meta name="robots" content="noindex" />}
+        {(!PROD || process.env.PREVIEW) && (
+          <meta name="robots" content="noindex" />
+        )}
       </Head>
 
       <ApplicationProvider dehydratedState={pageProps.dehydratedState}>

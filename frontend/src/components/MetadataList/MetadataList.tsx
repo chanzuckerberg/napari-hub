@@ -13,7 +13,6 @@ import styles from './MetadataList.module.scss';
 interface Props {
   children: ReactNode;
   className?: string;
-  compact?: boolean;
   empty?: boolean;
   id?: MetadataKeys;
   inline?: boolean;
@@ -26,7 +25,6 @@ interface Props {
 export function MetadataList({
   children,
   className,
-  compact,
   empty,
   id,
   inline,
@@ -47,10 +45,9 @@ export function MetadataList({
         <MetadataHighlighter
           className={clsx(
             // Item spacing for inline lists.
-            inline && 'space-x-2',
-
-            // Vertical spacing.
-            'space-y-2',
+            inline && [
+              empty ? 'flex items-center screen-875:inline' : 'inline',
+            ],
           )}
           highlight={empty}
           tooltip={null}
@@ -63,7 +60,7 @@ export function MetadataList({
               'font-bold whitespace-nowrap',
 
               // Render title inline with values.
-              inline && 'inline',
+              inline ? 'inline mr-2' : 'mb-3',
             )}
           >
             {title}:
@@ -72,12 +69,16 @@ export function MetadataList({
           {/* List values */}
           <ul
             className={clsx(
+              styles.list,
               'list-none text-sm leading-normal',
+              process.env.PREVIEW && styles.preview,
 
               // Vertical and horizontal spacing.
-              inline
-                ? ['inline space-y-2', styles.inlineList]
-                : [compact ? 'space-y-2' : 'space-y-5'],
+              inline && [
+                'inline space-y-2',
+                empty && 'flex-grow',
+                styles.inline,
+              ],
             )}
           >
             {empty ? (

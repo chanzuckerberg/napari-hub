@@ -1,10 +1,14 @@
 import { AxiosError } from 'axios';
 import { GetServerSidePropsContext } from 'next';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
 import { ParsedUrlQuery } from 'node:querystring';
 
 import { hubAPI } from '@/axios';
 import { ErrorMessage } from '@/components/common/ErrorMessage';
+import { PageMetadata } from '@/components/common/PageMetadata';
 import { PluginDetails } from '@/components/PluginDetails';
+import { useLoadingState } from '@/context/loading';
 import { PluginStateProvider } from '@/context/plugin';
 import { PluginData } from '@/types';
 import { fetchRepoData, FetchRepoDataResult } from '@/utils';
@@ -91,8 +95,39 @@ export default function PluginPage({
   repo,
   repoFetchError,
 }: Props) {
+  const router = useRouter();
+  const isLoading = useLoadingState();
+
+  const keywords: string[] = [];
+  let title = 'napari hub | plugins';
+  if (isLoading) {
+    title = `${title} | loading...`;
+  } else if (plugin?.name && plugin?.authors) {
+    title = `${title} | ${plugin.name}`;
+
+    const authors = plugin.authors.map(({ name }) => name).join(', ');
+    if (authors) {
+      title = `${title} by ${authors}`;
+    }
+
+    for (const { name } of plugin.authors ?? []) {
+      if (name) {
+        keywords.push(plugin.name, name);
+      }
+    }
+  }
+
   return (
     <>
+      <Head>
+        <title>{title}</title>
+        <PageMetadata
+          keywords={keywords}
+          description={plugin?.summary}
+          pathname={router.pathname}
+        />
+      </Head>
+
       {error ? (
         <ErrorMessage error={error}>Unable to load plugin</ErrorMessage>
       ) : (

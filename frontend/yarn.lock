@@ -11440,6 +11440,11 @@ tr46@^2.0.2:
   dependencies:
     punycode "^2.1.1"
 
+transform-parser@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/transform-parser/-/transform-parser-1.0.1.tgz#9c7c6d219f2a41e1575baedcc96813809b51a33f"
+  integrity sha512-Dkc1aSlHuaQljFCTehRVT6eEBuZ53pTHM9HxMjUMRITZim8kQm0+bK36GSuGwjvaK3rIfrrEcv0qZ4tNvsG7Xw==
+
 tree-kill@^1.2.2:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/tree-kill/-/tree-kill-1.2.2.tgz"

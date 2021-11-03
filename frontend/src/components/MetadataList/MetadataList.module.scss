@@ -1,25 +1,35 @@
-// Styles to apply to inline lists and their list items.
-.inlineList {
+.list {
   .textItem,
   .linkItem {
-    @apply inline;
-
-    // Add commas for every item except the last.
-    &:not(:last-child)::after {
-      @apply mr-1;
-      content: ', ';
-    }
-
-    // Make icons inline.
-    svg {
-      @apply inline;
+    &:not(:first-child) {
+      @apply mt-3;
     }
   }
 
-  // If there are multiple link items in the list, use inline flex so that links
-  // and icons do not break on separate lines:
-  // https://stackoverflow.com/a/18738114
-  .linkItem + .linkItem {
-    @apply inline-flex items-end;
+  &.inline {
+    .textItem,
+    .linkItem {
+      @apply inline-flex items-center;
+
+      // Add commas for every item except the last.
+      &:not(:last-child)::after {
+        @apply mr-1;
+        content: ', ';
+      }
+    }
+
+    .linkItem {
+      // Limit inline link items to be as long as the content.
+      @apply w-max space-x-2;
+
+      // Make icons inline.
+      svg {
+        @apply inline;
+      }
+    }
+  }
+
+  &.preview .linkItem.empty:not(:first-child) {
+    @apply mt-1;
   }
 }
