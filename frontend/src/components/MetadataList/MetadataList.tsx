@@ -83,7 +83,9 @@ export function MetadataList({
           >
             {empty ? (
               <EmptyListItem>
-                <EmptyMetadataTooltip metadataId={id} />
+                {process.env.PREVIEW && (
+                  <EmptyMetadataTooltip metadataId={id} />
+                )}
               </EmptyListItem>
             ) : (
               children
