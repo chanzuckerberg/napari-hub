@@ -59,9 +59,9 @@ def iterate_parent(ontology_label, ontology, family_tree, mappings):
 if __name__ == "__main__":
     # Generate data from edam ontology for a particular version
     edam_version = 'alpha06'
-    with open(f"data/category-edam-{edam_version}-to-hub-dimension.json") as edam_to_hub_dimension_json, \
-            open(f"data/category-edam-{edam_version}-parents.json", "w") as edam_parents_json, \
-            open(f"data/category-edam-{edam_version}-mappings.json", "w") as edam_mappings_json:
+    with open(f"data/edam-{edam_version}-to-hub-dimension.json") as edam_to_hub_dimension_json, \
+            open(f"data/edam-{edam_version}-parents.json", "w") as edam_parents_json, \
+            open(f"data/edam-{edam_version}-mappings.json", "w") as edam_mappings_json:
 
         edam_to_hub = json.load(edam_to_hub_dimension_json)
 
