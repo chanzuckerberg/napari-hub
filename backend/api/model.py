@@ -240,7 +240,7 @@ def move_artifact_to_s3(payload, client):
                                         f'https://preview.napari-hub.org/{owner}/{repo}/{pull_request_number}')
 
 
-def get_category(category: str = None, mappings: dict = None, version="edam-alpha06") -> Union[Dict[str, List], List]:
+def get_category(category: str = None, version="edam-alpha06") -> Union[Dict[str, List], List]:
     """
     Get category mappings
 
@@ -250,8 +250,6 @@ def get_category(category: str = None, mappings: dict = None, version="edam-alph
         name of the category to map
     version: str
         version of the category to use
-    mappings: dict
-        mappings to use for lookups, if None, use cached mapping
 
     Returns
     -------
@@ -277,8 +275,7 @@ def get_category(category: str = None, mappings: dict = None, version="edam-alph
             }
         ]
     """
-    if not mappings:
-        mappings = get_cache(f'category-{version}-mappings.json')
+    mappings = get_cache(f'category-{version}-mappings.json')
     if not category:
         return mappings
     if category not in mappings:
