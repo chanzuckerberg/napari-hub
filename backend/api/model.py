@@ -125,14 +125,14 @@ def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
     if 'category' in metadata:
         category_mappings = get_category_mapping()
         categories = set()
-        hierarchies = set()
+        hierarchies = []
         for category in metadata['category']:
             mapped_category = get_category_mapping(category, category_mappings)
             for match in mapped_category:
                 categories.add(match['label'])
-                hierarchies.add(match['hierarchy'])
+                hierarchies.append(match['hierarchy'])
         metadata['category'] = list(categories)
-        metadata['category_hierarchy'] = list(hierarchies)
+        metadata['category_hierarchy'] = hierarchies
     cache(metadata, f'cache/{plugin}/{version}.json')
     return plugin, metadata
 
