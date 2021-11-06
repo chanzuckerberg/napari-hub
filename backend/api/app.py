@@ -5,7 +5,7 @@ from flask import Flask, Response, jsonify
 from flask_githubapp.core import GitHubApp
 
 from api.model import get_public_plugins, get_index, get_plugin, get_excluded_plugins, update_cache, \
-    move_artifact_to_s3, get_category
+    move_artifact_to_s3, get_category_mapping
 from api.shield import get_shield
 from utils.utils import send_alert, reformat_ssh_key_to_pem_bytes
 
@@ -62,10 +62,11 @@ def get_exclusion_list() -> Response:
     return jsonify(get_excluded_plugins())
 
 
-@app.route('/category', defaults={'category': ""})
-@app.route('/category/<category>')
-def get_category(category: str) -> Response:
-    return jsonify(get_category(category))
+@app.route('/category', defaults={'category': "", 'version': os.getenv('category_version', 'edam-alpha06')})
+@app.route('/category/<category>', defaults={'version': os.getenv('category_version', 'edam-alpha06')})
+@app.route('/category/<category>/version/<version>')
+def get_category(category: str, version: str) -> Response:
+    return jsonify(get_category_mapping(category, version=version))
 
 
 @app.errorhandler(404)
@@ -74,7 +75,8 @@ def handle_exception(e) -> Response:
              and (rule.rule.startswith("/plugins")
                   or rule.rule.startswith("/shields")
                   or rule.rule.startswith("/category"))]
-    return app.make_response((f"Invalid Endpoint, valid endpoints are {links}", 404,
+    links = "\n".join(links)
+    return app.make_response((f"Invalid Endpoint, valid endpoints are:\n {links}", 404,
                               {'Content-Type': 'text/plain; charset=utf-8'}))
 
 
