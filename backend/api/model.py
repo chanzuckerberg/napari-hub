@@ -122,6 +122,8 @@ def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
         metadata = {**metadata, **get_github_metadata(github_repo_url)}
     if 'description' in metadata:
         metadata['description_text'] = render_description(metadata.get('description'))
+    if 'category' in metadata:
+        metadata['category'] = [get_category(category) for category in metadata['category']]
     cache(metadata, f'cache/{plugin}/{version}.json')
     return plugin, metadata
 
@@ -197,15 +199,11 @@ def get_plugin_metadata_async(plugins: Dict[str, str]) -> dict:
     :return: plugin metadata list
     """
     plugins_metadata = {}
-    category_mapping = get_category()
     with futures.ThreadPoolExecutor(max_workers=32) as executor:
         plugin_futures = [executor.submit(build_plugin_metadata, k, v)
                           for k, v in plugins.items()]
     for future in futures.as_completed(plugin_futures):
-        metadata = future.result()[1]
-        if 'category' in metadata:
-            metadata['category'] = [get_category(category, category_mapping) for category in metadata['category']]
-        plugins_metadata[future.result()[0]] = metadata
+        plugins_metadata[future.result()[0]] = (future.result()[1])
     return plugins_metadata
 
 
