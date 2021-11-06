@@ -1,6 +1,6 @@
 from concurrent import futures
 from datetime import datetime
-from typing import Tuple, Dict, List
+from typing import Tuple, Dict, List, Union
 from zipfile import ZipFile
 from io import BytesIO
 
@@ -13,7 +13,7 @@ from api.zulip import notify_new_packages
 index_subset = {'name', 'summary', 'description_text', 'description_content_type',
                 'authors', 'license', 'python_version', 'operating_system',
                 'release_date', 'version', 'first_released',
-                'development_status'}
+                'development_status', 'category'}
 
 
 def get_public_plugins() -> Dict[str, str]:
@@ -91,7 +91,7 @@ def slice_metadata_to_index_columns(plugins_metadata: List[dict]) -> List[dict]:
     :param plugins_metadata: plugin metadata dictionary
     :return: sliced dict metadata for the plugin
     """
-    return [{k: plugin_metadata[k] for k in index_subset} for plugin_metadata in plugins_metadata]
+    return [{k: plugin_metadata.get(k) for k in index_subset} for plugin_metadata in plugins_metadata]
 
 
 def get_excluded_plugins() -> Dict[str, str]:
@@ -197,11 +197,15 @@ def get_plugin_metadata_async(plugins: Dict[str, str]) -> dict:
     :return: plugin metadata list
     """
     plugins_metadata = {}
+    category_mapping = get_category()
     with futures.ThreadPoolExecutor(max_workers=32) as executor:
         plugin_futures = [executor.submit(build_plugin_metadata, k, v)
                           for k, v in plugins.items()]
     for future in futures.as_completed(plugin_futures):
-        plugins_metadata[future.result()[0]] = (future.result()[1])
+        metadata = future.result()[1]
+        if 'category' in metadata:
+            metadata['category'] = [get_category(category, category_mapping) for category in metadata['category']]
+        plugins_metadata[future.result()[0]] = metadata
     return plugins_metadata
 
 
@@ -236,3 +240,50 @@ def move_artifact_to_s3(payload, client):
             pull_request = client.pull_request(owner, repo, pull_request_number)
             pull_request.create_comment('Preview page for your plugin is ready here:\n'
                                         f'https://preview.napari-hub.org/{owner}/{repo}/{pull_request_number}')
+
+
+def get_category(category: str = None, mappings: dict = None, version="edam-alpha06") -> Union[Dict[str, List], List]:
+    """
+    Get category mappings
+
+    Parameters
+    ----------
+    category : str
+        name of the category to map
+    version: str
+        version of the category to use
+    mappings: dict
+        mappings to use for lookups, if None, use cached mapping
+
+    Returns
+    -------
+    match : dict if no category is given or list of dict if matched
+        list of mapped label, dimension and hierarchy, for example, Manual segmentation is mapped to following:
+        [
+            {
+                "label": "Image Segmentation",
+                "dimension": "Operation",
+                "hierarchy": [
+                    "Manual segmentation",
+                    "Image segmentation"
+                ]
+            },
+            {
+                "label": "Image annotation",
+                "dimension": "Operation",
+                "hierarchy": [
+                    "Manual segmentation",
+                    "Dense image annotation",
+                    "Image annotation"
+                ]
+            }
+        ]
+    """
+    if not mappings:
+        mappings = get_cache(f'category-{version}-mappings.json')
+    if not category:
+        return mappings
+    if category not in mappings:
+        return []
+    else:
+        return mappings[category]

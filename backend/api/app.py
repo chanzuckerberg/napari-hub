@@ -4,7 +4,8 @@ from werkzeug.middleware.dispatcher import DispatcherMiddleware
 from flask import Flask, Response, jsonify
 from flask_githubapp.core import GitHubApp
 
-from api.model import get_public_plugins, get_index, get_plugin, get_excluded_plugins, update_cache, move_artifact_to_s3
+from api.model import get_public_plugins, get_index, get_plugin, get_excluded_plugins, update_cache, \
+    move_artifact_to_s3, get_category
 from api.shield import get_shield
 from utils.utils import send_alert, reformat_ssh_key_to_pem_bytes
 

@@ -1,0 +1,158 @@
+{
+  "Bright-field microscopy": {
+    "label": "Bright-field microscopy",
+    "dimension": "Imaging Modality"
+  },
+  "Phase-contrast microscopy": {
+    "label": "Phase-Contrast microscopy",
+    "dimension": "Imaging Modality"
+  },
+  "DIC microscopy": {
+    "label": "DIC microscopy",
+    "dimension": "Imaging Modality"
+  },
+  "Fluorescence microscopy": {
+    "label": "Fluorescence microscopy",
+    "dimension": "Imaging Modality"
+  },
+  "Ultrasonography": {
+    "label": "Ultrasound imaging",
+    "dimension": "Imaging Modality"
+  },
+  "Computed tomography": {
+    "label": "Computed tomography ",
+    "dimension": "Imaging Modality"
+  },
+  "Magnetic resonance imaging": {
+    "label": "Magnetic resonance imaging",
+    "dimension": "Imaging Modality"
+  },
+  "Electron microscopy": {
+    "label": "Electron microscopy",
+    "dimension": "Imaging Modality"
+  },
+  "Multimodal imaging": {
+    "label": "Multimodal imaging",
+    "dimension": "Imaging Modality"
+  },
+  "Medical imaging": {
+    "label": "Medical imaging",
+    "dimension": "Imaging Modality"
+  },
+  "Confocal microscopy": {
+    "label": "Confocal microscopy",
+    "dimension": "Imaging Modality"
+  },
+  "Multi-photon microscopy": {
+    "label": "Multi-photon microscopy",
+    "dimension": "Imaging Modality"
+  },
+  "2D image": {
+    "label": "2D",
+    "dimension": "Data Dimensionality"
+  },
+  "3D image": {
+    "label": "3D",
+    "dimension": "Data Dimensionality"
+  },
+  "Image time series": {
+    "label": "Time series",
+    "dimension": "Data Dimensionality"
+  },
+  "Multi-channel image": {
+    "label": "Multi-channel",
+    "dimension": "Data Dimensionality"
+  },
+  "Image registration": {
+    "label": "Image registration",
+    "dimension": "Operation"
+  },
+  "Image correction": {
+    "label": "Image correction",
+    "dimension": "Operation"
+  },
+  "Image enhancement": {
+    "label": "Image enhancement",
+    "dimension": "Operation"
+  },
+  "Image reconstruction": {
+    "label": "Image reconstruction",
+    "dimension": "Operation"
+  },
+  "Pixel classification": {
+    "label": "Pixel classification",
+    "dimension": "Operation"
+  },
+  "Image feature detection": {
+    "label": "Image feature detection",
+    "dimension": "Operation"
+  },
+  "Image annotation": {
+    "label": "Image annotation",
+    "dimension": "Operation"
+  },
+  "Filament tracing": {
+    "label": "Filament tracing",
+    "dimension": "Operation"
+  },
+  "Object classification": {
+    "label": "Object classification",
+    "dimension": "Operation"
+  },
+  "Object-based colocalisation analysis": {
+    "label": "Object-based colocalisation",
+    "dimension": "Operation"
+  },
+  "Object feature extraction": {
+    "label": "Object feature extraction",
+    "dimension": "Operation"
+  },
+  "Object tracking": {
+    "label": "Object tracking",
+    "dimension": "Operation"
+  },
+  "Clustering": {
+    "label": "Clustering",
+    "dimension": "Operation"
+  },
+  "Frequency-domain analysis": {
+    "label": "Frequency domain analysis",
+    "dimension": "Operation"
+  },
+  "Pixel-based colocalisation": {
+    "label": "Pixel-based colocalisation",
+    "dimension": "Operation"
+  },
+  "Fluorescence correlation spectroscopy": {
+    "label": "Fluorescence correlation spectroscopy",
+    "dimension": "Operation"
+  },
+  "Optical flow analysis": {
+    "label": "Optical flow analysis",
+    "dimension": "Operation"
+  },
+  "Image segmentation": {
+    "label": "Image Segmentation",
+    "dimension": "Operation"
+  },
+  "Visualisation": {
+    "label": "Visualization",
+    "dimension": "Operation"
+  },
+  "Synthetic image generation": {
+    "label": "Synthetic image generation",
+    "dimension": "Operation"
+  },
+  "Morphological operation": {
+    "label": "Morphological operations",
+    "dimension": "Operation"
+  },
+  "Image fusion": {
+    "label": "Image fusion",
+    "dimension": "Operation"
+  },
+  "Image classification": {
+    "label": "Image classification",
+    "dimension": "Operation"
+  }
+}
