@@ -124,7 +124,7 @@ def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
         metadata['description_text'] = render_description(metadata.get('description'))
     if 'category' in metadata:
         categories = get_category_mapping()
-        metadata['category'] = [get_category_mapping(category, categories) for category in metadata['category']]
+        metadata['category'] = [categories[category] for category in metadata['category'] if category in categories]
     cache(metadata, f'cache/{plugin}/{version}.json')
     return plugin, metadata
 
