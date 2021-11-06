@@ -279,7 +279,7 @@ def get_category(category: str = None, mappings: dict = None, version="edam-alph
         ]
     """
     if not mappings:
-        mappings = get_cache(f'category-{version}-mappings.json')
+        mappings = get_cache(f'category/{version}-mappings.json')
     if not category:
         return mappings
     if category not in mappings:
