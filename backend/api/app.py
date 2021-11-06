@@ -64,7 +64,7 @@ def get_exclusion_list() -> Response:
 
 @app.route('/category', defaults={'category': ""})
 @app.route('/category/<category>')
-def get_exclusion_list(category: str) -> Response:
+def get_category(category: str) -> Response:
     return jsonify(get_category(category))
 
 
