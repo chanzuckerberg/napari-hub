@@ -123,8 +123,16 @@ def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
     if 'description' in metadata:
         metadata['description_text'] = render_description(metadata.get('description'))
     if 'category' in metadata:
-        categories = get_category_mapping()
-        metadata['category'] = [categories[category] for category in metadata['category'] if category in categories]
+        category_mappings = get_category_mapping()
+        categories = set()
+        hierarchies = set()
+        for category in metadata['category']:
+            mapped_category = get_category_mapping(category, category_mappings)
+            for match in mapped_category:
+                categories.add(match['label'])
+                hierarchies.add(match['hierarchy'])
+        metadata['category'] = list(categories)
+        metadata['category_hierarchy'] = list(hierarchies)
     cache(metadata, f'cache/{plugin}/{version}.json')
     return plugin, metadata
 
@@ -242,7 +250,7 @@ def move_artifact_to_s3(payload, client):
 
 
 def get_category_mapping(category: str = None, mappings: dict = None,
-                         version="edam-alpha06") -> Union[Dict[str, List], List]:
+                         version="edam-alpha06") -> Union[Dict[str, List], List[Dict]]:
     """
     Get category mappings
 
