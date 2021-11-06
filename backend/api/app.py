@@ -75,6 +75,7 @@ def handle_exception(e) -> Response:
              and (rule.rule.startswith("/plugins")
                   or rule.rule.startswith("/shields")
                   or rule.rule.startswith("/category"))]
+    links.sort()
     links = "\n".join(links)
     return app.make_response((f"Invalid Endpoint, valid endpoints are:\n {links}", 404,
                               {'Content-Type': 'text/plain; charset=utf-8'}))
