@@ -123,7 +123,8 @@ def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
     if 'description' in metadata:
         metadata['description_text'] = render_description(metadata.get('description'))
     if 'category' in metadata:
-        metadata['category'] = [get_category(category) for category in metadata['category']]
+        categories = get_category()
+        metadata['category'] = [get_category(category, categories) for category in metadata['category']]
     cache(metadata, f'cache/{plugin}/{version}.json')
     return plugin, metadata
 
@@ -240,7 +241,7 @@ def move_artifact_to_s3(payload, client):
                                         f'https://preview.napari-hub.org/{owner}/{repo}/{pull_request_number}')
 
 
-def get_category(category: str = None, version="edam-alpha06") -> Union[Dict[str, List], List]:
+def get_category(category: str = None, mappings: dict = None, version="edam-alpha06") -> Union[Dict[str, List], List]:
     """
     Get category mappings
 
@@ -248,6 +249,8 @@ def get_category(category: str = None, version="edam-alpha06") -> Union[Dict[str
     ----------
     category : str
         name of the category to map
+    mappings: dict
+        mappings to use for lookups, if None, use cached mapping
     version: str
         version of the category to use
 
@@ -275,7 +278,8 @@ def get_category(category: str = None, version="edam-alpha06") -> Union[Dict[str
             }
         ]
     """
-    mappings = get_cache(f'category-{version}-mappings.json')
+    if not mappings:
+        mappings = get_cache(f'category-{version}-mappings.json')
     if not category:
         return mappings
     if category not in mappings:
