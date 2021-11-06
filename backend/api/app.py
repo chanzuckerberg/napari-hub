@@ -62,10 +62,18 @@ def get_exclusion_list() -> Response:
     return jsonify(get_excluded_plugins())
 
 
+@app.route('/category', defaults={'category': ""})
+@app.route('/category/<category>')
+def get_exclusion_list(category: str) -> Response:
+    return jsonify(get_category(category))
+
+
 @app.errorhandler(404)
 def handle_exception(e) -> Response:
     links = [rule.rule for rule in app.url_map.iter_rules() if 'GET' in rule.methods
-             and (rule.rule.startswith("/plugins") or rule.rule.startswith("/shields"))]
+             and (rule.rule.startswith("/plugins")
+                  or rule.rule.startswith("/shields")
+                  or rule.rule.startswith("/category"))]
     return app.make_response((f"Invalid Endpoint, valid endpoints are {links}", 404,
                               {'Content-Type': 'text/plain; charset=utf-8'}))
 
