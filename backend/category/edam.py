@@ -1,10 +1,10 @@
 import json
 import csv
 import requests
-from typing import Dict, Tuple
+from typing import Dict, List
 
 
-def get_edam_ontology(version: str) -> Dict[str, Tuple[str, str]]:
+def get_edam_ontology(version: str) -> Dict[str, List[str]]:
     """
 
     Parameters
@@ -14,8 +14,8 @@ def get_edam_ontology(version: str) -> Dict[str, Tuple[str, str]]:
 
     Returns
     -------
-    Dict[str, Tuple(str)]
-        mapping between edam id to tuple of edam label and parent
+    Dict[str, List[str]]
+        mapping between edam label to its parents
 
     """
     if version:
@@ -57,17 +57,19 @@ def iterate_parent(ontology_label, ontology, family_tree, mappings):
 
 
 if __name__ == "__main__":
-    # Generate data from edam ontology for a particular version
+    # Generate mapping json from edam ontology for a particular version
     edam_version = 'alpha06'
+
+    # the dimension mapping file is curated specifically for a particular version
+    # the edam-alpha06 version can be found in here:
+    # https://airtable.com/appWpxrq1iPzzxyFE/tblwIaRmQjEkMD1pm/viw2CboXiF0JQqxdr
     with open(f"data/edam-{edam_version}-to-hub-dimension.json") as edam_to_hub_dimension_json, \
-            open(f"data/edam-{edam_version}-parents.json", "w") as edam_parents_json, \
             open(f"data/edam-{edam_version}-mappings.json", "w") as edam_mappings_json:
 
         edam_to_hub = json.load(edam_to_hub_dimension_json)
 
         # load edam terms
         edam = get_edam_ontology(edam_version)
-        json.dump(edam, edam_parents_json, indent=2)
 
         # generate hub term mapping for all edam terms with hierarchy
         edam_mappings = {}

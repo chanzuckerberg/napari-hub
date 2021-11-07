@@ -92,7 +92,8 @@ def slice_metadata_to_index_columns(plugins_metadata: List[dict]) -> List[dict]:
     :param plugins_metadata: plugin metadata dictionary
     :return: sliced dict metadata for the plugin
     """
-    return [{k: plugin_metadata.get(k) for k in index_subset} for plugin_metadata in plugins_metadata]
+    return [{k: plugin_metadata[k] for k in index_subset if k in plugin_metadata}
+            for plugin_metadata in plugins_metadata]
 
 
 def get_excluded_plugins() -> Dict[str, str]:
@@ -126,16 +127,16 @@ def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
     if 'category' in metadata:
         category_mappings = get_category_mapping()
         categories = defaultdict(list)
-        hierarchies = defaultdict(list)
+        category_hierarchy = defaultdict(list)
         for category in metadata['category']:
             mapped_category = get_category_mapping(category, category_mappings)
             for match in mapped_category:
                 if match['label'] not in categories[match['dimension']]:
                     categories[match['dimension']].append(match['label'])
                 match['hierarchy'][0] = match['label']
-                hierarchies[match['dimension']].append(match['hierarchy'])
+                category_hierarchy[match['dimension']].append(match['hierarchy'])
         metadata['category'] = categories
-        metadata['category_hierarchy'] = hierarchies
+        metadata['category_hierarchy'] = category_hierarchy
     cache(metadata, f'cache/{plugin}/{version}.json')
     return plugin, metadata
 
@@ -269,23 +270,24 @@ def get_category_mapping(category: str = None, mappings: dict = None,
     Returns
     -------
     match : dict if no category is given or list of dict if matched
-        list of mapped label, dimension and hierarchy, for example, Manual segmentation is mapped to following:
+        list of mapped label, dimension and hierarchy, where hierarchy is from most abstract to most specific.
+        for example, Manual segmentation is mapped to the following list:
         [
             {
                 "label": "Image Segmentation",
                 "dimension": "Operation",
                 "hierarchy": [
-                    "Manual segmentation",
-                    "Image segmentation"
+                    "Image segmentation",
+                    "Manual segmentation"
                 ]
             },
             {
                 "label": "Image annotation",
                 "dimension": "Operation",
                 "hierarchy": [
-                    "Manual segmentation",
+                    "Image annotation",
                     "Dense image annotation",
-                    "Image annotation"
+                    "Manual segmentation"
                 ]
             }
         ]
