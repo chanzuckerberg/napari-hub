@@ -50,7 +50,8 @@ def get_edam_ontology(version: str) -> Dict[str, List[str]]:
     }
 
 
-def iterate_parent(ontology_label: str, ontology: Dict[str, List[str]], family_tree, mappings):
+def iterate_parent(ontology_label: str, ontology: Dict[str, List[str]],
+                   family_tree: List[str], mappings: Dict[str, Dict[str, str]]):
     """
     Iterate ontology to find matched mapping.
 
@@ -66,7 +67,7 @@ def iterate_parent(ontology_label: str, ontology: Dict[str, List[str]], family_t
         list of labels in the family tree.
 
     mappings
-        ontology to hub term mappings.
+        ontology label to hub term/dimension mappings.
 
     Returns
     -------
