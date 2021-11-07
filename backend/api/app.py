@@ -14,6 +14,7 @@ GITHUB_APP_KEY = os.getenv("GITHUBAPP_KEY")
 GITHUB_APP_SECRET = os.getenv('GITHUBAPP_SECRET')
 
 app = Flask(__name__)
+app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 app.url_map.redirect_defaults = False
 preview_app = Flask("Preview")
 
@@ -29,7 +30,6 @@ else:
 
 github_app = GitHubApp(preview_app)
 handler = make_lambda_handler(app.wsgi_app)
-
 
 
 @app.route('/plugins/index')
