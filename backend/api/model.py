@@ -3,6 +3,7 @@ from datetime import datetime
 from typing import Tuple, Dict, List, Union
 from zipfile import ZipFile
 from io import BytesIO
+from collections import defaultdict
 
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
@@ -124,14 +125,14 @@ def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
         metadata['description_text'] = render_description(metadata.get('description'))
     if 'category' in metadata:
         category_mappings = get_category_mapping()
-        categories = set()
-        hierarchies = []
+        categories = defaultdict(set)
+        hierarchies = defaultdict(list)
         for category in metadata['category']:
             mapped_category = get_category_mapping(category, category_mappings)
             for match in mapped_category:
-                categories.add(match['label'])
-                hierarchies.append(match['hierarchy'])
-        metadata['category'] = list(categories)
+                categories[match['dimension']].add(match['label'])
+                hierarchies[match['dimension']].append(match['hierarchy'])
+        metadata['category'] = categories
         metadata['category_hierarchy'] = hierarchies
     cache(metadata, f'cache/{plugin}/{version}.json')
     return plugin, metadata
