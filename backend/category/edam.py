@@ -41,7 +41,7 @@ def get_edam_ontology(version: str) -> Dict[str, Tuple[str, str]]:
 
 
 def iterate_parent(ontology_label, ontology, family_tree, mappings):
-    family_tree.append(ontology_label)
+    family_tree.insert(0, ontology_label)
     if ontology_label in mappings:
         return [{
             "label": mappings[ontology_label]["label"],
