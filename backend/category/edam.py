@@ -6,7 +6,6 @@ from typing import Dict, List
 
 def get_edam_ontology(version: str) -> Dict[str, List[str]]:
     """
-
     Parameters
     ----------
     version : str
@@ -15,8 +14,19 @@ def get_edam_ontology(version: str) -> Dict[str, List[str]]:
     Returns
     -------
     Dict[str, List[str]]
-        mapping between edam label to its parents
-
+        mapping between edam label to its parents, For example:
+        {
+            "Manual segmentation": [
+                "Image segmentation",
+                "Dense image annotation"
+            ],
+            "Semi-automatic segmentation": [
+                "Image segmentation"
+            ],
+            "Sparse image annotation": [
+                "Image annotation"
+            ]
+        }
     """
     if version:
         url = f'https://edamontology.org/EDAM-bioimaging_{version}.csv'
@@ -40,7 +50,47 @@ def get_edam_ontology(version: str) -> Dict[str, List[str]]:
     }
 
 
-def iterate_parent(ontology_label, ontology, family_tree, mappings):
+def iterate_parent(ontology_label: str, ontology: Dict[str, List[str]], family_tree, mappings):
+    """
+    Iterate ontology to find matched mapping.
+
+    Parameters
+    ----------
+    ontology_label
+        label to query mappings.
+
+    ontology
+        name to parents mappings.
+
+    family_tree
+        list of labels in the family tree.
+
+    mappings
+        ontology to hub term mappings.
+
+    Returns
+    -------
+    list of mapped dictionary of label, dimension, and hierarchy, for example iterating Manual segmentation returns
+    [
+        {
+            "label": "Image Segmentation",
+            "dimension": "Operation",
+            "hierarchy": [
+                "Image segmentation",
+                "Manual segmentation"
+            ]
+        },
+        {
+            "label": "Image annotation",
+            "dimension": "Operation",
+            "hierarchy": [
+                "Image annotation",
+                "Dense image annotation",
+                "Manual segmentation"
+            ]
+        }
+    ]
+    """
     family_tree.insert(0, ontology_label)
     if ontology_label in mappings:
         return [{
