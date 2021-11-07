@@ -294,6 +294,8 @@ def get_category_mapping(category: str = None, mappings: dict = None,
     """
     if not mappings:
         mappings = get_cache(f'category/{version}-mappings.json')
+    if not mappings:
+        return []
     if not category:
         return mappings
     if category not in mappings:
