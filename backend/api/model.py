@@ -131,6 +131,7 @@ def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
             mapped_category = get_category_mapping(category, category_mappings)
             for match in mapped_category:
                 categories[match['dimension']].add(match['label'])
+                match['hierarchy'][0] = match['label']
                 hierarchies[match['dimension']].append(match['hierarchy'])
         metadata['category'] = categories
         metadata['category_hierarchy'] = hierarchies
