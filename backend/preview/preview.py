@@ -12,7 +12,8 @@ import json
 from utils.github import github_pattern, get_github_metadata, get_github_repo_url
 from utils.pypi import get_plugin_pypi_metadata
 
-def get_plugin_preview(repo_pth: str, dest_dir: str, is_local: bool = False) -> dict:
+
+def get_plugin_preview(repo_pth: str, dest_dir: str, is_local: bool = False, branch: str = 'HEAD'):
     """Get plugin preview metadata of package at repo_pth.
 
     If is_local is not True, first clone the repository from GitHub
@@ -24,10 +25,13 @@ def get_plugin_preview(repo_pth: str, dest_dir: str, is_local: bool = False) -> 
     :param repo_pth: path to plugin repository (URL unless is_local is True)
     :param dest_dir: path to destination directory (must exist)
     :param is_local: True if repo_pth is to local directory, otherwise False
+    :param branch: Use a branch if specified
     """
     # clone repository from URL (if repo is not local)
     if not is_local:
-        repo_pth = clone_repo(repo_pth, dest_dir)
+        repo = clone_repo(repo_pth, dest_dir)
+        if branch:
+            repo.git.checkout(branch)
 
     # build distribution for plugin repository
     wheel_pth = build_dist(repo_pth, dest_dir)
@@ -37,7 +41,7 @@ def get_plugin_preview(repo_pth: str, dest_dir: str, is_local: bool = False) -> 
 
     # parse additional metadata from URL
     if meta.get("code_repository"):
-        extra_meta = get_github_metadata(meta["code_repository"])
+        extra_meta = get_github_metadata(meta["code_repository"], branch=branch)
         meta.update(extra_meta)
 
     # get release date and first released
@@ -48,12 +52,12 @@ def get_plugin_preview(repo_pth: str, dest_dir: str, is_local: bool = False) -> 
         json.dump(meta, f)
 
 
-def clone_repo(code_url: str, dest_dir: str) -> Union[str, None]:
+def clone_repo(code_url: str, dest_dir: str) -> Union['Repo', None]:
     """Clone repository at code_url to dest_dir.
 
     :param code_url: url to GitHub code repository
     :param dest_dir: path to destination directory
-    :return: path to repository or None
+    :return: cloned repo or None
     """
     github_match = github_pattern.match(code_url)
     if not github_match:
@@ -69,7 +73,7 @@ def clone_repo(code_url: str, dest_dir: str) -> Union[str, None]:
     except Exception:
         raise RuntimeError(f"Could not clone repo from {code_url}")
 
-    return repo.working_tree_dir
+    return repo
 
 
 def build_dist(pth: str, dest_dir: str) -> str:
