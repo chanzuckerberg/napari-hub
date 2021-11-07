@@ -72,6 +72,6 @@ def cache(content: Union[dict, list, IO[bytes]], key: str, mime: str = None):
         s3_client.upload_fileobj(Fileobj=content, Bucket=bucket,
                                  Key=os.path.join(bucket_path, key), ExtraArgs=extra_args)
     else:
-        with io.BytesIO(json.dumps(content).encode('utf8')) as stream:
+        with io.BytesIO(json.dumps(content, indent=2).encode('utf8')) as stream:
             s3_client.upload_fileobj(Fileobj=stream, Bucket=bucket,
                                      Key=os.path.join(bucket_path, key), ExtraArgs=extra_args)
