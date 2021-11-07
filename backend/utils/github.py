@@ -9,7 +9,7 @@ from cffconvert.citation import Citation
 from requests.auth import HTTPBasicAuth
 from requests.exceptions import HTTPError
 
-from utils.utils import get_attribute
+from utils.utils import get_attribute, render_description
 from utils.auth import HTTPBearerAuth
 
 # Environment variable set through ecs stack terraform module
@@ -25,6 +25,7 @@ elif github_client_id and github_client_secret:
 
 visibility_set = {'public', 'disabled', 'hidden'}
 github_pattern = re.compile("https://github\\.com/([^/]+)/([^/]+)")
+default_description = 'The developer has not yet provided a napari-hub specific description.'
 
 
 def get_file(download_url: str, file: str, branch: str = 'HEAD') -> [dict, None]:
@@ -102,7 +103,7 @@ def get_github_metadata(repo_url: str, branch: str = 'HEAD') -> dict:
 
     description = get_file(repo_url, ".napari/DESCRIPTION.md", branch=branch)
 
-    if description is not None:
+    if description and default_description not in description:
         github_metadata['description'] = description
 
     yaml_file = get_file(repo_url, ".napari/config.yml", branch=branch)
