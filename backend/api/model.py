@@ -130,7 +130,8 @@ def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
         for category in metadata['category']:
             mapped_category = get_category_mapping(category, category_mappings)
             for match in mapped_category:
-                categories[match['dimension']].append(match['label'])
+                if match['label'] not in categories[match['dimension']]:
+                    categories[match['dimension']].append(match['label'])
                 match['hierarchy'][0] = match['label']
                 hierarchies[match['dimension']].append(match['hierarchy'])
         metadata['category'] = categories
