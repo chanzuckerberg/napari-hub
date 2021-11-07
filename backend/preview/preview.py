@@ -30,6 +30,7 @@ def get_plugin_preview(repo_pth: str, dest_dir: str, is_local: bool = False, bra
     # clone repository from URL (if repo is not local)
     if not is_local:
         repo = clone_repo(repo_pth, dest_dir)
+        repo_pth = repo.working_tree_dir
         if branch:
             repo.git.checkout(branch)
 
