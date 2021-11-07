@@ -125,12 +125,12 @@ def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
         metadata['description_text'] = render_description(metadata.get('description'))
     if 'category' in metadata:
         category_mappings = get_category_mapping()
-        categories = defaultdict(set)
+        categories = defaultdict(list)
         hierarchies = defaultdict(list)
         for category in metadata['category']:
             mapped_category = get_category_mapping(category, category_mappings)
             for match in mapped_category:
-                categories[match['dimension']].add(match['label'])
+                categories[match['dimension']].append(match['label'])
                 match['hierarchy'][0] = match['label']
                 hierarchies[match['dimension']].append(match['hierarchy'])
         metadata['category'] = categories
