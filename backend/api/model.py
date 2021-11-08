@@ -137,6 +137,7 @@ def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
                 category_hierarchy[match['dimension']].append(match['hierarchy'])
         metadata['category'] = categories
         metadata['category_hierarchy'] = category_hierarchy
+        del metadata['labels']
     cache(metadata, f'cache/{plugin}/{version}.json')
     return plugin, metadata
 

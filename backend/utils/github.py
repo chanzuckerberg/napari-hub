@@ -17,7 +17,7 @@ github_client_secret = os.environ.get('GITHUB_CLIENT_SECRET', None)
 
 visibility_set = {'public', 'disabled', 'hidden'}
 github_pattern = re.compile("https://github\\.com/([^/]+)/([^/]+)")
-hub_config_keys = {'summary', 'authors'}
+hub_config_keys = {'summary', 'authors', 'labels', 'visibility'}
 
 
 def get_file(download_url: str, file: str) -> [dict, None]:
