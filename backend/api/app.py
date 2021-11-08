@@ -64,11 +64,11 @@ def get_exclusion_list() -> Response:
     return jsonify(get_excluded_plugins())
 
 
-@app.route('/category', defaults={'category': "", 'version': os.getenv('category_version', 'edam-alpha06')})
-@app.route('/category/<category>', defaults={'version': os.getenv('category_version', 'edam-alpha06')})
+@app.route('/category', defaults={'category': "", 'version': os.getenv('category_version', 'EDAM-BIOIMAGING:alpha06')})
+@app.route('/category/<category>', defaults={'version': os.getenv('category_version', 'EDAM-BIOIMAGING:alpha06')})
 @app.route('/category/<category>/version/<version>')
 def get_category(category: str, version: str) -> Response:
-    return jsonify(get_category_mapping(category, version=version))
+    return jsonify(get_category_mapping(version, category))
 
 
 @app.errorhandler(404)

@@ -125,11 +125,11 @@ def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
     if 'description' in metadata:
         metadata['description_text'] = render_description(metadata.get('description'))
     if 'labels' in metadata:
-        category_mappings = get_category_mapping(version=metadata['labels']['ontology'].replace(":", "/"))
+        category_mappings = get_category_mapping(metadata['labels']['ontology'])
         categories = defaultdict(list)
         category_hierarchy = defaultdict(list)
         for category in metadata['labels']['terms']:
-            mapped_category = get_category_mapping(category, category_mappings)
+            mapped_category = get_category_mapping(metadata['labels']['ontology'], category, category_mappings)
             for match in mapped_category:
                 if match['label'] not in categories[match['dimension']]:
                     categories[match['dimension']].append(match['label'])
@@ -253,19 +253,18 @@ def move_artifact_to_s3(payload, client):
                                         f'https://preview.napari-hub.org/{owner}/{repo}/{pull_request_number}')
 
 
-def get_category_mapping(category: str = None, mappings: dict = None,
-                         version="EDAM-BIOIMAGING/alpha06") -> Union[Dict[str, List], List[Dict]]:
+def get_category_mapping(version: str, category: str = None, mappings: dict = None) -> Union[Dict[str, List], List[Dict]]:
     """
     Get category mappings
 
     Parameters
     ----------
+    version: str
+        version of the category to use
     category : str
         name of the category to map
     mappings: dict
         mappings to use for lookups, if None, use cached mapping
-    version: str
-        version of the category to use
 
     Returns
     -------
@@ -293,7 +292,7 @@ def get_category_mapping(category: str = None, mappings: dict = None,
         ]
     """
     if not mappings:
-        mappings = get_cache(f'category/{version}.json')
+        mappings = get_cache(f'category/{version.replace(":", "/")}.json')
     if not mappings:
         return []
     if not category:
