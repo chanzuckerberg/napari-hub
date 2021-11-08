@@ -124,11 +124,11 @@ def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
         metadata = {**metadata, **get_github_metadata(github_repo_url)}
     if 'description' in metadata:
         metadata['description_text'] = render_description(metadata.get('description'))
-    if 'category' in metadata:
-        category_mappings = get_category_mapping()
+    if 'labels' in metadata:
+        category_mappings = get_category_mapping(version=metadata['labels']['ontology'].replace(":", "/"))
         categories = defaultdict(list)
         category_hierarchy = defaultdict(list)
-        for category in metadata['category']:
+        for category in metadata['labels']['terms']:
             mapped_category = get_category_mapping(category, category_mappings)
             for match in mapped_category:
                 if match['label'] not in categories[match['dimension']]:
@@ -254,7 +254,7 @@ def move_artifact_to_s3(payload, client):
 
 
 def get_category_mapping(category: str = None, mappings: dict = None,
-                         version="edam-alpha06") -> Union[Dict[str, List], List[Dict]]:
+                         version="EDAM-BIOIMAGING/alpha06") -> Union[Dict[str, List], List[Dict]]:
     """
     Get category mappings
 
@@ -293,7 +293,7 @@ def get_category_mapping(category: str = None, mappings: dict = None,
         ]
     """
     if not mappings:
-        mappings = get_cache(f'category/{version}-mappings.json')
+        mappings = get_cache(f'category/{version}.json')
     if not mappings:
         return []
     if not category:

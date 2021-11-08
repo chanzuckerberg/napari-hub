@@ -114,10 +114,10 @@ if __name__ == "__main__":
     # the dimension mapping file is curated specifically for a particular version
     # the edam-alpha06 version can be found in here:
     # https://airtable.com/appWpxrq1iPzzxyFE/tblwIaRmQjEkMD1pm/viw2CboXiF0JQqxdr
-    with open(f"data/edam-{edam_version}-to-hub-dimension.json") as edam_to_hub_dimension_json, \
-            open(f"data/edam-{edam_version}-mappings.json", "w") as edam_mappings_json:
+    with open(f"data/EDAM-BIOIMAGING/hub-mapping-{edam_version}.json") as hub_mapping_json, \
+            open(f"data/EDAM-BIOIMAGING/{edam_version}.json", "w") as edam_mappings_json:
 
-        edam_to_hub = json.load(edam_to_hub_dimension_json)
+        edam_to_hub = json.load(hub_mapping_json)
 
         # load edam terms
         edam = get_edam_ontology(edam_version)
