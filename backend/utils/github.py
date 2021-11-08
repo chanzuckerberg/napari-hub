@@ -9,30 +9,40 @@ from cffconvert.citation import Citation
 from requests.auth import HTTPBasicAuth
 from requests.exceptions import HTTPError
 
-from utils.utils import get_attribute
+from utils.utils import get_attribute, render_description
+from utils.auth import HTTPBearerAuth
 
 # Environment variable set through ecs stack terraform module
 github_client_id = os.environ.get('GITHUB_CLIENT_ID', None)
 github_client_secret = os.environ.get('GITHUB_CLIENT_SECRET', None)
+github_token = os.environ.get('GITHUB_TOKEN', None)
+
+auth = None
+if github_token:
+    auth = HTTPBearerAuth(github_token)
+elif github_client_id and github_client_secret:
+    auth = HTTPBasicAuth(github_client_id, github_client_secret)
 
 visibility_set = {'public', 'disabled', 'hidden'}
 github_pattern = re.compile("https://github\\.com/([^/]+)/([^/]+)")
 hub_config_keys = {'summary', 'authors', 'labels', 'visibility'}
+default_description = 'The developer has not yet provided a napari-hub specific description.'
 
 
-def get_file(download_url: str, file: str) -> [dict, None]:
+def get_file(download_url: str, file: str, branch: str = 'HEAD') -> [dict, None]:
     """
     Get file from github.
 
     :param download_url: github url to download from
     :param file: filename to get
+    :param branch: branch name to use if specified
     :return: file context for the file to download
     """
     api_url = download_url.replace("https://github.com/",
                                    "https://raw.githubusercontent.com/")
     try:
-        url = f'{api_url}/HEAD/{file}'
-        response = requests.get(url)
+        url = f'{api_url}/{branch}/{file}'
+        response = requests.get(url, auth=auth)
         if response.status_code != requests.codes.ok:
             response.raise_for_status()
         return response.text
@@ -42,14 +52,11 @@ def get_file(download_url: str, file: str) -> [dict, None]:
     return None
 
 
-def get_license(url: str) -> [str, None]:
+def get_license(url: str, branch: str = 'HEAD') -> [str, None]:
     try:
         api_url = url.replace("https://github.com/",
                               "https://api.github.com/repos/")
-        auth = None
-        if github_client_id is not None and github_client_secret is not None:
-            auth = HTTPBasicAuth(github_client_id, github_client_secret)
-        response = requests.get(f'{api_url}/license', auth=auth)
+        response = requests.get(f'{api_url}/license?ref={branch}', auth=auth)
         if response.status_code != requests.codes.ok:
             response.raise_for_status()
         spdx_id = get_attribute(json.loads(response.text.strip()), ['license', "spdx_id"])
@@ -81,25 +88,26 @@ def get_github_repo_url(project_urls: Dict[str, str]) -> [str, None]:
     return None
 
 
-def get_github_metadata(repo_url: str) -> dict:
+def get_github_metadata(repo_url: str, branch: str = 'HEAD') -> dict:
     """
     Extract extra metadata from the github repo url.
 
     :param repo_url: github repo url to download from
+    :param branch: name of the branch to use if specified
     :return: github metadata dictionary
     """
     github_metadata = {}
 
-    github_license = get_license(repo_url)
+    github_license = get_license(repo_url, branch=branch)
     if github_license is not None:
         github_metadata['license'] = github_license
 
-    description = get_file(repo_url, ".napari/DESCRIPTION.md")
+    description = get_file(repo_url, ".napari/DESCRIPTION.md", branch=branch)
 
-    if description is not None:
+    if description and default_description not in description:
         github_metadata['description'] = description
 
-    citation_file = get_file(repo_url, "CITATION.cff")
+    citation_file = get_file(repo_url, "CITATION.cff", branch=branch)
     if citation_file is not None:
         citation = get_citations(citation_file)
         if citation:
@@ -110,7 +118,7 @@ def get_github_metadata(repo_url: str) -> dict:
     elif github_metadata['visibility'] not in visibility_set:
         github_metadata['visibility'] = 'public'
 
-    yaml_file = get_file(repo_url, ".napari/config.yml")
+    yaml_file = get_file(repo_url, ".napari/config.yml", branch=branch)
     if yaml_file:
         config = yaml.safe_load(yaml_file)
         hub_config = {key: config[key] for key in hub_config_keys if key in config}
@@ -151,7 +159,8 @@ def get_citations(citation_str: str) -> Union[Dict[str, str], None]:
 
 
 def get_artifact(url: str, token: str) -> Union[IO[bytes], None]:
-    response = requests.get(url, headers={'Authorization': f'Bearer {token}'})
+    preview_auth = HTTPBearerAuth(token)
+    response = requests.get(url, auth=preview_auth)
     if response.status_code != requests.codes.ok:
         return None
 
@@ -159,7 +168,7 @@ def get_artifact(url: str, token: str) -> Union[IO[bytes], None]:
     if not download_url:
         return None
 
-    response = requests.get(download_url, stream=True, headers={'Authorization': f'Bearer {token}'})
+    response = requests.get(download_url, stream=True, auth=preview_auth)
     if response.status_code != requests.codes.ok:
         return None
 

@@ -6,6 +6,7 @@ parser = argparse.ArgumentParser(description='Write preview metadata to JSON.')
 parser.add_argument('repo_pth', action='store', help='Path to GitHub repository of plugin. Use `--local` if repository has already been cloned.')
 parser.add_argument('dest', action='store', help='Path to destination directory (must exist).')
 parser.add_argument('--local', action='store_true', help='Use if repo_pth is path to a local repository.')
+parser.add_argument('--branch', action='store', nargs='?', default='HEAD', help='specify branch for the repository')
 
 if __name__ == '__main__':
     args = parser.parse_args()
@@ -13,4 +14,4 @@ if __name__ == '__main__':
     if args.local:
         repo_pth = os.path.abspath(args.repo_pth)
     dest_pth = os.path.abspath(args.dest)
-    get_plugin_preview(repo_pth, dest_pth, args.local)
+    get_plugin_preview(repo_pth, dest_pth, args.local, args.branch)

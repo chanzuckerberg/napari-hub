@@ -15,7 +15,7 @@ example_plugin_release_date = "2021-10-08T00:49:53.706510Z"
 
 def test_clone_existing_plugin(tmpdir):
     dest_dir = tmpdir.mkdir("repo")
-    repo_pth = clone_repo(code_plugin_url, dest_dir)
+    repo_pth = clone_repo(code_plugin_url, dest_dir).working_tree_dir
     
     # a git repository
     assert os.path.exists(os.path.join(dest_dir, 'example-plugin', '.git/'))
@@ -32,7 +32,7 @@ def test_clone_invalid_plugin(tmpdir):
 
 def test_build_dist(tmpdir):
     dest_dir = tmpdir.mkdir("repo")
-    repo_pth = clone_repo(code_plugin_url, dest_dir)
+    repo_pth = clone_repo(code_plugin_url, dest_dir).working_tree_dir
 
     wheel_pth = build_dist(repo_pth, dest_dir)
     assert wheel_pth.endswith('.whl')
@@ -50,7 +50,7 @@ def test_build_dist_fail(tmpdir):
 
 def test_parse_meta(tmpdir):
     repo_dir = tmpdir.mkdir("repo")
-    repo_pth = clone_repo(code_plugin_url, repo_dir)
+    repo_pth = clone_repo(code_plugin_url, repo_dir).working_tree_dir
     wheel_pth = build_dist(repo_pth, repo_dir)
     meta = parse_meta(wheel_pth)
     assert meta['name'] == 'example-plugin'
