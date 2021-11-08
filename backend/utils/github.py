@@ -17,6 +17,7 @@ github_client_secret = os.environ.get('GITHUB_CLIENT_SECRET', None)
 
 visibility_set = {'public', 'disabled', 'hidden'}
 github_pattern = re.compile("https://github\\.com/([^/]+)/([^/]+)")
+hub_config_keys = {'summary', 'authors'}
 
 
 def get_file(download_url: str, file: str) -> [dict, None]:
@@ -98,11 +99,6 @@ def get_github_metadata(repo_url: str) -> dict:
     if description is not None:
         github_metadata['description'] = description
 
-    yaml_file = get_file(repo_url, ".napari/config.yml")
-    if yaml_file:
-        config = yaml.safe_load(yaml_file)
-        github_metadata.update(config)
-
     citation_file = get_file(repo_url, "CITATION.cff")
     if citation_file is not None:
         citation = get_citations(citation_file)
@@ -114,17 +110,23 @@ def get_github_metadata(repo_url: str) -> dict:
     elif github_metadata['visibility'] not in visibility_set:
         github_metadata['visibility'] = 'public'
 
-    project_urls = github_metadata.get('project_urls', {})
-    if 'Project Site' in project_urls:
-        github_metadata['project_site'] = project_urls['Project Site']
-    if 'Documentation' in project_urls:
-        github_metadata['documentation'] = project_urls['Documentation']
-    if 'User Support' in project_urls:
-        github_metadata['support'] = project_urls['User Support']
-    if 'Report Issues' in project_urls:
-        github_metadata['report_issues'] = project_urls['Report Issues']
-    if 'Twitter' in project_urls:
-        github_metadata['twitter'] = project_urls['Twitter']
+    yaml_file = get_file(repo_url, ".napari/config.yml")
+    if yaml_file:
+        config = yaml.safe_load(yaml_file)
+        hub_config = {key: config[key] for key in hub_config_keys if key in config}
+        github_metadata.update(hub_config)
+
+        project_urls = config.get('project_urls', {})
+        if 'Project Site' in project_urls:
+            github_metadata['project_site'] = project_urls['Project Site']
+        if 'Documentation' in project_urls:
+            github_metadata['documentation'] = project_urls['Documentation']
+        if 'User Support' in project_urls:
+            github_metadata['support'] = project_urls['User Support']
+        if 'Report Issues' in project_urls:
+            github_metadata['report_issues'] = project_urls['Report Issues']
+        if 'Twitter' in project_urls:
+            github_metadata['twitter'] = project_urls['Twitter']
 
     return github_metadata
 
