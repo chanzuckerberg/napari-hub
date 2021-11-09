@@ -1,158 +1,158 @@
 {
   "Bright-field microscopy": {
     "label": "Bright-field microscopy",
-    "dimension": "Imaging Modality"
+    "dimension": "Image modality"
   },
   "Phase-contrast microscopy": {
     "label": "Phase-Contrast microscopy",
-    "dimension": "Imaging Modality"
+    "dimension": "Image modality"
   },
   "DIC microscopy": {
     "label": "DIC microscopy",
-    "dimension": "Imaging Modality"
+    "dimension": "Image modality"
   },
   "Fluorescence microscopy": {
     "label": "Fluorescence microscopy",
-    "dimension": "Imaging Modality"
+    "dimension": "Image modality"
   },
   "Ultrasonography": {
     "label": "Ultrasound imaging",
-    "dimension": "Imaging Modality"
+    "dimension": "Image modality"
   },
   "Computed tomography": {
     "label": "Computed tomography ",
-    "dimension": "Imaging Modality"
+    "dimension": "Image modality"
   },
   "Magnetic resonance imaging": {
     "label": "Magnetic resonance imaging",
-    "dimension": "Imaging Modality"
+    "dimension": "Image modality"
   },
   "Electron microscopy": {
     "label": "Electron microscopy",
-    "dimension": "Imaging Modality"
+    "dimension": "Image modality"
   },
   "Multimodal imaging": {
     "label": "Multimodal imaging",
-    "dimension": "Imaging Modality"
+    "dimension": "Image modality"
   },
   "Medical imaging": {
     "label": "Medical imaging",
-    "dimension": "Imaging Modality"
+    "dimension": "Image modality"
   },
   "Confocal microscopy": {
     "label": "Confocal microscopy",
-    "dimension": "Imaging Modality"
+    "dimension": "Image modality"
   },
   "Multi-photon microscopy": {
     "label": "Multi-photon microscopy",
-    "dimension": "Imaging Modality"
+    "dimension": "Image modality"
   },
   "2D image": {
     "label": "2D",
-    "dimension": "Data Dimensionality"
+    "dimension": "Supported data"
   },
   "3D image": {
     "label": "3D",
-    "dimension": "Data Dimensionality"
+    "dimension": "Supported data"
   },
   "Image time series": {
     "label": "Time series",
-    "dimension": "Data Dimensionality"
+    "dimension": "Supported data"
   },
   "Multi-channel image": {
     "label": "Multi-channel",
-    "dimension": "Data Dimensionality"
+    "dimension": "Supported data"
   },
   "Image registration": {
     "label": "Image registration",
-    "dimension": "Operation"
+    "dimension": "Workflow step"
   },
   "Image correction": {
     "label": "Image correction",
-    "dimension": "Operation"
+    "dimension": "Workflow step"
   },
   "Image enhancement": {
     "label": "Image enhancement",
-    "dimension": "Operation"
+    "dimension": "Workflow step"
   },
   "Image reconstruction": {
     "label": "Image reconstruction",
-    "dimension": "Operation"
+    "dimension": "Workflow step"
   },
   "Pixel classification": {
     "label": "Pixel classification",
-    "dimension": "Operation"
+    "dimension": "Workflow step"
   },
   "Image feature detection": {
     "label": "Image feature detection",
-    "dimension": "Operation"
+    "dimension": "Workflow step"
   },
   "Image annotation": {
     "label": "Image annotation",
-    "dimension": "Operation"
+    "dimension": "Workflow step"
   },
   "Filament tracing": {
     "label": "Filament tracing",
-    "dimension": "Operation"
+    "dimension": "Workflow step"
   },
   "Object classification": {
     "label": "Object classification",
-    "dimension": "Operation"
+    "dimension": "Workflow step"
   },
   "Object-based colocalisation analysis": {
     "label": "Object-based colocalisation",
-    "dimension": "Operation"
+    "dimension": "Workflow step"
   },
   "Object feature extraction": {
     "label": "Object feature extraction",
-    "dimension": "Operation"
+    "dimension": "Workflow step"
   },
   "Object tracking": {
     "label": "Object tracking",
-    "dimension": "Operation"
+    "dimension": "Workflow step"
   },
   "Clustering": {
     "label": "Clustering",
-    "dimension": "Operation"
+    "dimension": "Workflow step"
   },
   "Frequency-domain analysis": {
     "label": "Frequency domain analysis",
-    "dimension": "Operation"
+    "dimension": "Workflow step"
   },
   "Pixel-based colocalisation": {
     "label": "Pixel-based colocalisation",
-    "dimension": "Operation"
+    "dimension": "Workflow step"
   },
   "Fluorescence correlation spectroscopy": {
     "label": "Fluorescence correlation spectroscopy",
-    "dimension": "Operation"
+    "dimension": "Workflow step"
   },
   "Optical flow analysis": {
     "label": "Optical flow analysis",
-    "dimension": "Operation"
+    "dimension": "Workflow step"
   },
   "Image segmentation": {
     "label": "Image Segmentation",
-    "dimension": "Operation"
+    "dimension": "Workflow step"
   },
   "Visualisation": {
     "label": "Visualization",
-    "dimension": "Operation"
+    "dimension": "Workflow step"
   },
   "Synthetic image generation": {
     "label": "Synthetic image generation",
-    "dimension": "Operation"
+    "dimension": "Workflow step"
   },
   "Morphological operation": {
     "label": "Morphological operations",
-    "dimension": "Operation"
+    "dimension": "Workflow step"
   },
   "Image fusion": {
     "label": "Image fusion",
-    "dimension": "Operation"
+    "dimension": "Workflow step"
   },
   "Image classification": {
     "label": "Image classification",
-    "dimension": "Operation"
+    "dimension": "Workflow step"
   }
 }
