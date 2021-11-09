@@ -1,0 +1,158 @@
+{
+  "Bright-field microscopy": {
+    "label": "Bright-field microscopy",
+    "dimension": "Image modality"
+  },
+  "Phase-contrast microscopy": {
+    "label": "Phase-Contrast microscopy",
+    "dimension": "Image modality"
+  },
+  "DIC microscopy": {
+    "label": "DIC microscopy",
+    "dimension": "Image modality"
+  },
+  "Fluorescence microscopy": {
+    "label": "Fluorescence microscopy",
+    "dimension": "Image modality"
+  },
+  "Ultrasonography": {
+    "label": "Ultrasound imaging",
+    "dimension": "Image modality"
+  },
+  "Computed tomography": {
+    "label": "Computed tomography ",
+    "dimension": "Image modality"
+  },
+  "Magnetic resonance imaging": {
+    "label": "Magnetic resonance imaging",
+    "dimension": "Image modality"
+  },
+  "Electron microscopy": {
+    "label": "Electron microscopy",
+    "dimension": "Image modality"
+  },
+  "Multimodal imaging": {
+    "label": "Multimodal imaging",
+    "dimension": "Image modality"
+  },
+  "Medical imaging": {
+    "label": "Medical imaging",
+    "dimension": "Image modality"
+  },
+  "Confocal microscopy": {
+    "label": "Confocal microscopy",
+    "dimension": "Image modality"
+  },
+  "Multi-photon microscopy": {
+    "label": "Multi-photon microscopy",
+    "dimension": "Image modality"
+  },
+  "2D image": {
+    "label": "2D",
+    "dimension": "Supported data"
+  },
+  "3D image": {
+    "label": "3D",
+    "dimension": "Supported data"
+  },
+  "Image time series": {
+    "label": "Time series",
+    "dimension": "Supported data"
+  },
+  "Multi-channel image": {
+    "label": "Multi-channel",
+    "dimension": "Supported data"
+  },
+  "Image registration": {
+    "label": "Image registration",
+    "dimension": "Workflow step"
+  },
+  "Image correction": {
+    "label": "Image correction",
+    "dimension": "Workflow step"
+  },
+  "Image enhancement": {
+    "label": "Image enhancement",
+    "dimension": "Workflow step"
+  },
+  "Image reconstruction": {
+    "label": "Image reconstruction",
+    "dimension": "Workflow step"
+  },
+  "Pixel classification": {
+    "label": "Pixel classification",
+    "dimension": "Workflow step"
+  },
+  "Image feature detection": {
+    "label": "Image feature detection",
+    "dimension": "Workflow step"
+  },
+  "Image annotation": {
+    "label": "Image annotation",
+    "dimension": "Workflow step"
+  },
+  "Filament tracing": {
+    "label": "Filament tracing",
+    "dimension": "Workflow step"
+  },
+  "Object classification": {
+    "label": "Object classification",
+    "dimension": "Workflow step"
+  },
+  "Object-based colocalisation analysis": {
+    "label": "Object-based colocalisation",
+    "dimension": "Workflow step"
+  },
+  "Object feature extraction": {
+    "label": "Object feature extraction",
+    "dimension": "Workflow step"
+  },
+  "Object tracking": {
+    "label": "Object tracking",
+    "dimension": "Workflow step"
+  },
+  "Clustering": {
+    "label": "Clustering",
+    "dimension": "Workflow step"
+  },
+  "Frequency-domain analysis": {
+    "label": "Frequency domain analysis",
+    "dimension": "Workflow step"
+  },
+  "Pixel-based colocalisation": {
+    "label": "Pixel-based colocalisation",
+    "dimension": "Workflow step"
+  },
+  "Fluorescence correlation spectroscopy": {
+    "label": "Fluorescence correlation spectroscopy",
+    "dimension": "Workflow step"
+  },
+  "Optical flow analysis": {
+    "label": "Optical flow analysis",
+    "dimension": "Workflow step"
+  },
+  "Image segmentation": {
+    "label": "Image Segmentation",
+    "dimension": "Workflow step"
+  },
+  "Visualisation": {
+    "label": "Visualization",
+    "dimension": "Workflow step"
+  },
+  "Synthetic image generation": {
+    "label": "Synthetic image generation",
+    "dimension": "Workflow step"
+  },
+  "Morphological operation": {
+    "label": "Morphological operations",
+    "dimension": "Workflow step"
+  },
+  "Image fusion": {
+    "label": "Image fusion",
+    "dimension": "Workflow step"
+  },
+  "Image classification": {
+    "label": "Image classification",
+    "dimension": "Workflow step"
+  }
+}

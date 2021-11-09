@@ -3,7 +3,7 @@ import json
 import os
 import os.path
 from datetime import datetime
-from typing import Union, IO
+from typing import Union, IO, List, Dict
 import mimetypes
 
 import boto3
@@ -36,7 +36,7 @@ def cache_available(key: str) -> bool:
         return False
 
 
-def get_cache(key: str) -> Union[dict, None]:
+def get_cache(key: str) -> Union[Dict, List, None]:
     """
     Get the cached file for a given key if exists, None otherwise.
 

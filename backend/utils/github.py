@@ -25,7 +25,15 @@ elif github_client_id and github_client_secret:
 
 visibility_set = {'public', 'disabled', 'hidden'}
 github_pattern = re.compile("https://github\\.com/([^/]+)/([^/]+)")
+hub_config_keys = {'summary', 'authors', 'labels', 'visibility'}
 default_description = 'The developer has not yet provided a napari-hub specific description.'
+project_url_names = {
+    'Project Site': 'project_site',
+    'Documentation': 'documentation',
+    'User Support': 'support',
+    'Report Issues': 'report_issues',
+    'Twitter': 'twitter'
+}
 
 
 def get_file(download_url: str, file: str, branch: str = 'HEAD') -> [dict, None]:
@@ -106,11 +114,6 @@ def get_github_metadata(repo_url: str, branch: str = 'HEAD') -> dict:
     if description and default_description not in description:
         github_metadata['description'] = description
 
-    yaml_file = get_file(repo_url, ".napari/config.yml", branch=branch)
-    if yaml_file:
-        config = yaml.safe_load(yaml_file)
-        github_metadata.update(config)
-
     citation_file = get_file(repo_url, "CITATION.cff", branch=branch)
     if citation_file is not None:
         citation = get_citations(citation_file)
@@ -122,17 +125,17 @@ def get_github_metadata(repo_url: str, branch: str = 'HEAD') -> dict:
     elif github_metadata['visibility'] not in visibility_set:
         github_metadata['visibility'] = 'public'
 
-    project_urls = github_metadata.get('project_urls', {})
-    if 'Project Site' in project_urls:
-        github_metadata['project_site'] = project_urls['Project Site']
-    if 'Documentation' in project_urls:
-        github_metadata['documentation'] = project_urls['Documentation']
-    if 'User Support' in project_urls:
-        github_metadata['support'] = project_urls['User Support']
-    if 'Report Issues' in project_urls:
-        github_metadata['report_issues'] = project_urls['Report Issues']
-    if 'Twitter' in project_urls:
-        github_metadata['twitter'] = project_urls['Twitter']
+    yaml_file = get_file(repo_url, ".napari/config.yml", branch=branch)
+    if yaml_file:
+        config = yaml.safe_load(yaml_file)
+        hub_config = {key: config[key] for key in hub_config_keys if key in config}
+        github_metadata.update(hub_config)
+
+        project_urls = config.get('project_urls', {})
+        github_metadata.update({
+           hub_name: project_urls[yaml_name]
+           for yaml_name, hub_name in project_url_names.items() if yaml_name in project_urls
+        })
 
     return github_metadata
 

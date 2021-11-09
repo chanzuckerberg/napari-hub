@@ -4,7 +4,8 @@ from werkzeug.middleware.dispatcher import DispatcherMiddleware
 from flask import Flask, Response, jsonify
 from flask_githubapp.core import GitHubApp
 
-from api.model import get_public_plugins, get_index, get_plugin, get_excluded_plugins, update_cache, move_artifact_to_s3
+from api.model import get_public_plugins, get_index, get_plugin, get_excluded_plugins, update_cache, \
+    move_artifact_to_s3, get_category_mapping, get_categories_mapping
 from api.shield import get_shield
 from utils.utils import send_alert, reformat_ssh_key_to_pem_bytes
 
@@ -13,6 +14,8 @@ GITHUB_APP_KEY = os.getenv("GITHUBAPP_KEY")
 GITHUB_APP_SECRET = os.getenv('GITHUBAPP_SECRET')
 
 app = Flask(__name__)
+app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
+app.url_map.redirect_defaults = False
 preview_app = Flask("Preview")
 
 if GITHUB_APP_ID and GITHUB_APP_KEY and GITHUB_APP_SECRET:
@@ -61,11 +64,27 @@ def get_exclusion_list() -> Response:
     return jsonify(get_excluded_plugins())
 
 
+@app.route('/categories', defaults={'version': os.getenv('category_version', 'EDAM-BIOIMAGING:alpha06')})
+def get_categories(version: str) -> Response:
+    return jsonify(get_categories_mapping(version))
+
+
+@app.route('/categories/<category>', defaults={'version': os.getenv('category_version', 'EDAM-BIOIMAGING:alpha06')})
+@app.route('/categories/<category>/versions/<version>')
+def get_category(category: str, version: str) -> Response:
+    return jsonify(get_category_mapping(category, get_categories_mapping(version)))
+
+
 @app.errorhandler(404)
 def handle_exception(e) -> Response:
-    links = [rule.rule for rule in app.url_map.iter_rules() if 'GET' in rule.methods
-             and (rule.rule.startswith("/plugins") or rule.rule.startswith("/shields"))]
-    return app.make_response((f"Invalid Endpoint, valid endpoints are {links}", 404,
+    links = [rule.rule for rule in app.url_map.iter_rules()
+             if 'GET' in rule.methods and
+             any((rule.rule.startswith("/plugins"),
+                  rule.rule.startswith("/shields"),
+                  rule.rule.startswith("/category")))]
+    links.sort()
+    links = "\n".join(links)
+    return app.make_response((f"Invalid Endpoint, valid endpoints are:\n{links}", 404,
                               {'Content-Type': 'text/plain; charset=utf-8'}))
 
 

@@ -1,8 +1,9 @@
 from concurrent import futures
 from datetime import datetime
-from typing import Tuple, Dict, List
+from typing import Tuple, Dict, List, Union
 from zipfile import ZipFile
 from io import BytesIO
+from collections import defaultdict
 
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
@@ -13,7 +14,7 @@ from api.zulip import notify_new_packages
 index_subset = {'name', 'summary', 'description_text', 'description_content_type',
                 'authors', 'license', 'python_version', 'operating_system',
                 'release_date', 'version', 'first_released',
-                'development_status'}
+                'development_status', 'category'}
 
 
 def get_public_plugins() -> Dict[str, str]:
@@ -91,7 +92,8 @@ def slice_metadata_to_index_columns(plugins_metadata: List[dict]) -> List[dict]:
     :param plugins_metadata: plugin metadata dictionary
     :return: sliced dict metadata for the plugin
     """
-    return [{k: plugin_metadata[k] for k in index_subset} for plugin_metadata in plugins_metadata]
+    return [{k: plugin_metadata[k] for k in index_subset if k in plugin_metadata}
+            for plugin_metadata in plugins_metadata]
 
 
 def get_excluded_plugins() -> Dict[str, str]:
@@ -122,6 +124,20 @@ def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
         metadata = {**metadata, **get_github_metadata(github_repo_url)}
     if 'description' in metadata:
         metadata['description_text'] = render_description(metadata.get('description'))
+    if 'labels' in metadata:
+        category_mappings = get_categories_mapping(metadata['labels']['ontology'])
+        categories = defaultdict(list)
+        category_hierarchy = defaultdict(list)
+        for category in metadata['labels']['terms']:
+            mapped_category = get_category_mapping(category, category_mappings)
+            for match in mapped_category:
+                if match['label'] not in categories[match['dimension']]:
+                    categories[match['dimension']].append(match['label'])
+                match['hierarchy'][0] = match['label']
+                category_hierarchy[match['dimension']].append(match['hierarchy'])
+        metadata['category'] = categories
+        metadata['category_hierarchy'] = category_hierarchy
+        del metadata['labels']
     cache(metadata, f'cache/{plugin}/{version}.json')
     return plugin, metadata
 
@@ -236,3 +252,65 @@ def move_artifact_to_s3(payload, client):
             pull_request = client.pull_request(owner, repo, pull_request_number)
             pull_request.create_comment('Preview page for your plugin is ready here:\n'
                                         f'https://preview.napari-hub.org/{owner}/{repo}/{pull_request_number}')
+
+
+def get_categories_mapping(version: str) -> Dict[str, List]:
+    """
+    Get all category mappings.
+
+    Parameters
+    ----------
+    version
+        version of the category mapping to get
+
+    Returns
+    -------
+    Mapping between ontology label to list of mappings, each mapping consists:
+        dimension: dimension of the mapping, should be one of ["Supported data", "Image modality", "Workflow step"]
+        hierarchy: mapped hierarchy from the top level ontology label to the bottom as a list
+        label: mapped napari hub label.
+    """
+    mappings = get_cache(f'category/{version.replace(":", "/")}.json')
+    return mappings or {}
+
+
+def get_category_mapping(category: str, mappings: Dict[str, List]) -> List[Dict]:
+    """
+    Get category mappings
+
+    Parameters
+    ----------
+    category : str
+        name of the category to map
+    mappings: dict
+        mappings to use for lookups, if None, use cached mapping
+
+    Returns
+    -------
+    match : list of matched category
+        list of mapped label, dimension and hierarchy, where hierarchy is from most abstract to most specific.
+        for example, Manual segmentation is mapped to the following list:
+        [
+            {
+                "label": "Image Segmentation",
+                "dimension": "Operation",
+                "hierarchy": [
+                    "Image segmentation",
+                    "Manual segmentation"
+                ]
+            },
+            {
+                "label": "Image annotation",
+                "dimension": "Operation",
+                "hierarchy": [
+                    "Image annotation",
+                    "Dense image annotation",
+                    "Manual segmentation"
+                ]
+            }
+        ]
+    """
+    if category not in mappings:
+        return []
+    else:
+        return mappings[category]
