@@ -45,8 +45,8 @@ def get_plugin_preview(repo_pth: str, dest_dir: str, is_local: bool = False, bra
     if action_github_repo:
         action_repo_url = f'https://github.com/{action_github_repo}'
         meta.update(get_github_metadata(action_repo_url, branch=branch))
-        if "code_repository" in meta and action_github_repo != meta["code_repository"]:
-            meta['action_repo'] = action_github_repo
+        if "code_repository" in meta and action_repo_url != meta["code_repository"]:
+            meta['action_repository'] = action_repo_url
     elif "code_repository" in meta:
         meta.update(get_github_metadata(meta["code_repository"], branch=branch))
 
