@@ -184,6 +184,14 @@ export function usePluginMetadata() {
       name: 'Citation information',
       value: plugin?.citations,
     },
+
+    category: {
+      value: plugin?.category || undefined,
+    },
+
+    categoryHierarchy: {
+      value: plugin?.category_hierarchy || undefined,
+    },
   };
 }
 

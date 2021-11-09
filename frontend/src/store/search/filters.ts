@@ -5,11 +5,17 @@
 import { satisfies } from '@renovate/pep440';
 import { flow, intersection, isArray, isEmpty, some } from 'lodash';
 
-import { DeriveGet } from '@/types';
+import { DeriveGet, HubDimension } from '@/types';
 
 import { searchFormStore } from './form.store';
 import { SearchResult } from './search.types';
 import { SearchResultTransformFunction } from './types';
+
+function getSelectedKeys(state: Record<string, boolean>): string[] {
+  return Object.entries(state)
+    .filter(([, enabled]) => enabled)
+    .map(([version]) => version);
+}
 
 function filterByPythonVersion(
   get: DeriveGet,
@@ -18,10 +24,7 @@ function filterByPythonVersion(
   const state = get(searchFormStore).filters.pythonVersions;
 
   // Collect all versions selected on the filter form
-  const selectedVersions = Object.entries(state)
-    .filter(([, enabled]) => enabled)
-    .map(([version]) => version);
-
+  const selectedVersions = getSelectedKeys(state);
   if (isEmpty(selectedVersions)) {
     return results;
   }
@@ -117,11 +120,65 @@ function filterByLicense(
   return results;
 }
 
+interface CreateCategoryFilterOptions {
+  dimension: HubDimension;
+  getState: (get: DeriveGet) => Record<string, boolean>;
+}
+
+/**
+ * Helper for creating category filter functions. Generally this allows us to
+ * create functions that check if the selected category terms match whatever is
+ * in the plugin for a particular category dimension.
+ */
+function createCategoryFilter({
+  dimension,
+  getState,
+}: CreateCategoryFilterOptions) {
+  return (get: DeriveGet, results: SearchResult[]) => {
+    const state = getState(get);
+
+    // Check if the user enabled any of the filters. Return early otherwise.
+    const selectedKeys = getSelectedKeys(state);
+    if (isEmpty(selectedKeys)) {
+      return results;
+    }
+
+    // Return plugins that include at least one selected category.
+    return results.filter(
+      ({ plugin }) =>
+        !isEmpty(
+          intersection(
+            plugin.category ? plugin.category[dimension] : [],
+            selectedKeys,
+          ),
+        ),
+    );
+  };
+}
+
+const filterByWorkflowStep = createCategoryFilter({
+  getState: (get) => get(searchFormStore).filters.workflowStep,
+  dimension: 'Workflow step',
+});
+
+const filterByImageModality = createCategoryFilter({
+  getState: (get) => get(searchFormStore).filters.imageModality,
+  dimension: 'Image modality',
+});
+
+const filterBySupportedData = createCategoryFilter({
+  getState: (get) => get(searchFormStore).filters.supportedData,
+  dimension: 'Supported data',
+});
+
 const FILTERS = [
   filterByPythonVersion,
   filterByOperatingSystem,
   filterByDevelopmentStatus,
   filterByLicense,
+  filterByWorkflowStep,
+  filterByImageModality,
+  filterBySupportedData,
 ];
 
 /**

@@ -1,9 +1,10 @@
 import { over } from 'lodash';
+import { DeepPartial } from 'utility-types';
 import { proxy, ref } from 'valtio';
 import { derive, subscribeKey } from 'valtio/utils';
 
 import { BEGINNING_PAGE } from '@/constants/search';
-import { PluginIndexData } from '@/types';
+import { HubDimension, PluginIndexData } from '@/types';
 
 import { DEFAULT_SORT_TYPE } from './constants';
 import { FuseSearchEngine } from './engines';
@@ -45,6 +46,10 @@ export const DEFAULT_STATE = {
       3.8: false,
       3.9: false,
     },
+
+    supportedData: {} as Record<string, boolean>,
+    workflowStep: {} as Record<string, boolean>,
+    imageModality: {} as Record<string, boolean>,
   },
 };
 
@@ -113,6 +118,38 @@ export function initSearchEngine(index: PluginIndexData[]): void {
 export function initOsiApprovedLicenseSet(licenses: SpdxLicenseData[]): void {
   searchFormStore.filters.license.osiApprovedLicenseSet =
     getOsiApprovedLicenseSet(licenses);
+}
+
+/**
+ * Map of hub dimensions to their corresponding UI state.
+ */
+const CATEGORY_FILTER_STATES: Record<HubDimension, Record<string, boolean>> = {
+  'Image modality': searchFormStore.filters.imageModality,
+  'Supported data': searchFormStore.filters.supportedData,
+  'Workflow step': searchFormStore.filters.workflowStep,
+};
+
+/**
+ * Initialization function that sets up the category filters using the provided
+ * data. This is necessary so that the filters only include a subset of terms
+ * that are included in the current plugin ecosystem.
+ *
+ * @param index The plugin index.
+ */
+export function initCategoryFilters(index: PluginIndexData[]): void {
+  for (const plugin of index) {
+    if (plugin?.category) {
+      for (const [dimension, keys] of Object.entries(plugin.category)) {
+        const state = CATEGORY_FILTER_STATES[dimension as HubDimension];
+
+        for (const key of keys) {
+          if (key) {
+            state[key] = false;
+          }
+        }
+      }
+    }
+  }
 }
 
 export function resetFilters(): void {
