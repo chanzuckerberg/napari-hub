@@ -125,11 +125,11 @@ def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
     if 'description' in metadata:
         metadata['description_text'] = render_description(metadata.get('description'))
     if 'labels' in metadata:
-        category_mappings = get_category_mapping(metadata['labels']['ontology'])
+        category_mappings = get_categories_mapping(metadata['labels']['ontology'])
         categories = defaultdict(list)
         category_hierarchy = defaultdict(list)
         for category in metadata['labels']['terms']:
-            mapped_category = get_category_mapping(metadata['labels']['ontology'], category, category_mappings)
+            mapped_category = get_category_mapping(category, category_mappings)
             for match in mapped_category:
                 if match['label'] not in categories[match['dimension']]:
                     categories[match['dimension']].append(match['label'])
@@ -254,14 +254,32 @@ def move_artifact_to_s3(payload, client):
                                         f'https://preview.napari-hub.org/{owner}/{repo}/{pull_request_number}')
 
 
-def get_category_mapping(version: str, category: str = None, mappings: dict = None) -> Union[Dict[str, List], List[Dict]]:
+def get_categories_mapping(version: str) -> Dict[str, List]:
+    """
+    Get all category mappings.
+
+    Parameters
+    ----------
+    version
+        version of the category mapping to get
+
+    Returns
+    -------
+    Mapping between ontology label to list of mappings, each mapping consists:
+        dimension: dimension of the mapping, should be one of ["Supported data", "Image modality", "Workflow step"]
+        hierarchy: mapped hierarchy from the top level ontology label to the bottom as a list
+        label: mapped napari hub label.
+    """
+    mappings = get_cache(f'category/{version.replace(":", "/")}.json')
+    return mappings or {}
+
+
+def get_category_mapping(category: str, mappings: Dict[str, List]) -> List[Dict]:
     """
     Get category mappings
 
     Parameters
     ----------
-    version: str
-        version of the category to use
     category : str
         name of the category to map
     mappings: dict
@@ -269,7 +287,7 @@ def get_category_mapping(version: str, category: str = None, mappings: dict = No
 
     Returns
     -------
-    match : dict if no category is given or list of dict if matched
+    match : list of matched category
         list of mapped label, dimension and hierarchy, where hierarchy is from most abstract to most specific.
         for example, Manual segmentation is mapped to the following list:
         [
@@ -292,12 +310,6 @@ def get_category_mapping(version: str, category: str = None, mappings: dict = No
             }
         ]
     """
-    if not mappings:
-        mappings = get_cache(f'category/{version.replace(":", "/")}.json')
-    if not mappings:
-        return []
-    if not category:
-        return mappings
     if category not in mappings:
         return []
     else:

@@ -28,10 +28,8 @@ def get_edam_ontology(version: str) -> Dict[str, List[str]]:
             ]
         }
     """
-    if version:
-        url = f'https://edamontology.org/EDAM-bioimaging_{version}.csv'
-    else:
-        url = f'https://edamontology.org/EDAM-bioimaging.csv'
+    version = f"_{version}" if version else version
+    url = f'https://edamontology.org/EDAM-bioimaging{version}.csv'
     response = requests.get(url)
     if response.status_code != requests.codes.ok:
         response.raise_for_status()

@@ -5,7 +5,7 @@ from flask import Flask, Response, jsonify
 from flask_githubapp.core import GitHubApp
 
 from api.model import get_public_plugins, get_index, get_plugin, get_excluded_plugins, update_cache, \
-    move_artifact_to_s3, get_category_mapping
+    move_artifact_to_s3, get_category_mapping, get_categories_mapping
 from api.shield import get_shield
 from utils.utils import send_alert, reformat_ssh_key_to_pem_bytes
 
@@ -64,11 +64,15 @@ def get_exclusion_list() -> Response:
     return jsonify(get_excluded_plugins())
 
 
-@app.route('/category', defaults={'category': "", 'version': os.getenv('category_version', 'EDAM-BIOIMAGING:alpha06')})
-@app.route('/category/<category>', defaults={'version': os.getenv('category_version', 'EDAM-BIOIMAGING:alpha06')})
-@app.route('/category/<category>/version/<version>')
+@app.route('/categories', defaults={'category': "", 'version': os.getenv('category_version', 'EDAM-BIOIMAGING:alpha06')})
+def get_categories(version: str) -> Response:
+    return jsonify(get_categories_mapping(version))
+
+
+@app.route('/categories/<category>', defaults={'version': os.getenv('category_version', 'EDAM-BIOIMAGING:alpha06')})
+@app.route('/categories/<category>/versions/<version>')
 def get_category(category: str, version: str) -> Response:
-    return jsonify(get_category_mapping(version, category))
+    return jsonify(get_category_mapping(category, get_categories_mapping(version)))
 
 
 @app.errorhandler(404)

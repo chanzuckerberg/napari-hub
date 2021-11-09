@@ -27,6 +27,13 @@ visibility_set = {'public', 'disabled', 'hidden'}
 github_pattern = re.compile("https://github\\.com/([^/]+)/([^/]+)")
 hub_config_keys = {'summary', 'authors', 'labels', 'visibility'}
 default_description = 'The developer has not yet provided a napari-hub specific description.'
+project_url_names = {
+    'Project Site': 'project_site',
+    'Documentation': 'documentation',
+    'User Support': 'support',
+    'Report Issues': 'report_issues',
+    'Twitter': 'twitter'
+}
 
 
 def get_file(download_url: str, file: str, branch: str = 'HEAD') -> [dict, None]:
@@ -125,16 +132,10 @@ def get_github_metadata(repo_url: str, branch: str = 'HEAD') -> dict:
         github_metadata.update(hub_config)
 
         project_urls = config.get('project_urls', {})
-        if 'Project Site' in project_urls:
-            github_metadata['project_site'] = project_urls['Project Site']
-        if 'Documentation' in project_urls:
-            github_metadata['documentation'] = project_urls['Documentation']
-        if 'User Support' in project_urls:
-            github_metadata['support'] = project_urls['User Support']
-        if 'Report Issues' in project_urls:
-            github_metadata['report_issues'] = project_urls['Report Issues']
-        if 'Twitter' in project_urls:
-            github_metadata['twitter'] = project_urls['Twitter']
+        github_metadata.update({
+           hub_name: project_urls[yaml_name]
+           for yaml_name, hub_name in project_url_names.items() if yaml_name in project_urls
+        })
 
     return github_metadata
 
