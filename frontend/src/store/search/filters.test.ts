@@ -262,28 +262,30 @@ describe('filterResults()', () => {
     });
   });
 
-  describe('filter by workflow step', () => {
-    const results = getCategoryResults(
-      {
-        category: {
-          'Workflow step': ['foo', 'bar'],
-        },
+  const categoryResults = getCategoryResults(
+    {
+      category: {
+        'Supported data': ['2d', '3d'],
+        'Workflow step': ['foo', 'bar'],
       },
-      {
-        category: {
-          'Workflow step': ['bar'],
-        },
+    },
+    {
+      category: {
+        'Workflow step': ['bar'],
       },
-      {
-        category: {
-          'Image modality': ['foo', 'bar'],
-        },
+    },
+    {
+      category: {
+        'Image modality': ['foo', 'bar'],
+        'Supported data': ['3d'],
       },
-    );
+    },
+  );
 
+  describe('filter by workflow step', () => {
     it('should allow all plugins when no filters are enabled', () => {
-      const filtered = filterResults(createMockFilterGet(), results);
-      expect(filtered).toEqual(results);
+      const filtered = filterResults(createMockFilterGet(), categoryResults);
+      expect(filtered).toEqual(categoryResults);
     });
 
     it('should filter plugins with matching workflow steps', () => {
@@ -293,34 +295,16 @@ describe('filterResults()', () => {
             bar: true,
           },
         }),
-        results,
+        categoryResults,
       );
-      expect(filtered).toEqual(results.slice(0, 2));
+      expect(filtered).toEqual(categoryResults.slice(0, 2));
     });
   });
 
   describe('filter by image modality', () => {
-    const results = getCategoryResults(
-      {
-        category: {
-          'Workflow step': ['foo', 'bar'],
-        },
-      },
-      {
-        category: {
-          'Workflow step': ['bar'],
-        },
-      },
-      {
-        category: {
-          'Image modality': ['foo', 'bar'],
-        },
-      },
-    );
-
     it('should allow all plugins when no filters are enabled', () => {
-      const filtered = filterResults(createMockFilterGet(), results);
-      expect(filtered).toEqual(results);
+      const filtered = filterResults(createMockFilterGet(), categoryResults);
+      expect(filtered).toEqual(categoryResults);
     });
 
     it('should filter plugins with matching workflow steps', () => {
@@ -330,34 +314,16 @@ describe('filterResults()', () => {
             bar: true,
           },
         }),
-        results,
+        categoryResults,
       );
-      expect(filtered).toEqual(results.slice(2, 3));
+      expect(filtered).toEqual(categoryResults.slice(2, 3));
     });
   });
 
   describe('filter by supported data', () => {
-    const results = getCategoryResults(
-      {
-        category: {
-          'Supported data': ['2d', '3d'],
-        },
-      },
-      {
-        category: {
-          'Workflow step': ['bar'],
-        },
-      },
-      {
-        category: {
-          'Supported data': ['3d'],
-        },
-      },
-    );
-
     it('should allow all plugins when no filters are enabled', () => {
-      const filtered = filterResults(createMockFilterGet(), results);
-      expect(filtered).toEqual(results);
+      const filtered = filterResults(createMockFilterGet(), categoryResults);
+      expect(filtered).toEqual(categoryResults);
     });
 
     it('should filter plugins with matching workflow steps', () => {
@@ -367,9 +333,9 @@ describe('filterResults()', () => {
             '3d': true,
           },
         }),
-        results,
+        categoryResults,
       );
-      expect(filtered).toEqual([results[0], results[2]]);
+      expect(filtered).toEqual([categoryResults[0], categoryResults[2]]);
     });
   });
 });
