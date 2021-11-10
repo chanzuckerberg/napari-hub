@@ -316,7 +316,7 @@ describe('filterResults()', () => {
         }),
         categoryResults,
       );
-      expect(filtered).toEqual(categoryResults.slice(2, 3));
+      expect(filtered).toEqual([categoryResults[2]]);
     });
   });
 
