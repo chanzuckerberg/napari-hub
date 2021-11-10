@@ -1,5 +1,4 @@
 import { over } from 'lodash';
-import { DeepPartial } from 'utility-types';
 import { proxy, ref } from 'valtio';
 import { derive, subscribeKey } from 'valtio/utils';
 
