@@ -41,9 +41,14 @@ def get_plugin_preview(repo_pth: str, dest_dir: str, is_local: bool = False, bra
     meta = parse_meta(wheel_pth)
 
     # parse additional metadata from URL
-    if meta.get("code_repository"):
-        extra_meta = get_github_metadata(meta["code_repository"], branch=branch)
-        meta.update(extra_meta)
+    action_github_repo = os.getenv("GITHUB_REPOSITORY")
+    if action_github_repo:
+        action_repo_url = f'https://github.com/{action_github_repo}'
+        meta.update(get_github_metadata(action_repo_url, branch=branch))
+        if "code_repository" in meta and action_repo_url != meta["code_repository"]:
+            meta['action_repository'] = action_repo_url
+    elif "code_repository" in meta:
+        meta.update(get_github_metadata(meta["code_repository"], branch=branch))
 
     # get release date and first released
     get_pypi_date_meta(meta)
