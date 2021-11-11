@@ -39,6 +39,7 @@ export interface PluginIndexData {
  * Interface for plugin data response from backend.
  */
 export interface PluginData extends PluginIndexData {
+  action_repository?: string;
   citations?: CitationData | null;
   code_repository: string;
   documentation: string;

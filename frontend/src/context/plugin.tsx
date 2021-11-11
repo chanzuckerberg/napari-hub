@@ -184,9 +184,14 @@ export function usePluginMetadata() {
       name: 'Citation information',
       value: plugin?.citations,
     },
+
+    actionRepository: {
+      name: '',
+      value: plugin?.action_repository ?? '',
+    },
   };
 }
 
 export type Metadata = ReturnType<typeof usePluginMetadata>;
 
-export type MetadataKeys = keyof Metadata;
+export type MetadataKeys = keyof Omit<Metadata, 'actionRepository'>;
