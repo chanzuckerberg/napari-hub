@@ -282,23 +282,25 @@ export function AppBarPreview() {
               {PREVIEW_LINK_TEXT}
             </Link>
             {hasRepoMismatch ? (
-              <span>
-                , but your metadata points to{' '}
-                <Link className="underline" href={codeRepo}>
-                  {codeRepoName}{' '}
-                </Link>
-                as the source code (
+              <>
+                <span className="italic">
+                  <span>, but your metadata points to </span>
+                  <Link className="underline" href={codeRepo}>
+                    {codeRepoName}
+                  </Link>{' '}
+                  <span>as the source code. </span>
+                </span>
+
                 <Link className="underline" href={MISMATCH_REPOSITORY_DOCS_URL}>
-                  Learn more
+                  Learn more.
                 </Link>
-                ).
-              </span>
+              </>
             ) : (
               '.'
             )}
           </div>
 
-          <div>It is not live on napari hub</div>
+          <div>It is not live on the napari hub</div>
         </p>
       </div>
     </>
