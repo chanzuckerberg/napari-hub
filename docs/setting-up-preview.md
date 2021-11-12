@@ -34,6 +34,7 @@ e.g. `plugin_preview.yml` and place this file in a `.github/workflows` folder at
 
 ```yaml
 name: napari hub Preview Page
+# For more info on this action, see https://github.com/apps/napari-hub-plugin-preview
 
 on:
   pull_request:
