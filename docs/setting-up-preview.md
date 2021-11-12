@@ -7,8 +7,7 @@ page every time you open a new pull request, or update an existing one.
 ## Setting it up
 
 ### 1. Install the GitHub app
-First, you will need to install the napari Hub Plugin Preview GitHub app to the account or
-organization where the plugin lives. 
+First, you will need to install the napari Hub Plugin Preview GitHub app to the plugin's repository. 
 Follow [this link](https://github.com/apps/napari-hub-plugin-preview) and click the green `Install` button on the right.
 
 ![napari hub plugin preview app page with large green install button on the right](./images/app_page.png)
@@ -60,9 +59,9 @@ Commit this file and push it to your repository.
 ### 3. Open your pull request and view your preview
 Now that your workflow and GitHub app are set up, you can open a Pull Request to your
 plugin repo! This will kick off your preview workflow, and once the preview is built,
-the app will post a comment to your pull request with a link to the preview page 
-(it may take up to 5 minutes for this comment to be posted).
-<!-- TODO: is 5 minutes accurate? -->
+the app will post a comment to your pull request with a link to the preview page. It 
+can take up to 5 minutes for the preview action to complete, and on completion the
+comment is posted almost instantly.
 
 ![napari-hub-plugin-preview GitHub app posts comment on open pull request with link to plugin preview](./images/plugin_preview_comment.png)
 
@@ -89,10 +88,10 @@ Once all your fields are complete, the banner will collapse and there will be no
 
 ![my-napari-plugin preview page with collapsed banner showing "All fields complete"](./images/all_fields_complete.png)
 
-```{note}
+### Seeing a warning message?
 You may see a message at the top of the preview page telling you 
-"This preview of <your-plugin> was generated from <some-other-account>/<your-plugin>, *but your metadata points to
-<your-account>/<your-plugin> as the source code. Learn more."
+"This preview of `<your-plugin>` was generated from `<some-other-account>/<your-plugin>`, *but your metadata points to
+`<your-account>/<your-plugin>` as the source code*. Learn more."
 
 ![plugin preview page showing warning message at the bottom of the top banner](./images/warning_message.png)
 
@@ -105,7 +104,6 @@ This message may also occur if you've mistyped your source code URL, or if it po
 of the organization where your plugin is stored. In this case, you may also want to update the source code URL.
 
 [This guide](./customizing-plugin-listing#code-repository) has information on how to set the source code URL of your plugin.
-```
 
 If you notice any issues with the metadata, or discrepancies in what the preview page is showing versus what 
 you see on the napari hub, please let us know by raising an issue on the [napari hub repo](https://github.com/chanzuckerberg/napari-hub/issues/new/choose).
@@ -122,13 +120,15 @@ checking out your repository, and parsing the wheel's metadata directly. Any of 
 metadata that comes from other sources (like your `.napari/config.yml` or `citation.cff` files)
 is pulled directly from your GitHub repository.
 
-<!-- TODO: is this all valid and do we need more detail? -->
 Once the metadata is parsed, we use the [GitHub action](https://github.com/chanzuckerberg/napari-hub-preview-action) in a Pull Request triggered workflow to build your preview page.
 The page built by your action is then rendered using the help of the [GitHub app](https://github.com/apps/napari-hub-plugin-preview), which
 is also responsible for posting the URL of your preview page on your PR once it's ready.
 
-<!-- TODO: what do we want the user to do if they want more information -->
-For more information...?
+For more detail on how this is built, you can check out the following links:
+- [The GitHub action](https://github.com/chanzuckerberg/napari-hub-preview-action/blob/main/action.yml) that builds your preview page
+- [The script](https://github.com/chanzuckerberg/napari-hub/blob/main/backend/preview/preview.py) that parses the metadata from your pull request
+- [The documentation](https://github.com/chanzuckerberg/napari-hub/blob/main/frontend/README.md#documentation) on the architecture and structure of the frontend 
+- [The GitHub app](https://github.com/chanzuckerberg/napari-hub/blob/dfa9fc6c12388b92db00e9ee432e77a4969a196d/backend/api/app.py#L97) responsible for grabbing your preview page and transfering it for hosting
 
 For questions or help, please [reach out on our Discussions forum](https://github.com/chanzuckerberg/napari-hub/discussions/categories/q-a).
 
