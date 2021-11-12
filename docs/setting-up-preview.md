@@ -118,7 +118,7 @@ small error.
 
 This plugin preview service therefore relies on building a wheel of your package after
 checking out your repository, and parsing the wheel's metadata directly. Any of your 
-metadata that comes from other sources (like your `config.yml` or `citation.cff` files)
+metadata that comes from other sources (like your `.napari/config.yml` or `citation.cff` files)
 is pulled directly from your GitHub repository.
 
 <!-- TODO: is this all valid and do we need more detail? -->
