@@ -33,7 +33,7 @@ To add the workflow to your plugin repository, copy the YAML snippet below into 
 e.g. `plugin_preview.yml` and place this file in a `.github/workflows` folder at the root of your repository.
 
 ```yaml
-name: Preview Page
+name: napari hub Preview Page
 
 on:
   pull_request:
