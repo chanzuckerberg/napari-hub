@@ -130,4 +130,5 @@ is also responsible for posting the URL of your preview page on your PR once it'
 <!-- TODO: what do we want the user to do if they want more information -->
 For more information...?
 
+For questions or help, please [reach out on our Discussions forum](https://github.com/chanzuckerberg/napari-hub/discussions/categories/q-a).
 
