@@ -88,8 +88,7 @@ Once all your fields are complete, the banner will collapse and there will be no
 
 ![my-napari-plugin preview page with collapsed banner showing "All fields complete"](./images/all_fields_complete.png)
 
-```{admonition}
-class: important
+```{note}
 You may see a message at the top of the preview page telling you 
 "This preview of <your-plugin> was generated from <some-other-account>/<your-plugin>, *but your metadata points to
 <your-account>/<your-plugin> as the source code. Learn more."
