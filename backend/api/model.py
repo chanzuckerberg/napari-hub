@@ -228,7 +228,7 @@ def move_artifact_to_s3(payload, client):
     :param payload: json body from the github webhook
     :param client: installation client to query GitHub API
     """
-    if get_attribute(payload, ["workflow_run", "name"]) != "Preview Page":
+    if get_attribute(payload, ["workflow_run", "name"]) != "napari hub Preview Page":
         return
 
     owner = get_attribute(payload, ['repository', 'owner', 'login'])

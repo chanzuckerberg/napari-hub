@@ -32,7 +32,7 @@ To add the workflow to your plugin repository, copy the YAML snippet below into 
 e.g. `plugin_preview.yml` and place this file in a `.github/workflows` folder at the root of your repository.
 
 ```yaml
-name: napari hub Preview Page
+name: napari hub Preview Page # we use this name to find your preview page artifact, so don't change it!
 # For more info on this action, see https://github.com/chanzuckerberg/napari-hub-preview-action/blob/main/action.yml
 
 on:
@@ -104,9 +104,6 @@ This message may also occur if you've mistyped your source code URL, or if it po
 of the organization where your plugin is stored. In this case, you may also want to update the source code URL.
 
 [This guide](./customizing-plugin-listing#code-repository) has information on how to set the source code URL of your plugin.
-
-If you notice any issues with the metadata, or discrepancies in what the preview page is showing versus what 
-you see on the napari hub, please let us know by raising an issue on the [napari hub repo](https://github.com/chanzuckerberg/napari-hub/issues/new/choose).
 
 ## How does it work?
 One of the challenges of building this preview is that much of the metadata of your 
