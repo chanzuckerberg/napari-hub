@@ -2,7 +2,12 @@ import { isArray } from 'lodash';
 import { createContext, ReactNode, useContext } from 'react';
 import { DeepPartial } from 'utility-types';
 
-import { PluginData, PluginRepoData, PluginRepoFetchError } from '@/types';
+import {
+  HubDimension,
+  PluginData,
+  PluginRepoData,
+  PluginRepoFetchError,
+} from '@/types';
 import { formatDate } from '@/utils';
 
 /**
@@ -61,6 +66,10 @@ export function usePluginState(): PluginState {
  */
 export function usePluginMetadata() {
   const { plugin } = usePluginState();
+
+  function getCategoryValue(dimension: HubDimension) {
+    return plugin?.category ? plugin.category[dimension] ?? [] : [];
+  }
 
   return {
     name: {
@@ -184,9 +193,27 @@ export function usePluginMetadata() {
       name: 'Citation information',
       value: plugin?.citations,
     },
+
+    workflowSteps: {
+      name: 'Workflow step',
+      value: getCategoryValue('Workflow step'),
+    },
+
+    imageModality: {
+      name: 'Image modality',
+      value: getCategoryValue('Image modality'),
+    },
+
+    supportedData: {
+      name: 'Supported data',
+      value: getCategoryValue('Supported data'),
+    },
   };
 }
 
 export type Metadata = ReturnType<typeof usePluginMetadata>;
 
-export type MetadataKeys = keyof Metadata;
+export type MetadataKeys = keyof Omit<
+  Metadata,
+  'workflowSteps' | 'imageModality' | 'supportedData'
+>;
