@@ -10,6 +10,9 @@
     */
     "isolatedModules": false,
 
+    // JSX needs to be compiled for Jest tests.
+    "jsx": "react-jsx",
+
     "paths": {
       "@/*": ["./src/*"],
       "@/tests/*": ["./tests/*"]

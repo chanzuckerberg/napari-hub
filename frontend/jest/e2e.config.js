@@ -1,4 +1,5 @@
 const { set } = require('lodash');
+const path = require('path');
 const { breakpoints } = require('../src/theme');
 
 const isHeadful =
@@ -74,7 +75,13 @@ module.exports = {
     },
   },
 
+  globals: {
+    'ts-jest': {
+      tsconfig: path.resolve(__dirname, './tsconfig.json'),
+    },
+  },
+
   transform: {
-    '\\.tsx?$': 'babel-jest',
+    '\\.tsx?$': 'ts-jest',
   },
 };
