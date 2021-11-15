@@ -1,4 +1,4 @@
-import { Divider } from '@material-ui/core';
+import Divider from '@material-ui/core/Divider';
 import clsx from 'clsx';
 import { AnimateSharedLayout, motion } from 'framer-motion';
 

@@ -1,5 +1,6 @@
-import { Button, Chip } from '@material-ui/core';
-import { Close } from '@material-ui/icons';
+import Button from '@material-ui/core/Button';
+import Chip from '@material-ui/core/Chip';
+import Close from '@material-ui/icons/Close';
 import { isEmpty, set } from 'lodash';
 import { useSnapshot } from 'valtio';
 

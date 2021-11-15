@@ -1,4 +1,5 @@
-import { Collapse, IconButton } from '@material-ui/core';
+import Collapse from '@material-ui/core/Collapse';
+import IconButton from '@material-ui/core/IconButton';
 import clsx from 'clsx';
 import { ReactNode, useState } from 'react';
 

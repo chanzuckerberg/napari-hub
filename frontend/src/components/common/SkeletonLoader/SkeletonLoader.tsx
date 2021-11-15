@@ -1,4 +1,4 @@
-import { Skeleton } from '@material-ui/lab';
+import Skeleton from '@material-ui/lab/Skeleton';
 import { ReactNode } from 'react';
 
 import { useLoadingState } from '@/context/loading';

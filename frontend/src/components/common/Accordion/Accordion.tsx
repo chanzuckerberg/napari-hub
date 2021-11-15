@@ -1,9 +1,7 @@
-import {
-  Accordion as MUIAccordion,
-  AccordionDetails,
-  AccordionSummary,
-} from '@material-ui/core';
-import { Add } from '@material-ui/icons';
+import MUIAccordion from '@material-ui/core/Accordion';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import Add from '@material-ui/icons/Add';
 import clsx from 'clsx';
 import { ReactNode } from 'react';
 
