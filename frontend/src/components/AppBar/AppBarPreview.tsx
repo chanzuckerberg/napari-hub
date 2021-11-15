@@ -173,7 +173,7 @@ const PREVIEW_LINK_TEXT = getFullRepoName(PR_LINK);
 
 // TODO Update this to the correct link.
 const MISMATCH_REPOSITORY_DOCS_URL =
-  'https://github.com/chanzuckerberg/napari-hub';
+  'https://github.com/chanzuckerberg/napari-hub/blob/main/docs/setting-up-preview.md#seeing-a-warning-message';
 
 export function AppBarPreview() {
   const metadata = usePluginMetadata();
@@ -285,13 +285,17 @@ export function AppBarPreview() {
               <>
                 <span className="italic">
                   <span>, but your metadata points to </span>
-                  <Link className="underline" href={codeRepo}>
+                  <Link className="underline" href={codeRepo} newTab>
                     {codeRepoName}
                   </Link>{' '}
                   <span>as the source code. </span>
                 </span>
 
-                <Link className="underline" href={MISMATCH_REPOSITORY_DOCS_URL}>
+                <Link
+                  className="underline"
+                  href={MISMATCH_REPOSITORY_DOCS_URL}
+                  newTab
+                >
                   Learn more.
                 </Link>
               </>
