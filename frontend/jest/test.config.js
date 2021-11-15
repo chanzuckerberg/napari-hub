@@ -1,5 +1,3 @@
-const path = require('path');
-
 module.exports = {
   rootDir: '..',
   setupFilesAfterEnv: ['<rootDir>/jest/setupTests.ts'],
@@ -16,13 +14,7 @@ module.exports = {
     '^@/(.*)$': '<rootDir>/src/$1',
   },
 
-  globals: {
-    'ts-jest': {
-      tsconfig: path.resolve(__dirname, './tsconfig.json'),
-    },
-  },
-
   transform: {
-    '\\.tsx?$': 'ts-jest',
+    '\\.tsx?$': 'babel-jest',
   },
 };
