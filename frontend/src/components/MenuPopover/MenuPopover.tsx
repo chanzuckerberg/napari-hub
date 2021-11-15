@@ -1,4 +1,5 @@
-import { IconButton, Popover } from '@material-ui/core';
+import IconButton from '@material-ui/core/IconButton';
+import Popover from '@material-ui/core/Popover';
 import clsx from 'clsx';
 
 import { Close } from '@/components/common/icons';

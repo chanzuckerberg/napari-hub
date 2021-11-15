@@ -1,4 +1,4 @@
-import { ServerStyleSheets } from '@material-ui/styles';
+import ServerStyleSheets from '@material-ui/styles/ServerStyleSheets';
 import clsx from 'clsx';
 import Document, {
   DocumentContext,

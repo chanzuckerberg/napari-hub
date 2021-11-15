@@ -1,5 +1,6 @@
-import { Tooltip, useMediaQuery } from '@material-ui/core';
 import useTheme from '@material-ui/core/styles/useTheme';
+import Tooltip from '@material-ui/core/Tooltip';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import clsx from 'clsx';
 import { useEffect } from 'react';
 import { usePrevious } from 'react-use';
