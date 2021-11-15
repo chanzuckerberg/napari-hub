@@ -8,7 +8,6 @@ export interface PluginAuthor {
 /**
  * Citation formats.
  * */
-
 export interface CitationData {
   citation: string;
   RIS: string;
@@ -16,11 +15,25 @@ export interface CitationData {
   APA: string;
 }
 
+export type HubDimension =
+  | 'Workflow step'
+  | 'Supported data'
+  | 'Image modality';
+
+export type PluginCategory = Partial<{
+  [key in HubDimension]: string[];
+}>;
+
+export type PluginCategoryHierarchy = Partial<{
+  [key in HubDimension]: string[][];
+}>;
+
 /**
  * Plugin data used for indexing. This is a subset of the full plugin data.
  */
 export interface PluginIndexData {
   authors: PluginAuthor[] | '';
+  category?: PluginCategory | '';
   description_content_type: string;
   description: string;
   description_text: string;
@@ -40,6 +53,7 @@ export interface PluginIndexData {
  */
 export interface PluginData extends PluginIndexData {
   action_repository?: string;
+  category_hierarchy?: PluginCategoryHierarchy;
   citations?: CitationData | null;
   code_repository: string;
   documentation: string;

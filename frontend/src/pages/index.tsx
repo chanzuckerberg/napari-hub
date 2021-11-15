@@ -8,6 +8,7 @@ import { ErrorMessage } from '@/components/common/ErrorMessage';
 import { PluginSearch } from '@/components/PluginSearch';
 import { useLoadingState } from '@/context/loading';
 import {
+  initCategoryFilters,
   initOsiApprovedLicenseSet,
   initPageResetListener,
   initSearchEngine,
@@ -51,6 +52,7 @@ export default function Home({ error, index, licenses }: Props) {
 
     if (index) {
       initSearchEngine(index);
+      initCategoryFilters(index);
     }
 
     if (licenses) {

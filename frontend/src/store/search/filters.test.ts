@@ -2,7 +2,12 @@ import { defaultsDeep } from 'lodash';
 import { DeepPartial } from 'utility-types';
 
 import pluginIndex from '@/fixtures/index.json';
-import { DeriveGet, PluginIndexData } from '@/types';
+import {
+  DeriveGet,
+  PluginCategory,
+  PluginCategoryHierarchy,
+  PluginIndexData,
+} from '@/types';
 
 import { filterResults } from './filters';
 import { DEFAULT_STATE, SearchFormStore } from './form.store';
@@ -49,6 +54,23 @@ function getLicenseResults(...licenses: string[]): SearchResult[] {
   const plugins = licenses.map((license) => ({
     ...pluginIndex[0],
     license,
+  }));
+
+  return getResults(...plugins);
+}
+
+interface CategoryResultData {
+  category?: PluginCategory;
+  category_hierarchy?: PluginCategoryHierarchy;
+}
+
+function getCategoryResults(
+  ...categoryData: CategoryResultData[]
+): SearchResult[] {
+  const plugins = categoryData.map(({ category, category_hierarchy }) => ({
+    ...pluginIndex[0],
+    category,
+    category_hierarchy,
   }));
 
   return getResults(...plugins);
@@ -237,6 +259,83 @@ describe('filterResults()', () => {
         results,
       );
       expect(filtered).toEqual(getLicenseResults('valid'));
+    });
+  });
+
+  const categoryResults = getCategoryResults(
+    {
+      category: {
+        'Supported data': ['2d', '3d'],
+        'Workflow step': ['foo', 'bar'],
+      },
+    },
+    {
+      category: {
+        'Workflow step': ['bar'],
+      },
+    },
+    {
+      category: {
+        'Image modality': ['foo', 'bar'],
+        'Supported data': ['3d'],
+      },
+    },
+  );
+
+  describe('filter by workflow step', () => {
+    it('should allow all plugins when no filters are enabled', () => {
+      const filtered = filterResults(createMockFilterGet(), categoryResults);
+      expect(filtered).toEqual(categoryResults);
+    });
+
+    it('should filter plugins with matching workflow steps', () => {
+      const filtered = filterResults(
+        createMockFilterGet({
+          workflowStep: {
+            bar: true,
+          },
+        }),
+        categoryResults,
+      );
+      expect(filtered).toEqual(categoryResults.slice(0, 2));
+    });
+  });
+
+  describe('filter by image modality', () => {
+    it('should allow all plugins when no filters are enabled', () => {
+      const filtered = filterResults(createMockFilterGet(), categoryResults);
+      expect(filtered).toEqual(categoryResults);
+    });
+
+    it('should filter plugins with matching workflow steps', () => {
+      const filtered = filterResults(
+        createMockFilterGet({
+          imageModality: {
+            bar: true,
+          },
+        }),
+        categoryResults,
+      );
+      expect(filtered).toEqual([categoryResults[2]]);
+    });
+  });
+
+  describe('filter by supported data', () => {
+    it('should allow all plugins when no filters are enabled', () => {
+      const filtered = filterResults(createMockFilterGet(), categoryResults);
+      expect(filtered).toEqual(categoryResults);
+    });
+
+    it('should filter plugins with matching workflow steps', () => {
+      const filtered = filterResults(
+        createMockFilterGet({
+          supportedData: {
+            '3d': true,
+          },
+        }),
+        categoryResults,
+      );
+      expect(filtered).toEqual([categoryResults[0], categoryResults[2]]);
     });
   });
 });
