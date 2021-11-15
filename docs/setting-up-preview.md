@@ -19,7 +19,7 @@ Select the account or organization where the plugin repository is hosted.
 Finally, choose to install to "Only select repositories" by clicking on the text and selecting
 the plugin repository from the dropdown menu. If you have multiple plugins, you can select
 them all. Note that you'll still need to add the workflow to each repository individually,
-[as below](#set-up-the-github-workflow). Once you've selected your repository, click `Install` in the bottom left.
+[as below](#2-set-up-the-github-workflow). Once you've selected your repository, click `Install` in the bottom left.
 
 ![GitHub app "select your repository" page with "Only select repositories" checked and user_account/my_napari_plugin repository selected](./images/choose_install_repository.png)
 
@@ -103,7 +103,7 @@ a "true fork" i.e. release the fork as a standalone plugin, you should probably 
 This message may also occur if you've mistyped your source code URL, or if it points to a personal account instead
 of the organization where your plugin is stored. In this case, you may also want to update the source code URL.
 
-[This guide](./customizing-plugin-listing#code-repository) has information on how to set the source code URL of your plugin.
+[This guide](./customizing-plugin-listing#source-code) has information on how to set the source code URL of your plugin.
 
 ## How does it work?
 One of the challenges of building this preview is that much of the metadata of your 
