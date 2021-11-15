@@ -300,7 +300,7 @@ export function AppBarPreview() {
             )}
           </div>
 
-          <div>It is not live on the napari hub</div>
+          <div>It is not live on the napari hub.</div>
         </p>
       </div>
     </>
