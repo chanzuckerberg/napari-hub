@@ -1,4 +1,4 @@
-import { Checkbox } from '@material-ui/core';
+import Checkbox from '@material-ui/core/Checkbox';
 import clsx from 'clsx';
 
 import { CheckboxIcon } from '@/components/common/icons';

@@ -1,4 +1,4 @@
-import { FormLabel } from '@material-ui/core';
+import FormLabel from '@material-ui/core/FormLabel';
 import { get, set } from 'lodash';
 import { useSnapshot } from 'valtio';
 

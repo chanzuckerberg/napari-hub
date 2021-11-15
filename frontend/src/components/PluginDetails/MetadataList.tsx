@@ -1,4 +1,4 @@
-import { Tooltip } from '@material-ui/core';
+import Tooltip from '@material-ui/core/Tooltip';
 import clsx from 'clsx';
 import { ReactNode } from 'react';
 

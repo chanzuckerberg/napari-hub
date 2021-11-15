@@ -1,4 +1,4 @@
-import { IconButton } from '@material-ui/core';
+import IconButton from '@material-ui/core/IconButton';
 import clsx from 'clsx';
 import { useRouter } from 'next/router';
 import { HTMLProps, useEffect, useState } from 'react';

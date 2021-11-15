@@ -1,4 +1,4 @@
-import { IconButton } from '@material-ui/core';
+import IconButton from '@material-ui/core/IconButton';
 import clsx from 'clsx';
 import { useRef, useState } from 'react';
 

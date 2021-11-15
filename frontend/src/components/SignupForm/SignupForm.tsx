@@ -1,4 +1,6 @@
-import { Button, FormHelperTextProps, TextField } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
+import { FormHelperTextProps } from '@material-ui/core/FormHelperText';
+import TextField from '@material-ui/core/TextField';
 import clsx from 'clsx';
 import React, { useRef, useState } from 'react';
 

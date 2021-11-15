@@ -1,7 +1,11 @@
 module.exports = {
   extends: ['airbnb/hooks'],
 
+  plugins: ['napari-hub'],
+
   rules: {
+    'napari-hub/no-root-mui-import': 'error',
+
     /*
       Prop types aren't necessary since we have TypeScript interfaces for
       prop types.

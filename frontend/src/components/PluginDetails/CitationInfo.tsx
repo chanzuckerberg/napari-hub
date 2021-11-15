@@ -1,5 +1,8 @@
-import { Button, Tab } from '@material-ui/core';
-import { TabContext, TabList, TabPanel } from '@material-ui/lab';
+import Button from '@material-ui/core/Button';
+import Tab from '@material-ui/core/Tab';
+import TabContext from '@material-ui/lab/TabContext';
+import TabList from '@material-ui/lab/TabList';
+import TabPanel from '@material-ui/lab/TabPanel';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';

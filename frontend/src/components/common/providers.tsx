@@ -1,4 +1,5 @@
-import { StylesProvider, ThemeProvider } from '@material-ui/styles';
+import StylesProvider from '@material-ui/styles/StylesProvider';
+import ThemeProvider from '@material-ui/styles/ThemeProvider';
 import NextPlausibleProvider from 'next-plausible';
 import { ReactNode, useEffect, useRef } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';

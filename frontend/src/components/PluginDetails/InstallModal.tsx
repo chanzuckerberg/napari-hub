@@ -1,5 +1,7 @@
-import { Button, Dialog, IconButton } from '@material-ui/core';
-import { CheckCircle } from '@material-ui/icons';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import IconButton from '@material-ui/core/IconButton';
+import CheckCircle from '@material-ui/icons/CheckCircle';
 import clsx from 'clsx';
 import Image from 'next/image';
 import { useState } from 'react';
