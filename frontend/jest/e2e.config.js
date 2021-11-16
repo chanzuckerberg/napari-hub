@@ -1,4 +1,5 @@
 const { set } = require('lodash');
+const { createConfig } = require('./createConfig');
 const { breakpoints } = require('../src/theme');
 
 const isHeadful =
@@ -49,7 +50,7 @@ const DEVICES = Object.entries(breakpoints)
  */
 const { SCREEN } = process.env;
 
-module.exports = {
+module.exports = createConfig({
   rootDir: '..',
   preset: 'jest-playwright-preset',
   testMatch: ['<rootDir>/tests/**/*.test.ts'],
@@ -73,8 +74,4 @@ module.exports = {
       launchOptions: DEFAULT_LAUNCH_CONFIG,
     },
   },
-
-  transform: {
-    '\\.tsx?$': 'babel-jest',
-  },
-};
+});
