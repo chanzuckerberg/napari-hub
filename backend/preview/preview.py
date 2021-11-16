@@ -149,7 +149,7 @@ def parse_meta(pkg_pth):
     project_url_meta = {
         "documentation": "Documentation",
         "support": "User Support",
-        "report_issues": "Report Issues",
+        "report_issues": "Bug Tracker",
         "twitter": "Twitter",
         "code_repository": "Source Code",
     }
