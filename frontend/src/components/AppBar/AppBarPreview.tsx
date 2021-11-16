@@ -156,10 +156,25 @@ function AppBarPreviewRightColumn({
 const GITHUB_URL_REGEX = /\w+:\/\/(.+@)*[\w\d.]+(:[\d]+){0,1}\/*([^?&]*)/;
 const PR_LINK = process.env.PREVIEW_PULL_REQUEST;
 
-const repoPath = GITHUB_URL_REGEX.exec(PR_LINK)?.[3];
-const [ORG_NAME = '', REPO_NAME = '', , PR_NUMBER = ''] =
-  repoPath?.split('/') ?? [];
-const PREVIEW_LINK_TEXT = `${ORG_NAME}/${REPO_NAME}#${PR_NUMBER}`;
+function getFullRepoName(repoUrl: string) {
+  const repoPath = GITHUB_URL_REGEX.exec(repoUrl)?.[3];
+  const [orgName = '', repoName = '', , prNumber = ''] =
+    repoPath?.split('/') ?? [];
+
+  let fullName = `${orgName}/${repoName}`;
+
+  if (prNumber) {
+    fullName = `${fullName}#${prNumber}`;
+  }
+
+  return fullName;
+}
+
+const PREVIEW_LINK_TEXT = getFullRepoName(PR_LINK);
+
+// TODO Update this to the correct link.
+const MISMATCH_REPOSITORY_DOCS_URL =
+  'https://github.com/chanzuckerberg/napari-hub/blob/main/docs/setting-up-preview.md#seeing-a-warning-message';
 
 export function AppBarPreview() {
   const metadata = usePluginMetadata();
@@ -169,6 +184,12 @@ export function AppBarPreview() {
   const renderRightColumn = () => (
     <AppBarPreviewRightColumn expanded={expanded} setExpanded={setExpanded} />
   );
+
+  const actionRepo = metadata.actionRepository.value;
+  const hasRepoMismatch =
+    actionRepo && actionRepo !== metadata.sourceCode.value;
+  const codeRepo = metadata.sourceCode.value;
+  const codeRepoName = hasRepoMismatch ? getFullRepoName(codeRepo) : '';
 
   return (
     <>
@@ -252,15 +273,39 @@ export function AppBarPreview() {
         )}
       >
         <p className="text-napari-preview-orange text-center px-6 screen-495:px-12">
-          This preview of{' '}
-          <span className="font-bold">
-            {metadata.name.value || 'Plugin name'}
-          </span>{' '}
-          was generated from{' '}
-          <Link className="underline" href={PR_LINK} newTab>
-            {PREVIEW_LINK_TEXT}
-          </Link>
-          . It is not live on the napari hub.
+          <div>
+            <span>This preview of </span>
+            <span className="font-bold">
+              {metadata.name.value || 'Plugin name'}
+            </span>{' '}
+            <span>was generated from </span>
+            <Link className="underline" href={PR_LINK} newTab>
+              {PREVIEW_LINK_TEXT}
+            </Link>
+            {hasRepoMismatch ? (
+              <>
+                <span className="italic">
+                  <span>, but your metadata points to </span>
+                  <Link className="underline" href={codeRepo} newTab>
+                    {codeRepoName}
+                  </Link>{' '}
+                  <span>as the source code. </span>
+                </span>
+
+                <Link
+                  className="underline"
+                  href={MISMATCH_REPOSITORY_DOCS_URL}
+                  newTab
+                >
+                  Learn more.
+                </Link>
+              </>
+            ) : (
+              '.'
+            )}
+          </div>
+
+          <div>It is not live on the napari hub.</div>
         </p>
       </div>
     </>

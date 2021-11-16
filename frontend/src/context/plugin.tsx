@@ -194,6 +194,11 @@ export function usePluginMetadata() {
       value: plugin?.citations,
     },
 
+    actionRepository: {
+      name: '',
+      value: plugin?.action_repository ?? '',
+    },
+
     workflowSteps: {
       name: 'Workflow step',
       value: getCategoryValue('Workflow step'),
@@ -215,5 +220,5 @@ export type Metadata = ReturnType<typeof usePluginMetadata>;
 
 export type MetadataKeys = keyof Omit<
   Metadata,
-  'workflowSteps' | 'imageModality' | 'supportedData'
+  'actionRepository' | 'workflowSteps' | 'imageModality' | 'supportedData'
 >;

@@ -42,6 +42,11 @@ function formatTwitter(url: string): string {
   return '';
 }
 
+function formatRepoName(repoUrl: string): string {
+  const match = /https:\/\/github\.com\/([^/]+)\/(?<name>[^/]+)/.exec(repoUrl);
+  return match?.groups?.name ?? '';
+}
+
 interface CommonProps {
   /**
    * Class name to pass to root element.
@@ -174,7 +179,7 @@ export function SupportInfoBase({ className, inline }: SupportInfoBaseProps) {
             icon={<GitHub />}
             missingIcon={<GitHub className={styles.missingGithub} />}
           >
-            {metadata.name.value}
+            {formatRepoName(metadata.sourceCode.value) || metadata.name.value}
           </MetadataListLinkItem>
         )}
       </MetadataList>
