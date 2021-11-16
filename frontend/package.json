@@ -99,7 +99,6 @@
     "@typescript-eslint/eslint-plugin": "^5.1.0",
     "@typescript-eslint/parser": "^5.1.0",
     "autoprefixer": "^10.3.7",
-    "babel-jest": "^27.3.1",
     "eslint": "^8.0.1",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-airbnb-typescript": "^14.0.1",
