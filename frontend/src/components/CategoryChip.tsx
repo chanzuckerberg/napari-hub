@@ -3,6 +3,7 @@ import { Chip, Tooltip } from 'czifui';
 import { Fragment } from 'react';
 import { DeepPartial } from 'utility-types';
 
+import { FilterCategoryKeys, searchFormStore } from '@/store/search/form.store';
 import { HubDimension } from '@/types';
 
 import { Link } from './common/Link';
@@ -17,13 +18,17 @@ interface Props {
 const EXAMPLE_TEXT =
   "According to all known laws of aviation, there is no way that a bee should be able to fly. Its wings are too small to get its fat little body off the ground. The bee, of course, flies anyways. Because bees don't care what humans think is impossible.";
 
-export const TOOLTIP_TEXT: DeepPartial<
-  Record<HubDimension, Record<string, string>>
-> = {
-  'Workflow step': {
-    'Image Segmentation': EXAMPLE_TEXT,
-    'Image annotation': EXAMPLE_TEXT,
-  },
+const TOOLTIP_TEXT: DeepPartial<Record<HubDimension, Record<string, string>>> =
+  {
+    'Workflow step': {
+      'Image Segmentation': EXAMPLE_TEXT,
+      'Image annotation': EXAMPLE_TEXT,
+    },
+  };
+
+const STATE_KEY_MAP: Partial<Record<HubDimension, FilterCategoryKeys>> = {
+  'Image modality': 'imageModality',
+  'Workflow step': 'workflowStep',
 };
 
 /**
@@ -58,7 +63,15 @@ export function CategoryChip({
   return (
     <>
       <Chip
-        className="bg-[#ecf8ff] text-xs"
+        className="bg-[#ecf8ff] text-xs hover:bg-napari-hover focus:bg-napari-hover"
+        onClick={(event) => {
+          event.preventDefault();
+
+          const stateKey = STATE_KEY_MAP[dimension];
+          if (tooltipTitle && stateKey) {
+            searchFormStore.filters[stateKey][tooltipTitle] = true;
+          }
+        }}
         label={
           <div className="flex items-center space-x-1">
             <span>{dimension}</span>
