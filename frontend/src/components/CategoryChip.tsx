@@ -84,7 +84,6 @@ export function CategoryChip({
             {tooltipTitle && tooltipBody && (
               // TODO Replace with hub specific tooltip implementation.
               <Tooltip
-                arrow
                 leaveDelay={0}
                 classes={{
                   tooltip: 'border border-napari-gray',
