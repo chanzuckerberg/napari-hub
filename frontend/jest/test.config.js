@@ -1,4 +1,6 @@
-module.exports = {
+const { createConfig } = require('./createConfig');
+
+module.exports = createConfig({
   rootDir: '..',
   setupFilesAfterEnv: ['<rootDir>/jest/setupTests.ts'],
   testMatch: ['<rootDir>/src/**/*.test.ts?(x)'],
@@ -13,8 +15,4 @@ module.exports = {
     '^.+\\.module\\.scss$': 'identity-obj-proxy',
     '^@/(.*)$': '<rootDir>/src/$1',
   },
-
-  transform: {
-    '\\.tsx?$': 'babel-jest',
-  },
-};
+});
