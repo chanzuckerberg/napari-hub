@@ -2,10 +2,7 @@ import fs from 'fs';
 
 import { getBuildManifest } from './next';
 
-jest.mock('fs', () => ({
-  existsSync: jest.fn().mockReturnValueOnce(false),
-  readFileSync: jest.fn().mockReturnValue('{}'),
-}));
+jest.spyOn(fs, 'readFileSync').mockReturnValue('{}');
 
 describe('getBuildManifest()', () => {
   beforeEach(() => {
@@ -13,8 +10,8 @@ describe('getBuildManifest()', () => {
   });
 
   it('should return manifest when found', () => {
-    (fs.existsSync as jest.Mock).mockReturnValueOnce(true);
-    expect(getBuildManifest()).toBeDefined();
+    jest.spyOn(fs, 'existsSync').mockReturnValueOnce(true);
+    expect(getBuildManifest()).not.toBeNull();
   });
 
   it('should return null when not found', () => {
