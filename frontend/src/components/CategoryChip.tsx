@@ -1,4 +1,5 @@
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
+import clsx from 'clsx';
 import { Chip, Tooltip } from 'czifui';
 import { Fragment } from 'react';
 import { DeepPartial } from 'utility-types';
@@ -64,6 +65,9 @@ export function CategoryChip({
     <>
       <Chip
         className="bg-[#ecf8ff] text-xs hover:bg-napari-hover focus:bg-napari-hover"
+        classes={{
+          label: 'pl-2 pr-0',
+        }}
         onClick={(event) => {
           event.preventDefault();
 
@@ -81,8 +85,18 @@ export function CategoryChip({
               // TODO Replace with hub specific tooltip implementation.
               <Tooltip
                 arrow
+                leaveDelay={0}
+                classes={{
+                  tooltip: 'border border-napari-gray',
+                }}
                 title={
-                  <div className="flex flex-col mx-3 my-2 space-y-2 leading-normal">
+                  <div
+                    className={clsx(
+                      'leading-normal',
+                      'flex flex-col',
+                      'mx-3 my-2 space-y-2',
+                    )}
+                  >
                     <span className="font-semibold text-sm">
                       {tooltipTitle}
                     </span>
@@ -93,7 +107,9 @@ export function CategoryChip({
                   </div>
                 }
               >
-                <InfoOutlinedIcon className="w-3 h-3" />
+                <span className="p-2 pr-3 flex items-center justify-center">
+                  <InfoOutlinedIcon className="w-3 h-3" />
+                </span>
               </Tooltip>
             )}
           </div>
