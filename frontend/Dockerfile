@@ -5,6 +5,7 @@ WORKDIR /app
 
 # Install dependencies
 COPY package.json yarn.lock postinstall.js /app/
+COPY eslint/ /app/eslint/
 RUN yarn install
 
 # Build for production
@@ -19,6 +20,7 @@ WORKDIR /app
 
 # Install dependencies for production
 COPY package.json yarn.lock postinstall.js /app/
+COPY eslint/ /app/eslint/
 ENV NODE_ENV=production
 RUN yarn install
 
