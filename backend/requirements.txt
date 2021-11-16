@@ -5,8 +5,7 @@ flask-githubapp
 gunicorn[gevent]
 pyyaml
 requests
-markdown
-importlib-metadata
+markdown==3.3.4
 bs4
 cffconvert
 GitPython
