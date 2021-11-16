@@ -64,7 +64,7 @@ export function CategoryChip({
   return (
     <>
       <Chip
-        className="bg-[#ecf8ff] text-xs hover:bg-napari-hover focus:bg-napari-hover"
+        className="bg-napari-category-blue text-xs hover:bg-napari-hover focus:bg-napari-hover"
         classes={{
           label: 'pl-2 pr-0',
         }}
