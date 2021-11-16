@@ -6,6 +6,7 @@ gunicorn[gevent]
 pyyaml
 requests
 markdown
+importlib-metadata
 bs4
 cffconvert
 GitPython
