@@ -55,11 +55,8 @@ module.exports = withMDX({
   basePath: process.env.BASE_PATH || '',
   pageExtensions: ['ts', 'tsx', 'mdx'],
 
-  // Enable support for importing native ESM modules.
-  // https://nextjs.org/blog/next-11-1#es-modules-support
-  experimental: {
-    esmExternals: true,
-  },
+  // Use SWC to minify code.
+  swcMinify: true,
 
   webpack(config, { isServer }) {
     // Sets BABEL_ENV to `<[server|client]-[dev|prod]>` depending on the Next.js
