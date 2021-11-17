@@ -98,31 +98,6 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
           </div>
           <div
             class="text-sm"
-            id="developmentStatus"
-          >
-            <div
-              class=""
-              id="developmentStatus"
-            >
-              <h4
-                class="font-bold whitespace-nowrap mb-3"
-              >
-                Development status
-                :
-              </h4>
-              <ul
-                class="list list-none text-sm leading-normal"
-              >
-                <li
-                  class="textItem"
-                >
-                  4 - Beta
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div
-            class="text-sm"
             id="license"
           >
             <div
@@ -1100,31 +1075,6 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
           </div>
           <div
             class="text-sm"
-            id="developmentStatus"
-          >
-            <div
-              class="inline"
-              id="developmentStatus"
-            >
-              <h4
-                class="font-bold whitespace-nowrap inline mr-2"
-              >
-                Development status
-                :
-              </h4>
-              <ul
-                class="list list-none text-sm leading-normal inline space-y-2 inline"
-              >
-                <li
-                  class="textItem"
-                >
-                  4 - Beta
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div
-            class="text-sm"
             id="license"
           >
             <div
@@ -1397,31 +1347,6 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
                   class="textItem"
                 >
                   22 February 2021
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div
-            class="text-sm"
-            id="developmentStatus"
-          >
-            <div
-              class=""
-              id="developmentStatus"
-            >
-              <h4
-                class="font-bold whitespace-nowrap mb-3"
-              >
-                Development status
-                :
-              </h4>
-              <ul
-                class="list list-none text-sm leading-normal"
-              >
-                <li
-                  class="textItem"
-                >
-                  4 - Beta
                 </li>
               </ul>
             </div>

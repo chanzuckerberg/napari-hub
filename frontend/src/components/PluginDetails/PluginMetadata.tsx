@@ -133,7 +133,6 @@ function PluginMetadataBase({
           {renderSingleItemList('version')}
           {renderSingleItemList('releaseDate')}
           {renderSingleItemList('firstReleased')}
-          {renderItemList('developmentStatus')}
           {renderSingleItemList('license')}
         </>
       )}

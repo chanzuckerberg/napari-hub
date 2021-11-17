@@ -70,7 +70,7 @@ export function useMetadataSections(): MetadataSection[] {
       title: 'Development information',
       description:
         '[Explain what these metadata help the end user understand / why useful to populate them.]',
-      fields: getFields('version', 'developmentStatus', 'license'),
+      fields: getFields('version', 'license'),
     },
     {
       title: 'Implementation requirements',
