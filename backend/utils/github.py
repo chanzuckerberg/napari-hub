@@ -172,5 +172,7 @@ def get_artifact(url: str, token: str) -> Union[IO[bytes], None]:
     response = requests.get(download_url, stream=True, auth=preview_auth)
     if response.status_code != requests.codes.ok:
         return None
-
-    return response.raw
+    if 'preview-page.zip' in response.headers.get('content-disposition', ''):
+        return response.raw
+    else:
+        return None
