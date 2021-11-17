@@ -5,6 +5,7 @@ locals {
 module lambda {
   source  = "terraform-aws-modules/lambda/aws"
   version = "2.0.0"
+  publish = var.provisioned_lambda == -1 ? false : true
 
   function_name          = local.name
   description            = var.description
