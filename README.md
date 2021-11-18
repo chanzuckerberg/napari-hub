@@ -60,7 +60,7 @@ We're a cross-functional product team in the [Imaging Program at the Chan Zucker
 - Justin Kiggins, Product ([@neuromusic](https://github.com/neuromusic))
 - Kevin Lai, Engineering ([@klai95](ttps://github.com/klai95))
 - Justine Larsen, Engineering ([@justinelarsen](https://github.com/justinelarsen))
-- Ziyang Liu, Engineering ([@ziyangczi](https://github.com/ziyangczi))
+- Ziyang Liu, Engineering ([@potating-potato](https://github.com/potating-potato))
 - Lucy Obus, User Experience ([@LCObus](https://github.com/LCObus))
 - Lia Prins, Design ([@liaprins-czi](https://github.com/liaprins-czi))
 - Nicholas Sofroniew, Product ([@sofroniewn](https://github.com/sofroniewn))
