@@ -81,7 +81,7 @@ def handle_exception(e) -> Response:
              if 'GET' in rule.methods and
              any((rule.rule.startswith("/plugins"),
                   rule.rule.startswith("/shields"),
-                  rule.rule.startswith("/category")))]
+                  rule.rule.startswith("/categories")))]
     links.sort()
     links = "\n".join(links)
     return app.make_response((f"Invalid Endpoint, valid endpoints are:\n{links}", 404,
