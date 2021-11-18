@@ -60,6 +60,16 @@ export const searchFormStore = proxy(DEFAULT_STATE);
 
 export type SearchFormStore = typeof searchFormStore;
 
+export type FilterCategoryKeys = keyof Pick<
+  SearchFormStore['filters'],
+  'imageModality' | 'supportedData' | 'workflowStep'
+>;
+
+export type FilterRequirementKeys = keyof Omit<
+  SearchFormStore['filters'],
+  FilterCategoryKeys
+>;
+
 /**
  * Derived store for filter chips. This returns a list of key-value pairs that
  * correspond to each enabled filter.
