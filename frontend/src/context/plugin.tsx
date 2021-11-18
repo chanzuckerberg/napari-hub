@@ -79,12 +79,12 @@ export function usePluginMetadata() {
 
     summary: {
       name: 'Brief description',
-      value: plugin?.name ?? '',
+      value: plugin?.summary ?? '',
     },
 
     description: {
       name: 'Plugin description using hub-specific template',
-      value: plugin?.name ?? '',
+      value: plugin?.description ?? '',
     },
 
     releaseDate: {
