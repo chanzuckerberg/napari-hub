@@ -1,4 +1,4 @@
-import { isEmpty } from 'lodash';
+import { isArray, isEmpty, isString } from 'lodash';
 
 import { MetadataKeys, usePluginMetadata } from '@/context/plugin';
 
@@ -26,11 +26,26 @@ export function useMetadataSections(): MetadataSection[] {
   function getFields(...keys: MetadataKeys[]) {
     return keys.map((key) => {
       const data = metadata[key];
+      let hasValue = false;
+
+      if (isString(data.value)) {
+        // If value is string, check if the trimmed string is empty.
+        hasValue = !isEmpty(data.value.trim());
+      } else if (isArray(data.value)) {
+        // If value is array, filter out empty strings after trimming, and check
+        // if the array is empty.
+        hasValue = !isEmpty(
+          data.value.filter((value) => !isEmpty(value.trim())),
+        );
+      } else {
+        // If value is something else, just check if it's empty.
+        hasValue = !isEmpty(data.value);
+      }
 
       return {
+        hasValue,
         id: key,
         name: hasPreviewName(data) ? data.previewName : data.name,
-        hasValue: !isEmpty(data.value),
       };
     });
   }
