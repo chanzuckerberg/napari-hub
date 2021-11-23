@@ -1,0 +1,39 @@
+div.complexFilter {
+  @apply w-full space-y-4;
+
+  // TODO Replace with CSS classes if / when czifui exposes an API for it.
+  // https://v4.mui.com/customization/components/#overriding-styles-with-classes
+  :global {
+    .MuiButtonBase-root {
+      @apply p-0 text-black w-full flex justify-start;
+
+      .MuiButton-label {
+        @apply p-0 pb-3 m-0;
+        @apply border-b border-black;
+
+        span {
+          @apply flex flex-grow;
+        }
+      }
+    }
+
+    .MuiChip-root {
+      @apply bg-napari-hover-gray hover:bg-napari-gray max-w-napari-col;
+      @apply rounded-xl;
+
+      .MuiChip-label {
+        @apply text-black font-normal text-[0.6875rem];
+      }
+
+      .MuiChip-deleteIcon {
+        @apply text-black w-4 h-4;
+      }
+    }
+  }
+}
+
+.autoComplete > div {
+  @apply p-0 m-0;
+  @apply border-t-0 border-l-0 border-r-0;
+  @apply border-black rounded-none;
+}
