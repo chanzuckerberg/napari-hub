@@ -87,6 +87,9 @@ const FILTER_KEY_HUB_DIMENSION_MAP: Partial<Record<FilterKey, HubDimension>> = {
   workflowStep: 'Workflow step',
 };
 
+/**
+ * Map of for grouping workflow steps under a specific label.
+ */
 const WORKFLOW_STEP_GROUP_MAP: Partial<Record<string, string>> = {
   'Image registration': 'Image processing',
   'Image correction': 'Image processing',
@@ -178,15 +181,23 @@ export function PluginComplexFilter({ filterKey }: Props) {
 
   const isSearchEnabled = SEARCH_ENABLED_FILTERS.has(filterKey);
 
+  // Effect that sets the max width of the tooltip container when it is added to
+  // the DOM. This is required so that the width is only as wide as the filter
+  // component. Otherwise, it would fill the whole screen.
   useEffect(() => {
-    const observer = new MutationObserver((mutations) => {
-      for (const mutation of mutations) {
-        for (const node of mutation.addedNodes) {
+    const observer = new MutationObserver((mutations) =>
+      mutations.forEach((mutation) =>
+        // Only observe added nodes.
+        mutation.addedNodes.forEach((node) => {
           const tooltip = node as HTMLDivElement;
+          // Check if current added node is a tooltip
           if (tooltip.getAttribute('role') === 'tooltip') {
+            // Flag for if the tooltip is for the current filter.
             const isActiveFilter = !!tooltip.querySelector(
               `[data-filter=${filterKey}]`,
             );
+
+            // Get the filter node for the current filter.
             const complexFilterNode =
               isActiveFilter &&
               document.querySelector(
@@ -196,13 +207,17 @@ export function PluginComplexFilter({ filterKey }: Props) {
             if (complexFilterNode) {
               const width = complexFilterNode.clientWidth;
 
+              // Set the width of the tooltip to be the same width as the filter
+              // component. If the screen width is smaller than 300px, then
+              // default to 100% because the tooltip does not fill the screen
+              // for sizes <300px.
               tooltip.style.maxWidth =
                 window.outerWidth < 300 ? '100%' : `${width}px`;
             }
           }
-        }
-      }
-    });
+        }),
+      ),
+    );
 
     observer.observe(document.body, { childList: true });
 
@@ -213,7 +228,9 @@ export function PluginComplexFilter({ filterKey }: Props) {
     <ComplexFilter
       className={styles.complexFilter}
       data-testid="pluginFilter"
+      // Data attribute used to query the complex filter node.
       data-complex-filter
+      // Data attribute used to query the complex filter node by filter.
       data-filter={filterKey}
       label={FILTER_LABELS[filterKey] ?? filterKey}
       multiple
@@ -229,6 +246,7 @@ export function PluginComplexFilter({ filterKey }: Props) {
           paper: 'w-[14.0625rem]',
         },
 
+        // Data attribute used for querying the tooltip for the current filter.
         'data-filter': filterKey,
 
         groupBy: (option: PluginMenuSelectOption) =>
@@ -252,22 +270,20 @@ export function PluginComplexFilter({ filterKey }: Props) {
         renderOption: (
           option: PluginMenuSelectOption,
           { selected }: AutocompleteRenderOptionState,
-        ) => {
-          return (
-            <div className="flex space-x-2 py-2 px-4">
-              <CheckboxIcon checked={selected} />
+        ) => (
+          <div className="flex space-x-2 py-2 px-4">
+            <CheckboxIcon checked={selected} />
 
-              <p
-                className={clsx(
-                  '-mt-1 text-[0.875rem] break-words leading-normal',
-                  selected && 'text-black',
-                )}
-              >
-                {option.name}
-              </p>
-            </div>
-          );
-        },
+            <p
+              className={clsx(
+                '-mt-1 text-[0.875rem] break-words leading-normal',
+                selected && 'text-black',
+              )}
+            >
+              {option.name}
+            </p>
+          </div>
+        ),
       }}
       options={optionsRef.current}
       value={pendingState}
