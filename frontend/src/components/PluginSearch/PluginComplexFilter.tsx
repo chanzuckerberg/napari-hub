@@ -178,6 +178,37 @@ export function PluginComplexFilter({ filterKey }: Props) {
 
   const isSearchEnabled = SEARCH_ENABLED_FILTERS.has(filterKey);
 
+  useEffect(() => {
+    const observer = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        for (const node of mutation.addedNodes) {
+          const tooltip = node as HTMLDivElement;
+          if (tooltip.getAttribute('role') === 'tooltip') {
+            const isActiveFilter = !!tooltip.querySelector(
+              `[data-filter=${filterKey}]`,
+            );
+            const complexFilterNode =
+              isActiveFilter &&
+              document.querySelector(
+                `[data-complex-filter][data-filter=${filterKey}]`,
+              );
+
+            if (complexFilterNode) {
+              const width = complexFilterNode.clientWidth;
+
+              tooltip.style.maxWidth =
+                window.outerWidth < 300 ? '100%' : `${width}px`;
+            }
+          }
+        }
+      }
+    });
+
+    observer.observe(document.body, { childList: true });
+
+    return () => observer.disconnect();
+  }, [filterKey]);
+
   return (
     <ComplexFilter
       className={styles.complexFilter}
@@ -197,6 +228,8 @@ export function PluginComplexFilter({ filterKey }: Props) {
           root: clsx('px-4', styles.autoComplete, isSearchEnabled && 'mb-3'),
           paper: 'w-[14.0625rem]',
         },
+
+        'data-filter': filterKey,
 
         groupBy: (option: PluginMenuSelectOption) =>
           WORKFLOW_STEP_GROUP_MAP[option.stateKey] ?? '',
