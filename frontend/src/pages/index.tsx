@@ -6,6 +6,7 @@ import { ReactNode, useEffect } from 'react';
 import { hubAPI, spdxLicenseDataAPI } from '@/axios';
 import { ErrorMessage } from '@/components/common/ErrorMessage';
 import { PluginSearch } from '@/components/PluginSearch';
+import { FilterDataProvider } from '@/context/filter';
 import { useLoadingState } from '@/context/loading';
 import {
   initCategoryFilters,
@@ -76,7 +77,12 @@ export default function Home({ error, index, licenses }: Props) {
       {error ? (
         <ErrorMessage error={error}>Unable to fetch plugin index</ErrorMessage>
       ) : (
-        index && licenses && <PluginSearch />
+        index &&
+        licenses && (
+          <FilterDataProvider index={index}>
+            <PluginSearch />
+          </FilterDataProvider>
+        )
       )}
     </>
   );
