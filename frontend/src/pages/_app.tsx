@@ -13,8 +13,8 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { ComponentType, ReactNode } from 'react';
 
+import { ApplicationProvider } from '@/components/ApplicationProvider';
 import { PageMetadata } from '@/components/common/PageMetadata';
-import { ApplicationProvider } from '@/components/common/providers';
 import { Layout } from '@/components/Layout';
 import { DEFAULT_PLUGIN_DATA, DEFAULT_REPO_DATA } from '@/constants/plugin';
 import { LoadingStateProvider } from '@/context/loading';

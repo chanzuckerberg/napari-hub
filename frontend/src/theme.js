@@ -3,6 +3,7 @@
  * Tailwind config can import it in a Node.js environment.
  */
 
+const { defaultAppTheme, makeThemeOptions } = require('czifui');
 const createTheme = require('@material-ui/core/styles/createTheme').default;
 
 const colors = {
@@ -47,7 +48,11 @@ const breakpoints = {
 
 const fontFamily = ['Barlow', 'sans-serif'];
 
+const appTheme = makeThemeOptions(defaultAppTheme);
+
 const theme = createTheme({
+  ...appTheme,
+
   palette: {
     primary: {
       main: colors.primary,
@@ -71,6 +76,7 @@ const theme = createTheme({
 });
 
 module.exports = {
+  appTheme,
   breakpoints,
   colors,
   fontFamily,
