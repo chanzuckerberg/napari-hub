@@ -27,9 +27,6 @@ const FILTER_OPTION_LABELS: Record<string, string | undefined> = {
   mac: 'macOS',
   windows: 'Windows',
 
-  // Development Status
-  stable: 'Only show stable plugins',
-
   // License
   openSource: 'Limit to plugins with open source license',
 };
