@@ -1,5 +1,6 @@
 export type Styles = {
   autoComplete: string;
+  categories: string;
   complexFilter: string;
 };
 

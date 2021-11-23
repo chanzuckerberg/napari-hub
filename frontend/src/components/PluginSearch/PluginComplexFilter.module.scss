@@ -30,6 +30,12 @@ div.complexFilter {
       }
     }
   }
+
+  &.categories :global {
+    .MuiChip-root {
+      @apply bg-napari-category-blue hover:bg-napari-hover;
+    }
+  }
 }
 
 .autoComplete > div {

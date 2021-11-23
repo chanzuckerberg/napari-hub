@@ -48,6 +48,8 @@ const FILTER_OPTION_LABELS: Record<string, string | undefined> = {
 
 const SEARCH_ENABLED_FILTERS = new Set<FilterKey>(['workflowStep']);
 
+const CATEGORY_FILTERS = new Set<FilterKey>(['workflowStep', 'imageModality']);
+
 interface Props {
   filterKey: FilterKey;
 }
@@ -226,7 +228,10 @@ export function PluginComplexFilter({ filterKey }: Props) {
 
   return (
     <ComplexFilter
-      className={styles.complexFilter}
+      className={clsx(
+        styles.complexFilter,
+        CATEGORY_FILTERS.has(filterKey) && styles.categories,
+      )}
       data-testid="pluginFilter"
       // Data attribute used to query the complex filter node.
       data-complex-filter
