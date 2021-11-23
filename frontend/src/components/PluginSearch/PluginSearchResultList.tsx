@@ -10,7 +10,6 @@ import { searchResultsStore } from '@/store/search/results.store';
 import { SearchResult } from '@/store/search/search.types';
 import { PluginIndexData } from '@/types';
 
-import { FilterChips } from './FilterChips';
 import { PluginSearchResult } from './PluginSearchResult';
 
 /**
@@ -75,12 +74,10 @@ function SearchResultItems() {
 
 export function PluginSearchResultList() {
   return (
-    <section className="col-span-2 screen-1425:col-span-3">
+    <section className="col-span-2 screen-1425:col-span-3 space-y-5">
       <h3 className={clsx('flex items-center font-bold text-xl')}>
         Browse plugins: <SearchResultCount />
       </h3>
-
-      <FilterChips className="my-5" />
 
       <ColumnLayout
         classes={{
