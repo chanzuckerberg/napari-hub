@@ -1,6 +1,8 @@
 .expandIcon {
+  @apply transition-transform;
+
   &.expanded {
-    transform: rotate(45deg);
+    transform: rotate(90deg);
   }
 }
 
@@ -17,5 +19,13 @@
     &::before {
       display: initial;
     }
+  }
+}
+
+.summary {
+  // Prevent weird scrolling issue when expanding the accordion.
+  &,
+  &.expanded {
+    @apply h-12 min-h-12;
   }
 }
