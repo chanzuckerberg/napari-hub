@@ -11,6 +11,12 @@ import { PluginSortByForm } from './PluginSortByForm';
  * Renders the plugin search controls for filtering and sorting the list of plugins.
  */
 export function PluginSearchControls() {
+  const divider = (
+    <Media className="my-6" greaterThanOrEqual="screen-875">
+      <Divider layout component={motion.div} className="bg-black" />
+    </Media>
+  );
+
   return (
     <aside
       className={clsx(
@@ -24,9 +30,16 @@ export function PluginSearchControls() {
       <AnimateSharedLayout>
         <PluginSortByForm />
 
-        <Media className="my-6" greaterThanOrEqual="screen-875">
-          <Divider layout component={motion.div} className="bg-black" />
-        </Media>
+        {divider}
+
+        <motion.div layout>
+          <PluginFilterByForm
+            label="Filter by category"
+            filters={['workflowStep', 'imageModality']}
+          />
+        </motion.div>
+
+        {divider}
 
         <motion.div layout>
           <PluginFilterByForm
