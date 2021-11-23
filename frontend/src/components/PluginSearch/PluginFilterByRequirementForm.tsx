@@ -11,6 +11,7 @@ import { PluginComplexFilter } from './PluginComplexFilter';
  */
 function FilterForm() {
   const filters: FilterKey[] = [
+    'supportedData',
     'pythonVersions',
     'operatingSystems',
     'license',
