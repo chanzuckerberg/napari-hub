@@ -15,6 +15,7 @@ describe('getBuildManifest()', () => {
   });
 
   it('should return null when not found', () => {
+    jest.spyOn(fs, 'existsSync').mockReturnValue(false);
     expect(getBuildManifest()).toBeNull();
   });
 });
