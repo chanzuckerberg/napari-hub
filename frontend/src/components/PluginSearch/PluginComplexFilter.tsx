@@ -87,6 +87,32 @@ const FILTER_KEY_HUB_DIMENSION_MAP: Partial<Record<FilterKey, HubDimension>> = {
   workflowStep: 'Workflow step',
 };
 
+const WORKFLOW_STEP_GROUP_MAP: Partial<Record<string, string>> = {
+  'Image registration': 'Image processing',
+  'Image correction': 'Image processing',
+  'Image enhancement': 'Image processing',
+  'Image reconstruction': 'Image processing',
+  'Pixel classification': 'Image segmentation & object detection',
+  'Image feature detection': 'Image segmentation & object detection',
+  'Image annotation': 'Image segmentation & object detection',
+  'Filament tracing': 'Image segmentation & object detection',
+  'Object classification': 'Object-based analysis',
+  'Object-based colocalisation': 'Object-based analysis',
+  'Object feature extraction': 'Object-based analysis',
+  'Object tracking': 'Object-based analysis',
+  Clustering: 'Object-based analysis',
+  'Frequency domain analysis': 'Image-based analysis',
+  'Pixel-based colocalisation': 'Image-based analysis',
+  'Fluorescence correlation spectroscopy': 'Image-based analysis',
+  'Optical flow analysis': 'Image-based analysis',
+  'Image Segmentation': 'Image segmentation & object detection',
+  Visualization: 'Visualization',
+  'Synthetic image generation': 'Data generation',
+  'Morphological operations': 'Image processing',
+  'Image fusion': 'Image processing',
+  'Image classification': 'Image-based analysis',
+};
+
 /**
  * Helper that creates a new autocomplete option for the given state key.
  *
@@ -171,6 +197,9 @@ export function PluginComplexFilter({ filterKey }: Props) {
           root: clsx('px-4', styles.autoComplete, isSearchEnabled && 'mb-3'),
           paper: 'w-[14.0625rem]',
         },
+
+        groupBy: (option: PluginMenuSelectOption) =>
+          WORKFLOW_STEP_GROUP_MAP[option.stateKey] ?? '',
 
         renderInput: (params: AutocompleteRenderInputParams) => (
           <TextField
