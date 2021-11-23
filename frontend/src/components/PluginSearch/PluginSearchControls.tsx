@@ -43,7 +43,7 @@ export function PluginSearchControls() {
 
         <motion.div layout>
           <PluginFilterByForm
-            label="Filter by category"
+            label="Filter by requirement"
             filters={[
               'supportedData',
               'pythonVersions',

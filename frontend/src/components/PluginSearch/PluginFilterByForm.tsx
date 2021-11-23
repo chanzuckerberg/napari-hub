@@ -38,11 +38,12 @@ function FilterForm({ filters, label }: Props) {
  */
 export function PluginFilterByForm(props: Props) {
   const form = <FilterForm {...props} />;
+  const { label } = props;
 
   return (
     <>
       <Media lessThan="screen-875">
-        <Accordion title="Filter by category">{form}</Accordion>
+        <Accordion title={label}>{form}</Accordion>
       </Media>
 
       <Media greaterThanOrEqual="screen-875">{form}</Media>

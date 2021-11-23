@@ -242,9 +242,11 @@ export function PluginComplexFilter({ filterKey }: Props) {
         classes: {
           groupLabel:
             'text-[0.875rem] leading-normal text-black font-semibold top-0',
-          option: 'text-[2rem]',
           root: clsx('px-4', styles.autoComplete, isSearchEnabled && 'mb-3'),
+          noOptions: 'text-[0.875rem]',
         },
+
+        noOptionsText: 'No categories',
 
         // Data attribute used for querying the tooltip for the current filter.
         'data-filter': filterKey,
