@@ -78,10 +78,11 @@ function getCategoryResults(
 
 function createMockFilterGet(
   filters: DeepPartial<SearchFormStore['filters']> = {},
+  osiApprovedLicenseSet: SearchFormStore['osiApprovedLicenseSet'] = new Set(),
 ) {
   return jest.fn(() =>
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    defaultsDeep({ filters }, DEFAULT_STATE),
+    defaultsDeep({ filters, osiApprovedLicenseSet }, DEFAULT_STATE),
   ) as unknown as DeriveGet;
 }
 
@@ -250,12 +251,14 @@ describe('filterResults()', () => {
 
     it('should filter plugins with open source licenses', () => {
       const filtered = filterResults(
-        createMockFilterGet({
-          license: {
-            openSource: true,
-            osiApprovedLicenseSet: new Set(['valid']),
+        createMockFilterGet(
+          {
+            license: {
+              openSource: true,
+            },
           },
-        }),
+          new Set(['valid']),
+        ),
         results,
       );
       expect(filtered).toEqual(getLicenseResults('valid'));

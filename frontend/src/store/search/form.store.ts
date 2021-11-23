@@ -14,15 +14,15 @@ import { FilterChipItem, SpdxLicenseData } from './types';
  * Default state used for initializing and resetting the store.
  */
 export const DEFAULT_STATE = {
+  osiApprovedLicenseSet: new Set<string>(),
   page: BEGINNING_PAGE,
+  sort: DEFAULT_SORT_TYPE,
 
   search: {
     index: [] as PluginIndexData[],
     engine: null as SearchEngine | null,
     query: '',
   },
-
-  sort: DEFAULT_SORT_TYPE,
 
   filters: {
     devStatus: {
@@ -31,7 +31,6 @@ export const DEFAULT_STATE = {
 
     license: {
       openSource: false,
-      osiApprovedLicenseSet: new Set<string>(),
     },
 
     operatingSystems: {
@@ -59,6 +58,8 @@ export const DEFAULT_STATE = {
 export const searchFormStore = proxy(DEFAULT_STATE);
 
 export type SearchFormStore = typeof searchFormStore;
+
+export type FilterKey = keyof SearchFormStore['filters'];
 
 export type FilterCategoryKeys = keyof Pick<
   SearchFormStore['filters'],
@@ -125,8 +126,7 @@ export function initSearchEngine(index: PluginIndexData[]): void {
 }
 
 export function initOsiApprovedLicenseSet(licenses: SpdxLicenseData[]): void {
-  searchFormStore.filters.license.osiApprovedLicenseSet =
-    getOsiApprovedLicenseSet(licenses);
+  searchFormStore.osiApprovedLicenseSet = getOsiApprovedLicenseSet(licenses);
 }
 
 /**

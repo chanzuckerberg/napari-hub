@@ -109,11 +109,12 @@ function filterByLicense(
   get: DeriveGet,
   results: SearchResult[],
 ): SearchResult[] {
-  const state = get(searchFormStore).filters.license;
+  const rootState = get(searchFormStore);
+  const state = rootState.filters.license;
 
   if (state.openSource) {
     return results.filter(({ plugin }) =>
-      state.osiApprovedLicenseSet.has(plugin.license),
+      rootState.osiApprovedLicenseSet.has(plugin.license),
     );
   }
 

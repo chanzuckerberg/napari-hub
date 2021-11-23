@@ -45,7 +45,7 @@ function SortForm() {
       {/* Only show label on larger screens. This is because the Accordion already includes a title. */}
       <MediaFragment greaterThanOrEqual="screen-875">
         <legend className="uppercase text-black font-semibold text-sm mb-2">
-          Sort By
+          Sort
         </legend>
       </MediaFragment>
 
@@ -101,7 +101,7 @@ export function PluginSortByForm() {
   return (
     <>
       <Media lessThan="screen-875">
-        <Accordion title="Sort By">{form}</Accordion>
+        <Accordion title="Sort">{form}</Accordion>
       </Media>
 
       <Media greaterThanOrEqual="screen-875">{form}</Media>

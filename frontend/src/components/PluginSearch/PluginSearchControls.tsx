@@ -4,7 +4,7 @@ import { AnimateSharedLayout, motion } from 'framer-motion';
 
 import { Media } from '@/components/common/media';
 
-import { PluginFilterByForm } from './PluginFilterByForm';
+import { PluginFilterByRequirementForm } from './PluginFilterByRequirementForm';
 import { PluginSortByForm } from './PluginSortByForm';
 
 /**
@@ -29,7 +29,7 @@ export function PluginSearchControls() {
         </Media>
 
         <motion.div layout>
-          <PluginFilterByForm />
+          <PluginFilterByRequirementForm />
         </motion.div>
       </AnimateSharedLayout>
     </aside>
