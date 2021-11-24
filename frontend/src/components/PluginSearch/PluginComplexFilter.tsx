@@ -143,7 +143,7 @@ function InputDropdown(props: InputDropdownProps) {
   return (
     <Button
       {...props}
-      className="py-2 text-black w-full flex justify-between"
+      className="py-2 px-0 text-black w-full flex justify-between"
       classes={{
         label: 'border-b border-black pb-2',
       }}
