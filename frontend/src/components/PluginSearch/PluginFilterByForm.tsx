@@ -22,7 +22,7 @@ function FilterForm({ filters, label }: Props) {
         </legend>
       </Media>
 
-      <div className="flex flex-col col-span-2 space-y-4">
+      <div className="flex flex-col col-span-2 space-y-2">
         {filters.map((filterKey) => (
           <PluginComplexFilter key={filterKey} filterKey={filterKey} />
         ))}

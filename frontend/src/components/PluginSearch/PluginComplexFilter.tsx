@@ -6,7 +6,12 @@ import {
   AutocompleteRenderOptionState,
 } from '@material-ui/lab/Autocomplete';
 import clsx from 'clsx';
-import { ComplexFilter, DefaultMenuSelectOption } from 'czifui';
+import {
+  Button,
+  ComplexFilter,
+  DefaultMenuSelectOption,
+  InputDropdownProps,
+} from 'czifui';
 import { useEffect, useRef, useState } from 'react';
 import { useSnapshot } from 'valtio';
 
@@ -15,7 +20,7 @@ import { FilterKey, searchFormStore } from '@/store/search/form.store';
 import { appTheme } from '@/theme';
 import { HubDimension } from '@/types';
 
-import { CheckboxIcon, Search } from '../common/icons';
+import { CheckboxIcon, ChevronDown, ChevronUp, Search } from '../common/icons';
 import styles from './PluginComplexFilter.module.scss';
 
 /**
@@ -131,6 +136,25 @@ function getFilterOption(stateKey: string): PluginMenuSelectOption {
   };
 }
 
+function InputDropdown(props: InputDropdownProps) {
+  const { label, sdsStage } = props;
+  const iconSizeClassName = 'w-4 h-4';
+
+  return (
+    <Button
+      {...props}
+      className="py-2 text-black w-full flex justify-between"
+      classes={{
+        label: 'border-b border-black pb-2',
+      }}
+    >
+      <span className="font-semibold text-sm">{label}</span>
+      {sdsStage === 'default' && <ChevronDown className={iconSizeClassName} />}
+      {sdsStage === 'userInput' && <ChevronUp className={iconSizeClassName} />}
+    </Button>
+  );
+}
+
 /**
  * Complex filter component for filtering a specific part of the filter state.
  */
@@ -243,6 +267,7 @@ export function PluginComplexFilter({ filterKey }: Props) {
       onChange={(nextOptions) =>
         setPendingState(nextOptions as PluginMenuSelectOption[])
       }
+      InputDropdownComponent={InputDropdown}
       MenuSelectProps={{
         classes: {
           groupLabel:
@@ -268,7 +293,8 @@ export function PluginComplexFilter({ filterKey }: Props) {
             inputProps={params.inputProps}
             // eslint-disable-next-line react/jsx-no-duplicate-props
             InputProps={{
-              className: 'text-[0.6875rem]',
+              className: 'text-[0.6875rem] border-b border-black',
+              disableUnderline: true,
               endAdornment: <Search />,
             }}
           />
@@ -278,7 +304,7 @@ export function PluginComplexFilter({ filterKey }: Props) {
           option: PluginMenuSelectOption,
           { selected }: AutocompleteRenderOptionState,
         ) => (
-          <div className="flex space-x-2 py-2 px-4">
+          <div className="flex space-x-2 py-1 px-4">
             <CheckboxIcon checked={selected} />
 
             <p
