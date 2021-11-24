@@ -12,9 +12,9 @@ import {
   DefaultMenuSelectOption,
   InputDropdownProps,
 } from 'czifui';
-import { get } from 'lodash';
-import { useEffect, useRef, useState } from 'react';
-import { useSnapshot } from 'valtio';
+import { get, isEqual } from 'lodash';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { subscribe, useSnapshot } from 'valtio';
 
 import { useSearchStore } from '@/store/search/context';
 import { FilterKey } from '@/store/search/search.store';
@@ -152,6 +152,7 @@ function InputDropdown(props: InputDropdownProps) {
 export function PluginComplexFilter({ filterKey }: Props) {
   const { searchStore } = useSearchStore();
   const state = useSnapshot(searchStore);
+  const filterStore = searchStore.filters[filterKey];
   const filterState = state.filters[filterKey];
 
   // Store options in ref to prevent re-render on options value. There's a race
@@ -159,14 +160,34 @@ export function PluginComplexFilter({ filterKey }: Props) {
   // `pendingValue` are updated at the same time.
   const optionsRef = useRef(Object.keys(filterState).map(getFilterOption));
 
+  const getEnabledOptions = useCallback(
+    () =>
+      optionsRef.current.filter((option) =>
+        get(filterStore, option.stateKey, false),
+      ),
+    [filterStore],
+  );
+
   const [pendingState, setPendingState] = useState<PluginMenuSelectOption[]>(
     // Use truthy values in filter state as the initial value. Options need to
     // be taken from `optionsRef` because the autocomplete component compares
     // values using referential equality.
+    getEnabledOptions,
+  );
+
+  // Effect for keeping the local pending state in sync with external changes
+  // to the filter store.
+  useEffect(
     () =>
-      optionsRef.current.filter((option) =>
-        get(filterState, option.stateKey, false),
-      ),
+      subscribe(filterStore, () => {
+        const options = getEnabledOptions();
+
+        // Only update the state if it changed to prevent unnecessary re-renders.
+        if (!isEqual(options, pendingState)) {
+          setPendingState(options);
+        }
+      }),
+    [filterStore, getEnabledOptions, pendingState],
   );
 
   // Effect that merges the pending state into the global state.
@@ -176,12 +197,12 @@ export function PluginComplexFilter({ filterKey }: Props) {
     );
     const nextState: Record<string, boolean> = {};
 
-    for (const key of Object.keys(filterState)) {
+    for (const key of Object.keys(filterStore)) {
       nextState[key] = enabledStates.has(key);
     }
 
-    Object.assign(searchStore.filters[filterKey], nextState);
-  }, [filterKey, filterState, searchStore.filters, pendingState]);
+    Object.assign(filterStore, nextState);
+  }, [filterStore, pendingState]);
 
   const isSearchEnabled = SEARCH_ENABLED_FILTERS.has(filterKey);
 
