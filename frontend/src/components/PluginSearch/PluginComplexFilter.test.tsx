@@ -5,7 +5,7 @@ import {
   screen,
 } from '@testing-library/react';
 
-import { resetState, searchFormStore } from '@/store/search/form.store';
+import { resetState, searchFormStore } from '@/store/search/search.store';
 
 import { PluginComplexFilter } from './PluginComplexFilter';
 

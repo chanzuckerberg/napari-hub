@@ -12,13 +12,13 @@ import {
   DefaultMenuSelectOption,
   InputDropdownProps,
 } from 'czifui';
+import { get } from 'lodash';
 import { useEffect, useRef, useState } from 'react';
 import { useSnapshot } from 'valtio';
 
-import { useFilterData } from '@/context/filter';
-import { FilterKey, searchFormStore } from '@/store/search/form.store';
+import { useSearchStore } from '@/store/search/context';
+import { FilterKey } from '@/store/search/search.store';
 import { appTheme } from '@/theme';
-import { HubDimension } from '@/types';
 
 import { CheckboxIcon, ChevronDown, ChevronUp, Search } from '../common/icons';
 import styles from './PluginComplexFilter.module.scss';
@@ -86,15 +86,6 @@ const StyledPopper = styled(Popper)`
 `;
 
 /**
- * Map of hub dimensions to their corresponding UI state.
- */
-const FILTER_KEY_HUB_DIMENSION_MAP: Partial<Record<FilterKey, HubDimension>> = {
-  imageModality: 'Image modality',
-  supportedData: 'Supported data',
-  workflowStep: 'Workflow step',
-};
-
-/**
  * Map of for grouping workflow steps under a specific label.
  */
 const WORKFLOW_STEP_GROUP_MAP: Partial<Record<string, string>> = {
@@ -159,36 +150,23 @@ function InputDropdown(props: InputDropdownProps) {
  * Complex filter component for filtering a specific part of the filter state.
  */
 export function PluginComplexFilter({ filterKey }: Props) {
-  const { categoryFilterKeys } = useFilterData();
-
-  const state = useSnapshot(searchFormStore);
+  const { searchStore } = useSearchStore();
+  const state = useSnapshot(searchStore);
   const filterState = state.filters[filterKey];
-
-  const [pendingState, setPendingState] = useState<PluginMenuSelectOption[]>(
-    // Use truthy values in filter state as the initial value.
-    Object.entries(filterState)
-      .filter(([, value]) => value)
-      .map(([stateKey]) => getFilterOption(stateKey)),
-  );
 
   // Store options in ref to prevent re-render on options value. There's a race
   // condition issue when re-rendering ComplexFilter when `options` and
   // `pendingValue` are updated at the same time.
-  const optionsRef = useRef(
-    (() => {
-      const hubDimension = FILTER_KEY_HUB_DIMENSION_MAP[filterKey];
-      const stateKeys = Object.keys(filterState);
+  const optionsRef = useRef(Object.keys(filterState).map(getFilterOption));
 
-      // Add additional
-      if (hubDimension) {
-        const additionalKeys = Array.from(
-          categoryFilterKeys[hubDimension] ?? [],
-        );
-        stateKeys.push(...additionalKeys);
-      }
-
-      return stateKeys.map(getFilterOption);
-    })(),
+  const [pendingState, setPendingState] = useState<PluginMenuSelectOption[]>(
+    // Use truthy values in filter state as the initial value. Options need to
+    // be taken from `optionsRef` because the autocomplete component compares
+    // values using referential equality.
+    () =>
+      optionsRef.current.filter((option) =>
+        get(filterState, option.stateKey, false),
+      ),
   );
 
   // Effect that merges the pending state into the global state.
@@ -202,8 +180,8 @@ export function PluginComplexFilter({ filterKey }: Props) {
       nextState[key] = enabledStates.has(key);
     }
 
-    Object.assign(searchFormStore.filters[filterKey], nextState);
-  }, [filterKey, filterState, pendingState]);
+    Object.assign(searchStore.filters[filterKey], nextState);
+  }, [filterKey, filterState, searchStore.filters, pendingState]);
 
   const isSearchEnabled = SEARCH_ENABLED_FILTERS.has(filterKey);
 

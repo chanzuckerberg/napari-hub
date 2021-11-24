@@ -1,6 +1,6 @@
 import { Accordion } from '@/components/common/Accordion';
 import { Media } from '@/components/common/media';
-import { FilterKey } from '@/store/search/form.store';
+import { FilterKey } from '@/store/search/search.store';
 
 import { PluginComplexFilter } from './PluginComplexFilter';
 

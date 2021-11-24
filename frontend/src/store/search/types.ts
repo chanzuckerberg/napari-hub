@@ -9,14 +9,6 @@ export type SearchResultTransformFunction = (
 ) => SearchResult[];
 
 /**
- * Data used for rendering the filter chips.
- */
-export interface FilterChipItem {
-  key: string;
-  value: string;
-}
-
-/**
  * Response data from fetching the SPDX license list:
  * https://github.com/spdx/license-list-data/blob/master/json/licenses.json
  */
@@ -39,4 +31,8 @@ export interface SpdxLicenseData {
   seeAlso: string[];
   isOsiApproved: boolean;
   isFsfLibre?: boolean;
+}
+
+export interface Resettable {
+  reset(): void;
 }
