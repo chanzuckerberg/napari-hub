@@ -9,21 +9,29 @@ import { FilterKey } from '@/store/search/search.store';
 
 import { PluginComplexFilter } from './PluginComplexFilter';
 
+export type FilterType = 'category' | 'requirement';
+
 interface Props {
   filters: FilterKey[];
-  label: string;
+  filterType: FilterType;
 }
+
+const FILTER_LABEL_MAP: Record<FilterType, string> = {
+  category: 'Filter by category',
+  requirement: 'Filter by requirement',
+};
 
 /**
  * Button for clearing all filters defined in the `filters` prop.
  */
-function ClearAllButton({ filters }: Pick<Props, 'filters'>) {
+function ClearAllButton({ filters, filterType }: Props) {
   const { searchStore } = useSearchStore();
 
   return (
     <Button
       className="underline w-min"
       data-testid="clearAllButton"
+      data-filter-type={filterType}
       onClick={() => {
         for (const filterKey of filters) {
           for (const stateKey of Object.keys(searchStore.filters[filterKey])) {
@@ -42,7 +50,10 @@ function ClearAllButton({ filters }: Pick<Props, 'filters'>) {
 /**
  * Component for the form for selecting the plugin filter type.
  */
-function FilterForm({ filters, label }: Props) {
+function FilterForm(props: Props) {
+  const { filters, filterType } = props;
+  const label = FILTER_LABEL_MAP[filterType];
+
   return (
     <div
       className={clsx(
@@ -61,7 +72,7 @@ function FilterForm({ filters, label }: Props) {
           {label}
         </legend>
 
-        <ClearAllButton filters={filters} />
+        <ClearAllButton {...props} />
       </Media>
 
       <div className="flex flex-col col-span-2 space-y-2">
@@ -80,13 +91,14 @@ function FilterForm({ filters, label }: Props) {
  */
 export function PluginFilterByForm(props: Props) {
   const form = <FilterForm {...props} />;
-  const { filters, label } = props;
+  const { filterType } = props;
+  const label = FILTER_LABEL_MAP[filterType];
 
   return (
     <>
       <Media lessThan="screen-875">
         <Accordion title={label}>
-          <ClearAllButton filters={filters} />
+          <ClearAllButton {...props} />
 
           {form}
         </Accordion>
