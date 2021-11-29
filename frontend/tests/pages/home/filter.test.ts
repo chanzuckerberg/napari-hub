@@ -133,9 +133,13 @@ async function testPluginFilter({
     await page.goto(getSearchUrl());
     await openAccordion();
 
-    await openFilter(filterKey);
-    const optionResults = await getOptions(options);
-    await Promise.all(optionResults.map(({ node }) => node?.click()));
+    for (let i = 0; i < options.length; i += 1) {
+      await openFilter(filterKey);
+      const optionResults = await getOptions(options);
+      const { node } =
+        optionResults.find((result) => result.label === options[i]) ?? {};
+      node?.click();
+    }
 
     // Close filter by clicking on chevron.
     const chevron = await page.$(
