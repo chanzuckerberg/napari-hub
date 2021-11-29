@@ -83,7 +83,7 @@ describe('<PluginComplexFilter />', () => {
     expect(screen.getByText('Linux')).toBeInTheDocument();
   });
 
-  it('should remove filters', async () => {
+  it('should remove filters', () => {
     setOsFilterState({
       linux: true,
       windows: true,

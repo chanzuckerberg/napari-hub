@@ -163,8 +163,8 @@ async function testPluginFilter({
     expect(chipLabels).toEqual([]);
   }
 
-  // await testInitialLoad();
-  // await testClickingOnOptions();
+  await testInitialLoad();
+  await testClickingOnOptions();
   await testClearAll();
 }
 
