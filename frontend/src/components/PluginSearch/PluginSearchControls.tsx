@@ -13,7 +13,7 @@ import { PluginSortByForm } from './PluginSortByForm';
 export function PluginSearchControls() {
   const divider = (
     <Media className="my-6" greaterThanOrEqual="screen-875">
-      <Divider layout component={motion.div} className="bg-black" />
+      <Divider layout component={motion.div} className="bg-black h-1" />
     </Media>
   );
 
@@ -34,7 +34,7 @@ export function PluginSearchControls() {
 
         <motion.div layout>
           <PluginFilterByForm
-            label="Filter by category"
+            filterType="category"
             filters={['workflowStep', 'imageModality']}
           />
         </motion.div>
@@ -43,7 +43,7 @@ export function PluginSearchControls() {
 
         <motion.div layout>
           <PluginFilterByForm
-            label="Filter by category"
+            filterType="requirement"
             filters={[
               'supportedData',
               'pythonVersions',

@@ -1,17 +1,14 @@
-import { defaultsDeep } from 'lodash';
-import { DeepPartial } from 'utility-types';
-
 import pluginIndex from '@/fixtures/index.json';
 import {
-  DeriveGet,
   PluginCategory,
   PluginCategoryHierarchy,
   PluginIndexData,
 } from '@/types';
 
-import { filterResults } from './filters';
-import { DEFAULT_STATE, SearchFormStore } from './form.store';
+import { SearchFilterStore } from './filter.store';
+import { PluginSearchStore } from './search.store';
 import { SearchResult } from './search.types';
+import { SpdxLicenseData } from './types';
 
 function getResults(...plugins: PluginIndexData[]): SearchResult[] {
   return plugins.map((plugin) => ({
@@ -76,21 +73,13 @@ function getCategoryResults(
   return getResults(...plugins);
 }
 
-function createMockFilterGet(
-  filters: DeepPartial<SearchFormStore['filters']> = {},
-  osiApprovedLicenseSet: SearchFormStore['osiApprovedLicenseSet'] = new Set(),
-) {
-  return jest.fn(() =>
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    defaultsDeep({ filters, osiApprovedLicenseSet }, DEFAULT_STATE),
-  ) as unknown as DeriveGet;
-}
-
 describe('filterResults()', () => {
   describe('filter by python versions', () => {
     it('should allow all plugins when no filters are enabled', () => {
       const results = getVersionResults('>=3.10', '>=3.9');
-      expect(filterResults(createMockFilterGet(), results)).toEqual(results);
+      const store = new SearchFilterStore();
+      const filtered = store.filterResults(results);
+      expect(filtered).toEqual(results);
     });
 
     it("should filter plugins that don't match an exact version", () => {
@@ -118,14 +107,10 @@ describe('filterResults()', () => {
       ];
 
       testCases.forEach(({ input, output }) => {
-        const result = filterResults(
-          createMockFilterGet({
-            pythonVersions: {
-              3.9: true,
-            },
-          }),
-          input,
-        );
+        const store = new SearchFilterStore({
+          pythonVersions: { 3.9: true },
+        });
+        const result = store.filterResults(input);
         expect(result).toEqual(output);
       });
     });
@@ -137,7 +122,8 @@ describe('filterResults()', () => {
         ['Operating System :: OS Independent'],
         ['Operating System :: POSIX :: Linux'],
       );
-      const filtered = filterResults(createMockFilterGet(), results);
+      const store = new SearchFilterStore();
+      const filtered = store.filterResults(results);
       expect(filtered).toEqual(results);
     });
 
@@ -147,14 +133,12 @@ describe('filterResults()', () => {
         ['Operating System :: POSIX :: Linux'],
       );
 
-      const filtered = filterResults(
-        createMockFilterGet({
-          operatingSystems: {
-            mac: true,
-          },
-        }),
-        results,
-      );
+      const store = new SearchFilterStore({
+        operatingSystems: {
+          mac: true,
+        },
+      });
+      const filtered = store.filterResults(results);
 
       expect(filtered).toEqual(
         getOperatingSystemResults(['Operating System :: OS Independent']),
@@ -170,7 +154,7 @@ describe('filterResults()', () => {
       );
 
       interface TestCase {
-        input: Partial<SearchFormStore['filters']['operatingSystems']>;
+        input: Partial<PluginSearchStore['filters']['operatingSystems']>;
         output: SearchResult[];
       }
 
@@ -200,10 +184,8 @@ describe('filterResults()', () => {
       ];
 
       testCases.forEach(({ input, output }) => {
-        const filtered = filterResults(
-          createMockFilterGet({ operatingSystems: input }),
-          results,
-        );
+        const store = new SearchFilterStore({ operatingSystems: input });
+        const filtered = store.filterResults(results);
         expect(filtered).toEqual(output);
       });
     });
@@ -219,7 +201,8 @@ describe('filterResults()', () => {
     );
 
     it('should allow all plugins when no filters are enabled', () => {
-      const filtered = filterResults(createMockFilterGet(), results);
+      const store = new SearchFilterStore();
+      const filtered = store.filterResults(results);
       expect(filtered).toEqual(results);
     });
 
@@ -229,14 +212,12 @@ describe('filterResults()', () => {
         ['Development Status :: 6 - Mature'],
       );
 
-      const filtered = filterResults(
-        createMockFilterGet({
-          devStatus: {
-            stable: true,
-          },
-        }),
-        results,
-      );
+      const store = new SearchFilterStore({
+        devStatus: {
+          stable: true,
+        },
+      });
+      const filtered = store.filterResults(results);
       expect(filtered).toEqual(expected);
     });
   });
@@ -245,22 +226,22 @@ describe('filterResults()', () => {
     const results = getLicenseResults('valid', 'invalid');
 
     it('should allow all plugins when no filters are enabled', () => {
-      const filtered = filterResults(createMockFilterGet(), results);
+      const store = new SearchFilterStore();
+      const filtered = store.filterResults(results);
       expect(filtered).toEqual(results);
     });
 
     it('should filter plugins with open source licenses', () => {
-      const filtered = filterResults(
-        createMockFilterGet(
-          {
-            license: {
-              openSource: true,
-            },
+      const store = new SearchFilterStore(
+        {
+          license: {
+            openSource: true,
           },
-          new Set(['valid']),
-        ),
-        results,
+        },
+        [],
+        [{ licenseId: 'valid', isOsiApproved: true } as SpdxLicenseData],
       );
+      const filtered = store.filterResults(results);
       expect(filtered).toEqual(getLicenseResults('valid'));
     });
   });
@@ -287,57 +268,54 @@ describe('filterResults()', () => {
 
   describe('filter by workflow step', () => {
     it('should allow all plugins when no filters are enabled', () => {
-      const filtered = filterResults(createMockFilterGet(), categoryResults);
+      const store = new SearchFilterStore();
+      const filtered = store.filterResults(categoryResults);
       expect(filtered).toEqual(categoryResults);
     });
 
     it('should filter plugins with matching workflow steps', () => {
-      const filtered = filterResults(
-        createMockFilterGet({
-          workflowStep: {
-            bar: true,
-          },
-        }),
-        categoryResults,
-      );
+      const store = new SearchFilterStore({
+        workflowStep: {
+          bar: true,
+        },
+      });
+      const filtered = store.filterResults(categoryResults);
       expect(filtered).toEqual(categoryResults.slice(0, 2));
     });
   });
 
   describe('filter by image modality', () => {
     it('should allow all plugins when no filters are enabled', () => {
-      const filtered = filterResults(createMockFilterGet(), categoryResults);
+      const store = new SearchFilterStore();
+      const filtered = store.filterResults(categoryResults);
       expect(filtered).toEqual(categoryResults);
     });
 
     it('should filter plugins with matching workflow steps', () => {
-      const filtered = filterResults(
-        createMockFilterGet({
-          imageModality: {
-            bar: true,
-          },
-        }),
-        categoryResults,
-      );
+      const store = new SearchFilterStore({
+        imageModality: {
+          bar: true,
+        },
+      });
+      const filtered = store.filterResults(categoryResults);
       expect(filtered).toEqual([categoryResults[2]]);
     });
   });
 
   describe('filter by supported data', () => {
     it('should allow all plugins when no filters are enabled', () => {
-      const filtered = filterResults(createMockFilterGet(), categoryResults);
+      const store = new SearchFilterStore();
+      const filtered = store.filterResults(categoryResults);
       expect(filtered).toEqual(categoryResults);
     });
 
     it('should filter plugins with matching workflow steps', () => {
-      const filtered = filterResults(
-        createMockFilterGet({
-          supportedData: {
-            '3d': true,
-          },
-        }),
-        categoryResults,
-      );
+      const store = new SearchFilterStore({
+        supportedData: {
+          '3d': true,
+        },
+      });
+      const filtered = store.filterResults(categoryResults);
       expect(filtered).toEqual([categoryResults[0], categoryResults[2]]);
     });
   });

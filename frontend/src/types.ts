@@ -1,4 +1,5 @@
 import { RequestError } from '@octokit/types';
+import { NonFunctionKeys } from 'utility-types';
 
 export interface PluginAuthor {
   name: string;
@@ -94,5 +95,6 @@ export interface LinkInfo {
   newTab?: boolean;
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-export type DeriveGet = <T extends object>(proxyObject: T) => T;
+export type ClassState<T extends object> = {
+  [key in NonFunctionKeys<T>]: T[key];
+};

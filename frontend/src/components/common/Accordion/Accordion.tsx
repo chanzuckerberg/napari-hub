@@ -3,7 +3,7 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Add from '@material-ui/icons/Add';
 import clsx from 'clsx';
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 
 import { Expand } from '@/components/common/icons';
 
@@ -27,6 +27,7 @@ export function Accordion({
 }: Props) {
   const isDefault = variant === 'default';
   const isFAQ = variant === 'faq';
+  const [expanded, setExpanded] = useState(false);
 
   return (
     <MUIAccordion
@@ -34,19 +35,26 @@ export function Accordion({
         root: clsx('shadow-none', isFAQ && styles.accordion, className),
         expanded: styles.expanded,
       }}
+      expanded={expanded}
+      onChange={(_, nextExpanded) => setExpanded(nextExpanded)}
     >
       <AccordionSummary
         data-testid="accordionSummary"
         data-title={title}
-        className={clsx('p-0 font-semibold', isDefault && 'flex-row-reverse')}
-        classes={
-          isFAQ
-            ? {
-                expandIcon: styles.expandIcon,
-                expanded: styles.expanded,
-              }
-            : { content: '!ml-6', expandIcon: 'p-0' }
-        }
+        className={clsx(
+          'p-0 font-semibold',
+          styles.summary,
+          isDefault && 'flex-row-reverse',
+        )}
+        classes={{
+          expandIcon: styles.expandIcon,
+          expanded: clsx(styles.expanded),
+          ...(isFAQ
+            ? {}
+            : {
+                content: '!ml-6',
+              }),
+        }}
         expandIcon={isFAQ ? <Add className="text-black" /> : <Expand />}
       >
         {title}

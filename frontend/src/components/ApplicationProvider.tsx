@@ -10,6 +10,7 @@ import { Hydrate } from 'react-query/hydration';
 
 import { MediaContextProvider } from '@/components/common/media';
 import { PROD } from '@/env';
+import { SearchStoreProvider } from '@/store/search/context';
 import { theme } from '@/theme';
 
 interface QueryProviderProps {
@@ -102,6 +103,26 @@ interface ApplicationProviderProps extends ProviderProps {
 }
 
 /**
+ * Provider for setting up global store data that is shared for the entire
+ * application. New global store provider should be added here so that all of
+ * our store providers are in used in one location.
+ */
+function StoreProvider({ children }: ProviderProps) {
+  return (
+    // Render search store provider so that components using the search
+    // store on non-search pages continue to function properly. Since it
+    // is not possible to to run hooks conditionally, we can't get a
+    // store snapshot conditionally, so we need to provide the store for every page.
+    <SearchStoreProvider
+      // Use `skipInit` to disable search effects for every page.
+      skipInit
+    >
+      {children}
+    </SearchStoreProvider>
+  );
+}
+
+/**
  * Root application provider that composes all providers into one.
  */
 export function ApplicationProvider({
@@ -112,7 +133,9 @@ export function ApplicationProvider({
     <ReactQueryProvider dehydratedState={dehydratedState}>
       <MediaContextProvider>
         <MaterialUIProvider>
-          <PlausibleProvider>{children}</PlausibleProvider>
+          <PlausibleProvider>
+            <StoreProvider>{children}</StoreProvider>
+          </PlausibleProvider>
         </MaterialUIProvider>
       </MediaContextProvider>
     </ReactQueryProvider>

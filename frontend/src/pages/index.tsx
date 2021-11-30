@@ -1,20 +1,11 @@
 import { AxiosError } from 'axios';
-import { over } from 'lodash';
 import Head from 'next/head';
-import { ReactNode, useEffect } from 'react';
+import { ReactNode } from 'react';
 
 import { hubAPI, spdxLicenseDataAPI } from '@/axios';
 import { ErrorMessage } from '@/components/common/ErrorMessage';
 import { PluginSearch } from '@/components/PluginSearch';
-import { FilterDataProvider } from '@/context/filter';
-import { useLoadingState } from '@/context/loading';
-import {
-  initCategoryFilters,
-  initOsiApprovedLicenseSet,
-  initPageResetListener,
-  initSearchEngine,
-} from '@/store/search/form.store';
-import { initQueryParameterListener } from '@/store/search/queryParameters';
+import { SearchStoreProvider } from '@/store/search/context';
 import { SpdxLicenseData, SpdxLicenseResponse } from '@/store/search/types';
 import { PluginIndexData } from '@/types';
 
@@ -44,30 +35,6 @@ export async function getServerSideProps() {
 }
 
 export default function Home({ error, index, licenses }: Props) {
-  const isLoading = useLoadingState();
-  useEffect(() => {
-    // Skip indexing while the search page is loading.
-    if (isLoading) {
-      return () => {};
-    }
-
-    if (index) {
-      initSearchEngine(index);
-      initCategoryFilters(index);
-    }
-
-    if (licenses) {
-      initOsiApprovedLicenseSet(licenses);
-    }
-
-    const unsubscribe = over([
-      initQueryParameterListener(),
-      initPageResetListener(),
-    ]);
-
-    return unsubscribe as () => void;
-  }, [index, isLoading, licenses]);
-
   return (
     <>
       <Head>
@@ -79,9 +46,9 @@ export default function Home({ error, index, licenses }: Props) {
       ) : (
         index &&
         licenses && (
-          <FilterDataProvider index={index}>
+          <SearchStoreProvider index={index} licenses={licenses}>
             <PluginSearch />
-          </FilterDataProvider>
+          </SearchStoreProvider>
         )
       )}
     </>

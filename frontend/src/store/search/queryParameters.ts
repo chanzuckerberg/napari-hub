@@ -1,12 +1,14 @@
-import { set } from 'lodash';
+/* eslint-disable no-param-reassign */
+
+import { isObject, set } from 'lodash';
 import { snapshot, subscribe } from 'valtio';
 
 import { BEGINNING_PAGE, RESULTS_PER_PAGE } from '@/constants/search';
-import { isSearchPage, replaceUrlState } from '@/utils';
+import { createUrl, isSearchPage, replaceUrlState } from '@/utils';
 
 import { SearchQueryParams, SearchSortType } from './constants';
-import { searchFormStore } from './form.store';
-import { searchResultsStore } from './results.store';
+import { PluginSearchResultStore } from './results.store';
+import type { PluginSearchStore } from './search.store';
 
 export const PARAM_KEY_MAP: Record<string, string | undefined> = {
   operatingSystems: 'operatingSystem',
@@ -32,19 +34,22 @@ interface ForEachFilterParamCallbackOptions {
  * @param callback The callback to call :)
  */
 function forEachFilterParam(
+  searchStore: PluginSearchStore,
   callback: (options: ForEachFilterParamCallbackOptions) => void,
 ) {
-  for (const [filterKey, store] of Object.entries(searchFormStore.filters)) {
-    for (const [stateKey, state] of Object.entries(store)) {
-      const key = PARAM_KEY_MAP[filterKey] ?? filterKey;
-      const value = PARAM_VALUE_MAP[stateKey] ?? stateKey;
-      callback({
-        filterKey,
-        key,
-        state,
-        stateKey,
-        value,
-      });
+  for (const [filterKey, store] of Object.entries(searchStore.filters)) {
+    if (isObject(store)) {
+      for (const [stateKey, state] of Object.entries(store)) {
+        const key = PARAM_KEY_MAP[filterKey] ?? filterKey;
+        const value = PARAM_VALUE_MAP[stateKey] ?? stateKey;
+        callback({
+          state: state as boolean,
+          filterKey,
+          key,
+          stateKey,
+          value,
+        });
+      }
     }
   }
 }
@@ -59,29 +64,33 @@ let skipQueryParamUpdate = false;
  * Parses the URL query parameters for initial state. This should only happen
  * once on initial load.
  */
-function initStateFromQueryParameters() {
-  const params = new URL(window.location.href).searchParams;
+export function initStateFromQueryParameters(
+  searchStore: PluginSearchStore,
+  resultsStore: PluginSearchResultStore,
+  url: string,
+) {
+  const params = createUrl(url).searchParams;
 
   const query = params.get(SearchQueryParams.Search);
-  if (query && searchFormStore.search.query !== query) {
-    searchFormStore.search.query = query;
+  if (query && searchStore.search.query !== query) {
+    searchStore.search.query = query;
   }
 
   const sort = params.get(SearchQueryParams.Sort);
   if (sort) {
-    searchFormStore.sort = sort as SearchSortType;
+    searchStore.sort = sort as SearchSortType;
   } else if (query) {
     // Set sort type to relevance if the search query is present but the sort
     // type isn't.
-    searchFormStore.sort = SearchSortType.Relevance;
+    searchStore.sort = SearchSortType.Relevance;
   }
 
   // Flag for if at least one filter is enabled.
   let isFilterEnabled = false;
 
-  forEachFilterParam(({ key, value, stateKey, filterKey }) => {
+  forEachFilterParam(searchStore, ({ key, value, stateKey, filterKey }) => {
     if (params.getAll(key).includes(value)) {
-      set(searchFormStore.filters, [filterKey, stateKey], true);
+      set(searchStore.filters, [filterKey, stateKey], true);
 
       if (!isFilterEnabled) {
         isFilterEnabled = true;
@@ -101,9 +110,9 @@ function initStateFromQueryParameters() {
    */
   function setPageState(totalPages: number) {
     if (page > totalPages) {
-      searchFormStore.page = totalPages;
+      searchStore.page = totalPages;
     } else {
-      searchFormStore.page = page;
+      searchStore.page = page;
     }
   }
 
@@ -113,7 +122,7 @@ function initStateFromQueryParameters() {
     // If the page number is not a number or less than the beginning page, then
     // set it to the beginning page.
     if (Number.isNaN(page) || page < BEGINNING_PAGE) {
-      searchFormStore.page = BEGINNING_PAGE;
+      searchStore.page = BEGINNING_PAGE;
     } else if (
       // If a query or filter is provided, then the `totalPages` state can only be
       // calculated using the derived state of the `searchResultStore`.
@@ -125,17 +134,17 @@ function initStateFromQueryParameters() {
       skipQueryParamUpdate = true;
 
       // Create a one-time subscriber so that we can read the `totalPages` state
-      // when it's available. Because of the delay, there will be a minor flash
-      // in the query page parameters
-      const unsubscribe = subscribe(searchResultsStore, () => {
-        const { totalPages } = snapshot(searchResultsStore).results;
+      // when it's available. This helps prevent the URL from flashing while we
+      // load the state.
+      const unsubscribe = subscribe(resultsStore.results, () => {
+        const { totalPages } = snapshot(resultsStore).results;
         setPageState(totalPages);
         unsubscribe();
         skipQueryParamUpdate = false;
       });
     } else {
       const totalPages = Math.ceil(
-        searchFormStore.search.index.length / RESULTS_PER_PAGE,
+        searchStore.search.index.length / RESULTS_PER_PAGE,
       );
 
       setPageState(totalPages);
@@ -152,7 +161,10 @@ function initStateFromQueryParameters() {
  *
  * @param initialLoad Whether this is the first time the page is loading.
  */
-function updateQueryParameters(initialLoad?: boolean) {
+function updateQueryParameters(
+  searchStore: PluginSearchStore,
+  initialLoad?: boolean,
+) {
   if (!isSearchPage(window.location.pathname) || skipQueryParamUpdate) {
     return;
   }
@@ -162,7 +174,7 @@ function updateQueryParameters(initialLoad?: boolean) {
   const params = url.searchParams;
 
   // Search query
-  const { query } = searchFormStore.search;
+  const { query } = searchStore.search;
   if (query) {
     params.set(SearchQueryParams.Search, query);
   } else {
@@ -172,12 +184,12 @@ function updateQueryParameters(initialLoad?: boolean) {
   // Sort type
   // Don't set sort type on initial load unless a value is already specified.
   if (!initialLoad || fullUrl.searchParams.get(SearchQueryParams.Sort)) {
-    const { sort } = searchFormStore;
+    const { sort } = searchStore;
     params.set(SearchQueryParams.Sort, sort);
   }
 
   // Filters
-  forEachFilterParam(({ key, value, state }) => {
+  forEachFilterParam(searchStore, ({ key, value, state }) => {
     if (typeof state === 'boolean' && state) {
       params.append(key, value);
     }
@@ -186,7 +198,7 @@ function updateQueryParameters(initialLoad?: boolean) {
   // Current page.
   // Don't set query parameter on initial load unless a value is already specified.
   if (!initialLoad || fullUrl.searchParams.get(SearchQueryParams.Page)) {
-    params.set(SearchQueryParams.Page, String(searchFormStore.page));
+    params.set(SearchQueryParams.Page, String(searchStore.page));
   }
 
   if (window.location.href !== url.href) {
@@ -200,13 +212,14 @@ function updateQueryParameters(initialLoad?: boolean) {
  *
  * @returns A function that can be used to unsubscribe the listener.
  */
-export function initQueryParameterListener(): () => void {
-  initStateFromQueryParameters();
-  updateQueryParameters(true);
+export function startQueryParameterListener(
+  searchStore: PluginSearchStore,
+): () => void {
+  updateQueryParameters(searchStore, true);
 
   const unsubscribe = subscribe(
-    searchFormStore,
-    updateQueryParameters.bind(null, false),
+    searchStore,
+    updateQueryParameters.bind(null, searchStore, false),
   );
   return unsubscribe;
 }

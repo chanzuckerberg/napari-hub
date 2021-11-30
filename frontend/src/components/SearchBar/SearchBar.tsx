@@ -13,7 +13,7 @@ import {
   SearchQueryParams,
   SearchSortType,
 } from '@/store/search/constants';
-import { searchFormStore } from '@/store/search/form.store';
+import { useSearchStore } from '@/store/search/context';
 import { createUrl, isSearchPage, scrollToSearchBar } from '@/utils';
 
 import styles from './SearchBar.module.scss';
@@ -39,7 +39,8 @@ interface Props extends HTMLProps<HTMLFormElement> {
  */
 export function SearchBar({ large, ...props }: Props) {
   const router = useRouter();
-  const state = useSnapshot(searchFormStore);
+  const { searchStore } = useSearchStore();
+  const state = useSnapshot(searchStore);
   const { query } = state.search;
   const currentPathname = createUrl(router.asPath).pathname;
 
@@ -70,19 +71,19 @@ export function SearchBar({ large, ...props }: Props) {
     if (isSearchPage(window.location.pathname)) {
       if (searchQuery) {
         scrollToSearchBar({ behavior: 'smooth' });
-        searchFormStore.search.query = searchQuery;
-        searchFormStore.sort = SearchSortType.Relevance;
+        searchStore.search.query = searchQuery;
+        searchStore.sort = SearchSortType.Relevance;
       } else {
-        searchFormStore.search.query = '';
+        searchStore.search.query = '';
 
         if (state.sort === SearchSortType.Relevance) {
-          searchFormStore.sort = DEFAULT_SORT_TYPE;
+          searchStore.sort = DEFAULT_SORT_TYPE;
         }
       }
     } else if (searchQuery) {
       // Set query in global state so that the search bar shows the query while
       // the search page is loading.
-      searchFormStore.search.query = searchQuery;
+      searchStore.search.query = searchQuery;
 
       const url = {
         pathname: SEARCH_PAGE,
@@ -96,7 +97,7 @@ export function SearchBar({ large, ...props }: Props) {
     }
 
     // Reset pagination when searching with a new query.
-    searchFormStore.page = BEGINNING_PAGE;
+    searchStore.page = BEGINNING_PAGE;
   }
 
   return (
