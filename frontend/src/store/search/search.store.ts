@@ -15,17 +15,17 @@ import { SearchEngine, SearchResult } from './search.types';
 import { Resettable } from './types';
 
 export class SearchEngineStore implements Resettable {
-  #engine: SearchEngine;
+  engine: SearchEngine;
 
   query = '';
 
   constructor(public index: PluginIndexData[] = []) {
-    this.#engine = ref(this.getDefaultSearchEngine());
-    this.#engine.index(index);
+    this.engine = ref(this.getDefaultSearchEngine());
+    this.engine.index(index);
   }
 
   search(): SearchResult[] {
-    return this.#engine.search(this.query);
+    return this.engine.search(this.query);
   }
 
   private getDefaultSearchEngine() {

@@ -65,13 +65,13 @@ export function SearchStoreProvider({
 
   // Place stores in refs so that there's only one store created at a time per render.
   const searchStore = useRef(
-    searchStoreProp ??
-      proxy(
+    proxy(
+      searchStoreProp ??
         new PluginSearchStore(
           new SearchEngineStore(index),
           new SearchFilterStore({}, index, licenses),
         ),
-      ),
+    ),
   ).current;
   const resultsStore = useRef(getResultsStore(searchStore)).current;
 

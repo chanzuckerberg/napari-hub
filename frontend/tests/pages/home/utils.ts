@@ -92,8 +92,9 @@ export async function getSearchResultMetadata(label: MetadataLabel) {
 }
 
 export enum AccordionTitle {
-  FilterBy = 'Filter By',
-  SortBy = 'Sort By',
+  FilterByRequirement = 'Filter by requirement',
+  FilterByCategory = 'Filter by category',
+  Sort = 'Sort',
 }
 
 /**
@@ -105,9 +106,6 @@ export enum AccordionTitle {
 export async function maybeOpenAccordion(title: AccordionTitle) {
   const width = deviceName?.split('-')?.[1] ?? 0;
   if (width < breakpoints['screen-875']) {
-    const accordion = await page.$(
-      `[data-testid=accordionSummary][data-title="${title}"]`,
-    );
-    await accordion?.click();
+    await page.click(`[data-testid=accordionSummary][data-title="${title}"]`);
   }
 }

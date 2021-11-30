@@ -34,7 +34,7 @@ export function PluginSearchControls() {
 
         <motion.div layout>
           <PluginFilterByForm
-            label="Filter by category"
+            filterType="category"
             filters={['workflowStep', 'imageModality']}
           />
         </motion.div>
@@ -43,7 +43,7 @@ export function PluginSearchControls() {
 
         <motion.div layout>
           <PluginFilterByForm
-            label="Filter by requirement"
+            filterType="requirement"
             filters={[
               'supportedData',
               'pythonVersions',

@@ -12,7 +12,48 @@
     "version": "0.0.1",
     "first_released": "2021-08-25T13:15:20.364Z",
     "development_status": ["Development Status :: 4 - Beta"],
-    "description_text": "napari-test-plugin\n\nSome cool testing plugin!\n\n\n"
+    "description_text": "napari-test-plugin\n\nSome cool testing plugin!\n\n\n",
+    "category": {
+      "Supported data": ["2D", "3D"],
+      "Image modality": [
+        "Medical imaging",
+        "Confocal microscopy",
+        "Multi-photon microscopy"
+      ],
+      "Workflow step": [
+        "Image registration",
+        "Image correction",
+        "Image enhancement",
+        "Image reconstruction",
+        "Pixel classification",
+        "Image feature detection",
+        "Image annotation",
+        "Filament tracing",
+        "Object classification",
+        "Object-based colocalisation",
+        "Object feature extraction",
+        "Object tracking",
+        "Clustering",
+        "Frequency domain analysis",
+        "Pixel-based colocalisation",
+        "Fluorescence correlation spectroscopy",
+        "Optical flow analysis",
+        "Image Segmentation",
+        "Visualization",
+        "Synthetic image generation",
+        "Morphological operations",
+        "Image fusion",
+        "Image classification"
+      ]
+    },
+    "category_hierarchy": {
+      "Supported data": [["2D"], ["3D"]],
+      "Workflow step": [
+        ["Image Segmentation", "Manual segmentation"],
+        ["Image annotation", "Dense image annotation", "Manual segmentation"],
+        ["Image Segmentation", "Semi-automatic segmentation"]
+      ]
+    }
   },
   {
     "name": "napari-compressed-labels-io",
