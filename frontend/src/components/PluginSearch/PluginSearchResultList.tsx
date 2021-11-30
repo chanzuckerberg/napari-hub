@@ -6,7 +6,7 @@ import { SkeletonLoader } from '@/components/common/SkeletonLoader';
 import { RESULTS_PER_PAGE } from '@/constants/search';
 import { useLoadingState } from '@/context/loading';
 import { loadingStore } from '@/store/loading';
-import { searchResultsStore } from '@/store/search/results.store';
+import { useSearchStore } from '@/store/search/context';
 import { SearchResult } from '@/store/search/search.types';
 import { PluginIndexData } from '@/types';
 
@@ -29,9 +29,10 @@ function getSkeletonResults(count: number) {
 }
 
 function SearchResultCount() {
+  const { resultsStore } = useSearchStore();
   const {
     results: { totalPlugins },
-  } = useSnapshot(searchResultsStore);
+  } = useSnapshot(resultsStore);
 
   return (
     <SkeletonLoader
@@ -42,9 +43,10 @@ function SearchResultCount() {
 }
 
 function SearchResultItems() {
+  const { resultsStore } = useSearchStore();
   const {
     results: { paginatedResults },
-  } = useSnapshot(searchResultsStore);
+  } = useSnapshot(resultsStore);
   const {
     skeleton: { resultHeights },
   } = useSnapshot(loadingStore);

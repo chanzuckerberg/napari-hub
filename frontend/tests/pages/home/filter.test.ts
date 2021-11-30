@@ -1,5 +1,12 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
+/* eslint-disable
+  @typescript-eslint/no-non-null-assertion,
+  no-await-in-loop,
+*/
+
 import { satisfies } from '@renovate/pep440';
+
+import { FilterType } from '@/components/PluginSearch/PluginFilterByForm';
+import { FilterKey } from '@/store/search/search.store';
 
 import {
   AccordionTitle,
@@ -11,37 +18,95 @@ import {
 } from './utils';
 
 interface TestPluginFilterOptions {
-  checkboxIds: string[];
-  label: MetadataLabel;
+  options: string[];
+  filterKey: FilterKey;
   params: string[][];
-  testMetadata(values: string[]): void;
+  testMetadata?(values: string[]): void;
+}
+
+const FILTER_KEY_METADATA_LABEL_MAP: Partial<Record<FilterKey, MetadataLabel>> =
+  {
+    license: MetadataLabel.License,
+    operatingSystems: MetadataLabel.OperatingSystem,
+    pythonVersions: MetadataLabel.PythonVersion,
+  };
+
+const CATEGORY_FILTERS = new Set<FilterKey>(['imageModality', 'workflowStep']);
+
+async function openFilter(filterKey: FilterKey) {
+  const filterButton = await page.$(
+    `[data-testid=pluginFilter][data-filter=${filterKey}]`,
+  );
+  await filterButton?.click();
+}
+
+async function getOptions(labels: string[]) {
+  const labelSet = new Set(labels);
+  const optionNodes = await page.$$('[role=tooltip] [role=option]');
+
+  interface OptionResult {
+    label: string;
+    node: typeof optionNodes[number];
+    enabled: boolean;
+  }
+
+  const optionResults: OptionResult[] = [];
+
+  for (const node of optionNodes) {
+    const paragraphNode = await node.$('p');
+    const label = await paragraphNode?.textContent();
+    const ariaSelected = await node.getAttribute('aria-selected');
+    if (label && labelSet.has(label)) {
+      optionResults.push({
+        label,
+        node,
+        enabled: ariaSelected === 'true',
+      });
+    }
+  }
+
+  return optionResults;
+}
+
+async function getChips(filterKey: FilterKey, labels: string[]) {
+  const labelSet = new Set(labels);
+  const chipNodes = await page.$$(`[data-filter=${filterKey}] .MuiChip-root`);
+  const result: string[] = [];
+
+  for (const node of chipNodes) {
+    const labelNode = await node.$('.MuiChip-label');
+    const label = await labelNode?.textContent();
+    if (label && labelSet.has(label)) {
+      result.push(label);
+    }
+  }
+
+  return result;
 }
 
 async function testPluginFilter({
-  checkboxIds,
-  label,
+  options,
+  filterKey,
   params,
   testMetadata,
 }: TestPluginFilterOptions) {
-  async function getCheckboxes() {
-    return Promise.all(checkboxIds.map((id) => page.$(id)));
-  }
+  const isCategoryFilter = CATEGORY_FILTERS.has(filterKey);
 
   async function testResults() {
-    const checkboxes = await getCheckboxes();
+    const optionResults = await getOptions(options);
 
-    // Check that the checkboxes are enabled
-    await Promise.all(
-      checkboxes.map(async (checkbox) => {
-        const checked = await checkbox?.getAttribute('value');
-        expect(checked).toBe('true');
-      }),
-    );
+    // Check that filters are enabled.
+    for (const { enabled } of optionResults) {
+      expect(enabled).toBe(true);
+    }
 
-    const values = await getSearchResultMetadata(label);
+    const label = FILTER_KEY_METADATA_LABEL_MAP[filterKey];
+    if (label) {
+      const values = await getSearchResultMetadata(label);
 
-    // Check that every plugin version passes the enabled filter.
-    testMetadata(values);
+      // Check that every plugin version passes the metadata test function.
+      testMetadata?.(values);
+    }
 
     // Check query parameters
     for (const [key, value] of params) {
@@ -56,18 +121,55 @@ async function testPluginFilter({
     await testResults();
   }
 
-  async function testCheckboxes() {
-    await page.goto(getSearchUrl());
-    await maybeOpenAccordion(AccordionTitle.FilterBy);
+  async function openAccordion() {
+    await maybeOpenAccordion(
+      isCategoryFilter
+        ? AccordionTitle.FilterByCategory
+        : AccordionTitle.FilterByRequirement,
+    );
+  }
 
-    const checkboxes = await getCheckboxes();
-    await Promise.all(checkboxes.map((checkbox) => checkbox?.click()));
+  async function testClickingOnOptions() {
+    await page.goto(getSearchUrl());
+    await openAccordion();
+
+    for (let i = 0; i < options.length; i += 1) {
+      await openFilter(filterKey);
+      const optionResults = await getOptions(options);
+      const { node } =
+        optionResults.find((result) => result.label === options[i]) ?? {};
+      node?.click();
+    }
+
+    // Close filter by clicking on chevron.
+    const chevron = await page.$(
+      `[data-testid=pluginFilter][data-filter=${filterKey}] svg`,
+    );
+    await chevron?.click();
 
     await testResults();
   }
 
+  async function testClearAll() {
+    await page.goto(getSearchUrl(...params));
+    await openAccordion();
+    let chipLabels = await getChips(filterKey, options);
+    expect(chipLabels).toEqual(options);
+
+    const filterType: FilterType = isCategoryFilter
+      ? 'category'
+      : 'requirement';
+    await page.click(
+      `[data-testid=clearAllButton][data-filter-type=${filterType}]`,
+    );
+
+    chipLabels = await getChips(filterKey, options);
+    expect(chipLabels).toEqual([]);
+  }
+
   await testInitialLoad();
-  await testCheckboxes();
+  await testClickingOnOptions();
+  await testClearAll();
 }
 
 describe('Plugin Filters', () => {
@@ -77,11 +179,8 @@ describe('Plugin Filters', () => {
 
   it('should filter by python version', async () => {
     await testPluginFilter({
-      checkboxIds: [
-        '#checkbox-pythonVersions-3\\.7',
-        '#checkbox-pythonVersions-3\\.8',
-      ],
-      label: MetadataLabel.PythonVersion,
+      options: ['3.7', '3.8'],
+      filterKey: 'pythonVersions',
       params: [
         ['python', '3.7'],
         ['python', '3.8'],
@@ -103,8 +202,8 @@ describe('Plugin Filters', () => {
     }
 
     await testPluginFilter({
-      checkboxIds: ['#checkbox-operatingSystems-linux'],
-      label: MetadataLabel.OperatingSystem,
+      options: ['Linux'],
+      filterKey: 'operatingSystems',
       params: [['operatingSystem', 'linux']],
       testMetadata(operatingSystems) {
         expect(hasLinux(operatingSystems)).toBe(true);
@@ -112,8 +211,8 @@ describe('Plugin Filters', () => {
     });
 
     await testPluginFilter({
-      checkboxIds: ['#checkbox-operatingSystems-mac'],
-      label: MetadataLabel.OperatingSystem,
+      options: ['macOS'],
+      filterKey: 'operatingSystems',
       params: [['operatingSystem', 'mac']],
       testMetadata(operatingSystems) {
         expect(hasLinux(operatingSystems)).not.toBe(true);
@@ -123,8 +222,8 @@ describe('Plugin Filters', () => {
 
   it('should filter by license', async () => {
     await testPluginFilter({
-      checkboxIds: [],
-      label: MetadataLabel.License,
+      options: [],
+      filterKey: 'license',
       params: [],
       testMetadata(licenses) {
         expect(licenses).toContain('secret');
@@ -132,12 +231,54 @@ describe('Plugin Filters', () => {
     });
 
     await testPluginFilter({
-      checkboxIds: ['#checkbox-license-openSource'],
-      label: MetadataLabel.License,
+      options: ['Limit to plugins with open source license'],
+      filterKey: 'license',
       params: [['license', 'oss']],
       testMetadata(licenses) {
         expect(licenses).not.toContain('secret');
       },
+    });
+  });
+
+  // eslint-disable-next-line jest/expect-expect
+  it('should filter by workflow step', async () => {
+    const options = ['Image registration', 'Pixel classification'];
+
+    await testPluginFilter({
+      options,
+      filterKey: 'workflowStep',
+      params: [
+        ['workflowStep', options[0]],
+        ['workflowStep', options[1]],
+      ],
+    });
+  });
+
+  // eslint-disable-next-line jest/expect-expect
+  it('should filter by image modality', async () => {
+    const options = ['Medical imaging', 'Multi-photon microscopy'];
+
+    await testPluginFilter({
+      options,
+      filterKey: 'imageModality',
+      params: [
+        ['imageModality', options[0]],
+        ['imageModality', options[1]],
+      ],
+    });
+  });
+
+  // eslint-disable-next-line jest/expect-expect
+  it('should filter by supported data', async () => {
+    const options = ['2D', '3D'];
+
+    await testPluginFilter({
+      options,
+      filterKey: 'supportedData',
+      params: [
+        ['supportedData', options[0]],
+        ['supportedData', options[1]],
+      ],
     });
   });
 });

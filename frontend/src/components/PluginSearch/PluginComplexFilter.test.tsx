@@ -5,34 +5,51 @@ import {
   screen,
 } from '@testing-library/react';
 
-import { resetState, searchFormStore } from '@/store/search/form.store';
+import { SearchStoreProvider } from '@/store/search/context';
+import { SearchFilterStore } from '@/store/search/filter.store';
+import { PluginSearchStore } from '@/store/search/search.store';
 
 import { PluginComplexFilter } from './PluginComplexFilter';
 
-function renderFilter() {
-  return render(<PluginComplexFilter filterKey="operatingSystems" />);
-}
-
 describe('<PluginComplexFilter />', () => {
+  let mockSearchStore: PluginSearchStore;
+
+  function setOsFilterState(
+    state: Partial<SearchFilterStore['operatingSystems']>,
+  ) {
+    Object.assign(mockSearchStore.filters.operatingSystems, state);
+  }
+
+  function renderFilter() {
+    return render(
+      <SearchStoreProvider searchStore={mockSearchStore}>
+        <PluginComplexFilter filterKey="operatingSystems" />
+      </SearchStoreProvider>,
+    );
+  }
+
   beforeEach(() => {
-    resetState();
+    mockSearchStore = new PluginSearchStore();
   });
 
   it('should match snapshot', () => {
-    searchFormStore.filters.operatingSystems.linux = true;
-    searchFormStore.filters.operatingSystems.mac = true;
-    searchFormStore.filters.operatingSystems.windows = true;
+    setOsFilterState({
+      linux: true,
+      mac: true,
+      windows: true,
+    });
 
     const component = renderFilter();
     expect(component.asFragment()).toMatchSnapshot();
   });
 
   it('should render filter options on initial load', () => {
-    searchFormStore.filters.operatingSystems.linux = true;
-    searchFormStore.filters.operatingSystems.windows = true;
+    setOsFilterState({
+      linux: true,
+      windows: true,
+    });
 
-    const { debug, queryByText } = renderFilter();
-    debug();
+    const { queryByText } = renderFilter();
 
     expect(queryByText('Linux')).toBeInTheDocument();
     expect(queryByText('Windows')).toBeInTheDocument();
@@ -67,8 +84,10 @@ describe('<PluginComplexFilter />', () => {
   });
 
   it('should remove filters', () => {
-    searchFormStore.filters.operatingSystems.linux = true;
-    searchFormStore.filters.operatingSystems.windows = true;
+    setOsFilterState({
+      linux: true,
+      windows: true,
+    });
 
     const { getByText, queryByText } = renderFilter();
 
@@ -82,7 +101,6 @@ describe('<PluginComplexFilter />', () => {
       fireEvent.click(deleteButton);
     }
 
-    expect(searchFormStore.filters.operatingSystems.linux).toBe(false);
     expect(queryByText('Linux')).toBeNull();
   });
 });

@@ -8,8 +8,7 @@ import { Pagination } from '@/components/common/Pagination';
 import { Footer } from '@/components/Footer';
 import { SignupForm } from '@/components/SignupForm';
 import { loadingStore } from '@/store/loading';
-import { searchFormStore } from '@/store/search/form.store';
-import { searchResultsStore } from '@/store/search/results.store';
+import { useSearchStore } from '@/store/search/context';
 import { scrollToSearchBar } from '@/utils';
 
 import { PluginSearchBar } from './PluginSearchBar';
@@ -23,29 +22,30 @@ const scrollHandler = throttle(() => {
 }, SCROLL_HANDLER_THROTTLE_MS);
 
 /**
- * Updates the current page value and maintains the current scroll location in
- * case the results change the height of the page.
- *
- * @param value Value to append to the page state.
- */
-function updatePage(value: number) {
-  // Update page value.
-  searchFormStore.page += value;
-
-  // Scroll to top of results so that the user will see the most relevant for
-  // the current page.
-  scrollToSearchBar();
-}
-
-/**
  * Pagination component using search form and result state for determining the
  * current page and the total pages.
  */
 function SearchPagination() {
-  const { page } = useSnapshot(searchFormStore);
+  const { resultsStore, searchStore } = useSearchStore();
+  const { page } = useSnapshot(searchStore);
   const {
     results: { totalPages },
-  } = useSnapshot(searchResultsStore);
+  } = useSnapshot(resultsStore);
+
+  /**
+   * Updates the current page value and maintains the current scroll location in
+   * case the results change the height of the page.
+   *
+   * @param value Value to append to the page state.
+   */
+  function updatePage(value: number) {
+    // Update page value.
+    searchStore.page += value;
+
+    // Scroll to top of results so that the user will see the most relevant for
+    // the current page.
+    scrollToSearchBar();
+  }
 
   return (
     <Pagination

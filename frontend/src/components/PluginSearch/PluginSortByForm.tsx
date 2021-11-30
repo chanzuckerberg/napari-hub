@@ -9,7 +9,7 @@ import { useSnapshot } from 'valtio';
 import { Accordion } from '@/components/common/Accordion';
 import { Media, MediaFragment } from '@/components/common/media';
 import { SearchSortType } from '@/store/search/constants';
-import { searchFormStore } from '@/store/search/form.store';
+import { useSearchStore } from '@/store/search/context';
 
 const DEFAULT_SORT_BY_RADIO_ORDER: SearchSortType[] = [
   SearchSortType.PluginName,
@@ -28,7 +28,8 @@ const SORT_BY_LABELS: Record<SearchSortType, string> = {
  * Component for the radio form for selecting the plugin sort type.
  */
 function SortForm() {
-  const state = useSnapshot(searchFormStore);
+  const { searchStore } = useSearchStore();
+  const state = useSnapshot(searchStore);
   const isSearching = state.search.query;
 
   const radios: SearchSortType[] = [];
@@ -54,7 +55,7 @@ function SortForm() {
         name="sort-by"
         value={state.sort}
         onChange={(event) => {
-          searchFormStore.sort = event.target.value as SearchSortType;
+          searchStore.sort = event.target.value as SearchSortType;
         }}
       >
         {radios.map((sortType) => (

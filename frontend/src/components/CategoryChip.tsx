@@ -4,7 +4,8 @@ import { Chip, Tooltip } from 'czifui';
 import { Fragment } from 'react';
 import { DeepPartial } from 'utility-types';
 
-import { FilterCategoryKeys, searchFormStore } from '@/store/search/form.store';
+import { useSearchStore } from '@/store/search/context';
+import { FilterCategoryKeys } from '@/store/search/search.store';
 import { HubDimension } from '@/types';
 
 import { Link } from './common/Link';
@@ -42,6 +43,7 @@ export function CategoryChip({
   category,
   categoryHierarchy,
 }: Props) {
+  const { searchStore } = useSearchStore();
   const chipBody =
     category ||
     categoryHierarchy?.map((term, index) => (
@@ -73,7 +75,7 @@ export function CategoryChip({
 
           const stateKey = STATE_KEY_MAP[dimension];
           if (tooltipTitle && stateKey) {
-            searchFormStore.filters[stateKey][tooltipTitle] = true;
+            searchStore.filters[stateKey][tooltipTitle] = true;
           }
         }}
         label={
