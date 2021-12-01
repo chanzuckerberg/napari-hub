@@ -10,6 +10,8 @@ import { SearchResultMatch } from '@/store/search/search.types';
 import { PluginIndexData } from '@/types';
 import { formatDate, formatOperatingSystem } from '@/utils';
 
+import { CategoryChip } from '../CategoryChip';
+
 interface Props {
   /**
    * Class applied to root element.
@@ -189,6 +191,23 @@ export function PluginSearchResult({
                     {renderText(author.name, matches[author.name]?.match)}
                   </li>
                 ))
+              }
+            />
+          </ul>
+
+          {/* Plugin categories */}
+          <ul className="mt-5 text-xs">
+            <SkeletonLoader
+              render={() =>
+                isArray(plugin.category) &&
+                Object.entries(plugin.category).map(
+                  ([pluginDimension, pluginCategory]) => (
+                    <CategoryChip
+                      dimension={pluginDimension}
+                      category={pluginCategory}
+                    />
+                  ),
+                )
               }
             />
           </ul>
