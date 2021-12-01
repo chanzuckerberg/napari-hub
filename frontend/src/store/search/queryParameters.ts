@@ -4,7 +4,7 @@ import { isObject, set } from 'lodash';
 import { snapshot, subscribe } from 'valtio';
 
 import { BEGINNING_PAGE, RESULTS_PER_PAGE } from '@/constants/search';
-import { createUrl, isSearchPage, replaceUrlState } from '@/utils';
+import { createUrl, replaceUrlState } from '@/utils';
 
 import { SearchQueryParams, SearchSortType } from './constants';
 import { PluginSearchResultStore } from './results.store';
@@ -53,12 +53,6 @@ function forEachFilterParam(
     }
   }
 }
-
-/**
- * Flag for disabling the query parameter update phase. This will prevent the
- * URL query parameters from being updated when this is `true`.
- */
-let skipQueryParamUpdate = false;
 
 /**
  * Parses the URL query parameters for initial state. This should only happen
@@ -129,18 +123,13 @@ export function initStateFromQueryParameters(
       query ||
       isFilterEnabled
     ) {
-      // Skip query parameter updates while we wait for the `totalPages` state
-      // to be ready.
-      skipQueryParamUpdate = true;
-
       // Create a one-time subscriber so that we can read the `totalPages` state
       // when it's available. This helps prevent the URL from flashing while we
       // load the state.
-      const unsubscribe = subscribe(resultsStore.results, () => {
+      const unsubscribe = subscribe(resultsStore, () => {
         const { totalPages } = snapshot(resultsStore).results;
         setPageState(totalPages);
         unsubscribe();
-        skipQueryParamUpdate = false;
       });
     } else {
       const totalPages = Math.ceil(
@@ -165,42 +154,54 @@ function updateQueryParameters(
   searchStore: PluginSearchStore,
   initialLoad?: boolean,
 ) {
-  if (!isSearchPage(window.location.pathname) || skipQueryParamUpdate) {
-    return;
-  }
-
-  const fullUrl = new URL(window.location.href);
-  const url = new URL(window.location.origin);
+  const url = new URL(window.location.href);
   const params = url.searchParams;
+  // Draft parameter object to store updated parameter values.
+  const nextParams = new URLSearchParams();
+
+  // Set of parameters that should not transfer to the draft parameter object.
+  // This is necessary so that the URL maintains non state related parameters in
+  // the URL.
+  const blockedParams = new Set([
+    ...Object.values(SearchQueryParams),
+    ...Object.keys(searchStore.filters).map((key) => PARAM_KEY_MAP[key] ?? key),
+  ]);
+
+  for (const key of params.keys()) {
+    if (!blockedParams.has(key)) {
+      for (const value of params.getAll(key)) {
+        nextParams.append(key, value);
+      }
+    }
+  }
 
   // Search query
   const { query } = searchStore.search;
   if (query) {
-    params.set(SearchQueryParams.Search, query);
-  } else {
-    params.delete(SearchQueryParams.Search);
+    nextParams.set(SearchQueryParams.Search, query);
   }
 
   // Sort type
   // Don't set sort type on initial load unless a value is already specified.
-  if (!initialLoad || fullUrl.searchParams.get(SearchQueryParams.Sort)) {
+  if (!initialLoad || params.get(SearchQueryParams.Sort)) {
     const { sort } = searchStore;
-    params.set(SearchQueryParams.Sort, sort);
+    nextParams.set(SearchQueryParams.Sort, sort);
   }
 
   // Filters
   forEachFilterParam(searchStore, ({ key, value, state }) => {
     if (typeof state === 'boolean' && state) {
-      params.append(key, value);
+      nextParams.append(key, value);
     }
   });
 
   // Current page.
   // Don't set query parameter on initial load unless a value is already specified.
-  if (!initialLoad || fullUrl.searchParams.get(SearchQueryParams.Page)) {
-    params.set(SearchQueryParams.Page, String(searchStore.page));
+  if (!initialLoad || params.get(SearchQueryParams.Page)) {
+    nextParams.set(SearchQueryParams.Page, String(searchStore.page));
   }
 
+  url.search = nextParams.toString();
   if (window.location.href !== url.href) {
     replaceUrlState(url);
   }
