@@ -3,6 +3,8 @@ import clsx from 'clsx';
 import { AnimateSharedLayout, motion } from 'framer-motion';
 
 import { Media } from '@/components/common/media';
+import { FilterKey } from '@/store/search/search.store';
+import { isFeatureFlagEnabled } from '@/utils/featureFlags';
 
 import { PluginFilterByForm } from './PluginFilterByForm';
 import { PluginSortByForm } from './PluginSortByForm';
@@ -16,6 +18,15 @@ export function PluginSearchControls() {
       <Divider layout component={motion.div} className="bg-black h-1" />
     </Media>
   );
+
+  const isCategoryFiltersEnabled = isFeatureFlagEnabled('categoryFilters');
+  const requirementFilters: FilterKey[] = [];
+
+  if (isCategoryFiltersEnabled) {
+    requirementFilters.push('supportedData');
+  }
+
+  requirementFilters.push('pythonVersions', 'operatingSystems', 'license');
 
   return (
     <aside
@@ -32,24 +43,23 @@ export function PluginSearchControls() {
 
         {divider}
 
-        <motion.div layout>
-          <PluginFilterByForm
-            filterType="category"
-            filters={['workflowStep', 'imageModality']}
-          />
-        </motion.div>
+        {isCategoryFiltersEnabled && (
+          <>
+            <motion.div layout>
+              <PluginFilterByForm
+                filterType="category"
+                filters={['workflowStep', 'imageModality']}
+              />
+            </motion.div>
 
-        {divider}
+            {divider}
+          </>
+        )}
 
         <motion.div layout>
           <PluginFilterByForm
             filterType="requirement"
-            filters={[
-              'supportedData',
-              'pythonVersions',
-              'operatingSystems',
-              'license',
-            ]}
+            filters={requirementFilters}
           />
         </motion.div>
       </AnimateSharedLayout>
