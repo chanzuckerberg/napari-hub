@@ -9,6 +9,7 @@ import { useLoadingState } from '@/context/loading';
 import { SearchResultMatch } from '@/store/search/search.types';
 import { HubDimension, PluginIndexData } from '@/types';
 import { formatDate, formatOperatingSystem } from '@/utils';
+
 import { CategoryChip } from '../CategoryChip';
 
 interface Props {
@@ -199,11 +200,9 @@ export function PluginSearchResult({
             <SkeletonLoader
               render={() =>
                 isObject(plugin.category) &&
-                Object.entries(plugin.category).map(
-                  ([pluginDimension, pluginCategory]) => (
-                    <CategoryChip dimension={pluginDimension as HubDimension} />
-                  ),
-                )
+                Object.entries(plugin.category).map(([pluginDimension]) => (
+                  <CategoryChip dimension={pluginDimension as HubDimension} />
+                ))
               }
             />
           </ul>
