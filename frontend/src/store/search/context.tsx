@@ -14,6 +14,7 @@ import {
 import { getResultsStore, PluginSearchResultStore } from './results.store';
 import { PluginSearchStore, SearchEngineStore } from './search.store';
 import { SpdxLicenseData } from './types';
+import { usePlausibleSearchEvents } from './usePlausibleSearchEvents';
 
 interface SearchStoreContextValue {
   /**
@@ -97,6 +98,8 @@ export function SearchStoreProvider({
 
     return unsubscribe as () => void;
   }, [searchStore, shouldInitState]);
+
+  usePlausibleSearchEvents(searchStore);
 
   return (
     <SearchStoreContext.Provider value={{ resultsStore, searchStore }}>

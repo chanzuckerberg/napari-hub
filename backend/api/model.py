@@ -232,10 +232,10 @@ def move_artifact_to_s3(payload, client):
     repo = get_attribute(payload, ["repository", "name"])
     pull_request_number = get_attribute(payload, ['workflow_run', 'pull_requests', 0, 'number'])
     if not pull_request_number:
-        repo = client.repository(owner, repo)
+        github_repo = client.repository(owner, repo)
         head_owner = get_attribute(payload, ['workflow_run', 'head_repository', 'owner', 'login'])
         head_branch = get_attribute(payload, ['workflow_run', 'head_branch'])
-        pull_requests = list(repo.pull_requests(head=f'{head_owner}:{head_branch}'))
+        pull_requests = list(github_repo.pull_requests(head=f'{head_owner}:{head_branch}'))
         if len(pull_requests) == 1:
             pull_request_number = pull_requests[0].number
         else:
