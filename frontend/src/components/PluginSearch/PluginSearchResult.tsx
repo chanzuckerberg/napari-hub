@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { isArray, isEmpty } from 'lodash';
+import { isArray, isEmpty, isObject } from 'lodash';
 import { CSSProperties } from 'react';
 
 import { Link } from '@/components/common/Link';
@@ -7,9 +7,8 @@ import { SkeletonLoader } from '@/components/common/SkeletonLoader';
 import { TextHighlighter } from '@/components/common/TextHighlighter';
 import { useLoadingState } from '@/context/loading';
 import { SearchResultMatch } from '@/store/search/search.types';
-import { PluginIndexData } from '@/types';
+import { HubDimension, PluginIndexData } from '@/types';
 import { formatDate, formatOperatingSystem } from '@/utils';
-
 import { CategoryChip } from '../CategoryChip';
 
 interface Props {
@@ -199,13 +198,10 @@ export function PluginSearchResult({
           <ul className="mt-5 text-xs">
             <SkeletonLoader
               render={() =>
-                isArray(plugin.category) &&
+                isObject(plugin.category) &&
                 Object.entries(plugin.category).map(
                   ([pluginDimension, pluginCategory]) => (
-                    <CategoryChip
-                      dimension={pluginDimension}
-                      category={pluginCategory}
-                    />
+                    <CategoryChip dimension={pluginDimension as HubDimension} />
                   ),
                 )
               }
