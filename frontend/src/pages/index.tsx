@@ -15,6 +15,7 @@ import {
 } from '@/store/search/form.store';
 import { initQueryParameterListener } from '@/store/search/queryParameters';
 import { SpdxLicenseData, SpdxLicenseResponse } from '@/store/search/types';
+import { usePlausibleSearchEvents } from '@/store/search/usePlausibleSearchEvents';
 import { PluginIndexData } from '@/types';
 
 interface Props {
@@ -66,6 +67,8 @@ export default function Home({ error, index, licenses }: Props) {
 
     return unsubscribe as () => void;
   }, [index, isLoading, licenses]);
+
+  usePlausibleSearchEvents();
 
   return (
     <>
