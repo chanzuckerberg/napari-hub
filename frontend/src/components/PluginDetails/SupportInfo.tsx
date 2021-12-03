@@ -17,6 +17,7 @@ import {
   MetadataList,
   MetadataListLinkItem,
   MetadataListTextItem,
+  MetadataListSearchItem,
 } from '@/components/MetadataList';
 import { MetadataId, MetadataKeys, usePluginMetadata } from '@/context/plugin';
 
@@ -153,7 +154,7 @@ export function SupportInfoBase({ className, inline }: SupportInfoBaseProps) {
         inline={inline}
       >
         {metadata.authors.value.map((author) => (
-          <MetadataListTextItem key={author}>{author}</MetadataListTextItem>
+          <MetadataListSearchItem key={author}>{author}</MetadataListSearchItem>
         ))}
       </MetadataList>
 
