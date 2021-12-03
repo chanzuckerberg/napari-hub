@@ -200,9 +200,16 @@ export function PluginSearchResult({
             <SkeletonLoader
               render={() =>
                 isObject(plugin.category) &&
-                Object.entries(plugin.category).map(([pluginDimension]) => (
-                  <CategoryChip dimension={pluginDimension as HubDimension} />
-                ))
+                Object.entries(plugin.category).map(
+                  ([pluginDimension, pluginCategories]) =>
+                    pluginCategories.map((pluginCategory) => (
+                      <CategoryChip
+                        key={plugin.name}
+                        dimension={pluginDimension as HubDimension}
+                        category={pluginCategory}
+                      />
+                    )),
+                )
               }
             />
           </ul>
