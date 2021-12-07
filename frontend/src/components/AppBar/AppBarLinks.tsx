@@ -2,7 +2,6 @@ import clsx from 'clsx';
 
 import { Link } from '@/components/common/Link';
 import { resetLoadingState } from '@/store/loading';
-import { resetState } from '@/store/search/form.store';
 import { LinkInfo } from '@/types';
 
 interface CommonProps {
@@ -11,12 +10,6 @@ interface CommonProps {
 
 interface LinkListProps extends CommonProps {
   items: LinkInfo[];
-}
-
-function resetStateClickHandler() {
-  // Reset states when opening app bar links.
-  resetState();
-  resetLoadingState();
 }
 
 /**
@@ -30,7 +23,7 @@ function LinkList({ items, vertical }: LinkListProps) {
           className={clsx(vertical ? 'mt-4' : 'ml-6')}
           key={item.link}
           href={item.link}
-          onClick={resetStateClickHandler}
+          onClick={resetLoadingState}
         >
           {item.title}
         </Link>
@@ -55,7 +48,7 @@ export function AppBarLinks({ className, items, vertical }: Props) {
         className="whitespace-nowrap"
         // Redirect to home page
         href="/"
-        onClick={resetStateClickHandler}
+        onClick={resetLoadingState}
       >
         napari <strong>hub</strong>
       </Link>

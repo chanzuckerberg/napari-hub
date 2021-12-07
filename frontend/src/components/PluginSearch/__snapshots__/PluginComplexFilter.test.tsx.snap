@@ -1,0 +1,112 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PluginComplexFilter /> should match snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="complexFilter css-end8kr"
+    data-complex-filter="true"
+    data-filter="operatingSystems"
+    data-testid="pluginFilter"
+  >
+    <button
+      class="MuiButtonBase-root MuiButton-root MuiButton-text py-2 px-0 text-black w-full flex justify-between css-156jeld"
+      label="Operating system"
+      sdsstage="default"
+      tabindex="0"
+      type="button"
+    >
+      <span
+        class="MuiButton-label border-b border-black pb-2"
+      >
+        <span
+          class="font-semibold text-sm"
+        >
+          Operating system
+        </span>
+        <svg
+          class="w-4 h-4"
+          fill="none"
+          height="35"
+          viewBox="0 0 35 35"
+          width="35"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M6 12L17.8587 23.8587L29.7173 12"
+            stroke="black"
+            stroke-width="3"
+          />
+        </svg>
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>
+    <div>
+      <div
+        class="MuiChip-root css-1mixguo MuiChip-deletable"
+        role="button"
+        tabindex="0"
+      >
+        <span
+          class="MuiChip-label"
+        >
+          Linux
+        </span>
+        <svg
+          aria-hidden="true"
+          class="MuiSvgIcon-root MuiChip-deleteIcon"
+          focusable="false"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+          />
+        </svg>
+      </div>
+      <div
+        class="MuiChip-root css-1mixguo MuiChip-deletable"
+        role="button"
+        tabindex="0"
+      >
+        <span
+          class="MuiChip-label"
+        >
+          macOS
+        </span>
+        <svg
+          aria-hidden="true"
+          class="MuiSvgIcon-root MuiChip-deleteIcon"
+          focusable="false"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+          />
+        </svg>
+      </div>
+      <div
+        class="MuiChip-root css-1mixguo MuiChip-deletable"
+        role="button"
+        tabindex="0"
+      >
+        <span
+          class="MuiChip-label"
+        >
+          Windows
+        </span>
+        <svg
+          aria-hidden="true"
+          class="MuiSvgIcon-root MuiChip-deleteIcon"
+          focusable="false"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+          />
+        </svg>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;

@@ -1,112 +1,114 @@
-import FormLabel from '@material-ui/core/FormLabel';
-import { get, set } from 'lodash';
-import { useSnapshot } from 'valtio';
+import clsx from 'clsx';
+import { Button } from 'czifui';
+import { set } from 'lodash';
 
 import { Accordion } from '@/components/common/Accordion';
 import { Media } from '@/components/common/media';
-import { SearchFormStore, searchFormStore } from '@/store/search/form.store';
+import { useSearchStore } from '@/store/search/context';
+import { FilterKey } from '@/store/search/search.store';
+import { isFeatureFlagEnabled } from '@/utils/featureFlags';
 
-import { PluginFilterBySection } from './PluginFilterBySection';
+import { PluginComplexFilter } from './PluginComplexFilter';
 
-const FILTER_LABELS: Record<string, string | undefined> = {
-  // Operating System
-  linux: 'Linux',
-  mac: 'macOS',
-  windows: 'Windows',
+export type FilterType = 'category' | 'requirement';
 
-  // Development Status
-  stable: 'Only show stable plugins',
+interface Props {
+  filters: FilterKey[];
+  filterType: FilterType;
+}
 
-  // License
-  openSource: 'Only show plugins with open source licenses',
+const FILTER_LABEL_MAP: Record<FilterType, string> = {
+  category: 'Filter by category',
+  requirement: 'Filter by requirement',
 };
 
-function getCheckboxFilters(
-  filterKey: keyof SearchFormStore['filters'],
-  stateKeys: string[],
-) {
-  return stateKeys.map((stateKey) => ({
-    label: FILTER_LABELS[stateKey] ?? stateKey,
-    filterKey,
-    stateKey,
+/**
+ * Button for clearing all filters defined in the `filters` prop.
+ */
+function ClearAllButton({ filters, filterType }: Props) {
+  const { searchStore } = useSearchStore();
 
-    useFilterState() {
-      const filterState = useSnapshot(searchFormStore).filters;
-      return get(filterState, [filterKey, stateKey]) as boolean;
-    },
+  return (
+    <Button
+      className="underline w-min"
+      data-testid="clearAllButton"
+      data-filter-type={filterType}
+      onClick={() => {
+        for (const filterKey of filters) {
+          for (const stateKey of Object.keys(searchStore.filters[filterKey])) {
+            set(searchStore.filters, [filterKey, stateKey], false);
+          }
+        }
+      }}
+      sdsType="primary"
+      variant="text"
+    >
+      Clear all
+    </Button>
+  );
+}
 
-    setFilterState(checked: boolean) {
-      set(searchFormStore.filters, [filterKey, stateKey], checked);
-    },
-  }));
+function getLabel(filterType: FilterType) {
+  return isFeatureFlagEnabled('categoryFilters')
+    ? FILTER_LABEL_MAP[filterType]
+    : 'Filter';
 }
 
 /**
  * Component for the form for selecting the plugin filter type.
  */
-function FilterForm() {
-  const sections = [
-    {
-      title: 'Python versions',
-      filters: getCheckboxFilters('pythonVersions', ['3.7', '3.8', '3.9']),
-    },
-    {
-      title: 'Operating system',
-      filters: getCheckboxFilters('operatingSystems', [
-        'linux',
-        'mac',
-        'windows',
-      ]),
-    },
-    // TODO Uncomment when we figure out what to do with the dev status filter
-    // {
-    //   title: 'Development status',
-    //   state: filter?.state.developmentStatus,
-    //   setState: filter?.setDevelopmentStatus,
-    // },
-    {
-      title: 'License',
-      filters: getCheckboxFilters('license', ['openSource']),
-    },
-  ];
+function FilterForm(props: Props) {
+  const { filters, filterType } = props;
+  const label = getLabel(filterType);
 
   return (
-    <div className="grid grid-cols-1 screen-600:grid-cols-2 screen-875:grid-cols-1">
+    <div
+      className={clsx(
+        'grid grid-cols-1',
+        'screen-600:grid-cols-2 screen-875:grid-cols-1',
+        'space-y-4',
+        'px-2 screen-875:px-0',
+      )}
+    >
       {/* Only show label on larger screens. This is because the Accordion already includes a title. */}
-      <Media greaterThanOrEqual="screen-875">
-        <FormLabel
-          className="uppercase text-black font-semibold text-sm"
-          component="legend"
-          focused={false}
-        >
-          Filter By
-        </FormLabel>
+      <Media
+        className="flex items-center justify-between"
+        greaterThanOrEqual="screen-875"
+      >
+        <legend className="uppercase text-black font-semibold text-sm">
+          {label}
+        </legend>
+
+        <ClearAllButton {...props} />
       </Media>
 
-      {sections.map((section) => (
-        <PluginFilterBySection
-          className="mt-6"
-          key={section.title}
-          title={section.title}
-          filters={section.filters}
-        />
-      ))}
+      <div className="flex flex-col col-span-2 space-y-2">
+        {filters.map((filterKey) => (
+          <PluginComplexFilter key={filterKey} filterKey={filterKey} />
+        ))}
+      </div>
     </div>
   );
 }
 
 /**
- * Renders the plugin filter form. For smaller screen sizes (< 875px), an
+ * Renders a form for plugin filter. For smaller screen sizes (< 875px), an
  * expandable accordion layout is used. For larger screens, the filter form is
  * rendered as-is.
  */
-export function PluginFilterByForm() {
-  const form = <FilterForm />;
+export function PluginFilterByForm(props: Props) {
+  const form = <FilterForm {...props} />;
+  const { filterType } = props;
+  const label = getLabel(filterType);
 
   return (
     <>
       <Media lessThan="screen-875">
-        <Accordion title="Filter By">{form}</Accordion>
+        <Accordion title={label}>
+          <ClearAllButton {...props} />
+
+          {form}
+        </Accordion>
       </Media>
 
       <Media greaterThanOrEqual="screen-875">{form}</Media>

@@ -4,31 +4,31 @@ import { subscribeKey } from 'valtio/utils';
 
 import { usePlausible } from '@/hooks';
 
-import { SearchFormStore, searchFormStore } from './form.store';
+import { FilterKey, PluginSearchStore } from './search.store';
 
 type Unsubscriber = () => void;
 
 /**
  * Hook that sends plausible events when portions of the Valtio state changes.
  */
-export function usePlausibleSearchEvents() {
+export function usePlausibleSearchEvents(searchStore: PluginSearchStore) {
   const plausible = usePlausible();
 
   useEffect(() => {
     const unsubscribers: Unsubscriber[] = [
       // Search events.
-      subscribeKey(searchFormStore.search, 'query', () => plausible('Search')),
+      subscribeKey(searchStore.search, 'query', () => plausible('Search')),
 
       // Sort events.
-      subscribeKey(searchFormStore, 'sort', (sortType) =>
+      subscribeKey(searchStore, 'sort', (sortType) =>
         plausible('Sort', { by: sortType }),
       ),
     ];
 
     // Add subscribers for filter events.
-    for (const key of Object.keys(searchFormStore.filters)) {
-      const filterKey = key as keyof SearchFormStore['filters'];
-      const filterState = searchFormStore.filters[filterKey];
+    for (const key of Object.keys(searchStore.filters)) {
+      const filterKey = key as FilterKey;
+      const filterState = searchStore.filters[filterKey];
 
       for (const stateKey of Object.keys(filterState)) {
         unsubscribers.push(
@@ -44,5 +44,5 @@ export function usePlausibleSearchEvents() {
     }
 
     return over(unsubscribers) as () => void;
-  }, [plausible]);
+  }, [plausible, searchStore]);
 }

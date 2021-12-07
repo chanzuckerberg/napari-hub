@@ -1,6 +1,8 @@
 import { render, RenderResult, screen } from '@testing-library/react';
 import { ReactNode } from 'react';
 
+import { SearchStoreProvider } from '@/store/search/context';
+
 import { Layout } from './Layout';
 
 describe('<Layout />', () => {
@@ -10,7 +12,11 @@ describe('<Layout />', () => {
 
   beforeEach(() => {
     child = <h1>{text}</h1>;
-    component = render(<Layout>{child}</Layout>);
+    component = render(
+      <SearchStoreProvider>
+        <Layout>{child}</Layout>
+      </SearchStoreProvider>,
+    );
   });
 
   it('should match snapshot', () => {

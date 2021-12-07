@@ -50,7 +50,7 @@ async function testPluginSort({
 
   async function testRadios() {
     await page.goto(getSearchUrl());
-    await maybeOpenAccordion(AccordionTitle.SortBy);
+    await maybeOpenAccordion(AccordionTitle.Sort);
     await preTestRadios?.();
     await clickOnRadio(`input[value=${sortType}]`);
     await testSortResults();
