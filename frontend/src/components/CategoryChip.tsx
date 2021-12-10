@@ -60,13 +60,14 @@ export function CategoryChip({
 
   const tooltipTitle = category || categoryHierarchy?.[0];
   const tooltipBody = tooltipTitle && TOOLTIP_TEXT?.[dimension]?.[tooltipTitle];
+  const hasTooltip = !!(tooltipTitle && tooltipBody);
 
   return (
     <>
       <Chip
         className="bg-napari-category-blue text-xs hover:bg-napari-hover focus:bg-napari-hover"
         classes={{
-          label: 'pl-2 pr-0',
+          label: clsx('pl-2', hasTooltip && 'pr-0'),
         }}
         onClick={(event) => {
           event.preventDefault();
@@ -81,7 +82,7 @@ export function CategoryChip({
             <span>{dimension}</span>
             <span className="font-semibold space-x-1">{chipBody}</span>
 
-            {tooltipTitle && tooltipBody && (
+            {hasTooltip && (
               // TODO Replace with hub specific tooltip implementation.
               <Tooltip
                 leaveDelay={0}
