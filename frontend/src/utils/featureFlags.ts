@@ -1,6 +1,8 @@
+import { useRouter } from 'next/router';
+
 import { PROD, STAGING } from '@/env';
 
-import { createUrl } from '.';
+import { createUrl } from './url';
 
 export type FeatureFlagEnvironment = 'dev' | 'staging' | 'prod';
 
@@ -42,28 +44,27 @@ const DISABLE_FEATURE_FLAG_QUERY_PARAM = 'disable-feature';
  * @param key The feature flag key.
  * @returns True or false depending on if the feature flag is enabled.
  */
-export function isFeatureFlagEnabled(key: FeatureFlagKey): boolean {
+export function useIsFeatureFlagEnabled(key: FeatureFlagKey): boolean {
+  const router = useRouter();
   const flag = FEATURE_FLAGS[key];
 
   // If the flag is enabled / disabled in a URL parameter, then override the
   // environment check.
-  if (process.browser) {
-    const params = createUrl(window.location.href).searchParams;
+  const params = createUrl(router.asPath).searchParams;
 
-    const enabledFeatures = new Set(
-      params.getAll(ENABLE_FEATURE_FLAG_QUERY_PARAM),
-    );
-    const disabledFetures = new Set(
-      params.getAll(DISABLE_FEATURE_FLAG_QUERY_PARAM),
-    );
+  const enabledFeatures = new Set(
+    params.getAll(ENABLE_FEATURE_FLAG_QUERY_PARAM),
+  );
+  const disabledFetures = new Set(
+    params.getAll(DISABLE_FEATURE_FLAG_QUERY_PARAM),
+  );
 
-    if (enabledFeatures.has(key)) {
-      return true;
-    }
+  if (enabledFeatures.has(key)) {
+    return true;
+  }
 
-    if (disabledFetures.has(key)) {
-      return false;
-    }
+  if (disabledFetures.has(key)) {
+    return false;
   }
 
   if (PROD) {

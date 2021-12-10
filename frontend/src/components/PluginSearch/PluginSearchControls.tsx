@@ -4,7 +4,7 @@ import { AnimateSharedLayout, motion } from 'framer-motion';
 
 import { Media } from '@/components/common/media';
 import { FilterKey } from '@/store/search/search.store';
-import { isFeatureFlagEnabled } from '@/utils/featureFlags';
+import { useIsFeatureFlagEnabled } from '@/utils/featureFlags';
 
 import { PluginFilterByForm } from './PluginFilterByForm';
 import { PluginSortByForm } from './PluginSortByForm';
@@ -19,7 +19,7 @@ export function PluginSearchControls() {
     </Media>
   );
 
-  const isCategoryFiltersEnabled = isFeatureFlagEnabled('categoryFilters');
+  const isCategoryFiltersEnabled = useIsFeatureFlagEnabled('categoryFilters');
   const requirementFilters: FilterKey[] = [];
 
   if (isCategoryFiltersEnabled) {

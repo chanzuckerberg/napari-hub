@@ -6,7 +6,7 @@ import { Accordion } from '@/components/common/Accordion';
 import { Media } from '@/components/common/media';
 import { useSearchStore } from '@/store/search/context';
 import { FilterKey } from '@/store/search/search.store';
-import { isFeatureFlagEnabled } from '@/utils/featureFlags';
+import { useIsFeatureFlagEnabled } from '@/utils/featureFlags';
 
 import { PluginComplexFilter } from './PluginComplexFilter';
 
@@ -48,8 +48,8 @@ function ClearAllButton({ filters, filterType }: Props) {
   );
 }
 
-function getLabel(filterType: FilterType) {
-  return isFeatureFlagEnabled('categoryFilters')
+function useFilterLabel(filterType: FilterType) {
+  return useIsFeatureFlagEnabled('categoryFilters')
     ? FILTER_LABEL_MAP[filterType]
     : 'Filter';
 }
@@ -59,7 +59,7 @@ function getLabel(filterType: FilterType) {
  */
 function FilterForm(props: Props) {
   const { filters, filterType } = props;
-  const label = getLabel(filterType);
+  const label = useFilterLabel(filterType);
 
   return (
     <div
@@ -99,7 +99,7 @@ function FilterForm(props: Props) {
 export function PluginFilterByForm(props: Props) {
   const form = <FilterForm {...props} />;
   const { filterType } = props;
-  const label = getLabel(filterType);
+  const label = useFilterLabel(filterType);
 
   return (
     <>
