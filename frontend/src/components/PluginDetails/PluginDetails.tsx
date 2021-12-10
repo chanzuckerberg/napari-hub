@@ -104,23 +104,30 @@ function PluginCenterColumn() {
       />
 
       {/* Plugin categories */}
-      <ul className="mt-5 text-xs">
+      <ul className="mt-5 text-xs space-y-2">
         <SkeletonLoader
           render={() =>
-            isObject(plugin?.category_hierarchy) &&
-            Object.entries(plugin?.category_hierarchy).map(
-              ([pluginDimension, pluginHierarchies]) =>
+            plugin?.category_hierarchy &&
+            isObject(plugin.category_hierarchy) &&
+            Object.entries(plugin.category_hierarchy)
+              .filter(
+                ([pluginDimension]) =>
+                  !pluginDimension.includes('Supported data'),
+              )
+              .map(([pluginDimension, pluginHierarchies]) =>
                 pluginHierarchies.map((pluginHierarchy) => (
                   <CategoryChip
                     key={plugin?.name}
                     dimension={pluginDimension as HubDimension}
-                    categoryHierarchy={pluginHierarchy}
+                    categoryHierarchy={pluginHierarchy as string[]}
                   />
                 )),
-            )
+              )
           }
         />
       </ul>
+
+      <br />
 
       <Media
         className={clsx(

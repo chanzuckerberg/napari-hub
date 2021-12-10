@@ -195,12 +195,16 @@ export function PluginSearchResult({
           </ul>
 
           {/* Plugin categories */}
-          <ul className="mt-5 text-xs">
+          <ul className="mt-5 text-xs space-y-2">
             <SkeletonLoader
               render={() =>
                 isObject(plugin.category) &&
-                Object.entries(plugin.category).map(
-                  ([pluginDimension, pluginCategories]) =>
+                Object.entries(plugin.category)
+                  .filter(
+                    ([pluginDimension]) =>
+                      !pluginDimension.includes('Supported data'),
+                  )
+                  .map(([pluginDimension, pluginCategories]) =>
                     pluginCategories.map((pluginCategory) => (
                       <CategoryChip
                         key={plugin.name}
@@ -208,7 +212,7 @@ export function PluginSearchResult({
                         category={pluginCategory}
                       />
                     )),
-                )
+                  )
               }
             />
           </ul>
