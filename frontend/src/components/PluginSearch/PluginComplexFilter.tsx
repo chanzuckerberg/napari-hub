@@ -301,7 +301,10 @@ export function PluginComplexFilter({ filterKey }: Props) {
           { selected }: AutocompleteRenderOptionState,
         ) => (
           <div className="flex space-x-2 py-1 px-4">
-            <CheckboxIcon checked={selected} />
+            <CheckboxIcon
+              className="min-w-[0.875rem] min-h-[0.875rem]"
+              checked={selected}
+            />
 
             <p
               className={clsx(
