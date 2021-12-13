@@ -8,7 +8,7 @@ page every time you open a new pull request, or update an existing one.
 
 ### 1. Install the GitHub app
 First, you will need to install the napari Hub Plugin Preview GitHub app to the plugin's repository. 
-Follow [this link](https://github.com/apps/napari-hub-plugin-preview) and click the green `Install` button on the right.
+Follow [this link](https://github.com/apps/napari-hub) and click the green `Install` button on the right.
 
 ![napari hub plugin preview app page with large green install button on the right](./images/app_page.png)
 
@@ -118,7 +118,7 @@ metadata that comes from other sources (like your `.napari/config.yml` or `citat
 is pulled directly from your GitHub repository.
 
 Once the metadata is parsed, we use the [GitHub action](https://github.com/chanzuckerberg/napari-hub-preview-action) in a Pull Request triggered workflow to build your preview page.
-The page built by your action is then rendered using the help of the [GitHub app](https://github.com/apps/napari-hub-plugin-preview), which
+The page built by your action is then rendered using the help of the [GitHub app](https://github.com/apps/napari), which
 is also responsible for posting the URL of your preview page on your PR once it's ready.
 
 For more detail on how this is built, you can check out the following links:
