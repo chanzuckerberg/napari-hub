@@ -68,7 +68,9 @@ export function usePluginMetadata() {
   const { plugin } = usePluginState();
 
   function getCategoryValue(dimension: HubDimension): string[] {
-    return plugin?.category ? plugin.category[dimension] ?? [] : [];
+    return (
+      plugin?.category ? plugin.category[dimension] ?? [] : []
+    ) as string[];
   }
 
   return {
