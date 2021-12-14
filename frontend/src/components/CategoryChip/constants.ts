@@ -28,7 +28,7 @@ export const TOOLTIP_TEXT: DeepPartial<
     'Filament tracing':
       "Filament tracing takes an image of filamentous structures (may be a tree-like structure, a filament network, or 'stick-like' filaments) as input and outputs data that represent the filament, commonly a skeleton representation of the filaments and their diameters or surfaces.",
     'Image Segmentation':
-      'Image segmentation based on pre-trained machine learning model',
+      'Image segmentation is the process of partitioning an image into multiple objects and sits on the border between Image Processing and Image Analysis',
     'Object classification':
       'Object classification uses a classifier to recognize categories of objects based on their features.',
     'Object-based colocalisation':
