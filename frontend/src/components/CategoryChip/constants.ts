@@ -48,7 +48,7 @@ export const TOOLTIP_TEXT: DeepPartial<
     'Optical flow analysis':
       'Optical flow analysis is the process of estimating motion in a time-series image, typically represented as vector field as the distribution of the apparent object velocities in an image. ',
     'Image classification':
-      'An annotation is a metadatum (e.g. a post, explanation, markup) attached to location or other data',
+      'Image classification is a process for assigning images to different classes based on the content of the image.',
     Visualization:
       'Visualization covers plugins that enhance or create visualization utilities for images and data plotting.',
     'Synthetic image generation':
