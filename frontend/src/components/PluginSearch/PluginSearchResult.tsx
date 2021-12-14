@@ -194,29 +194,6 @@ export function PluginSearchResult({
             />
           </ul>
 
-          {/* Plugin categories */}
-          <ul className="mt-5 text-xs space-y-2">
-            <SkeletonLoader
-              render={() =>
-                isObject(plugin.category) &&
-                Object.entries(plugin.category)
-                  .filter(
-                    ([pluginDimension]) =>
-                      !pluginDimension.includes('Supported data'),
-                  )
-                  .map(([pluginDimension, pluginCategories]) =>
-                    pluginCategories.map((pluginCategory) => (
-                      <CategoryChip
-                        key={plugin.name}
-                        dimension={pluginDimension as HubDimension}
-                        category={pluginCategory}
-                      />
-                    )),
-                  )
-              }
-            />
-          </ul>
-
           {/* Search preview of plugin description. */}
           {isSearching && matches.description_text && (
             <TextHighlighter
@@ -255,6 +232,35 @@ export function PluginSearchResult({
                   </span>
                 </li>
               ))
+            }
+          />
+        </ul>
+
+        {/* Plugin categories */}
+        <ul
+          className={clsx(
+            'mt-5 text-xs',
+            'flex flex-wrap gap-2',
+            'col-span-2 screen-1425:col-span-3',
+          )}
+        >
+          <SkeletonLoader
+            render={() =>
+              isObject(plugin.category) &&
+              Object.entries(plugin.category)
+                .filter(
+                  ([pluginDimension]) =>
+                    !pluginDimension.includes('Supported data'),
+                )
+                .map(([pluginDimension, pluginCategories]) =>
+                  pluginCategories.map((pluginCategory) => (
+                    <CategoryChip
+                      key={plugin.name}
+                      dimension={pluginDimension as HubDimension}
+                      category={pluginCategory}
+                    />
+                  )),
+                )
             }
           />
         </ul>
