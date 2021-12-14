@@ -1,13 +1,14 @@
 import clsx from 'clsx';
-import { isArray, isEmpty } from 'lodash';
+import { isArray, isEmpty, isObject } from 'lodash';
 import { CSSProperties } from 'react';
 
+import { CategoryChip } from '@/components/CategoryChip';
 import { Link } from '@/components/common/Link';
 import { SkeletonLoader } from '@/components/common/SkeletonLoader';
 import { TextHighlighter } from '@/components/common/TextHighlighter';
 import { useLoadingState } from '@/context/loading';
 import { SearchResultMatch } from '@/store/search/search.types';
-import { PluginIndexData } from '@/types';
+import { HubDimension, PluginIndexData } from '@/types';
 import { formatDate, formatOperatingSystem } from '@/utils';
 
 interface Props {
@@ -189,6 +190,29 @@ export function PluginSearchResult({
                     {renderText(author.name, matches[author.name]?.match)}
                   </li>
                 ))
+              }
+            />
+          </ul>
+
+          {/* Plugin categories */}
+          <ul className="mt-5 text-xs space-y-2">
+            <SkeletonLoader
+              render={() =>
+                isObject(plugin.category) &&
+                Object.entries(plugin.category)
+                  .filter(
+                    ([pluginDimension]) =>
+                      !pluginDimension.includes('Supported data'),
+                  )
+                  .map(([pluginDimension, pluginCategories]) =>
+                    pluginCategories.map((pluginCategory) => (
+                      <CategoryChip
+                        key={plugin.name}
+                        dimension={pluginDimension as HubDimension}
+                        category={pluginCategory}
+                      />
+                    )),
+                  )
               }
             />
           </ul>

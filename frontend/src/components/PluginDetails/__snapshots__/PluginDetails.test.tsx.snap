@@ -133,6 +133,49 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
           class="fresnel-container fresnel-lessThan-screen-875 "
         />
         <div
+          class="space-y-5"
+        >
+          <div
+            class="text-sm"
+            id="supportedData"
+          >
+            <div
+              class=""
+              id="supportedData"
+            >
+              <h4
+                class="font-bold whitespace-nowrap mb-3"
+              >
+                Supported data
+                :
+              </h4>
+              <ul
+                class="list list-none text-sm leading-normal"
+              >
+                <li
+                  class="flex justify-between items-center"
+                >
+                  <span
+                    class="text-napari-gray font-normal"
+                  >
+                    information not submitted
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div
+          class="fresnel-container fresnel-greaterThanOrEqual-screen-1425 "
+        >
+          <div
+            class="mb-2 h-px bg-black border-none"
+          />
+        </div>
+        <div
+          class="fresnel-container fresnel-lessThan-screen-875 "
+        />
+        <div
           class="text-sm screen-875:justify-self-center screen-1425:justify-self-start"
         >
           <div
@@ -330,6 +373,10 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
         Cool plugin for demos
       </h2>
     </div>
+    <ul
+      class="mt-5 text-xs space-y-2"
+    />
+    <br />
     <div
       class="fresnel-container fresnel-lessThan-3xl flex flex-col lg:flex-row lg:items-center my-6 screen-495:mt-30 screen-600:mb-12"
     >
@@ -1110,6 +1157,49 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
           />
         </div>
         <div
+          class="space-y-5"
+        >
+          <div
+            class="text-sm"
+            id="supportedData"
+          >
+            <div
+              class="flex items-center screen-875:inline"
+              id="supportedData"
+            >
+              <h4
+                class="font-bold whitespace-nowrap inline mr-2"
+              >
+                Supported data
+                :
+              </h4>
+              <ul
+                class="list list-none text-sm leading-normal inline space-y-2 flex-grow inline"
+              >
+                <li
+                  class="flex justify-between items-center"
+                >
+                  <span
+                    class="text-napari-gray font-normal"
+                  >
+                    information not submitted
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div
+          class="fresnel-container fresnel-greaterThanOrEqual-screen-1425 "
+        />
+        <div
+          class="fresnel-container fresnel-lessThan-screen-875 "
+        >
+          <div
+            class="mb-2 h-px bg-black border-none"
+          />
+        </div>
+        <div
           class="text-sm screen-875:justify-self-center screen-1425:justify-self-start"
         >
           <div
@@ -1372,6 +1462,49 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
                   class="textItem"
                 >
                   MIT
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div
+          class="fresnel-container fresnel-greaterThanOrEqual-screen-1425 "
+        >
+          <div
+            class="mb-2 h-px bg-black border-none"
+          />
+        </div>
+        <div
+          class="fresnel-container fresnel-lessThan-screen-875 "
+        />
+        <div
+          class="space-y-5"
+        >
+          <div
+            class="text-sm"
+            id="supportedData"
+          >
+            <div
+              class=""
+              id="supportedData"
+            >
+              <h4
+                class="font-bold whitespace-nowrap mb-3"
+              >
+                Supported data
+                :
+              </h4>
+              <ul
+                class="list list-none text-sm leading-normal"
+              >
+                <li
+                  class="flex justify-between items-center"
+                >
+                  <span
+                    class="text-napari-gray font-normal"
+                  >
+                    information not submitted
+                  </span>
                 </li>
               </ul>
             </div>
