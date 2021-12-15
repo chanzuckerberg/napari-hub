@@ -282,7 +282,6 @@ export function PluginComplexFilter({ filterKey }: Props) {
 
         renderInput: (params: AutocompleteRenderInputParams) => (
           <TextField
-            autoFocus
             fullWidth
             placeholder="search for a category"
             ref={params.InputProps.ref}
