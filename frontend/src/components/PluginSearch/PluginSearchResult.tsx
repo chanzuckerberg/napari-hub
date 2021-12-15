@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import { isArray, isEmpty, isObject } from 'lodash';
-import { CSSProperties } from 'react';
+import React, { CSSProperties, useState } from 'react';
+import { useDebounce } from 'use-debounce';
 
 import { CategoryChip } from '@/components/CategoryChip';
 import { Link } from '@/components/common/Link';
@@ -97,6 +98,8 @@ export function PluginSearchResult({
   style,
 }: Props) {
   const isLoading = useLoadingState();
+  const [isHoveringOverChip, setIsHoveringOverChip] = useState(false);
+  const [debouncedIsHoveringOverChip] = useDebounce(isHoveringOverChip, 100);
 
   // TODO consolidate with PluginGithubData component in PluginMetadata.tsx
   const items: SearchResultItem[] = isLoading
@@ -255,9 +258,13 @@ export function PluginSearchResult({
                 .map(([pluginDimension, pluginCategories]) =>
                   pluginCategories.map((pluginCategory) => (
                     <CategoryChip
-                      key={plugin.name}
+                      key={`${pluginDimension}-${pluginCategory}`}
                       dimension={pluginDimension as HubDimension}
                       category={pluginCategory}
+                      chipProps={{
+                        onMouseEnter: () => setIsHoveringOverChip(true),
+                        onMouseLeave: () => setIsHoveringOverChip(false),
+                      }}
                     />
                   )),
                 )
@@ -286,7 +293,10 @@ export function PluginSearchResult({
   return (
     <Link
       data-testid="pluginSearchResult"
-      className={clsx(resultClassName, 'hover:bg-napari-hover-gray')}
+      className={clsx(
+        resultClassName,
+        !debouncedIsHoveringOverChip && 'hover:bg-napari-hover-gray',
+      )}
       href={`/plugins/${plugin.name}`}
       style={style}
     >

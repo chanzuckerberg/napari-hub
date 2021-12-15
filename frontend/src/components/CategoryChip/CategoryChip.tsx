@@ -1,4 +1,4 @@
-import Chip from '@material-ui/core/Chip';
+import Chip, { ChipProps } from '@material-ui/core/Chip';
 import Tooltip from '@material-ui/core/Tooltip';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import clsx from 'clsx';
@@ -12,9 +12,10 @@ import { HubDimension } from '@/types';
 import { TOOLTIP_TEXT } from './constants';
 
 interface Props {
-  dimension: HubDimension;
   category?: string;
   categoryHierarchy?: string[];
+  chipProps?: ChipProps;
+  dimension: HubDimension;
 }
 
 const STATE_KEY_MAP: Partial<Record<HubDimension, FilterCategoryKeys>> = {
@@ -28,12 +29,13 @@ const STATE_KEY_MAP: Partial<Record<HubDimension, FilterCategoryKeys>> = {
  * copy is available.
  */
 export function CategoryChip({
-  dimension,
   category,
   categoryHierarchy,
+  chipProps,
+  dimension,
 }: Props) {
   const { searchStore } = useSearchStore();
-  const iconRef = useRef<HTMLDivElement>(null);
+  const iconRef = useRef<HTMLButtonElement>(null);
   const chipBody =
     category ||
     categoryHierarchy?.map((term, index) => (
@@ -54,11 +56,11 @@ export function CategoryChip({
   const tooltipBody = tooltipTitle && TOOLTIP_TEXT?.[dimension]?.[tooltipTitle];
   const hasTooltip = !!(tooltipTitle && tooltipBody);
 
-  const tooltipBodyNode = (
+  return (
     <Chip
       className={clsx(
         'text-xs !rounded-full',
-        'bg-napari-category-blue hover:bg-napari-hover focus:bg-napari-hover',
+        'bg-napari-category-blue hover:bg-napari-light focus:bg-napari-light',
       )}
       classes={{
         label: clsx('pl-2', hasTooltip && 'pr-0'),
@@ -75,47 +77,48 @@ export function CategoryChip({
         <div className="flex items-center space-x-1">
           <span>{dimension}</span>
           <span className="font-semibold space-x-1">{chipBody}</span>
-          <span
-            className="p-2 pr-3 flex items-center justify-center"
-            ref={iconRef}
-          >
-            <InfoOutlinedIcon className="w-3 h-3" />
-          </span>
-        </div>
-      }
-    />
-  );
-
-  return (
-    <Tooltip
-      arrow
-      leaveDelay={0}
-      classes={{
-        arrow: 'before:bg-white before:border before:border-napari-gray',
-        tooltip: 'bg-white text-black border border-napari-gray',
-      }}
-      PopperProps={{
-        anchorEl() {
-          return iconRef.current as HTMLDivElement;
-        },
-      }}
-      title={
-        <div
-          className={clsx(
-            'leading-normal',
-            'flex flex-col',
-            'mx-3 my-2 space-y-2',
+          {hasTooltip && (
+            <Tooltip
+              arrow
+              leaveDelay={0}
+              classes={{
+                arrow:
+                  'before:bg-white before:border before:border-napari-gray',
+                tooltip: 'bg-white text-black border border-napari-gray',
+              }}
+              PopperProps={{
+                anchorEl() {
+                  return iconRef.current as HTMLButtonElement;
+                },
+              }}
+              title={
+                <div
+                  className={clsx(
+                    'leading-normal',
+                    'flex flex-col',
+                    'mx-3 my-2 space-y-2',
+                  )}
+                >
+                  <span className="font-semibold text-sm">{tooltipTitle}</span>
+                  <span className="text-xs">{tooltipBody}</span>
+                  <span className="text-xs italic">
+                    Click the category name to add it as a filter.
+                  </span>
+                </div>
+              }
+            >
+              <button
+                className="p-2 pr-3 flex items-center justify-center"
+                ref={iconRef}
+                type="button"
+              >
+                <InfoOutlinedIcon className="w-3 h-3" />
+              </button>
+            </Tooltip>
           )}
-        >
-          <span className="font-semibold text-sm">{tooltipTitle}</span>
-          <span className="text-xs">{tooltipBody}</span>
-          <span className="text-xs italic">
-            Click the category name to add it as a filter.
-          </span>
         </div>
       }
-    >
-      {tooltipBodyNode}
-    </Tooltip>
+      {...chipProps}
+    />
   );
 }
