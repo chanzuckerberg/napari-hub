@@ -374,7 +374,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
       </h2>
     </div>
     <ul
-      class="mt-5 text-xs space-y-2"
+      class="mt-5 text-xs flex flex-wrap gap-2"
     />
     <br />
     <div

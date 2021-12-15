@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import { isArray, isEmpty, isObject } from 'lodash';
-import { CSSProperties } from 'react';
+import React, { CSSProperties, useState } from 'react';
+import { useDebounce } from 'use-debounce';
 
 import { CategoryChip } from '@/components/CategoryChip';
 import { Link } from '@/components/common/Link';
@@ -97,6 +98,8 @@ export function PluginSearchResult({
   style,
 }: Props) {
   const isLoading = useLoadingState();
+  const [isHoveringOverChip, setIsHoveringOverChip] = useState(false);
+  const [debouncedIsHoveringOverChip] = useDebounce(isHoveringOverChip, 100);
 
   // TODO consolidate with PluginGithubData component in PluginMetadata.tsx
   const items: SearchResultItem[] = isLoading
@@ -194,29 +197,6 @@ export function PluginSearchResult({
             />
           </ul>
 
-          {/* Plugin categories */}
-          <ul className="mt-5 text-xs space-y-2">
-            <SkeletonLoader
-              render={() =>
-                isObject(plugin.category) &&
-                Object.entries(plugin.category)
-                  .filter(
-                    ([pluginDimension]) =>
-                      !pluginDimension.includes('Supported data'),
-                  )
-                  .map(([pluginDimension, pluginCategories]) =>
-                    pluginCategories.map((pluginCategory) => (
-                      <CategoryChip
-                        key={plugin.name}
-                        dimension={pluginDimension as HubDimension}
-                        category={pluginCategory}
-                      />
-                    )),
-                  )
-              }
-            />
-          </ul>
-
           {/* Search preview of plugin description. */}
           {isSearching && matches.description_text && (
             <TextHighlighter
@@ -258,6 +238,39 @@ export function PluginSearchResult({
             }
           />
         </ul>
+
+        {/* Plugin categories */}
+        <ul
+          className={clsx(
+            'mt-5 text-xs',
+            'flex flex-wrap gap-2',
+            'col-span-2 screen-1425:col-span-3',
+          )}
+        >
+          <SkeletonLoader
+            render={() =>
+              isObject(plugin.category) &&
+              Object.entries(plugin.category)
+                .filter(
+                  ([pluginDimension]) =>
+                    !pluginDimension.includes('Supported data'),
+                )
+                .map(([pluginDimension, pluginCategories]) =>
+                  pluginCategories.map((pluginCategory) => (
+                    <CategoryChip
+                      key={`${pluginDimension}-${pluginCategory}`}
+                      dimension={pluginDimension as HubDimension}
+                      category={pluginCategory}
+                      chipProps={{
+                        onMouseEnter: () => setIsHoveringOverChip(true),
+                        onMouseLeave: () => setIsHoveringOverChip(false),
+                      }}
+                    />
+                  )),
+                )
+            }
+          />
+        </ul>
       </article>
     );
   }
@@ -280,7 +293,10 @@ export function PluginSearchResult({
   return (
     <Link
       data-testid="pluginSearchResult"
-      className={clsx(resultClassName, 'hover:bg-napari-hover-gray')}
+      className={clsx(
+        resultClassName,
+        !debouncedIsHoveringOverChip && 'hover:bg-napari-hover-gray',
+      )}
       href={`/plugins/${plugin.name}`}
       style={style}
     >
