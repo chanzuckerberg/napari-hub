@@ -295,6 +295,11 @@ export function PluginComplexFilter({ filterKey }: Props) {
                 // mobile input focus:
                 // https://css-tricks.com/16px-or-larger-text-prevents-ios-form-zoom
                 'text-lg',
+
+                // Render transparent text caret when search is not enabled so
+                // that it doesn't render a blinking caret. Remove this when the above issue is fixed.
+                !isSearchEnabled && styles.hiddenInputCaret,
+
                 'border-b border-black',
               ),
               disableUnderline: true,
