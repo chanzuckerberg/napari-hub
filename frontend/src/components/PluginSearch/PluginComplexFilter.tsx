@@ -282,14 +282,26 @@ export function PluginComplexFilter({ filterKey }: Props) {
 
         renderInput: (params: AutocompleteRenderInputParams) => (
           <TextField
+            {...params}
             autoFocus
             fullWidth
             placeholder="search for a category"
-            ref={params.InputProps.ref}
-            inputProps={params.inputProps}
-            // eslint-disable-next-line react/jsx-no-duplicate-props
             InputProps={{
-              className: 'text-[0.6875rem] border-b border-black',
+              ...params.InputProps,
+              className: clsx(
+                // Use large text for now until
+                // https://github.com/chanzuckerberg/napari-hub/issues/367 is
+                // fixed properly. Large text will reduce the amount of zoom for
+                // mobile input focus:
+                // https://css-tricks.com/16px-or-larger-text-prevents-ios-form-zoom
+                'text-lg',
+
+                // Render transparent text caret when search is not enabled so
+                // that it doesn't render a blinking caret. Remove this when the above issue is fixed.
+                !isSearchEnabled && styles.hiddenInputCaret,
+
+                'border-b border-black',
+              ),
               disableUnderline: true,
               endAdornment: <Search />,
             }}
