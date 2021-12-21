@@ -45,6 +45,12 @@ def get_file(download_url: str, file: str, branch: str = 'HEAD') -> [dict, None]
     :param branch: branch name to use if specified
     :return: file context for the file to download
     """
+    local_workspace = os.getenv("GITHUB_WORKSPACE")
+    if local_workspace:
+        # read files locally since github action already checked it out
+        with open(os.path.join(local_workspace, file)) as f:
+            return f.read()
+
     api_url = download_url.replace("https://github.com/",
                                    "https://raw.githubusercontent.com/")
     try:
