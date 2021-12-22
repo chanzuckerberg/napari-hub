@@ -55,37 +55,19 @@ export function useMetadataSections(): MetadataSection[] {
       title: 'Describe what the plugin does',
       description:
         'A concise summary & clear description help users understand what your plugin does and whether it is what they are looking for.',
-      fields: getFields(
-        'name',
-        'summary',
-        'description',
-
-        // TODO Future categories, disable this for now until the data is ready.
-        // 'supportedData',
-        // 'pluginType',
-      ),
+      fields: getFields('name', 'summary', 'description', 'authors'),
     },
     {
       title: 'Tell users where they can get help',
       description:
         'Make sure your users know where to go to learn how to use your plugin, get help, report bugs, or request new features.',
-      fields: getFields(
-        'authors',
-        // TODO Add when design for optional metadata is ready
-        // 'projectSite',
-        'reportIssues',
-        // TODO Add when design for optional metadata is ready
-        // 'twitter',
-        'sourceCode',
-        'documentationSite',
-        'supportSite',
-      ),
+      fields: getFields('documentationSite', 'supportSite', 'reportIssues'),
     },
     {
       title: 'Give insight into your code',
       description:
         'Let users see your source code and know what kind of stability they should expect.',
-      fields: getFields('version', 'license'),
+      fields: getFields('sourceCode', 'license', 'version'),
     },
     {
       title: 'Specify system requirements',
