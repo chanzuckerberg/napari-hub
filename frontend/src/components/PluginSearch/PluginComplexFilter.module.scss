@@ -27,10 +27,12 @@ div.complexFilter {
   }
 }
 
-.autoComplete > div {
-  @apply p-0 m-0;
-  @apply border-t-0 border-l-0 border-r-0;
-  @apply border-black rounded-none;
+.autoComplete {
+  & > div {
+    @apply p-0 m-0;
+    @apply border-t-0 border-l-0 border-r-0;
+    @apply border-black rounded-none;
+  }
 }
 
 .hiddenInputCaret {

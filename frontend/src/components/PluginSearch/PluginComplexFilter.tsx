@@ -1,10 +1,6 @@
 import styled from '@emotion/styled';
 import Popper from '@material-ui/core/Popper';
-import TextField from '@material-ui/core/TextField';
-import {
-  AutocompleteRenderInputParams,
-  AutocompleteRenderOptionState,
-} from '@material-ui/lab/Autocomplete';
+import { AutocompleteRenderOptionState } from '@material-ui/lab/Autocomplete';
 import clsx from 'clsx';
 import {
   Button,
@@ -14,6 +10,7 @@ import {
 } from 'czifui';
 import { get, isEqual } from 'lodash';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { render } from 'react-dom';
 import { subscribe, useSnapshot } from 'valtio';
 
 import { useSearchStore } from '@/store/search/context';
@@ -79,6 +76,10 @@ const StyledPopper = styled(Popper)`
     background: #fff;
     position: relative;
     width: 100% !important;
+  }
+
+  .MuiAutocomplete-option {
+    min-height: 0;
   }
 `;
 
@@ -235,6 +236,27 @@ export function PluginComplexFilter({ filterKey }: Props) {
               // for sizes <300px.
               tooltip.style.maxWidth =
                 window.outerWidth < 300 ? '100%' : `${width}px`;
+
+              // Manually set the placeholder of the input component. This
+              // workaround is required until props are added to the
+              // ComplexFilter component that'll let us pass props to the nested
+              // Autocomplete input component.
+              const searchInput = tooltip.querySelector('input');
+              if (searchInput) {
+                searchInput.placeholder = 'search for a category';
+              }
+
+              // Manually replace the filter input adornment. This workaround is
+              // required for the same reasons as above.
+              if (filterKey === 'workflowStep') {
+                const svgContainer = tooltip.querySelector(
+                  '.MuiInputAdornment-root',
+                );
+
+                if (svgContainer) {
+                  render(<Search />, svgContainer);
+                }
+              }
             }
           }
         }),
@@ -279,34 +301,6 @@ export function PluginComplexFilter({ filterKey }: Props) {
 
         groupBy: (option: PluginMenuSelectOption) =>
           WORKFLOW_STEP_GROUP_MAP[option.stateKey] ?? '',
-
-        renderInput: (params: AutocompleteRenderInputParams) => (
-          <TextField
-            {...params}
-            autoFocus
-            fullWidth
-            placeholder="search for a category"
-            InputProps={{
-              ...params.InputProps,
-              className: clsx(
-                // Use large text for now until
-                // https://github.com/chanzuckerberg/napari-hub/issues/367 is
-                // fixed properly. Large text will reduce the amount of zoom for
-                // mobile input focus:
-                // https://css-tricks.com/16px-or-larger-text-prevents-ios-form-zoom
-                'text-lg',
-
-                // Render transparent text caret when search is not enabled so
-                // that it doesn't render a blinking caret. Remove this when the above issue is fixed.
-                !isSearchEnabled && styles.hiddenInputCaret,
-
-                'border-b border-black',
-              ),
-              disableUnderline: true,
-              endAdornment: <Search />,
-            }}
-          />
-        ),
 
         renderOption: (
           option: PluginMenuSelectOption,

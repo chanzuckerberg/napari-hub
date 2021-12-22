@@ -33,7 +33,7 @@ const FILTER_KEY_METADATA_LABEL_MAP: Partial<Record<FilterKey, MetadataLabel>> =
 
 const CATEGORY_FILTERS = new Set<FilterKey>(['imageModality', 'workflowStep']);
 
-async function openFilter(filterKey: FilterKey) {
+async function clickOnFilterButton(filterKey: FilterKey) {
   const filterButton = await page.$(
     `[data-testid=pluginFilter][data-filter=${filterKey}]`,
   );
@@ -132,21 +132,16 @@ async function testPluginFilter({
   async function testClickingOnOptions() {
     await page.goto(getSearchUrl());
     await openAccordion();
+    await clickOnFilterButton(filterKey);
 
     for (let i = 0; i < options.length; i += 1) {
-      await openFilter(filterKey);
       const optionResults = await getOptions(options);
       const { node } =
         optionResults.find((result) => result.label === options[i]) ?? {};
       node?.click();
     }
 
-    // Close filter by clicking on chevron.
-    const chevron = await page.$(
-      `[data-testid=pluginFilter][data-filter=${filterKey}] svg`,
-    );
-    await chevron?.click();
-
+    await clickOnFilterButton(filterKey);
     await testResults();
   }
 

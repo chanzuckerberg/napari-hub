@@ -3808,10 +3808,10 @@ cwd@^0.10.0:
     find-pkg "^0.1.2"
     fs-exists-sync "^0.1.0"
 
-czifui@^1.5.0:
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/czifui/-/czifui-1.5.0.tgz#9766e1335271917ba3e55e80650893ed2f82f007"
-  integrity sha512-7MnrDsZvM5mDdxAqVsoj2ugvRch9cOiV62RV10TMv+MRHu/nH+azIZ78+kk2IlVPrbL/HIU4aXn3vd0V8SskdA==
+czifui@^1.5.6:
+  version "1.5.6"
+  resolved "https://registry.yarnpkg.com/czifui/-/czifui-1.5.6.tgz#92e367b655869d8145b80f8daddeaeef815d1c6d"
+  integrity sha512-XQKXFT35EG7NOaDrMjFlY+bDkvU2IqN9JIhlEDeERqQrSOpuITQs9PNSgN/i9Z8QbxhcFLxlADqKuljxE5SfvQ==
 
 damerau-levenshtein@^1.0.6:
   version "1.0.6"
