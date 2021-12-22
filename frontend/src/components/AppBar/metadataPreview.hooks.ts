@@ -88,7 +88,7 @@ export function useMetadataSections(): MetadataSection[] {
       fields: getFields('version', 'license'),
     },
     {
-      title: 'Implementation requirements',
+      title: 'Specify system requirements',
       description:
         'Make the technical requirements of your plugin clear so users will know if it they can install it.',
       fields: getFields('pythonVersion', 'operatingSystems', 'requirements'),
