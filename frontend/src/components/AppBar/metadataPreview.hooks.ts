@@ -54,7 +54,7 @@ export function useMetadataSections(): MetadataSection[] {
     {
       title: 'Name + descriptions',
       description:
-        '[Explain what these metadata help the end user understand / why useful to populate them.]',
+        'A concise summary & clear description help users understand what your plugin does and whether it is what they are looking for.',
       fields: getFields(
         'name',
         'summary',
@@ -68,7 +68,7 @@ export function useMetadataSections(): MetadataSection[] {
     {
       title: 'Support + contact',
       description:
-        '[Explain what these metadata help the end user understand / why useful to populate them.]',
+        'Make sure your users know where to go to learn how to use your plugin, get help, report bugs, or request new features.',
       fields: getFields(
         'authors',
         // TODO Add when design for optional metadata is ready
@@ -84,13 +84,13 @@ export function useMetadataSections(): MetadataSection[] {
     {
       title: 'Development information',
       description:
-        '[Explain what these metadata help the end user understand / why useful to populate them.]',
+        'Let users see your source code and know what kind of stability they should expect.',
       fields: getFields('version', 'license'),
     },
     {
       title: 'Implementation requirements',
       description:
-        '[Explain what these metadata help the end user understand / why useful to populate them.]',
+        'Make the technical requirements of your plugin clear so users will know if it they can install it.',
       fields: getFields('pythonVersion', 'operatingSystems', 'requirements'),
     },
   ];
