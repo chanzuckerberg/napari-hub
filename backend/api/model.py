@@ -1,6 +1,6 @@
 from concurrent import futures
 from datetime import datetime
-from typing import Tuple, Dict, List, Union
+from typing import Tuple, Dict, List
 from zipfile import ZipFile
 from io import BytesIO
 from collections import defaultdict
@@ -8,7 +8,7 @@ from collections import defaultdict
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
 from api.s3 import get_cache, cache
-from utils.utils import render_description, send_alert, get_attribute
+from utils.utils import render_description, send_alert, get_attribute, get_category_mapping
 from api.zulip import notify_new_packages
 
 index_subset = {'name', 'summary', 'description_text', 'description_content_type',
@@ -276,45 +276,3 @@ def get_categories_mapping(version: str) -> Dict[str, List]:
     """
     mappings = get_cache(f'category/{version.replace(":", "/")}.json')
     return mappings or {}
-
-
-def get_category_mapping(category: str, mappings: Dict[str, List]) -> List[Dict]:
-    """
-    Get category mappings
-
-    Parameters
-    ----------
-    category : str
-        name of the category to map
-    mappings: dict
-        mappings to use for lookups, if None, use cached mapping
-
-    Returns
-    -------
-    match : list of matched category
-        list of mapped label, dimension and hierarchy, where hierarchy is from most abstract to most specific.
-        for example, Manual segmentation is mapped to the following list:
-        [
-            {
-                "label": "Image Segmentation",
-                "dimension": "Operation",
-                "hierarchy": [
-                    "Image segmentation",
-                    "Manual segmentation"
-                ]
-            },
-            {
-                "label": "Image annotation",
-                "dimension": "Operation",
-                "hierarchy": [
-                    "Image annotation",
-                    "Dense image annotation",
-                    "Manual segmentation"
-                ]
-            }
-        ]
-    """
-    if category not in mappings:
-        return []
-    else:
-        return mappings[category]
