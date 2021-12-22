@@ -62,6 +62,7 @@ def test_parse_preview_matches_hub(tmpdir):
 
     # get preview metadata for example-plugin
     os.environ["GITHUB_REPOSITORY"] = "DragaDoncila/example-plugin"
+    os.environ["GITHUB_WORKSPACE"] = ""
     get_plugin_preview(code_plugin_url, dest_dir)
     with open(os.path.join(dest_dir, 'preview_meta.json')) as f:
         preview_meta = json.load(f)
