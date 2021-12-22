@@ -76,16 +76,19 @@ export function usePluginMetadata() {
   return {
     name: {
       name: 'Plugin name',
+      previewName: 'Name',
       value: plugin?.name ?? '',
     },
 
     summary: {
       name: 'Brief description',
+      previewName: 'Summary',
       value: plugin?.summary ?? '',
     },
 
     description: {
       name: 'Plugin description using hub-specific template',
+      previewName: 'Description',
       value: plugin?.description ?? '',
     },
 
@@ -116,7 +119,6 @@ export function usePluginMetadata() {
 
     reportIssues: {
       name: 'Report issues',
-      previewName: 'Report issues site',
       value: plugin?.report_issues ?? '',
     },
 
@@ -133,12 +135,12 @@ export function usePluginMetadata() {
 
     supportSite: {
       name: 'Support site',
+      previewName: 'Support',
       value: plugin?.support ?? '',
     },
 
     documentationSite: {
       name: 'Documentation',
-      previewName: 'Documentation site',
       value: plugin?.documentation ?? '',
     },
 

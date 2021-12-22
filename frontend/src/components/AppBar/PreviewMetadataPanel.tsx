@@ -55,7 +55,7 @@ function MetadataField({ field }: MetadataFieldProps) {
           key: field.name,
 
           className:
-            'flex items-center justify-start text-left m-0 p-1 flex-grow',
+            'flex items-start justify-start text-left m-0 p-1 flex-grow',
 
           // Attach click listener if field is a button.
           ...(field.hasValue

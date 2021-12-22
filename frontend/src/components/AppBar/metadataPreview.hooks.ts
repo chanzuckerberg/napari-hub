@@ -52,45 +52,27 @@ export function useMetadataSections(): MetadataSection[] {
 
   return [
     {
-      title: 'Name + descriptions',
+      title: 'Describe what the plugin does',
       description:
-        '[Explain what these metadata help the end user understand / why useful to populate them.]',
-      fields: getFields(
-        'name',
-        'summary',
-        'description',
-
-        // TODO Future categories, disable this for now until the data is ready.
-        // 'supportedData',
-        // 'pluginType',
-      ),
+        'A concise summary & clear description help users understand what your plugin does and whether it is what they are looking for.',
+      fields: getFields('name', 'summary', 'description', 'authors'),
     },
     {
-      title: 'Support + contact',
+      title: 'Tell users where they can get help',
       description:
-        '[Explain what these metadata help the end user understand / why useful to populate them.]',
-      fields: getFields(
-        'authors',
-        // TODO Add when design for optional metadata is ready
-        // 'projectSite',
-        'reportIssues',
-        // TODO Add when design for optional metadata is ready
-        // 'twitter',
-        'sourceCode',
-        'documentationSite',
-        'supportSite',
-      ),
+        'Make sure your users know where to go to learn how to use your plugin, get help, report bugs, or request new features.',
+      fields: getFields('documentationSite', 'supportSite', 'reportIssues'),
     },
     {
-      title: 'Development information',
+      title: 'Give insight into your code',
       description:
-        '[Explain what these metadata help the end user understand / why useful to populate them.]',
-      fields: getFields('version', 'license'),
+        'Let users see your source code and know what kind of stability they should expect.',
+      fields: getFields('sourceCode', 'license', 'version'),
     },
     {
-      title: 'Implementation requirements',
+      title: 'Specify system requirements',
       description:
-        '[Explain what these metadata help the end user understand / why useful to populate them.]',
+        'Make the technical requirements of your plugin clear so users will know if it they can install it.',
       fields: getFields('pythonVersion', 'operatingSystems', 'requirements'),
     },
   ];
