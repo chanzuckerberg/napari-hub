@@ -52,7 +52,7 @@ export function useMetadataSections(): MetadataSection[] {
 
   return [
     {
-      title: 'Name + descriptions',
+      title: 'Describe what the plugin does',
       description:
         'A concise summary & clear description help users understand what your plugin does and whether it is what they are looking for.',
       fields: getFields(
