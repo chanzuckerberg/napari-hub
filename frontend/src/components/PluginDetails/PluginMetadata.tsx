@@ -75,6 +75,8 @@ interface PluginMetadataBaseProps extends CommonProps {
   inline?: boolean;
 }
 
+type PickMetadataKey = MetadataKeys | 'supportedData';
+
 /**
  * Utility type for picking keys that have a value that is a specific type. For
  * example, `PickMetadataKeys<string>` will return `'name' | 'summary' | ...`
@@ -83,8 +85,8 @@ interface PluginMetadataBaseProps extends CommonProps {
  * because those metadata keys have string arrays as their values.
  */
 type PickMetadataKeys<T> = {
-  [Key in MetadataKeys]: Metadata[Key]['value'] extends T ? Key : never;
-}[MetadataKeys];
+  [Key in PickMetadataKey]: Metadata[Key]['value'] extends T ? Key : never;
+}[PickMetadataKey];
 
 /**
  * Component for rendering plugin metadata responsively.  This handles
@@ -113,7 +115,7 @@ function PluginMetadataBase({
 
     return (
       <MetadataList
-        id={key}
+        id={key as MetadataKeys}
         inline={inline}
         title={name}
         empty={isEmpty(values)}
@@ -136,6 +138,13 @@ function PluginMetadataBase({
           {renderSingleItemList('license')}
         </>
       )}
+    />
+  );
+
+  const categoryMetadata = (
+    <SkeletonLoader
+      className="h-56"
+      render={() => <>{renderItemList('supportedData')}</>}
     />
   );
 
@@ -172,6 +181,10 @@ function PluginMetadataBase({
       )}
     >
       <div className={listClassName}>{projectMetadata}</div>
+
+      {divider}
+
+      <div className={listClassName}>{categoryMetadata}</div>
 
       {divider}
 

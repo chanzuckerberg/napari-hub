@@ -1,8 +1,9 @@
 import clsx from 'clsx';
-import { throttle } from 'lodash';
+import { isObject, throttle } from 'lodash';
 import { useEffect } from 'react';
 
 import { AppBarPreview } from '@/components/AppBar';
+import { CategoryChip } from '@/components/CategoryChip';
 import { ColumnLayout } from '@/components/common/ColumnLayout';
 import { Markdown } from '@/components/common/Markdown';
 import { Media, MediaFragment } from '@/components/common/media';
@@ -14,6 +15,7 @@ import { useLoadingState } from '@/context/loading';
 import { usePluginState } from '@/context/plugin';
 import { usePlausible } from '@/hooks';
 import { usePreviewClickAway } from '@/hooks/usePreviewClickAway';
+import { HubDimension } from '@/types';
 
 import { CallToActionButton } from './CallToActionButton';
 import { CitationInfo } from './CitationInfo';
@@ -100,6 +102,32 @@ function PluginCenterColumn() {
           </MetadataHighlighter>
         )}
       />
+
+      {/* Plugin categories */}
+      <ul className="mt-5 text-xs flex flex-wrap gap-2">
+        <SkeletonLoader
+          render={() =>
+            plugin?.category_hierarchy &&
+            isObject(plugin.category_hierarchy) &&
+            Object.entries(plugin.category_hierarchy)
+              .filter(
+                ([pluginDimension]) =>
+                  !pluginDimension.includes('Supported data'),
+              )
+              .map(([pluginDimension, pluginHierarchies]) =>
+                pluginHierarchies.map((pluginHierarchy) => (
+                  <CategoryChip
+                    key={plugin?.name}
+                    dimension={pluginDimension as HubDimension}
+                    categoryHierarchy={pluginHierarchy as string[]}
+                  />
+                )),
+              )
+          }
+        />
+      </ul>
+
+      <br />
 
       <Media
         className={clsx(
