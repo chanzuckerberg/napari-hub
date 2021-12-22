@@ -66,7 +66,7 @@ export function useMetadataSections(): MetadataSection[] {
       ),
     },
     {
-      title: 'Support + contact',
+      title: 'Tell users where they can get help',
       description:
         'Make sure your users know where to go to learn how to use your plugin, get help, report bugs, or request new features.',
       fields: getFields(
