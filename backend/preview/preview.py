@@ -55,7 +55,7 @@ def get_plugin_preview(repo_pth: str, dest_dir: str, is_local: bool = False, bra
 
     if 'labels' in github_metadata:
         ontology = github_metadata['labels']['ontology']
-        category_mappings = json.loads(requests.get(f'https://api.napari-hub.org/categories?version={ontology}'))
+        category_mappings = json.loads(requests.get(f'https://api.napari-hub.org/categories?version={ontology}').text)
         categories = defaultdict(list)
         category_hierarchy = defaultdict(list)
         for category in github_metadata['labels']['terms']:
