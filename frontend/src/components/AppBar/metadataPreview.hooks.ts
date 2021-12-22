@@ -82,7 +82,7 @@ export function useMetadataSections(): MetadataSection[] {
       ),
     },
     {
-      title: 'Development information',
+      title: 'Give insight into your code',
       description:
         'Let users see your source code and know what kind of stability they should expect.',
       fields: getFields('version', 'license'),
