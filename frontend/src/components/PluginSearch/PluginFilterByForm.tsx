@@ -104,7 +104,7 @@ export function PluginFilterByForm(props: Props) {
   return (
     <>
       <Media lessThan="screen-875">
-        <Accordion title={label}>
+        <Accordion className="uppercase" title={label}>
           <ClearAllButton {...props} />
 
           {form}

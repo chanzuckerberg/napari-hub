@@ -102,7 +102,9 @@ export function PluginSortByForm() {
   return (
     <>
       <Media lessThan="screen-875">
-        <Accordion title="Sort">{form}</Accordion>
+        <Accordion className="uppercase" title="Sort">
+          {form}
+        </Accordion>
       </Media>
 
       <Media greaterThanOrEqual="screen-875">{form}</Media>

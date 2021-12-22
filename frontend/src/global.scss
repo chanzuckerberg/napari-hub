@@ -51,3 +51,22 @@ body {
   @apply min-w-napari-xs;
 }
 /* stylelint-enable */
+
+// Styles for complex filter tooltips.
+[role='tooltip'] {
+  /* stylelint-disable-next-line selector-class-pattern */
+  .MuiAutocomplete-root[data-filter] {
+    input {
+      @apply text-xs;
+    }
+
+    // Use larger font size for touch devices to prevent zoom when the filter
+    // input is focused:
+    // https://css-tricks.com/16px-or-larger-text-prevents-ios-form-zoom/
+    @media (any-hover: none) {
+      input {
+        @apply text-lg;
+      }
+    }
+  }
+}
