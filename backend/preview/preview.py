@@ -8,7 +8,8 @@ import sys
 import glob
 import os
 import json
-
+import requests
+from utils.utils import get_category_mapping
 from utils.github import github_pattern, get_github_metadata, get_github_repo_url
 from utils.pypi import get_plugin_pypi_metadata
 
@@ -44,12 +45,31 @@ def get_plugin_preview(repo_pth: str, dest_dir: str, is_local: bool = False, bra
     action_github_repo = os.getenv("GITHUB_REPOSITORY")
     if action_github_repo:
         action_repo_url = f'https://github.com/{action_github_repo}'
-        meta.update(get_github_metadata(action_repo_url, branch=branch))
+        github_metadata = get_github_metadata(action_repo_url, branch=branch)
         if "code_repository" in meta and action_repo_url != meta["code_repository"]:
-            meta['action_repository'] = action_repo_url
+            github_metadata['action_repository'] = action_repo_url
     elif "code_repository" in meta:
-        meta.update(get_github_metadata(meta["code_repository"], branch=branch))
+        github_metadata = get_github_metadata(meta["code_repository"], branch=branch)
+    else:
+        github_metadata = {}
 
+    if 'labels' in github_metadata:
+        ontology = github_metadata['labels']['ontology']
+        category_mappings = json.loads(requests.get(f'https://api.napari-hub.org/categories?version={ontology}').text)
+        categories = defaultdict(list)
+        category_hierarchy = defaultdict(list)
+        for category in github_metadata['labels']['terms']:
+            mapped_category = get_category_mapping(category, category_mappings)
+            for match in mapped_category:
+                if match['label'] not in categories[match['dimension']]:
+                    categories[match['dimension']].append(match['label'])
+                match['hierarchy'][0] = match['label']
+                category_hierarchy[match['dimension']].append(match['hierarchy'])
+        github_metadata['category'] = categories
+        github_metadata['category_hierarchy'] = category_hierarchy
+        del github_metadata['labels']
+
+    meta.update(github_metadata)
     # get release date and first released
     get_pypi_date_meta(meta)
 
