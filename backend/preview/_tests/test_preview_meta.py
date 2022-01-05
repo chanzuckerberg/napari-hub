@@ -8,27 +8,29 @@ from datetime import datetime
 
 from ..preview import clone_repo, build_dist, parse_meta, get_plugin_preview, get_pypi_date_meta
 
-code_plugin_url = "https://github.com/DragaDoncila/example-plugin"
-hub_plugin_url = "https://api.napari-hub.org/plugins/example-plugin"
+code_plugin_url = "https://github.com/chanzuckerberg/napari-demo"
+hub_plugin_url = "https://api.napari-hub.org/plugins/napari-demo"
 example_plugin_first_released = "2021-07-12T21:30:25.936203Z"
 example_plugin_release_date = "2021-10-08T00:49:53.706510Z"
+
 
 def test_clone_existing_plugin(tmpdir):
     dest_dir = tmpdir.mkdir("repo")
     repo_pth = clone_repo(code_plugin_url, dest_dir).working_tree_dir
     
     # a git repository
-    assert os.path.exists(os.path.join(dest_dir, 'example-plugin', '.git/'))
+    assert os.path.exists(os.path.join(dest_dir, 'napari-demo', '.git/'))
     # correct repo name 
-    assert os.path.basename(repo_pth) == 'example-plugin'
+    assert os.path.basename(repo_pth) == 'napari-demo'
 
 
 def test_clone_invalid_plugin(tmpdir):
-    plugin_url = "https://github.com/DragaDoncila/fake-repo"
+    plugin_url = "https://github.com/chanzuckerberg/fake-repo"
     dest_dir = tmpdir.mkdir("repo")
     
     with pytest.raises(RuntimeError):
         clone_repo(plugin_url, dest_dir)
+
 
 def test_build_dist(tmpdir):
     dest_dir = tmpdir.mkdir("repo")
@@ -39,7 +41,8 @@ def test_build_dist(tmpdir):
 
     wheel = pkginfo.Wheel(wheel_pth)
     assert isinstance(wheel, pkginfo.Wheel)
-    assert wheel.name == 'example-plugin'
+    assert wheel.name == 'napari-demo'
+
 
 def test_build_dist_fail(tmpdir):
     plugin_dir = tmpdir.mkdir('fake-plugin')
@@ -48,12 +51,14 @@ def test_build_dist_fail(tmpdir):
     with pytest.raises(RuntimeError):
         build_dist(plugin_dir, tmpdir.mkdir('wheel_dir'))
 
+
 def test_parse_meta(tmpdir):
     repo_dir = tmpdir.mkdir("repo")
     repo_pth = clone_repo(code_plugin_url, repo_dir).working_tree_dir
     wheel_pth = build_dist(repo_pth, repo_dir)
     meta = parse_meta(wheel_pth)
-    assert meta['name'] == 'example-plugin'
+    assert meta['name'] == 'napari-demo'
+
 
 def test_parse_preview_matches_hub(tmpdir):
     dest_dir = tmpdir.mkdir('preview')
@@ -61,7 +66,7 @@ def test_parse_preview_matches_hub(tmpdir):
     hub_metadata = json.loads(requests.get(hub_plugin_url).text)
 
     # get preview metadata for example-plugin
-    os.environ["GITHUB_REPOSITORY"] = "DragaDoncila/example-plugin"
+    os.environ["GITHUB_REPOSITORY"] = "chanzuckerberg/napari-demo"
     os.environ["GITHUB_WORKSPACE"] = ""
     get_plugin_preview(code_plugin_url, dest_dir)
     with open(os.path.join(dest_dir, 'preview_meta.json')) as f:
