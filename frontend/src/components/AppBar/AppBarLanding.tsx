@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import { useTranslation } from 'next-i18next';
 import { ReactNode } from 'react';
 
 import { ColumnLayout } from '@/components/common/ColumnLayout';
@@ -33,13 +34,12 @@ function List({ children, className }: ListProps) {
  */
 export function AppBarLanding() {
   const links = useAppBarLinks();
+  const [t] = useTranslation(['homePage']);
 
   // On smaller layouts, the last list item is rendered below the icon and 2
   // preceding list items. To achieve this affect, the last list item is
   // rendered in a separate list so that it can be rendered below everything.
-  const lastListNode = (
-    <li>Share your image analysis tools with napari’s growing community</li>
-  );
+  const lastListNode = <li>{t('homePage:appBar.share')}</li>;
 
   return (
     <ColumnLayout
@@ -67,7 +67,7 @@ export function AppBarLanding() {
           styles.heading,
         )}
       >
-        Discover, install, and share napari plugins
+        {t('homePage:appBar.title')}
       </h1>
 
       <div
@@ -82,8 +82,8 @@ export function AppBarLanding() {
         <Hub className={styles.logo} />
 
         <List className="ml-7">
-          <li>Discover plugins that solve your image analysis challenges</li>
-          <li>Learn how to install into napari</li>
+          <li>{t('homePage:appBar.discover')}</li>
+          <li>{t('homePage:appBar.learnHow')}</li>
 
           {/* Render in list if screen is wide enough. */}
           <MediaFragment greaterThanOrEqual="screen-725">

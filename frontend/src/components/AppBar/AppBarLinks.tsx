@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 
+import { I18n } from '@/components/common/I18n';
 import { Link } from '@/components/common/Link';
 import { resetLoadingState } from '@/store/loading';
 import { LinkInfo } from '@/types';
@@ -50,7 +51,7 @@ export function AppBarLinks({ className, items, vertical }: Props) {
         href="/"
         onClick={resetLoadingState}
       >
-        napari <strong>hub</strong>
+        <I18n i18nKey="common:napariHub.strong" />
       </Link>
 
       {items && <LinkList items={items} vertical={vertical} />}

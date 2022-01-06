@@ -1,4 +1,5 @@
 import { isArray, isEmpty, isString } from 'lodash';
+import { useTranslation } from 'next-i18next';
 
 import { MetadataKeys, usePluginMetadata } from '@/context/plugin';
 
@@ -14,14 +15,9 @@ export interface MetadataSection {
   fields: MetadataSectionField[];
 }
 
-function hasPreviewName<T extends { previewName: string }>(
-  value: unknown,
-): value is T {
-  return !!(value as T).previewName;
-}
-
 export function useMetadataSections(): MetadataSection[] {
   const metadata = usePluginMetadata();
+  const [t] = useTranslation(['preview']);
 
   function getFields(...keys: MetadataKeys[]) {
     return keys.map((key) => {
@@ -45,35 +41,44 @@ export function useMetadataSections(): MetadataSection[] {
       return {
         hasValue,
         id: key,
-        name: hasPreviewName(data) ? data.previewName : data.name,
+        name: data.previewLabel,
       };
     });
   }
 
+  function getSection({
+    section,
+    fields,
+  }: {
+    section: { title: string; description: string };
+    fields: MetadataKeys[];
+  }) {
+    return {
+      title: section.title,
+      description: section.description,
+      fields: getFields(...fields),
+    };
+  }
+
   return [
-    {
-      title: 'Describe what the plugin does',
-      description:
-        'A concise summary & clear description help users understand what your plugin does and whether it is what they are looking for.',
-      fields: getFields('name', 'summary', 'description', 'authors'),
-    },
-    {
-      title: 'Tell users where they can get help',
-      description:
-        'Make sure your users know where to go to learn how to use your plugin, get help, report bugs, or request new features.',
-      fields: getFields('documentationSite', 'supportSite', 'reportIssues'),
-    },
-    {
-      title: 'Give insight into your code',
-      description:
-        'Let users see your source code and know what kind of stability they should expect.',
-      fields: getFields('sourceCode', 'license', 'version'),
-    },
-    {
-      title: 'Specify system requirements',
-      description:
-        'Make the technical requirements of your plugin clear so users will know if it they can install it.',
-      fields: getFields('pythonVersion', 'operatingSystems', 'requirements'),
-    },
+    getSection({
+      section: t('preview:sections.describeWhat'),
+      fields: ['name', 'summary', 'description', 'authors'],
+    }),
+
+    getSection({
+      section: t('preview:sections.tellUsers'),
+      fields: ['name', 'summary', 'description', 'authors'],
+    }),
+
+    getSection({
+      section: t('preview:sections.giveInsight'),
+      fields: ['sourceCode', 'license', 'version'],
+    }),
+
+    getSection({
+      section: t('preview:sections.specifySystem'),
+      fields: ['pythonVersion', 'operatingSystems', 'requirements'],
+    }),
   ];
 }
