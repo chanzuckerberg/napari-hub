@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import { isEmpty } from 'lodash';
+import { useTranslation } from 'next-i18next';
 import { ReactNode } from 'react';
 
 import { Divider } from '@/components/common/Divider';
@@ -14,7 +15,7 @@ import {
 } from '@/context/plugin';
 
 interface GithubMetadataItem {
-  title: string;
+  label: string;
   count: number;
 }
 
@@ -25,28 +26,35 @@ interface GithubMetadataItem {
  */
 function PluginGithubData() {
   const { repo, repoFetchError } = usePluginState();
+  const [t] = useTranslation(['pluginPage']);
+
   const items: GithubMetadataItem[] = [
     {
-      title: 'Stars',
+      label: t('pluginPage:github.stars'),
       count: repo.stars,
     },
     {
-      title: 'Forks',
+      label: t('pluginPage:github.forks'),
       count: repo.forks,
     },
     {
-      title: 'Issues + PRs',
+      label: t('pluginPage:github.issuesAndPrs'),
       count: repo.issuesAndPRs,
     },
   ];
+
   const error =
     repoFetchError &&
-    `We're having trouble loading the GitHub stats: ${repoFetchError.status}`;
+    t('pluginPage:github.fetchError', {
+      replace: {
+        status: repoFetchError.status,
+      },
+    });
 
   return (
     <MetadataList
       className="screen-875:justify-self-center screen-1425:justify-self-start"
-      title="GitHub activity"
+      label={t('pluginPage:githubActivity')}
     >
       {error ? (
         <li>
@@ -54,8 +62,8 @@ function PluginGithubData() {
         </li>
       ) : (
         items.map((item) => (
-          <MetadataListTextItem key={item.title}>
-            {item.title}: <span className="font-bold">{item.count}</span>
+          <MetadataListTextItem key={item.label}>
+            {item.label}: <span className="font-bold">{item.count}</span>
           </MetadataListTextItem>
         ))
       )}
@@ -101,23 +109,23 @@ function PluginMetadataBase({
   const metadata = usePluginMetadata();
 
   function renderSingleItemList(key: PickMetadataKeys<string>) {
-    const { name, value } = metadata[key];
+    const { label, value } = metadata[key];
 
     return (
-      <MetadataList id={key} inline={inline} title={name} empty={!value}>
+      <MetadataList id={key} inline={inline} label={label} empty={!value}>
         <MetadataListTextItem>{value}</MetadataListTextItem>
       </MetadataList>
     );
   }
 
   function renderItemList(key: PickMetadataKeys<string[]>) {
-    const { name, value: values } = metadata[key];
+    const { label, value: values } = metadata[key];
 
     return (
       <MetadataList
         id={key as MetadataKeys}
         inline={inline}
-        title={name}
+        label={label}
         empty={isEmpty(values)}
       >
         {values.map((value) => (
