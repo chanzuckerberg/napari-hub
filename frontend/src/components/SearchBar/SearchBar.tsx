@@ -2,6 +2,7 @@ import IconButton from '@material-ui/core/IconButton';
 import clsx from 'clsx';
 import { useRouter } from 'next/router';
 import { HTMLProps, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSnapshot } from 'valtio';
 
 import { Close, Search } from '@/components/common/icons';
@@ -38,6 +39,7 @@ interface Props extends HTMLProps<HTMLFormElement> {
  * This makes the SearchBar component re-useable for non-search enabled pages.
  */
 export function SearchBar({ large, ...props }: Props) {
+  const [t] = useTranslation(['common']);
   const router = useRouter();
   const { searchStore } = useSearchStore();
   const state = useSnapshot(searchStore);
@@ -119,7 +121,7 @@ export function SearchBar({ large, ...props }: Props) {
       {...props}
     >
       <input
-        aria-label="Search bar for searching for napari plugins."
+        aria-label={t('common:ariaLabels.searchBar')}
         data-testid="searchBarInput"
         className={clsx(
           // Flex layout
@@ -146,7 +148,11 @@ export function SearchBar({ large, ...props }: Props) {
       />
 
       <IconButton
-        aria-label={query ? 'Clear search bar text' : 'Submit search query'}
+        aria-label={t(
+          query
+            ? 'common:ariaLabels.clearSearchBar'
+            : 'common:ariaLabels.submitSearchQuery',
+        )}
         data-testid={query ? 'clearQueryButton' : 'submitQueryButton'}
         onClick={async () => {
           // Clear local query if close button is clicked and the search engine
