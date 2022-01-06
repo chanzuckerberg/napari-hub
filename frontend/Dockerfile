@@ -27,6 +27,8 @@ RUN yarn install
 # Copy application build to image
 COPY --from=builder /app/.next /app/.next
 COPY public /app/public
+COPY i18n /app/i18n
+COPY next.config.js next-i18next.config.js /app/
 
 EXPOSE 8080
 ENTRYPOINT [ "yarn", "start" ]

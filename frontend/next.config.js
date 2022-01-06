@@ -6,6 +6,7 @@ const { EnvironmentPlugin } = require('webpack');
 
 const linkvars = require('./src/utils/linkvars');
 const { LINKS } = require('./src/constants');
+const { i18n } = require('./next-i18next.config');
 
 const withMDX = mdx({
   extensions: /\.mdx$/,
@@ -51,6 +52,7 @@ if (PROD && PREVIEW) {
 
 module.exports = withMDX({
   ...previewOptions,
+  i18n,
 
   basePath: process.env.BASE_PATH || '',
   pageExtensions: ['ts', 'tsx', 'mdx'],
