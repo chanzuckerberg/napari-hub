@@ -1,3 +1,5 @@
+import { useTranslation } from 'next-i18next';
+
 import { ColumnLayout } from '@/components/common/ColumnLayout';
 import { SearchBar } from '@/components/SearchBar';
 import { SEARCH_BAR_ID } from '@/constants/search';
@@ -6,6 +8,8 @@ import { SEARCH_BAR_ID } from '@/constants/search';
  * Component that renders the landing page search bar.
  */
 export function PluginSearchBar() {
+  const [t] = useTranslation(['homePage']);
+
   return (
     <ColumnLayout
       id={SEARCH_BAR_ID}
@@ -20,7 +24,7 @@ export function PluginSearchBar() {
           id="plugin-search-title"
           className="font-bold text-xl mb-4 whitespace-nowrap"
         >
-          Search for a plugin by keyword or author
+          {t('homePage:searchBar')}
         </h2>
 
         <SearchBar aria-describedby="plugin-search-title" large />
