@@ -1,24 +1,6 @@
-const mdx = require('@next/mdx');
-const slug = require('remark-slug');
-const html = require('rehype-stringify');
-const externalLinks = require('remark-external-links');
 const { EnvironmentPlugin } = require('webpack');
 
-const linkvars = require('./src/utils/linkvars');
-const { LINKS } = require('./src/constants');
 const { i18n } = require('./next-i18next.config');
-
-const withMDX = mdx({
-  extensions: /\.mdx$/,
-  options: {
-    remarkPlugins: [
-      slug,
-      html,
-      [externalLinks, { target: '_blank', rel: 'noreferrer' }],
-      [linkvars, { vars: LINKS }],
-    ],
-  },
-});
 
 const { PREVIEW } = process.env;
 const PROD = process.env.NODE_ENV === 'production';
@@ -50,12 +32,12 @@ if (PROD && PREVIEW) {
   console.log('Building preview page for plugin file', PREVIEW);
 }
 
-module.exports = withMDX({
+module.exports = {
   ...previewOptions,
   i18n,
 
   basePath: process.env.BASE_PATH || '',
-  pageExtensions: ['ts', 'tsx', 'mdx'],
+  pageExtensions: ['ts', 'tsx'],
 
   // Use SWC to minify code.
   swcMinify: true,
@@ -99,4 +81,4 @@ module.exports = withMDX({
 
     return config;
   },
-});
+};

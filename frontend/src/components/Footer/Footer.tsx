@@ -4,7 +4,7 @@ import { ComponentType } from 'react';
 import { CZI, GitHub, NapariLogo } from '@/components/common/icons';
 import { IconProps } from '@/components/common/icons/icons.type';
 import { Link } from '@/components/common/Link';
-import { LINKS } from '@/constants';
+import { useLinks } from '@/hooks/useLinks';
 import { LinkInfo } from '@/types';
 
 interface FooterItem extends LinkInfo {
@@ -14,21 +14,27 @@ interface FooterItem extends LinkInfo {
   icon?: ComponentType<IconProps>;
 }
 
-const FOOTER_LINKS: FooterItem[] = [
-  LINKS.ABOUT,
-  LINKS.FAQ,
-  LINKS.PRIVACY,
-  LINKS.CONTACT,
-  { ...LINKS.HUB_REPO, icon: GitHub },
-];
+function useFooterItems(): FooterItem[] {
+  const links = useLinks();
+
+  return [
+    links.ABOUT,
+    links.FAQ,
+    links.PRIVACY,
+    links.CONTACT,
+    { ...links.HUB_REPO, icon: GitHub },
+  ];
+}
 
 /**
  * Link bar for footer links
  */
 function FooterLinks() {
+  const items = useFooterItems();
+
   return (
     <>
-      {FOOTER_LINKS.map((item) => (
+      {items.map((item) => (
         <Link
           className={clsx(
             // font style

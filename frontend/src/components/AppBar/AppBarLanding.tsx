@@ -3,11 +3,11 @@ import { ReactNode } from 'react';
 
 import { ColumnLayout } from '@/components/common/ColumnLayout';
 import { Hub } from '@/components/common/icons';
+import { Media, MediaFragment } from '@/components/common/media';
 
-import { Media, MediaFragment } from '../common/media';
-import { APP_LINKS } from './AppBar.constants';
 import styles from './AppBarLanding.module.scss';
 import { AppBarLinks } from './AppBarLinks';
+import { useAppBarLinks } from './useAppBarLinks';
 
 interface ListProps {
   children: ReactNode;
@@ -32,6 +32,8 @@ function List({ children, className }: ListProps) {
  * Component that renders the landing page variant of the AppBar.
  */
 export function AppBarLanding() {
+  const links = useAppBarLinks();
+
   // On smaller layouts, the last list item is rendered below the icon and 2
   // preceding list items. To achieve this affect, the last list item is
   // rendered in a separate list so that it can be rendered below everything.
@@ -50,11 +52,11 @@ export function AppBarLanding() {
       component="header"
     >
       <Media greaterThanOrEqual="screen-1425">
-        <AppBarLinks items={APP_LINKS} vertical />
+        <AppBarLinks items={links} vertical />
       </Media>
 
       <Media lessThan="screen-1425">
-        <AppBarLinks className="mb-6" items={APP_LINKS} />
+        <AppBarLinks className="mb-6" items={links} />
       </Media>
 
       <h1
