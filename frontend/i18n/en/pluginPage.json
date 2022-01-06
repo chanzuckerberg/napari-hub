@@ -1,0 +1,39 @@
+{
+  "githubActivity": "GitHub activity",
+  "viewProjectData": "View project data",
+
+  "alt": {
+    "installMenu": "napari plugin install menu",
+    "pluginList": "napari plugin list"
+  },
+
+  "errors": {
+    "fetch": "Unable to load plugin",
+    "emptyPlugin": "Empty plugin data"
+  },
+
+  "github": {
+    "stars": "Stars",
+    "forks": "Forks",
+    "issuesAndPrs": "Issues + PRs",
+    "fetchError": "We're having trouble loading the GitHub stats: {{status}}"
+  },
+
+  "installModal": {
+    "title": "Installing a plugin with napari",
+    "visitNapari": "To get started with napari, visit <hubLink href='https://napari.org'>napari.org</hubLink>",
+    "steps": {
+      "step1": "From the “Plugins” menu within the napari application, select “Install/Uninstall Package(s)...”.",
+      "step2": "Copy <copyButton /> and paste it where it says “Install by name/url…”.",
+      "step3": "Click “Install”."
+    }
+  },
+
+  "citations": {
+    "body": "If you use this plugin in your work, please cite it using the following citation. Don’t forget to <hubLink href='https://napari.org/#citing-napari'>cite napari</hubLink> too!",
+    "copied": "Copied!",
+    "copy": "Copy",
+    "download": "Download",
+    "title": "How to cite this plugin"
+  }
+}

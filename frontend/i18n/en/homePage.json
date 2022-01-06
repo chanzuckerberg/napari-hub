@@ -1,0 +1,99 @@
+{
+  "browsePlugins": "Browse plugins: <count />",
+  "fetchError": "Unable to fetch plugin index",
+  "searchBar": "Search for a plugin by keyword or author",
+
+  "ariaLabels": {
+    "sortPlugins": "Sort plugins by"
+  },
+
+  "appBar": {
+    "discover": "Discover plugins that solve your image analysis challenges",
+    "learnHow": "Learn how to install into napari",
+    "share": "Share your image analysis tools with napari’s growing community",
+    "title": "Discover, install, and share napari plugins"
+  },
+
+  "sort": {
+    "newest": "Newest",
+    "pluginName": "Plugin name",
+    "recentlyUpdated": "Recently updated",
+    "relevance": "Relevance",
+    "title": "Sort"
+  },
+
+  "filter": {
+    "clearAll": "Clear all",
+
+    "title": {
+      "base": "Filter",
+      "category": "$t(filter.title.base) by category",
+      "requirement": "$t(filter.title.base) by requirement"
+    },
+
+    "category": {
+      "imageModality": "Image modality",
+      "workflowStep": "Workflow step"
+    },
+
+    "operatingSystem": {
+      "linux": "Linux",
+      "mac": "macOS",
+      "windows": "Windows"
+    },
+
+    "requirement": {
+      "ossLicense": "Limit to plugins with open source license"
+    },
+
+    "workflowStep": {
+      "groups": {
+        "dataGeneration": "Data generation",
+        "imageBasedAnalysis": "Image-based analysis",
+        "imageProcessing": "Image processing",
+        "imageSegmentationAndObjectDetection": "Image segmentation & object detection",
+        "objectedBasedAnalysis": "Object-based analysis",
+        "visualization": "Visualization"
+      },
+
+      "groupings": {
+        "dataGeneration": ["Synthetic image generation"],
+
+        "imageBasedAnalysis": [
+          "Fluorescence correlation spectroscopy",
+          "Frequency domain analysis",
+          "Image classification",
+          "Optical flow analysis",
+          "Pixel-based colocalisation"
+        ],
+
+        "imageProcessing": [
+          "Image correction",
+          "Image enhancement",
+          "Image fusion",
+          "Image reconstruction",
+          "Image registration",
+          "Morphological operations"
+        ],
+
+        "imageSegmentationAndObjectDetection": [
+          "Filament tracing",
+          "Image annotation",
+          "Image feature detection",
+          "Image Segmentation",
+          "Pixel classification"
+        ],
+
+        "objectedBasedAnalysis": [
+          "Clustering",
+          "Object classification",
+          "Object feature extraction",
+          "Object tracking",
+          "Object-based colocalisation"
+        ],
+
+        "visualization": ["Visualization"]
+      }
+    }
+  }
+}

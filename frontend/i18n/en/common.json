@@ -1,0 +1,41 @@
+{
+  "about": "About",
+  "close": "Close",
+  "contact": "Contact",
+  "cziOss": "Chan Zuckerberg Initiative EOSS Program",
+  "download": "Download",
+  "error": "Error",
+  "faq": "FAQ",
+  "githubRepo": "GitHub repo",
+  "home": "Home",
+  "infoNotSubmitted": "Information not submitted",
+  "install": "Install",
+  "learnMore": "Learn more",
+  "mailchimpPrivacy": "Mailchimp Privacy Policy",
+  "napariGovernanceModel": "napari governance model",
+  "napariImageScForum": "napari image.sc forum",
+  "napariMainWebsite": "napari main website",
+  "napariPlausible": "napari.dev analytics dashboard",
+  "plausiblePrivacy": "Plausible.io Privacy Policy",
+  "privacy": "Privacy",
+
+  "ariaLabels": {
+    "clearSearchBar": "Clear search bar text",
+    "searchBar": "Search bar for searching for napari plugins.",
+    "submitSearchQuery": "Submit search query"
+  },
+
+  "napariHub": {
+    "base": "napari hub",
+    "strong": "napari <strong>hub</strong>"
+  },
+
+  "alt": {
+    "sideMenu": "Icon for opening side menu."
+  },
+
+  "errors": {
+    "notFound": "Page <code>{{pathname}}</code> not found.",
+    "serverError": "Internal server error"
+  }
+}
