@@ -270,7 +270,7 @@ export function PluginDetails() {
   }, [loading]);
 
   return (
-    <>
+    <div className="flex flex-grow justify-center">
       {process.env.PREVIEW && <AppBarPreview />}
 
       <ColumnLayout
@@ -290,6 +290,6 @@ export function PluginDetails() {
         <PluginRightColumn />
         <PluginCenterColumn />
       </ColumnLayout>
-    </>
+    </div>
   );
 }
