@@ -22,7 +22,7 @@ exports[`<Layout /> should match snapshot 1`] = `
             data-testid="appBarHome"
             href="/"
           >
-            common:napariHub.strong
+            napari &lt;strong&gt;hub&lt;/strong&gt;
           </a>
           <div
             class="flex"
@@ -53,7 +53,7 @@ exports[`<Layout /> should match snapshot 1`] = `
             data-testid="appBarHome"
             href="/"
           >
-            common:napariHub.strong
+            napari &lt;strong&gt;hub&lt;/strong&gt;
           </a>
         </nav>
       </div>

@@ -32,7 +32,11 @@ jest.mock('next/router', () => ({
 }));
 
 jest.mock('@/components/common/I18n', () => ({
-  I18n: ({ i18nKey }: { i18nKey: string }) => i18nKey,
+  I18n: ({ i18nKey }: { i18nKey: string }) => {
+    const [namespace, key] = i18nKey.split(':');
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return get(I18nResources, [namespace, ...key.split('.')]) ?? i18nKey;
+  },
 }));
 
 jest.mock('next-i18next', () => ({
