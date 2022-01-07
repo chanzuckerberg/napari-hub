@@ -12,25 +12,25 @@ exports[`<Footer /> should match snapshot 1`] = `
         class="whitespace-nowrap font-semibold text-sm mr-6 last:mr-0"
         href="/about"
       >
-        About
+        common:about
       </a>
       <a
         class="whitespace-nowrap font-semibold text-sm mr-6 last:mr-0"
         href="/faq"
       >
-        FAQ
+        common:faq
       </a>
       <a
         class="whitespace-nowrap font-semibold text-sm mr-6 last:mr-0"
         href="/privacy"
       >
-        Privacy
+        common:privacy
       </a>
       <a
         class="whitespace-nowrap font-semibold text-sm mr-6 last:mr-0"
         href="/contact"
       >
-        Contact
+        common:contact
       </a>
       <a
         class="whitespace-nowrap font-semibold text-sm flex flex-row items-center mr-6 last:mr-0"
@@ -51,7 +51,7 @@ exports[`<Footer /> should match snapshot 1`] = `
             fill="black"
           />
         </svg>
-        GitHub repo
+        common:githubRepo
       </a>
     </div>
     <div

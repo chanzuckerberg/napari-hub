@@ -31,13 +31,13 @@ exports[`<AppBar /> should match snapshot 1`] = `
             class="ml-6"
             href="/about"
           >
-            About
+            common:about
           </a>
           <a
             class="ml-6"
             href="/faq"
           >
-            FAQ
+            common:faq
           </a>
         </div>
       </nav>
