@@ -1,6 +1,8 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
+import { createUrl } from '@/utils';
+
 import { usePageMetadata } from './usePageMetadata';
 
 interface Props {
@@ -15,7 +17,8 @@ interface Props {
  */
 export function PageMetadata({ description, keywords }: Props) {
   const router = useRouter();
-  const metadata = usePageMetadata(router.pathname);
+  const { pathname } = createUrl(router.asPath);
+  const metadata = usePageMetadata(pathname);
 
   return (
     <Head>
