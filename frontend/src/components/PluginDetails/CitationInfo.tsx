@@ -8,10 +8,10 @@ import { useTranslation } from 'next-i18next';
 import { useEffect, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 
+import { I18n } from '@/components/common/I18n';
 import { usePluginState } from '@/context/plugin';
 import { CitationData } from '@/types';
 
-import { I18n } from '../common/I18n';
 import { ANCHOR } from './CitationInfo.constants';
 
 interface Props {
