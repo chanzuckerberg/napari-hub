@@ -22,10 +22,7 @@ exports[`<Layout /> should match snapshot 1`] = `
             data-testid="appBarHome"
             href="/"
           >
-            napari 
-            <strong>
-              hub
-            </strong>
+            common:napariHub.strong
           </a>
           <div
             class="flex"
@@ -34,13 +31,13 @@ exports[`<Layout /> should match snapshot 1`] = `
               class="ml-6"
               href="/about"
             >
-              common:about
+              About
             </a>
             <a
               class="ml-6"
               href="/faq"
             >
-              common:faq
+              FAQ
             </a>
           </div>
         </nav>
@@ -56,10 +53,7 @@ exports[`<Layout /> should match snapshot 1`] = `
             data-testid="appBarHome"
             href="/"
           >
-            napari 
-            <strong>
-              hub
-            </strong>
+            common:napariHub.strong
           </a>
         </nav>
       </div>
@@ -177,7 +171,7 @@ exports[`<Layout /> should match snapshot 1`] = `
           target="_blank"
         >
           <div
-            aria-label="email address"
+            aria-label="Email address"
             class="MuiFormControl-root MuiTextField-root text-sm pt-0.5 h-8 screen-495:h-[35px] col-span-2 screen-495:col-span-1 screen-875:col-span-2"
           >
             <div
@@ -224,25 +218,25 @@ exports[`<Layout /> should match snapshot 1`] = `
           class="whitespace-nowrap font-semibold text-sm mr-6 last:mr-0"
           href="/about"
         >
-          common:about
+          About
         </a>
         <a
           class="whitespace-nowrap font-semibold text-sm mr-6 last:mr-0"
           href="/faq"
         >
-          common:faq
+          FAQ
         </a>
         <a
           class="whitespace-nowrap font-semibold text-sm mr-6 last:mr-0"
           href="/privacy"
         >
-          common:privacy
+          Privacy
         </a>
         <a
           class="whitespace-nowrap font-semibold text-sm mr-6 last:mr-0"
           href="/contact"
         >
-          common:contact
+          Contact
         </a>
         <a
           class="whitespace-nowrap font-semibold text-sm flex flex-row items-center mr-6 last:mr-0"
@@ -263,7 +257,7 @@ exports[`<Layout /> should match snapshot 1`] = `
               fill="black"
             />
           </svg>
-          common:githubRepo
+          GitHub repo
         </a>
       </div>
       <div
