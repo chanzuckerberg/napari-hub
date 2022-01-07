@@ -19,11 +19,19 @@
 
 import type { TFuncKey } from 'react-i18next';
 
-import type { I18nNamespace, I18nResourceMap } from '@/constants/i18n';
+import type { I18nResources } from '@/constants/i18n';
 
-// Unfortunately we can't re-export the above imported type when
-// `--isolatedModules` is enabled.
-export type { I18nNamespace, I18nResourceMap } from '@/constants/i18n';
+/**
+ * Type for all i18n resources. This is used for generating type
+ * information for `react-i18next`. The key is an i18n namespace and should
+ * match the name of the base filename.
+ */
+export type I18nResourceMap = typeof I18nResources;
+
+/**
+ * Type for all i18n namespace string keys.
+ */
+export type I18nNamespace = keyof typeof I18nResources;
 
 /**
  * Ambient module declaration responsible for passing the `I18nResourceMap` type

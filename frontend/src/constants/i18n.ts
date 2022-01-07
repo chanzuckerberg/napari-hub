@@ -19,15 +19,3 @@ export const I18nResources = {
   pluginPage,
   preview,
 };
-
-/**
- * Type for all i18n resources. This is used for generating type
- * information for `react-i18next`. The key is an i18n namespace and should
- * match the name of the base filename.
- */
-export type I18nResourceMap = typeof I18nResources;
-
-/**
- * Type for all i18n namespace string keys.
- */
-export type I18nNamespace = keyof typeof I18nResources;
