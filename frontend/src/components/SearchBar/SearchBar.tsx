@@ -1,8 +1,8 @@
 import IconButton from '@material-ui/core/IconButton';
 import clsx from 'clsx';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
 import { HTMLProps, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useSnapshot } from 'valtio';
 
 import { Close, Search } from '@/components/common/icons';
