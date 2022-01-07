@@ -153,13 +153,14 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
                 class="list list-none text-sm leading-normal"
               >
                 <li
-                  class="flex justify-between items-center"
+                  class="textItem"
                 >
-                  <span
-                    class="text-napari-gray font-normal"
-                  >
-                    information not submitted
-                  </span>
+                  2D
+                </li>
+                <li
+                  class="textItem"
+                >
+                  3D
                 </li>
               </ul>
             </div>
@@ -347,7 +348,20 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
       </button>
       <ul
         class="mt-9 flex flex-col border-l border-black"
-      />
+      >
+        <li
+          class="flex pl-6 border-l-4 min-h-6 h-auto my-2 first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-black"
+          data-active="true"
+          data-testid="tocItem"
+        >
+          <a
+            class="font-bold"
+            href="#how-to-cite"
+          >
+            How to cite this plugin
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
   <article
@@ -375,7 +389,170 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
     </div>
     <ul
       class="mt-5 text-xs flex flex-wrap gap-2"
-    />
+    >
+      <div
+        class="MuiButtonBase-root MuiChip-root text-xs !rounded-full bg-napari-category-blue hover:bg-napari-light focus:bg-napari-light MuiChip-clickable"
+        role="button"
+        tabindex="0"
+      >
+        <span
+          class="MuiChip-label pl-2 pr-0"
+        >
+          <div
+            class="flex items-center space-x-1"
+          >
+            <span>
+              Workflow step
+            </span>
+            <span
+              class="font-semibold space-x-1"
+            >
+              <a
+                class="underline"
+                href="/?workflowStep=Image Segmentation"
+              >
+                Image Segmentation
+              </a>
+              <span>
+                ›
+              </span>
+              <span>
+                Manual segmentation
+              </span>
+              <span />
+            </span>
+            <button
+              class="p-2 pr-3 flex items-center justify-center"
+              type="button"
+            >
+              <svg
+                aria-hidden="true"
+                class="MuiSvgIcon-root w-3 h-3"
+                focusable="false"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
+                />
+              </svg>
+            </button>
+          </div>
+        </span>
+        <span
+          class="MuiTouchRipple-root"
+        />
+      </div>
+      <div
+        class="MuiButtonBase-root MuiChip-root text-xs !rounded-full bg-napari-category-blue hover:bg-napari-light focus:bg-napari-light MuiChip-clickable"
+        role="button"
+        tabindex="0"
+      >
+        <span
+          class="MuiChip-label pl-2 pr-0"
+        >
+          <div
+            class="flex items-center space-x-1"
+          >
+            <span>
+              Workflow step
+            </span>
+            <span
+              class="font-semibold space-x-1"
+            >
+              <a
+                class="underline"
+                href="/?workflowStep=Image annotation"
+              >
+                Image annotation
+              </a>
+              <span>
+                ›
+              </span>
+              <span>
+                Dense image annotation
+              </span>
+              <span>
+                ›
+              </span>
+              <span>
+                Manual segmentation
+              </span>
+              <span />
+            </span>
+            <button
+              class="p-2 pr-3 flex items-center justify-center"
+              type="button"
+            >
+              <svg
+                aria-hidden="true"
+                class="MuiSvgIcon-root w-3 h-3"
+                focusable="false"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
+                />
+              </svg>
+            </button>
+          </div>
+        </span>
+        <span
+          class="MuiTouchRipple-root"
+        />
+      </div>
+      <div
+        class="MuiButtonBase-root MuiChip-root text-xs !rounded-full bg-napari-category-blue hover:bg-napari-light focus:bg-napari-light MuiChip-clickable"
+        role="button"
+        tabindex="0"
+      >
+        <span
+          class="MuiChip-label pl-2 pr-0"
+        >
+          <div
+            class="flex items-center space-x-1"
+          >
+            <span>
+              Workflow step
+            </span>
+            <span
+              class="font-semibold space-x-1"
+            >
+              <a
+                class="underline"
+                href="/?workflowStep=Image Segmentation"
+              >
+                Image Segmentation
+              </a>
+              <span>
+                ›
+              </span>
+              <span>
+                Semi-automatic segmentation
+              </span>
+              <span />
+            </span>
+            <button
+              class="p-2 pr-3 flex items-center justify-center"
+              type="button"
+            >
+              <svg
+                aria-hidden="true"
+                class="MuiSvgIcon-root w-3 h-3"
+                focusable="false"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
+                />
+              </svg>
+            </button>
+          </div>
+        </span>
+        <span
+          class="MuiTouchRipple-root"
+        />
+      </div>
+    </ul>
     <br />
     <div
       class="fresnel-container fresnel-lessThan-3xl flex flex-col lg:flex-row lg:items-center my-6 screen-495:mt-30 screen-600:mb-12"
@@ -647,6 +824,37 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
                   target="_blank"
                 >
                   @PotatingPotato
+                </a>
+              </li>
+              <li
+                class="flex linkItem"
+                id="citations"
+              >
+                <span
+                  class="min-w-4"
+                >
+                  <svg
+                    fill="none"
+                    height="10"
+                    viewBox="0 0 13 10"
+                    width="13"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M0 2.87379C0 1.28664 1.28915 0 2.8794 0C4.46966 0 5.75881 1.28664 5.75881 2.87379C5.75881 3.66487 5.49193 4.71887 5.00777 5.71289C4.32106 7.12274 2.12167 9.5475 2.12167 9.5475L0.909286 8.94131C0.909286 8.94131 2.57631 5.91036 2.43064 5.71289C1.05353 5.4978 0 4.30859 0 2.87379Z"
+                      fill="black"
+                    />
+                    <path
+                      d="M6.97119 2.87379C6.97119 1.28664 8.26034 0 9.8506 0C11.4408 0 12.73 1.28664 12.73 2.87379C12.73 3.66487 12.4631 4.71887 11.979 5.71289C11.2923 7.12274 9.09286 9.5475 9.09286 9.5475L7.88048 8.94131C7.88048 8.94131 9.5475 5.91036 9.40183 5.71289C8.02472 5.4978 6.97119 4.30859 6.97119 2.87379Z"
+                      fill="black"
+                    />
+                  </svg>
+                </span>
+                <a
+                  class="ml-2 -mt-1 flex-grow underline"
+                  href="napari-demo#how-to-cite"
+                >
+                  Citation information
                 </a>
               </li>
             </ul>
@@ -958,6 +1166,37 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
                   @PotatingPotato
                 </a>
               </li>
+              <li
+                class="flex linkItem"
+                id="citations"
+              >
+                <span
+                  class="min-w-4"
+                >
+                  <svg
+                    fill="none"
+                    height="10"
+                    viewBox="0 0 13 10"
+                    width="13"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M0 2.87379C0 1.28664 1.28915 0 2.8794 0C4.46966 0 5.75881 1.28664 5.75881 2.87379C5.75881 3.66487 5.49193 4.71887 5.00777 5.71289C4.32106 7.12274 2.12167 9.5475 2.12167 9.5475L0.909286 8.94131C0.909286 8.94131 2.57631 5.91036 2.43064 5.71289C1.05353 5.4978 0 4.30859 0 2.87379Z"
+                      fill="black"
+                    />
+                    <path
+                      d="M6.97119 2.87379C6.97119 1.28664 8.26034 0 9.8506 0C11.4408 0 12.73 1.28664 12.73 2.87379C12.73 3.66487 12.4631 4.71887 11.979 5.71289C11.2923 7.12274 9.09286 9.5475 9.09286 9.5475L7.88048 8.94131C7.88048 8.94131 9.5475 5.91036 9.40183 5.71289C8.02472 5.4978 6.97119 4.30859 6.97119 2.87379Z"
+                      fill="black"
+                    />
+                  </svg>
+                </span>
+                <a
+                  class="ml-2 -mt-1 flex-grow underline"
+                  href="napari-demo#how-to-cite"
+                >
+                  Citation information
+                </a>
+              </li>
             </ul>
           </div>
         </div>
@@ -1034,6 +1273,167 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
       >
         Install
       </button>
+      <div
+        class="mt-10"
+      >
+        <div
+          class="prose max-w-none mb-6"
+        >
+          <h2
+            id="how-to-cite"
+          >
+            How to cite this plugin
+          </h2>
+          <p>
+            If you use this plugin in your work, please cite it using the following citation. Don’t forget to
+             
+            <a
+              href="https://napari.org/#citing-napari"
+              rel="noreferrer"
+              target="_blank"
+            >
+              cite napari
+            </a>
+             
+            too!
+          </p>
+        </div>
+        <div>
+          <div
+            class="MuiTabs-root min-h-0"
+          >
+            <div
+              class="MuiTabs-scroller MuiTabs-fixed"
+              style="overflow: hidden;"
+            >
+              <div
+                class="MuiTabs-flexContainer"
+                role="tablist"
+              >
+                <button
+                  aria-controls="mui-p-50617-P-APA"
+                  aria-selected="true"
+                  class="MuiButtonBase-root MuiTab-root MuiTab-textColorInherit min-w-0 min-h-0 p-0 mr-6 text-black font-semibold opacity-100 Mui-selected"
+                  id="mui-p-50617-T-APA"
+                  role="tab"
+                  tabindex="0"
+                  type="button"
+                >
+                  <span
+                    class="MuiTab-wrapper"
+                  >
+                    APA
+                  </span>
+                  <span
+                    class="MuiTouchRipple-root"
+                  />
+                </button>
+                <button
+                  aria-controls="mui-p-50617-P-BibTex"
+                  aria-selected="false"
+                  class="MuiButtonBase-root MuiTab-root MuiTab-textColorInherit min-w-0 min-h-0 p-0 mr-6 text-black font-semibold opacity-100"
+                  id="mui-p-50617-T-BibTex"
+                  role="tab"
+                  tabindex="-1"
+                  type="button"
+                >
+                  <span
+                    class="MuiTab-wrapper"
+                  >
+                    BibTex
+                  </span>
+                  <span
+                    class="MuiTouchRipple-root"
+                  />
+                </button>
+                <button
+                  aria-controls="mui-p-50617-P-RIS"
+                  aria-selected="false"
+                  class="MuiButtonBase-root MuiTab-root MuiTab-textColorInherit min-w-0 min-h-0 p-0 mr-6 text-black font-semibold opacity-100"
+                  id="mui-p-50617-T-RIS"
+                  role="tab"
+                  tabindex="-1"
+                  type="button"
+                >
+                  <span
+                    class="MuiTab-wrapper"
+                  >
+                    RIS
+                  </span>
+                  <span
+                    class="MuiTouchRipple-root"
+                  />
+                </button>
+              </div>
+              <span
+                class="PrivateTabIndicator-root-1 PrivateTabIndicator-colorPrimary-2 MuiTabs-indicator"
+                style="left: 0px; width: 0px;"
+              />
+            </div>
+          </div>
+          <div
+            aria-labelledby="mui-p-50617-T-APA"
+            class="MuiTabPanel-root py-4 px-6 mt-6 bg-napari-hover-gray"
+            id="mui-p-50617-P-APA"
+            role="tabpanel"
+          >
+            <div
+              class="whitespace-pre-wrap overflow-y-auto max-h-32"
+            >
+              Ziyang L. (2021). A napari demo plugin (version 0.0.2). URL: https://github.com/potating-potato/napari-demo
+
+            </div>
+          </div>
+          <div
+            aria-labelledby="mui-p-50617-T-BibTex"
+            class="MuiTabPanel-root py-4 px-6 mt-6 bg-napari-hover-gray"
+            hidden=""
+            id="mui-p-50617-P-BibTex"
+            role="tabpanel"
+          />
+          <div
+            aria-labelledby="mui-p-50617-T-RIS"
+            class="MuiTabPanel-root py-4 px-6 mt-6 bg-napari-hover-gray"
+            hidden=""
+            id="mui-p-50617-P-RIS"
+            role="tabpanel"
+          />
+          <div
+            class="grid screen-600:grid-cols-napari-3 gap-6 screen-600:gap-12 mt-6"
+          >
+            <button
+              class="MuiButtonBase-root MuiButton-root MuiButton-outlined border-2 border-napari-primary py-3 px-6 font-semibold h-12 col-span-1"
+              tabindex="0"
+              type="button"
+            >
+              <span
+                class="MuiButton-label"
+              >
+                Copy
+              </span>
+              <span
+                class="MuiTouchRipple-root"
+              />
+            </button>
+            <a
+              aria-disabled="false"
+              class="MuiButtonBase-root MuiButton-root MuiButton-outlined border-2 border-napari-primary py-3 px-6 font-semibold h-12 col-span-1"
+              download="napari-demo.txt"
+              href="data:text/plain;charset=utf-8,Ziyang%20L.%20(2021).%20A%20napari%20demo%20plugin%20(version%200.0.2).%20URL%3A%20https%3A%2F%2Fgithub.com%2Fpotating-potato%2Fnapari-demo%0A"
+              tabindex="0"
+            >
+              <span
+                class="MuiButton-label"
+              >
+                Download
+              </span>
+              <span
+                class="MuiTouchRipple-root"
+              />
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
     <div
       class="fresnel-container fresnel-lessThan-screen-1425 "
@@ -1164,7 +1564,7 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
             id="supportedData"
           >
             <div
-              class="flex items-center screen-875:inline"
+              class="inline"
               id="supportedData"
             >
               <h4
@@ -1174,16 +1574,17 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
                 :
               </h4>
               <ul
-                class="list list-none text-sm leading-normal inline space-y-2 flex-grow inline"
+                class="list list-none text-sm leading-normal inline space-y-2 inline"
               >
                 <li
-                  class="flex justify-between items-center"
+                  class="textItem"
                 >
-                  <span
-                    class="text-napari-gray font-normal"
-                  >
-                    information not submitted
-                  </span>
+                  2D
+                </li>
+                <li
+                  class="textItem"
+                >
+                  3D
                 </li>
               </ul>
             </div>
@@ -1498,13 +1899,14 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
                 class="list list-none text-sm leading-normal"
               >
                 <li
-                  class="flex justify-between items-center"
+                  class="textItem"
                 >
-                  <span
-                    class="text-napari-gray font-normal"
-                  >
-                    information not submitted
-                  </span>
+                  2D
+                </li>
+                <li
+                  class="textItem"
+                >
+                  3D
                 </li>
               </ul>
             </div>
