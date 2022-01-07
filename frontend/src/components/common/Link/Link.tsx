@@ -1,8 +1,7 @@
 import NextLink, { LinkProps } from 'next/link';
 import { AnchorHTMLAttributes } from 'react';
 
-interface Props extends AnchorHTMLAttributes<HTMLElement> {
-  href: string;
+export interface Props extends AnchorHTMLAttributes<HTMLElement> {
   newTab?: boolean;
   linkProps?: LinkProps;
 }
@@ -13,7 +12,7 @@ interface Props extends AnchorHTMLAttributes<HTMLElement> {
  */
 export function Link({
   children,
-  href,
+  href = '',
   linkProps = { href },
   newTab,
   ...props
