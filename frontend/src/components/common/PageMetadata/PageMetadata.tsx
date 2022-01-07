@@ -1,4 +1,4 @@
-import { getPageMetadata } from './PageMetadata.utils';
+import { usePageMetadata } from './usePageMetadata';
 
 interface Props {
   keywords?: string[];
@@ -17,7 +17,7 @@ interface Props {
  * it's used instead of the configured value.
  */
 export function PageMetadata({ keywords, description, pathname }: Props) {
-  const metadata = getPageMetadata(pathname);
+  const metadata = usePageMetadata(pathname);
 
   return (
     <>
