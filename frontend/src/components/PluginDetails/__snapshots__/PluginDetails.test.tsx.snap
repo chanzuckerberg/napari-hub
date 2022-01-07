@@ -1311,10 +1311,10 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
                 role="tablist"
               >
                 <button
-                  aria-controls="mui-p-50617-P-APA"
+                  aria-controls="mui-p-22000-P-APA"
                   aria-selected="true"
                   class="MuiButtonBase-root MuiTab-root MuiTab-textColorInherit min-w-0 min-h-0 p-0 mr-6 text-black font-semibold opacity-100 Mui-selected"
-                  id="mui-p-50617-T-APA"
+                  id="mui-p-22000-T-APA"
                   role="tab"
                   tabindex="0"
                   type="button"
@@ -1329,10 +1329,10 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
                   />
                 </button>
                 <button
-                  aria-controls="mui-p-50617-P-BibTex"
+                  aria-controls="mui-p-22000-P-BibTex"
                   aria-selected="false"
                   class="MuiButtonBase-root MuiTab-root MuiTab-textColorInherit min-w-0 min-h-0 p-0 mr-6 text-black font-semibold opacity-100"
-                  id="mui-p-50617-T-BibTex"
+                  id="mui-p-22000-T-BibTex"
                   role="tab"
                   tabindex="-1"
                   type="button"
@@ -1347,10 +1347,10 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
                   />
                 </button>
                 <button
-                  aria-controls="mui-p-50617-P-RIS"
+                  aria-controls="mui-p-22000-P-RIS"
                   aria-selected="false"
                   class="MuiButtonBase-root MuiTab-root MuiTab-textColorInherit min-w-0 min-h-0 p-0 mr-6 text-black font-semibold opacity-100"
-                  id="mui-p-50617-T-RIS"
+                  id="mui-p-22000-T-RIS"
                   role="tab"
                   tabindex="-1"
                   type="button"
@@ -1372,9 +1372,9 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
             </div>
           </div>
           <div
-            aria-labelledby="mui-p-50617-T-APA"
+            aria-labelledby="mui-p-22000-T-APA"
             class="MuiTabPanel-root py-4 px-6 mt-6 bg-napari-hover-gray"
-            id="mui-p-50617-P-APA"
+            id="mui-p-22000-P-APA"
             role="tabpanel"
           >
             <div
@@ -1385,17 +1385,17 @@ exports[`<PluginDetails /> should match snapshot 1`] = `
             </div>
           </div>
           <div
-            aria-labelledby="mui-p-50617-T-BibTex"
+            aria-labelledby="mui-p-22000-T-BibTex"
             class="MuiTabPanel-root py-4 px-6 mt-6 bg-napari-hover-gray"
             hidden=""
-            id="mui-p-50617-P-BibTex"
+            id="mui-p-22000-P-BibTex"
             role="tabpanel"
           />
           <div
-            aria-labelledby="mui-p-50617-T-RIS"
+            aria-labelledby="mui-p-22000-T-RIS"
             class="MuiTabPanel-root py-4 px-6 mt-6 bg-napari-hover-gray"
             hidden=""
-            id="mui-p-50617-P-RIS"
+            id="mui-p-22000-P-RIS"
             role="tabpanel"
           />
           <div
