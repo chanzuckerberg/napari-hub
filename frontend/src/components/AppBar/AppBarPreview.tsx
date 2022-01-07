@@ -16,7 +16,7 @@ import { MetadataStatus } from '@/components/MetadataStatus';
 import { usePluginMetadata } from '@/context/plugin';
 
 import styles from './AppBarPreview.module.scss';
-import { MetadataSection, useMetadataSections } from './metadataPreview.hooks';
+import { MetadataSection, useMetadataSections } from './useMetadataSections';
 import { PreviewMetadataPanel } from './PreviewMetadataPanel';
 
 function MetadataStatusBar() {

@@ -2,6 +2,7 @@ import { isArray, isEmpty, isString } from 'lodash';
 import { useTranslation } from 'next-i18next';
 
 import { MetadataKeys, usePluginMetadata } from '@/context/plugin';
+import { I18nPreviewSection } from '@/types/i18n';
 
 export interface MetadataSectionField {
   id: MetadataKeys;
@@ -60,25 +61,34 @@ export function useMetadataSections(): MetadataSection[] {
     };
   }
 
-  return [
-    getSection({
+  interface GetSectionInputData {
+    section: I18nPreviewSection;
+    fields: MetadataKeys[];
+  }
+
+  function getSections(...sections: GetSectionInputData[]) {
+    return sections.map(getSection);
+  }
+
+  return getSections(
+    {
       section: t('preview:sections.describeWhat'),
       fields: ['name', 'summary', 'description', 'authors'],
-    }),
+    },
 
-    getSection({
+    {
       section: t('preview:sections.tellUsers'),
       fields: ['name', 'summary', 'description', 'authors'],
-    }),
+    },
 
-    getSection({
+    {
       section: t('preview:sections.giveInsight'),
       fields: ['sourceCode', 'license', 'version'],
-    }),
+    },
 
-    getSection({
+    {
       section: t('preview:sections.specifySystem'),
       fields: ['pythonVersion', 'operatingSystems', 'requirements'],
-    }),
-  ];
+    },
+  );
 }

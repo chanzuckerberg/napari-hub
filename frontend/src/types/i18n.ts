@@ -64,6 +64,11 @@ export type I18nPluginDataLabel =
       lower?: string;
     };
 
+export interface I18nPreviewSection {
+  description: string;
+  title: string;
+}
+
 /**
  * Helper type for getting a union of all i18n keys for a specific namespace.
  */
