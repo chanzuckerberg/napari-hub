@@ -1,5 +1,7 @@
 import { useTranslation } from 'next-i18next';
 
+import { useLoadingState } from '@/context/loading';
+
 /**
  * Hook that gets a map of categories to category groups for the workflow step
  * filter. This will return a dictionary that looks like:
@@ -19,6 +21,12 @@ import { useTranslation } from 'next-i18next';
  */
 export function useWorkflowStepGroups() {
   const [t] = useTranslation(['common', 'homePage']);
+  const isLoading = useLoadingState();
+
+  if (isLoading) {
+    return {};
+  }
+
   const {
     // `groups` is a map of group keys to group labels. The group labels are
     // used for rendering the name of the group in the user's language.

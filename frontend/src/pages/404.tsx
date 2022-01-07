@@ -11,6 +11,10 @@ export async function getStaticProps({ locale = 'en' }: GetStaticPropsContext) {
   const props = await serverSideTranslations(locale, [
     'common',
     'footer',
+
+    // Home and plugin page namespaces required for page transitions.
+    'pluginPage',
+    'homePage',
   ] as I18nNamespace[]);
 
   return { props };
