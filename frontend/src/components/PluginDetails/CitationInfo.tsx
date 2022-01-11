@@ -4,14 +4,15 @@ import TabContext from '@material-ui/lab/TabContext';
 import TabList from '@material-ui/lab/TabList';
 import TabPanel from '@material-ui/lab/TabPanel';
 import clsx from 'clsx';
+import { useTranslation } from 'next-i18next';
 import { useEffect, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 
-import { Link } from '@/components/common/Link';
+import { I18n } from '@/components/common/I18n';
 import { usePluginState } from '@/context/plugin';
 import { CitationData } from '@/types';
 
-import { ANCHOR, TITLE } from './CitationInfo.constants';
+import { ANCHOR } from './CitationInfo.constants';
 
 interface Props {
   className?: string;
@@ -33,6 +34,7 @@ const BUTTON_STYLES =
   'border-2 border-napari-primary py-3 px-6 font-semibold h-12 col-span-1';
 
 export function CitationInfo({ className }: Props) {
+  const [t] = useTranslation(['common', 'pluginPage']);
   const { plugin } = usePluginState();
   const [copied, setCopied] = useState(false);
   const [tab, setTab] = useState(CITATION_TYPES[0]);
@@ -54,14 +56,9 @@ export function CitationInfo({ className }: Props) {
   return (
     <div className={className}>
       <div className="prose max-w-none mb-6">
-        <h2 id={ANCHOR}>{TITLE}</h2>
+        <h2 id={ANCHOR}>{t('pluginPage:citations.title')}</h2>
         <p>
-          If you use this plugin in your work, please cite it using the
-          following citation. Don’t forget to{' '}
-          <Link href="https://napari.org/#citing-napari" newTab>
-            cite napari
-          </Link>{' '}
-          too!
+          <I18n i18nKey="pluginPage:citations.body" />
         </p>
       </div>
       <div>
@@ -116,7 +113,11 @@ export function CitationInfo({ className }: Props) {
               setCopiedDebounced(false);
             }}
           >
-            {copied ? <>Copied!</> : <>Copy</>}
+            {copied ? (
+              <>{t('pluginPage:citations.copied')}</>
+            ) : (
+              <>{t('pluginPage:citations.copy')}</>
+            )}
           </Button>
 
           {plugin?.name && citation && (
@@ -128,7 +129,7 @@ export function CitationInfo({ className }: Props) {
                 citation,
               )}`}
             >
-              Download
+              {t('common:download')}
             </Button>
           )}
         </div>

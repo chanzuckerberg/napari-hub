@@ -17,7 +17,7 @@ interface Props extends SSRConfig {
   mdxSource?: MDXRemoteSerializeResult;
 }
 
-const LOCALE_DIR = __dirname.replace('.next/server/pages', `src/locales`);
+const LOCALE_DIR = __dirname.replace('.next/server/pages', 'i18n');
 
 /**
  * Special Next.js function responsible for returning all possible paths that
@@ -64,6 +64,10 @@ export async function getStaticProps({
   const translationProps = await serverSideTranslations(locale, [
     'common',
     'footer',
+
+    // Home and plugin page namespaces required for page transitions.
+    'pluginPage',
+    'homePage',
   ] as I18nNamespace[]);
   const props: Partial<Props> = { ...translationProps };
 

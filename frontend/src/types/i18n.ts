@@ -11,36 +11,27 @@
  *
  * 1. Create a new namespace JSON file in the English locale directory.
  * 2. Import the JSON file type.
- * 3. Add the JSON file type to the `I18nResourceMap` interface with the key
- *    matching the base filename.
+ * 3. Add the JSON file type to the `I18nResources` object in
+ *    `src/constants/i18n.ts` with the key matching the base filename.
  * 4. Add the namespace to the namespace array used by the
  *    `serverSideTranslations()` function for each page that uses the locale.
  */
 
 import type { TFuncKey } from 'react-i18next';
 
-import type Common from '@/i18n/en/common.json';
-import type Footer from '@/i18n/en/footer.json';
-import type HomePage from '@/i18n/en/homePage.json';
-import type PageTitles from '@/i18n/en/pageTitles.json';
-import type PluginData from '@/i18n/en/pluginData.json';
-import type PluginPage from '@/i18n/en/pluginPage.json';
-import type Preview from '@/i18n/en/preview.json';
+import type { I18nResources } from '@/constants/i18n';
 
 /**
- * Interface for all i18n resources. This is used for generating type
+ * Type for all i18n resources. This is used for generating type
  * information for `react-i18next`. The key is an i18n namespace and should
  * match the name of the base filename.
  */
-interface I18nResourceMap {
-  common: typeof Common;
-  footer: typeof Footer;
-  homePage: typeof HomePage;
-  pluginData: typeof PluginData;
-  pageTitles: typeof PageTitles;
-  pluginPage: typeof PluginPage;
-  preview: typeof Preview;
-}
+export type I18nResourceMap = typeof I18nResources;
+
+/**
+ * Type for all i18n namespace string keys.
+ */
+export type I18nNamespace = keyof typeof I18nResources;
 
 /**
  * Ambient module declaration responsible for passing the `I18nResourceMap` type
@@ -53,11 +44,6 @@ declare module 'react-i18next' {
     resources: I18nResourceMap;
   }
 }
-
-/**
- * Type for all i18n namespace string keys.
- */
-export type I18nNamespace = keyof I18nResourceMap;
 
 /**
  * Type for plugin metadata labels.
@@ -85,6 +71,11 @@ export type I18nPluginDataLabel =
        */
       lower?: string;
     };
+
+export interface I18nPreviewSection {
+  description: string;
+  title: string;
+}
 
 /**
  * Helper type for getting a union of all i18n keys for a specific namespace.

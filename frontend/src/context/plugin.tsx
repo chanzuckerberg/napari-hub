@@ -1,4 +1,5 @@
-import { isArray } from 'lodash';
+import { isArray, isString } from 'lodash';
+import { useTranslation } from 'next-i18next';
 import { createContext, ReactNode, useContext } from 'react';
 import { DeepPartial } from 'utility-types';
 
@@ -8,6 +9,7 @@ import {
   PluginRepoData,
   PluginRepoFetchError,
 } from '@/types';
+import { I18nPluginDataLabel } from '@/types/i18n';
 import { formatDate } from '@/utils';
 
 /**
@@ -55,6 +57,70 @@ export function usePluginState(): PluginState {
 }
 
 /**
+ * Input data for the `getMetadataLabels()` function.
+ */
+type WithLabelsInputData<V> = {
+  label?: I18nPluginDataLabel;
+  value: V;
+};
+
+/**
+ * Output data for the `getMetadataLabels()` function.
+ */
+type WithLabelsResult<V> = {
+  label: string;
+  previewLabel: string;
+  value: V;
+};
+
+/**
+ * Helper conditional type that replaces an indexable object mapped to
+ * `WithLabelsInputData` with `WithLabelsResult`.
+ */
+type WithLabels<T> = {
+  // If the value of T[K] is type `WithLabelsInputData<V>`, then convert it to a
+  // `WithLabelsResult<V>` type. The type V is inferred so that the metadata
+  // value type will be maintained.
+  [K in keyof T]: T[K] extends WithLabelsInputData<infer V>
+    ? WithLabelsResult<V>
+    : never;
+};
+
+/**
+ * Helper function to attach plugin metadata labels to the metadata object.
+ *
+ * @param metadata The plugin metadata.
+ * @returns  The plugin metadata with labels.
+ */
+function getMetadataLabels<
+  T extends {
+    [key in keyof T]: WithLabelsInputData<unknown>;
+  },
+>(metadata: T) {
+  const result: Record<string, WithLabelsResult<unknown>> = {};
+
+  for (const [key, labelData] of Object.entries(metadata)) {
+    const { label, value } = labelData as WithLabelsInputData<unknown>;
+    result[key] = {
+      value,
+
+      // Add labels to plugin metadata.
+      ...(isString(label)
+        ? {
+            label,
+            previewLabel: label,
+          }
+        : {
+            label: label?.label ?? '',
+            previewLabel: label?.preview ?? label?.label ?? '',
+          }),
+    };
+  }
+
+  return result as WithLabels<T>;
+}
+
+/**
  * Hook for accessing plugin metadata and related information. This serves as a
  * single-source of truth for plugin metadata so that multiple features can
  * reference the same data, and therefore allow us to colocate extra information
@@ -65,6 +131,7 @@ export function usePluginState(): PluginState {
  * @returns The plugin metadata.
  */
 export function usePluginMetadata() {
+  const [t] = useTranslation(['pluginData']);
   const { plugin } = usePluginState();
 
   function getCategoryValue(dimension: HubDimension): string[] {
@@ -73,37 +140,34 @@ export function usePluginMetadata() {
     ) as string[];
   }
 
-  return {
+  return getMetadataLabels({
     name: {
-      name: 'Plugin name',
-      previewName: 'Name',
+      label: t('pluginData:labels.pluginName'),
       value: plugin?.name ?? '',
     },
 
     summary: {
-      name: 'Brief description',
-      previewName: 'Summary',
+      label: t('pluginData:labels.summary'),
       value: plugin?.summary ?? '',
     },
 
     description: {
-      name: 'Plugin description using hub-specific template',
-      previewName: 'Description',
+      label: t('pluginData:labels.description'),
       value: plugin?.description ?? '',
     },
 
     releaseDate: {
-      name: 'Release date',
+      label: t('pluginData:labels.releaseDate'),
       value: plugin?.release_date ? formatDate(plugin.release_date) : '',
     },
 
     firstReleased: {
-      name: 'First released',
+      label: t('pluginData:labels.firstReleased'),
       value: plugin?.first_released ? formatDate(plugin.first_released) : '',
     },
 
     authors: {
-      name: 'Authors',
+      label: t('pluginData:labels.authors'),
       value:
         plugin?.authors && isArray(plugin.authors)
           ? plugin.authors
@@ -113,66 +177,52 @@ export function usePluginMetadata() {
     },
 
     projectSite: {
-      name: 'Project site',
+      label: t('pluginData:labels.projectSite'),
       value: plugin?.project_site ?? '',
     },
 
     reportIssues: {
-      name: 'Report issues',
+      label: t('pluginData:labels.reportIssues'),
       value: plugin?.report_issues ?? '',
     },
 
     twitter: {
-      name: 'Twitter',
-      previewName: 'Twitter handle',
+      label: t('pluginData:labels.twitter'),
       value: plugin?.twitter ?? '',
     },
 
     sourceCode: {
-      name: 'Source code',
+      label: t('pluginData:labels.sourceCode'),
       value: plugin?.code_repository ?? '',
     },
 
     supportSite: {
-      name: 'Support site',
-      previewName: 'Support',
+      label: t('pluginData:labels.supportSite'),
       value: plugin?.support ?? '',
     },
 
     documentationSite: {
-      name: 'Documentation',
+      label: t('pluginData:labels.documentation'),
       value: plugin?.documentation ?? '',
     },
 
     version: {
-      name: 'Version',
+      label: t('pluginData:labels.version'),
       value: plugin?.version ?? '',
     },
 
-    developmentStatus: {
-      name: 'Development status',
-      value:
-        plugin?.development_status && isArray(plugin.development_status)
-          ? plugin.development_status
-              ?.map(
-                (status) => status?.replace('Development Status :: ', '') ?? '',
-              )
-              .filter((value): value is string => !!value)
-          : [],
-    },
-
     license: {
-      name: 'License',
+      label: t('pluginData:labels.license'),
       value: plugin?.license ?? '',
     },
 
     pythonVersion: {
-      name: 'Python versions supported',
+      label: t('pluginData:labels.pythonVersion'),
       value: plugin?.python_version ?? '',
     },
 
     operatingSystems: {
-      name: 'Operating system',
+      label: t('pluginData:labels.operatingSystem'),
       value:
         plugin?.operating_system && isArray(plugin.operating_system)
           ? plugin.operating_system
@@ -184,7 +234,7 @@ export function usePluginMetadata() {
     },
 
     requirements: {
-      name: 'Requirements',
+      label: t('pluginData:labels.requirements'),
       value:
         plugin?.requirements && isArray(plugin.requirements)
           ? plugin.requirements.filter(
@@ -194,30 +244,29 @@ export function usePluginMetadata() {
     },
 
     citations: {
-      name: 'Citation information',
+      label: t('pluginData:labels.citations'),
       value: plugin?.citations,
     },
 
     actionRepository: {
-      name: '',
       value: plugin?.action_repository ?? '',
     },
 
     workflowSteps: {
-      name: 'Workflow step',
+      label: t('pluginData:labels.Workflow step'),
       value: getCategoryValue('Workflow step'),
     },
 
     imageModality: {
-      name: 'Image modality',
+      label: t('pluginData:labels.Image modality'),
       value: getCategoryValue('Image modality'),
     },
 
     supportedData: {
-      name: 'Supported data',
+      label: t('pluginData:labels.Supported data'),
       value: getCategoryValue('Supported data'),
     },
-  };
+  });
 }
 
 export type Metadata = ReturnType<typeof usePluginMetadata>;

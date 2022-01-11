@@ -1,5 +1,6 @@
 import IconButton from '@material-ui/core/IconButton';
 import clsx from 'clsx';
+import { useTranslation } from 'next-i18next';
 import { useRef, useState } from 'react';
 
 import { ColumnLayout } from '@/components/common/ColumnLayout';
@@ -18,6 +19,7 @@ export function AppBar() {
   const anchorElRef = useRef<HTMLButtonElement | null>(null);
   const [visible, setVisible] = useState(false);
   const links = useAppBarLinks();
+  const [t] = useTranslation(['common']);
 
   return (
     <>
@@ -76,7 +78,7 @@ export function AppBar() {
           {/* Menu button */}
           <Media className="ml-6 flex" lessThan="screen-600">
             <IconButton onClick={() => setVisible(true)} ref={anchorElRef}>
-              <Menu alt="Icon for opening side menu." />
+              <Menu alt={t('common:alt.sideMenu')} />
             </IconButton>
           </Media>
         </div>

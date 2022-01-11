@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import { isObject, throttle } from 'lodash';
+import { useTranslation } from 'next-i18next';
 import { useEffect } from 'react';
 
 import { AppBarPreview } from '@/components/AppBar';
@@ -19,14 +20,9 @@ import { HubDimension } from '@/types';
 
 import { CallToActionButton } from './CallToActionButton';
 import { CitationInfo } from './CitationInfo';
-import { ANCHOR, TITLE } from './CitationInfo.constants';
+import { ANCHOR } from './CitationInfo.constants';
 import { PluginMetadata } from './PluginMetadata';
 import { SupportInfo } from './SupportInfo';
-
-const CITATION_HEADER: TOCHeader = {
-  id: ANCHOR,
-  text: TITLE,
-};
 
 function PluginLeftColumn() {
   return (
@@ -36,11 +32,9 @@ function PluginLeftColumn() {
   );
 }
 
-const EMPTY_DESCRIPTION_PLACEHOLDER =
-  'The developer has not yet provided a napari-hub specific description.';
-
 function PluginCenterColumn() {
   const { plugin } = usePluginState();
+  const [t] = useTranslation(['common', 'pluginPage', 'preview', 'pluginData']);
 
   usePreviewClickAway('name');
   usePreviewClickAway('summary');
@@ -49,7 +43,7 @@ function PluginCenterColumn() {
   // Check if body is an empty string or if it's set to the cookiecutter text.
   const isEmptyDescription =
     !plugin?.description ||
-    plugin.description.includes(EMPTY_DESCRIPTION_PLACEHOLDER);
+    plugin.description.includes(t('preview:emptyDescription'));
 
   return (
     <article
@@ -77,7 +71,7 @@ function PluginCenterColumn() {
                 !plugin?.name && 'text-napari-dark-gray',
               )}
             >
-              {plugin?.name ?? 'Plugin name'}
+              {plugin?.name ?? t('pluginData:labels.pluginName.label')}
             </h1>
           </MetadataHighlighter>
         )}
@@ -97,7 +91,7 @@ function PluginCenterColumn() {
                 !plugin?.summary && 'text-napari-dark-gray',
               )}
             >
-              {plugin?.summary ?? 'Brief description'}
+              {plugin?.summary ?? t('pluginData:labels.summary.preview')}
             </h2>
           </MetadataHighlighter>
         )}
@@ -169,7 +163,7 @@ function PluginCenterColumn() {
               )}
               href="#pluginMetadata"
             >
-              View project data
+              {t('pluginPage:viewProjectData')}
             </a>
           )}
         />
@@ -189,7 +183,7 @@ function PluginCenterColumn() {
             highlight={isEmptyDescription}
           >
             <Markdown disableHeader placeholder={isEmptyDescription}>
-              {plugin?.description ?? EMPTY_DESCRIPTION_PLACEHOLDER}
+              {plugin?.description ?? t('preview:emptyDescription')}
             </Markdown>
           </MetadataHighlighter>
         )}
@@ -208,8 +202,14 @@ function PluginCenterColumn() {
 }
 
 function PluginRightColumn() {
+  const [t] = useTranslation(['pluginPage']);
   const { plugin } = usePluginState();
   const plausible = usePlausible();
+
+  const citationHeader: TOCHeader = {
+    id: ANCHOR,
+    text: t('pluginPage:citations.title'),
+  };
 
   return (
     <Media
@@ -235,7 +235,7 @@ function PluginRightColumn() {
                 }
               }}
               free
-              extraHeaders={plugin?.citations ? [CITATION_HEADER] : undefined}
+              extraHeaders={plugin?.citations ? [citationHeader] : undefined}
             />
           )}
         />
@@ -270,7 +270,7 @@ export function PluginDetails() {
   }, [loading]);
 
   return (
-    <div className="flex flex-grow justify-center">
+    <div className="flex flex-col flex-grow justify-center">
       {process.env.PREVIEW && <AppBarPreview />}
 
       <ColumnLayout

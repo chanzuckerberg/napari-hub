@@ -19,10 +19,7 @@ exports[`<AppBar /> should match snapshot 1`] = `
           data-testid="appBarHome"
           href="/"
         >
-          napari 
-          <strong>
-            hub
-          </strong>
+          napari &lt;strong&gt;hub&lt;/strong&gt;
         </a>
         <div
           class="flex"
@@ -31,13 +28,13 @@ exports[`<AppBar /> should match snapshot 1`] = `
             class="ml-6"
             href="/about"
           >
-            common:about
+            About
           </a>
           <a
             class="ml-6"
             href="/faq"
           >
-            common:faq
+            FAQ
           </a>
         </div>
       </nav>
@@ -53,10 +50,7 @@ exports[`<AppBar /> should match snapshot 1`] = `
           data-testid="appBarHome"
           href="/"
         >
-          napari 
-          <strong>
-            hub
-          </strong>
+          napari &lt;strong&gt;hub&lt;/strong&gt;
         </a>
       </nav>
     </div>

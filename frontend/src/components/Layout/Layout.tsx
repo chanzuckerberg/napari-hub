@@ -13,7 +13,7 @@ export function Layout({ children }: Props) {
     <div className="flex flex-col min-h-screen">
       {!process.env.PREVIEW && <AppBar />}
 
-      <main className="flex flex-grow">{children}</main>
+      <main className="flex flex-col flex-grow">{children}</main>
       <SignupForm />
       <Footer />
     </div>

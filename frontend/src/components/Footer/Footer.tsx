@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import { useTranslation } from 'next-i18next';
 import { ComponentType } from 'react';
 
 import { CZI, GitHub, NapariLogo } from '@/components/common/icons';
@@ -65,6 +66,8 @@ function FooterLinks() {
  * TODO: revert to using flex wrap + flex gap when iOS 14.6 isn't so new
  */
 export function Footer() {
+  const [t] = useTranslation(['footer']);
+
   return (
     <div
       className={clsx(
@@ -88,16 +91,16 @@ export function Footer() {
       >
         <FooterLinks />
       </div>
+
       <div className="flex flex-row flex-grow w-min justify-end self-end">
         <Link href="https://napari.org" className="mr-2" newTab>
-          <NapariLogo className="w-8 h-8" alt="Go to napari main website." />
+          <NapariLogo className="w-8 h-8" alt={t('footer:alt.goToNapari')} />
         </Link>
+
         <div className="border-r-[1px] border-black" />
+
         <Link href="https://chanzuckerberg.com" className="ml-2" newTab>
-          <CZI
-            className="w-8 h-8"
-            alt="Go to Chan Zuckerberg Initiative main website."
-          />
+          <CZI className="w-8 h-8" alt={t('footer:alt.goToCzi')} />
         </Link>
       </div>
     </div>

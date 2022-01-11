@@ -4,12 +4,25 @@ import {
   render,
   screen,
 } from '@testing-library/react';
+import { get } from 'lodash';
 
+import homePageI18n from '@/i18n/en/homePage.json';
+import pluginDataI18n from '@/i18n/en/pluginPage.json';
 import { SearchStoreProvider } from '@/store/search/context';
 import { SearchFilterStore } from '@/store/search/filter.store';
 import { PluginSearchStore } from '@/store/search/search.store';
 
 import { PluginComplexFilter } from './PluginComplexFilter';
+
+jest.mock('next-i18next', () => ({
+  useTranslation: () => [
+    (i18nKey: string) => {
+      const key = i18nKey.split(':')[1];
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+      return get(homePageI18n, key) || get(pluginDataI18n, key) || i18nKey;
+    },
+  ],
+}));
 
 describe('<PluginComplexFilter />', () => {
   let mockSearchStore: PluginSearchStore;

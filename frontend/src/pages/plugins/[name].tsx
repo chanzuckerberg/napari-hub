@@ -1,7 +1,6 @@
 import { AxiosError } from 'axios';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 import { SSRConfig, useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { ParsedUrlQuery } from 'node:querystring';
@@ -112,7 +111,6 @@ export default function PluginPage({
   repo,
   repoFetchError,
 }: Props) {
-  const router = useRouter();
   const isLoading = useLoadingState();
   const [t] = useTranslation(['pageTitles', 'pluginPage']);
 
@@ -137,13 +135,10 @@ export default function PluginPage({
 
   return (
     <>
+      <PageMetadata keywords={keywords} description={plugin?.summary} />
+
       <Head>
         <title>{title}</title>
-        <PageMetadata
-          keywords={keywords}
-          description={plugin?.summary}
-          pathname={router.pathname}
-        />
       </Head>
 
       {error ? (
