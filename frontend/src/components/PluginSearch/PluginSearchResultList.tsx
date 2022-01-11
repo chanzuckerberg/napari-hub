@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import { useSnapshot } from 'valtio';
 
 import { ColumnLayout } from '@/components/common/ColumnLayout';
+import { I18n } from '@/components/common/I18n';
 import { SkeletonLoader } from '@/components/common/SkeletonLoader';
 import { RESULTS_PER_PAGE } from '@/constants/search';
 import { useLoadingState } from '@/context/loading';
@@ -78,7 +79,10 @@ export function PluginSearchResultList() {
   return (
     <section className="col-span-2 screen-1425:col-span-3 space-y-5">
       <h3 className={clsx('flex items-center font-bold text-xl')}>
-        Browse plugins: <SearchResultCount />
+        <I18n
+          i18nKey="homePage:browsePlugins"
+          components={{ count: <SearchResultCount /> }}
+        />
       </h3>
 
       <ColumnLayout

@@ -1,5 +1,6 @@
 import IconButton from '@material-ui/core/IconButton';
 import clsx from 'clsx';
+import { useTranslation } from 'next-i18next';
 import { useRef, useState } from 'react';
 
 import { ColumnLayout } from '@/components/common/ColumnLayout';
@@ -8,8 +9,8 @@ import { Media } from '@/components/common/media';
 import { MenuPopover } from '@/components/MenuPopover';
 import { SearchBar } from '@/components/SearchBar';
 
-import { APP_LINKS } from './AppBar.constants';
 import { AppBarLinks } from './AppBarLinks';
+import { useAppBarLinks } from './useAppBarLinks';
 
 /**
  * App bar component that renders the home link, search bar, and menu.
@@ -17,13 +18,15 @@ import { AppBarLinks } from './AppBarLinks';
 export function AppBar() {
   const anchorElRef = useRef<HTMLButtonElement | null>(null);
   const [visible, setVisible] = useState(false);
+  const links = useAppBarLinks();
+  const [t] = useTranslation(['common']);
 
   return (
     <>
       <Media lessThan="screen-600">
         <MenuPopover
           anchorEl={anchorElRef.current}
-          items={APP_LINKS}
+          items={links}
           onClose={() => setVisible(false)}
           visible={visible}
         />
@@ -48,7 +51,7 @@ export function AppBar() {
         component="header"
       >
         <Media greaterThanOrEqual="screen-600">
-          <AppBarLinks items={APP_LINKS} />
+          <AppBarLinks items={links} />
         </Media>
 
         <Media lessThan="screen-600">
@@ -75,7 +78,7 @@ export function AppBar() {
           {/* Menu button */}
           <Media className="ml-6 flex" lessThan="screen-600">
             <IconButton onClick={() => setVisible(true)} ref={anchorElRef}>
-              <Menu alt="Icon for opening side menu." />
+              <Menu alt={t('common:alt.sideMenu')} />
             </IconButton>
           </Media>
         </div>

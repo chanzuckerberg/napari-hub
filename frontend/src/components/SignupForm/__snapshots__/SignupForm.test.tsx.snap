@@ -21,7 +21,7 @@ exports[`<SignupForm /> should match snapshot 1`] = `
         target="_blank"
       >
         <div
-          aria-label="email address"
+          aria-label="Email address"
           class="MuiFormControl-root MuiTextField-root text-sm pt-0.5 h-8 screen-495:h-[35px] col-span-2 screen-495:col-span-1 screen-875:col-span-2"
         >
           <div

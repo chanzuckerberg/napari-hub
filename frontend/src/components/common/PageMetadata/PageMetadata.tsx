@@ -1,14 +1,13 @@
-import { getPageMetadata } from './PageMetadata.utils';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+
+import { createUrl } from '@/utils';
+
+import { usePageMetadata } from './usePageMetadata';
 
 interface Props {
-  keywords?: string[];
   description?: string;
-
-  /**
-   * Pathname has to be passed directly because `useRouter()` cannot be used
-   * within `<Head />` components.
-   */
-  pathname: string;
+  keywords?: string[];
 }
 
 /**
@@ -16,11 +15,13 @@ interface Props {
  * appended to the keyword list used for the page. If a description is provided,
  * it's used instead of the configured value.
  */
-export function PageMetadata({ keywords, description, pathname }: Props) {
-  const metadata = getPageMetadata(pathname);
+export function PageMetadata({ description, keywords }: Props) {
+  const router = useRouter();
+  const { pathname } = createUrl(router.asPath);
+  const metadata = usePageMetadata(pathname);
 
   return (
-    <>
+    <Head>
       <meta name="viewport" content="width=device-width,initial-scale=1" />
 
       {metadata && (
@@ -38,6 +39,6 @@ export function PageMetadata({ keywords, description, pathname }: Props) {
           />
         </>
       )}
-    </>
+    </Head>
   );
 }

@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import { isEmpty } from 'lodash';
+import { useTranslation } from 'next-i18next';
 import { ReactNode } from 'react';
 
 import {
@@ -70,6 +71,7 @@ interface SupportInfoBaseProps extends CommonProps {
 }
 
 export function SupportInfoBase({ className, inline }: SupportInfoBaseProps) {
+  const [t] = useTranslation(['common']);
   const metadata = usePluginMetadata();
   const learnMoreItems: MetadataLinkItem[] = [];
 
@@ -78,7 +80,7 @@ export function SupportInfoBase({ className, inline }: SupportInfoBaseProps) {
 
     return {
       id: key,
-      text: data.name,
+      text: data.label,
       href: data.value as string,
     };
   }
@@ -125,7 +127,7 @@ export function SupportInfoBase({ className, inline }: SupportInfoBaseProps) {
     learnMoreItems.push({
       id: 'citations',
       href: `${metadata.name.value}#${ANCHOR}`,
-      text: metadata.citations.name,
+      text: metadata.citations.label,
       icon: <Quotes />,
     });
   }
@@ -146,7 +148,7 @@ export function SupportInfoBase({ className, inline }: SupportInfoBaseProps) {
     >
       <MetadataList
         id="authors"
-        title={metadata.authors.name}
+        label={metadata.authors.label}
         empty={isEmpty(metadata.authors.value)}
         inline={inline}
       >
@@ -155,7 +157,7 @@ export function SupportInfoBase({ className, inline }: SupportInfoBaseProps) {
         ))}
       </MetadataList>
 
-      <MetadataList title="Learn more" inline={inline}>
+      <MetadataList label={t('common:learnMore')} inline={inline}>
         {learnMoreItems.map(({ text, id, ...linkProps }) => (
           <MetadataListLinkItem
             key={linkProps.href + text}
@@ -169,7 +171,7 @@ export function SupportInfoBase({ className, inline }: SupportInfoBaseProps) {
 
       <MetadataList
         id="sourceCode"
-        title={metadata.sourceCode.name}
+        label={metadata.sourceCode.label}
         empty={!metadata.sourceCode.value}
         inline={inline}
       >

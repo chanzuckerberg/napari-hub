@@ -22,10 +22,7 @@ exports[`<Layout /> should match snapshot 1`] = `
             data-testid="appBarHome"
             href="/"
           >
-            napari 
-            <strong>
-              hub
-            </strong>
+            napari &lt;strong&gt;hub&lt;/strong&gt;
           </a>
           <div
             class="flex"
@@ -56,10 +53,7 @@ exports[`<Layout /> should match snapshot 1`] = `
             data-testid="appBarHome"
             href="/"
           >
-            napari 
-            <strong>
-              hub
-            </strong>
+            napari &lt;strong&gt;hub&lt;/strong&gt;
           </a>
         </nav>
       </div>
@@ -152,7 +146,7 @@ exports[`<Layout /> should match snapshot 1`] = `
       </div>
     </header>
     <main
-      class="flex-grow"
+      class="flex flex-col flex-grow"
     >
       <h1>
         Hello, World!
@@ -177,7 +171,7 @@ exports[`<Layout /> should match snapshot 1`] = `
           target="_blank"
         >
           <div
-            aria-label="email address"
+            aria-label="Email address"
             class="MuiFormControl-root MuiTextField-root text-sm pt-0.5 h-8 screen-495:h-[35px] col-span-2 screen-495:col-span-1 screen-875:col-span-2"
           >
             <div
