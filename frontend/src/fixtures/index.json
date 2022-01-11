@@ -53,6 +53,12 @@
         ["Image annotation", "Dense image annotation", "Manual segmentation"],
         ["Image Segmentation", "Semi-automatic segmentation"]
       ]
+    },
+    "citations": {
+      "APA": "Ziyang L. (2021). A napari demo plugin (version 0.0.2). URL: https://github.com/potating-potato/napari-demo\n",
+      "BibTex": "@misc{YourReferenceHere,\nauthor = {Ziyang, Liu},\nmonth = {4},\ntitle = {A napari demo plugin},\nurl = {https://github.com/potating-potato/napari-demo},\nyear = {2021}\n}\n",
+      "RIS": "TY  - GEN\nAU  - Ziyang, Liu\nDA  - 2021-04-26\nPY  - 2021\nTI  - A napari demo plugin\nUR  - https://github.com/potating-potato/napari-demo\nER\n",
+      "citation": "cff-version: 1.2.0\nmessage: \"Spaghetti taco cookie cake macaron souffle I am content.\"\nauthors:\n- family-names: \"Ziyang\"\n  given-names: \"Liu\"\ntitle: \"A napari demo plugin\"\nversion: 0.0.2\ndate-released: 2021-04-26\nurl: \"https://github.com/potating-potato/napari-demo\"\n"
     }
   },
   {

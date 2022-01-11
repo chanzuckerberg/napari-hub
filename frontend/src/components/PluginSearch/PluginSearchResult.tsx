@@ -1,5 +1,6 @@
 import clsx from 'clsx';
-import { isArray, isEmpty, isObject } from 'lodash';
+import { isArray, isEmpty, isObject, isString } from 'lodash';
+import { useTranslation } from 'next-i18next';
 import React, { CSSProperties, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 
@@ -10,6 +11,7 @@ import { TextHighlighter } from '@/components/common/TextHighlighter';
 import { useLoadingState } from '@/context/loading';
 import { SearchResultMatch } from '@/store/search/search.types';
 import { HubDimension, PluginIndexData } from '@/types';
+import { I18nPluginDataLabel } from '@/types/i18n';
 import { formatDate, formatOperatingSystem } from '@/utils';
 
 interface Props {
@@ -97,37 +99,57 @@ export function PluginSearchResult({
   plugin,
   style,
 }: Props) {
+  const [t] = useTranslation(['pluginData']);
   const isLoading = useLoadingState();
   const [isHoveringOverChip, setIsHoveringOverChip] = useState(false);
   const [debouncedIsHoveringOverChip] = useDebounce(isHoveringOverChip, 100);
 
+  const getLower = (label: I18nPluginDataLabel) =>
+    isString(label) ? label : label.lower ?? label.label;
+
+  function getItems(
+    ...items: Array<{
+      label: I18nPluginDataLabel;
+      value: string;
+    }>
+  ): SearchResultItem[] {
+    return items.map((item) => ({
+      label: getLower(item.label),
+      value: item.value,
+    }));
+  }
+
   // TODO consolidate with PluginGithubData component in PluginMetadata.tsx
-  const items: SearchResultItem[] = isLoading
+  const items = isLoading
     ? []
-    : [
+    : getItems(
         {
-          label: 'version',
+          label: t('pluginData:labels.version'),
           value: plugin.version,
         },
+
         {
-          label: 'release date',
+          label: t('pluginData:labels.releaseDate'),
           value: formatDate(plugin.release_date),
         },
+
         {
-          label: 'license',
+          label: t('pluginData:labels.license'),
           value: plugin.license,
         },
+
         {
-          label: 'Python version',
+          label: t('pluginData:labels.pythonVersion'),
           value: plugin.python_version,
         },
+
         {
-          label: 'operating system',
+          label: t('pluginData:labels.operatingSystem'),
           value: isArray(plugin.operating_system)
             ? plugin.operating_system.map(formatOperatingSystem).join(', ')
             : '',
         },
-      ];
+      );
 
   const isSearching = !isEmpty(matches);
 
@@ -224,7 +246,7 @@ export function PluginSearchResult({
                   key={`${item.label}-${item.value}`}
                   className="grid grid-cols-[auto,1fr]"
                 >
-                  <h5 className="inline whitespace-nowrap">{item.label}: </h5>
+                  <h5 className="inline whitespace-nowrap">{item.label}</h5>
                   <span
                     className={clsx(
                       'ml-1',

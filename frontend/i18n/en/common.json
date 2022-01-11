@@ -1,0 +1,63 @@
+{
+  "about": "About",
+  "close": "Close",
+  "contact": "Contact",
+  "cziOss": "Chan Zuckerberg Initiative EOSS Program",
+  "download": "Download",
+  "error": "Error",
+  "faq": "FAQ",
+  "githubRepo": "GitHub repo",
+  "home": "Home",
+  "infoNotSubmitted": "Information not submitted",
+  "install": "Install",
+  "learnMore": "Learn more",
+  "mailchimpPrivacy": "Mailchimp Privacy Policy",
+  "napariGovernanceModel": "napari governance model",
+  "napariImageScForum": "napari image.sc forum",
+  "napariMainWebsite": "napari main website",
+  "napariPlausible": "napari.dev analytics dashboard",
+  "plausiblePrivacy": "Plausible.io Privacy Policy",
+  "privacy": "Privacy",
+
+  "ariaLabels": {
+    "clearSearchBar": "Clear search bar text",
+    "searchBar": "Search bar for searching for napari plugins.",
+    "submitSearchQuery": "Submit search query"
+  },
+
+  "napariHub": {
+    "base": "napari hub",
+    "strong": "napari <strong>hub</strong>"
+  },
+
+  "alt": {
+    "sideMenu": "Icon for opening side menu."
+  },
+
+  "errors": {
+    "notFound": "Page <code>{{pathname}}</code> not found.",
+    "serverError": "Internal server error"
+  },
+
+  "htmlMeta": {
+    "about": {
+      "description": "The napari hub is a service of the Chan Zuckerberg Initiative in collaboration with napari.\nThe napari hub seeks to solve many of the challenges and needs in finding analysis solutions to bioimaging problems."
+    },
+
+    "contact": {
+      "description": "If you would like to contact the napari hub team, you can do so in a variety of ways. For help with or ideas for the napari hub, please check out the discussion board."
+    },
+
+    "faq": {
+      "description": "We hope these questions will help you in your napari plugin journey! We endeavour to update this regularly. If you need additional information or assistance, check out the Contact page or you can reach a human at team@napari-hub.org."
+    },
+
+    "home": {
+      "description": "A site for napari plugins. Discover plugins that solve your image analysis challenges, learn how to install into napari, and share image analysis tools with napari’s growing community."
+    },
+
+    "privacy": {
+      "description": "Information about napari hub's website privacy notice."
+    }
+  }
+}

@@ -1,7 +1,9 @@
 import fs from 'fs-extra';
-import { GetStaticPropsResult } from 'next';
+import { GetStaticPropsContext, GetStaticPropsResult } from 'next';
 import DefaultErrorPage from 'next/error';
 import Head from 'next/head';
+import { SSRConfig, useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useEffect } from 'react';
 import { DeepPartial } from 'utility-types';
 
@@ -11,19 +13,34 @@ import { MetadataKeys, PluginStateProvider } from '@/context/plugin';
 import { PROD } from '@/env';
 import { previewStore } from '@/store/preview';
 import { PluginData } from '@/types';
+import { I18nNamespace } from '@/types/i18n';
 import { fetchRepoData, FetchRepoDataResult } from '@/utils';
 
-interface Props extends FetchRepoDataResult {
+interface BaseProps {
   plugin: DeepPartial<PluginData>;
 }
 
+type Props = BaseProps & FetchRepoDataResult & SSRConfig;
+
 const PLUGIN_PATH = process.env.PREVIEW;
 
-export async function getStaticProps(): Promise<GetStaticPropsResult<Props>> {
+export async function getStaticProps({
+  locale,
+}: GetStaticPropsContext): Promise<GetStaticPropsResult<Props>> {
+  const translationProps = await serverSideTranslations(locale ?? 'en', [
+    'common',
+    'footer',
+    'pageTitles',
+    'pluginPage',
+    'pluginData',
+    'preview',
+  ] as I18nNamespace[]);
+
   // Return default data to prevent Next.js error if the plugin path is not defined.
   if (!PLUGIN_PATH) {
     return {
       props: {
+        ...translationProps,
         plugin: DEFAULT_PLUGIN_DATA,
         repo: DEFAULT_REPO_DATA,
       },
@@ -37,6 +54,7 @@ export async function getStaticProps(): Promise<GetStaticPropsResult<Props>> {
 
   return {
     props: {
+      ...translationProps,
       plugin,
       ...(repoFetchResult || { repo: DEFAULT_REPO_DATA }),
     },
@@ -44,6 +62,8 @@ export async function getStaticProps(): Promise<GetStaticPropsResult<Props>> {
 }
 
 export default function PreviewPage({ plugin, repo, repoFetchError }: Props) {
+  const [t] = useTranslation(['pageTitles', 'pluginData']);
+
   // Set active metadata ID on initial load if the hash is already set.
   useEffect(() => {
     const id = window.location.hash.replace('#', '');
@@ -60,7 +80,10 @@ export default function PreviewPage({ plugin, repo, repoFetchError }: Props) {
   return (
     <>
       <Head>
-        <title>napari hub | preview | {plugin.name || 'Plugin name'}</title>
+        <title>
+          napari hub | {t('pageTitles:preview')} |{' '}
+          {plugin.name || t('pluginData:labels.pluginName.label')}
+        </title>
       </Head>
 
       <PluginStateProvider

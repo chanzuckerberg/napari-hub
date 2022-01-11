@@ -11,6 +11,7 @@ import '@/global.scss';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import { appWithTranslation } from 'next-i18next';
 import { ComponentType, ReactNode } from 'react';
 
 import { ApplicationProvider } from '@/components/ApplicationProvider';
@@ -28,7 +29,7 @@ type GetLayoutComponent = ComponentType & {
   getLayout?(page: ReactNode): ReactNode;
 };
 
-export default function App({ Component, pageProps }: AppProps) {
+function App({ Component, pageProps }: AppProps) {
   const { loading, nextUrl } = usePageTransitions();
   const router = useRouter();
 
@@ -77,16 +78,14 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <>
-      <Head>
-        {
-          // The plugin page has plugin specific content that needs to be added
-          // to the Page Metadata, so skip adding it here in `_app.tsx` so that
-          // the data can be fetched by the plugin page.
-          !router.pathname.includes('/plugins/') && (
-            <PageMetadata pathname={router.pathname} />
-          )
-        }
+      {
+        // The plugin page has plugin specific content that needs to be added
+        // to the Page Metadata, so skip adding it here in `_app.tsx` so that
+        // the data can be fetched by the plugin page.
+        !/\/preview|plugins/.exec(router.pathname) && <PageMetadata />
+      }
 
+      <Head>
         {/*
           Disable indexing for non-production deployments.
           https://developers.google.com/search/docs/advanced/crawling/block-indexing
@@ -102,3 +101,5 @@ export default function App({ Component, pageProps }: AppProps) {
     </>
   );
 }
+
+export default appWithTranslation(App);

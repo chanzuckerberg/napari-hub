@@ -1,8 +1,10 @@
 import Collapse from '@material-ui/core/Collapse';
 import IconButton from '@material-ui/core/IconButton';
 import clsx from 'clsx';
+import { useTranslation } from 'next-i18next';
 import { ReactNode, useState } from 'react';
 
+import { I18n } from '@/components/common/I18n';
 import {
   ChevronDown,
   ChevronUp,
@@ -11,12 +13,11 @@ import {
 import { Link } from '@/components/common/Link';
 import { Media } from '@/components/common/media';
 import { MetadataStatus } from '@/components/MetadataStatus';
-import { HUB_WIKI_LINK } from '@/constants/preview';
 import { usePluginMetadata } from '@/context/plugin';
 
 import styles from './AppBarPreview.module.scss';
-import { MetadataSection, useMetadataSections } from './metadataPreview.hooks';
 import { PreviewMetadataPanel } from './PreviewMetadataPanel';
+import { MetadataSection, useMetadataSections } from './useMetadataSections';
 
 function MetadataStatusBar() {
   const sections = useMetadataSections();
@@ -50,6 +51,7 @@ function MetadataStatusBar() {
 
 function AppBarPreviewLeftColumn() {
   const prLink = process.env.PREVIEW_PULL_REQUEST;
+  const [t] = useTranslation(['preview']);
 
   return (
     <Link
@@ -58,13 +60,16 @@ function AppBarPreviewLeftColumn() {
       newTab
     >
       <ViewPullRequest />
-      <Media greaterThanOrEqual="screen-495">View pull request</Media>
-      <Media lessThan="screen-495">Edit in Github</Media>
+      <Media greaterThanOrEqual="screen-495">
+        {t('preview:appBar.viewPR')}
+      </Media>
+      <Media lessThan="screen-495">{t('preview:appBar.editInGitHub')}</Media>
     </Link>
   );
 }
 
 function AppBarPreviewCenterColumn() {
+  const [t] = useTranslation(['preview']);
   const sections = useMetadataSections();
   let missingFieldsCount = 0;
 
@@ -85,16 +90,13 @@ function AppBarPreviewCenterColumn() {
           missingFieldsCount > 0 && 'bg-napari-preview-orange text-white',
         )}
       >
-        {missingFieldsCount > 0
-          ? `${missingFieldsCount} fields need attention`
-          : 'All fields complete!'}
+        {t('preview:appBar.missingFields', {
+          count: missingFieldsCount,
+        })}
       </span>
 
       <Media className="text-sm font-semibold" greaterThanOrEqual="screen-875">
-        Learn how to update fields in the{' '}
-        <Link className="underline" href={HUB_WIKI_LINK} newTab>
-          napari hub GitHub Wiki.
-        </Link>
+        <I18n i18nKey="preview:appBar.learnHow" />
       </Media>
     </>
   );
@@ -172,11 +174,8 @@ function getFullRepoName(repoUrl: string) {
 
 const PREVIEW_LINK_TEXT = getFullRepoName(PR_LINK);
 
-// TODO Update this to the correct link.
-const MISMATCH_REPOSITORY_DOCS_URL =
-  'https://github.com/chanzuckerberg/napari-hub/blob/main/docs/setting-up-preview.md#seeing-a-warning-message';
-
 export function AppBarPreview() {
+  const [t] = useTranslation(['common', 'preview', 'pluginData']);
   const metadata = usePluginMetadata();
   const sections = useMetadataSections();
   const [expanded, setExpanded] = useState(hasMissingFields(sections));
@@ -188,8 +187,8 @@ export function AppBarPreview() {
   const actionRepo = metadata.actionRepository.value;
   const hasRepoMismatch =
     actionRepo && actionRepo !== metadata.sourceCode.value;
-  const codeRepo = metadata.sourceCode.value;
-  const codeRepoName = hasRepoMismatch ? getFullRepoName(codeRepo) : '';
+  const codeRepoLink = metadata.sourceCode.value;
+  const codeRepoName = hasRepoMismatch ? getFullRepoName(codeRepoLink) : '';
 
   return (
     <>
@@ -274,38 +273,24 @@ export function AppBarPreview() {
       >
         <p className="text-napari-preview-orange text-center px-6 screen-495:px-12">
           <div>
-            <span>This preview of </span>
-            <span className="font-bold">
-              {metadata.name.value || 'Plugin name'}
-            </span>{' '}
-            <span>was generated from </span>
-            <Link className="underline" href={PR_LINK} newTab>
-              {PREVIEW_LINK_TEXT}
-            </Link>
-            {hasRepoMismatch ? (
-              <>
-                <span className="italic">
-                  <span>, but your metadata points to </span>
-                  <Link className="underline" href={codeRepo} newTab>
-                    {codeRepoName}
-                  </Link>{' '}
-                  <span>as the source code. </span>
-                </span>
-
-                <Link
-                  className="underline"
-                  href={MISMATCH_REPOSITORY_DOCS_URL}
-                  newTab
-                >
-                  Learn more.
-                </Link>
-              </>
-            ) : (
-              '.'
-            )}
+            <I18n
+              i18nKey="preview:appBar.previewMessage"
+              tOptions={{
+                context: hasRepoMismatch ? 'mismatch' : '',
+              }}
+              values={{
+                codeRepoLink,
+                codeRepoName,
+                pullRequestLink: PR_LINK,
+                previewRepoName: PREVIEW_LINK_TEXT,
+                pluginName:
+                  metadata.name.value ||
+                  t('pluginData:labels.pluginName.preview'),
+              }}
+            />
           </div>
 
-          <div>It is not live on the napari hub.</div>
+          <div>{t('preview:appBar.notLive')}</div>
         </p>
       </div>
     </>

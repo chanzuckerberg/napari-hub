@@ -1,7 +1,8 @@
 import { AxiosError } from 'axios';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
+import { SSRConfig, useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { ParsedUrlQuery } from 'node:querystring';
 
 import { hubAPI } from '@/axios';
@@ -11,6 +12,7 @@ import { PluginDetails } from '@/components/PluginDetails';
 import { useLoadingState } from '@/context/loading';
 import { PluginStateProvider } from '@/context/plugin';
 import { PluginData } from '@/types';
+import { I18nNamespace } from '@/types/i18n';
 import { fetchRepoData, FetchRepoDataResult } from '@/utils';
 
 /**
@@ -29,10 +31,12 @@ interface RequestError {
   stackTrace: string[];
 }
 
-interface Props extends FetchRepoDataResult {
+interface BaseProps {
   error?: string;
   plugin?: PluginData;
 }
+
+type Props = FetchRepoDataResult & Partial<SSRConfig> & BaseProps;
 
 type RequestResponse = PluginData | RequestError;
 
@@ -60,10 +64,22 @@ function isAxiosError(error: unknown): error is AxiosError {
  */
 export async function getServerSideProps({
   params,
+  locale,
 }: GetServerSidePropsContext<Params>) {
   const name = String(params?.name);
   const url = `/plugins/${name}`;
-  const props: Partial<Props> = {};
+  const translationProps = await serverSideTranslations(locale ?? 'en', [
+    'common',
+    'footer',
+    'pageTitles',
+    'pluginData',
+    'pluginPage',
+
+    // Home page namespace required for page transitions to search page from the
+    // plugin page.
+    'homePage',
+  ] as I18nNamespace[]);
+  const props: Partial<Props> = { ...translationProps };
 
   try {
     const { data } = await hubAPI.get<PluginData | RequestError>(url);
@@ -95,19 +111,19 @@ export default function PluginPage({
   repo,
   repoFetchError,
 }: Props) {
-  const router = useRouter();
   const isLoading = useLoadingState();
+  const [t] = useTranslation(['pageTitles', 'pluginPage']);
 
   const keywords: string[] = [];
-  let title = 'napari hub | plugins';
+  let title = t('pageTitles:plugin.base');
   if (isLoading) {
-    title = `${title} | loading...`;
+    title = `${title} | ${t('pageTitles:plugin.loading')}...`;
   } else if (plugin?.name && plugin?.authors) {
     title = `${title} | ${plugin.name}`;
 
     const authors = plugin.authors.map(({ name }) => name).join(', ');
     if (authors) {
-      title = `${title} by ${authors}`;
+      title = `${title} ${t('pageTitles:plugin.by')} ${authors}`;
     }
 
     for (const { name } of plugin.authors ?? []) {
@@ -119,17 +135,16 @@ export default function PluginPage({
 
   return (
     <>
+      <PageMetadata keywords={keywords} description={plugin?.summary} />
+
       <Head>
         <title>{title}</title>
-        <PageMetadata
-          keywords={keywords}
-          description={plugin?.summary}
-          pathname={router.pathname}
-        />
       </Head>
 
       {error ? (
-        <ErrorMessage error={error}>Unable to load plugin</ErrorMessage>
+        <ErrorMessage error={error}>
+          {t('pluginPage:errors.fetch')}
+        </ErrorMessage>
       ) : (
         <>
           {plugin ? (
@@ -141,7 +156,7 @@ export default function PluginPage({
               <PluginDetails />
             </PluginStateProvider>
           ) : (
-            <ErrorMessage>Empty plugin data</ErrorMessage>
+            <ErrorMessage>{t('pluginPage:errors.emptyPlugin')}</ErrorMessage>
           )}
         </>
       )}

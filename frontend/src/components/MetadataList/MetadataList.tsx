@@ -16,7 +16,7 @@ interface Props {
   empty?: boolean;
   id?: MetadataKeys;
   inline?: boolean;
-  title: string;
+  label: string;
 }
 
 /**
@@ -28,7 +28,7 @@ export function MetadataList({
   empty,
   id,
   inline,
-  title,
+  label,
 }: Props) {
   usePreviewClickAway(id);
 
@@ -63,7 +63,7 @@ export function MetadataList({
               inline ? 'inline mr-2' : 'mb-3',
             )}
           >
-            {title}:
+            {label}:
           </h4>
 
           {/* List values */}

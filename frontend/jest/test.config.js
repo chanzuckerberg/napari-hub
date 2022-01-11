@@ -13,6 +13,7 @@ module.exports = createConfig({
       names.
     */
     '^.+\\.module\\.scss$': 'identity-obj-proxy',
+    '^@/i18n/(.*)$': '<rootDir>/i18n/$1',
     '^@/(.*)$': '<rootDir>/src/$1',
   },
 });
