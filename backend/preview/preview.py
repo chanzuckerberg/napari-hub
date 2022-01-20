@@ -217,6 +217,8 @@ def parse_meta(pkg_pth):
     # try to github pattern match home page if code_repository still hasn't been found
     if not meta.get("code_repository"):
         proj_site = meta["project_site"]
+        if not proj_site:
+            raise RuntimeError(f"Cannot find GitHub repository link for plugin {meta['name']}. Have you added a Sourec Code url?")
         match = github_pattern.match(proj_site)
         if match:
             meta["code_repository"] = match.group(0)
