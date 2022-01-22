@@ -66,10 +66,10 @@ def get_plugin(plugin: str, version: str = None) -> dict:
         if not entity:
             return {}
         else:
-            return entity.get_attributes()
+            return entity.attribute_values
     else:
         try:
-            return Plugin.get(plugin, version).get_attributes()
+            return Plugin.get(plugin, version).attribute_values
         except DoesNotExist:
             return {}
 
@@ -117,7 +117,7 @@ def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
     :return: dict for aggregated plugin metadata
     """
     try:
-        return plugin, Plugin.get(plugin, version).serialize()
+        return plugin, Plugin.get(plugin, version).attribute_values
     except DoesNotExist:
         pass
     metadata = get_plugin_pypi_metadata(plugin, version)

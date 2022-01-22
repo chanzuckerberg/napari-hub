@@ -47,3 +47,11 @@ class TestPypi(unittest.TestCase):
     )
     def test_get_plugin_error(self, mock_get):
         assert ({} == get_plugin_pypi_metadata("test", "0.0.1"))
+
+    def test_dynamo(self):
+        from api.model import build_plugin_metadata
+        from api.entity import Plugin
+        Plugin.create_table(read_capacity_units=2, write_capacity_units=2)
+        import time
+        time.sleep(1)
+        build_plugin_metadata("napari-demo", "0.0.2")
