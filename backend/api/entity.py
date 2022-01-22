@@ -13,7 +13,6 @@ class Entity(Model):
 class Plugin(Entity):
     class Meta:
         table_name = f"dynamo-integration-plugin-data"
-        region = dynamodb.meta.region_name
 
     name = UnicodeAttribute(hash_key=True)
     version = UnicodeAttribute(range_key=True)
