@@ -151,8 +151,8 @@ def update_cache():
     plugins = query_pypi()
     update_plugin_metadata_async(plugins)
 
-    for plugin in plugins.keys():
-        if plugin not in existing_public_plugins:
+    for plugin in existing_public_plugins.keys():
+        if plugin not in plugins:
             notify_packages(plugin, removed=True)
 
 
