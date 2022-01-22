@@ -100,6 +100,7 @@ module backend_lambda {
   environment = {
     "ENV" = var.env
     "SERVICE" = "napari-hub-backend"
+    "DYNAMO_PREFIX" = local.custom_stack_name
     "BUCKET" = local.data_bucket_name
     "BUCKET_PATH" = var.env == "dev" ? local.custom_stack_name : ""
     "GOOGLE_APPLICATION_CREDENTIALS" = "./credentials.json"

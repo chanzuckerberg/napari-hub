@@ -9,7 +9,7 @@ from pynamodb.exceptions import DoesNotExist
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
 from api.s3 import get_cache, cache
-from api.entity import Plugin
+from api.entity import Plugin, get_plugin_entity
 from utils.utils import render_description, send_alert, get_attribute, get_category_mapping
 from utils.datadog import report_metrics
 from api.zulip import notify_new_packages
@@ -143,9 +143,7 @@ def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
         metadata['category_hierarchy'] = category_hierarchy
         del metadata['labels']
 
-    entity = Plugin.from_raw_data({
-        **metadata, **{"name": plugin, "date_created": datetime.now(), "date_modified": datetime.now()}
-    })
+    entity = get_plugin_entity(plugin, metadata)
     entity.save()
     return plugin, metadata
 
