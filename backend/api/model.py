@@ -162,8 +162,10 @@ def update_plugin_metadata_async(plugins: Dict[str, str]):
     :param plugins: plugin name and versions to query
     """
     with futures.ThreadPoolExecutor() as executor:
-        for k, v in plugins.items():
-            executor.submit(save_plugin_metadata, k, v)
+        completion = [executor.submit(save_plugin_metadata, k, v) for k, v in plugins.items()]
+
+    for future in futures.as_completed(completion):
+        assert future.done()
 
 
 def move_artifact_to_s3(payload, client):
