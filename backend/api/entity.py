@@ -12,13 +12,8 @@ class Entity(Model):
 
 class Plugin(Entity):
     class Meta:
-        #table_name = f'{os.getenv("DYNAMO_PREFIX")}-plugin-data'
-        #region = os.getenv("AWS_REGION")
-        table_name = f"dynamo-integration-plugin-data"
-        region = "us-east-1"
-        host = "http://127.0.0.1:8000"
-        aws_access_key_id = "anything"
-        aws_secret_access_key = "fake"
+        table_name = f'{os.getenv("DYNAMO_PREFIX")}-plugin-data'
+        region = os.getenv("AWS_REGION")
 
     name = UnicodeAttribute(hash_key=True)
     version = UnicodeAttribute(range_key=True)
