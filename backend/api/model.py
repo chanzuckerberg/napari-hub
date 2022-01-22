@@ -80,10 +80,12 @@ def get_index() -> dict:
 
     :return: dict for index page metadata
     """
-    return {
+    index = {
         plugin.name: plugin.attribute_values for plugin in
         Plugin.scan(Plugin.visibility == 'public', attributes_to_get=index_subset)
     }
+    print(index)
+    return index
 
 
 def slice_metadata_to_index_columns(plugins_metadata: List[dict]) -> List[dict]:
