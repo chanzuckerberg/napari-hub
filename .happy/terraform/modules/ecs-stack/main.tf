@@ -117,6 +117,13 @@ module backend_lambda {
   timeout               = 300
 }
 
+module database {
+  source               = "../database"
+  custom_stack_name    = local.custom_stack_name
+  tags                 = var.tags
+}
+
+
 module api_gateway_proxy_stage {
   source               = "../api-gateway-proxy-stage"
   lambda_function_name = module.backend_lambda.function_name

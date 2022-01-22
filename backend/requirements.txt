@@ -13,3 +13,4 @@ setuptools
 wheel
 pkginfo
 datadog-lambda
+pynamodb

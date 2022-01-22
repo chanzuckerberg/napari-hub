@@ -4,10 +4,12 @@ from typing import Tuple, Dict, List
 from zipfile import ZipFile
 from io import BytesIO
 from collections import defaultdict
+from pynamodb.exceptions import DoesNotExist
 
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
 from api.s3 import get_cache, cache
+from api.entity import Plugin
 from utils.utils import render_description, send_alert, get_attribute, get_category_mapping
 from utils.datadog import report_metrics
 from api.zulip import notify_new_packages
@@ -66,10 +68,10 @@ def get_plugin(plugin: str, version: str = None) -> dict:
         return {}
     elif version is None:
         version = plugins[plugin]
-    plugin = get_cache(f'cache/{plugin}/{version}.json')
-    if plugin:
-        return plugin
-    else:
+
+    try:
+        return Plugin.get(plugin, version).serialize()
+    except DoesNotExist:
         return {}
 
 
