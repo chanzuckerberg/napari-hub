@@ -200,9 +200,9 @@ data aws_iam_policy_document backend_policy {
         "${local.data_bucket_arn}/*",
         "${module.database.plugin_data_table_arn}",
         "${module.database.plugin_data_table_arn}/index/*",
-        "${module.database.excluded_plugin_table_arn",
+        "${module.database.excluded_plugin_table_arn}",
         "${module.database.excluded_plugin_table_arn}/index/*",
-        "${module.database.category_table_arn",
+        "${module.database.category_table_arn}",
         "${module.database.category_table_arn}/index/*"
     ]
   }
