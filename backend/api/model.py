@@ -1,6 +1,5 @@
 from concurrent import futures
-from datetime import datetime
-from typing import Tuple, Dict, List
+from typing import Dict, List
 from zipfile import ZipFile
 from io import BytesIO
 from collections import defaultdict
@@ -12,7 +11,7 @@ from api.s3 import get_cache, cache
 from api.entity import Plugin, ExcludedPlugin, get_plugin_entity
 from utils.utils import render_description, send_alert, get_attribute, get_category_mapping
 from utils.datadog import report_metrics
-from api.zulip import notify_new_packages
+from api.zulip import notify_packages
 
 index_subset = ['name', 'summary', 'description_text', 'description_content_type',
                 'authors', 'license', 'python_version', 'operating_system',
@@ -98,14 +97,15 @@ def get_excluded_plugins() -> Dict[str, str]:
     }
 
 
-def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
+def save_plugin_metadata(plugin: str, version: str):
     """
     Build plugin metadata from multiple sources, reuse cached ones if available.
 
     :return: dict for aggregated plugin metadata
     """
     try:
-        return plugin, Plugin.get(plugin, version).attribute_values
+        Plugin.get(plugin, version, attributes_to_get=[])
+        return
     except DoesNotExist:
         pass
     metadata = get_plugin_pypi_metadata(plugin, version)
@@ -130,8 +130,17 @@ def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
         del metadata['labels']
 
     entity = get_plugin_entity(plugin, metadata)
+    exclusion = ExcludedPlugin.query(plugin).next()
+    if exclusion:
+        entity.visibility.set(exclusion.status)
+    if entity.visibility == 'public':
+        try:
+            Plugin.get(plugin, attributes_to_get=[])
+            notify_packages(plugin, version)
+        except DoesNotExist:
+            notify_packages(plugin)
+    report_metrics('napari_hub.plugins.count', 1, [f'visibility:{entity.visibility}'])
     entity.save()
-    return plugin, metadata
 
 
 def update_cache():
@@ -140,74 +149,22 @@ def update_cache():
     """
     existing_public_plugins = get_public_plugins()
     plugins = query_pypi()
-    plugins_metadata = get_plugin_metadata_async(plugins)
-    excluded_plugins = get_updated_plugin_exclusion(plugins_metadata)
-    for name, status in excluded_plugins.items():
-        excluded_plugin_entity = ExcludedPlugin(name=name, status=status)
-        excluded_plugin_entity.save()
+    update_plugin_metadata_async(plugins)
 
-    visibility_plugins = {"public": {}, "hidden": {}}
-    for plugin, version in plugins.items():
-        visibility = plugins_metadata[plugin].get('visibility', 'public')
-        if visibility in visibility_plugins:
-            visibility_plugins[visibility][plugin] = version
-
-    for plugin, _ in excluded_plugins.items():
-        if plugin in plugins_metadata:
-            del (plugins_metadata[plugin])
-
-    for key in visibility_plugins.keys():
-        report_metrics('napari_hub.plugins.count', len(visibility_plugins[key]), [f'visibility:{key}'])
-
-    if visibility_plugins['public']:
-        notify_new_packages(existing_public_plugins, visibility_plugins['public'])
-    else:
-        send_alert(f"({datetime.now()})Actions Required! Failed to query pypi for "
-                   f"napari plugin packages, switching to backup analysis dump")
+    for plugin in plugins.keys():
+        if plugin not in existing_public_plugins:
+            notify_packages(plugin, removed=True)
 
 
-def get_updated_plugin_exclusion(plugins_metadata):
-    """
-    Update plugin visibility information with latest metadata.
-    Override existing visibility information if existing entry is not 'blocked' (disabled by hub admin)
-
-    public: fully visible (default)
-    hidden: plugin page exists, but doesn't show up in search listings
-    disabled: no plugin page created, does not show up in search listings
-
-    :param plugins_metadata: plugin metadata containing visibility information
-    :return: updated exclusion list
-    """
-    excluded_plugins = get_excluded_plugins()
-    for plugin, plugin_metadata in plugins_metadata.items():
-        if not plugin_metadata:
-            excluded_plugins[plugin] = 'invalid'
-        if 'visibility' not in plugin_metadata:
-            continue
-        if plugin in excluded_plugins and excluded_plugins[plugin] != "blocked":
-            if plugin_metadata['visibility'] == 'public':
-                del excluded_plugins[plugin]
-            else:
-                excluded_plugins[plugin] = plugin_metadata['visibility']
-        elif plugin not in excluded_plugins and plugin_metadata['visibility'] != 'public':
-            excluded_plugins[plugin] = plugin_metadata['visibility']
-    return excluded_plugins
-
-
-def get_plugin_metadata_async(plugins: Dict[str, str]) -> dict:
+def update_plugin_metadata_async(plugins: Dict[str, str]):
     """
     Query plugin metadata async.
 
     :param plugins: plugin name and versions to query
-    :return: plugin metadata list
     """
-    plugins_metadata = {}
     with futures.ThreadPoolExecutor(max_workers=32) as executor:
-        plugin_futures = [executor.submit(build_plugin_metadata, k, v)
-                          for k, v in plugins.items()]
-    for future in futures.as_completed(plugin_futures):
-        plugins_metadata[future.result()[0]] = (future.result()[1])
-    return plugins_metadata
+        for k, v in plugins.items():
+            executor.submit(save_plugin_metadata, k, v)
 
 
 def move_artifact_to_s3(payload, client):
