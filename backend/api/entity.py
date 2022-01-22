@@ -11,7 +11,7 @@ class Plugin(Model):
 
     name = UnicodeAttribute(hash_key=True)
     version = UnicodeAttribute(range_key=True)
-    visibility = UnicodeAttribute(null=True, default='public')
+    visibility = UnicodeAttribute(null=True)
     summary = UnicodeAttribute(null=True)
     description = UnicodeAttribute(null=True)
     description_text = UnicodeAttribute(null=True)
@@ -58,7 +58,7 @@ def get_plugin_entity(name: str, metadata: dict) -> Plugin:
     return Plugin(
         name=name,
         version=metadata.get("version"),
-        visibility=metadata.get("visibility"),
+        visibility=metadata.get("visibility", 'public'),
         summary=metadata.get("summary"),
         description=metadata.get("description"),
         description_text=metadata.get("description_text"),
