@@ -1,4 +1,5 @@
 import os
+from pynamodb.attributes import MapAttribute
 from apig_wsgi import make_lambda_handler
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
 from flask import Flask, Response, jsonify
@@ -6,6 +7,7 @@ from flask_githubapp.core import GitHubApp
 
 from api.model import get_public_plugins, get_index, get_plugin, get_excluded_plugins, update_cache, \
     move_artifact_to_s3, get_category_mapping, get_categories_mapping
+from api.entity import MapAttributeEncoder
 from api.shield import get_shield
 from utils.utils import send_alert, reformat_ssh_key_to_pem_bytes
 
@@ -16,6 +18,7 @@ GITHUB_APP_SECRET = os.getenv('GITHUBAPP_SECRET')
 app = Flask(__name__)
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 app.url_map.redirect_defaults = False
+app.json_encoder = MapAttributeEncoder
 preview_app = Flask("Preview")
 
 if GITHUB_APP_ID and GITHUB_APP_KEY and GITHUB_APP_SECRET:

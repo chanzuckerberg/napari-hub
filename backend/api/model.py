@@ -74,29 +74,16 @@ def get_plugin(plugin: str, version: str = None) -> dict:
             return {}
 
 
-def get_index() -> dict:
+def get_index() -> Dict[str, dict]:
     """
     Get the index page related metadata for all plugins.
 
     :return: dict for index page metadata
     """
-    index = {
+    return {
         plugin.name: plugin.attribute_values for plugin in
         Plugin.scan(Plugin.visibility == 'public', attributes_to_get=index_subset)
     }
-    print(index)
-    return index
-
-
-def slice_metadata_to_index_columns(plugins_metadata: List[dict]) -> List[dict]:
-    """
-    slice index to only include specified indexing related columns.
-
-    :param plugins_metadata: plugin metadata dictionary
-    :return: sliced dict metadata for the plugin
-    """
-    return [{k: plugin_metadata[k] for k in index_subset if k in plugin_metadata}
-            for plugin_metadata in plugins_metadata]
 
 
 def get_excluded_plugins() -> Dict[str, str]:
