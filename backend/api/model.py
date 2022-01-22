@@ -74,16 +74,16 @@ def get_plugin(plugin: str, version: str = None) -> dict:
             return {}
 
 
-def get_index() -> Dict[str, dict]:
+def get_index() -> List[dict]:
     """
     Get the index page related metadata for all plugins.
 
-    :return: dict for index page metadata
+    :return: list of plugin index metadata
     """
-    return {
-        plugin.name: plugin.attribute_values for plugin in
+    return [
+        plugin.attribute_values for plugin in
         Plugin.scan(Plugin.visibility == 'public', attributes_to_get=index_subset)
-    }
+    ]
 
 
 def get_excluded_plugins() -> Dict[str, str]:
@@ -144,6 +144,7 @@ def update_cache():
     - cache/index.json (overwrite)
     - cache/{plugin}/{version}.json (skip if exists)
     """
+    existing_public_plugins = get_public_plugins()
     plugins = query_pypi()
     plugins_metadata = get_plugin_metadata_async(plugins)
     excluded_plugins = get_updated_plugin_exclusion(plugins_metadata)
@@ -159,7 +160,6 @@ def update_cache():
             del (plugins_metadata[plugin])
 
     if visibility_plugins['public']:
-        existing_public_plugins = get_public_plugins()
         cache(excluded_plugins, 'excluded_plugins.json')
         notify_new_packages(existing_public_plugins, visibility_plugins['public'])
         report_metrics('napari_hub.plugins.count', len(visibility_plugins['public']), ['visibility:public'])

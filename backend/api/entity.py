@@ -1,6 +1,5 @@
 import os
 import json
-from datetime import datetime
 from pynamodb.models import Model
 from pynamodb.attributes import UnicodeAttribute, ListAttribute, MapAttribute
 
@@ -34,6 +33,25 @@ class Plugin(Model):
     citations = MapAttribute(null=True)
     category = MapAttribute(null=True)
     category_hierarchy = MapAttribute(null=True)
+
+
+class ExcludedPlugin(Model):
+    class Meta:
+        table_name = f'{os.getenv("DYNAMO_PREFIX")}-excluded-plugin'
+        region = os.getenv("AWS_REGION")
+
+    name = UnicodeAttribute(hash_key=True)
+    status = UnicodeAttribute(range_key=True)
+
+
+class Category(Model):
+    class Meta:
+        table_name = f'{os.getenv("DYNAMO_PREFIX")}-category'
+        region = os.getenv("AWS_REGION")
+
+    name = UnicodeAttribute(hash_key=True)
+    version = UnicodeAttribute(range_key=True)
+    mapping = MapAttribute()
 
 
 def get_plugin_entity(name:str, metadata: dict) -> Plugin:

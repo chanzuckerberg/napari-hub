@@ -131,7 +131,8 @@ def get_github_metadata(repo_url: str, branch: str = 'HEAD') -> dict:
 
     if 'visibility' not in github_metadata:
         github_metadata['visibility'] = 'public'
-    elif github_metadata['visibility'] not in visibility_set:
+    elif not isinstance(github_metadata['visibility'], str) or \
+            github_metadata['visibility'] not in visibility_set:
         github_metadata['visibility'] = 'public'
 
     yaml_file = get_file(repo_url, ".napari/config.yml", branch=branch)
