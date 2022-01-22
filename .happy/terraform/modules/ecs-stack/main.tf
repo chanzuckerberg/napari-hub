@@ -196,8 +196,8 @@ data aws_iam_policy_document backend_policy {
 
     resources = [
         "${local.data_bucket_arn}/*",
-        "${module.plugin_data_table_arn.arn}",
-        "${module.plugin_data_table_arn.arn}/index/*"
+        "${module.database.plugin_data_table_arn}",
+        "${module.database.plugin_data_table_arn}/index/*"
     ]
   }
 }
