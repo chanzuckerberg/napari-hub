@@ -143,11 +143,13 @@ def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
         metadata['category_hierarchy'] = category_hierarchy
         del metadata['labels']
 
-    plugin_entity = Plugin(name=plugin, version=version,
-                           date_created=datetime.now(),
-                           date_modified=datetime.now())
-    plugin_entity.from_raw_data(metadata)
-    plugin_entity.save()
+    entity = Plugin.from_raw_data(metadata)
+    entity.update(actions=[
+        Plugin.name.set(plugin),
+        Plugin.date_created.set(datetime.now()),
+        Plugin.date_modified.set(datetime.now())
+    ])
+    entity.save()
     return plugin, metadata
 
 

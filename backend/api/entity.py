@@ -17,7 +17,7 @@ class Plugin(Entity):
 
     name = UnicodeAttribute(hash_key=True)
     version = UnicodeAttribute(range_key=True)
-    visibility = UnicodeAttribute()
+    visibility = UnicodeAttribute(null=True)
     summary = UnicodeAttribute(null=True)
     description = UnicodeAttribute(null=True)
     description_text = UnicodeAttribute(null=True)
