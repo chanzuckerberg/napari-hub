@@ -103,8 +103,10 @@ def save_plugin_metadata(plugin: str, version: str):
 
     :return: dict for aggregated plugin metadata
     """
-    if Plugin.count(plugin, Plugin.version == version) > 0:
-        return
+    try:
+        Plugin.get(plugin, version)
+    except DoesNotExist:
+        pass
     metadata = get_plugin_pypi_metadata(plugin, version)
     github_repo_url = metadata.get('code_repository')
     if github_repo_url:
@@ -131,9 +133,10 @@ def save_plugin_metadata(plugin: str, version: str):
     if exclusion:
         entity.visibility.set(exclusion.status)
     if entity.visibility == 'public':
-        if Plugin.count(plugin) > 0:
+        try:
+            Plugin.get(plugin)
             notify_packages(plugin, version)
-        else:
+        except DoesNotExist:
             notify_packages(plugin)
     report_metrics('napari_hub.plugins.count', 1, [f'visibility:{entity.visibility}'])
     entity.save()
@@ -158,7 +161,7 @@ def update_plugin_metadata_async(plugins: Dict[str, str]):
 
     :param plugins: plugin name and versions to query
     """
-    with futures.ThreadPoolExecutor(max_workers=32) as executor:
+    with futures.ThreadPoolExecutor() as executor:
         for k, v in plugins.items():
             executor.submit(save_plugin_metadata, k, v)
 
