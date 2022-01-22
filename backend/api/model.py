@@ -14,10 +14,10 @@ from utils.utils import render_description, send_alert, get_attribute, get_categ
 from utils.datadog import report_metrics
 from api.zulip import notify_new_packages
 
-index_subset = {'name', 'summary', 'description_text', 'description_content_type',
+index_subset = ['name', 'summary', 'description_text', 'description_content_type',
                 'authors', 'license', 'python_version', 'operating_system',
                 'release_date', 'version', 'first_released',
-                'development_status', 'category'}
+                'development_status', 'category']
 
 
 def get_public_plugins() -> Dict[str, str]:
@@ -26,11 +26,10 @@ def get_public_plugins() -> Dict[str, str]:
 
     :return: dict of public plugins and their versions
     """
-    public_plugins = get_cache('cache/public-plugins.json')
-    if public_plugins:
-        return public_plugins
-    else:
-        return {}
+    return {
+        plugin.name: plugin.version for plugin in
+        Plugin.scan(Plugin.visibility == 'public')
+    }
 
 
 def get_hidden_plugins() -> Dict[str, str]:
@@ -39,11 +38,10 @@ def get_hidden_plugins() -> Dict[str, str]:
 
     :return: dict of hidden plugins and their versions
     """
-    hidden_plugins = get_cache('cache/hidden-plugins.json')
-    if hidden_plugins:
-        return hidden_plugins
-    else:
-        return {}
+    return {
+        plugin.name: plugin.version for plugin in
+        Plugin.scan(Plugin.visibility == 'hidden')
+    }
 
 
 def get_valid_plugins() -> Dict[str, str]:
@@ -63,16 +61,17 @@ def get_plugin(plugin: str, version: str = None) -> dict:
     :param version: version of the plugin
     :return: plugin metadata dictionary
     """
-    plugins = get_valid_plugins()
-    if plugin not in plugins:
-        return {}
-    elif version is None:
-        version = plugins[plugin]
-
-    try:
-        return Plugin.get(plugin, version).serialize()
-    except DoesNotExist:
-        return {}
+    if not version:
+        entity = Plugin.query(plugin, scan_index_forward=False).next()
+        if not entity:
+            return {}
+        else:
+            return entity.get_attributes()
+    else:
+        try:
+            return Plugin.get(plugin, version).get_attributes()
+        except DoesNotExist:
+            return {}
 
 
 def get_index() -> dict:
@@ -81,11 +80,10 @@ def get_index() -> dict:
 
     :return: dict for index page metadata
     """
-    index = get_cache('cache/index.json')
-    if index:
-        return index
-    else:
-        return {}
+    return {
+        plugin.name: plugin.attribute_values for plugin in
+        Plugin.scan(Plugin.visibility == 'public', attributes_to_get=index_subset)
+    }
 
 
 def slice_metadata_to_index_columns(plugins_metadata: List[dict]) -> List[dict]:
@@ -174,9 +172,6 @@ def update_cache():
     if visibility_plugins['public']:
         existing_public_plugins = get_public_plugins()
         cache(excluded_plugins, 'excluded_plugins.json')
-        cache(visibility_plugins['public'], 'cache/public-plugins.json')
-        cache(visibility_plugins['hidden'], 'cache/hidden-plugins.json')
-        cache(slice_metadata_to_index_columns(list(plugins_metadata.values())), 'cache/index.json')
         notify_new_packages(existing_public_plugins, visibility_plugins['public'])
         report_metrics('napari_hub.plugins.count', len(visibility_plugins['public']), ['visibility:public'])
         report_metrics('napari_hub.plugins.count', len(visibility_plugins['hidden']), ['visibility:hidden'])
