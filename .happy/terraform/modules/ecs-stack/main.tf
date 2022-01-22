@@ -184,9 +184,16 @@ data aws_iam_policy_document backend_policy {
     actions = [
       "s3:PutObject",
       "s3:GetObject",
+      "dynamodb:GetItem",
+      "dynamodb:BatchGetItem",
+      "dynamodb:PutItem",
+      "dynamodb:BatchWriteItem",
+      "dynamodb:UpdateItem",
+      "dynamodb:Query",
+      "dynamodb:Scan",
     ]
 
-    resources = ["${local.data_bucket_arn}/*"]
+    resources = ["${local.data_bucket_arn}/*", "${module.database.arn}", "${module.database.arn}/index/*"]
   }
 }
 
