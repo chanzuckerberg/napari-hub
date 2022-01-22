@@ -2,15 +2,10 @@ import os
 import json
 from datetime import datetime
 from pynamodb.models import Model
-from pynamodb.attributes import UnicodeAttribute, UTCDateTimeAttribute, ListAttribute, MapAttribute
+from pynamodb.attributes import UnicodeAttribute, ListAttribute, MapAttribute
 
 
-class Entity(Model):
-    date_created = UTCDateTimeAttribute()
-    date_modified = UTCDateTimeAttribute()
-
-
-class Plugin(Entity):
+class Plugin(Model):
     class Meta:
         table_name = f'{os.getenv("DYNAMO_PREFIX")}-plugin-data'
         region = os.getenv("AWS_REGION")
@@ -44,8 +39,6 @@ class Plugin(Entity):
 def get_plugin_entity(name:str, metadata: dict) -> Plugin:
     return Plugin(
         name=name,
-        date_created=datetime.now(),
-        date_modified=datetime.now(),
         version=metadata.get("version"),
         visibility=metadata.get("visibility"),
         summary=metadata.get("summary"),
