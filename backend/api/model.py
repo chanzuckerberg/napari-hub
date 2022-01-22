@@ -118,9 +118,10 @@ def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
 
     :return: dict for aggregated plugin metadata
     """
-    cached_plugin = get_cache(f'cache/{plugin}/{version}.json')
-    if cached_plugin:
-        return plugin, cached_plugin
+    try:
+        return plugin, Plugin.get(plugin, version).serialize()
+    except DoesNotExist:
+        pass
     metadata = get_plugin_pypi_metadata(plugin, version)
     github_repo_url = metadata.get('code_repository')
     if github_repo_url:
@@ -141,7 +142,12 @@ def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
         metadata['category'] = categories
         metadata['category_hierarchy'] = category_hierarchy
         del metadata['labels']
-    cache(metadata, f'cache/{plugin}/{version}.json')
+
+    plugin_entity = Plugin(name=plugin, version=version,
+                           date_created=datetime.now(),
+                           date_modified=datetime.now())
+    plugin_entity.from_raw_data(metadata)
+    plugin_entity.save()
     return plugin, metadata
 
 
