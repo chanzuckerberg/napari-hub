@@ -1,11 +1,8 @@
 import os
 
-import boto3
 from datetime import datetime
 from pynamodb.models import Model
 from pynamodb.attributes import UnicodeAttribute, UTCDateTimeAttribute, ListAttribute, MapAttribute
-
-dynamodb = boto3.client("dynamodb")
 
 
 class Entity(Model):
@@ -16,6 +13,7 @@ class Entity(Model):
 class Plugin(Entity):
     class Meta:
         table_name = f'{os.getenv("DYNAMO_PREFIX")}-plugin-data'
+        region = os.getenv("AWS_REGION")
 
     name = UnicodeAttribute(hash_key=True)
     version = UnicodeAttribute(range_key=True)
