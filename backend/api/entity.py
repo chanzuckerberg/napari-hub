@@ -11,7 +11,7 @@ class Plugin(Model):
 
     name = UnicodeAttribute(hash_key=True)
     version = UnicodeAttribute(range_key=True)
-    visibility = UnicodeAttribute(null=True)
+    visibility = UnicodeAttribute(null=True, default='public')
     summary = UnicodeAttribute(null=True)
     description = UnicodeAttribute(null=True)
     description_text = UnicodeAttribute(null=True)
@@ -54,7 +54,7 @@ class Category(Model):
     mapping = MapAttribute()
 
 
-def get_plugin_entity(name:str, metadata: dict) -> Plugin:
+def get_plugin_entity(name: str, metadata: dict) -> Plugin:
     return Plugin(
         name=name,
         version=metadata.get("version"),
