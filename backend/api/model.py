@@ -9,7 +9,7 @@ from pynamodb.exceptions import DoesNotExist
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
 from api.s3 import get_cache, cache
-from api.entity import Plugin, get_plugin_entity
+from api.entity import Plugin, ExcludedPlugin, get_plugin_entity
 from utils.utils import render_description, send_alert, get_attribute, get_category_mapping
 from utils.datadog import report_metrics
 from api.zulip import notify_new_packages
@@ -92,11 +92,10 @@ def get_excluded_plugins() -> Dict[str, str]:
 
     :return: dict for excluded plugins and their exclusion status
     """
-    excluded_plugins = get_cache('excluded_plugins.json')
-    if excluded_plugins:
-        return excluded_plugins
-    else:
-        return {}
+    return {
+        excluded_plugin.name: excluded_plugin.status for excluded_plugin in
+        ExcludedPlugin.scan()
+    }
 
 
 def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
@@ -137,17 +136,15 @@ def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
 
 def update_cache():
     """
-    Update existing caches to reflect new/updated plugins. Files updated:
-    - excluded_plugins.json (overwrite)
-    - cache/public-plugins.json (overwrite)
-    - cache/hidden-plugins.json (overwrite)
-    - cache/index.json (overwrite)
-    - cache/{plugin}/{version}.json (skip if exists)
+    Update database to reflect new/updated plugins.
     """
     existing_public_plugins = get_public_plugins()
     plugins = query_pypi()
     plugins_metadata = get_plugin_metadata_async(plugins)
     excluded_plugins = get_updated_plugin_exclusion(plugins_metadata)
+    for name, status in excluded_plugins.items():
+        excluded_plugin_entity = ExcludedPlugin(name=name, status=status)
+        excluded_plugin_entity.save()
 
     visibility_plugins = {"public": {}, "hidden": {}}
     for plugin, version in plugins.items():
@@ -159,12 +156,11 @@ def update_cache():
         if plugin in plugins_metadata:
             del (plugins_metadata[plugin])
 
+    for key in visibility_plugins.keys():
+        report_metrics('napari_hub.plugins.count', len(visibility_plugins[key]), [f'visibility:{key}'])
+
     if visibility_plugins['public']:
-        cache(excluded_plugins, 'excluded_plugins.json')
         notify_new_packages(existing_public_plugins, visibility_plugins['public'])
-        report_metrics('napari_hub.plugins.count', len(visibility_plugins['public']), ['visibility:public'])
-        report_metrics('napari_hub.plugins.count', len(visibility_plugins['hidden']), ['visibility:hidden'])
-        report_metrics('napari_hub.plugins.excluded', len(excluded_plugins))
     else:
         send_alert(f"({datetime.now()})Actions Required! Failed to query pypi for "
                    f"napari plugin packages, switching to backup analysis dump")
