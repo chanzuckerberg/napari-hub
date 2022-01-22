@@ -1,5 +1,5 @@
 resource "aws_dynamodb_table" "plugin-data-table" {
-  name           = "${local.custom_stack_name}-plugin-data"
+  name           = "${var.custom_stack_name}-plugin-data"
   billing_mode   = "PAY_PER_REQUEST"
   hash_key       = "name"
 
