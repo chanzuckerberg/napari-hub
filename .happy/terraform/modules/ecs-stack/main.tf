@@ -111,6 +111,7 @@ module backend_lambda {
     "GITHUBAPP_SECRET" = local.github_app_secret
     "DD_API_KEY" = local.datadog_api_key
     "DD_ENV" = var.env
+    "DD_SERVICE" = local.custom_stack_name
   }
 
   log_retention_in_days = 14
