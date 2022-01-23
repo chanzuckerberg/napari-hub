@@ -2,6 +2,7 @@ import Button from '@material-ui/core/Button';
 import { FormHelperTextProps } from '@material-ui/core/FormHelperText';
 import TextField from '@material-ui/core/TextField';
 import clsx from 'clsx';
+import { useTranslation } from 'next-i18next';
 import React, { useRef, useState } from 'react';
 
 import { ColumnLayout } from '@/components/common/ColumnLayout';
@@ -23,6 +24,7 @@ interface Props {
  * Signup form to capture email address and send it to MailChimp
  */
 export function SignupForm({ onSubmit, variant = 'default' }: Props) {
+  const [t] = useTranslation(['footer']);
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
   const emailRef = useRef<HTMLInputElement | null>(null);
@@ -33,11 +35,11 @@ export function SignupForm({ onSubmit, variant = 'default' }: Props) {
     const validityState = emailRef.current?.validity;
 
     if (validityState?.valueMissing) {
-      setError('Please enter an email address');
+      setError(t('footer:signUp.missingEmail'));
       return false;
     }
     if (validityState?.typeMismatch) {
-      setError('Please provide a valid email address');
+      setError(t('footer:signUp.invalidEmail'));
       return false;
     }
 
@@ -64,7 +66,7 @@ export function SignupForm({ onSubmit, variant = 'default' }: Props) {
     >
       <div className="col-span-2 screen-495:col-span-3 screen-1425:col-start-2">
         <h3 className="text-lg font-semibold mb-1 screen-495:mb-4">
-          Sign up to receive updates
+          {t('footer:signUp.title')}
         </h3>
         <form
           onSubmit={handleSubmit}
@@ -87,7 +89,7 @@ export function SignupForm({ onSubmit, variant = 'default' }: Props) {
             helperText={error}
             type="email"
             name="EMAIL"
-            aria-label="email address"
+            aria-label={t('footer:ariaLabels.emailAddress')}
             placeholder="email"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
@@ -120,7 +122,7 @@ export function SignupForm({ onSubmit, variant = 'default' }: Props) {
             )}
             data-testid="submitButton"
           >
-            Subscribe
+            {t('footer:signUp.subscribe')}
           </Button>
         </form>
       </div>

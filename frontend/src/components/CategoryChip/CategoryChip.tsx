@@ -2,14 +2,14 @@ import Chip, { ChipProps } from '@material-ui/core/Chip';
 import Tooltip from '@material-ui/core/Tooltip';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import clsx from 'clsx';
+import { useTranslation } from 'next-i18next';
 import { Fragment, useRef } from 'react';
 
 import { Link } from '@/components/common/Link';
 import { useSearchStore } from '@/store/search/context';
 import { FilterCategoryKeys } from '@/store/search/search.store';
 import { HubDimension } from '@/types';
-
-import { TOOLTIP_TEXT } from './constants';
+import { I18nKeys } from '@/types/i18n';
 
 interface Props {
   category?: string;
@@ -34,27 +34,30 @@ export function CategoryChip({
   chipProps,
   dimension,
 }: Props) {
+  const [t] = useTranslation(['common', 'pluginData']);
   const { searchStore } = useSearchStore();
   const iconRef = useRef<HTMLButtonElement>(null);
-  const chipBody =
-    category ||
-    categoryHierarchy?.map((term, index) => (
-      <Fragment key={`${dimension}-${term}`}>
-        {index === 0 ? (
-          <Link className="underline" href={`/?workflowStep=${term}`}>
-            {term}
-          </Link>
-        ) : (
-          <span>{term}</span>
-        )}
+  const chipBody = category
+    ? t(`pluginData:category.labels.${category}` as I18nKeys<'common'>)
+    : categoryHierarchy?.map((term, index) => (
+        <Fragment key={`${dimension}-${term}`}>
+          {index === 0 ? (
+            <Link className="underline" href={`/?workflowStep=${term}`}>
+              {t(`pluginData:category.labels.${term}` as I18nKeys<'common'>)}
+            </Link>
+          ) : (
+            <span>{term}</span>
+          )}
 
-        <span>{index < categoryHierarchy.length - 1 && '›'}</span>
-      </Fragment>
-    ));
+          <span>{index < categoryHierarchy.length - 1 && '›'}</span>
+        </Fragment>
+      ));
 
-  const tooltipTitle = category || categoryHierarchy?.[0];
-  const tooltipBody = tooltipTitle && TOOLTIP_TEXT?.[dimension]?.[tooltipTitle];
-  const hasTooltip = !!(tooltipTitle && tooltipBody);
+  const categoryType = category || categoryHierarchy?.[0];
+  const tooltipBody =
+    categoryType &&
+    t(`pluginData:category.tooltips.${categoryType}` as I18nKeys<'common'>);
+  const hasTooltip = !!(categoryType && tooltipBody);
 
   return (
     <Chip
@@ -69,13 +72,15 @@ export function CategoryChip({
         event.preventDefault();
 
         const stateKey = STATE_KEY_MAP[dimension];
-        if (tooltipTitle && stateKey) {
-          searchStore.filters[stateKey][tooltipTitle] = true;
+        if (categoryType && stateKey) {
+          searchStore.filters[stateKey][categoryType] = true;
         }
       }}
       label={
         <div className="flex items-center space-x-1">
-          <span>{dimension}</span>
+          <span>
+            {t(`pluginData:labels.${dimension}` as I18nKeys<'common'>)}
+          </span>
           <span className="font-semibold space-x-1">{chipBody}</span>
           {hasTooltip && (
             <Tooltip
@@ -99,10 +104,10 @@ export function CategoryChip({
                     'mx-3 my-2 space-y-2',
                   )}
                 >
-                  <span className="font-semibold text-sm">{tooltipTitle}</span>
+                  <span className="font-semibold text-sm">{categoryType}</span>
                   <span className="text-xs">{tooltipBody}</span>
                   <span className="text-xs italic">
-                    Click the category name to add it as a filter.
+                    {t('pluginData:category.clickToAdd')}
                   </span>
                 </div>
               }

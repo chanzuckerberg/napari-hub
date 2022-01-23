@@ -1,59 +1,43 @@
-const mdx = require('@next/mdx');
-const slug = require('remark-slug');
-const html = require('rehype-stringify');
-const externalLinks = require('remark-external-links');
 const { EnvironmentPlugin } = require('webpack');
 
-const linkvars = require('./src/utils/linkvars');
-const { LINKS } = require('./src/constants');
-
-const withMDX = mdx({
-  extensions: /\.mdx$/,
-  options: {
-    remarkPlugins: [
-      slug,
-      html,
-      [externalLinks, { target: '_blank', rel: 'noreferrer' }],
-      [linkvars, { vars: LINKS }],
-    ],
-  },
-});
+const { i18n } = require('./next-i18next.config');
 
 const { PREVIEW } = process.env;
 const PROD = process.env.NODE_ENV === 'production';
+const isPreview = !!(PROD && PREVIEW);
 
 // Enable static HTML export of the preview page in production and if the
 // preview file is provided.
-const previewOptions =
-  PROD && PREVIEW
-    ? {
-        // The Image API doesn't work for exported apps, so we need to use a
-        // different image loader to supplement it. The workaround is to use imgix
-        // with a root path for Next.js v10: https://git.io/J0k6G.
-        images: {
-          loader: 'imgix',
-          path: process.env.BASE_PATH || '/',
-        },
+const previewOptions = isPreview
+  ? {
+      // The Image API doesn't work for exported apps, so we need to use a
+      // different image loader to supplement it. The workaround is to use imgix
+      // with a root path for Next.js v10: https://git.io/J0k6G.
+      images: {
+        loader: 'imgix',
+        path: process.env.BASE_PATH || '/',
+      },
 
-        // Override default pages being exported to be only the preview page:
-        // https://stackoverflow.com/a/64071979
-        exportPathMap() {
-          return {
-            '/preview': { page: '/preview' },
-          };
-        },
-      }
-    : {};
+      // Override default pages being exported to be only the preview page:
+      // https://stackoverflow.com/a/64071979
+      exportPathMap() {
+        return {
+          '/preview': { page: '/preview' },
+        };
+      },
+    }
+  : {};
 
-if (PROD && PREVIEW) {
+if (isPreview) {
   console.log('Building preview page for plugin file', PREVIEW);
 }
 
-module.exports = withMDX({
+module.exports = {
   ...previewOptions,
+  i18n: isPreview ? undefined : i18n,
 
   basePath: process.env.BASE_PATH || '',
-  pageExtensions: ['ts', 'tsx', 'mdx'],
+  pageExtensions: ['ts', 'tsx'],
 
   // Use SWC to minify code.
   swcMinify: true,
@@ -97,4 +81,4 @@ module.exports = withMDX({
 
     return config;
   },
-});
+};

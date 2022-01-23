@@ -26,16 +26,7 @@ const FILTER_OS_PATTERN = {
   windows: /Windows/,
 };
 
-const STABLE_DEV_STATUS = [
-  'Development Status :: 5 - Production/Stable',
-  'Development Status :: 6 - Mature',
-];
-
 export class SearchFilterStore implements Resettable {
-  devStatus = {
-    stable: false,
-  };
-
   license = {
     openSource: false,
   };
@@ -86,7 +77,6 @@ export class SearchFilterStore implements Resettable {
     const filters = [
       this.filterByPythonVersion,
       this.filterByOperatingSystem,
-      this.filterByDevelopmentStatus,
       this.filterByLicense,
       this.filterByWorkflowStep,
       this.filterByImageModality,
@@ -192,20 +182,6 @@ export class SearchFilterStore implements Resettable {
         )
       );
     });
-  }
-
-  private filterByDevelopmentStatus(results: SearchResult[]): SearchResult[] {
-    const state = this.devStatus;
-
-    if (state.stable) {
-      // Filter plugins that include at least one of the stable dev statuses.
-      return results.filter(
-        ({ plugin }) =>
-          !isEmpty(intersection(STABLE_DEV_STATUS, plugin.development_status)),
-      );
-    }
-
-    return results;
   }
 
   private filterByLicense(results: SearchResult[]): SearchResult[] {

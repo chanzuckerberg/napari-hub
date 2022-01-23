@@ -1,0 +1,142 @@
+{
+  "labels": {
+    "authors": "Authors",
+    "citations": "Citation information",
+    "description": "Description",
+    "documentation": "Documentation",
+    "firstReleased": "First released",
+    "projectSite": "Project site",
+    "reportIssues": "Report issues",
+    "requirements": "Requirements",
+    "sourceCode": "Source code",
+
+    "Image modality": "Image modality",
+    "Supported data": "Supported data",
+    "Workflow step": "Workflow step",
+
+    "license": {
+      "label": "License",
+      "lower": "license"
+    },
+
+    "operatingSystem": {
+      "label": "Operating system",
+      "lower": "operating system"
+    },
+
+    "pluginName": {
+      "label": "Plugin name",
+      "preview": "Name"
+    },
+
+    "pythonVersion": {
+      "label": "Python versions supported",
+      "short": "Python versions",
+      "lower": "Python version"
+    },
+
+    "releaseDate": {
+      "label": "Release date",
+      "lower": "release date"
+    },
+
+    "summary": {
+      "label": "Brief description",
+      "preview": "Summary"
+    },
+
+    "supportSite": {
+      "label": "Support site",
+      "preview": "Support"
+    },
+
+    "twitter": {
+      "label": "Twitter"
+    },
+
+    "version": {
+      "label": "Version",
+      "lower": "version"
+    }
+  },
+
+  "category": {
+    "clickToAdd": "Click the category name to add it as a filter.",
+
+    "labels": {
+      "Bright-field microscopy": "Bright-field microscopy",
+      "Clustering": "Clustering",
+      "Computed tomography ": "Computed tomography",
+      "Confocal microscopy": "Confocal microscopy",
+      "DIC microscopy": "DIC microscopy",
+      "Electron microscopy": "Electron microscopy",
+      "Filament tracing": "Filament tracing",
+      "Fluorescence correlation spectroscopy": "Fluorescence correlation spectroscopy",
+      "Fluorescence microscopy": "Fluorescence microscopy",
+      "Frequency domain analysis": "Frequency domain analysis",
+      "Image annotation": "Image annotation",
+      "Image classification": "Image classification",
+      "Image correction": "Image correction",
+      "Image enhancement": "Image enhancement",
+      "Image feature detection": "Image feature detection",
+      "Image fusion": "Image fusion",
+      "Image reconstruction": "Image reconstruction",
+      "Image registration": "Image registration",
+      "Image Segmentation": "Image Segmentation",
+      "Magnetic resonance imaging": "Magnetic resonance imaging",
+      "Medical imaging": "Medical imaging",
+      "Morphological operations": "Morphological operations",
+      "Multi-photon microscopy": "Multi-photon microscopy",
+      "Multimodal imaging": "Multimodal imaging",
+      "Object classification": "Object classification",
+      "Object feature extraction": "Object feature extraction",
+      "Object tracking": "Object tracking",
+      "Object-based colocalisation": "Object-based colocalisation",
+      "Optical flow analysis": "Optical flow analysis",
+      "Phase-Contrast microscopy": "Phase-Contrast microscopy",
+      "Pixel classification": "Pixel classification",
+      "Pixel-based colocalisation": "Pixel-based colocalisation",
+      "Synthetic image generation": "Synthetic image generation",
+      "Ultrasound imaging": "Ultrasound imaging",
+      "Visualization": "Visualization"
+    },
+
+    "tooltips": {
+      "Bright-field microscopy": "Microscopy technique based on the direct observation of samples with light transmitted through them.",
+      "Clustering": "Clustering is a process of grouping a set of objects in such a way that objects in the same group are, in some sense,  more similar to each other than to those in other groups. Sometimes referred to as unsupervised classification.",
+      "Computed tomography ": "CT is a computerized imaging procedure in which a narrow beam of X-rays is quickly rotated around the body, producing signals that are processed by the computer to generate cross-sectional images. ",
+      "Confocal microscopy": "Microscopy restricted to objects which are in the same focal plane.",
+      "DIC microscopy": "Contrast enhancing microscopy technique based on interferences between rays that travel different distances through a sample.",
+      "Electron microscopy": "Microscopy that uses a beam of accelerated electrons to image a sample, e.g. TEM, SEM.",
+      "Filament tracing": "Filament tracing takes an image of filamentous structures (may be a tree-like structure, a filament network, or 'stick-like' filaments) as input and outputs data that represent the filament, commonly a skeleton representation of the filaments and their diameters or surfaces.",
+      "Fluorescence correlation spectroscopy": "FCS is a statistical analysis that measures fluorescence intensity fluctuation via time or spatial correlation, which provides physical parameters of the sample such as diffusion coefficient or concentration.",
+      "Fluorescence microscopy": "Techniques in microscopy based on the use of fluorescent molecules that emit light of longer wavelength upon excitation.",
+      "Frequency domain analysis": "Frequency domain analysis quantifies the various amounts (e.g. amplitudes, powers, intensities, or phases) versus frequency. It requires decompose an image into a sum of many individual frequency components.",
+      "Image annotation": "Image annotation is the process of defining labels or metadata to an image, e.g. defining regions, marking points, creating textual descriptions, attaching tags to image contents.",
+      "Image classification": "Image classification is a process for assigning images to different classes based on the content of the image.",
+      "Image correction": "Image correction removes aberrations originating from the imaging instrument, lighting, or sample, e.g. chromatic aberration correction, drift correction, spectral unmixing.",
+      "Image enhancement": "Image enhancement refers to an operation that increases the quality of the image or enhances features of interest in the image, e.g. contrast enhancement, denoising.",
+      "Image feature detection": "Feature detection includes methods for computing abstractions of image information and making local decisions at every image point whether there is an image feature of a given type.",
+      "Image fusion": "Image fusion is the process of gathering all the important information from multiple images, and their inclusion into fewer images, usually a single one.",
+      "Image reconstruction": "Image reconstruction refers to a wide arrays of operation that reconstructs the image, e.g. deconvolution, stitching, structured illumination reconstruction.",
+      "Image registration": "Image registration is the process of aligning two or more images of the same (or similar) scene, when images are captured under variable conditions that can change the acquisition perspective or the content of the scene.",
+      "Image Segmentation": "Image segmentation is the process of partitioning an image into multiple objects and sits on the border between Image Processing and Image Analysis",
+      "Magnetic resonance imaging": "MRI uses magnetic fields and radio waves to generate images of organs and tissues.",
+      "Medical imaging": "Medical imaging is the technique and process of imaging the interior of a body for clinical analysis and medical intervention, as well as visual representation of the function of some organs or tissues.",
+      "Morphological operations": "Morphological operations is a technique for the analysis and processing of geometrical structures, based on set theory, lattice theory, topology, and random functions. It is most commonly applied to images, but it can be employed as well on graphs, surface meshes, solids, and many other spatial structures. The basic morphological operators are erosion, dilation, opening and closing.",
+      "Multi-photon microscopy": "Fluorescence microscopy technique in which the fluorescent molecule is excited by multiple photons of a wavelength longer than the emission of the fluorescent molecule.",
+      "Multimodal imaging": "Utilizing different imaging modalities in combination, e.g. correlative light and electron microscopy (CLEM)",
+      "Object classification": "Object classification uses a classifier to recognize categories of objects based on their features.",
+      "Object feature extraction": "Object features include, but not limited to: shapes, textures, dynamics (for time series image)",
+      "Object tracking": "Object tracking takes detected objects from a time-series image and tracks each of the objects as they move over time.",
+      "Object-based colocalisation": "Object-based colocalisation refers to the identification of the spatial overlap between two (or more) different objects.",
+      "Optical flow analysis": "Optical flow analysis is the process of estimating motion in a time-series image, typically represented as vector field as the distribution of the apparent object velocities in an image.",
+      "Phase-Contrast microscopy": "Phase-contrast microscopy is based on the conversion of sample-induced phase shift of light into contrast in an image.",
+      "Pixel classification": "Pixel Classification assigns labels to pixels based on pixel features. ",
+      "Pixel-based colocalisation": "In pixel-based colocalisation, the intensity of a pixel in one channel is evaluated against the corresponding pixel in another channel, generally producing a scatterplot from which a correlation coefficient is determined.",
+      "Synthetic image generation": "Generates synthetic images through a simulation",
+      "Ultrasound imaging": "Ultrasound imaging (sonography) uses high-frequency sound waves to view inside the body.",
+      "Visualization": "Visualization covers plugins that enhance or create visualization utilities for images and data plotting."
+    }
+  }
+}

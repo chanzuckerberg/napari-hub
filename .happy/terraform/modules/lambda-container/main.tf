@@ -27,6 +27,16 @@ module lambda {
   cloudwatch_logs_retention_in_days = var.log_retention_in_days
   attach_network_policy             = true
   reserved_concurrent_executions    = var.reserved_concurrent_executions
-  provisioned_concurrent_executions = var.provisioned_lambda
   allowed_triggers                  = var.allowed_triggers
+}
+
+resource "aws_lambda_provisioned_concurrency_config" "provisioned" {
+  count = var.provisioned_lambda > 0 ? 1 : 0
+  function_name                     = module.lambda.lambda_function_name
+  provisioned_concurrent_executions = var.provisioned_lambda
+  qualifier                         = module.lambda.lambda_function_version
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }

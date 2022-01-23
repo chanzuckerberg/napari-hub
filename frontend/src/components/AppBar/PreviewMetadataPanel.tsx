@@ -10,7 +10,7 @@ import { setUrlHash } from '@/utils';
 import {
   MetadataSectionField,
   useMetadataSections,
-} from './metadataPreview.hooks';
+} from './useMetadataSections';
 
 /**
  * Creates a new array of metadata fields that have the missing metadata ordered

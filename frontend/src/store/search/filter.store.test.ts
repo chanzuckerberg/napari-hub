@@ -38,15 +38,6 @@ function getOperatingSystemResults(
   return getResults(...plugins);
 }
 
-function getDevStatusResults(...devStatuses: string[][]): SearchResult[] {
-  const plugins = devStatuses.map((development_status) => ({
-    ...pluginIndex[0],
-    development_status,
-  }));
-
-  return getResults(...plugins);
-}
-
 function getLicenseResults(...licenses: string[]): SearchResult[] {
   const plugins = licenses.map((license) => ({
     ...pluginIndex[0],
@@ -188,37 +179,6 @@ describe('filterResults()', () => {
         const filtered = store.filterResults(results);
         expect(filtered).toEqual(output);
       });
-    });
-  });
-
-  describe('filter by development status', () => {
-    const results = getDevStatusResults(
-      ['Development Status :: 1 - Planning'],
-      ['Development Status :: 2 - Pre-Alpha'],
-      ['Development Status :: 5 - Production/Stable'],
-      ['Development Status :: 6 - Mature'],
-      ['Development Status :: 7 - Inactive'],
-    );
-
-    it('should allow all plugins when no filters are enabled', () => {
-      const store = new SearchFilterStore();
-      const filtered = store.filterResults(results);
-      expect(filtered).toEqual(results);
-    });
-
-    it('should filter stable plugins', () => {
-      const expected = getDevStatusResults(
-        ['Development Status :: 5 - Production/Stable'],
-        ['Development Status :: 6 - Mature'],
-      );
-
-      const store = new SearchFilterStore({
-        devStatus: {
-          stable: true,
-        },
-      });
-      const filtered = store.filterResults(results);
-      expect(filtered).toEqual(expected);
     });
   });
 

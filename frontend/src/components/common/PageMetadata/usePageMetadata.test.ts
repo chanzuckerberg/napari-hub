@@ -1,4 +1,4 @@
-import { getPageMetadata } from './PageMetadata.utils';
+import { usePageMetadata } from './usePageMetadata';
 
 describe('getPageMetadata', () => {
   it('should get metadata for match', () => {
@@ -12,11 +12,11 @@ describe('getPageMetadata', () => {
     ];
 
     testCases.forEach((pathname) =>
-      expect(getPageMetadata(pathname)).not.toBeNull(),
+      expect(usePageMetadata(pathname)).toBeDefined(),
     );
   });
 
-  it('should return null for no match', () => {
-    expect(getPageMetadata('/non-existent')).toBeNull();
+  it('should return undefined for no match', () => {
+    expect(usePageMetadata('/non-existent')).toBeUndefined();
   });
 });

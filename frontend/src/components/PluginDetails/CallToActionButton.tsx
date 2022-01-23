@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import { useTranslation } from 'next-i18next';
 import { useState } from 'react';
 
 import { SkeletonLoader } from '@/components/common/SkeletonLoader';
@@ -16,6 +17,7 @@ interface Props {
  * install button will render the modal visible.
  */
 export function CallToActionButton({ className }: Props) {
+  const [t] = useTranslation(['common']);
   const { plugin } = usePluginState();
   const plausible = usePlausible();
   const [visible, setVisible] = useState(false);
@@ -50,7 +52,7 @@ export function CallToActionButton({ className }: Props) {
             }}
             type="button"
           >
-            Install
+            {t('common:install')}
           </button>
         </>
       )}

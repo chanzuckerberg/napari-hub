@@ -13,7 +13,9 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@/i18n/*": ["./i18n/*"],
+      "@/next-i18next.config": ["./next-i18next.config.js"]
     },
     "resolveJsonModule": true,
     "skipLibCheck": true,
@@ -21,6 +23,6 @@
     "target": "esnext",
     "incremental": true
   },
-  "include": ["*.d.ts", "src/**/*.ts", "src/**/*.tsx"],
+  "include": ["*.d.ts", "src/**/*.ts", "src/**/*.tsx", "i18n/**/*"],
   "exclude": ["node_modules"]
 }

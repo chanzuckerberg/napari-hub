@@ -9,41 +9,25 @@ import {
   InputDropdownProps,
 } from 'czifui';
 import { get, isEqual } from 'lodash';
+import { useTranslation } from 'next-i18next';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { render } from 'react-dom';
 import { subscribe, useSnapshot } from 'valtio';
 
+import {
+  CheckboxIcon,
+  ChevronDown,
+  ChevronUp,
+  Search,
+} from '@/components/common/icons';
 import { useSearchStore } from '@/store/search/context';
 import { FilterKey } from '@/store/search/search.store';
 import { appTheme } from '@/theme';
 
-import { CheckboxIcon, ChevronDown, ChevronUp, Search } from '../common/icons';
 import styles from './PluginComplexFilter.module.scss';
-
-/**
- * Labels to use for a particular filter state.
- */
-const FILTER_LABELS: Partial<Record<FilterKey, string>> = {
-  license: 'License',
-  operatingSystems: 'Operating system',
-  pythonVersions: 'Python versions',
-  supportedData: 'Supported data',
-  workflowStep: 'Workflow step',
-  imageModality: 'Image modality',
-};
-
-/**
- * Labels to use for a particular filter option.
- */
-const FILTER_OPTION_LABELS: Record<string, string | undefined> = {
-  // Operating System
-  linux: 'Linux',
-  mac: 'macOS',
-  windows: 'Windows',
-
-  // License
-  openSource: 'Limit to plugins with open source license',
-};
+import { useFilterLabels } from './useFilterLabels';
+import { useFilterOptionLabels } from './useFilterOptionLabels';
+import { useWorkflowStepGroups } from './useWorkflowStepGroups';
 
 const SEARCH_ENABLED_FILTERS = new Set<FilterKey>(['workflowStep']);
 
@@ -83,48 +67,6 @@ const StyledPopper = styled(Popper)`
   }
 `;
 
-/**
- * Map of for grouping workflow steps under a specific label.
- */
-const WORKFLOW_STEP_GROUP_MAP: Partial<Record<string, string>> = {
-  'Image registration': 'Image processing',
-  'Image correction': 'Image processing',
-  'Image enhancement': 'Image processing',
-  'Image reconstruction': 'Image processing',
-  'Pixel classification': 'Image segmentation & object detection',
-  'Image feature detection': 'Image segmentation & object detection',
-  'Image annotation': 'Image segmentation & object detection',
-  'Filament tracing': 'Image segmentation & object detection',
-  'Object classification': 'Object-based analysis',
-  'Object-based colocalisation': 'Object-based analysis',
-  'Object feature extraction': 'Object-based analysis',
-  'Object tracking': 'Object-based analysis',
-  Clustering: 'Object-based analysis',
-  'Frequency domain analysis': 'Image-based analysis',
-  'Pixel-based colocalisation': 'Image-based analysis',
-  'Fluorescence correlation spectroscopy': 'Image-based analysis',
-  'Optical flow analysis': 'Image-based analysis',
-  'Image Segmentation': 'Image segmentation & object detection',
-  Visualization: 'Visualization',
-  'Synthetic image generation': 'Data generation',
-  'Morphological operations': 'Image processing',
-  'Image fusion': 'Image processing',
-  'Image classification': 'Image-based analysis',
-};
-
-/**
- * Helper that creates a new autocomplete option for the given state key.
- *
- * @param stateKey The state key identifier.
- * @returns A new autocomplete option.
- */
-function getFilterOption(stateKey: string): PluginMenuSelectOption {
-  return {
-    stateKey,
-    name: FILTER_OPTION_LABELS[stateKey] ?? stateKey,
-  };
-}
-
 function InputDropdown(props: InputDropdownProps) {
   const { label, sdsStage } = props;
   const iconSizeClassName = 'w-4 h-4';
@@ -148,15 +90,46 @@ function InputDropdown(props: InputDropdownProps) {
  * Complex filter component for filtering a specific part of the filter state.
  */
 export function PluginComplexFilter({ filterKey }: Props) {
+  const [t] = useTranslation(['common', 'pageTitles', 'pluginData']);
+  const workflowStepGroups = useWorkflowStepGroups();
   const { searchStore } = useSearchStore();
   const state = useSnapshot(searchStore);
+
+  // Get dictionary that maps category keys to category names in the user's
+  // language.
+  const categoryNamesMap = t('pluginData:category.labels') as Record<
+    string,
+    string | undefined
+  >;
+
   const filterStore = searchStore.filters[filterKey];
   const filterState = state.filters[filterKey];
+
+  const filterOptionLabels = useFilterOptionLabels();
+  const filterLabels = useFilterLabels();
 
   // Store options in ref to prevent re-render on options value. There's a race
   // condition issue when re-rendering ComplexFilter when `options` and
   // `pendingValue` are updated at the same time.
-  const optionsRef = useRef(Object.keys(filterState).map(getFilterOption));
+  const optionsRef = useRef(
+    Object.keys(filterState).map((stateKey) => {
+      const optionLabel = filterOptionLabels[stateKey];
+      const categoryName = categoryNamesMap[stateKey];
+
+      let name = stateKey;
+
+      if (optionLabel) {
+        name = optionLabel;
+      } else if (categoryName) {
+        name = categoryName;
+      }
+
+      return {
+        name,
+        stateKey,
+      };
+    }),
+  );
 
   const getEnabledOptions = useCallback(
     () =>
@@ -279,7 +252,7 @@ export function PluginComplexFilter({ filterKey }: Props) {
       data-complex-filter
       // Data attribute used to query the complex filter node by filter.
       data-filter={filterKey}
-      label={FILTER_LABELS[filterKey] ?? filterKey}
+      label={filterLabels[filterKey]}
       multiple
       search={isSearchEnabled}
       onChange={(nextOptions) =>
@@ -300,7 +273,7 @@ export function PluginComplexFilter({ filterKey }: Props) {
         'data-filter': filterKey,
 
         groupBy: (option: PluginMenuSelectOption) =>
-          WORKFLOW_STEP_GROUP_MAP[option.stateKey] ?? '',
+          workflowStepGroups[option.stateKey] ?? '',
 
         renderOption: (
           option: PluginMenuSelectOption,

@@ -1,5 +1,8 @@
 import { AxiosError } from 'axios';
+import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
+import { SSRConfig, useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { ReactNode } from 'react';
 
 import { hubAPI, spdxLicenseDataAPI } from '@/axios';
@@ -8,16 +11,26 @@ import { PluginSearch } from '@/components/PluginSearch';
 import { SearchStoreProvider } from '@/store/search/context';
 import { SpdxLicenseData, SpdxLicenseResponse } from '@/store/search/types';
 import { PluginIndexData } from '@/types';
+import { I18nNamespace } from '@/types/i18n';
 
-interface Props {
+interface Props extends Partial<SSRConfig> {
   licenses?: SpdxLicenseData[];
   index?: PluginIndexData[];
   error?: string;
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps({
+  locale,
+}: GetServerSidePropsContext) {
   const url = '/plugins/index';
-  const props: Props = {};
+  const translationProps = await serverSideTranslations(locale ?? 'en', [
+    'common',
+    'footer',
+    'homePage',
+    'pageTitles',
+    'pluginData',
+  ] as I18nNamespace[]);
+  const props: Props = { ...translationProps };
 
   try {
     const { data: index } = await hubAPI.get<PluginIndexData[]>(url);
@@ -35,14 +48,16 @@ export async function getServerSideProps() {
 }
 
 export default function Home({ error, index, licenses }: Props) {
+  const [t] = useTranslation(['pageTitles', 'homePage']);
+
   return (
     <>
       <Head>
-        <title>napari hub | Search</title>
+        <title>{t('pageTitles:home')}</title>
       </Head>
 
       {error ? (
-        <ErrorMessage error={error}>Unable to fetch plugin index</ErrorMessage>
+        <ErrorMessage error={error}>{t('homePage:fetchError')}</ErrorMessage>
       ) : (
         index &&
         licenses && (

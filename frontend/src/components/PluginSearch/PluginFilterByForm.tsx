@@ -1,6 +1,8 @@
 import clsx from 'clsx';
 import { Button } from 'czifui';
 import { set } from 'lodash';
+import { useTranslation } from 'next-i18next';
+import type { TFuncKey } from 'react-i18next';
 
 import { Accordion } from '@/components/common/Accordion';
 import { Media } from '@/components/common/media';
@@ -17,16 +19,12 @@ interface Props {
   filterType: FilterType;
 }
 
-const FILTER_LABEL_MAP: Record<FilterType, string> = {
-  category: 'Filter by category',
-  requirement: 'Filter by requirement',
-};
-
 /**
  * Button for clearing all filters defined in the `filters` prop.
  */
 function ClearAllButton({ filters, filterType }: Props) {
   const { searchStore } = useSearchStore();
+  const [t] = useTranslation(['homePage']);
 
   return (
     <Button
@@ -43,15 +41,25 @@ function ClearAllButton({ filters, filterType }: Props) {
       sdsType="primary"
       variant="text"
     >
-      Clear all
+      {t('homePage:filter.clearAll')}
     </Button>
   );
 }
 
+const FILTER_LABEL_MAP: Record<FilterType, TFuncKey<'homePage'>> = {
+  category: 'filter.title.category',
+  requirement: 'filter.title.requirement',
+};
+
 function useFilterLabel(filterType: FilterType) {
-  return useIsFeatureFlagEnabled('categoryFilters')
-    ? FILTER_LABEL_MAP[filterType]
-    : 'Filter';
+  const [t] = useTranslation(['homePage']);
+  const isEnabled = useIsFeatureFlagEnabled('categoryFilters');
+
+  if (isEnabled) {
+    return t(`homePage:${FILTER_LABEL_MAP[filterType]}`) as string;
+  }
+
+  return t('homePage:filter.title.base');
 }
 
 /**
