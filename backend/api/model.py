@@ -105,6 +105,7 @@ def save_plugin_metadata(plugin: str, version: str):
     """
     try:
         Plugin.get(plugin, version)
+        return
     except DoesNotExist:
         pass
     metadata = get_plugin_pypi_metadata(plugin, version)
