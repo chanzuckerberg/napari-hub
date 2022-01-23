@@ -128,9 +128,10 @@ def save_plugin_metadata(plugin: str, version: str):
         metadata['category_hierarchy'] = category_hierarchy
         del metadata['labels']
 
-    exclusion = ExcludedPlugin.query(plugin)
-    if exclusion.total_count > 0:
-        metadata['visibility'] = exclusion.next().attribute_values['status']
+    try:
+        metadata['visibility'] = ExcludedPlugin.get(plugin).attribute_values['status']
+    except DoesNotExist:
+        pass
 
     entity = save_plugin_entity(plugin, metadata)
     if entity.attribute_values['visibility'] == 'public':

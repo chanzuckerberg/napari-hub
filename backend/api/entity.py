@@ -41,7 +41,7 @@ class ExcludedPlugin(Model):
         region = os.getenv("AWS_REGION")
 
     name = UnicodeAttribute(hash_key=True)
-    status = UnicodeAttribute(range_key=True)
+    status = UnicodeAttribute()
 
 
 class Category(Model):

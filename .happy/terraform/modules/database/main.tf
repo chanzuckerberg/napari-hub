@@ -21,15 +21,9 @@ resource "aws_dynamodb_table" "excluded_plugin_table" {
   name           = "${var.custom_stack_name}-excluded-plugin"
   billing_mode   = "PAY_PER_REQUEST"
   hash_key       = "name"
-  range_key      = "status"
 
   attribute {
     name = "name"
-    type = "S"
-  }
-
-  attribute {
-    name = "status"
     type = "S"
   }
 
