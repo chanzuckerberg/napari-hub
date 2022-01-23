@@ -141,7 +141,6 @@ def save_plugin_metadata(plugin: str, version: str):
             notify_packages(plugin)
         else:
             notify_packages(plugin, version)
-    report_metrics('napari_hub.plugins.count', 1, [f'visibility:{entity.visibility}'])
 
 
 def update_cache():

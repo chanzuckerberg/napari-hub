@@ -3,6 +3,7 @@ import os
 import requests
 from requests.auth import HTTPBasicAuth
 from requests.exceptions import HTTPError
+from utils.datadog import report_metrics
 
 # Environment variable set through ecs stack terraform module
 zulip_credentials = os.environ.get('ZULIP_CREDENTIALS', "")
@@ -24,12 +25,15 @@ def notify_packages(package: str, version: str = None, removed: bool = False):
 
     if removed:
         message = f'{package} is no longer available on the [napari hub](https://napari-hub.org) :('
+        report_metrics('napari_hub.plugins.count', 1, ['status:removal'])
     elif not version:
         message = f'A new plugin has been published on the napari hub! ' \
                   f'Check out [{package}](https://napari-hub.org/plugins/{package})!'
+        report_metrics('napari_hub.plugins.count', 1, ['status:new'])
     else:
         message = f'A new version of [{package}](https://napari-hub.org/plugins/{package}) is available on the ' \
                   f'napari hub! Check out [{version}](https://napari-hub.org/plugins/{package})!'
+        report_metrics('napari_hub.plugins.count', 1, ['status:update'])
     if username and key:
         send_zulip_message(username, key, package, message)
     else:
