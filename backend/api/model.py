@@ -61,11 +61,9 @@ def get_plugin(plugin: str, version: str = None) -> dict:
     :return: plugin metadata dictionary
     """
     if not version:
-        entity = Plugin.query(plugin, scan_index_forward=False).next()
-        if not entity:
-            return {}
-        else:
+        for entity in Plugin.query(plugin, scan_index_forward=False, limit=1):
             return entity.attribute_values
+        return {}
     else:
         try:
             return Plugin.get(plugin, version).attribute_values
@@ -136,7 +134,7 @@ def save_plugin_metadata(plugin: str, version: str):
 
     entity = save_plugin_entity(plugin, metadata)
     if entity.visibility == 'public':
-        if Plugin.query(plugin).total_count == 0:
+        if Plugin.query(plugin, limit=1).total_count == 0:
             notify_packages(plugin)
         else:
             notify_packages(plugin, version)
