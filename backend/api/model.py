@@ -8,8 +8,8 @@ from pynamodb.exceptions import DoesNotExist
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
 from api.s3 import get_cache, cache
-from api.entity import Plugin, ExcludedPlugin, get_plugin_entity
-from utils.utils import render_description, send_alert, get_attribute, get_category_mapping
+from api.entity import Plugin, ExcludedPlugin, save_plugin_entity
+from utils.utils import render_description, get_attribute, get_category_mapping
 from utils.datadog import report_metrics
 from api.zulip import notify_packages
 
@@ -128,19 +128,16 @@ def save_plugin_metadata(plugin: str, version: str):
         metadata['category_hierarchy'] = category_hierarchy
         del metadata['labels']
 
-    try:
-        exclusion = ExcludedPlugin.get(plugin)
-        metadata['visibility'] = exclusion.status
-    except DoesNotExist:
-        pass
+    exclusion = ExcludedPlugin.query(plugin)
+    if exclusion.total_count > 0:
+        metadata['visibility'] = exclusion.next().attribute_values['status']
 
-    entity = get_plugin_entity(plugin, metadata)
+    entity = save_plugin_entity(plugin, metadata)
     if entity.attribute_values['visibility'] == 'public':
-        try:
-            Plugin.get(plugin)
-            notify_packages(plugin, version)
-        except DoesNotExist:
+        if Plugin.query(plugin).total_count == 0:
             notify_packages(plugin)
+        else:
+            notify_packages(plugin, version)
     report_metrics('napari_hub.plugins.count', 1, [f'visibility:{entity.visibility}'])
 
 

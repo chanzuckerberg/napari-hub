@@ -54,7 +54,7 @@ class Category(Model):
     mapping = MapAttribute()
 
 
-def get_plugin_entity(name: str, metadata: dict) -> Plugin:
+def save_plugin_entity(name: str, metadata: dict) -> Plugin:
     plugin = Plugin(
         name=name,
         version=metadata.get("version"),
@@ -83,7 +83,6 @@ def get_plugin_entity(name: str, metadata: dict) -> Plugin:
     )
     plugin.save()
     return plugin
-
 
 
 class MapAttributeEncoder(json.JSONEncoder):
