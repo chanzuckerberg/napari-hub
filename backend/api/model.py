@@ -143,8 +143,15 @@ def save_plugin_metadata(plugin: str, version: str):
 
 def update_cache():
     """
-    Update database to reflect new/updated plugins.
+    Update database to keep data in sync.
     """
+    category_version = os.getenv('CATEGORY_VERSION')
+    if Category.count(None, Category.version == category_version) == 0:
+        edam_mappings = get_edam_mappings(category_version.split(":")[1])
+        for name, mapping in edam_mappings.items():
+            entity = Category(name=name, mapping=mapping, version=category_version)
+            entity.save()
+
     existing_public_plugins = get_public_plugins()
     plugins = query_pypi()
     update_plugin_metadata_async(plugins)
@@ -152,13 +159,6 @@ def update_cache():
     for plugin in existing_public_plugins.keys():
         if plugin not in plugins:
             notify_packages(plugin, removed=True)
-
-    category_version = os.getenv('CATEGORY_VERSION')
-    if Category.count(None, Category.version == category_version) == 0:
-        edam_mappings = get_edam_mappings(category_version.split(":")[1])
-        for name, mapping in edam_mappings.items():
-            entity = Category(name=name, mapping=mapping, version=category_version)
-            entity.save()
 
 
 def update_plugin_metadata_async(plugins: Dict[str, str]):
