@@ -112,6 +112,7 @@ module backend_lambda {
     "DD_API_KEY" = local.datadog_api_key
     "DD_ENV" = var.env
     "DD_SERVICE" = local.custom_stack_name
+    "CATEGORY_VERSION" = "EDAM-BIOIMAGING:alpha06"
   }
 
   log_retention_in_days = 14

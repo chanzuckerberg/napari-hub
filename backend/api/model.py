@@ -1,3 +1,4 @@
+import os
 from concurrent import futures
 from typing import Dict, List
 from zipfile import ZipFile
@@ -9,7 +10,7 @@ from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
 from api.s3 import cache
 from api.entity import Plugin, ExcludedPlugin, Category, save_plugin_entity
-from utils.utils import render_description, get_attribute, get_category_mapping
+from utils.utils import render_description, get_attribute
 from api.zulip import notify_packages
 from category.edam import get_edam_mappings
 
@@ -117,7 +118,7 @@ def save_plugin_metadata(plugin: str, version: str):
         categories = defaultdict(list)
         category_hierarchy = defaultdict(list)
         for category in metadata['labels']['terms']:
-            mapped_category = get_category_mapping(category, category_mappings)
+            mapped_category = category_mappings.get(category, [])
             for match in mapped_category:
                 if match['label'] not in categories[match['dimension']]:
                     categories[match['dimension']].append(match['label'])
@@ -152,10 +153,11 @@ def update_cache():
         if plugin not in plugins:
             notify_packages(plugin, removed=True)
 
-    if Category.count(None, Category.version == "EDAM-BIOIMAGING:alpha06") == 0:
-        edam_mappings = get_edam_mappings('alpha06')
+    category_version = os.getenv('CATEGORY_VERSION')
+    if Category.count(None, Category.version == category_version) == 0:
+        edam_mappings = get_edam_mappings(category_version.split(":")[1])
         for name, mapping in edam_mappings.items():
-            entity = Category(name=name, mapping=mapping, version="EDAM-BIOIMAGING:alpha06")
+            entity = Category(name=name, mapping=mapping, version=category_version)
             entity.save()
 
 
@@ -228,3 +230,45 @@ def get_categories_mapping(version: str) -> Dict[str, List]:
     return {
         category.name: category.mapping for category in Category.scan(Category.version == version)
     }
+
+
+def get_category_mapping(category: str, version: str) -> List[Dict]:
+    """
+    Get category mappings
+
+    Parameters
+    ----------
+    category : str
+        name of the category to map
+    version: str
+        version of the category
+
+    Returns
+    -------
+    match : list of matched category
+        list of mapped label, dimension and hierarchy, where hierarchy is from most abstract to most specific.
+        for example, Manual segmentation is mapped to the following list:
+        [
+            {
+                "label": "Image Segmentation",
+                "dimension": "Operation",
+                "hierarchy": [
+                    "Image segmentation",
+                    "Manual segmentation"
+                ]
+            },
+            {
+                "label": "Image annotation",
+                "dimension": "Operation",
+                "hierarchy": [
+                    "Image annotation",
+                    "Dense image annotation",
+                    "Manual segmentation"
+                ]
+            }
+        ]
+    """
+    try:
+        return Category.get(category, version).mapping
+    except DoesNotExist:
+        return []

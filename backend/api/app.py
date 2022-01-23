@@ -66,15 +66,16 @@ def get_exclusion_list() -> Response:
     return jsonify(get_excluded_plugins())
 
 
-@app.route('/categories', defaults={'version': os.getenv('category_version', 'EDAM-BIOIMAGING:alpha06')})
+@app.route('/categories', defaults={'version': os.getenv('CATEGORY_VERSION')})
+@app.route('/categories/<version>')
 def get_categories(version: str) -> Response:
     return jsonify(get_categories_mapping(version))
 
 
-@app.route('/categories/<category>', defaults={'version': os.getenv('category_version', 'EDAM-BIOIMAGING:alpha06')})
-@app.route('/categories/<category>/versions/<version>')
+@app.route('/category/<category>', defaults={'version': os.getenv('CATEGORY_VERSION')})
+@app.route('/category/<category>/versions/<version>')
 def get_category(category: str, version: str) -> Response:
-    return jsonify(get_category_mapping(category, get_categories_mapping(version)))
+    return jsonify(get_category_mapping(category, version))
 
 
 @app.errorhandler(404)
@@ -83,6 +84,7 @@ def handle_exception(e) -> Response:
              if 'GET' in rule.methods and
              any((rule.rule.startswith("/plugins"),
                   rule.rule.startswith("/shields"),
+                  rule.rule.startswith("/category"),
                   rule.rule.startswith("/categories")))]
     links.sort()
     links = "\n".join(links)

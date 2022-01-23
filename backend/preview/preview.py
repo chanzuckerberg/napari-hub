@@ -9,7 +9,6 @@ import glob
 import os
 import json
 import requests
-from utils.utils import get_category_mapping
 from utils.github import github_pattern, get_github_metadata, get_github_repo_url
 from utils.pypi import get_plugin_pypi_metadata
 
@@ -59,7 +58,7 @@ def get_plugin_preview(repo_pth: str, dest_dir: str, is_local: bool = False, bra
         categories = defaultdict(list)
         category_hierarchy = defaultdict(list)
         for category in github_metadata['labels']['terms']:
-            mapped_category = get_category_mapping(category, category_mappings)
+            mapped_category = category_mappings.get(category, [])
             for match in mapped_category:
                 if match['label'] not in categories[match['dimension']]:
                     categories[match['dimension']].append(match['label'])
