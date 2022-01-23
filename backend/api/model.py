@@ -152,7 +152,7 @@ def update_cache():
         if plugin not in plugins:
             notify_packages(plugin, removed=True)
 
-    if Category.scan(Category.version == "EDAM-BIOIMAGING:alpha06", limit=1).total_count == 0:
+    if Category.count(None, Category.version == "EDAM-BIOIMAGING:alpha06") == 0:
         edam_mappings = get_edam_mappings('alpha06')
         for name, mapping in edam_mappings.items():
             entity = Category(name=name, mapping=mapping, version="EDAM-BIOIMAGING:alpha06")
