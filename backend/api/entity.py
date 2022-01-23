@@ -51,7 +51,7 @@ class Category(Model):
 
     name = UnicodeAttribute(hash_key=True)
     version = UnicodeAttribute(range_key=True)
-    mapping = MapAttribute()
+    mapping = ListAttribute()
 
 
 def save_plugin_entity(name: str, metadata: dict) -> Plugin:
