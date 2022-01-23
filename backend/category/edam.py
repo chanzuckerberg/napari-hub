@@ -114,7 +114,7 @@ def get_edam_mappings(version: str):
         edam_to_hub = json.load(hub_mapping_json)
 
         # load edam terms
-        edam = get_edam_ontology(edam_version)
+        edam = get_edam_ontology(version)
 
         # generate hub term mapping for all edam terms with hierarchy
         mappings = {}
@@ -124,13 +124,3 @@ def get_edam_mappings(version: str):
                 mappings[label] = mapped
 
         return mappings
-
-
-if __name__ == "__main__":
-    # Generate mapping json from edam ontology for a particular version
-    edam_version = 'alpha06'
-
-    edam_mappings = get_edam_mappings(edam_version)
-
-    with open(f"data/EDAM-BIOIMAGING/{edam_version}.json", "w") as edam_mappings_json:
-        json.dump(edam_mappings, edam_mappings_json, indent=2)
