@@ -128,18 +128,21 @@ def save_plugin_metadata(plugin: str, version: str):
         metadata['category_hierarchy'] = category_hierarchy
         del metadata['labels']
 
+    try:
+        exclusion = ExcludedPlugin.get(plugin)
+        metadata['visibility'] = exclusion.status
+    except DoesNotExist:
+        pass
+
     entity = get_plugin_entity(plugin, metadata)
-    exclusion = ExcludedPlugin.query(plugin).next()
-    if exclusion:
-        entity.visibility.set(exclusion.status)
     if entity.visibility == 'public':
         try:
             Plugin.get(plugin)
             notify_packages(plugin, version)
         except DoesNotExist:
             notify_packages(plugin)
-    report_metrics('napari_hub.plugins.count', 1, [f'visibility:{entity.visibility}'])
     entity.save()
+    report_metrics('napari_hub.plugins.count', 1, [f'visibility:{entity.visibility}'])
 
 
 def update_cache():
