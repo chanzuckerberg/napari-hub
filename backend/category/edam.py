@@ -105,15 +105,11 @@ def iterate_parent(ontology_label: str, ontology: Dict[str, List[str]],
     return all_families
 
 
-if __name__ == "__main__":
-    # Generate mapping json from edam ontology for a particular version
-    edam_version = 'alpha06'
-
+def get_edam_mappings(version: str):
     # the dimension mapping file is curated specifically for a particular version
     # the edam-alpha06 version can be found in here:
     # https://airtable.com/appWpxrq1iPzzxyFE/tblwIaRmQjEkMD1pm/viw2CboXiF0JQqxdr
-    with open(f"data/EDAM-BIOIMAGING/hub-mapping-{edam_version}.json") as hub_mapping_json, \
-            open(f"data/EDAM-BIOIMAGING/{edam_version}.json", "w") as edam_mappings_json:
+    with open(f"category/data/EDAM-BIOIMAGING/hub-mapping-{version}.json") as hub_mapping_json:
 
         edam_to_hub = json.load(hub_mapping_json)
 
@@ -121,10 +117,20 @@ if __name__ == "__main__":
         edam = get_edam_ontology(edam_version)
 
         # generate hub term mapping for all edam terms with hierarchy
-        edam_mappings = {}
+        mappings = {}
         for label in edam.keys():
             mapped = iterate_parent(label, edam, [], edam_to_hub)
             if mapped:
-                edam_mappings[label] = mapped
+                mappings[label] = mapped
 
+        return mappings
+
+
+if __name__ == "__main__":
+    # Generate mapping json from edam ontology for a particular version
+    edam_version = 'alpha06'
+
+    edam_mappings = get_edam_mappings(edam_version)
+
+    with open(f"data/EDAM-BIOIMAGING/{edam_version}.json", "w") as edam_mappings_json:
         json.dump(edam_mappings, edam_mappings_json, indent=2)

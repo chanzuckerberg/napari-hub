@@ -12,6 +12,7 @@ from api.entity import Plugin, ExcludedPlugin, Category, save_plugin_entity
 from utils.utils import render_description, get_attribute, get_category_mapping
 from utils.datadog import report_metrics
 from api.zulip import notify_packages
+from category.edam import get_edam_mappings
 
 index_subset = ['name', 'summary', 'description_text', 'description_content_type',
                 'authors', 'license', 'python_version', 'operating_system',
@@ -154,6 +155,12 @@ def update_cache():
     for plugin in existing_public_plugins.keys():
         if plugin not in plugins:
             notify_packages(plugin, removed=True)
+
+    if Category.scan(Category.version == "EDAM-BIOIMAGING:alpha06", limit=1).total_count == 0:
+        edam_mappings = get_edam_mappings('alpha06')
+        for name, mapping in edam_mappings.items():
+            entity = Category(name=name, mapping=mapping, version="EDAM-BIOIMAGING:alpha06")
+            entity.save()
 
 
 def update_plugin_metadata_async(plugins: Dict[str, str]):
