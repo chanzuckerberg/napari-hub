@@ -153,25 +153,26 @@ def update_cache():
     Update database to keep data in sync.
     """
     category_version = os.getenv('CATEGORY_VERSION')
-    if Category.scan(filter_condition=Category.version == category_version, limit=1).total_count == 0:
+    if len(list(Category.scan(Category.version == category_version,
+                              limit=1, attributes_to_get=["name", "version"]))) == 0:
         edam_mappings = get_edam_mappings(category_version.split(":")[1])
         for name, mapping in edam_mappings.items():
             entity = Category(name=name, mapping=mapping, version=category_version)
             entity.save()
 
-    all_plugins = {(plugin.name, plugin.version): plugin.visibility
-                   for plugin in Plugin.scan(attributes_to_get=['name', 'version', 'visibility'])}
-    public_plugins = {
-        plugin[0]: plugin[1] for plugin, visibility in all_plugins.items() if visibility == 'public'
-    }
+    public_plugins = get_public_plugins()
     pypi_plugins = query_pypi()
 
     for plugin in public_plugins.keys():
         if plugin not in pypi_plugins:
             notify_packages(plugin, removed=True)
 
+    all_plugins = {
+        plugin.name: plugin.version for plugin in
+        Plugin.scan(attributes_to_get=['name', 'version'])
+    }
     updated_plugins = {
-        name: version for name, version in pypi_plugins if (name, version) not in all_plugins.keys()
+        name: version for name, version in pypi_plugins if all_plugins.get(name) != version
     }
     update_plugin_metadata_async(updated_plugins)
 
