@@ -55,7 +55,7 @@ class Category(Model):
 
 
 def get_plugin_entity(name: str, metadata: dict) -> Plugin:
-    return Plugin(
+    plugin = Plugin(
         name=name,
         version=metadata.get("version"),
         visibility=metadata.get("visibility", 'public'),
@@ -81,6 +81,9 @@ def get_plugin_entity(name: str, metadata: dict) -> Plugin:
         category=metadata.get("category"),
         category_hierarchy=metadata.get("category_hierarchy")
     )
+    plugin.save()
+    return plugin
+
 
 
 class MapAttributeEncoder(json.JSONEncoder):

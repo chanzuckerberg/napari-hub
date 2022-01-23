@@ -135,13 +135,12 @@ def save_plugin_metadata(plugin: str, version: str):
         pass
 
     entity = get_plugin_entity(plugin, metadata)
-    if entity.visibility == 'public':
+    if entity.attribute_values['visibility'] == 'public':
         try:
             Plugin.get(plugin)
             notify_packages(plugin, version)
         except DoesNotExist:
             notify_packages(plugin)
-    entity.save()
     report_metrics('napari_hub.plugins.count', 1, [f'visibility:{entity.visibility}'])
 
 
