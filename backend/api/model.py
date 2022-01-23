@@ -10,7 +10,6 @@ from utils.pypi import query_pypi, get_plugin_pypi_metadata
 from api.s3 import cache
 from api.entity import Plugin, ExcludedPlugin, Category, save_plugin_entity
 from utils.utils import render_description, get_attribute, get_category_mapping
-from utils.datadog import report_metrics
 from api.zulip import notify_packages
 from category.edam import get_edam_mappings
 

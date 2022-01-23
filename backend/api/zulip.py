@@ -11,10 +11,10 @@ zulip_credentials = os.environ.get('ZULIP_CREDENTIALS', "")
 
 def notify_packages(package: str, version: str = None, removed: bool = False):
     """
-    Notify zulip about new packages.
+    Notify package update.
 
-    :param package: existing packages in cache
-    :param version: version of the new package
+    :param package: name of the package
+    :param version: version of the package
     :param removed: if the package is no longer available
     """
     username = None
