@@ -92,7 +92,7 @@ def get_category_mapping(category: str, mappings: Dict[str, List]) -> List[Dict]
     ----------
     category : str
         name of the category to map
-    mappings: dict
+    mappings: Dict[str, List]
         mappings to use for lookups, if None, use cached mapping
 
     Returns

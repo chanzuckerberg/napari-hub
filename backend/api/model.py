@@ -7,8 +7,8 @@ from pynamodb.exceptions import DoesNotExist
 
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
-from api.s3 import get_cache, cache
-from api.entity import Plugin, ExcludedPlugin, save_plugin_entity
+from api.s3 import cache
+from api.entity import Plugin, ExcludedPlugin, Category, save_plugin_entity
 from utils.utils import render_description, get_attribute, get_category_mapping
 from utils.datadog import report_metrics
 from api.zulip import notify_packages
@@ -130,12 +130,12 @@ def save_plugin_metadata(plugin: str, version: str):
         del metadata['labels']
 
     try:
-        metadata['visibility'] = ExcludedPlugin.get(plugin).attribute_values['status']
+        metadata['visibility'] = ExcludedPlugin.get(plugin).status
     except DoesNotExist:
         pass
 
     entity = save_plugin_entity(plugin, metadata)
-    if entity.attribute_values['visibility'] == 'public':
+    if entity.visibility == 'public':
         if Plugin.query(plugin).total_count == 0:
             notify_packages(plugin)
         else:
@@ -222,5 +222,6 @@ def get_categories_mapping(version: str) -> Dict[str, List]:
         hierarchy: mapped hierarchy from the top level ontology label to the bottom as a list
         label: mapped napari hub label.
     """
-    mappings = get_cache(f'category/{version.replace(":", "/")}.json')
-    return mappings or {}
+    return {
+        category.name: category.mapping for category in Category.scan(Category.version == version)
+    }
