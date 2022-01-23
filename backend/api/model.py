@@ -153,7 +153,7 @@ def update_cache():
     Update database to keep data in sync.
     """
     category_version = os.getenv('CATEGORY_VERSION')
-    if Category.count(filter_condition=Category.version == category_version, limit=1) == 0:
+    if Category.scan(filter_condition=Category.version == category_version, limit=1).total_count == 0:
         edam_mappings = get_edam_mappings(category_version.split(":")[1])
         for name, mapping in edam_mappings.items():
             entity = Category(name=name, mapping=mapping, version=category_version)
