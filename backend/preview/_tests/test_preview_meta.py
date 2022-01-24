@@ -6,7 +6,7 @@ import requests
 import dateutil.parser
 from datetime import datetime
 
-from ..preview import clone_repo, build_dist, parse_meta, get_plugin_preview, get_pypi_date_meta
+from ..preview import clone_repo, build_dist, parse_meta, get_plugin_preview, get_pypi_date_meta, populate_source_code_url
 
 code_plugin_url = "https://github.com/chanzuckerberg/napari-demo"
 hub_plugin_url = "https://api.napari-hub.org/plugins/napari-demo"
@@ -95,3 +95,20 @@ def test_release_date_logic():
     get_pypi_date_meta(meta)
     assert dateutil.parser.isoparse(meta['first_released']).date() == dateutil.parser.isoparse(example_plugin_first_released).date()
     assert dateutil.parser.isoparse(meta['release_date']).date() == dateutil.parser.isoparse(example_plugin_release_date).date()
+
+
+def test_source_code_match():
+    # providing code_repository doesn't change url
+    meta = {'name': 'example-plugin', 'code_repository': code_plugin_url}
+    populate_source_code_url(meta)
+    assert meta['code_repository'] == code_plugin_url
+
+    # providing github project site gives us code_repository
+    meta = {'name': 'example-plugin', 'project_site': code_plugin_url}
+    populate_source_code_url(meta)
+    assert meta['code_repository'] == code_plugin_url
+
+    # non github project site leaves code_repository empty
+    meta = {'name': 'example-plugin', 'project_site': 'www.somesite.com'}
+    populate_source_code_url(meta)
+    assert 'code_repository' not in meta
