@@ -118,6 +118,8 @@ def save_plugin_metadata(plugin: str, version: str):
     github_repo_url = metadata.get('code_repository')
     if github_repo_url:
         metadata = {**metadata, **get_github_metadata(github_repo_url)}
+    else:
+        metadata['visibility'] = 'public'
     if 'description' in metadata:
         metadata['description_text'] = render_description(metadata.get('description'))
     if 'labels' in metadata:
@@ -140,12 +142,12 @@ def save_plugin_metadata(plugin: str, version: str):
     except DoesNotExist:
         pass
 
-    entity = save_plugin_entity(plugin, metadata)
-    if entity.visibility == 'public':
+    if metadata['visibility'] == 'public':
         if Plugin.count(plugin, limit=1) == 0:
             notify_packages(plugin)
         else:
             notify_packages(plugin, version)
+    save_plugin_entity(plugin, metadata)
 
 
 def update_cache():

@@ -129,12 +129,6 @@ def get_github_metadata(repo_url: str, branch: str = 'HEAD') -> dict:
         if citation:
             github_metadata['citations'] = citation
 
-    if 'visibility' not in github_metadata:
-        github_metadata['visibility'] = 'public'
-    elif not isinstance(github_metadata['visibility'], str) or \
-            github_metadata['visibility'] not in visibility_set:
-        github_metadata['visibility'] = 'public'
-
     yaml_file = get_file(repo_url, ".napari/config.yml", branch=branch)
     if yaml_file:
         config = yaml.safe_load(yaml_file)
@@ -146,6 +140,9 @@ def get_github_metadata(repo_url: str, branch: str = 'HEAD') -> dict:
            hub_name: project_urls[yaml_name]
            for yaml_name, hub_name in project_url_names.items() if yaml_name in project_urls
         })
+
+    if github_metadata.get('visibility') not in visibility_set:
+        github_metadata['visibility'] = 'public'
 
     return github_metadata
 
