@@ -1,5 +1,5 @@
 import os
-from typing import List, Dict
+from typing import List
 
 import requests
 from bs4 import BeautifulSoup
@@ -82,45 +82,3 @@ def reformat_ssh_key_to_pem_bytes(ssh_key_str: str) -> bytes:
     """
     chunked = '\n'.join(ssh_key_str[i:i+64] for i in range(0, len(ssh_key_str), 64))
     return f"-----BEGIN RSA PRIVATE KEY-----\n{chunked}\n-----END RSA PRIVATE KEY-----\n".encode("utf-8")
-
-
-def get_category_mapping(category: str, mappings: Dict[str, List]) -> List[Dict]:
-    """
-    Get category mappings
-
-    Parameters
-    ----------
-    category : str
-        name of the category to map
-    mappings: dict
-        mappings to use for lookups, if None, use cached mapping
-
-    Returns
-    -------
-    match : list of matched category
-        list of mapped label, dimension and hierarchy, where hierarchy is from most abstract to most specific.
-        for example, Manual segmentation is mapped to the following list:
-        [
-            {
-                "label": "Image Segmentation",
-                "dimension": "Operation",
-                "hierarchy": [
-                    "Image segmentation",
-                    "Manual segmentation"
-                ]
-            },
-            {
-                "label": "Image annotation",
-                "dimension": "Operation",
-                "hierarchy": [
-                    "Image annotation",
-                    "Dense image annotation",
-                    "Manual segmentation"
-                ]
-            }
-        ]
-    """
-    if category not in mappings:
-        return []
-    else:
-        return mappings[category]

@@ -5,10 +5,12 @@ flask-githubapp
 gunicorn[gevent]
 pyyaml
 requests
-markdown==3.3.4
+markdown
 bs4
 cffconvert
 GitPython
 setuptools
 wheel
 pkginfo
+datadog-lambda
+pynamodb

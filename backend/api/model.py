@@ -1,20 +1,24 @@
+import os
 from concurrent import futures
-from datetime import datetime
-from typing import Tuple, Dict, List
+from typing import Dict, List
 from zipfile import ZipFile
 from io import BytesIO
 from collections import defaultdict
+from pynamodb.exceptions import DoesNotExist
 
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
-from api.s3 import get_cache, cache
-from utils.utils import render_description, send_alert, get_attribute, get_category_mapping
-from api.zulip import notify_new_packages
+from api.s3 import cache
+from api.entity import Plugin, ExcludedPlugin, Category, save_plugin_entity
+from utils.utils import render_description, get_attribute
+from api.zulip import notify_packages
+from category.edam import get_edam_mappings
 
-index_subset = {'name', 'summary', 'description_text', 'description_content_type',
+index_subset = ['name', 'summary', 'description_text', 'description_content_type',
                 'authors', 'license', 'python_version', 'operating_system',
                 'release_date', 'version', 'first_released',
-                'development_status', 'category'}
+                'development_status', 'category']
+valid_visibility = {'public', 'hidden'}
 
 
 def get_public_plugins() -> Dict[str, str]:
@@ -23,11 +27,10 @@ def get_public_plugins() -> Dict[str, str]:
 
     :return: dict of public plugins and their versions
     """
-    public_plugins = get_cache('cache/public-plugins.json')
-    if public_plugins:
-        return public_plugins
-    else:
-        return {}
+    return {
+        plugin.name: plugin.version for plugin in
+        Plugin.scan(Plugin.visibility == 'public', attributes_to_get=['name', 'version'])
+    }
 
 
 def get_hidden_plugins() -> Dict[str, str]:
@@ -36,11 +39,10 @@ def get_hidden_plugins() -> Dict[str, str]:
 
     :return: dict of hidden plugins and their versions
     """
-    hidden_plugins = get_cache('cache/hidden-plugins.json')
-    if hidden_plugins:
-        return hidden_plugins
-    else:
-        return {}
+    return {
+        plugin.name: plugin.version for plugin in
+        Plugin.scan(Plugin.visibility == 'hidden', attributes_to_get=['name', 'version'])
+    }
 
 
 def get_valid_plugins() -> Dict[str, str]:
@@ -49,7 +51,10 @@ def get_valid_plugins() -> Dict[str, str]:
 
     :return: dict of valid plugins and their versions
     """
-    return {**get_hidden_plugins(), **get_public_plugins()}
+    return {
+        plugin.name: plugin.version for plugin in
+        Plugin.scan(Plugin.visibility.is_in(valid_visibility), attributes_to_get=['name', 'version'])
+    }
 
 
 def get_plugin(plugin: str, version: str = None) -> dict:
@@ -60,40 +65,30 @@ def get_plugin(plugin: str, version: str = None) -> dict:
     :param version: version of the plugin
     :return: plugin metadata dictionary
     """
-    plugins = get_valid_plugins()
-    if plugin not in plugins:
-        return {}
-    elif version is None:
-        version = plugins[plugin]
-    plugin = get_cache(f'cache/{plugin}/{version}.json')
-    if plugin:
-        return plugin
+    match = None
+    if not version:
+        for entity in Plugin.query(plugin, scan_index_forward=False, limit=1):
+            match = entity
     else:
-        return {}
+        try:
+            match = Plugin.get(plugin, version)
+        except DoesNotExist:
+            pass
+    if match and match.visibility in valid_visibility:
+        return match.attribute_values
+    return {}
 
 
-def get_index() -> dict:
+def get_index() -> List[dict]:
     """
     Get the index page related metadata for all plugins.
 
-    :return: dict for index page metadata
+    :return: list of plugin index metadata
     """
-    index = get_cache('cache/index.json')
-    if index:
-        return index
-    else:
-        return {}
-
-
-def slice_metadata_to_index_columns(plugins_metadata: List[dict]) -> List[dict]:
-    """
-    slice index to only include specified indexing related columns.
-
-    :param plugins_metadata: plugin metadata dictionary
-    :return: sliced dict metadata for the plugin
-    """
-    return [{k: plugin_metadata[k] for k in index_subset if k in plugin_metadata}
-            for plugin_metadata in plugins_metadata]
+    return [
+        plugin.attribute_values for plugin in
+        Plugin.scan(Plugin.visibility == 'public', attributes_to_get=index_subset)
+    ]
 
 
 def get_excluded_plugins() -> Dict[str, str]:
@@ -102,22 +97,23 @@ def get_excluded_plugins() -> Dict[str, str]:
 
     :return: dict for excluded plugins and their exclusion status
     """
-    excluded_plugins = get_cache('excluded_plugins.json')
-    if excluded_plugins:
-        return excluded_plugins
-    else:
-        return {}
+    return {
+        excluded_plugin.name: excluded_plugin.status for excluded_plugin in
+        ExcludedPlugin.scan(attributes_to_get=['name', 'status'])
+    }
 
 
-def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
+def save_plugin_metadata(plugin: str, version: str):
     """
     Build plugin metadata from multiple sources, reuse cached ones if available.
 
     :return: dict for aggregated plugin metadata
     """
-    cached_plugin = get_cache(f'cache/{plugin}/{version}.json')
-    if cached_plugin:
-        return plugin, cached_plugin
+    try:
+        Plugin.get(plugin, version)
+        return
+    except DoesNotExist:
+        pass
     metadata = get_plugin_pypi_metadata(plugin, version)
     github_repo_url = metadata.get('code_repository')
     if github_repo_url:
@@ -129,7 +125,7 @@ def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
         categories = defaultdict(list)
         category_hierarchy = defaultdict(list)
         for category in metadata['labels']['terms']:
-            mapped_category = get_category_mapping(category, category_mappings)
+            mapped_category = category_mappings.get(category, [])
             for match in mapped_category:
                 if match['label'] not in categories[match['dimension']]:
                     categories[match['dimension']].append(match['label'])
@@ -138,87 +134,60 @@ def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
         metadata['category'] = categories
         metadata['category_hierarchy'] = category_hierarchy
         del metadata['labels']
-    cache(metadata, f'cache/{plugin}/{version}.json')
-    return plugin, metadata
+
+    try:
+        metadata['visibility'] = ExcludedPlugin.get(plugin).status
+    except DoesNotExist:
+        pass
+
+    entity = save_plugin_entity(plugin, metadata)
+    if entity.visibility == 'public':
+        if Plugin.count(plugin, limit=1) == 0:
+            notify_packages(plugin)
+        else:
+            notify_packages(plugin, version)
 
 
 def update_cache():
     """
-    Update existing caches to reflect new/updated plugins. Files updated:
-    - excluded_plugins.json (overwrite)
-    - cache/public-plugins.json (overwrite)
-    - cache/hidden-plugins.json (overwrite)
-    - cache/index.json (overwrite)
-    - cache/{plugin}/{version}.json (skip if exists)
+    Update database to keep data in sync.
     """
-    plugins = query_pypi()
-    plugins_metadata = get_plugin_metadata_async(plugins)
-    excluded_plugins = get_updated_plugin_exclusion(plugins_metadata)
+    category_version = os.getenv('CATEGORY_VERSION')
+    if len(list(Category.scan(Category.version == category_version,
+                              limit=1, attributes_to_get=["name", "version"]))) == 0:
+        edam_mappings = get_edam_mappings(category_version.split(":")[1])
+        for name, mapping in edam_mappings.items():
+            entity = Category(name=name, mapping=mapping, version=category_version)
+            entity.save()
 
-    visibility_plugins = {"public": {}, "hidden": {}}
-    for plugin, version in plugins.items():
-        visibility = plugins_metadata[plugin].get('visibility', 'public')
-        if visibility in visibility_plugins:
-            visibility_plugins[visibility][plugin] = version
+    public_plugins = get_public_plugins()
+    pypi_plugins = query_pypi()
 
-    for plugin, _ in excluded_plugins.items():
-        if plugin in plugins_metadata:
-            del (plugins_metadata[plugin])
+    for plugin in public_plugins.keys():
+        if plugin not in pypi_plugins:
+            notify_packages(plugin, removed=True)
 
-    if visibility_plugins['public']:
-        existing_public_plugins = get_public_plugins()
-        cache(excluded_plugins, 'excluded_plugins.json')
-        cache(visibility_plugins['public'], 'cache/public-plugins.json')
-        cache(visibility_plugins['hidden'], 'cache/hidden-plugins.json')
-        cache(slice_metadata_to_index_columns(list(plugins_metadata.values())), 'cache/index.json')
-        notify_new_packages(existing_public_plugins, visibility_plugins['public'])
-    else:
-        send_alert(f"({datetime.now()})Actions Required! Failed to query pypi for "
-                   f"napari plugin packages, switching to backup analysis dump")
-
-
-def get_updated_plugin_exclusion(plugins_metadata):
-    """
-    Update plugin visibility information with latest metadata.
-    Override existing visibility information if existing entry is not 'blocked' (disabled by hub admin)
-
-    public: fully visible (default)
-    hidden: plugin page exists, but doesn't show up in search listings
-    disabled: no plugin page created, does not show up in search listings
-
-    :param plugins_metadata: plugin metadata containing visibility information
-    :return: updated exclusion list
-    """
-    excluded_plugins = get_excluded_plugins()
-    for plugin, plugin_metadata in plugins_metadata.items():
-        if not plugin_metadata:
-            excluded_plugins[plugin] = 'invalid'
-        if 'visibility' not in plugin_metadata:
-            continue
-        if plugin in excluded_plugins and excluded_plugins[plugin] != "blocked":
-            if plugin_metadata['visibility'] == 'public':
-                del excluded_plugins[plugin]
-            else:
-                excluded_plugins[plugin] = plugin_metadata['visibility']
-        elif plugin not in excluded_plugins and plugin_metadata['visibility'] != 'public':
-            excluded_plugins[plugin] = plugin_metadata['visibility']
-    return excluded_plugins
+    all_plugins = {
+        plugin.name: plugin.version for plugin in
+        Plugin.scan(attributes_to_get=['name', 'version'])
+    }
+    updated_plugins = {
+        name: version for name, version in pypi_plugins.items() if all_plugins.get(name) != version
+    }
+    update_plugin_metadata_async(updated_plugins)
 
 
-def get_plugin_metadata_async(plugins: Dict[str, str]) -> dict:
+def update_plugin_metadata_async(plugins: Dict[str, str]):
     """
     Query plugin metadata async.
 
     :param plugins: plugin name and versions to query
-    :return: plugin metadata list
     """
-    plugins_metadata = {}
-    with futures.ThreadPoolExecutor(max_workers=32) as executor:
-        plugin_futures = [executor.submit(build_plugin_metadata, k, v)
-                          for k, v in plugins.items()]
-    for future in futures.as_completed(plugin_futures):
-        plugins_metadata[future.result()[0]] = (future.result()[1])
-    return plugins_metadata
+    with futures.ThreadPoolExecutor() as executor:
+        completion = [executor.submit(save_plugin_metadata, k, v) for k, v in plugins.items()]
+
+    for future in futures.as_completed(completion):
+        assert future.done()
 
 
 def move_artifact_to_s3(payload, client):
@@ -274,5 +243,49 @@ def get_categories_mapping(version: str) -> Dict[str, List]:
         hierarchy: mapped hierarchy from the top level ontology label to the bottom as a list
         label: mapped napari hub label.
     """
-    mappings = get_cache(f'category/{version.replace(":", "/")}.json')
-    return mappings or {}
+    return {
+        category.name: category.mapping for category in
+        Category.scan(Category.version == version, attributes_to_get=['name', 'version', 'mapping'])
+    }
+
+
+def get_category_mapping(category: str, version: str) -> List[Dict]:
+    """
+    Get category mappings
+
+    Parameters
+    ----------
+    category : str
+        name of the category to map
+    version: str
+        version of the category
+
+    Returns
+    -------
+    match : list of matched category
+        list of mapped label, dimension and hierarchy, where hierarchy is from most abstract to most specific.
+        for example, Manual segmentation is mapped to the following list:
+        [
+            {
+                "label": "Image Segmentation",
+                "dimension": "Operation",
+                "hierarchy": [
+                    "Image segmentation",
+                    "Manual segmentation"
+                ]
+            },
+            {
+                "label": "Image annotation",
+                "dimension": "Operation",
+                "hierarchy": [
+                    "Image annotation",
+                    "Dense image annotation",
+                    "Manual segmentation"
+                ]
+            }
+        ]
+    """
+    try:
+        return Category.get(category, version).mapping
+    except DoesNotExist:
+        return []

@@ -6,6 +6,7 @@ from flask_githubapp.core import GitHubApp
 
 from api.model import get_public_plugins, get_index, get_plugin, get_excluded_plugins, update_cache, \
     move_artifact_to_s3, get_category_mapping, get_categories_mapping
+from api.entity import MapAttributeEncoder
 from api.shield import get_shield
 from utils.utils import send_alert, reformat_ssh_key_to_pem_bytes
 
@@ -16,6 +17,7 @@ GITHUB_APP_SECRET = os.getenv('GITHUBAPP_SECRET')
 app = Flask(__name__)
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 app.url_map.redirect_defaults = False
+app.json_encoder = MapAttributeEncoder
 preview_app = Flask("Preview")
 
 if GITHUB_APP_ID and GITHUB_APP_KEY and GITHUB_APP_SECRET:
@@ -64,15 +66,16 @@ def get_exclusion_list() -> Response:
     return jsonify(get_excluded_plugins())
 
 
-@app.route('/categories', defaults={'version': os.getenv('category_version', 'EDAM-BIOIMAGING:alpha06')})
+@app.route('/categories', defaults={'version': os.getenv('CATEGORY_VERSION')})
+@app.route('/categories/<version>')
 def get_categories(version: str) -> Response:
     return jsonify(get_categories_mapping(version))
 
 
-@app.route('/categories/<category>', defaults={'version': os.getenv('category_version', 'EDAM-BIOIMAGING:alpha06')})
-@app.route('/categories/<category>/versions/<version>')
+@app.route('/category/<category>', defaults={'version': os.getenv('CATEGORY_VERSION')})
+@app.route('/category/<category>/versions/<version>')
 def get_category(category: str, version: str) -> Response:
-    return jsonify(get_category_mapping(category, get_categories_mapping(version)))
+    return jsonify(get_category_mapping(category, version))
 
 
 @app.errorhandler(404)
@@ -81,6 +84,7 @@ def handle_exception(e) -> Response:
              if 'GET' in rule.methods and
              any((rule.rule.startswith("/plugins"),
                   rule.rule.startswith("/shields"),
+                  rule.rule.startswith("/category"),
                   rule.rule.startswith("/categories")))]
     links.sort()
     links = "\n".join(links)
