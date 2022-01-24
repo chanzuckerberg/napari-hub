@@ -78,7 +78,7 @@ export function useMetadataSections(): MetadataSection[] {
 
     {
       section: t('preview:sections.tellUsers'),
-      fields: ['name', 'summary', 'description', 'authors'],
+      fields: ['documentationSite', 'supportSite', 'reportIssues'],
     },
 
     {
