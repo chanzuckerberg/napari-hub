@@ -9,6 +9,7 @@ from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
 from api.s3 import get_cache, cache
 from utils.utils import render_description, send_alert, get_attribute, get_category_mapping
+from utils.datadog import report_metrics
 from api.zulip import notify_new_packages
 
 index_subset = {'name', 'summary', 'description_text', 'description_content_type',
@@ -172,6 +173,9 @@ def update_cache():
         cache(visibility_plugins['hidden'], 'cache/hidden-plugins.json')
         cache(slice_metadata_to_index_columns(list(plugins_metadata.values())), 'cache/index.json')
         notify_new_packages(existing_public_plugins, visibility_plugins['public'])
+        report_metrics('napari_hub.plugins.count', len(visibility_plugins['public']), ['visibility:public'])
+        report_metrics('napari_hub.plugins.count', len(visibility_plugins['hidden']), ['visibility:hidden'])
+        report_metrics('napari_hub.plugins.excluded', len(excluded_plugins))
     else:
         send_alert(f"({datetime.now()})Actions Required! Failed to query pypi for "
                    f"napari plugin packages, switching to backup analysis dump")

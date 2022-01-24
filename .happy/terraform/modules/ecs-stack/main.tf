@@ -44,6 +44,7 @@ locals {
   github_app_id = try(local.secret["github"]["app_id"], "")
   github_app_key = try(local.secret["github"]["app_key"], "")
   github_app_secret = try(local.secret["github"]["app_secret"], "")
+  datadog_api_key = try(local.secret["datadog"]["api_key"], "")
 
   frontend_url = var.frontend_url != "" ? var.frontend_url: try(join("", ["https://", module.frontend_dns.dns_prefix, ".", local.external_dns]), var.frontend_url)
 }
@@ -107,6 +108,9 @@ module backend_lambda {
     "GITHUBAPP_ID" = local.github_app_id
     "GITHUBAPP_KEY" = local.github_app_key
     "GITHUBAPP_SECRET" = local.github_app_secret
+    "DD_API_KEY" = local.datadog_api_key
+    "DD_ENV" = var.env
+    "DD_SERVICE" = local.custom_stack_name
   }
 
   log_retention_in_days = 14
