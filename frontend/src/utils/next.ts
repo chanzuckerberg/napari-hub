@@ -1,6 +1,36 @@
 import fs from 'fs';
 import { resolve } from 'path';
 
+type ManifestFileName = 'build' | 'prerender';
+
+/**
+ * Reads a Next.js manifest file from the `.next` directory.
+ *
+ * @param name The name of the manifest file.
+ * @returns The manifest file or null if it does not exist.
+ */
+function getManifestFile<T>(name: ManifestFileName): T | null {
+  let cwd = __dirname;
+  let manifestPath = '';
+  let manifestFound = false;
+
+  while (cwd !== '/' && !manifestFound) {
+    manifestPath = resolve(cwd, `.next/${name}-manifest.json`);
+
+    if (fs.existsSync(manifestPath)) {
+      manifestFound = true;
+    } else {
+      cwd = resolve(cwd, '..');
+    }
+  }
+
+  if (manifestFound) {
+    return JSON.parse(fs.readFileSync(manifestPath, 'utf-8')) as T;
+  }
+
+  return null;
+}
+
 export interface BuildManifest {
   polyfillFiles: string[];
   devFiles: string[];
@@ -17,23 +47,36 @@ export interface BuildManifest {
  * @returns The build manifest or null if it can't be found.
  */
 export function getBuildManifest(): BuildManifest | null {
-  let cwd = __dirname;
-  let manifestPath = '';
-  let manifestFound = false;
+  return getManifestFile<BuildManifest>('build');
+}
 
-  while (cwd !== '/' && !manifestFound) {
-    manifestPath = resolve(cwd, '.next/build-manifest.json');
+interface Preview {
+  previewModeId: string;
+  previewModeSigningKey: string;
+  previewModeEncryptionKey: string;
+}
 
-    if (fs.existsSync(manifestPath)) {
-      manifestFound = true;
-    } else {
-      cwd = resolve(cwd, '..');
-    }
-  }
+interface DynamicRoute {
+  routeRegex: string;
+  dataRoute: string;
+  fallback: boolean;
+  dataRouteRegex: string;
+}
 
-  if (manifestFound) {
-    return JSON.parse(fs.readFileSync(manifestPath, 'utf-8')) as BuildManifest;
-  }
+interface Route {
+  initialRevalidateSeconds: boolean;
+  srcRoute: string | null;
+  dataRoute: string;
+}
 
-  return null;
+export interface PreRenderManifest {
+  version: number;
+  routes: Record<string, Route>;
+  dynamicRoutes: Record<string, DynamicRoute>;
+  notFoundRoutes: unknown[];
+  preview: Preview;
+}
+
+export function getPreRenderManifest(): PreRenderManifest | null {
+  return getManifestFile<PreRenderManifest>('prerender');
 }
