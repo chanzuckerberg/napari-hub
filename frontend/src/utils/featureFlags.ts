@@ -20,7 +20,7 @@ function createFeatureFlags<T>(flags: { [key in keyof T]: FeatureFlag }) {
 
 export const FEATURE_FLAGS = createFeatureFlags({
   categoryFilters: {
-    environments: ['dev'],
+    environments: ['dev', 'staging', 'prod'],
   },
 });
 
