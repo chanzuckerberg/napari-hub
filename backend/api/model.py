@@ -172,7 +172,7 @@ def update_cache():
         Plugin.scan(attributes_to_get=['name', 'version'])
     }
     updated_plugins = {
-        name: version for name, version in pypi_plugins if all_plugins.get(name) != version
+        name: version for name, version in pypi_plugins.items() if all_plugins.get(name) != version
     }
     update_plugin_metadata_async(updated_plugins)
 
