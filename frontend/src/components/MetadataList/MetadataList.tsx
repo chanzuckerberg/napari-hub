@@ -10,13 +10,14 @@ import { EmptyListItem } from './EmptyListItem';
 import { MetadataContextProvider } from './metadata.context';
 import styles from './MetadataList.module.scss';
 
-interface Props {
+export interface Props {
   children: ReactNode;
   className?: string;
   empty?: boolean;
   id?: MetadataKeys;
   inline?: boolean;
   label: string;
+  highlight?: boolean;
 }
 
 /**
@@ -26,6 +27,7 @@ export function MetadataList({
   children,
   className,
   empty,
+  highlight = true,
   id,
   inline,
   label,
@@ -49,7 +51,7 @@ export function MetadataList({
               empty ? 'flex items-center screen-875:inline' : 'inline',
             ],
           )}
-          highlight={empty}
+          highlight={highlight && empty}
           tooltip={null}
           id={id}
         >
@@ -84,7 +86,10 @@ export function MetadataList({
             {empty ? (
               <EmptyListItem>
                 {process.env.PREVIEW && (
-                  <EmptyMetadataTooltip metadataId={id} />
+                  <EmptyMetadataTooltip
+                    metadataId={id}
+                    showStatus={highlight}
+                  />
                 )}
               </EmptyListItem>
             ) : (

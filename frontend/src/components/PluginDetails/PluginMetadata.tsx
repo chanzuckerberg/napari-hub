@@ -6,7 +6,11 @@ import { ReactNode } from 'react';
 import { Divider } from '@/components/common/Divider';
 import { Media } from '@/components/common/media';
 import { SkeletonLoader } from '@/components/common/SkeletonLoader';
-import { MetadataList, MetadataListTextItem } from '@/components/MetadataList';
+import {
+  MetadataList,
+  MetadataListTextItem,
+  Props as MetadataListProps,
+} from '@/components/MetadataList';
 import {
   Metadata,
   MetadataKeys,
@@ -108,17 +112,29 @@ function PluginMetadataBase({
 }: PluginMetadataBaseProps) {
   const metadata = usePluginMetadata();
 
-  function renderSingleItemList(key: PickMetadataKeys<string>) {
+  function renderSingleItemList(
+    key: PickMetadataKeys<string>,
+    props?: Partial<MetadataListProps>,
+  ) {
     const { label, value } = metadata[key];
 
     return (
-      <MetadataList id={key} inline={inline} label={label} empty={!value}>
+      <MetadataList
+        id={key}
+        inline={inline}
+        label={label}
+        empty={!value}
+        {...props}
+      >
         <MetadataListTextItem>{value}</MetadataListTextItem>
       </MetadataList>
     );
   }
 
-  function renderItemList(key: PickMetadataKeys<string[]>) {
+  function renderItemList(
+    key: PickMetadataKeys<string[]>,
+    props?: Partial<MetadataListProps>,
+  ) {
     const { label, value: values } = metadata[key];
 
     return (
@@ -127,6 +143,7 @@ function PluginMetadataBase({
         inline={inline}
         label={label}
         empty={isEmpty(values)}
+        {...props}
       >
         {values.map((value) => (
           <MetadataListTextItem key={value}>{value}</MetadataListTextItem>
@@ -140,8 +157,8 @@ function PluginMetadataBase({
       className="h-56"
       render={() => (
         <>
-          {renderSingleItemList('version')}
-          {renderSingleItemList('releaseDate')}
+          {renderSingleItemList('version', { highlight: false })}
+          {renderSingleItemList('releaseDate', { highlight: false })}
           {renderSingleItemList('firstReleased')}
           {renderSingleItemList('license')}
         </>
@@ -152,7 +169,9 @@ function PluginMetadataBase({
   const categoryMetadata = (
     <SkeletonLoader
       className="h-56"
-      render={() => <>{renderItemList('supportedData')}</>}
+      render={() => (
+        <>{renderItemList('supportedData', { highlight: false })}</>
+      )}
     />
   );
 
