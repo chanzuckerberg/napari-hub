@@ -44,6 +44,7 @@ locals {
   github_app_id = try(local.secret["github"]["app_id"], "")
   github_app_key = try(local.secret["github"]["app_key"], "")
   github_app_secret = try(local.secret["github"]["app_secret"], "")
+  datadog_api_key = try(local.secret["datadog"]["api_key"], "")
 
   frontend_url = var.frontend_url != "" ? var.frontend_url: try(join("", ["https://", module.frontend_dns.dns_prefix, ".", local.external_dns]), var.frontend_url)
 }
@@ -97,9 +98,8 @@ module backend_lambda {
   }
 
   environment = {
+    "DYNAMO_PREFIX" = local.custom_stack_name
     "BUCKET" = local.data_bucket_name
-    "BUCKET_PATH" = var.env == "dev" ? local.custom_stack_name : ""
-    "GOOGLE_APPLICATION_CREDENTIALS" = "./credentials.json"
     "SLACK_URL" = local.slack_url
     "ZULIP_CREDENTIALS" = local.zulip_credentials
     "GITHUB_CLIENT_ID" = local.github_client_id
@@ -107,11 +107,22 @@ module backend_lambda {
     "GITHUBAPP_ID" = local.github_app_id
     "GITHUBAPP_KEY" = local.github_app_key
     "GITHUBAPP_SECRET" = local.github_app_secret
+    "DD_API_KEY" = local.datadog_api_key
+    "DD_ENV" = var.env
+    "DD_SERVICE" = local.custom_stack_name
+    "CATEGORY_VERSION" = "EDAM-BIOIMAGING:alpha06"
   }
 
   log_retention_in_days = 14
   timeout               = 300
 }
+
+module database {
+  source               = "../database"
+  custom_stack_name    = local.custom_stack_name
+  tags                 = var.tags
+}
+
 
 module api_gateway_proxy_stage {
   source               = "../api-gateway-proxy-stage"
@@ -173,9 +184,25 @@ data aws_iam_policy_document backend_policy {
     actions = [
       "s3:PutObject",
       "s3:GetObject",
+      "dynamodb:DescribeTable",
+      "dynamodb:GetItem",
+      "dynamodb:BatchGetItem",
+      "dynamodb:PutItem",
+      "dynamodb:BatchWriteItem",
+      "dynamodb:UpdateItem",
+      "dynamodb:Query",
+      "dynamodb:Scan",
     ]
 
-    resources = ["${local.data_bucket_arn}/*"]
+    resources = [
+        "${local.data_bucket_arn}/*",
+        "${module.database.plugin_data_table_arn}",
+        "${module.database.plugin_data_table_arn}/index/*",
+        "${module.database.excluded_plugin_table_arn}",
+        "${module.database.excluded_plugin_table_arn}/index/*",
+        "${module.database.category_table_arn}",
+        "${module.database.category_table_arn}/index/*"
+    ]
   }
 }
 
