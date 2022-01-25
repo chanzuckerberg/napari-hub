@@ -20,6 +20,7 @@ import { previewStore } from '@/store/preview';
 interface Props {
   className?: string;
   metadataId?: MetadataKeys;
+  showStatus?: boolean;
 }
 
 const TOOLTIP_CLASS_NAME = 'metadata-tooltip';
@@ -61,7 +62,11 @@ function useTooltipLabels() {
  * Renders a tooltip and metadata status icon for with information for the
  * metadata specified by `metadataId`.
  */
-export function EmptyMetadataTooltip({ className, metadataId }: Props) {
+export function EmptyMetadataTooltip({
+  className,
+  metadataId,
+  showStatus = true,
+}: Props) {
   const [t] = useTranslation(['pluginPage', 'preview']);
   const snap = useSnapshot(previewStore);
   const metadata = usePluginMetadata();
@@ -155,7 +160,9 @@ export function EmptyMetadataTooltip({ className, metadataId }: Props) {
       open={snap.activeMetadataField === metadataId}
     >
       <div className={className}>
-        <MetadataStatus className={className} hasValue={false} />
+        {showStatus && (
+          <MetadataStatus className={className} hasValue={false} />
+        )}
       </div>
     </Tooltip>
   );
