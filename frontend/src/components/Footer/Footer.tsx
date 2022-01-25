@@ -118,14 +118,17 @@ export function Footer() {
         )}
       >
         <Link href="https://napari.org" className="mr-2" newTab>
-          <NapariLogo className="w-8 h-8" alt={t('footer:alt.goToNapari')} />
+          <NapariLogo
+            className="w-[1.625rem] h-[1.625rem] screen-495:w-[2.375rem] screen-495:h-[2.375rem]"
+            alt={t('footer:alt.goToNapari')}
+          />
         </Link>
 
         <div className="border-r-[1px] border-black" />
 
         <Link href="https://chanzuckerberg.com" className="ml-2" newTab>
           <CZI
-            className="w-[53px] h-[27px] screen-495:w-[74px] screen-495:h-[38px]"
+            className="w-[3.3125rem] h-[1.625rem] screen-495:w-[4.625rem] screen-495:h-[2.375rem]"
             variant="large"
           />
         </Link>
