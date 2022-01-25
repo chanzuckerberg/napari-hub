@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import { useTranslation } from 'next-i18next';
 import { ComponentType } from 'react';
 
+import { I18n } from '@/components/common/I18n';
 import { CZI, GitHub, NapariLogo } from '@/components/common/icons';
 import { IconProps } from '@/components/common/icons/icons.type';
 import { Link } from '@/components/common/Link';
@@ -72,9 +73,14 @@ export function Footer() {
     <div
       className={clsx(
         // layout
-        'flex flex-col screen-655:flex-row justify-items-center',
+        'grid grid-cols-2',
+        'screen-655:grid-cols-[1fr,min-content]',
+        'screen-1150:grid-cols-[1fr,max-content,min-content]',
+        'gap-4',
+
         // color
         'bg-napari-primary',
+
         // spacing
         'p-6 screen-495:px-12',
       )}
@@ -92,7 +98,25 @@ export function Footer() {
         <FooterLinks />
       </div>
 
-      <div className="flex flex-row flex-grow w-min justify-end self-end">
+      <span
+        className={clsx(
+          'text-xs row-start-2 col-span-2',
+          'justify-self-end self-center',
+          'screen-655:col-span-1 screen-655:whitespace-nowrap',
+          'screen-1150:row-start-1 screen-1150:col-start-2',
+        )}
+      >
+        <I18n i18nKey="footer:napariHubCollab" />
+      </span>
+
+      <div
+        className={clsx(
+          'flex flex-row justify-end',
+          'row-start-3 col-start-2',
+          'screen-655:row-start-2 screen-655:col-start-2',
+          'screen-1150:row-start-1 screen-1150:col-start-3',
+        )}
+      >
         <Link href="https://napari.org" className="mr-2" newTab>
           <NapariLogo className="w-8 h-8" alt={t('footer:alt.goToNapari')} />
         </Link>
@@ -100,7 +124,10 @@ export function Footer() {
         <div className="border-r-[1px] border-black" />
 
         <Link href="https://chanzuckerberg.com" className="ml-2" newTab>
-          <CZI className="w-8 h-8" alt={t('footer:alt.goToCzi')} />
+          <CZI
+            className="w-[53px] h-[27px] screen-495:w-[74px] screen-495:h-[38px]"
+            variant="large"
+          />
         </Link>
       </div>
     </div>
