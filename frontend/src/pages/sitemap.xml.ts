@@ -3,6 +3,7 @@ import { GetServerSideProps } from 'next';
 import { hubAPI } from '@/axios';
 import { PluginIndexData } from '@/types';
 import { Logger } from '@/utils';
+import { getPreRenderManifest } from '@/utils/next';
 
 const logger = new Logger('sitemap.xml.ts');
 
@@ -36,6 +37,12 @@ const HUB_URL_IGNORE_PATTERNS = [
 
   // Plugin preview page
   /\/preview/,
+
+  // Error pages
+  /\/404|500/,
+
+  // MDX pages
+  /\/\[\.\.\.parts\]/,
 ];
 
 /**
@@ -45,16 +52,26 @@ async function getHubEntries(): Promise<SitemapEntry[]> {
   const { getBuildManifest } = await import('@/utils/next');
 
   try {
-    const manifest = getBuildManifest();
+    const buildManifest = getBuildManifest();
+    const preRenderManifest = getPreRenderManifest();
 
-    if (manifest) {
-      return Object.keys(manifest.pages)
+    const entries: SitemapEntry[] = [];
+    const entryUrls = [
+      ...Object.keys(buildManifest?.pages ?? {}),
+      ...Object.keys(preRenderManifest?.routes ?? {}),
+    ];
+
+    entries.push(
+      ...entryUrls
         .filter(
           (url) =>
             !HUB_URL_IGNORE_PATTERNS.some((pattern) => pattern.exec(url)),
         )
-        .map((url) => ({ url }));
-    }
+        .map((url) => url.replace('/en/', '/'))
+        .map((url) => ({ url })),
+    );
+
+    return entries;
   } catch (err) {
     logger.error('Unable to read Next.js build manifest:', err);
   }
