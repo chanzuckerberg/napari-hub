@@ -98,7 +98,7 @@ function PluginCenterColumn() {
       />
 
       {/* Plugin categories */}
-      <ul className="mt-5 text-xs flex flex-wrap gap-2">
+      <ul className="mt-5 text-xs flex flex-wrap gap-2 overflow-x-auto">
         <SkeletonLoader
           render={() =>
             plugin?.category_hierarchy &&
