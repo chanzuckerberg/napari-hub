@@ -3,7 +3,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import clsx from 'clsx';
 import { useTranslation } from 'next-i18next';
-import { Fragment, useRef } from 'react';
+import { Fragment, useRef, useState } from 'react';
 
 import { Link } from '@/components/common/Link';
 import { useSearchStore } from '@/store/search/context';
@@ -37,6 +37,8 @@ export function CategoryChip({
   const [t] = useTranslation(['common', 'pluginData']);
   const { searchStore } = useSearchStore();
   const iconRef = useRef<HTMLButtonElement>(null);
+  const [open, setOpen] = useState(false);
+
   const chipBody = category
     ? t(`pluginData:category.labels.${category}` as I18nKeys<'common'>)
     : categoryHierarchy?.map((term, index) => (
@@ -85,6 +87,9 @@ export function CategoryChip({
           {hasTooltip && (
             <Tooltip
               arrow
+              open={open}
+              onOpen={() => setOpen(true)}
+              onClose={() => setOpen(false)}
               leaveDelay={0}
               classes={{
                 arrow:
@@ -115,6 +120,11 @@ export function CategoryChip({
               <button
                 className="p-2 pr-3 flex items-center justify-center"
                 ref={iconRef}
+                onClick={(event) => {
+                  // Open tooltip when clicking on tooltip info button.
+                  event.preventDefault();
+                  setOpen(true);
+                }}
                 type="button"
               >
                 <InfoOutlinedIcon className="w-3 h-3" />
