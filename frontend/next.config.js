@@ -23,6 +23,11 @@ const previewOptions = isPreview
       exportPathMap() {
         return {
           '/preview': { page: '/preview' },
+
+          // By default Next.js, will assign the /404 page to the /_error page,
+          // so we need to manually reassign it to the /404 page to prevent i18n
+          // build errors: https://bit.ly/3G6WyvA
+          '/404': { page: '/404' },
         };
       },
     }
