@@ -44,7 +44,10 @@ export function CategoryChip({
     : categoryHierarchy?.map((term, index) => (
         <Fragment key={`${dimension}-${term}`}>
           {index === 0 ? (
-            <Link className="underline" href={`/?workflowStep=${term}`}>
+            <Link
+              className="underline"
+              href={`/?${STATE_KEY_MAP[dimension] ?? ''}=${term}`}
+            >
               {t(`pluginData:category.labels.${term}` as I18nKeys<'common'>)}
             </Link>
           ) : (
