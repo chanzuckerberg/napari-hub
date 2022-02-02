@@ -1,5 +1,6 @@
 {
   "githubRepo": "Github repo",
+  "napariHubCollab": "The napari hub is a service of the <hubLink href='https://chanzuckerberg.com/science/programs-resources/imaging'>Chan Zuckerberg Initiative</hubLink> in collaboration with <hubLink href='https://napari.org'>napari.</hubLink",
 
   "alt": {
     "goToCzi": "Go to Chan Zuckerberg Initiative main website.",

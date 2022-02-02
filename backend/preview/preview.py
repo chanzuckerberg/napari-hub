@@ -213,12 +213,8 @@ def parse_meta(pkg_pth):
         else:
             meta[field] = getattr(pkg_info, attr)
 
-    # try to github pattern match home page if code_repository still hasn't been found
-    if not meta.get("code_repository"):
-        proj_site = meta["project_site"]
-        match = github_pattern.match(proj_site)
-        if match:
-            meta["code_repository"] = match.group(0)
+    # try to github pattern match project site for source code URL if needed
+    populate_source_code_url(meta)
 
     return meta
 
@@ -265,3 +261,12 @@ def get_pypi_date_meta(meta):
     meta["release_date"] = release_date
     meta["first_released"] = first_released
 
+def populate_source_code_url(meta):
+    """Pattern match project_site as GitHub URL when source code url missing
+
+    :param meta: dictionary of plugin metadata
+    """
+    if not "code_repository" in meta and "project_site" in meta:
+        match = github_pattern.match(meta["project_site"])
+        if match:
+            meta["code_repository"] = match.group(0)
