@@ -9,7 +9,7 @@ from pynamodb.exceptions import DoesNotExist
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
 from api.s3 import cache
-from api.entity import Plugin, ExcludedPlugin, Category, save_plugin_entity
+from api.entity import Plugin, ExcludedPlugin, Category, save_plugin_entity, get_latest_plugins
 from utils.utils import render_description, get_attribute
 from api.zulip import notify_packages
 from category.edam import get_edam_mappings
@@ -28,8 +28,8 @@ def get_public_plugins() -> Dict[str, str]:
     :return: dict of public plugins and their versions
     """
     return {
-        plugin.name: plugin.version for plugin in
-        Plugin.scan(Plugin.visibility == 'public', attributes_to_get=['name', 'version'])
+        plugin.name: plugin.version for plugin in get_latest_plugins(
+            Plugin.scan(Plugin.visibility == 'public', attributes_to_get=['name', 'version']))
     }
 
 
@@ -40,8 +40,8 @@ def get_hidden_plugins() -> Dict[str, str]:
     :return: dict of hidden plugins and their versions
     """
     return {
-        plugin.name: plugin.version for plugin in
-        Plugin.scan(Plugin.visibility == 'hidden', attributes_to_get=['name', 'version'])
+        plugin.name: plugin.version for plugin in get_latest_plugins(
+            Plugin.scan(Plugin.visibility == 'hidden', attributes_to_get=['name', 'version']))
     }
 
 
@@ -52,8 +52,8 @@ def get_valid_plugins() -> Dict[str, str]:
     :return: dict of valid plugins and their versions
     """
     return {
-        plugin.name: plugin.version for plugin in
-        Plugin.scan(Plugin.visibility.is_in(valid_visibility), attributes_to_get=['name', 'version'])
+        plugin.name: plugin.version for plugin in get_latest_plugins(
+            Plugin.scan(Plugin.visibility.is_in(valid_visibility), attributes_to_get=['name', 'version']))
     }
 
 
@@ -67,8 +67,9 @@ def get_plugin(plugin: str, version: str = None) -> dict:
     """
     match = None
     if not version:
-        for entity in Plugin.query(plugin, scan_index_forward=False, limit=1):
+        for entity in get_latest_plugins(Plugin.query(plugin)):
             match = entity
+            break
     else:
         try:
             match = Plugin.get(plugin, version)
@@ -86,8 +87,8 @@ def get_index() -> List[dict]:
     :return: list of plugin index metadata
     """
     return [
-        plugin.attribute_values for plugin in
-        Plugin.scan(Plugin.visibility == 'public', attributes_to_get=index_subset)
+        plugin.attribute_values for plugin in get_latest_plugins(
+            Plugin.scan(Plugin.visibility == 'public', attributes_to_get=index_subset))
     ]
 
 

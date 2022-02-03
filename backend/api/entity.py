@@ -1,5 +1,7 @@
 import os
 import json
+from typing import List, Iterator
+from packaging import version
 from pynamodb.models import Model
 from pynamodb.attributes import UnicodeAttribute, ListAttribute, MapAttribute
 
@@ -81,6 +83,23 @@ def save_plugin_entity(name: str, metadata: dict):
         category=metadata.get("category"),
         category_hierarchy=metadata.get("category_hierarchy")
     ).save()
+
+
+def get_latest_plugins(plugins: Iterator[Plugin]) -> List[Plugin]:
+    """
+    Return only the latest version of plugins.
+
+    :param plugins: list of plugins
+    :return plugin filtered to latest version
+    """
+    latest = {}
+    for plugin in plugins:
+        if plugin.name in latest:
+            if version.parse(plugin.version) > version.parse(latest[plugin.name].version):
+                latest[plugin.name] = plugin
+        else:
+            latest[plugin.name] = plugin
+    return list(latest.values())
 
 
 class MapAttributeEncoder(json.JSONEncoder):
