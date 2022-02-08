@@ -20,22 +20,6 @@ endpoint_url = os.environ.get('BOTO_ENDPOINT_URL', None)
 s3_client = boto3.client("s3", endpoint_url=endpoint_url, config=Config(max_pool_connections=50))
 
 
-def cache_available(key: str) -> bool:
-    """
-    Check if cache is available for the key.
-
-    :param key: key to check in s3
-    :return: True iff cache exists
-    """
-    if bucket is None:
-        return False
-    try:
-        s3_client.head_object(Bucket=bucket, Key=os.path.join(bucket_path, key))
-        return True
-    except ClientError:
-        return False
-
-
 def get_cache(key: str) -> Union[Dict, List, None]:
     """
     Get the cached file for a given key if exists, None otherwise.
@@ -43,9 +27,9 @@ def get_cache(key: str) -> Union[Dict, List, None]:
     :param key: key to the cache to get
     :return: file content for the key if exists, None otherwise
     """
-    if cache_available(key):
+    try:
         return json.loads(s3_client.get_object(Bucket=bucket, Key=os.path.join(bucket_path, key))['Body'].read())
-    else:
+    except ClientError:
         print(f"Not cached: {key}")
         return None
 
