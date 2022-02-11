@@ -1,9 +1,8 @@
 import os
 from apig_wsgi import make_lambda_handler
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
-from flask import Flask, Response, jsonify
+from flask import Flask, Response, jsonify, send_from_directory
 from flask_githubapp.core import GitHubApp
-from flask_swagger_ui import get_swaggerui_blueprint
 
 from api.model import get_public_plugins, get_index, get_plugin, get_excluded_plugins, update_cache, \
     move_artifact_to_s3, get_category_mapping, get_categories_mapping
@@ -18,8 +17,6 @@ app = Flask(__name__)
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 app.url_map.redirect_defaults = False
 preview_app = Flask("Preview")
-prefix = f"/{os.getenv('BUCKET_PATH', '')}".strip("/")
-app.register_blueprint(get_swaggerui_blueprint(prefix, f'{prefix}/static/swagger.yml'))
 
 if GITHUB_APP_ID and GITHUB_APP_KEY and GITHUB_APP_SECRET:
     preview_app.config['GITHUBAPP_ID'] = int(GITHUB_APP_ID)
@@ -33,6 +30,11 @@ else:
 
 github_app = GitHubApp(preview_app)
 handler = make_lambda_handler(app.wsgi_app)
+
+
+@app.route('/')
+def swagger() -> Response:
+    return send_from_directory('static', 'index.html')
 
 
 @app.route('/plugins/index')
@@ -100,8 +102,3 @@ def handle_exception(e) -> Response:
 @github_app.on("workflow_run.completed")
 def preview():
     move_artifact_to_s3(github_app.payload, github_app.installation_client)
-
-
-if __name__ == '__main__':
-    app.debug=True
-    app.run(port=12345)

@@ -13,4 +13,3 @@ setuptools
 wheel
 pkginfo
 datadog-lambda
-flask_swagger_ui
