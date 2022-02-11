@@ -52,7 +52,7 @@ paths:
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/Plugins"
+              $ref: "#/definitions/Plugin"
   /plugins/excluded:
     get:
       tags:
@@ -65,9 +65,7 @@ paths:
         "200":
           description: "successful operation"
           schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/Plugins"
+            $ref: "#/definitions/ExcludedPlugin"
   /plugins/{name}:
     get:
       tags:
@@ -87,8 +85,38 @@ paths:
           description: "successful operation"
           schema:
             $ref: "#/definitions/Plugin"
-
-
+  /categories:
+    get:
+      tags:
+        - "categories"
+      summary: "List all categories"
+      description: "List all category mappings from category name to hub naming"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Categories"
+  /categories/{category}:
+    get:
+      tags:
+        - "categories"
+      summary: "Get plugin info by name"
+      description: "Returns plugin for the given name"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "category"
+          in: "path"
+          description: "name of category to query"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Category"
   /shields/{name}:
     get:
       tags:
@@ -110,27 +138,30 @@ paths:
             $ref: "#/definitions/Shield"
 definitions:
   Categories:
-    type: "object"
+    type: object
     properties:
-      id:
-        type: "integer"
-        format: "int64"
-      name:
-        type: "string"
+      <mapping>:
+        $ref: "#/definitions/Category"
+  Category:
+    type: array
+    items:
+      type: object
+      properties:
+        dimension:
+          type: string
+        hierarchy:
+          type: array
+          items:
+            type: string
+        label:
+            type: string
   Plugins:
-    type: "object"
-    required:
-    - "name"
-    - "version"
+    type: object
     properties:
-      name:
-        type: "string"
-        example: "napari-demo"
-      version:
-        type: "string"
-        example: "0.1.0"
+      <name>:
+        type: string
   Plugin:
-    type: "object"
+    type: object
     properties:
       authors:
         type: array
@@ -142,11 +173,9 @@ definitions:
           properties:
             name:
               type: string
-              example: "First Last"
             email:
               type: string
               format: email
-              example: "first_last@example.com"
       citations:
         type: object
         required:
@@ -165,67 +194,53 @@ definitions:
             type: string
       code_repository:
         type: string
-        example: "https://github.com/chanzuckerberg/napari-demo"
       description:
         type: string
       description_content_type:
         type: string
-        example: "text/markdown"
       description_text:
         type: string
       development_status:
         type: array
         items:
           type: string
-          example: "Development Status :: 4 - Beta"
       first_released:
         type: string
-        example: "2021-01-27T19:22:41.381119Z"
       license:
         type: string
-        example: "BSD-3-Clause"
       name:
         type: string
-        example: "napari-demo"
       operating_system:
         type: array
         items:
           type: string
-          example: "Operating System :: OS Independent"
       project_site:
         type: string
-        example: "https://github.com/chanzuckerberg/napari-demo"
       python_version:
         type: string
-        example: ">=3.6"
       release_date:
         type: string
-        example: "2022-01-05T22:41:52.115757Z"
       report_issues:
         type: string
-        example: "https://github.com/chanzuckerberg/napari-demo/issues"
       requirements:
         type: array
         items:
           type: string
-        example:
-          - "napari-plugin-engine (>=0.1.4)"
-          - "numpy"
       summary:
         type: string
-        example: "https://github.com/chanzuckerberg/napari-demo/issues"
       support:
         type: string
-        example: "https://github.com/chanzuckerberg/napari-demo/issues"
       twitter:
         type: string
-        example: "https://twitter.com/chanzuckerberg"
       version:
         type: string
-        example: "0.1.0"
       visibility:
         type: string
-        example: "public"
+  ExcludedPlugin:
+    type: object
+    properties:
+      <name>:
+        type: string
   Shield:
     type: "object"
     required:
@@ -234,19 +249,13 @@ definitions:
     properties:
       color:
         type: "string"
-        example: "#0074B8"
       label:
         type: "string"
-        example: "napari-hub"
       logoSvg:
         type: "string"
-        example: "<svg width=\"512\" height=\"512\" viewBox=\"0 0 512 512\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><circle cx=\"256.036\" cy=\"256\" r=\"85.3333\" fill=\"white\" stroke=\"white\" stroke-width=\"56.8889\"/><circle cx=\"256.036\" cy=\"42.6667\" r=\"42.6667\" fill=\"white\"/><circle cx=\"256.036\" cy=\"469.333\" r=\"42.6667\" fill=\"white\"/><path d=\"M256.036 28.4445L256.036 142.222\" stroke=\"white\" stroke-width=\"56.8889\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M256.036 369.778L256.036 483.556\" stroke=\"white\" stroke-width=\"56.8889\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><circle cx=\"71.2838\" cy=\"149.333\" r=\"42.6667\" transform=\"rotate(-60 71.2838 149.333)\" fill=\"white\"/><circle cx=\"440.788\" cy=\"362.667\" r=\"42.6667\" transform=\"rotate(-60 440.788 362.667)\" fill=\"white\"/><path d=\"M58.967 142.222L157.501 199.111\" stroke=\"white\" stroke-width=\"56.8889\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M354.57 312.889L453.105 369.778\" stroke=\"white\" stroke-width=\"56.8889\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><circle cx=\"71.2838\" cy=\"362.667\" r=\"42.6667\" transform=\"rotate(-120 71.2838 362.667)\" fill=\"white\"/><circle cx=\"440.788\" cy=\"149.333\" r=\"42.6667\" transform=\"rotate(-120 440.788 149.333)\" fill=\"white\"/><path d=\"M58.967 369.778L157.501 312.889\" stroke=\"white\" stroke-width=\"56.8889\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M354.57 199.111L453.105 142.222\" stroke=\"white\" stroke-width=\"56.8889\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"
       message:
-        type: "string"
-        example: "napari-demo"
+        type: string
       schemaVersion:
-        type: "integer"
-        example: 1
+        type: integer
       style:
-        type: "string"
-        example: "flat-square"
+        type: string
