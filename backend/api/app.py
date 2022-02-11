@@ -19,7 +19,7 @@ app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 app.url_map.redirect_defaults = False
 preview_app = Flask("Preview")
 
-app.register_blueprint(get_swaggerui_blueprint('', '/static/swagger.yml'))
+app.register_blueprint(get_swaggerui_blueprint(f"/{os.getenv('BUCKET_PATH', '')}".strip("/"), '/static/swagger.yml'))
 
 if GITHUB_APP_ID and GITHUB_APP_KEY and GITHUB_APP_SECRET:
     preview_app.config['GITHUBAPP_ID'] = int(GITHUB_APP_ID)
