@@ -1,0 +1,252 @@
+swagger: "2.0"
+info:
+  description: "This is the napari hub API for discovering napari plugins"
+  version: "1.0.0"
+  title: "Napari Hub API"
+  contact:
+    email: "team@napari-hub.org"
+  license:
+    name: "MIT License"
+    url: "https://github.com/chanzuckerberg/napari-hub/blob/main/LICENSE"
+host: "api.napari-hub.org"
+tags:
+- name: "plugins"
+  description: "everything about plugins"
+  externalDocs:
+    description: "Find out more"
+    url: "https://napari.org/plugins/stable/index.html"
+- name: "categories"
+  description: "everything about napari hub categories"
+- name: "shields"
+  description: "Get napari hub badge for plugin"
+  externalDocs:
+    description: "Find out more"
+    url: "https://shields.io/"
+schemes:
+- "https"
+paths:
+  /plugins:
+    get:
+      tags:
+      - "plugins"
+      summary: "List all plugins"
+      description: ""
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Plugins"
+  /plugins/index:
+    get:
+      tags:
+      - "plugins"
+      summary: "Get plugin information for index page"
+      description: ""
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Plugins"
+  /plugins/excluded:
+    get:
+      tags:
+      - "plugins"
+      summary: "Get excluded plugins"
+      description: ""
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Plugins"
+  /plugins/{name}:
+    get:
+      tags:
+      - "plugins"
+      summary: "Get plugin info by name"
+      description: "Returns plugin for the given name"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "name of plugin to query"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Plugin"
+
+
+  /shields/{name}:
+    get:
+      tags:
+      - "shields"
+      summary: "Get shield by name"
+      description: "Returns shield for the given name"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "name of plugin to query"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Shield"
+definitions:
+  Categories:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+  Plugins:
+    type: "object"
+    required:
+    - "name"
+    - "version"
+    properties:
+      name:
+        type: "string"
+        example: "napari-demo"
+      version:
+        type: "string"
+        example: "0.1.0"
+  Plugin:
+    type: "object"
+    properties:
+      authors:
+        type: array
+        items:
+          type: object
+          required:
+          - "name"
+          - "email"
+          properties:
+            name:
+              type: string
+              example: "First Last"
+            email:
+              type: string
+              format: email
+              example: "first_last@example.com"
+      citations:
+        type: object
+        required:
+        - "APA"
+        - "BibTex"
+        - "RIS"
+        - "citation"
+        properties:
+          APA:
+            type: string
+          BibTex:
+            type: string
+          RIS:
+            type: string
+          citation:
+            type: string
+      code_repository:
+        type: string
+        example: "https://github.com/chanzuckerberg/napari-demo"
+      description:
+        type: string
+      description_content_type:
+        type: string
+        example: "text/markdown"
+      description_text:
+        type: string
+      development_status:
+        type: array
+        items:
+          type: string
+          example: "Development Status :: 4 - Beta"
+      first_released:
+        type: string
+        example: "2021-01-27T19:22:41.381119Z"
+      license:
+        type: string
+        example: "BSD-3-Clause"
+      name:
+        type: string
+        example: "napari-demo"
+      operating_system:
+        type: array
+        items:
+          type: string
+          example: "Operating System :: OS Independent"
+      project_site:
+        type: string
+        example: "https://github.com/chanzuckerberg/napari-demo"
+      python_version:
+        type: string
+        example: ">=3.6"
+      release_date:
+        type: string
+        example: "2022-01-05T22:41:52.115757Z"
+      report_issues:
+        type: string
+        example: "https://github.com/chanzuckerberg/napari-demo/issues"
+      requirements:
+        type: array
+        items:
+          type: string
+        example:
+          - "napari-plugin-engine (>=0.1.4)"
+          - "numpy"
+      summary:
+        type: string
+        example: "https://github.com/chanzuckerberg/napari-demo/issues"
+      support:
+        type: string
+        example: "https://github.com/chanzuckerberg/napari-demo/issues"
+      twitter:
+        type: string
+        example: "https://twitter.com/chanzuckerberg"
+      version:
+        type: string
+        example: "0.1.0"
+      visibility:
+        type: string
+        example: "public"
+  Shield:
+    type: "object"
+    required:
+    - "name"
+    - "version"
+    properties:
+      color:
+        type: "string"
+        example: "#0074B8"
+      label:
+        type: "string"
+        example: "napari-hub"
+      logoSvg:
+        type: "string"
+        example: "<svg width=\"512\" height=\"512\" viewBox=\"0 0 512 512\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><circle cx=\"256.036\" cy=\"256\" r=\"85.3333\" fill=\"white\" stroke=\"white\" stroke-width=\"56.8889\"/><circle cx=\"256.036\" cy=\"42.6667\" r=\"42.6667\" fill=\"white\"/><circle cx=\"256.036\" cy=\"469.333\" r=\"42.6667\" fill=\"white\"/><path d=\"M256.036 28.4445L256.036 142.222\" stroke=\"white\" stroke-width=\"56.8889\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M256.036 369.778L256.036 483.556\" stroke=\"white\" stroke-width=\"56.8889\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><circle cx=\"71.2838\" cy=\"149.333\" r=\"42.6667\" transform=\"rotate(-60 71.2838 149.333)\" fill=\"white\"/><circle cx=\"440.788\" cy=\"362.667\" r=\"42.6667\" transform=\"rotate(-60 440.788 362.667)\" fill=\"white\"/><path d=\"M58.967 142.222L157.501 199.111\" stroke=\"white\" stroke-width=\"56.8889\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M354.57 312.889L453.105 369.778\" stroke=\"white\" stroke-width=\"56.8889\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><circle cx=\"71.2838\" cy=\"362.667\" r=\"42.6667\" transform=\"rotate(-120 71.2838 362.667)\" fill=\"white\"/><circle cx=\"440.788\" cy=\"149.333\" r=\"42.6667\" transform=\"rotate(-120 440.788 149.333)\" fill=\"white\"/><path d=\"M58.967 369.778L157.501 312.889\" stroke=\"white\" stroke-width=\"56.8889\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M354.57 199.111L453.105 142.222\" stroke=\"white\" stroke-width=\"56.8889\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"
+      message:
+        type: "string"
+        example: "napari-demo"
+      schemaVersion:
+        type: "integer"
+        example: 1
+      style:
+        type: "string"
+        example: "flat-square"
