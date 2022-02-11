@@ -23,3 +23,14 @@ resource aws_api_gateway_method_settings api_gateway_stage_setting {
     caching_enabled = true
   }
 }
+
+resource aws_api_gateway_method_settings api_gateway_stage_setting {
+  count = var.tags.env == "prod" ? 1 : 0
+  rest_api_id = var.rest_api_id
+  stage_name  = aws_api_gateway_stage.api_stage.stage_name
+  method_path = "/GET"
+
+  settings {
+    caching_enabled = true
+  }
+}
