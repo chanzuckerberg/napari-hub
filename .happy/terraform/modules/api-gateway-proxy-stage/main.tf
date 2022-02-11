@@ -13,7 +13,7 @@ resource aws_api_gateway_stage api_stage {
   }
 }
 
-resource aws_api_gateway_method_settings api_gateway_stage_setting {
+resource aws_api_gateway_method_settings proxy_cache {
   count = var.tags.env == "prod" ? 1 : 0
   rest_api_id = var.rest_api_id
   stage_name  = aws_api_gateway_stage.api_stage.stage_name
@@ -24,7 +24,7 @@ resource aws_api_gateway_method_settings api_gateway_stage_setting {
   }
 }
 
-resource aws_api_gateway_method_settings api_gateway_stage_setting {
+resource aws_api_gateway_method_settings root_cache {
   count = var.tags.env == "prod" ? 1 : 0
   rest_api_id = var.rest_api_id
   stage_name  = aws_api_gateway_stage.api_stage.stage_name
