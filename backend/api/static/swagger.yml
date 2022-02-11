@@ -57,7 +57,7 @@ paths:
     get:
       tags:
       - "plugins"
-      summary: "Get excluded plugins"
+      summary: "List excluded plugins"
       description: ""
       produces:
       - "application/json"
@@ -102,7 +102,7 @@ paths:
     get:
       tags:
         - "categories"
-      summary: "Get plugin info by name"
+      summary: "Get category info by name"
       description: "Returns plugin for the given name"
       produces:
         - "application/json"

@@ -3,6 +3,7 @@ from apig_wsgi import make_lambda_handler
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
 from flask import Flask, Response, jsonify
 from flask_githubapp.core import GitHubApp
+from flask_swagger_ui import get_swaggerui_blueprint
 
 from api.model import get_public_plugins, get_index, get_plugin, get_excluded_plugins, update_cache, \
     move_artifact_to_s3, get_category_mapping, get_categories_mapping
@@ -17,6 +18,8 @@ app = Flask(__name__)
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 app.url_map.redirect_defaults = False
 preview_app = Flask("Preview")
+
+app.register_blueprint(get_swaggerui_blueprint('', '/static/swagger.yml'))
 
 if GITHUB_APP_ID and GITHUB_APP_KEY and GITHUB_APP_SECRET:
     preview_app.config['GITHUBAPP_ID'] = int(GITHUB_APP_ID)
