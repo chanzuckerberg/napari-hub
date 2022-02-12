@@ -107,3 +107,9 @@ def handle_exception(e) -> Response:
 @github_app.on("workflow_run.completed")
 def preview():
     move_artifact_to_s3(github_app.payload, github_app.installation_client)
+
+
+@app.after_request
+def add_header(response):
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    return response
