@@ -34,7 +34,7 @@ handler = make_lambda_handler(app.wsgi_app)
 
 @app.route('/')
 def index():
-    return render_template('index.html', stack="/" + os.getenv('BUCKET_PATH') if 'BUCKET_PATH' in os.environ else '')
+    return render_template('index.html', stack="/" + os.getenv('BUCKET_PATH') if os.getenv('BUCKET_PATH') else '')
 
 
 @app.route('/swagger.yml')
@@ -113,3 +113,7 @@ def preview():
 def add_header(response):
     response.headers['Access-Control-Allow-Origin'] = '*'
     return response
+
+
+if __name__ == '__main__':
+    app.run(port=12345)
