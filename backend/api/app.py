@@ -1,7 +1,7 @@
 import os
 from apig_wsgi import make_lambda_handler
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
-from flask import Flask, Response, jsonify
+from flask import Flask, Response, jsonify, send_from_directory, render_template
 from flask_githubapp.core import GitHubApp
 
 from api.model import get_public_plugins, get_index, get_plugin, get_excluded_plugins, update_cache, \
@@ -32,8 +32,18 @@ github_app = GitHubApp(preview_app)
 handler = make_lambda_handler(app.wsgi_app)
 
 
+@app.route('/')
+def index():
+    return render_template('index.html', stack="/" + os.getenv('BUCKET_PATH') if 'BUCKET_PATH' in os.environ else '')
+
+
+@app.route('/swagger.yml')
+def swagger() -> Response:
+    return send_from_directory('static', 'swagger.yml')
+
+
 @app.route('/plugins/index')
-def index() -> Response:
+def plugin_index() -> Response:
     return jsonify(get_index())
 
 
@@ -97,3 +107,9 @@ def handle_exception(e) -> Response:
 @github_app.on("workflow_run.completed")
 def preview():
     move_artifact_to_s3(github_app.payload, github_app.installation_client)
+
+
+@app.after_request
+def add_header(response):
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    return response
