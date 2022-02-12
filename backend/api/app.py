@@ -34,7 +34,7 @@ handler = make_lambda_handler(app.wsgi_app)
 
 @app.route('/')
 def index():
-    return render_template('index.html', stack=os.getenv('BUCKET_PATH') + "/" if 'BUCKET_PATH' in os.environ else '')
+    return render_template('index.html', stack="/" + os.getenv('BUCKET_PATH') if 'BUCKET_PATH' in os.environ else '')
 
 
 @app.route('/swagger.yml')
