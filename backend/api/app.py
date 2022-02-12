@@ -33,12 +33,17 @@ handler = make_lambda_handler(app.wsgi_app)
 
 
 @app.route('/')
-def swagger() -> Response:
+def index() -> Response:
     return send_from_directory('static', 'index.html')
 
 
+@app.route('/swagger.yml')
+def swagger() -> Response:
+    return send_from_directory('static', 'swagger.yml')
+
+
 @app.route('/plugins/index')
-def index() -> Response:
+def plugin_index() -> Response:
     return jsonify(get_index())
 
 
@@ -102,7 +107,3 @@ def handle_exception(e) -> Response:
 @github_app.on("workflow_run.completed")
 def preview():
     move_artifact_to_s3(github_app.payload, github_app.installation_client)
-
-
-if __name__ == '__main__':
-    app.run(port=12345)
