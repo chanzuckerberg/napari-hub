@@ -1,7 +1,7 @@
 import os
 from apig_wsgi import make_lambda_handler
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
-from flask import Flask, Response, jsonify, send_from_directory
+from flask import Flask, Response, jsonify, send_from_directory, render_template
 from flask_githubapp.core import GitHubApp
 
 from api.model import get_public_plugins, get_index, get_plugin, get_excluded_plugins, update_cache, \
@@ -33,8 +33,8 @@ handler = make_lambda_handler(app.wsgi_app)
 
 
 @app.route('/')
-def index() -> Response:
-    return send_from_directory('static', 'index.html')
+def index():
+    return render_template('index.html', stack=os.getenv('BUCKET_PATH') + "/" if 'BUCKET_PATH' in os.environ else '')
 
 
 @app.route('/swagger.yml')
