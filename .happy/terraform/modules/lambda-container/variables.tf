@@ -1,11 +1,6 @@
-variable custom_stack_name {
+variable function_name {
   type        = string
-  description = "Please provide the stack name"
-}
-
-variable app_name {
-  type        = string
-  description = "Please provide the ECS service name"
+  description = "Please provide the function name"
 }
 
 variable timeout {
