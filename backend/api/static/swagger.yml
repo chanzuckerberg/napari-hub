@@ -1,261 +1,247 @@
-swagger: "2.0"
+openapi: 3.0.3
 info:
-  description: "This is the napari hub API for discovering napari plugins"
-  version: "1.0.0"
-  title: "Napari Hub API"
+  version: 0.1.0
+  description: napari hub api
+  title: Napari Hub API
   contact:
-    email: "team@napari-hub.org"
+    email: team@napari-hub.org
   license:
-    name: "MIT License"
-    url: "https://github.com/chanzuckerberg/napari-hub/blob/main/LICENSE"
-host: "api.napari-hub.org"
+    name: MIT License
+    url: https://github.com/chanzuckerberg/napari-hub/blob/main/LICENSE
+servers:
+  - url: https://api.napari-hub.org
+  - url: https://api.staging.napari-hub.org
+    description: staging server that may have unreleased features and changes
 tags:
-- name: "plugins"
-  description: "everything about plugins"
-  externalDocs:
-    description: "Find out more"
-    url: "https://napari.org/plugins/stable/index.html"
-- name: "categories"
-  description: "everything about napari hub categories"
-- name: "shields"
-  description: "Get napari hub badge for plugin"
-  externalDocs:
-    description: "Find out more"
-    url: "https://shields.io/"
-schemes:
-- "https"
+  - name: plugins
+    description: List, query, and fetch information about plugins
+    externalDocs:
+      description: Find out more
+      url: https://napari.org/plugins/stable/index.html
+  - name: categories
+    description: list, query, and fetch napari hub categories information
+  - name: shields
+    description: Generate json with shields.io integration for plugin
+    externalDocs:
+      description: Find out more
+      url: https://shields.io/
 paths:
   /plugins:
     get:
+      summary: List all public plugins
       tags:
-      - "plugins"
-      summary: "List all plugins"
-      description: ""
-      produces:
-      - "application/json"
+        - plugins
       responses:
-        "200":
-          description: "successful operation"
-          schema:
-            $ref: "#/definitions/Plugins"
-  /plugins/index:
-    get:
-      tags:
-      - "plugins"
-      summary: "Get plugin information for index page"
-      description: ""
-      produces:
-      - "application/json"
-      responses:
-        "200":
-          description: "successful operation"
-          schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/Plugin"
+        200:
+          description: The return json is a mapping between plugin name and their latest version
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Plugins'
   /plugins/excluded:
     get:
+      summary: List excluded plugins
       tags:
-      - "plugins"
-      summary: "List excluded plugins"
-      description: ""
-      produces:
-      - "application/json"
+        - plugins
       responses:
-        "200":
-          description: "successful operation"
-          schema:
-            $ref: "#/definitions/ExcludedPlugin"
+        200:
+          description: The return json is a mapping between the excluded plugin name and exclusion status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExcludedPlugin'
   /plugins/{name}:
     get:
+      summary: Get plugin info by name
       tags:
-      - "plugins"
-      summary: "Get plugin info by name"
-      description: "Returns plugin for the given name"
-      produces:
-      - "application/json"
+        - plugins
       parameters:
-      - name: "name"
-        in: "path"
-        description: "name of plugin to query"
+      - name: name
+        in: path
+        description: name of plugin to query
         required: true
-        type: "string"
+        schema:
+          type: string
       responses:
-        "200":
-          description: "successful operation"
-          schema:
-            $ref: "#/definitions/Plugin"
+        200:
+          description: The return json object maps to plugin metadata, and is empty if the plugin name is invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Plugin'
   /categories:
     get:
+      summary: List all categories
       tags:
-        - "categories"
-      summary: "List all categories"
-      description: "List all category mappings from category name to hub naming"
-      produces:
-        - "application/json"
+        - categories
+      description: This endpoint returns latest version of napari hub category label mapping
       responses:
-        "200":
-          description: "successful operation"
-          schema:
-            $ref: "#/definitions/Categories"
+        200:
+          description: The return json objects maps recognized category name to napari hub label, including their hierarchy and dimension
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Categories'
   /categories/{category}:
     get:
+      summary: Get category info by name
       tags:
-        - "categories"
-      summary: "Get category info by name"
-      description: "Returns plugin for the given name"
-      produces:
-        - "application/json"
+        - categories
       parameters:
-        - name: "category"
-          in: "path"
-          description: "name of category to query"
+        - name: category
+          in: path
+          description: name of category to query
           required: true
-          type: "string"
-      responses:
-        "200":
-          description: "successful operation"
           schema:
-            $ref: "#/definitions/Category"
+            type: string
+      responses:
+        200:
+          description: The returned json is a list of mappings from the given name to napari hub labels
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
   /shields/{name}:
     get:
+      summary: Get shield by name
       tags:
-      - "shields"
-      summary: "Get shield by name"
-      description: "Returns shield for the given name"
-      produces:
-      - "application/json"
+        - shields
+      description: The return json can be used in shields.io to generate a badge to display in plugin page
       parameters:
-      - name: "name"
-        in: "path"
-        description: "name of plugin to query"
+      - name: name
+        in: path
+        description: name of plugin to create badge
         required: true
-        type: "string"
+        schema:
+          type: string
       responses:
-        "200":
-          description: "successful operation"
-          schema:
-            $ref: "#/definitions/Shield"
-definitions:
-  Categories:
-    type: object
-    properties:
-      <mapping>:
-        $ref: "#/definitions/Category"
-  Category:
-    type: array
-    items:
+        200:
+          description: The return json can be used with shields.io endpoint to generate a napari hub shield for display
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Shield'
+components:
+  schemas:
+    Categories:
       type: object
       properties:
-        dimension:
+        <mapping>:
+          $ref: '#/components/schemas/Category'
+    Category:
+      type: array
+      items:
+        type: object
+        properties:
+          dimension:
+            type: string
+          hierarchy:
+            type: array
+            items:
+              type: string
+          label:
+            type: string
+    Plugins:
+      type: object
+      properties:
+        name:
           type: string
-        hierarchy:
+    Plugin:
+      type: object
+      properties:
+        authors:
+          type: array
+          items:
+            type: object
+            required:
+            - name
+            - email
+            properties:
+              name:
+                type: string
+              email:
+                type: string
+                format: email
+        citations:
+          type: object
+          required:
+          - APA
+          - BibTex
+          - RIS
+          - citation
+          properties:
+            APA:
+              type: string
+            BibTex:
+              type: string
+            RIS:
+              type: string
+            citation:
+              type: string
+        code_repository:
+          type: string
+        description:
+          type: string
+        description_content_type:
+          type: string
+        description_text:
+          type: string
+        development_status:
           type: array
           items:
             type: string
+        first_released:
+          type: string
+        license:
+          type: string
+        name:
+          type: string
+        operating_system:
+          type: array
+          items:
+            type: string
+        project_site:
+          type: string
+        python_version:
+          type: string
+        release_date:
+          type: string
+        report_issues:
+          type: string
+        requirements:
+          type: array
+          items:
+            type: string
+        summary:
+          type: string
+        support:
+          type: string
+        twitter:
+          type: string
+        version:
+          type: string
+        visibility:
+          type: string
+    ExcludedPlugin:
+      type: object
+      properties:
+        <name>:
+          type: string
+    Shield:
+      type: object
+      required:
+      - name
+      - version
+      properties:
+        color:
+          type: string
         label:
-            type: string
-  Plugins:
-    type: object
-    properties:
-      <name>:
-        type: string
-  Plugin:
-    type: object
-    properties:
-      authors:
-        type: array
-        items:
-          type: object
-          required:
-          - "name"
-          - "email"
-          properties:
-            name:
-              type: string
-            email:
-              type: string
-              format: email
-      citations:
-        type: object
-        required:
-        - "APA"
-        - "BibTex"
-        - "RIS"
-        - "citation"
-        properties:
-          APA:
-            type: string
-          BibTex:
-            type: string
-          RIS:
-            type: string
-          citation:
-            type: string
-      code_repository:
-        type: string
-      description:
-        type: string
-      description_content_type:
-        type: string
-      description_text:
-        type: string
-      development_status:
-        type: array
-        items:
           type: string
-      first_released:
-        type: string
-      license:
-        type: string
-      name:
-        type: string
-      operating_system:
-        type: array
-        items:
+        logoSvg:
           type: string
-      project_site:
-        type: string
-      python_version:
-        type: string
-      release_date:
-        type: string
-      report_issues:
-        type: string
-      requirements:
-        type: array
-        items:
+        message:
           type: string
-      summary:
-        type: string
-      support:
-        type: string
-      twitter:
-        type: string
-      version:
-        type: string
-      visibility:
-        type: string
-  ExcludedPlugin:
-    type: object
-    properties:
-      <name>:
-        type: string
-  Shield:
-    type: "object"
-    required:
-    - "name"
-    - "version"
-    properties:
-      color:
-        type: "string"
-      label:
-        type: "string"
-      logoSvg:
-        type: "string"
-      message:
-        type: string
-      schemaVersion:
-        type: integer
-      style:
-        type: string
+        schemaVersion:
+          type: integer
+        style:
+          type: string
