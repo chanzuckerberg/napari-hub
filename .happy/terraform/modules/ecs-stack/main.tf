@@ -111,6 +111,7 @@ module backend_lambda {
     "DD_API_KEY" = local.datadog_api_key
     "DD_ENV" = var.env
     "DD_SERVICE" = local.custom_stack_name
+    "API_URL" = var.env == "dev" ? module.api_gateway_proxy_stage.invoke_url : ""
   }
 
   log_retention_in_days = 14
