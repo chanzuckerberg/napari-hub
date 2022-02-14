@@ -9,10 +9,10 @@ info:
     name: MIT License
     url: https://github.com/chanzuckerberg/napari-hub/blob/main/LICENSE
 servers:
+  {{ local_url }}
   - url: https://api.napari-hub.org
   - url: https://api.staging.napari-hub.org
     description: staging server that may have unreleased features and changes
-  {{ local_url }}
 tags:
   - name: plugins
     description: List, query, and fetch information about plugins
