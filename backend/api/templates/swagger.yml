@@ -63,6 +63,7 @@ paths:
         required: true
         schema:
           type: string
+        example: napari-demo
       responses:
         200:
           description: The return json object maps to plugin metadata, and is empty if the plugin name is invalid
@@ -95,6 +96,7 @@ paths:
           required: true
           schema:
             type: string
+          example: Image segmentation
       responses:
         200:
           description: The returned json is a list of mappings from the given name to napari hub labels
@@ -115,6 +117,7 @@ paths:
         required: true
         schema:
           type: string
+        example: napari-demo
       responses:
         200:
           description: The return json can be used with shields.io endpoint to generate a napari hub shield for display
