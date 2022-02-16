@@ -29,19 +29,21 @@ tags:
 paths:
   /plugins:
     get:
-      summary: List all public plugins
+      summary: query all public plugins (excluding hidden and disabled plugins)
+      description: napari hub allows plugin author to specify visibility for their plugins, we only show public plugins on the hub home page, hidden plugins is available through plugin page while disabled plugin is not indexed at all.
       tags:
         - plugins
       responses:
         200:
-          description: The return json is a mapping between plugin name and their latest version
+          description: The return json is a mapping between public plugin name and their latest version
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Plugins'
   /plugins/excluded:
     get:
-      summary: List excluded plugins
+      summary: query excluded plugins
+      description: this endpoint can be used to see what plugins that napari hub is currently not indexing and the reason for their exclusion, if you have question on a plugin's visibility, please reach out to the plugin author or team@napari-hub.org
       tags:
         - plugins
       responses:
@@ -53,7 +55,7 @@ paths:
                 $ref: '#/components/schemas/ExcludedPlugin'
   /plugins/{name}:
     get:
-      summary: Get plugin info by name
+      summary: query plugin info by pypi pacakge name
       tags:
         - plugins
       parameters:
@@ -66,14 +68,14 @@ paths:
         example: napari-demo
       responses:
         200:
-          description: The return json object maps to plugin metadata, and is empty if the plugin name is invalid
+          description: The return json object maps to plugin metadata, and is empty if the plugin name is invalid or disabled
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Plugin'
   /categories:
     get:
-      summary: List all categories
+      summary: query all categories
       tags:
         - categories
       description: This endpoint returns latest version of napari hub category label mapping
@@ -86,7 +88,8 @@ paths:
                 $ref: '#/components/schemas/Categories'
   /categories/{category}:
     get:
-      summary: Get category info by name
+      summary: query category info by edam term
+      description: this endpoint can be used to map edam terms (case sensitive) to napari hub label
       tags:
         - categories
       parameters:
@@ -106,7 +109,7 @@ paths:
                 $ref: '#/components/schemas/Category'
   /shields/{name}:
     get:
-      summary: Get shield by name
+      summary: Get shield by pypi package name
       tags:
         - shields
       description: The return json can be used in shields.io to generate a badge to display in plugin page
@@ -120,7 +123,7 @@ paths:
         example: napari-demo
       responses:
         200:
-          description: The return json can be used with shields.io endpoint to generate a napari hub shield for display
+          description: The return json can be used with shields.io endpoint to generate a napari hub shield for display, if the package is not a valid napari plugin, it would dispaly 'plugin not found'
           content:
             application/json:
               schema:
