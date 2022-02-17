@@ -1,7 +1,7 @@
 import os
 from apig_wsgi import make_lambda_handler
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
-from flask import Flask, Response, jsonify, send_from_directory, render_template
+from flask import Flask, Response, jsonify, render_template
 from flask_githubapp.core import GitHubApp
 
 from api.model import get_public_plugins, get_index, get_plugin, get_excluded_plugins, update_cache, \
@@ -38,8 +38,8 @@ def index():
 
 
 @app.route('/swagger.yml')
-def swagger() -> Response:
-    return send_from_directory('static', 'swagger.yml')
+def swagger():
+    return render_template('swagger.yml', local_url=f"- url: {os.getenv('API_URL')}" if os.getenv('API_URL') else '')
 
 
 @app.route('/plugins/index')

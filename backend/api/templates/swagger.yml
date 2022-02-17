@@ -1,0 +1,254 @@
+openapi: 3.0.3
+info:
+  version: 0.1.0
+  description: napari hub api
+  title: Napari Hub API
+  contact:
+    email: team@napari-hub.org
+  license:
+    name: MIT License
+    url: https://github.com/chanzuckerberg/napari-hub/blob/main/LICENSE
+servers:
+  {{ local_url }}
+  - url: https://api.napari-hub.org
+  - url: https://api.staging.napari-hub.org
+    description: staging server that may have unreleased features and changes
+tags:
+  - name: plugins
+    description: List, query, and fetch information about plugins
+    externalDocs:
+      description: Find out more
+      url: https://napari.org/plugins/stable/index.html
+  - name: categories
+    description: list, query, and fetch napari hub categories information
+  - name: shields
+    description: Generate json with shields.io integration for plugin
+    externalDocs:
+      description: Find out more
+      url: https://shields.io/
+paths:
+  /plugins:
+    get:
+      summary: query all public plugins (excluding hidden and disabled plugins)
+      description: napari hub allows plugin author to specify visibility for their plugins, we only show public plugins on the hub home page, hidden plugins is available through plugin page while disabled plugin is not indexed at all.
+      tags:
+        - plugins
+      responses:
+        200:
+          description: The return json is a mapping between public plugin name and their latest version
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Plugins'
+  /plugins/excluded:
+    get:
+      summary: query excluded plugins
+      description: this endpoint can be used to see what plugins that napari hub is currently not indexing and the reason for their exclusion, if you have question on a plugin's visibility, please reach out to the plugin author or team@napari-hub.org
+      tags:
+        - plugins
+      responses:
+        200:
+          description: The return json is a mapping between the excluded plugin name and exclusion status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExcludedPlugin'
+  /plugins/{name}:
+    get:
+      summary: query plugin info by pypi pacakge name
+      tags:
+        - plugins
+      parameters:
+      - name: name
+        in: path
+        description: name of plugin to query
+        required: true
+        schema:
+          type: string
+        example: napari-demo
+      responses:
+        200:
+          description: The return json object maps to plugin metadata, and is empty if the plugin name is invalid or disabled
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Plugin'
+  /categories:
+    get:
+      summary: query all categories
+      tags:
+        - categories
+      description: This endpoint returns latest version of napari hub category label mapping
+      responses:
+        200:
+          description: The return json objects maps recognized category name to napari hub label, including their hierarchy and dimension
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Categories'
+  /categories/{category}:
+    get:
+      summary: query category info by edam term
+      description: this endpoint can be used to map edam terms (case sensitive) to napari hub label
+      tags:
+        - categories
+      parameters:
+        - name: category
+          in: path
+          description: name of category to query
+          required: true
+          schema:
+            type: string
+          example: Image segmentation
+      responses:
+        200:
+          description: The returned json is a list of mappings from the given name to napari hub labels
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+  /shields/{name}:
+    get:
+      summary: Get shield by pypi package name
+      tags:
+        - shields
+      description: The return json can be used in shields.io to generate a badge to display in plugin page
+      parameters:
+      - name: name
+        in: path
+        description: name of plugin to create badge
+        required: true
+        schema:
+          type: string
+        example: napari-demo
+      responses:
+        200:
+          description: The return json can be used with shields.io endpoint to generate a napari hub shield for display, if the package is not a valid napari plugin, it would dispaly 'plugin not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Shield'
+components:
+  schemas:
+    Categories:
+      type: object
+      properties:
+        <mapping>:
+          $ref: '#/components/schemas/Category'
+    Category:
+      type: array
+      items:
+        type: object
+        properties:
+          dimension:
+            type: string
+          hierarchy:
+            type: array
+            items:
+              type: string
+          label:
+            type: string
+    Plugins:
+      type: object
+      properties:
+        name:
+          type: string
+    Plugin:
+      type: object
+      properties:
+        authors:
+          type: array
+          items:
+            type: object
+            required:
+            - name
+            - email
+            properties:
+              name:
+                type: string
+              email:
+                type: string
+                format: email
+        citations:
+          type: object
+          required:
+          - APA
+          - BibTex
+          - RIS
+          - citation
+          properties:
+            APA:
+              type: string
+            BibTex:
+              type: string
+            RIS:
+              type: string
+            citation:
+              type: string
+        code_repository:
+          type: string
+        description:
+          type: string
+        description_content_type:
+          type: string
+        description_text:
+          type: string
+        development_status:
+          type: array
+          items:
+            type: string
+        first_released:
+          type: string
+        license:
+          type: string
+        name:
+          type: string
+        operating_system:
+          type: array
+          items:
+            type: string
+        project_site:
+          type: string
+        python_version:
+          type: string
+        release_date:
+          type: string
+        report_issues:
+          type: string
+        requirements:
+          type: array
+          items:
+            type: string
+        summary:
+          type: string
+        support:
+          type: string
+        twitter:
+          type: string
+        version:
+          type: string
+        visibility:
+          type: string
+    ExcludedPlugin:
+      type: object
+      properties:
+        <name>:
+          type: string
+    Shield:
+      type: object
+      required:
+      - name
+      - version
+      properties:
+        color:
+          type: string
+        label:
+          type: string
+        logoSvg:
+          type: string
+        message:
+          type: string
+        schemaVersion:
+          type: integer
+        style:
+          type: string

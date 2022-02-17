@@ -47,6 +47,7 @@ locals {
   datadog_api_key = try(local.secret["datadog"]["api_key"], "")
 
   frontend_url = var.frontend_url != "" ? var.frontend_url: try(join("", ["https://", module.frontend_dns.dns_prefix, ".", local.external_dns]), var.frontend_url)
+  backend_function_name = "${local.custom_stack_name}-backend"
 }
 
 module frontend_dns {
@@ -85,8 +86,7 @@ module frontend_service {
 
 module backend_lambda {
   source             = "../lambda-container"
-  custom_stack_name  = local.custom_stack_name
-  app_name           = "backend"
+  function_name      = local.backend_function_name
   image              = "${local.backend_image_repo}:${local.image_tag}"
   cmd                = local.backend_cmd
   tags               = var.tags
@@ -111,6 +111,7 @@ module backend_lambda {
     "DD_API_KEY" = local.datadog_api_key
     "DD_ENV" = var.env
     "DD_SERVICE" = local.custom_stack_name
+    "API_URL" = var.env == "dev" ? module.api_gateway_proxy_stage.invoke_url : ""
   }
 
   log_retention_in_days = 14
@@ -119,7 +120,7 @@ module backend_lambda {
 
 module api_gateway_proxy_stage {
   source               = "../api-gateway-proxy-stage"
-  lambda_function_name = module.backend_lambda.function_name
+  lambda_function_name = local.backend_function_name
   tags                 = var.tags
   custom_stack_name    = local.custom_stack_name
   app_name             = "backend"

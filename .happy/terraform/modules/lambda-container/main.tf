@@ -1,13 +1,9 @@
-locals {
-  name = "${var.custom_stack_name}-${var.app_name}"
-}
-
 module lambda {
   source  = "terraform-aws-modules/lambda/aws"
   version = "2.0.0"
   publish = var.provisioned_lambda == -1 ? false : true
 
-  function_name          = local.name
+  function_name          = var.function_name
   description            = var.description
   tags                   = var.tags
   create_package         = false
@@ -21,7 +17,7 @@ module lambda {
 
   memory_size                       = var.memory_size
   kms_key_arn                       = var.kms_key_arn
-  role_name                         = local.name
+  role_name                         = var.function_name
   role_path                         = var.lambda_role_path
   lambda_at_edge                    = var.at_edge
   cloudwatch_logs_retention_in_days = var.log_retention_in_days
