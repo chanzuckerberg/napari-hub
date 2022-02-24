@@ -28,7 +28,7 @@ resource aws_api_gateway_method_settings root_cache {
   count = var.tags.env == "prod" ? 1 : 0
   rest_api_id = var.rest_api_id
   stage_name  = aws_api_gateway_stage.api_stage.stage_name
-  method_path = "/GET"
+  method_path = "~1/GET"
 
   settings {
     caching_enabled = true
