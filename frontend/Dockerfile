@@ -11,6 +11,8 @@ RUN yarn install
 # Build for production
 COPY . /app
 ARG ENV
+ARG DATADOG_RUM_APP_ID
+ARG DATADOG_RUM_CLIENT_TOKEN
 RUN yarn build
 
 # Application image

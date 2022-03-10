@@ -38,6 +38,8 @@ jobs:
       - name: Create update dev
         if: ${{ github.event_name == 'push' }}
         env:
+          DATADOG_RUM_APP_ID: ${{ secrets.DATADOG_RUM_APP_ID }}
+          DATADOG_RUM_CLIENT_TOKEN: ${{ secrets.DATADOG_RUM_CLIENT_TOKEN }}
           TFE_TOKEN: ${{ secrets.TFE_TOKEN }}
         run: |
           pip install --upgrade pip

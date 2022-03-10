@@ -5,7 +5,7 @@ on:
     branches:
       - main
     tags:
-      - "v*"
+      - 'v*'
 
 jobs:
   prod:
@@ -30,6 +30,8 @@ jobs:
       - name: Deploy Changes
         shell: bash
         env:
+          DATADOG_RUM_APP_ID: ${{ secrets.DATADOG_RUM_APP_ID }}
+          DATADOG_RUM_CLIENT_TOKEN: ${{ secrets.DATADOG_RUM_CLIENT_TOKEN }}
           ENV: prod
           TFE_TOKEN: ${{ secrets.TFE_TOKEN }}
         run: |
@@ -58,6 +60,8 @@ jobs:
       - name: Deploy Changes
         shell: bash
         env:
+          DATADOG_RUM_APP_ID: ${{ secrets.DATADOG_RUM_APP_ID }}
+          DATADOG_RUM_CLIENT_TOKEN: ${{ secrets.DATADOG_RUM_CLIENT_TOKEN }}
           ENV: staging
           TFE_TOKEN: ${{ secrets.TFE_TOKEN }}
         run: |

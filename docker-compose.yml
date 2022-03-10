@@ -31,6 +31,8 @@ services:
         - HAPPY_BRANCH
         - HAPPY_TAG
         - ENV
+        - DATADOG_RUM_APP_ID
+        - DATADOG_RUM_CLIENT_TOKEN
     restart: always
     depends_on:
       - backend

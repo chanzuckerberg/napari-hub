@@ -10,5 +10,7 @@ declare namespace NodeJS {
     readonly PLAUSIBLE: 'true' | 'false';
     readonly PREVIEW: string;
     readonly PREVIEW_PULL_REQUEST: string;
+    readonly DATADOG_RUM_APP_ID: string;
+    readonly DATADOG_RUM_CLIENT_TOKEN: string;
   }
 }

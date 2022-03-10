@@ -81,6 +81,10 @@ module.exports = {
         PLAUSIBLE: JSON.stringify(
           ['prod', 'staging'].includes(process.env.ENV),
         ),
+
+        // Variables for enabling Datadog RUM.
+        DATADOG_RUM_APP_ID: '',
+        DATADOG_RUM_CLIENT_TOKEN: '',
       }),
     );
 

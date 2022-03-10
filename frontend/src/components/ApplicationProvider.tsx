@@ -4,6 +4,7 @@ import ThemeProvider from '@material-ui/styles/ThemeProvider';
 import { defaultTheme } from 'czifui';
 import NextPlausibleProvider from 'next-plausible';
 import { ReactNode, useEffect, useRef } from 'react';
+import Datadog from 'react-datadog';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { Hydrate } from 'react-query/hydration';
@@ -12,6 +13,9 @@ import { MediaContextProvider } from '@/components/common/media';
 import { PROD } from '@/env';
 import { SearchStoreProvider } from '@/store/search/context';
 import { theme } from '@/theme';
+import { Logger } from '@/utils';
+
+const logger = new Logger('ApplicationProvider.tsx');
 
 interface QueryProviderProps {
   children: ReactNode;
@@ -122,6 +126,45 @@ function StoreProvider({ children }: ProviderProps) {
   );
 }
 
+function DatadogRumProvider({ children }: ProviderProps) {
+  // Don't connect to Datadog if local env or datadog secrets aren't available.
+  const isLocal = process.env.ENV === 'local';
+  const isMissingAppId = !process.env.DATADOG_RUM_APP_ID;
+  const isMissingClientToken = !process.env.DATADOG_RUM_CLIENT_TOKEN;
+  if (isLocal || isMissingAppId || isMissingClientToken) {
+    if (isLocal) {
+      logger.info('Datadog disabled: Using local environment');
+    } else {
+      if (isMissingAppId) {
+        logger.error('Datadog disabled: Missing application ID');
+      }
+
+      if (isMissingClientToken) {
+        logger.error('Datadog disabled: Missing RUM client token');
+      }
+    }
+
+    return <>{children}</>;
+  }
+
+  return (
+    <Datadog
+      applicationId={process.env.DATADOG_RUM_APP_ID}
+      clientToken={process.env.DATADOG_RUM_CLIENT_TOKEN}
+      site="datadoghq.com"
+      service="napari-hub"
+      env={process.env.ENV}
+      sampleRate={100}
+      version={process.env.VERSION}
+      sessionReplayRecording
+      trackInteractions
+      defaultPrivacyLevel="mask-user-input"
+    >
+      {children}
+    </Datadog>
+  );
+}
+
 /**
  * Root application provider that composes all providers into one.
  */
@@ -130,14 +173,16 @@ export function ApplicationProvider({
   dehydratedState,
 }: ApplicationProviderProps) {
   return (
-    <ReactQueryProvider dehydratedState={dehydratedState}>
-      <MediaContextProvider>
-        <MaterialUIProvider>
-          <PlausibleProvider>
-            <StoreProvider>{children}</StoreProvider>
-          </PlausibleProvider>
-        </MaterialUIProvider>
-      </MediaContextProvider>
-    </ReactQueryProvider>
+    <DatadogRumProvider>
+      <ReactQueryProvider dehydratedState={dehydratedState}>
+        <MediaContextProvider>
+          <MaterialUIProvider>
+            <PlausibleProvider>
+              <StoreProvider>{children}</StoreProvider>
+            </PlausibleProvider>
+          </MaterialUIProvider>
+        </MediaContextProvider>
+      </ReactQueryProvider>
+    </DatadogRumProvider>
   );
 }

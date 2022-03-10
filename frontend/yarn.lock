@@ -656,6 +656,30 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
+"@datadog/browser-core@4.4.0":
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/@datadog/browser-core/-/browser-core-4.4.0.tgz#ad4981a19872674e4966b9d0afac502b01dde400"
+  integrity sha512-YTcf5JJGh7EIZKe3GfZZZqm/I1hpAsieIC/p+EwdqyOBYV+BG331fMNpLu7DU5nrq0Q+leqmtBiay6buVUogPQ==
+  dependencies:
+    tslib "^1.10.0"
+
+"@datadog/browser-rum-core@4.4.0":
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/@datadog/browser-rum-core/-/browser-rum-core-4.4.0.tgz#06dc34143767db90f2b2e94661b9923579eba162"
+  integrity sha512-tf5gIeh2kta/OiOikIRaOWj+2FMyDKCaqQrDwiaO8tHqMthgK+4e98ijIJ7zaqo4m3zfOSMm8N5wI+vkLYW+Lg==
+  dependencies:
+    "@datadog/browser-core" "4.4.0"
+    tslib "^1.10.0"
+
+"@datadog/browser-rum@^4.2.0":
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/@datadog/browser-rum/-/browser-rum-4.4.0.tgz#cbb69d2d37016dcaa60a22fbff9d55b8620be123"
+  integrity sha512-r39TzQ6UsT7qa6+i0NMBjkHJ7JPZCC3wXqR35qHSxnkG6kRw3qfZnuRNyiugPNsw6kXYSSBgeoz47yuTLhdXlw==
+  dependencies:
+    "@datadog/browser-core" "4.4.0"
+    "@datadog/browser-rum-core" "4.4.0"
+    tslib "^1.10.0"
+
 "@emotion/babel-plugin@^11.0.0", "@emotion/babel-plugin@^11.3.0":
   version "11.3.0"
   resolved "https://registry.yarnpkg.com/@emotion/babel-plugin/-/babel-plugin-11.3.0.tgz#3a16850ba04d8d9651f07f3fb674b3436a4fb9d7"
@@ -9775,6 +9799,13 @@ rc@^1.2.8:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
+react-datadog@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/react-datadog/-/react-datadog-1.0.2.tgz#b0b35b62d361a06c2ad9b79f824e98bfe906801c"
+  integrity sha512-f8Rn3VW5O01D5ljadyCV0Kj92hWaCYW6CPFwllaE5t3tuq/60cFIben0kQXsCbVTEoDgKHnclYjVd/Q4m1M2vA==
+  dependencies:
+    "@datadog/browser-rum" "^4.2.0"
+
 react-dom@17.0.2:
   version "17.0.2"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-17.0.2.tgz"
@@ -11586,7 +11617,7 @@ tsconfig-paths@^3.11.0, tsconfig-paths@^3.9.0:
     minimist "^1.2.0"
     strip-bom "^3.0.0"
 
-tslib@^1.8.1, tslib@^1.9.0:
+tslib@^1.10.0, tslib@^1.8.1, tslib@^1.9.0:
   version "1.14.1"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.14.1.tgz"
   integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==
