@@ -3828,10 +3828,10 @@ cwd@^0.10.0:
     find-pkg "^0.1.2"
     fs-exists-sync "^0.1.0"
 
-czifui@^1.5.6:
-  version "1.5.6"
-  resolved "https://registry.yarnpkg.com/czifui/-/czifui-1.5.6.tgz#92e367b655869d8145b80f8daddeaeef815d1c6d"
-  integrity sha512-XQKXFT35EG7NOaDrMjFlY+bDkvU2IqN9JIhlEDeERqQrSOpuITQs9PNSgN/i9Z8QbxhcFLxlADqKuljxE5SfvQ==
+czifui@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/czifui/-/czifui-3.2.0.tgz#aab1682eb21debb24b8a3db293e609a272f95b40"
+  integrity sha512-QGsBbkw7tMaIttv4LUQA8QKVA6CM7sIMFsj3cxENl/Ez3FKhybWPnwaFGApo2TMZEjP8/gJZ/DeWMpdIRcMSpg==
 
 damerau-levenshtein@^1.0.6:
   version "1.0.6"
@@ -4550,10 +4550,10 @@ eslint-plugin-prettier@^4.0.0:
   dependencies:
     prettier-linter-helpers "^1.0.0"
 
-eslint-plugin-react-hooks@^4.2.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-react-hooks/-/eslint-plugin-react-hooks-4.2.0.tgz"
-  integrity sha512-623WEiZJqxR7VdxFCKLI6d6LLpwJkGPYKODnkH3D7WpOG5KM8yWueBd8TLsNAetEJNF5iJmolaAKO3F8yzyVBQ==
+eslint-plugin-react-hooks@^4.3.0:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-react-hooks/-/eslint-plugin-react-hooks-4.3.0.tgz#318dbf312e06fab1c835a4abef00121751ac1172"
+  integrity sha512-XslZy0LnMn+84NEG9jSGR6eGqaZB3133L8xewQo3fQagbQuGt7a63gf+P1NGKZavEYEC3UXaWEAA/AqDkuN6xA==
 
 eslint-plugin-react@^7.26.1:
   version "7.26.1"

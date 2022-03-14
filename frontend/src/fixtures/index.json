@@ -18,7 +18,12 @@
       "Image modality": [
         "Medical imaging",
         "Confocal microscopy",
-        "Multi-photon microscopy"
+        "Multi-photon microscopy",
+        "Fluorescence microscopy",
+        "Confocal microscopy",
+        "Magnetic resonance imaging",
+        "Electron microscopy",
+        "Multimodal imaging"
       ],
       "Workflow step": [
         "Image registration",

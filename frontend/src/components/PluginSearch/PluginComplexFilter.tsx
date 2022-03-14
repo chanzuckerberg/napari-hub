@@ -259,6 +259,7 @@ export function PluginComplexFilter({ filterKey }: Props) {
         setPendingState(nextOptions as PluginMenuSelectOption[])
       }
       InputDropdownComponent={InputDropdown}
+      isTriggerChangeOnOptionClick
       MenuSelectProps={{
         classes: {
           groupLabel:

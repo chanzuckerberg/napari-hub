@@ -1,10 +1,10 @@
 import clsx from 'clsx';
 import { isObject, throttle } from 'lodash';
 import { useTranslation } from 'next-i18next';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { AppBarPreview } from '@/components/AppBar';
-import { CategoryChip } from '@/components/CategoryChip';
+import { CategoryChipContainer } from '@/components/CategoryChip';
 import { ColumnLayout } from '@/components/common/ColumnLayout';
 import { Markdown } from '@/components/common/Markdown';
 import { Media, MediaFragment } from '@/components/common/media';
@@ -33,6 +33,7 @@ function PluginLeftColumn() {
 }
 
 function PluginCenterColumn() {
+  const containerRef = useRef<HTMLElement>(null);
   const { plugin } = usePluginState();
   const [t] = useTranslation(['common', 'pluginPage', 'preview', 'pluginData']);
 
@@ -53,6 +54,7 @@ function PluginCenterColumn() {
         'screen-1150:col-start-1',
         'screen-1425:col-start-2',
       )}
+      ref={containerRef}
     >
       <SkeletonLoader
         className="h-12"
@@ -98,7 +100,7 @@ function PluginCenterColumn() {
       />
 
       {/* Plugin categories */}
-      <ul className="mt-5 text-xs flex flex-wrap gap-2 overflow-x-auto">
+      <ul className="mt-5 text-xs flex flex-wrap gap-2">
         <SkeletonLoader
           render={() =>
             plugin?.category_hierarchy &&
@@ -108,15 +110,14 @@ function PluginCenterColumn() {
                 ([pluginDimension]) =>
                   !pluginDimension.includes('Supported data'),
               )
-              .map(([pluginDimension, pluginHierarchies]) =>
-                pluginHierarchies.map((pluginHierarchy) => (
-                  <CategoryChip
-                    key={plugin?.name}
-                    dimension={pluginDimension as HubDimension}
-                    categoryHierarchy={pluginHierarchy as string[]}
-                  />
-                )),
-              )
+              .map(([pluginDimension, pluginHierarchies]) => (
+                <CategoryChipContainer
+                  key={pluginDimension}
+                  dimension={pluginDimension as HubDimension}
+                  hierarchies={pluginHierarchies as string[][]}
+                  containerRef={containerRef}
+                />
+              ))
           }
         />
       </ul>

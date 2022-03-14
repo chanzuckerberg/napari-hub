@@ -3,37 +3,38 @@ import Tooltip from '@material-ui/core/Tooltip';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import clsx from 'clsx';
 import { useTranslation } from 'next-i18next';
-import { Fragment, useRef, useState } from 'react';
+import { ForwardedRef, forwardRef, Fragment, useRef, useState } from 'react';
 
 import { Link } from '@/components/common/Link';
 import { useSearchStore } from '@/store/search/context';
-import { FilterCategoryKeys } from '@/store/search/search.store';
 import { HubDimension } from '@/types';
 import { I18nKeys } from '@/types/i18n';
 
-interface Props {
+import { STATE_KEY_MAP } from './constants';
+
+export interface Props extends ChipProps {
   category?: string;
   categoryHierarchy?: string[];
-  chipProps?: ChipProps;
   dimension: HubDimension;
+  isActive?: boolean;
 }
-
-const STATE_KEY_MAP: Partial<Record<HubDimension, FilterCategoryKeys>> = {
-  'Image modality': 'imageModality',
-  'Workflow step': 'workflowStep',
-};
 
 /**
  * Component for rendering a category or category hierarchy within a Chip / Pill
  * component. This also renders a tooltip with information about the category if
  * copy is available.
  */
-export function CategoryChip({
-  category,
-  categoryHierarchy,
-  chipProps,
-  dimension,
-}: Props) {
+function BaseCategoryChip(
+  {
+    className,
+    category,
+    categoryHierarchy,
+    dimension,
+    isActive,
+    ...props
+  }: Props,
+  ref: ForwardedRef<HTMLDivElement>,
+) {
   const [t] = useTranslation(['common', 'pluginData']);
   const { searchStore } = useSearchStore();
   const iconRef = useRef<HTMLButtonElement>(null);
@@ -66,9 +67,22 @@ export function CategoryChip({
 
   return (
     <Chip
+      ref={ref}
       className={clsx(
         'text-xs !rounded-full',
-        'bg-napari-category-blue hover:bg-napari-light focus:bg-napari-light',
+        className,
+
+        isActive && [
+          'bg-napari-category-blue',
+          'hover:bg-napari-light',
+          'focus:bg-napari-light',
+        ],
+
+        !isActive && [
+          'bg-napari-hover-gray',
+          'hover:bg-napari-hover-gray',
+          'focus:bg-napari-hover-gray',
+        ],
       )}
       classes={{
         label: clsx('pl-2', hasTooltip && 'pr-0'),
@@ -83,9 +97,6 @@ export function CategoryChip({
       }}
       label={
         <div className="flex items-center space-x-1">
-          <span>
-            {t(`pluginData:labels.${dimension}` as I18nKeys<'common'>)}
-          </span>
           <span className="font-semibold space-x-1">{chipBody}</span>
           {hasTooltip && (
             <Tooltip
@@ -136,7 +147,9 @@ export function CategoryChip({
           )}
         </div>
       }
-      {...chipProps}
+      {...props}
     />
   );
 }
+
+export const CategoryChip = forwardRef<HTMLDivElement, Props>(BaseCategoryChip);
