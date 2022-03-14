@@ -92,8 +92,8 @@ describe('<PluginComplexFilter />', () => {
       fireEvent.click(optionElement);
     }
 
-    expect(screen.getByText('Windows')).toBeInTheDocument();
-    expect(screen.getByText('Linux')).toBeInTheDocument();
+    expect(screen.getAllByText('Windows')[0]).toBeInTheDocument();
+    expect(screen.getAllByText('Linux')[0]).toBeInTheDocument();
   });
 
   it('should remove filters', () => {
