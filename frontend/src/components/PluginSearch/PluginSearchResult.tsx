@@ -1,18 +1,21 @@
 import clsx from 'clsx';
 import { isArray, isEmpty, isObject, isString } from 'lodash';
 import { useTranslation } from 'next-i18next';
-import React, { CSSProperties, useState } from 'react';
+import React, { CSSProperties, useMemo, useRef, useState } from 'react';
 import { useDebounce } from 'use-debounce';
+import { useSnapshot } from 'valtio';
 
-import { CategoryChip } from '@/components/CategoryChip';
+import { CategoryChipContainer } from '@/components/CategoryChip';
 import { Link } from '@/components/common/Link';
 import { SkeletonLoader } from '@/components/common/SkeletonLoader';
 import { TextHighlighter } from '@/components/common/TextHighlighter';
 import { useLoadingState } from '@/context/loading';
+import { useSearchStore } from '@/store/search/context';
+import { FilterCategoryKeys } from '@/store/search/search.store';
 import { SearchResultMatch } from '@/store/search/search.types';
 import { HubDimension, PluginIndexData } from '@/types';
 import { I18nPluginDataLabel } from '@/types/i18n';
-import { formatDate, formatOperatingSystem } from '@/utils';
+import { createUrl, formatDate, formatOperatingSystem } from '@/utils';
 
 interface Props {
   /**
@@ -103,6 +106,26 @@ export function PluginSearchResult({
   const isLoading = useLoadingState();
   const [isHoveringOverChip, setIsHoveringOverChip] = useState(false);
   const [debouncedIsHoveringOverChip] = useDebounce(isHoveringOverChip, 100);
+  const containerRef = useRef<HTMLElement>(null);
+
+  const { searchStore } = useSearchStore();
+  const snap = useSnapshot(searchStore);
+  const resultURL = useMemo(() => {
+    const url = createUrl(`/plugins/${plugin.name}`);
+    const states: FilterCategoryKeys[] = ['workflowStep', 'imageModality'];
+
+    for (const stateKey of states) {
+      const state = snap.filters[stateKey];
+
+      for (const [filterKey, filterValue] of Object.entries(state)) {
+        if (filterValue) {
+          url.searchParams.append(stateKey, filterKey);
+        }
+      }
+    }
+
+    return url.pathname + url.search;
+  }, [plugin.name, snap]);
 
   const getLower = (label: I18nPluginDataLabel) =>
     isString(label) ? label : label.lower ?? label.label;
@@ -176,6 +199,7 @@ export function PluginSearchResult({
           'screen-600:grid-cols-2',
           'screen-1425:grid-cols-napari-3',
         )}
+        ref={containerRef}
       >
         <div className="screen-1425:col-span-2 flex flex-col justify-between">
           {/* Wrapper div to group plugin name and summary  */}
@@ -265,7 +289,7 @@ export function PluginSearchResult({
         <ul
           className={clsx(
             'mt-5 text-xs',
-            'flex flex-wrap gap-2',
+            'flex flex-col gap-2',
             'col-span-2 screen-1425:col-span-3',
           )}
         >
@@ -277,19 +301,15 @@ export function PluginSearchResult({
                   ([pluginDimension]) =>
                     !pluginDimension.includes('Supported data'),
                 )
-                .map(([pluginDimension, pluginCategories]) =>
-                  pluginCategories.map((pluginCategory) => (
-                    <CategoryChip
-                      key={`${pluginDimension}-${pluginCategory}`}
-                      dimension={pluginDimension as HubDimension}
-                      category={pluginCategory}
-                      chipProps={{
-                        onMouseEnter: () => setIsHoveringOverChip(true),
-                        onMouseLeave: () => setIsHoveringOverChip(false),
-                      }}
-                    />
-                  )),
-                )
+                .map(([pluginDimension, pluginCategories]) => (
+                  <CategoryChipContainer
+                    key={pluginDimension}
+                    dimension={pluginDimension as HubDimension}
+                    categories={pluginCategories}
+                    setIsHovering={setIsHoveringOverChip}
+                    containerRef={containerRef}
+                  />
+                ))
             }
           />
         </ul>
@@ -319,7 +339,7 @@ export function PluginSearchResult({
         resultClassName,
         !debouncedIsHoveringOverChip && 'hover:bg-napari-hover-gray',
       )}
-      href={`/plugins/${plugin.name}`}
+      href={resultURL}
       style={style}
     >
       {renderResult()}

@@ -77,7 +77,7 @@ export type FilterKey = NonFunctionKeys<PluginSearchStore['filters']>;
 
 export type FilterCategoryKeys = keyof Pick<
   PluginSearchStore['filters'],
-  'imageModality' | 'supportedData' | 'workflowStep'
+  'imageModality' | 'workflowStep'
 >;
 
 export type FilterRequirementKeys = keyof Omit<
