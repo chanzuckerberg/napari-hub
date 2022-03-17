@@ -113,8 +113,8 @@ export function CategoryChipContainer({
     ));
 
   return (
-    <div className="flex gap-2 flex-wrap">
-      <span className="font-semibold text-xs whitespace-nowrap inline mt-2">
+    <div className="flex gap-2 flex-wrap items-center">
+      <span className="font-semibold text-xs whitespace-nowrap inline">
         {dimension}:
       </span>
 
