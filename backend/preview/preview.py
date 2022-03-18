@@ -130,7 +130,7 @@ def build_dist(pth: str, dest_dir: str) -> str:
 
     try:
         subprocess.run(
-            [PYTHON_BIN, "setup.py", "bdist_wheel", "--dist-dir", dest_dir],
+            [PYTHON_BIN, "-m", "build", "-w", ".", "-o", dest_dir],
             check=True,
             capture_output=True,
         )
