@@ -37,9 +37,9 @@ function PluginCenterColumn() {
   const { plugin } = usePluginState();
   const [t] = useTranslation(['common', 'pluginPage', 'preview', 'pluginData']);
 
-  usePreviewClickAway('name');
-  usePreviewClickAway('summary');
-  usePreviewClickAway('description');
+  usePreviewClickAway('metadata-name');
+  usePreviewClickAway('metadata-summary');
+  usePreviewClickAway('metadata-description');
 
   // Check if body is an empty string or if it's set to the cookiecutter text.
   const isEmptyDescription =
@@ -60,11 +60,14 @@ function PluginCenterColumn() {
         className="h-12"
         render={() => (
           <MetadataHighlighter
-            id="name"
+            metadataId="metadata-name"
             className="flex justify-between"
             highlight={!plugin?.name}
             tooltip={
-              <EmptyMetadataTooltip className="self-end" metadataId="name" />
+              <EmptyMetadataTooltip
+                className="self-end"
+                metadataId="metadata-name"
+              />
             }
           >
             <h1
@@ -83,7 +86,7 @@ function PluginCenterColumn() {
         className="h-6 my-6"
         render={() => (
           <MetadataHighlighter
-            id="summary"
+            metadataId="metadata-summary"
             className="flex justify-between items-center my-6"
             highlight={!plugin?.summary}
           >
@@ -179,7 +182,7 @@ function PluginCenterColumn() {
         className="h-[600px] mb-10"
         render={() => (
           <MetadataHighlighter
-            id="description"
+            metadataId="metadata-description"
             className="flex items-center justify-between mb-10"
             highlight={isEmptyDescription}
           >

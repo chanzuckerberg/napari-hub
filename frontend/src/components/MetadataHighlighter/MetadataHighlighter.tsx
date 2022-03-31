@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { createElement, HTMLProps, ReactHTML, ReactNode } from 'react';
 import { useSnapshot } from 'valtio';
 
-import { MetadataKeys } from '@/context/plugin';
+import { MetadataId } from '@/context/plugin';
 import { previewStore } from '@/store/preview';
 import { setUrlHash } from '@/utils';
 
@@ -15,7 +15,7 @@ interface Props<T extends HTMLKey> extends HTMLProps<ReactHTML[T]> {
   className?: string;
   component?: T;
   highlight?: boolean;
-  id?: MetadataKeys;
+  metadataId?: MetadataId;
   tooltip?: ReactNode;
   variant?: 'regular' | 'small';
 }
@@ -29,13 +29,13 @@ export function MetadataHighlighter<T extends HTMLKey>({
   className,
   component,
   highlight = false,
-  id,
+  metadataId,
   tooltip,
   variant,
   ...props
 }: Props<T>) {
   const snap = useSnapshot(previewStore);
-  const isActive = snap.activeMetadataField === id;
+  const isActive = snap.activeMetadataField === metadataId;
   const highlightEnabled = process.env.PREVIEW && highlight;
 
   const childNode = (
@@ -47,7 +47,7 @@ export function MetadataHighlighter<T extends HTMLKey>({
           {tooltip !== undefined ? (
             tooltip
           ) : (
-            <EmptyMetadataTooltip metadataId={id} />
+            <EmptyMetadataTooltip metadataId={metadataId} />
           )}
         </>
       )}
@@ -61,7 +61,7 @@ export function MetadataHighlighter<T extends HTMLKey>({
     {
       ...props,
 
-      id,
+      id: metadataId,
 
       className: clsx(
         className,
@@ -108,7 +108,10 @@ export function MetadataHighlighter<T extends HTMLKey>({
 
               // If the clicked metadata ID matches the active ID, then clear the
               // active ID state. Otherwise, set it to the clicked metadata ID.
-              const nextId = id && id !== snap.activeMetadataField ? id : '';
+              const nextId =
+                metadataId && metadataId !== snap.activeMetadataField
+                  ? metadataId
+                  : '';
               previewStore.activeMetadataField = nextId;
 
               // Replace current URL with active metadata ID.

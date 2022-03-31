@@ -275,3 +275,5 @@ export type MetadataKeys = keyof Omit<
   Metadata,
   'actionRepository' | 'workflowSteps' | 'imageModality' | 'supportedData'
 >;
+
+export type MetadataId = `metadata-${MetadataKeys}`;

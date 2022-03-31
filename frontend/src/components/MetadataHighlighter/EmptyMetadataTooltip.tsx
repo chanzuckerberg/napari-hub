@@ -3,7 +3,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import clsx from 'clsx';
 import { useTranslation } from 'next-i18next';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { usePrevious } from 'react-use';
 import {
   parse as parseTransformStr,
@@ -14,12 +14,12 @@ import { useSnapshot } from 'valtio';
 import { I18n } from '@/components/common/I18n';
 import { Link } from '@/components/common/Link';
 import { MetadataStatus } from '@/components/MetadataStatus';
-import { MetadataKeys, usePluginMetadata } from '@/context/plugin';
+import { MetadataId, MetadataKeys, usePluginMetadata } from '@/context/plugin';
 import { previewStore } from '@/store/preview';
 
 interface Props {
   className?: string;
-  metadataId?: MetadataKeys;
+  metadataId?: MetadataId;
   showStatus?: boolean;
 }
 
@@ -113,7 +113,13 @@ export function EmptyMetadataTooltip({
 
   const tooltipLabels = useTooltipLabels();
 
-  if (!metadataId) {
+  // Get metadata key from metadata ID by removing `metadata-` prefix.
+  const metadataKey = useMemo(
+    () => metadataId?.replace(/^metadata-/, '') as MetadataKeys | undefined,
+    [metadataId],
+  );
+
+  if (!metadataId || !metadataKey) {
     return null;
   }
 
@@ -132,9 +138,9 @@ export function EmptyMetadataTooltip({
       interactive
       title={
         <>
-          <h2 className="font-semibold">{metadata[metadataId].label}</h2>
+          <h2 className="font-semibold">{metadata[metadataKey].label}</h2>
 
-          <p>{tooltipLabels[metadataId] ?? ''}</p>
+          <p>{tooltipLabels[metadataKey] ?? ''}</p>
 
           <p className="text-xs mt-5 mb-3">
             <I18n
