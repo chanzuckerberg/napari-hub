@@ -42,7 +42,21 @@ export type Events = {
   Sort: {
     by: string;
   };
+
+  'Collapse Category': {
+    plugin: string;
+    url: string;
+    categoryDimension: string;
+  };
+
+  'Expand Category': {
+    plugin: string;
+    url: string;
+    categoryDimension: string;
+  };
 };
+
+export type PlausibleEventKey = keyof Events;
 
 /**
  * Hook for sending custom Plausible events with typing enabled.
@@ -50,7 +64,7 @@ export type Events = {
 export function usePlausible() {
   const plausible = usePlausibleNext();
 
-  function sendEvent<E extends keyof Events>(
+  function sendEvent<E extends PlausibleEventKey>(
     event: E,
     ...payload: Events[E][]
   ) {

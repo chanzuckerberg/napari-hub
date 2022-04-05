@@ -5,6 +5,7 @@ import { useTranslation } from 'next-i18next';
 import { RefObject, useEffect, useMemo, useRef, useState } from 'react';
 import { useSnapshot } from 'valtio';
 
+import { PlausibleEventKey, usePlausible } from '@/hooks';
 import { useSearchStore } from '@/store/search/context';
 import { HubDimension } from '@/types';
 import { createUrl } from '@/utils';
@@ -17,6 +18,7 @@ interface Props {
   categories?: string[];
   hierarchies?: string[][];
   containerRef: RefObject<HTMLElement>;
+  pluginName: string;
   setIsHovering?(value: boolean): void;
 }
 
@@ -32,12 +34,14 @@ export function CategoryChipContainer({
   categories,
   hierarchies = [],
   containerRef,
+  pluginName,
   setIsHovering,
 }: Props) {
   const categoryChipsRef = useRef<HTMLDivElement[]>([]);
   const [overflowIndex, setOverflowIndex] = useState(Infinity);
   const [overrideOverflow, setOverrideOverflow] = useState(false);
   const { t } = useTranslation(['homePage']);
+  const plausible = usePlausible();
 
   useEffect(() => {
     if (!containerRef.current) {
@@ -132,7 +136,19 @@ export function CategoryChipContainer({
           className="underline hover:bg-napari-hover-gray p-1"
           onClick={(event) => {
             event.preventDefault();
-            setOverrideOverflow((state) => !state);
+            setOverrideOverflow((state) => {
+              const plausibleEvent: PlausibleEventKey = state
+                ? 'Collapse Category'
+                : 'Expand Category';
+
+              plausible(plausibleEvent, {
+                categoryDimension: dimension,
+                plugin: pluginName,
+                url: router.pathname,
+              });
+
+              return !state;
+            });
           }}
           onMouseEnter={() => setIsHovering?.(true)}
           onMouseLeave={() => setIsHovering?.(false)}
