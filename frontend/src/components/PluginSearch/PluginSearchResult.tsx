@@ -308,6 +308,7 @@ export function PluginSearchResult({
                     categories={pluginCategories}
                     setIsHovering={setIsHoveringOverChip}
                     containerRef={containerRef}
+                    pluginName={plugin.name}
                   />
                 ))
             }

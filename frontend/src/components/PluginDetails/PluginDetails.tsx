@@ -119,6 +119,7 @@ function PluginCenterColumn() {
                   dimension={pluginDimension as HubDimension}
                   hierarchies={pluginHierarchies as string[][]}
                   containerRef={containerRef}
+                  pluginName={plugin.name ?? ''}
                 />
               ))
           }
