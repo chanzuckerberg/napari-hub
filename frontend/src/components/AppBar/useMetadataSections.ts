@@ -1,11 +1,11 @@
 import { isArray, isEmpty, isString } from 'lodash';
 import { useTranslation } from 'next-i18next';
 
-import { MetadataKeys, usePluginMetadata } from '@/context/plugin';
+import { MetadataId, MetadataKeys, usePluginMetadata } from '@/context/plugin';
 import { I18nPreviewSection } from '@/types/i18n';
 
 export interface MetadataSectionField {
-  id: MetadataKeys;
+  id: MetadataId;
   name: string;
   hasValue: boolean;
 }
@@ -41,9 +41,9 @@ export function useMetadataSections(): MetadataSection[] {
 
       return {
         hasValue,
-        id: key,
+        id: `metadata-${key}`,
         name: data.previewLabel,
-      };
+      } as MetadataSectionField;
     });
   }
 

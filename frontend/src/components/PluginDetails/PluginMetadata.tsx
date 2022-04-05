@@ -13,6 +13,7 @@ import {
 } from '@/components/MetadataList';
 import {
   Metadata,
+  MetadataId,
   MetadataKeys,
   usePluginMetadata,
   usePluginState,
@@ -120,7 +121,7 @@ function PluginMetadataBase({
 
     return (
       <MetadataList
-        id={key}
+        id={`metadata-${key}`}
         inline={inline}
         label={label}
         empty={!value}
@@ -139,7 +140,7 @@ function PluginMetadataBase({
 
     return (
       <MetadataList
-        id={key as MetadataKeys}
+        id={`metadata-${key}` as MetadataId}
         inline={inline}
         label={label}
         empty={isEmpty(values)}
@@ -157,7 +158,7 @@ function PluginMetadataBase({
       className="h-56"
       render={() => (
         <>
-          {renderSingleItemList('version', { highlight: false })}
+          {renderSingleItemList('version')}
           {renderSingleItemList('releaseDate', { highlight: false })}
           {renderSingleItemList('firstReleased')}
           {renderSingleItemList('license')}

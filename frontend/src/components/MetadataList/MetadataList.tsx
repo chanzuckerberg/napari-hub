@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 
 import { MetadataHighlighter } from '@/components/MetadataHighlighter';
 import { EmptyMetadataTooltip } from '@/components/MetadataHighlighter/EmptyMetadataTooltip';
-import { MetadataKeys } from '@/context/plugin';
+import { MetadataId } from '@/context/plugin';
 import { usePreviewClickAway } from '@/hooks/usePreviewClickAway';
 
 import { EmptyListItem } from './EmptyListItem';
@@ -14,7 +14,7 @@ export interface Props {
   children: ReactNode;
   className?: string;
   empty?: boolean;
-  id?: MetadataKeys;
+  id?: MetadataId;
   inline?: boolean;
   label: string;
   highlight?: boolean;
@@ -42,9 +42,10 @@ export function MetadataList({
         Use list wrapper so that the preview highlight overlay only renders as
         tall as the content.
        */}
-      <div id={id} className={clsx('text-sm', className)}>
+      <div className={clsx('text-sm', className)}>
         {/* List container */}
         <MetadataHighlighter
+          metadataId={id}
           className={clsx(
             // Item spacing for inline lists.
             inline && [
@@ -53,7 +54,6 @@ export function MetadataList({
           )}
           highlight={highlight && empty}
           tooltip={null}
-          id={id}
         >
           {/* List title */}
           <h4

@@ -3,7 +3,7 @@ import { ReactNode } from 'react-markdown';
 
 import { Link } from '@/components/common/Link/Link';
 import { MetadataHighlighter } from '@/components/MetadataHighlighter';
-import { MetadataKeys, usePluginState } from '@/context/plugin';
+import { MetadataId, usePluginState } from '@/context/plugin';
 import { usePlausible } from '@/hooks';
 import { usePreviewClickAway } from '@/hooks/usePreviewClickAway';
 import { isExternalUrl } from '@/utils';
@@ -15,7 +15,7 @@ interface Props {
   children: string;
   href: string;
   icon?: ReactNode;
-  id?: MetadataKeys;
+  id?: MetadataId;
   missingIcon?: ReactNode;
 }
 
@@ -40,7 +40,7 @@ export function MetadataListLinkItem({
 
   return (
     <MetadataHighlighter
-      id={id}
+      metadataId={id}
       component="li"
       className={clsx(
         'flex',

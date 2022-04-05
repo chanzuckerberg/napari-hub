@@ -30,6 +30,13 @@ interface MetadataFieldProps {
   field: MetadataSectionField;
 }
 
+/**
+ * Static class name to assign on metadata fields. This class name is used to
+ * query the metadata fields so that we can check if the field is being clicked
+ * on or not (see `usePreviewClickAway.ts`).
+ */
+export const PREVIEW_METADATA_FIELD_CLASS_NAME = 'preview-metadata-field';
+
 function MetadataField({ field }: MetadataFieldProps) {
   const fieldBody = (
     <>
@@ -54,8 +61,10 @@ function MetadataField({ field }: MetadataFieldProps) {
         {
           key: field.name,
 
-          className:
+          className: clsx(
+            PREVIEW_METADATA_FIELD_CLASS_NAME,
             'flex items-start justify-start text-left m-0 p-1 flex-grow',
+          ),
 
           // Attach click listener if field is a button.
           ...(field.hasValue

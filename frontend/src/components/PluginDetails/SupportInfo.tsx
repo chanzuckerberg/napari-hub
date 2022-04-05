@@ -18,7 +18,7 @@ import {
   MetadataListLinkItem,
   MetadataListTextItem,
 } from '@/components/MetadataList';
-import { MetadataKeys, usePluginMetadata } from '@/context/plugin';
+import { MetadataId, MetadataKeys, usePluginMetadata } from '@/context/plugin';
 
 import { ANCHOR } from './CitationInfo.constants';
 import styles from './SupportInfo.module.scss';
@@ -56,7 +56,7 @@ interface CommonProps {
 }
 
 interface MetadataLinkItem {
-  id: MetadataKeys;
+  id: MetadataId;
   text: string;
   href: string;
   icon?: ReactNode;
@@ -75,11 +75,11 @@ export function SupportInfoBase({ className, inline }: SupportInfoBaseProps) {
   const metadata = usePluginMetadata();
   const learnMoreItems: MetadataLinkItem[] = [];
 
-  function getLink(key: MetadataKeys) {
+  function getLink(key: MetadataKeys): MetadataLinkItem {
     const data = metadata[key];
 
     return {
-      id: key,
+      id: `metadata-${key}`,
       text: data.label,
       href: data.value as string,
     };
@@ -125,7 +125,7 @@ export function SupportInfoBase({ className, inline }: SupportInfoBaseProps) {
 
   if (metadata.citations.value) {
     learnMoreItems.push({
-      id: 'citations',
+      id: 'metadata-citations',
       href: `${metadata.name.value}#${ANCHOR}`,
       text: metadata.citations.label,
       icon: <Quotes />,
@@ -147,7 +147,7 @@ export function SupportInfoBase({ className, inline }: SupportInfoBaseProps) {
       )}
     >
       <MetadataList
-        id="authors"
+        id="metadata-authors"
         label={metadata.authors.label}
         empty={isEmpty(metadata.authors.value)}
         inline={inline}
@@ -170,7 +170,7 @@ export function SupportInfoBase({ className, inline }: SupportInfoBaseProps) {
       </MetadataList>
 
       <MetadataList
-        id="sourceCode"
+        id="metadata-sourceCode"
         label={metadata.sourceCode.label}
         empty={!metadata.sourceCode.value}
         inline={inline}
