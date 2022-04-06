@@ -146,6 +146,11 @@ export function usePluginMetadata() {
       value: plugin?.name ?? '',
     },
 
+    displayName: {
+      label: t('pluginData:labels.displayName'),
+      value: plugin?.display_name ?? '',
+    },
+
     summary: {
       label: t('pluginData:labels.summary'),
       value: plugin?.summary ?? '',

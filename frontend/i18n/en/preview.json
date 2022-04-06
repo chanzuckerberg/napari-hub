@@ -47,6 +47,7 @@
 
   "tooltips": {
     "name": "There can be only one. This is also the name of your Python package. Learn how to set this.",
+    "displayName": "This is the human-readable name of your Python package. Learn how to set this.",
     "description": "Focus on what’s relevant to users who might want to try your plugin. Learn how to set this.",
     "summary": "Stand out with a concise summary of what your plugin does. Learn how to set this.",
 

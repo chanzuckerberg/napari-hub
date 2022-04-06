@@ -73,7 +73,7 @@ export function useMetadataSections(): MetadataSection[] {
   return getSections(
     {
       section: t('preview:sections.describeWhat'),
-      fields: ['name', 'summary', 'description', 'authors'],
+      fields: ['displayName', 'summary', 'description', 'authors'],
     },
 
     {
