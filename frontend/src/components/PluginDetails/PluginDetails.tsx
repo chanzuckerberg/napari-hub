@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import { Tooltip } from 'czifui';
 import { isObject, throttle } from 'lodash';
 import { useTranslation } from 'next-i18next';
 import { useEffect, useRef } from 'react';
@@ -86,13 +87,18 @@ function PluginCenterColumn() {
       />
 
       {plugin?.name && (
-        <Link
-          className="mt-[10px] screen-495:mt-3 text-[0.6875rem] underline"
-          href={`https://pypi.org/project/${plugin?.name}`}
-          newTab
+        <Tooltip
+          title={t('pluginPage:tooltips.viewPypiPackage')}
+          placement="right"
         >
-          {plugin?.name}
-        </Link>
+          <Link
+            className="mt-[10px] screen-495:mt-3 text-[0.6875rem] underline"
+            href={`https://pypi.org/project/${plugin?.name}`}
+            newTab
+          >
+            {plugin?.name}
+          </Link>
+        </Tooltip>
       )}
 
       <SkeletonLoader
