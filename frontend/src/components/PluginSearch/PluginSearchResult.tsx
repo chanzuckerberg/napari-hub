@@ -205,17 +205,31 @@ export function PluginSearchResult({
           {/* Wrapper div to group plugin name and summary  */}
           <div>
             {/* Plugin name */}
-            <h4
-              className="inline font-bold text-lg"
-              data-testid="searchResultName"
-            >
+            <h4 className="font-bold text-lg" data-testid="searchResultName">
               <SkeletonLoader
-                render={() => renderText(plugin.name, matches.name?.match)}
+                render={() =>
+                  renderText(
+                    plugin.display_name ?? plugin.name,
+                    plugin.display_name
+                      ? matches.display_name?.match
+                      : matches.name?.match,
+                  )
+                }
               />
             </h4>
 
+            <span className="mt-[10px] screen-495:mt-3 text-[0.6875rem]">
+              <SkeletonLoader
+                className="h-12"
+                render={() => renderText(plugin.name, matches.name?.match)}
+              />
+            </span>
+
             {/* Plugin summary */}
-            <p className="mt-2" data-testid="searchResultSummary">
+            <p
+              className="mt-[17px] screen-495:mt-6"
+              data-testid="searchResultSummary"
+            >
               <SkeletonLoader
                 className="h-12"
                 render={() =>

@@ -3,10 +3,11 @@ import { PluginData, PluginRepoData } from '@/types';
 export const DEFAULT_PLUGIN_DATA: PluginData = {
   authors: [],
   code_repository: '',
-  description: '',
   description_content_type: '',
   description_text: '',
+  description: '',
   development_status: [],
+  display_name: '',
   documentation: '',
   first_released: '',
   license: '',
@@ -16,11 +17,11 @@ export const DEFAULT_PLUGIN_DATA: PluginData = {
   python_version: '',
   release_date: '',
   report_issues: '',
+  requirements: '',
   summary: '',
   support: '',
   twitter: '',
   version: '',
-  requirements: '',
 };
 
 export const DEFAULT_REPO_DATA: PluginRepoData = {
