@@ -126,7 +126,7 @@ export function SupportInfoBase({ className, inline }: SupportInfoBaseProps) {
   if (metadata.citations.value) {
     learnMoreItems.push({
       id: 'metadata-citations',
-      href: `${metadata.name.value}#${ANCHOR}`,
+      href: `#${ANCHOR}`,
       text: metadata.citations.label,
       icon: <Quotes />,
     });
