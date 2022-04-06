@@ -1,6 +1,7 @@
 [
   {
     "name": "napari-test-plugin",
+    "display_name": "Test Plugin",
     "summary": "Test plugin that is for testing.",
     "description": "# napari-test-plugin\n\nSome cool testing plugin!\n\n\n",
     "description_content_type": "text/markdown",
