@@ -38,7 +38,9 @@ async function testResults({
 
 const RESULTS = {
   PAGE_1_DEFAULT: [
-    'napari-test-plugin',
+    // Display name
+    // TODO add tests specifically for display name
+    'Test Plugin',
     'napari-animation',
     'PlatyMatch',
     'cellpose-napari',
