@@ -261,7 +261,8 @@ def move_artifact_to_s3(payload, client):
             pull_request = client.pull_request(owner, repo, pull_request_number)
             pull_request.create_comment(payload)
             pull_request.create_comment('Preview page for your plugin is ready here:\n'
-                                        f'https://preview.napari-hub.org/{owner}/{repo}/{pull_request_number}')
+                                        f'https://preview.napari-hub.org/{owner}/{repo}/{pull_request_number} \n'
+                                        f'and payload is : {str(payload)}')
 
 
 def get_categories_mapping(version: str) -> Dict[str, List]:
