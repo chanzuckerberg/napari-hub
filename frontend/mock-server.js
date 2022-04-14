@@ -6,7 +6,7 @@ if (process.env.MOCK_SERVER === 'false') {
 const express = require('express');
 const { set } = require('lodash');
 
-const napariPlugin = require('./src/fixtures/napari.json');
+const napariPlugin = require('./src/fixtures/plugin.json');
 const pluginIndex = require('./src/fixtures/index.json');
 
 const app = express();

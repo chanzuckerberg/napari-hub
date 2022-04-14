@@ -29,6 +29,10 @@
       "preview": "Name"
     },
 
+    "displayName": {
+      "label": "Display name"
+    },
+
     "pythonVersion": {
       "label": "Python versions supported",
       "short": "Python versions",

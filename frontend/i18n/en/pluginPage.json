@@ -35,5 +35,9 @@
     "copy": "Copy",
     "download": "Download",
     "title": "How to cite this plugin"
+  },
+
+  "tooltips": {
+    "viewPypiPackage": "View PyPI package"
   }
 }

@@ -36,9 +36,10 @@ export interface PluginIndexData {
   authors: PluginAuthor[] | '';
   category?: PluginCategory | '';
   description_content_type: string;
-  description: string;
   description_text: string;
+  description: string;
   development_status: string[] | '';
+  display_name?: string;
   first_released: string;
   license: string;
   name: string;

@@ -30,9 +30,11 @@ const TOOLTIP_CLASS_NAME = 'metadata-tooltip';
  */
 function useTooltipLabels() {
   const [t] = useTranslation(['preview']);
+
   const labels: Partial<Record<MetadataKeys, string>> = {
     // Plugin content
     name: t('preview:tooltips.name'),
+    displayName: t('preview:tooltips.displayName'),
     description: t('preview:tooltips.description'),
     summary: t('preview:tooltips.summary'),
 

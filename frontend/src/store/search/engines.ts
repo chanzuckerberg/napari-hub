@@ -42,6 +42,10 @@ export class FuseSearchEngine implements SearchEngine {
           weight: 8,
         },
         {
+          name: 'display_name',
+          weight: 8,
+        },
+        {
           name: 'summary',
           weight: 4,
         },

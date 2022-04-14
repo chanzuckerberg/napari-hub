@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import { Tooltip } from 'czifui';
 import { isObject, throttle } from 'lodash';
 import { useTranslation } from 'next-i18next';
 import { useEffect, useRef } from 'react';
@@ -6,6 +7,7 @@ import { useEffect, useRef } from 'react';
 import { AppBarPreview } from '@/components/AppBar';
 import { CategoryChipContainer } from '@/components/CategoryChip';
 import { ColumnLayout } from '@/components/common/ColumnLayout';
+import { Link } from '@/components/common/Link';
 import { Markdown } from '@/components/common/Markdown';
 import { Media, MediaFragment } from '@/components/common/media';
 import { SkeletonLoader } from '@/components/common/SkeletonLoader';
@@ -37,7 +39,7 @@ function PluginCenterColumn() {
   const { plugin } = usePluginState();
   const [t] = useTranslation(['common', 'pluginPage', 'preview', 'pluginData']);
 
-  usePreviewClickAway('metadata-name');
+  usePreviewClickAway('metadata-displayName');
   usePreviewClickAway('metadata-summary');
   usePreviewClickAway('metadata-description');
 
@@ -60,13 +62,13 @@ function PluginCenterColumn() {
         className="h-12"
         render={() => (
           <MetadataHighlighter
-            metadataId="metadata-name"
+            metadataId="metadata-displayName"
             className="flex justify-between"
-            highlight={!plugin?.name}
+            highlight={!plugin?.display_name}
             tooltip={
               <EmptyMetadataTooltip
                 className="self-end"
-                metadataId="metadata-name"
+                metadataId="metadata-displayName"
               />
             }
           >
@@ -76,11 +78,28 @@ function PluginCenterColumn() {
                 !plugin?.name && 'text-napari-dark-gray',
               )}
             >
-              {plugin?.name ?? t('pluginData:labels.pluginName.label')}
+              {plugin?.display_name ??
+                plugin?.name ??
+                t('pluginData:labels.pluginName.label')}
             </h1>
           </MetadataHighlighter>
         )}
       />
+
+      {plugin?.name && (
+        <Tooltip
+          title={t('pluginPage:tooltips.viewPypiPackage')}
+          placement="right"
+        >
+          <Link
+            className="mt-[10px] screen-495:mt-3 text-[0.6875rem] underline"
+            href={`https://pypi.org/project/${plugin?.name}`}
+            newTab
+          >
+            {plugin?.name}
+          </Link>
+        </Tooltip>
+      )}
 
       <SkeletonLoader
         className="h-6 my-6"
