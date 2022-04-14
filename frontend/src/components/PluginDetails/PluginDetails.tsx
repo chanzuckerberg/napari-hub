@@ -90,6 +90,8 @@ function PluginCenterColumn() {
         <Tooltip
           title={t('pluginPage:tooltips.viewPypiPackage')}
           placement="right"
+          interactive={false}
+          leaveDelay={0}
         >
           <Link
             className="mt-[10px] screen-495:mt-3 text-[0.6875rem] underline"
