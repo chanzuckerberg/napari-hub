@@ -1,10 +1,10 @@
 import { useRouter } from 'next/router';
 
-import { PROD, STAGING } from '@/env';
+import { PREVIEW, PROD, STAGING } from '@/env';
 
 import { createUrl } from './url';
 
-export type FeatureFlagEnvironment = 'dev' | 'staging' | 'prod';
+export type FeatureFlagEnvironment = 'dev' | 'staging' | 'prod' | 'preview';
 
 export interface FeatureFlag {
   environments: FeatureFlagEnvironment[];
@@ -20,7 +20,11 @@ function createFeatureFlags<T>(flags: { [key in keyof T]: FeatureFlag }) {
 
 export const FEATURE_FLAGS = createFeatureFlags({
   categoryFilters: {
-    environments: ['dev', 'staging', 'prod'],
+    environments: ['dev', 'staging', 'prod', 'preview'],
+  },
+
+  npe2: {
+    environments: ['dev', 'staging'],
   },
 });
 
@@ -73,6 +77,10 @@ export function useIsFeatureFlagEnabled(key: FeatureFlagKey): boolean {
 
   if (STAGING) {
     return flag.environments.includes('staging');
+  }
+
+  if (PREVIEW) {
+    return flag.environments.includes('preview');
   }
 
   return flag.environments.includes('dev');

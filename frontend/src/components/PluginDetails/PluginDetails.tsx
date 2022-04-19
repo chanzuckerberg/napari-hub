@@ -19,6 +19,7 @@ import { usePluginState } from '@/context/plugin';
 import { usePlausible } from '@/hooks';
 import { usePreviewClickAway } from '@/hooks/usePreviewClickAway';
 import { HubDimension } from '@/types';
+import { useIsFeatureFlagEnabled } from '@/utils/featureFlags';
 
 import { CallToActionButton } from './CallToActionButton';
 import { CitationInfo } from './CitationInfo';
@@ -38,8 +39,9 @@ function PluginCenterColumn() {
   const containerRef = useRef<HTMLElement>(null);
   const { plugin } = usePluginState();
   const [t] = useTranslation(['common', 'pluginPage', 'preview', 'pluginData']);
+  const isNpe2Enabled = useIsFeatureFlagEnabled('npe2');
 
-  usePreviewClickAway('metadata-displayName');
+  usePreviewClickAway(isNpe2Enabled ? 'metadata-displayName' : 'metadata-name');
   usePreviewClickAway('metadata-summary');
   usePreviewClickAway('metadata-description');
 
@@ -62,13 +64,17 @@ function PluginCenterColumn() {
         className="h-12"
         render={() => (
           <MetadataHighlighter
-            metadataId="metadata-displayName"
+            metadataId={
+              isNpe2Enabled ? 'metadata-displayName' : 'metadata-name'
+            }
             className="flex justify-between"
-            highlight={!plugin?.display_name}
+            highlight={isNpe2Enabled ? !plugin?.display_name : !plugin?.name}
             tooltip={
               <EmptyMetadataTooltip
                 className="self-end"
-                metadataId="metadata-displayName"
+                metadataId={
+                  isNpe2Enabled ? 'metadata-displayName' : 'metadata-name'
+                }
               />
             }
           >
@@ -78,7 +84,7 @@ function PluginCenterColumn() {
                 !plugin?.name && 'text-napari-dark-gray',
               )}
             >
-              {plugin?.display_name ??
+              {(isNpe2Enabled ? plugin?.display_name : undefined) ??
                 plugin?.name ??
                 t('pluginData:labels.pluginName.label')}
             </h1>
@@ -86,7 +92,7 @@ function PluginCenterColumn() {
         )}
       />
 
-      {plugin?.name && (
+      {isNpe2Enabled && plugin?.name && (
         <Tooltip
           title={t('pluginPage:tooltips.viewPypiPackage')}
           placement="right"
