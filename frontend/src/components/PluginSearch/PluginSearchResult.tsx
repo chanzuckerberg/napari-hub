@@ -16,6 +16,7 @@ import { SearchResultMatch } from '@/store/search/search.types';
 import { HubDimension, PluginIndexData } from '@/types';
 import { I18nPluginDataLabel } from '@/types/i18n';
 import { createUrl, formatDate, formatOperatingSystem } from '@/utils';
+import { useIsFeatureFlagEnabled } from '@/utils/featureFlags';
 
 interface Props {
   /**
@@ -107,6 +108,7 @@ export function PluginSearchResult({
   const [isHoveringOverChip, setIsHoveringOverChip] = useState(false);
   const [debouncedIsHoveringOverChip] = useDebounce(isHoveringOverChip, 100);
   const containerRef = useRef<HTMLElement>(null);
+  const isNpe2Enabled = useIsFeatureFlagEnabled('npe2');
 
   const { searchStore } = useSearchStore();
   const snap = useSnapshot(searchStore);
@@ -209,8 +211,10 @@ export function PluginSearchResult({
               <SkeletonLoader
                 render={() =>
                   renderText(
-                    plugin.display_name ?? plugin.name,
-                    plugin.display_name
+                    (isNpe2Enabled ? plugin.display_name : undefined) ??
+                      plugin.name,
+
+                    isNpe2Enabled && plugin.display_name
                       ? matches.display_name?.match
                       : matches.name?.match,
                   )
@@ -218,16 +222,20 @@ export function PluginSearchResult({
               />
             </h4>
 
-            <span className="mt-[10px] screen-495:mt-3 text-[0.6875rem]">
-              <SkeletonLoader
-                className="h-12"
-                render={() => renderText(plugin.name, matches.name?.match)}
-              />
-            </span>
+            {isNpe2Enabled && (
+              <span className="mt-[10px] screen-495:mt-3 text-[0.6875rem]">
+                <SkeletonLoader
+                  className="h-12"
+                  render={() => renderText(plugin.name, matches.name?.match)}
+                />
+              </span>
+            )}
 
             {/* Plugin summary */}
             <p
-              className="mt-[17px] screen-495:mt-6"
+              className={clsx(
+                isNpe2Enabled ? 'mt-[17px] screen-495:mt-6' : 'mt-2',
+              )}
               data-testid="searchResultSummary"
             >
               <SkeletonLoader
