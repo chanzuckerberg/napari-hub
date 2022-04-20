@@ -5,7 +5,7 @@ from flask import Flask, Response, jsonify, render_template
 from flask_githubapp.core import GitHubApp
 
 from api.model import get_public_plugins, get_index, get_plugin, get_excluded_plugins, update_cache, \
-    move_artifact_to_s3, get_category_mapping, get_categories_mapping
+    move_artifact_to_s3, get_category_mapping, get_categories_mapping, preview_page_comment
 from api.shield import get_shield
 from utils.utils import send_alert, reformat_ssh_key_to_pem_bytes
 
@@ -103,6 +103,9 @@ def handle_exception(e) -> Response:
     send_alert(f"An unexpected error has occurred in napari hub: {e}")
     return app.make_response(("Internal Server Error", 500))
 
+@github_app.on("pull_request.opened")
+def push_comment():
+    preview_page_comment(github_app.payload, github_app.installation_client)
 
 @github_app.on("workflow_run.completed")
 def preview():

@@ -224,6 +224,19 @@ def get_plugin_metadata_async(plugins: Dict[str, str]) -> dict:
         plugins_metadata[future.result()[0]] = (future.result()[1])
     return plugins_metadata
 
+def preview_page_comment(payload, client):
+    """
+    Print preview page link when pull request is opened
+
+    :param payload: json body from the github webhook
+    :param client: installation client to query GitHub API
+    """
+    owner = get_attribute(payload, ['repository', 'owner', 'login'])
+    repo = get_attribute(payload, ["repository", "name"])
+    pull_request_number = get_attribute(payload, ['pull_request', 'number'])
+    pull_request = client.pull_request(owner, repo, pull_request_number)
+    pull_request.create_comment('Checkout my awesome preview page!! \n'
+                                f'https://preview.napari-hub.org/{owner}/{repo}/{pull_request_number}')
 
 def move_artifact_to_s3(payload, client):
     """
@@ -259,10 +272,8 @@ def move_artifact_to_s3(payload, client):
                         cache(file, f'preview/{owner}/{repo}/{pull_request_number}/{name}')
 
             pull_request = client.pull_request(owner, repo, pull_request_number)
-            pull_request.create_comment(payload)
             pull_request.create_comment('Preview page for your plugin is ready here:\n'
-                                        f'https://preview.napari-hub.org/{owner}/{repo}/{pull_request_number} \n'
-                                        f'and payload is : {str(payload)}')
+                                        f'https://preview.napari-hub.org/{owner}/{repo}/{pull_request_number}')
 
 
 def get_categories_mapping(version: str) -> Dict[str, List]:
