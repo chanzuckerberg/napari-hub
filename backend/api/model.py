@@ -224,6 +224,7 @@ def get_plugin_metadata_async(plugins: Dict[str, str]) -> dict:
         plugins_metadata[future.result()[0]] = (future.result()[1])
     return plugins_metadata
 
+  
 def preview_page_comment(payload, client):
     """
     Print preview page link when pull request is opened
@@ -238,6 +239,7 @@ def preview_page_comment(payload, client):
     pull_request.create_comment('Checkout my awesome preview page!! \n'
                                 f'https://preview.napari-hub.org/{owner}/{repo}/{pull_request_number}')
 
+    
 def move_artifact_to_s3(payload, client):
     """
     move preview page build artifact zip to public s3.
@@ -270,11 +272,7 @@ def move_artifact_to_s3(payload, client):
                         cache(file, f'preview/{owner}/{repo}/{pull_request_number}', "text/html")
                     else:
                         cache(file, f'preview/{owner}/{repo}/{pull_request_number}/{name}')
-
-            pull_request = client.pull_request(owner, repo, pull_request_number)
-            pull_request.create_comment('Preview page for your plugin is ready here:\n'
-                                        f'https://preview.napari-hub.org/{owner}/{repo}/{pull_request_number}')
-
+                        
 
 def get_categories_mapping(version: str) -> Dict[str, List]:
     """
