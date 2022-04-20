@@ -236,7 +236,7 @@ def preview_page_comment(payload, client):
     repo = get_attribute(payload, ["repository", "name"])
     pull_request_number = get_attribute(payload, ['pull_request', 'number'])
     pull_request = client.pull_request(owner, repo, pull_request_number)
-    pull_request.create_comment('Checkout my awesome preview page!! \n'
+    pull_request.create_comment('Preview page for your plugin is ready here \n'
                                 f'https://preview.napari-hub.org/{owner}/{repo}/{pull_request_number}')
 
     
