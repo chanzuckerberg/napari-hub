@@ -19,7 +19,7 @@ export function MetadataListSearchItem({ children, className }: Props) {
   const plausible = usePlausible();
 
   // not sure how to get text from children?
-  const url = 'https://napari-hub.org/?search=' + { children };
+  const url = 'https://napari-hub.org/?search=' + encodeURIComponent(children);
 
   return (
     <li className={clsx(styles.textItem, className)}>
