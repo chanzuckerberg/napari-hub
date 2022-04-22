@@ -3,6 +3,7 @@ from apig_wsgi import make_lambda_handler
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
 from flask import Flask, Response, jsonify, render_template
 from flask_githubapp.core import GitHubApp
+import yaml
 
 from api.model import get_public_plugins, get_index, get_plugin, get_excluded_plugins, update_cache, \
     move_artifact_to_s3, get_category_mapping, get_categories_mapping, get_manifest
@@ -69,12 +70,15 @@ def versioned_plugin(plugin: str, version: str = None) -> Response:
 def plugin_manifest(plugin: str, version: str = None) -> Response:
     max_failure_tries = 2
     manifest = get_manifest(plugin, version)
-    if manifest and 'process_count' in manifest:
+    if 'process_count' in manifest:
         if manifest['process_count'] >= max_failure_tries:
             return app.make_response(("Plugin Manifest Not Found", 404))
         elif manifest['process_count'] < max_failure_tries:
-            return app.make_response(("Temporarily Unavailable", 503))
-    return jsonify(manifest)
+            response = app.make_response(("Temporarily Unavailable", 503))
+            response.headers["Retry-After"] = 120
+            return response
+    else:
+        return yaml.dump(manifest)
 
 
 @app.route('/shields/<plugin>')
