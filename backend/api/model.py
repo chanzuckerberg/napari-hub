@@ -259,7 +259,6 @@ def move_artifact_to_s3(payload, client):
                         cache(file, f'preview/{owner}/{repo}/{pull_request_number}', "text/html")
                     else:
                         cache(file, f'preview/{owner}/{repo}/{pull_request_number}/{name}')
-
             pull_request = client.pull_request(owner, repo, pull_request_number)
             text = 'Preview page for your plugin is ready here:'
             comment_found = False
