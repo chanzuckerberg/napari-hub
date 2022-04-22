@@ -177,6 +177,7 @@ export function usePluginMetadata() {
         plugin?.authors && isArray(plugin.authors)
           ? plugin.authors
               ?.flatMap((author) => author.name.split(/[,;&]+/))
+              .map((name) => name.trim())
               .filter((name): name is string => !!name)
           : [],
     },
