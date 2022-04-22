@@ -4,6 +4,7 @@ from typing import Tuple, Dict, List
 from zipfile import ZipFile
 from io import BytesIO
 from collections import defaultdict
+import time
 
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
@@ -224,19 +225,6 @@ def get_plugin_metadata_async(plugins: Dict[str, str]) -> dict:
         plugins_metadata[future.result()[0]] = (future.result()[1])
     return plugins_metadata
 
-def preview_page_comment(payload, client):
-    """
-    Print preview page link when pull request is opened
-
-    :param payload: json body from the github webhook
-    :param client: installation client to query GitHub API
-    """
-    owner = get_attribute(payload, ['repository', 'owner', 'login'])
-    repo = get_attribute(payload, ["repository", "name"])
-    pull_request_number = get_attribute(payload, ['pull_request', 'number'])
-    pull_request = client.pull_request(owner, repo, pull_request_number)
-    pull_request.create_comment('Checkout my awesome preview page!! \n'
-                                f'https://preview.napari-hub.org/{owner}/{repo}/{pull_request_number}')
 
 def move_artifact_to_s3(payload, client):
     """
@@ -260,6 +248,7 @@ def move_artifact_to_s3(payload, client):
             return
 
     artifact_url = get_attribute(payload, ["workflow_run", "artifacts_url"])
+    curr_clock = time.strftime("%m/%d/%Y , %H:%M:%S", time.localtime())
     if artifact_url:
         artifact = get_artifact(artifact_url, client.session.auth.token)
         if artifact:
@@ -272,8 +261,18 @@ def move_artifact_to_s3(payload, client):
                         cache(file, f'preview/{owner}/{repo}/{pull_request_number}/{name}')
 
             pull_request = client.pull_request(owner, repo, pull_request_number)
-            pull_request.create_comment('Preview page for your plugin is ready here:\n'
-                                        f'https://preview.napari-hub.org/{owner}/{repo}/{pull_request_number}')
+            text = 'Preview page for your plugin is ready here:'
+            comment_found = False
+            for comment in pull_request.issue_comments():
+                if text in comment.body:
+                    comment_found = True
+                    comment.edit(text + f'\nhttps://preview.napari-hub.org/{owner}/{repo}/{pull_request_number}'
+                                        f'\nUpdated at: {curr_clock}')
+                    break
+            if not comment_found:
+                pull_request.create_comment(
+                    text + f'\nhttps://preview.napari-hub.org/{owner}/{repo}/{pull_request_number}'
+                           f'\nCreated at: {curr_clock}')
 
 
 def get_categories_mapping(version: str) -> Dict[str, List]:
