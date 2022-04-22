@@ -4,6 +4,7 @@ from typing import Tuple, Dict, List
 from zipfile import ZipFile
 from io import BytesIO
 from collections import defaultdict
+from flask import abort
 
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
@@ -67,6 +68,26 @@ def get_plugin(plugin: str, version: str = None) -> dict:
     elif version is None:
         version = plugins[plugin]
     plugin = get_cache(f'cache/{plugin}/{version}.json')
+    if plugin:
+        return plugin
+    else:
+        return {}
+
+
+def get_manifest(plugin: str, version: str = None) -> dict:
+    """
+    Get plugin manifest file for a particular plugin, get latest if version is None.
+
+    :param plugin: name of the plugin to get
+    :param version: version of the plugin manifest
+    :return: plugin manifest dictionary
+    """
+    plugins = get_valid_plugins()
+    if plugin not in plugins:
+        return {}
+    elif version is None:
+        version = plugins[plugin]
+    plugin = get_cache(f'cache/{plugin}/{version}.yaml')
     if plugin:
         return plugin
     else:
