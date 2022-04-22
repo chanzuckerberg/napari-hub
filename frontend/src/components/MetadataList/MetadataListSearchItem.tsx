@@ -4,7 +4,7 @@ import { ReactNode } from 'react';
 import { Link } from '@/components/common/Link/Link';
 import { usePlausible } from '@/hooks';
 import styles from './MetadataList.module.scss';
-import { isExternalUrl } from '@/utils';
+// import { isExternalUrl } from '@/utils';
 // import { SEARCH_PAGE } from '@/store/search/constants';
 
 interface Props {
@@ -18,15 +18,17 @@ interface Props {
 export function MetadataListSearchItem({ children, className }: Props) {
   const plausible = usePlausible();
 
-  // not sure how to get text from children?
-  const url = 'https://napari-hub.org/?search=' + encodeURIComponent(children);
+  const href = `https://napari-hub.org/?search="${encodeURIComponent(
+    children,
+  )}"`;
+  // const internalLink = !isExternalUrl(href);
 
   return (
     <li className={clsx(styles.textItem, className)}>
       <Link
-        // className={clsx(itemClassName, 'underline')}
-        href={url}
-        // newTab={internalLink}
+        className={clsx('underline')}
+        href={href}
+        // newTab={!internalLink}
         // onClick={
         //   internalLink
         //     ? undefined
