@@ -18,6 +18,8 @@ import {
   usePluginMetadata,
   usePluginState,
 } from '@/context/plugin';
+import { PluginType } from '@/types';
+import { useIsFeatureFlagEnabled } from '@/utils/featureFlags';
 
 interface GithubMetadataItem {
   label: string;
@@ -112,6 +114,7 @@ function PluginMetadataBase({
   inline,
 }: PluginMetadataBaseProps) {
   const metadata = usePluginMetadata();
+  const isNpe2Enabled = useIsFeatureFlagEnabled('npe2');
 
   function renderSingleItemList(
     key: PickMetadataKeys<string>,
@@ -127,7 +130,9 @@ function PluginMetadataBase({
         empty={!value}
         {...props}
       >
-        <MetadataListTextItem>{value}</MetadataListTextItem>
+        <MetadataListTextItem metadataKey={key as MetadataKeys}>
+          {value}
+        </MetadataListTextItem>
       </MetadataList>
     );
   }
@@ -147,49 +152,20 @@ function PluginMetadataBase({
         {...props}
       >
         {values.map((value) => (
-          <MetadataListTextItem key={value}>{value}</MetadataListTextItem>
+          <MetadataListTextItem key={value} metadataKey={key as MetadataKeys}>
+            {value}
+          </MetadataListTextItem>
         ))}
       </MetadataList>
     );
   }
 
-  const projectMetadata = (
-    <SkeletonLoader
-      className="h-56"
-      render={() => (
-        <>
-          {renderSingleItemList('version')}
-          {renderSingleItemList('releaseDate', { highlight: false })}
-          {renderSingleItemList('firstReleased')}
-          {renderSingleItemList('license')}
-        </>
-      )}
-    />
-  );
-
-  const categoryMetadata = (
-    <SkeletonLoader
-      className="h-56"
-      render={() => (
-        <>{renderItemList('supportedData', { highlight: false })}</>
-      )}
-    />
-  );
-
-  const requirementMetadata = (
-    <SkeletonLoader
-      className="h-56"
-      render={() => (
-        <>
-          {renderSingleItemList('pythonVersion')}
-          {renderItemList('operatingSystems')}
-          {renderItemList('requirements')}
-        </>
-      )}
-    />
-  );
-
   const listClassName = clsx(process.env.PREVIEW ? 'space-y-2' : 'space-y-5');
+  const spacingClassName = clsx(
+    'space-y-5',
+    'screen-875:space-y-0',
+    'screen-1425:space-y-5',
+  );
 
   return (
     <div
@@ -197,37 +173,111 @@ function PluginMetadataBase({
       id="pluginMetadata"
       className={clsx(
         className,
+        spacingClassName,
 
         // Vertical 1-column grid layout for < xl
-        'grid space-y-5',
+        'grid',
 
         // Horizontal layout with 3-column grid for xl+
-        'screen-875:grid-cols-3 screen-875:space-y-0',
+        'screen-875:grid-cols-3',
 
         // Back to 1-column vertical layout for 3xl+
-        'screen-1425:grid-cols-1 screen-1425:space-y-5',
+        'screen-1425:grid-cols-1',
       )}
     >
-      <div className={listClassName}>{projectMetadata}</div>
+      <div className={listClassName}>
+        <SkeletonLoader
+          className="h-56"
+          render={() => (
+            <>
+              {renderSingleItemList('version')}
+              {renderSingleItemList('releaseDate', { highlight: false })}
+              {renderSingleItemList('firstReleased')}
+              {renderSingleItemList('license')}
+            </>
+          )}
+        />
+      </div>
 
       {divider}
 
-      <div className={listClassName}>{categoryMetadata}</div>
+      <div className={listClassName}>
+        <SkeletonLoader
+          className="h-56"
+          render={() => (
+            <>
+              {renderItemList('supportedData', { highlight: false })}
+
+              {isNpe2Enabled && (
+                <>
+                  {renderItemList('pluginType', { highlight: false })}
+
+                  {metadata.pluginType.value.includes(PluginType.Reader) &&
+                    renderItemList('readerFileExtensions', {
+                      highlight: false,
+                      inlineList: true,
+                    })}
+
+                  {metadata.pluginType.value.includes(PluginType.Writer) && (
+                    <>
+                      {renderItemList('writerFileExtensions', {
+                        highlight: false,
+                        inlineList: true,
+                      })}
+                      {renderItemList('writerSaveLayers', { highlight: false })}
+                    </>
+                  )}
+                </>
+              )}
+            </>
+          )}
+        />
+      </div>
 
       {divider}
 
-      <SkeletonLoader
-        className={clsx(
-          'h-40',
-          'screen-875:mx-6 screen-875:h-full',
-          'screen-1425:mx-0 screen-1425:h-40',
-        )}
-        render={() => <PluginGithubData />}
-      />
+      <Media className={spacingClassName} greaterThan="screen-1425">
+        <SkeletonLoader
+          className={clsx(
+            'h-40',
+            'screen-875:mx-6 screen-875:h-full',
+            'screen-1425:mx-0 screen-1425:h-40',
+          )}
+          render={() => <PluginGithubData />}
+        />
 
-      {divider}
+        {divider}
+      </Media>
 
-      <div className={listClassName}>{requirementMetadata}</div>
+      <Media className={spacingClassName} lessThan="screen-875">
+        <SkeletonLoader
+          className={clsx(
+            'h-40',
+            'screen-875:mx-6 screen-875:h-full',
+            'screen-1425:mx-0 screen-1425:h-40',
+          )}
+          render={() => <PluginGithubData />}
+        />
+
+        {divider}
+      </Media>
+
+      <div className={listClassName}>
+        <SkeletonLoader
+          className="h-56"
+          render={() => (
+            <>
+              <Media between={['screen-875', 'screen-1425']}>
+                <PluginGithubData />
+              </Media>
+
+              {renderSingleItemList('pythonVersion')}
+              {renderItemList('operatingSystems')}
+              {renderItemList('requirements')}
+            </>
+          )}
+        />
+      </div>
     </div>
   );
 }
@@ -248,11 +298,11 @@ export function PluginMetadata(props: CommonProps) {
 
   return (
     <>
-      <Media lessThan="screen-1425">
+      <Media lessThan="screen-875">
         <PluginMetadataBase {...props} divider={divider} inline />
       </Media>
 
-      <Media greaterThanOrEqual="screen-1425">
+      <Media greaterThanOrEqual="screen-875">
         <PluginMetadataBase {...props} divider={divider} />
       </Media>
     </>
