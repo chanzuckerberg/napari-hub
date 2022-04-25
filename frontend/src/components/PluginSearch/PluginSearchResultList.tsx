@@ -1,9 +1,9 @@
 import clsx from 'clsx';
 import { useSnapshot } from 'valtio';
 
-import { ColumnLayout } from '@/components/common/ColumnLayout';
-import { I18n } from '@/components/common/I18n';
-import { SkeletonLoader } from '@/components/common/SkeletonLoader';
+import { ColumnLayout } from '@/components/ColumnLayout';
+import { I18n } from '@/components/I18n';
+import { SkeletonLoader } from '@/components/SkeletonLoader';
 import { RESULTS_PER_PAGE } from '@/constants/search';
 import { useLoadingState } from '@/context/loading';
 import { loadingStore } from '@/store/loading';

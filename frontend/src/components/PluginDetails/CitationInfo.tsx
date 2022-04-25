@@ -8,7 +8,7 @@ import { useTranslation } from 'next-i18next';
 import { useEffect, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 
-import { I18n } from '@/components/common/I18n';
+import { I18n } from '@/components/I18n';
 import { usePluginState } from '@/context/plugin';
 import { CitationData } from '@/types';
 

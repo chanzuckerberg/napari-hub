@@ -4,8 +4,8 @@ import { set } from 'lodash';
 import { useTranslation } from 'next-i18next';
 import type { TFuncKey } from 'react-i18next';
 
-import { Accordion } from '@/components/common/Accordion';
-import { Media } from '@/components/common/media';
+import { Accordion } from '@/components/Accordion';
+import { Media } from '@/components/media';
 import { useSearchStore } from '@/store/search/context';
 import { FilterKey } from '@/store/search/search.store';
 import { useIsFeatureFlagEnabled } from '@/utils/featureFlags';

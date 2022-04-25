@@ -1,7 +1,4 @@
-import {
-  TableOfContents,
-  TOCHeader,
-} from '@/components/common/TableOfContents';
+import { TableOfContents, TOCHeader } from '@/components/TableOfContents';
 
 import { getHeadersFromMarkdown } from './Markdown.utils';
 

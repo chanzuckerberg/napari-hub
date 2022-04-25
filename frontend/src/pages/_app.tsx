@@ -15,8 +15,8 @@ import { appWithTranslation } from 'next-i18next';
 import { ComponentType, ReactNode } from 'react';
 
 import { ApplicationProvider } from '@/components/ApplicationProvider';
-import { PageMetadata } from '@/components/common/PageMetadata';
 import { Layout } from '@/components/Layout';
+import { PageMetadata } from '@/components/PageMetadata';
 import { DEFAULT_PLUGIN_DATA, DEFAULT_REPO_DATA } from '@/constants/plugin';
 import { LoadingStateProvider } from '@/context/loading';
 import { PROD } from '@/env';

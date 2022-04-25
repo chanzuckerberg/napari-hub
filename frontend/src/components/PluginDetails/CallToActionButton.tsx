@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { useTranslation } from 'next-i18next';
 import { useState } from 'react';
 
-import { SkeletonLoader } from '@/components/common/SkeletonLoader';
+import { SkeletonLoader } from '@/components/SkeletonLoader';
 import { usePluginState } from '@/context/plugin';
 import { usePlausible } from '@/hooks';
 

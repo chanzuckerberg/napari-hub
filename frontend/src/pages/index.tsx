@@ -6,7 +6,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { ReactNode } from 'react';
 
 import { hubAPI, spdxLicenseDataAPI } from '@/axios';
-import { ErrorMessage } from '@/components/common/ErrorMessage';
+import { ErrorMessage } from '@/components/ErrorMessage';
 import { PluginSearch } from '@/components/PluginSearch';
 import { SearchStoreProvider } from '@/store/search/context';
 import { SpdxLicenseData, SpdxLicenseResponse } from '@/store/search/types';

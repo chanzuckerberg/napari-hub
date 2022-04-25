@@ -5,7 +5,7 @@ import Add from '@material-ui/icons/Add';
 import clsx from 'clsx';
 import { ReactNode, useState } from 'react';
 
-import { Expand } from '@/components/common/icons';
+import { Expand } from '@/components/icons';
 
 import styles from './Accordian.module.scss';
 

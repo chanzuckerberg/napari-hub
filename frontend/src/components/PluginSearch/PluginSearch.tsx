@@ -3,9 +3,9 @@ import { useEffect } from 'react';
 import { snapshot, useSnapshot } from 'valtio';
 
 import { AppBarLanding } from '@/components/AppBar';
-import { ColumnLayout } from '@/components/common/ColumnLayout';
-import { Pagination } from '@/components/common/Pagination';
+import { ColumnLayout } from '@/components/ColumnLayout';
 import { Footer } from '@/components/Footer';
+import { Pagination } from '@/components/Pagination';
 import { SignupForm } from '@/components/SignupForm';
 import { loadingStore } from '@/store/loading';
 import { useSearchStore } from '@/store/search/context';

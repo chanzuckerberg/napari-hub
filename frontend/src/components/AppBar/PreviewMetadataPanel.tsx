@@ -2,7 +2,7 @@ import Button from '@material-ui/core/Button';
 import clsx from 'clsx';
 import { createElement } from 'react';
 
-import { Media } from '@/components/common/media';
+import { Media } from '@/components/media';
 import { MetadataStatus } from '@/components/MetadataStatus';
 import { previewStore } from '@/store/preview';
 import { setUrlHash } from '@/utils';

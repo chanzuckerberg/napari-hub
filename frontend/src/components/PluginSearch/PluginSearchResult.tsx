@@ -6,9 +6,9 @@ import { useDebounce } from 'use-debounce';
 import { useSnapshot } from 'valtio';
 
 import { CategoryChipContainer } from '@/components/CategoryChip';
-import { Link } from '@/components/common/Link';
-import { SkeletonLoader } from '@/components/common/SkeletonLoader';
-import { TextHighlighter } from '@/components/common/TextHighlighter';
+import { Link } from '@/components/Link';
+import { SkeletonLoader } from '@/components/SkeletonLoader';
+import { TextHighlighter } from '@/components/TextHighlighter';
 import { useLoadingState } from '@/context/loading';
 import { useSearchStore } from '@/store/search/context';
 import { FilterCategoryKeys } from '@/store/search/search.store';

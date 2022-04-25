@@ -11,8 +11,8 @@ import {
 } from 'transform-parser';
 import { useSnapshot } from 'valtio';
 
-import { I18n } from '@/components/common/I18n';
-import { Link } from '@/components/common/Link';
+import { I18n } from '@/components/I18n';
+import { Link } from '@/components/Link';
 import { MetadataStatus } from '@/components/MetadataStatus';
 import { MetadataId, MetadataKeys, usePluginMetadata } from '@/context/plugin';
 import { previewStore } from '@/store/preview';

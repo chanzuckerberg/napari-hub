@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 
-import { I18n } from '@/components/common/I18n';
-import { Link } from '@/components/common/Link';
+import { I18n } from '@/components/I18n';
+import { Link } from '@/components/Link';
 import { resetLoadingState } from '@/store/loading';
 import { LinkInfo } from '@/types';
 

@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 
-import { Fade } from '@/components/common/animations';
+import { Fade } from '@/components/animations';
 
 interface Props {
   visible?: boolean;

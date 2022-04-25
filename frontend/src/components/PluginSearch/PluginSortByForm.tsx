@@ -8,8 +8,8 @@ import { useTranslation } from 'next-i18next';
 import type { TFuncKey } from 'react-i18next';
 import { useSnapshot } from 'valtio';
 
-import { Accordion } from '@/components/common/Accordion';
-import { Media, MediaFragment } from '@/components/common/media';
+import { Accordion } from '@/components/Accordion';
+import { Media, MediaFragment } from '@/components/media';
 import { SearchSortType } from '@/store/search/constants';
 import { useSearchStore } from '@/store/search/context';
 

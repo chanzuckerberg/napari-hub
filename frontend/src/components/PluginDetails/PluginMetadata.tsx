@@ -3,14 +3,14 @@ import { isArray, isEmpty } from 'lodash';
 import { useTranslation } from 'next-i18next';
 import { ReactNode } from 'react';
 
-import { Divider } from '@/components/common/Divider';
-import { Media } from '@/components/common/media';
-import { SkeletonLoader } from '@/components/common/SkeletonLoader';
+import { Divider } from '@/components/Divider';
+import { Media } from '@/components/media';
 import {
   MetadataList,
   MetadataListTextItem,
   Props as MetadataListProps,
 } from '@/components/MetadataList';
+import { SkeletonLoader } from '@/components/SkeletonLoader';
 import {
   Metadata,
   MetadataId,

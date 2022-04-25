@@ -2,8 +2,8 @@ import IconButton from '@material-ui/core/IconButton';
 import Popover from '@material-ui/core/Popover';
 import clsx from 'clsx';
 
-import { Close } from '@/components/common/icons';
-import { Link } from '@/components/common/Link';
+import { Close } from '@/components/icons';
+import { Link } from '@/components/Link';
 import { LinkInfo } from '@/types';
 
 import styles from './MenuPopover.module.scss';

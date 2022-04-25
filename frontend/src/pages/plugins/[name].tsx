@@ -6,8 +6,8 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { ParsedUrlQuery } from 'node:querystring';
 
 import { hubAPI } from '@/axios';
-import { ErrorMessage } from '@/components/common/ErrorMessage';
-import { PageMetadata } from '@/components/common/PageMetadata';
+import { ErrorMessage } from '@/components/ErrorMessage';
+import { PageMetadata } from '@/components/PageMetadata';
 import { PluginDetails } from '@/components/PluginDetails';
 import { useLoadingState } from '@/context/loading';
 import { PluginStateProvider } from '@/context/plugin';

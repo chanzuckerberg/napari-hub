@@ -4,14 +4,10 @@ import clsx from 'clsx';
 import { useTranslation } from 'next-i18next';
 import { ReactNode, useState } from 'react';
 
-import { I18n } from '@/components/common/I18n';
-import {
-  ChevronDown,
-  ChevronUp,
-  ViewPullRequest,
-} from '@/components/common/icons';
-import { Link } from '@/components/common/Link';
-import { Media } from '@/components/common/media';
+import { I18n } from '@/components/I18n';
+import { ChevronDown, ChevronUp, ViewPullRequest } from '@/components/icons';
+import { Link } from '@/components/Link';
+import { Media } from '@/components/media';
 import { MetadataStatus } from '@/components/MetadataStatus';
 import { usePluginMetadata } from '@/context/plugin';
 

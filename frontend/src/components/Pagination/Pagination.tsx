@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { upperFirst } from 'lodash';
 
-import { ChevronLeft, ChevronRight } from '@/components/common/icons';
+import { ChevronLeft, ChevronRight } from '@/components/icons';
 import { BEGINNING_PAGE } from '@/constants/search';
 
 import styles from './Pagination.module.scss';

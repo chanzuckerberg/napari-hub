@@ -22,7 +22,7 @@ import {
   ChevronUp,
   Info,
   Search,
-} from '@/components/common/icons';
+} from '@/components/icons';
 import { useSearchStore } from '@/store/search/context';
 import { FilterKey } from '@/store/search/search.store';
 import { appTheme } from '@/theme';

@@ -8,7 +8,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { Hydrate } from 'react-query/hydration';
 
-import { MediaContextProvider } from '@/components/common/media';
+import { MediaContextProvider } from '@/components/media';
 import { PROD } from '@/env';
 import { SearchStoreProvider } from '@/store/search/context';
 import { theme } from '@/theme';

@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { ReactNode } from 'react-markdown';
 
-import { Link } from '@/components/common/Link/Link';
+import { Link } from '@/components/Link/Link';
 import { MetadataHighlighter } from '@/components/MetadataHighlighter';
 import { MetadataId, usePluginState } from '@/context/plugin';
 import { usePlausible } from '@/hooks';

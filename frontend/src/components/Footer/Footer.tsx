@@ -2,10 +2,10 @@ import clsx from 'clsx';
 import { useTranslation } from 'next-i18next';
 import { ComponentType } from 'react';
 
-import { I18n } from '@/components/common/I18n';
-import { CZI, GitHub, NapariLogo } from '@/components/common/icons';
-import { IconProps } from '@/components/common/icons/icons.type';
-import { Link } from '@/components/common/Link';
+import { I18n } from '@/components/I18n';
+import { CZI, GitHub, NapariLogo } from '@/components/icons';
+import { IconProps } from '@/components/icons/icons.type';
+import { Link } from '@/components/Link';
 import { useLinks } from '@/hooks/useLinks';
 import { LinkInfo } from '@/types';
 

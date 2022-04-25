@@ -1,6 +1,6 @@
 import { useTranslation } from 'next-i18next';
 
-import { ColumnLayout } from '@/components/common/ColumnLayout';
+import { ColumnLayout } from '@/components/ColumnLayout';
 import { SearchBar } from '@/components/SearchBar';
 import { SEARCH_BAR_ID } from '@/constants/search';
 

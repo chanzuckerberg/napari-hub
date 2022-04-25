@@ -2,7 +2,7 @@ import Divider from '@material-ui/core/Divider';
 import clsx from 'clsx';
 import { AnimateSharedLayout, motion } from 'framer-motion';
 
-import { Media } from '@/components/common/media';
+import { Media } from '@/components/media';
 import { FilterKey } from '@/store/search/search.store';
 import { useIsFeatureFlagEnabled } from '@/utils/featureFlags';
 

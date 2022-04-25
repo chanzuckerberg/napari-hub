@@ -11,8 +11,8 @@ import {
   ProjectSupport,
   Quotes,
   Twitter,
-} from '@/components/common/icons';
-import { Media } from '@/components/common/media';
+} from '@/components/icons';
+import { Media } from '@/components/media';
 import { MetadataList, MetadataListLinkItem } from '@/components/MetadataList';
 import { MetadataId, MetadataKeys, usePluginMetadata } from '@/context/plugin';
 

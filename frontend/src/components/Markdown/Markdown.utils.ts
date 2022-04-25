@@ -6,7 +6,7 @@ import markdownParser from 'remark-parse';
 import remark2rehype from 'remark-rehype';
 import unified from 'unified';
 
-import { TOC_HEADER_TAG, TOCHeader } from '@/components/common/TableOfContents';
+import { TOC_HEADER_TAG, TOCHeader } from '@/components/TableOfContents';
 
 import { HeadingNode, MarkdownNode } from './Markdown.types';
 
