@@ -48,6 +48,10 @@ export interface PluginIndexData {
   release_date: string;
   summary: string;
   version: string;
+  plugin_types?: PluginType[];
+  reader_file_extensions?: string[];
+  writer_file_extensions?: string[];
+  writer_save_layers?: PluginWriterSaveLayer[];
 }
 
 /**
@@ -99,3 +103,17 @@ export interface LinkInfo {
 export type ClassState<T extends object> = {
   [key in NonFunctionKeys<T>]: T[key];
 };
+
+export enum PluginType {
+  Reader = 'reader',
+  SampleData = 'sample_data',
+  Theme = 'theme',
+  Widget = 'widget',
+  Writer = 'writer',
+}
+
+export enum PluginWriterSaveLayer {
+  Image = 'image',
+  Points = 'points',
+  Shapes = 'shapes',
+}
