@@ -287,7 +287,7 @@ const scrollHandler = throttle(() => {
 /**
  * Component for rendering the plugin details page.
  */
-export function PluginDetails() {
+export function PluginPage() {
   const loading = useLoadingState();
 
   useEffect(() => {

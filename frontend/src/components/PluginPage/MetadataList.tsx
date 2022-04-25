@@ -9,7 +9,7 @@ import { usePlausible } from '@/hooks';
 import { isExternalUrl } from '@/utils/url';
 
 import styles from './MetadataList.module.scss';
-import { MetadataItem, MetadataValueTypes } from './PluginDetails.types';
+import { MetadataItem, MetadataValueTypes } from './types';
 
 interface CommonProps {
   /**

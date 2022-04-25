@@ -7,7 +7,7 @@ import { ParsedUrlQuery } from 'node:querystring';
 
 import { ErrorMessage } from '@/components/ErrorMessage';
 import { PageMetadata } from '@/components/PageMetadata';
-import { PluginDetails } from '@/components/PluginDetails';
+import { PluginPage } from '@/components/PluginPage';
 import { useLoadingState } from '@/context/loading';
 import { PluginStateProvider } from '@/context/plugin';
 import { PluginData } from '@/types';
@@ -105,12 +105,7 @@ export async function getServerSideProps({
  * This page fetches plugin data from the hub API and renders it in the
  * PluginDetails component.
  */
-export default function PluginPage({
-  error,
-  plugin,
-  repo,
-  repoFetchError,
-}: Props) {
+export default function Plugin({ error, plugin, repo, repoFetchError }: Props) {
   const isLoading = useLoadingState();
   const [t] = useTranslation(['pageTitles', 'pluginPage']);
 
@@ -153,7 +148,7 @@ export default function PluginPage({
               repo={repo}
               repoFetchError={repoFetchError}
             >
-              <PluginDetails />
+              <PluginPage />
             </PluginStateProvider>
           ) : (
             <ErrorMessage>{t('pluginPage:errors.emptyPlugin')}</ErrorMessage>

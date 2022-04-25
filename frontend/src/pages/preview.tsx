@@ -7,7 +7,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useEffect } from 'react';
 import { DeepPartial } from 'utility-types';
 
-import { PluginDetails } from '@/components/PluginDetails';
+import { PluginPage } from '@/components/PluginPage';
 import { DEFAULT_PLUGIN_DATA, DEFAULT_REPO_DATA } from '@/constants/plugin';
 import { MetadataId, PluginStateProvider } from '@/context/plugin';
 import { previewStore } from '@/store/preview';
@@ -90,7 +90,7 @@ export default function PreviewPage({ plugin, repo, repoFetchError }: Props) {
         repo={repo}
         repoFetchError={repoFetchError}
       >
-        <PluginDetails />
+        <PluginPage />
       </PluginStateProvider>
     </>
   );
