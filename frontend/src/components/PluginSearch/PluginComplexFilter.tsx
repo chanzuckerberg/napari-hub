@@ -6,7 +6,9 @@ import {
   Button,
   ComplexFilter,
   DefaultMenuSelectOption,
+  IconButton,
   InputDropdownProps,
+  Tooltip,
 } from 'czifui';
 import { get, isEqual } from 'lodash';
 import { useTranslation } from 'next-i18next';
@@ -18,6 +20,7 @@ import {
   CheckboxIcon,
   ChevronDown,
   ChevronUp,
+  Info,
   Search,
 } from '@/components/common/icons';
 import { useSearchStore } from '@/store/search/context';
@@ -45,6 +48,11 @@ interface PluginMenuSelectOption extends DefaultMenuSelectOption {
    * Key used for identifying what state to use when the option is enabled / disabled.
    */
   stateKey: string;
+
+  /**
+   * Tooltip to render with option for describing its usage.
+   */
+  tooltip?: string;
 }
 
 const StyledPopper = styled(Popper)`
@@ -117,9 +125,11 @@ export function PluginComplexFilter({ filterKey }: Props) {
       const categoryName = categoryNamesMap[stateKey];
 
       let name = stateKey;
+      let tooltip: string | undefined;
 
       if (optionLabel) {
-        name = optionLabel;
+        name = optionLabel.label;
+        tooltip = optionLabel.tooltip;
       } else if (categoryName) {
         name = categoryName;
       }
@@ -127,6 +137,7 @@ export function PluginComplexFilter({ filterKey }: Props) {
       return {
         name,
         stateKey,
+        tooltip,
       };
     }),
   );
@@ -279,20 +290,44 @@ export function PluginComplexFilter({ filterKey }: Props) {
           option: PluginMenuSelectOption,
           { selected }: AutocompleteRenderOptionState,
         ) => (
-          <div className="flex space-x-2 py-1 px-4">
-            <CheckboxIcon
-              className="min-w-[0.875rem] min-h-[0.875rem]"
-              checked={selected}
-            />
+          <div className="flex flex-auto justify-between py-1 px-4">
+            <div className="flex space-x-2">
+              <CheckboxIcon
+                className="min-w-[0.875rem] min-h-[0.875rem]"
+                checked={selected}
+              />
 
-            <p
-              className={clsx(
-                '-mt-1 text-[0.875rem] break-words leading-normal',
-                selected && 'text-black',
-              )}
-            >
-              {option.name}
-            </p>
+              <p
+                className={clsx(
+                  '-mt-1 text-[0.875rem] break-words leading-normal',
+                  selected && 'text-black',
+                )}
+              >
+                {option.name}
+              </p>
+            </div>
+
+            {option.tooltip && (
+              <Tooltip
+                interactive={false}
+                leaveDelay={0}
+                title={
+                  <div>
+                    <p className="font-semibold text-[0.6875rem] screen-495:text-xs">
+                      {option.name}
+                    </p>
+
+                    <span className="text-[0.5625rem] screen-495:text-[0.6875rem]">
+                      {option.tooltip}
+                    </span>
+                  </div>
+                }
+              >
+                <IconButton>
+                  <Info />
+                </IconButton>
+              </Tooltip>
+            )}
           </div>
         ),
       }}
