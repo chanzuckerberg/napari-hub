@@ -14,6 +14,27 @@
     "Supported data": "Supported data",
     "Workflow step": "Workflow step",
 
+    "pluginType": {
+      "label": "Plugin type",
+      "reader": "File reader",
+      "writer": "File writer"
+    },
+
+    "readerFileExtensions": {
+      "label": "Open extension"
+    },
+
+    "writerFileExtensions": {
+      "label": "Save extension"
+    },
+
+    "writerSaveLayers": {
+      "label": "Save layers",
+      "image": "Image",
+      "points": "Points",
+      "shapes": "Shapes"
+    },
+
     "license": {
       "label": "License",
       "lower": "license"

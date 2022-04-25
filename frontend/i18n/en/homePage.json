@@ -38,14 +38,41 @@
       "workflowStep": "Workflow step"
     },
 
-    "operatingSystem": {
-      "linux": "Linux",
-      "mac": "macOS",
-      "windows": "Windows"
-    },
-
     "requirement": {
-      "ossLicense": "Limit to plugins with open source license"
+      "osLinux": {
+        "label": "Linux"
+      },
+      "osMac": {
+        "label": "macOS"
+      },
+      "osWindows": {
+        "label": "Windows"
+      },
+
+      "ossLicense": {
+        "label": "Limit to plugins with open source license"
+      },
+
+      "reader": {
+        "label": "Reader",
+        "tooltip": "Reader plugins let users load data from specific filetypes."
+      },
+      "sample_data": {
+        "label": "Sample data",
+        "tooltip": "Sample Data plugins let users access sample data in napari."
+      },
+      "theme": {
+        "label": "Theme",
+        "tooltip": "Themes let users update the color palette of napari's interface."
+      },
+      "widget": {
+        "label": "Widget",
+        "tooltip": "Widgets provide new interactive functionality to napari."
+      },
+      "writer": {
+        "label": "Writer",
+        "tooltip": "Writer plugins let users export data to specific filetypes."
+      }
     },
 
     "workflowStep": {
