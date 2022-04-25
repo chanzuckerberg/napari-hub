@@ -1,8 +1,8 @@
 import { GetServerSideProps } from 'next';
 
-import { hubAPI } from '@/axios';
 import { PluginIndexData } from '@/types';
 import { Logger } from '@/utils';
+import { hubAPI } from '@/utils/axios';
 import { getPreRenderManifest } from '@/utils/next';
 
 const logger = new Logger('sitemap.xml.ts');
