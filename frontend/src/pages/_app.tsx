@@ -4,9 +4,9 @@
   @typescript-eslint/no-unsafe-member-access,
 */
 
+import '@/scss/global.scss';
+import '@/scss/tailwind.scss';
 import '@/utils/axios';
-import '@/tailwind.scss';
-import '@/global.scss';
 
 import { AppProps } from 'next/app';
 import Head from 'next/head';
