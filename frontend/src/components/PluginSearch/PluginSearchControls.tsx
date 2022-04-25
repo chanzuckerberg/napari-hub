@@ -20,10 +20,19 @@ export function PluginSearchControls() {
   );
 
   const isCategoryFiltersEnabled = useIsFeatureFlagEnabled('categoryFilters');
+  const isNpe2Enabled = useIsFeatureFlagEnabled('npe2');
   const requirementFilters: FilterKey[] = [];
 
   if (isCategoryFiltersEnabled) {
     requirementFilters.push('supportedData');
+  }
+
+  if (isNpe2Enabled) {
+    requirementFilters.push(
+      'pluginType',
+      'writerFileExtensions',
+      'readerFileExtensions',
+    );
   }
 
   requirementFilters.push('pythonVersions', 'operatingSystems', 'license');
