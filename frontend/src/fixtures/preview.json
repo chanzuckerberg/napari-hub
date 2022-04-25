@@ -1,5 +1,103 @@
 {
   "name": "napari-demo",
+  "display_name": "Demo",
+  "summary": "Cool plugin for demos",
+  "description": "# napari-demo\n\nThe coolest plugin for demos.",
+  "description_text": "napari-compressed-labels-io\n\n\n\n\n\nDescription\nThis napari plugin provides readers and writers for labels and their corresponding image layers into zarr format for compression and portability. Each reader/writer pair supports a round trip of saving and loading image and labels layers.\nWriters\nTwo writers are provided by this plugin, each with its own reader.\nlabels_to_zarr\nThis writer is an alternative to napari's default label writer and will write an entire labels layer, regardless of its dimensions, into a single zarr file. This writer provides the best compression option and its associated reader get_zarr_labels will read the layer back into napari.\nThis writer will be called when the user tries to save a selected labels layer into a path ending with .zarr\nlabel_image_pairs_to_zarr\nThis writer will save 3-dimensional labels and image layers from the viewer into individual zarrs for portability and convenience. For example, given one labels and one image layer of the shape (10, 200, 200) saved to my_stacks.zarr, 10 subdirectories will be created, each with two zarrs inside of shape (200, 200) corresponding to the labels and image layer.\nThis writer allows users to load stacks of associated images, label them, and then quickly save these stacks out into individual slices for easy loading, viewing and interaction. Its associated reader supports the loading into napari of the whole stack, all layers at one slice of the stack, and an individual layer of a given slice of the stack.\nThe writer currently supports only 3D layers, with the exception of RGB images of the form (z, y, x, 3), which are also supported.\nReaders\nTwo readers are provided by this plugin for loading the formats saved by each writer. These are detailed below.\nget_zarr_labels\nThis reader will open any zarr file with a .zarray at the top level in path as a labels layer. This is to be used in conjunction with labels_to_zarr.\nget_label_image_stack\nThis reader will open any zarr containing a .zmeta file as layers into napari. Depending on what is being opened, the reader will either load a full stack of labels and images, one slice of a stack of images and labels or an individual layer within a slice. This is to be used in conjunction with label_image_pairs_to_zarr.\n.zmeta\nThis metadata file contains information about the layer types in the stack and in each individual slice, as well as the number of image/label slices. This allows the reader plugin to load the correct layer types with appropriate names both at a stack level and at the individual slice level.\nAn example .zmeta specification\n```json\n{\n    \"meta\": {\n        \"stack\": 7                               # number of slices in the entire stack (1 for an individual slice, 0 for a layer within a slice)\n    },\n    \"data\": {\n        \"image\" : [                              # all image layers must be listed here\n            {\n                \"name\": \"leaves_example_data\",\n                \"shape\": [790, 790, 3],\n                \"dtype\": \"uint8\",\n                \"rgb\": true                      # where rgb is false the image will be loaded as greyscale (colormap support has not yet been implemented)\n            }\n        ],\n        \"labels\" : [\n            {\n                \"name\": \"oak\",\n                \"shape\": [790, 790],\n                \"dtype\": \"int64\"\n            },\n            {\n                \"name\": \"bg\",\n                \"shape\": [790, 790],\n                \"dtype\": \"int64\"\n            }\n        ]\n    }\n}\n```\n\nThis napari plugin was generated with Cookiecutter using with @napari's cookiecutter-napari-plugin template.\n\nInstallation\nYou can install napari-compressed-labels-io via pip:\npip install napari-compressed-labels-io\n\nContributing\nContributions are very welcome. Tests can be run with tox, please ensure\nthe coverage at least stays the same before you submit a pull request.\nLicense\nDistributed under the terms of the MIT license,\n\"napari-compressed-labels-io\" is free and open source software\nIssues\nIf you encounter any problems, please file an issue along with a detailed description.",
+  "description_content_type": "text/markdown",
+  "authors": [
+    {
+      "name": "Ziyang Liu",
+      "email": "potatingpotato@gmail.com"
+    }
+  ],
+  "license": "MIT",
+  "python_version": ">=3.6",
+  "operating_system": ["Operating System :: OS Independent"],
   "release_date": "2021-03-03T20:41:59.257726Z",
-  "first_released": "2021-02-23T01:34:32.478790Z"
+  "version": "0.0.2",
+  "first_released": "2021-02-23T01:34:32.478790Z",
+  "development_status": ["Development Status :: 4 - Beta"],
+  "requirements": [
+    "napari-plugin-engine (>=0.1.4)",
+    "numpy",
+    "zarr",
+    "dask[complete]"
+  ],
+  "project_site": "https://github.com/potating-potato/napari-demo",
+  "documentation": "https://github.com/potating-potato/napari-demo",
+  "support": "https://github.com/potating-potato/napari-demo/issues",
+  "report_issues": "https://github.com/potating-potato/napari-demo/issues",
+  "twitter": "https://twitter.com/PotatingPotato",
+  "code_repository": "https://github.com/potating-potato/napari-demo",
+  "action_repository": "https://github.com/codemonkey800/napari-demo",
+  "category": {
+    "Supported data": ["2D", "3D"],
+    "Image modality": [
+      "Medical imaging",
+      "Confocal microscopy",
+      "Multi-photon microscopy"
+    ],
+    "Workflow step": [
+      "Image registration",
+      "Image correction",
+      "Image enhancement",
+      "Image reconstruction",
+      "Pixel classification",
+      "Image feature detection",
+      "Image annotation",
+      "Filament tracing",
+      "Object classification",
+      "Object-based colocalisation",
+      "Object feature extraction",
+      "Object tracking",
+      "Clustering",
+      "Frequency domain analysis",
+      "Pixel-based colocalisation",
+      "Fluorescence correlation spectroscopy",
+      "Optical flow analysis",
+      "Image Segmentation",
+      "Visualization",
+      "Synthetic image generation",
+      "Morphological operations",
+      "Image fusion",
+      "Image classification"
+    ]
+  },
+  "category_hierarchy": {
+    "Supported data": [["2D"], ["3D"]],
+    "Workflow step": [
+      ["Image Segmentation", "Manual segmentation"],
+      ["Image annotation", "Dense image annotation", "Manual segmentation"],
+      ["Image Segmentation", "Semi-automatic segmentation"]
+    ]
+  },
+  "citations": {
+    "APA": "Ziyang L. (2021). A napari demo plugin (version 0.0.2). URL: https://github.com/potating-potato/napari-demo\n",
+    "BibTex": "@misc{YourReferenceHere,\nauthor = {Ziyang, Liu},\nmonth = {4},\ntitle = {A napari demo plugin},\nurl = {https://github.com/potating-potato/napari-demo},\nyear = {2021}\n}\n",
+    "RIS": "TY  - GEN\nAU  - Ziyang, Liu\nDA  - 2021-04-26\nPY  - 2021\nTI  - A napari demo plugin\nUR  - https://github.com/potating-potato/napari-demo\nER\n",
+    "citation": "cff-version: 1.2.0\nmessage: \"Spaghetti taco cookie cake macaron souffle I am content.\"\nauthors:\n- family-names: \"Ziyang\"\n  given-names: \"Liu\"\ntitle: \"A napari demo plugin\"\nversion: 0.0.2\ndate-released: 2021-04-26\nurl: \"https://github.com/potating-potato/napari-demo\"\n"
+  },
+  "plugin_types": ["reader", "writer"],
+  "writer_file_extensions": [
+    "czi",
+    "jpg",
+    "pdf",
+    "png",
+    "psd",
+    "tiff",
+    "xcar",
+    "zarr"
+  ],
+  "reader_file_extensions": [
+    "czi",
+    "jpg",
+    "pdf",
+    "png",
+    "psd",
+    "tiff",
+    "xcar",
+    "zarr"
+  ],
+  "writer_save_layers": ["image", "points", "shapes"]
 }

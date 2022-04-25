@@ -65,7 +65,29 @@
       "BibTex": "@misc{YourReferenceHere,\nauthor = {Ziyang, Liu},\nmonth = {4},\ntitle = {A napari demo plugin},\nurl = {https://github.com/potating-potato/napari-demo},\nyear = {2021}\n}\n",
       "RIS": "TY  - GEN\nAU  - Ziyang, Liu\nDA  - 2021-04-26\nPY  - 2021\nTI  - A napari demo plugin\nUR  - https://github.com/potating-potato/napari-demo\nER\n",
       "citation": "cff-version: 1.2.0\nmessage: \"Spaghetti taco cookie cake macaron souffle I am content.\"\nauthors:\n- family-names: \"Ziyang\"\n  given-names: \"Liu\"\ntitle: \"A napari demo plugin\"\nversion: 0.0.2\ndate-released: 2021-04-26\nurl: \"https://github.com/potating-potato/napari-demo\"\n"
-    }
+    },
+    "plugin_types": ["reader", "writer"],
+    "writer_file_extensions": [
+      "czi",
+      "jpg",
+      "pdf",
+      "png",
+      "psd",
+      "tiff",
+      "xcar",
+      "zarr"
+    ],
+    "reader_file_extensions": [
+      "czi",
+      "jpg",
+      "pdf",
+      "png",
+      "psd",
+      "tiff",
+      "xcar",
+      "zarr"
+    ],
+    "writer_save_layers": ["image", "points", "shapes"]
   },
   {
     "name": "napari-compressed-labels-io",
@@ -86,7 +108,10 @@
       "BibTex": "@misc{YourReferenceHere,\nauthor = {Fa, Gi N. and Family, Given},\ndoi = {10.0000/something.0000000},\nmonth = {11},\ntitle = {testing},\nurl = {https://example.com/example},\nyear = {2019}\n}\n",
       "RIS": "TY  - GEN\nAB  - Test\nAU  - Fa, Gi N.\nAU  - Family, Given\nDA  - 2019-11-12\nDO  - 10.0000/something.0000000\nKW  - citation\nKW  - test\nKW  - cff\nKW  - CITATION.cff\nPY  - 2019\nTI  - testing\nUR  - https://example.com/example\nER\n",
       "citation": "# YAML 1.2\n---\nabstract: \"Test\"\nauthors:\n  -\n    affiliation: \"Test Center\"\n    family-names: Fa\n    given-names: Gi N.\n    orcid: https://orcid.org/0000-0000-0000-0000\n  -\n    affiliation: \"Test Center 2\"\n    family-names: Family\n    given-names: Given\ncff-version: \"1.0.3\"\ndate-released: 2019-11-12\ndoi: 10.0000/something.0000000\nkeywords:\n  - \"citation\"\n  - \"test\"\n  - \"cff\"\n  - \"CITATION.cff\"\nlicense: Apache-2.0\nmessage: \"If you use this software, please cite it using these metadata.\"\nrepository-code: \"https://example.com/example\"\ntitle: testing\nversion: \"0.0.0\"\n"
-    }
+    },
+    "plugin_types": ["writer"],
+    "writer_file_extensions": ["czi", "zarr"],
+    "writer_save_layers": ["image", "points", "shapes"]
   },
   {
     "name": "affinder",
@@ -106,7 +131,8 @@
     "version": "0.2.0",
     "first_released": "2021-02-04T10:12:07.298699Z",
     "development_status": ["Development Status :: 3 - Alpha"],
-    "description_text": "affinder\n\n\n\n\n\nQuickly find the affine matrix mapping one image to another using manual correspondence points annotation\n\nThis napari plugin was generated with Cookiecutter using with @napari's cookiecutter-napari-plugin template.\n\nInstallation\nYou can install affinder via pip:\npip install affinder\n\nContributing\nContributions are very welcome. Tests can be run with tox, please ensure\nthe coverage at least stays the same before you submit a pull request.\nLicense\nDistributed under the terms of the BSD-3 license,\n\"affinder\" is free and open source software\nIssues\nIf you encounter any problems, please file an issue along with a detailed description."
+    "description_text": "affinder\n\n\n\n\n\nQuickly find the affine matrix mapping one image to another using manual correspondence points annotation\n\nThis napari plugin was generated with Cookiecutter using with @napari's cookiecutter-napari-plugin template.\n\nInstallation\nYou can install affinder via pip:\npip install affinder\n\nContributing\nContributions are very welcome. Tests can be run with tox, please ensure\nthe coverage at least stays the same before you submit a pull request.\nLicense\nDistributed under the terms of the BSD-3 license,\n\"affinder\" is free and open source software\nIssues\nIf you encounter any problems, please file an issue along with a detailed description.",
+    "plugin_types": ["sample_data"]
   },
   {
     "name": "napping",
@@ -123,7 +149,8 @@
     "version": "0.1.7",
     "first_released": "2021-02-02T20:57:19.679669Z",
     "development_status": ["Development Status :: 4 - Beta"],
-    "description_text": "napping\n\n\n\n\n\nControl point mapping and coordination transformation using napari\nRequirements\nThis package requires Python 3.7 or newer.\nPython package dependencies are listed in requirements.txt.\nUsing virtual environments is strongly recommended.\nInstallation\nInstall napping and its dependencies with:\npip install napping\n\nEnvironment setup example: mapping IMC and slidescanner images\nAs napari is under active development, the use of virtual environments is strongly encouraged. For example, to set up an environment for aligning Imaging Mass Cytometry (IMC, .mcd/.txt) and bright-field/immunofluorescence slidescanner (.czi) images:\nconda create -n napping python\nconda activate napping\npip install napping napari-imc napari-czifile2\n\nAfterwards, napping can be started from inside the environment:\nnapping\n\nUsage\nUse napping for control point mapping and coordinate transformation\nAuthors\nCreated and maintained by Jonas Windhager jonas.windhager@uzh.ch\nContributing\nContributing\nChangelog\nChangelog\nLicense\nMIT"
+    "description_text": "napping\n\n\n\n\n\nControl point mapping and coordination transformation using napari\nRequirements\nThis package requires Python 3.7 or newer.\nPython package dependencies are listed in requirements.txt.\nUsing virtual environments is strongly recommended.\nInstallation\nInstall napping and its dependencies with:\npip install napping\n\nEnvironment setup example: mapping IMC and slidescanner images\nAs napari is under active development, the use of virtual environments is strongly encouraged. For example, to set up an environment for aligning Imaging Mass Cytometry (IMC, .mcd/.txt) and bright-field/immunofluorescence slidescanner (.czi) images:\nconda create -n napping python\nconda activate napping\npip install napping napari-imc napari-czifile2\n\nAfterwards, napping can be started from inside the environment:\nnapping\n\nUsage\nUse napping for control point mapping and coordinate transformation\nAuthors\nCreated and maintained by Jonas Windhager jonas.windhager@uzh.ch\nContributing\nContributing\nChangelog\nChangelog\nLicense\nMIT",
+    "plugin_types": ["theme"]
   },
   {
     "name": "napari-console",
@@ -140,7 +167,8 @@
     "version": "0.0.3",
     "first_released": "2021-01-21T04:42:40.342150Z",
     "development_status": ["Development Status :: 4 - Beta"],
-    "description_text": "napari-console (WIP, under active development)\n\n\n\n\n\nA plugin that adds a console to napari\n\nThis napari plugin was generated with Cookiecutter using with @napari's cookiecutter-napari-plugin template.\n\nInstallation\nYou can install napari-console via pip:\npip install napari-console\n\nContributing\nContributions are very welcome. Tests can be run with tox, please ensure\nthe coverage at least stays the same before you submit a pull request.\nLicense\nDistributed under the terms of the BSD-3 license,\n\"napari-console\" is free and open source software\nIssues\nIf you encounter any problems, please file an issue along with a detailed description."
+    "description_text": "napari-console (WIP, under active development)\n\n\n\n\n\nA plugin that adds a console to napari\n\nThis napari plugin was generated with Cookiecutter using with @napari's cookiecutter-napari-plugin template.\n\nInstallation\nYou can install napari-console via pip:\npip install napari-console\n\nContributing\nContributions are very welcome. Tests can be run with tox, please ensure\nthe coverage at least stays the same before you submit a pull request.\nLicense\nDistributed under the terms of the BSD-3 license,\n\"napari-console\" is free and open source software\nIssues\nIf you encounter any problems, please file an issue along with a detailed description.",
+    "plugin_types": ["widget"]
   },
   {
     "name": "napari-hdf5-labels-io",
@@ -160,7 +188,9 @@
     "version": "0.2.dev13",
     "first_released": "2021-03-04T09:44:01.947204Z",
     "development_status": ["Development Status :: 4 - Beta"],
-    "description_text": "napari-hdf5-labels-io\n\n\n\n\n\nNapari plugin to store Napari projects in a .h5 file. Label layer are stored in a sparse representation (COO list).\n\nThis napari plugin was generated with Cookiecutter using with @napari's cookiecutter-napari-plugin template.\n\nDescription\nThis Napari plugin provides a writer and reader to store existing layers in the current Napari window, all the metadata is stored as well in a HDF5 file. All the stored preferences are included when a project file is opened.\nLabel layers are stored in a coordinate list sparse representation with the Sparse module to keep the project file size minimum (aiming to implement this in other layers in the future).\nHDF5 file architecture\nThe project file is a HDF5 generated with the h5py module. The file groups correspond to the different Napari layer types and the layer metadata is stored as attributes of each layer.\nIn the case of the meta dictionary which is nested in the LayerData meta dictionary (Napari IO), new keys are generated in the outer dictionary to use them as h5 dataset attributes. This nested dictionary architecture is reconstructed by the reader to ensure format compatibility.\nInstallation\nYou can install napari-hdf5-labels-io via pip:\npip install napari-hdf5-labels-io\n\nContributing\nContributions are very welcome. Tests can be run with tox, please ensure\nthe coverage at least stays the same before you submit a pull request.\nLicense\nDistributed under the terms of the GNU GPL v3.0 license,\n\"napari-hdf5-labels-io\" is free and open source software.\nIssues\nIf you encounter any problems, please file an issue along with a detailed description."
+    "description_text": "napari-hdf5-labels-io\n\n\n\n\n\nNapari plugin to store Napari projects in a .h5 file. Label layer are stored in a sparse representation (COO list).\n\nThis napari plugin was generated with Cookiecutter using with @napari's cookiecutter-napari-plugin template.\n\nDescription\nThis Napari plugin provides a writer and reader to store existing layers in the current Napari window, all the metadata is stored as well in a HDF5 file. All the stored preferences are included when a project file is opened.\nLabel layers are stored in a coordinate list sparse representation with the Sparse module to keep the project file size minimum (aiming to implement this in other layers in the future).\nHDF5 file architecture\nThe project file is a HDF5 generated with the h5py module. The file groups correspond to the different Napari layer types and the layer metadata is stored as attributes of each layer.\nIn the case of the meta dictionary which is nested in the LayerData meta dictionary (Napari IO), new keys are generated in the outer dictionary to use them as h5 dataset attributes. This nested dictionary architecture is reconstructed by the reader to ensure format compatibility.\nInstallation\nYou can install napari-hdf5-labels-io via pip:\npip install napari-hdf5-labels-io\n\nContributing\nContributions are very welcome. Tests can be run with tox, please ensure\nthe coverage at least stays the same before you submit a pull request.\nLicense\nDistributed under the terms of the GNU GPL v3.0 license,\n\"napari-hdf5-labels-io\" is free and open source software.\nIssues\nIf you encounter any problems, please file an issue along with a detailed description.",
+    "plugin_types": ["reader"],
+    "reader_file_extensions": ["czi", "zarr"]
   },
   {
     "name": "PlatyMatch",
