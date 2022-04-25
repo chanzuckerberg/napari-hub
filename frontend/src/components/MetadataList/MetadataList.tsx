@@ -16,6 +16,7 @@ export interface Props {
   empty?: boolean;
   id?: MetadataId;
   inline?: boolean;
+  inlineList?: boolean;
   label: string;
   highlight?: boolean;
 }
@@ -30,6 +31,7 @@ export function MetadataList({
   highlight = true,
   id,
   inline,
+  inlineList,
   label,
 }: Props) {
   usePreviewClickAway(id);
@@ -62,7 +64,8 @@ export function MetadataList({
               'font-bold whitespace-nowrap',
 
               // Render title inline with values.
-              inline ? 'inline mr-2' : 'mb-3',
+              inline && 'inline mr-2',
+              !inline && !inlineList && 'mb-3',
             )}
           >
             {label}:
@@ -76,7 +79,7 @@ export function MetadataList({
               process.env.PREVIEW && styles.preview,
 
               // Vertical and horizontal spacing.
-              inline && [
+              (inline || inlineList) && [
                 'inline space-y-2',
                 empty && 'flex-grow',
                 styles.inline,
