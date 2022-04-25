@@ -148,14 +148,20 @@ export class SearchFilterStore implements Resettable {
         plugin.reader_file_extensions &&
         plugin.plugin_types?.includes(PluginType.Reader)
       ) {
-        addToState(this.readerFileExtensions, plugin.reader_file_extensions);
+        addToState(
+          this.readerFileExtensions,
+          plugin.reader_file_extensions.sort(),
+        );
       }
 
       if (
         plugin.writer_file_extensions &&
         plugin.plugin_types?.includes(PluginType.Writer)
       ) {
-        addToState(this.writerFileExtensions, plugin.writer_file_extensions);
+        addToState(
+          this.writerFileExtensions,
+          plugin.writer_file_extensions.sort(),
+        );
       }
     }
   }
