@@ -10,7 +10,6 @@ import { DeepPartial } from 'utility-types';
 import { PluginDetails } from '@/components/PluginDetails';
 import { DEFAULT_PLUGIN_DATA, DEFAULT_REPO_DATA } from '@/constants/plugin';
 import { MetadataId, PluginStateProvider } from '@/context/plugin';
-import { PROD } from '@/env';
 import { previewStore } from '@/store/preview';
 import { PluginData } from '@/types';
 import { I18nNamespace } from '@/types/i18n';

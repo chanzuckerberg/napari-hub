@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 
-import { PREVIEW, PROD, STAGING } from '@/env';
+import { PREVIEW, PROD, STAGING } from '@/constants/env';
 
 import { createUrl } from './url';
 
