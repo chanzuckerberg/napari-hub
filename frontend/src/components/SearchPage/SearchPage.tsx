@@ -61,7 +61,7 @@ function SearchPagination() {
 /**
  * Component for rendering the landing page and plugin search.
  */
-export function PluginSearch() {
+export function SearchPage() {
   // Scroll to last scroll location on initial load.
   useEffect(() => {
     const { searchScrollY } = snapshot(loadingStore);

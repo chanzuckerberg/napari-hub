@@ -6,7 +6,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { ReactNode } from 'react';
 
 import { ErrorMessage } from '@/components/ErrorMessage';
-import { PluginSearch } from '@/components/PluginSearch';
+import { SearchPage } from '@/components/SearchPage';
 import { SearchStoreProvider } from '@/store/search/context';
 import { SpdxLicenseData, SpdxLicenseResponse } from '@/store/search/types';
 import { PluginIndexData } from '@/types';
@@ -62,7 +62,7 @@ export default function Home({ error, index, licenses }: Props) {
         index &&
         licenses && (
           <SearchStoreProvider index={index} licenses={licenses}>
-            <PluginSearch />
+            <SearchPage />
           </SearchStoreProvider>
         )
       )}

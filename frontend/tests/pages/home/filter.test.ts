@@ -5,7 +5,7 @@
 
 import { satisfies } from '@renovate/pep440';
 
-import { FilterType } from '@/components/PluginSearch/PluginFilterByForm';
+import { FilterType } from '@/components/SearchPage/PluginFilterByForm';
 import { FilterKey } from '@/store/search/search.store';
 
 import {
