@@ -18,9 +18,7 @@ interface Props {
 export function MetadataListSearchItem({ children, className }: Props) {
   const plausible = usePlausible();
 
-  const href = `https://napari-hub.org/?search="${encodeURIComponent(
-    children,
-  )}"`;
+  const href = `/?search="${encodeURIComponent(children)}"`;
   const internalLink = !isExternalUrl(href);
 
   return (
