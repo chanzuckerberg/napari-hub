@@ -75,7 +75,7 @@ def plugin_manifest(plugin: str, version: str = None) -> Response:
             return app.make_response(("Plugin Manifest Not Found", 404))
         elif manifest['process_count'] < max_failure_tries:
             response = app.make_response(("Temporarily Unavailable", 503))
-            response.headers["Retry-After"] = 120
+            response.headers["Retry-After"] = 300
             return response
     else:
         return yaml.dump(manifest)
