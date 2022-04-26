@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { isEmpty } from 'lodash';
+import { isArray, isEmpty } from 'lodash';
 import { useTranslation } from 'next-i18next';
 import { ReactNode } from 'react';
 
@@ -116,44 +116,27 @@ function PluginMetadataBase({
   const metadata = usePluginMetadata();
   const isNpe2Enabled = useIsFeatureFlagEnabled('npe2');
 
-  function renderSingleItemList(
-    key: PickMetadataKeys<string>,
+  function renderItemList(
+    key: PickMetadataKeys<string | string[]>,
     props?: Partial<MetadataListProps>,
   ) {
     const { label, value } = metadata[key];
-
-    return (
-      <MetadataList
-        id={`metadata-${key}`}
-        inline={inline}
-        label={label}
-        empty={!value}
-        {...props}
-      >
-        <MetadataListTextItem metadataKey={key as MetadataKeys}>
-          {value}
-        </MetadataListTextItem>
-      </MetadataList>
-    );
-  }
-
-  function renderItemList(
-    key: PickMetadataKeys<string[]>,
-    props?: Partial<MetadataListProps>,
-  ) {
-    const { label, value: values } = metadata[key];
+    const values = isArray(value) ? value : [value];
 
     return (
       <MetadataList
         id={`metadata-${key}` as MetadataId}
         inline={inline}
         label={label}
-        empty={isEmpty(values)}
+        empty={isEmpty(isArray(value) ? values : value)}
         {...props}
       >
-        {values.map((value) => (
-          <MetadataListTextItem key={value} metadataKey={key as MetadataKeys}>
-            {value}
+        {values.map((currentValue) => (
+          <MetadataListTextItem
+            key={currentValue}
+            metadataKey={key as MetadataKeys}
+          >
+            {currentValue}
           </MetadataListTextItem>
         ))}
       </MetadataList>
@@ -190,10 +173,10 @@ function PluginMetadataBase({
           className="h-56"
           render={() => (
             <>
-              {renderSingleItemList('version')}
-              {renderSingleItemList('releaseDate', { highlight: false })}
-              {renderSingleItemList('firstReleased')}
-              {renderSingleItemList('license')}
+              {renderItemList('version')}
+              {renderItemList('releaseDate', { highlight: false })}
+              {renderItemList('firstReleased')}
+              {renderItemList('license')}
             </>
           )}
         />
@@ -271,7 +254,7 @@ function PluginMetadataBase({
                 <PluginGithubData />
               </Media>
 
-              {renderSingleItemList('pythonVersion')}
+              {renderItemList('pythonVersion')}
               {renderItemList('operatingSystems')}
               {renderItemList('requirements')}
             </>
