@@ -59,7 +59,7 @@
       },
       "sample_data": {
         "label": "Sample data",
-        "tooltip": "Sample Data plugins let users access sample data in napari."
+        "tooltip": "Sample data plugins let users access sample data in napari."
       },
       "theme": {
         "label": "Theme",
