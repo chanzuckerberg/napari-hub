@@ -40,11 +40,13 @@ Fields that can be defined through the Python package configuration include the 
 For some fields, we look to the plugin developer's GitHub repository instead of (or in addition to) PyPI.
 This is only supported, however, if the plugin developer has added a link to their GitHub repository in their PyPI metadata (see [Source Code](#code-repository)).
 
-Plugin developers can modify these fields by adding a `.napari` configuration folder to their repository, along with the relevant configuration files for a given field.
+Plugin developers can modify these fields by adding a `.napari-hub/` configuration folder to their repository, along with the relevant configuration files for a given field.
 We currently support two configuration files:
 
 - `.napari-hub/DESCRIPTION.md` for a napari-specific description (see [Description](#description))
 - `.napari-hub/config.yml` for all other configurable fields
+
+> NOTE: We currently support loading these metadata from `.napari/` but to prevent confusion with the plugin manifest file (canonically, `napari.yml`), `.napari-hub/` is the preferred location for hub-specific configuration, metadata, and plugin documentation. We will deprecate support for `.napari/` at some point in the future.
 
 Fields that can be defined through the napari config include...
 
