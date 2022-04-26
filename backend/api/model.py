@@ -7,7 +7,7 @@ from collections import defaultdict
 
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
-from api.s3 import get_cache, cache, get_cache_manifest, write_cache_manifest
+from api.s3 import get_cache, cache, write_cache_manifest
 from utils.utils import render_description, send_alert, get_attribute, get_category_mapping
 from utils.datadog import report_metrics
 from api.zulip import notify_new_packages
@@ -86,7 +86,7 @@ def get_manifest(plugin: str, version: str = None) -> dict:
         return {}
     elif version is None:
         version = plugins[plugin]
-    plugin = get_cache_manifest(f'cache/{plugin}/{version}.yaml')
+    plugin = get_cache(f'cache/{plugin}/{version}.yaml', 'yaml')
     if plugin:
         return plugin
     else:

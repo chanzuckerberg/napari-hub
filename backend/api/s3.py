@@ -21,29 +21,19 @@ endpoint_url = os.environ.get('BOTO_ENDPOINT_URL', None)
 s3_client = boto3.client("s3", endpoint_url=endpoint_url, config=Config(max_pool_connections=50))
 
 
-def get_cache(key: str) -> Union[Dict, List, None]:
+def get_cache(key: str, format: str = 'json') -> Union[Dict, List, None]:
     """
-    Get the cached file for a given key if exists, None otherwise.
+    Get the cached json file or manifest file for a given key if exists, None otherwise.
 
     :param key: key to the cache to get
+    :param format: Format of the file to obtain
     :return: file content for the key if exists, None otherwise
     """
     try:
-        return json.loads(s3_client.get_object(Bucket=bucket, Key=os.path.join(bucket_path, key))['Body'].read())
-    except ClientError:
-        print(f"Not cached: {key}")
-        return None
-
-
-def get_cache_manifest(key: str) -> Union[Dict, List, None]:
-    """
-    Get the cached manifest file for a given key if exists, None otherwise.
-
-    :param key: key to the cache to get
-    :return: file content for the key if exists, None otherwise
-    """
-    try:
-        return yaml.safe_load(s3_client.get_object(Bucket=bucket, Key=os.path.join(bucket_path, key))['Body'])
+        if format == 'json':
+            return json.loads(s3_client.get_object(Bucket=bucket, Key=os.path.join(bucket_path, key))['Body'].read())
+        elif format == 'yaml':
+            return yaml.safe_load(s3_client.get_object(Bucket=bucket, Key=os.path.join(bucket_path, key))['Body'])
     except ClientError:
         print(f"Not cached: {key}")
         return None
