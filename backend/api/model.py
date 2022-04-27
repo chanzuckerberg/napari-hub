@@ -7,7 +7,7 @@ from collections import defaultdict
 
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
-from api.s3 import get_cache, cache, write_cache_manifest
+from api.s3 import get_cache, cache
 from utils.utils import render_description, send_alert, get_attribute, get_category_mapping
 from utils.datadog import report_metrics
 from api.zulip import notify_new_packages
@@ -90,8 +90,8 @@ def get_manifest(plugin: str, version: str = None) -> dict:
     if plugin:
         return plugin
     else:
-        write_cache_manifest({"process_count": 0}, f'cache/{plugin}/{version}.yaml')
-        return {"process_count": 0}
+        cache({"process_count": 3}, f'cache/{plugin}/{version}.yaml', format = 'yaml')
+        return {"process_count": 3}
 
 
 def get_index() -> dict:

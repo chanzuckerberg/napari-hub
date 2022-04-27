@@ -1,16 +1,15 @@
 import io
 import json
+import mimetypes
 import os
 import os.path
 from datetime import datetime
 from typing import Union, IO, List, Dict
-import mimetypes
 
 import boto3
 import yaml
-from botocore.exceptions import ClientError
 from botocore.client import Config
-
+from botocore.exceptions import ClientError
 from utils.utils import send_alert
 
 # Environment variable set through ecs stack terraform module
@@ -39,33 +38,14 @@ def get_cache(key: str, format: str = 'json') -> Union[Dict, List, None]:
         return None
 
 
-def write_cache_manifest(content: dict, key: str):
-    """
-    Cache the given content to the key location in yaml format
-
-    :param key: key path in s3
-    :param content: content to cache
-    """
-
-    extra_args = None
-    if bucket is None:
-        send_alert(f"({datetime.now()}) Unable to find bucket for lambda "
-                   f"configuration, skipping caching for napari hub."
-                   f"Check terraform setup to add environment variable for "
-                   f"napari hub lambda")
-        return content
-    with io.BytesIO(yaml.dump(content).encode('utf8')) as stream:
-        s3_client.upload_fileobj(Fileobj=stream, Bucket=bucket,
-                                 Key=os.path.join(bucket_path, key), ExtraArgs=extra_args)
-
-
-def cache(content: Union[dict, list, IO[bytes]], key: str, mime: str = None):
+def cache(content: Union[dict, list, IO[bytes]], key: str, mime: str = None, format: str = 'json'):
     """
     Cache the given content to the key location.
 
     :param content: content to cache
     :param key: key path in s3
     :param mime: type of the file
+    :param format: json file or yaml file
     """
     extra_args = None
     mime = mime or mimetypes.guess_type(key)[0]
@@ -81,6 +61,7 @@ def cache(content: Union[dict, list, IO[bytes]], key: str, mime: str = None):
         s3_client.upload_fileobj(Fileobj=content, Bucket=bucket,
                                  Key=os.path.join(bucket_path, key), ExtraArgs=extra_args)
     else:
-        with io.BytesIO(json.dumps(content).encode('utf8')) as stream:
+        with io.BytesIO(json.dumps(content).encode('utf8') if format == 'json' else
+                        yaml.dump(content).encode('utf8')) as stream:
             s3_client.upload_fileobj(Fileobj=stream, Bucket=bucket,
                                      Key=os.path.join(bucket_path, key), ExtraArgs=extra_args)
