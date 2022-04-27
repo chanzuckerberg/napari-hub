@@ -1,15 +1,13 @@
 .list {
   .textItem,
   .linkItem {
-    &:not(:first-child) {
-      @apply mt-3;
-    }
+    @apply mt-3;
   }
 
   &.inline {
     .textItem,
     .linkItem {
-      @apply inline-flex items-center;
+      @apply inline-flex items-center mt-0;
 
       // Add commas for every item except the last.
       &:not(:last-child)::after {

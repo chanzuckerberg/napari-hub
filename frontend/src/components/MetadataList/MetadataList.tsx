@@ -65,7 +65,6 @@ export function MetadataList({
 
               // Render title inline with values.
               inline && 'inline mr-2',
-              !inline && !inlineList && 'mb-3',
             )}
           >
             {label}:
