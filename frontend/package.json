@@ -39,7 +39,7 @@
     "// Renames the `preview.html` file to `index.html`": "",
     "preview:build:rename-files": "mv preview/preview.html preview/index.html",
     "// Runs preview page in dev mode. Accessible from http://localhost:8080/preview": "",
-    "preview:dev": "PREVIEW=src/fixtures/plugin.json PREVIEW_PULL_REQUEST=https://github.com/chanzuckerberg/napari-demo/pull/5 yarn dev",
+    "preview:dev": "PREVIEW=src/fixtures/preview.json PREVIEW_PULL_REQUEST=https://github.com/chanzuckerberg/napari-demo/pull/5 yarn dev",
     "// Builds preview page with dev data.": "",
     "preview:dev:build": "PREVIEW=src/fixtures/plugin.json PREVIEW_PULL_REQUEST=https://github.com/chanzuckerberg/napari-demo/pull/5 yarn preview:build",
     "// Runs frontend in production. Requires running `yarn build` first.": "",

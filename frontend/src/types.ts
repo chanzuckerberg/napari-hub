@@ -48,6 +48,10 @@ export interface PluginIndexData {
   release_date: string;
   summary: string;
   version: string;
+  plugin_types?: PluginType[];
+  reader_file_extensions?: string[];
+  writer_file_extensions?: string[];
+  writer_save_layers?: PluginWriterSaveLayer[];
 }
 
 /**
@@ -99,3 +103,19 @@ export interface LinkInfo {
 export type ClassState<T extends object> = {
   [key in NonFunctionKeys<T>]: T[key];
 };
+
+// IMPORTANT: The order of the enum properties here matter. See:
+// https://github.com/chanzuckerberg/napari-hub/pull/472#pullrequestreview-952464854
+export enum PluginType {
+  Widget = 'widget',
+  Reader = 'reader',
+  Writer = 'writer',
+  SampleData = 'sample_data',
+  Theme = 'theme',
+}
+
+export enum PluginWriterSaveLayer {
+  Image = 'image',
+  Points = 'points',
+  Shapes = 'shapes',
+}
