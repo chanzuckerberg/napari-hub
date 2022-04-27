@@ -86,7 +86,9 @@ def get_manifest(plugin: str, version: str = None) -> dict:
         return {}
     elif version is None:
         version = plugins[plugin]
+    print(version)
     plugin = get_cache(f'cache/{plugin}/{version}.yaml', 'yaml')
+    print(plugin)
     if plugin:
         return plugin
     else:

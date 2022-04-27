@@ -69,8 +69,11 @@ def versioned_plugin(plugin: str, version: str = None) -> Response:
 @app.route('/manifest/<plugin>/versions/<version>')
 def plugin_manifest(plugin: str, version: str = None) -> Response:
     max_failure_tries = 2
+    print(plugin)
     manifest = get_manifest(plugin, version)
+
     if 'process_count' in manifest:
+        print("Oops")
         if manifest['process_count'] >= max_failure_tries:
             return app.make_response(("Plugin Manifest Not Found", 404))
         elif manifest['process_count'] < max_failure_tries:
