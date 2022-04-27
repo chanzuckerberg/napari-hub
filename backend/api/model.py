@@ -61,10 +61,10 @@ def get_plugin(plugin: str, version: str = None) -> dict:
     :param version: version of the plugin
     :return: plugin metadata dictionary
     """
-    if version is None:
-        plugins = get_valid_plugins()
-        if plugin not in plugins:
-            return {}
+    plugins = get_valid_plugins()
+    if plugin not in plugins:
+        return {}
+    elif version is None:
         version = plugins[plugin]
     plugin = get_cache(f'cache/{plugin}/{version}.json')
     if plugin:

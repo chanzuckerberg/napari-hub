@@ -277,4 +277,5 @@ components:
     Manifest:
       type: object
       properties:
-        process_count: integer
+        process_count:
+          type: integer
