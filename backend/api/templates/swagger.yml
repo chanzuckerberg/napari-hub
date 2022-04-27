@@ -26,8 +26,6 @@ tags:
     externalDocs:
       description: Find out more
       url: https://shields.io/
-  - name: manifest
-    description: The manifest file corresponding to npe2 for plugin
 paths:
   /plugins:
     get:
@@ -130,26 +128,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Shield'
-  /manifest/{name}:
-    get:
-      summary: Get the manifest file for plugin
-      tags:
-        - manifest
-      parameters:
-      - name: name
-        in: path
-        description: name of plugin to query
-        required: true
-        schema:
-          type: string
-        example: napari-demo
-      responses:
-        200:
-          description: The return yaml object is the plugin's manifest, and is empty if the plugin name is invalid or disabled
-          content:
-            application/x-yaml:
-              schema:
-                $ref: '#/components/schemas/Manifest'
 components:
   schemas:
     Categories:
@@ -274,7 +252,3 @@ components:
           type: integer
         style:
           type: string
-    Manifest:
-      type: object
-      properties:
-        process_count: integer
