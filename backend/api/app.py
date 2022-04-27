@@ -3,10 +3,9 @@ from apig_wsgi import make_lambda_handler
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
 from flask import Flask, Response, jsonify, render_template
 from flask_githubapp.core import GitHubApp
-import yaml
 
 from api.model import get_public_plugins, get_index, get_plugin, get_excluded_plugins, update_cache, \
-    move_artifact_to_s3, get_category_mapping, get_categories_mapping, get_manifest
+    move_artifact_to_s3, get_category_mapping, get_categories_mapping
 from api.shield import get_shield
 from utils.utils import send_alert, reformat_ssh_key_to_pem_bytes
 
@@ -63,22 +62,6 @@ def plugins() -> Response:
 @app.route('/plugins/<plugin>/versions/<version>')
 def versioned_plugin(plugin: str, version: str = None) -> Response:
     return jsonify(get_plugin(plugin, version))
-
-
-@app.route('/manifest/<plugin>', defaults={'version': None})
-@app.route('/manifest/<plugin>/versions/<version>')
-def plugin_manifest(plugin: str, version: str = None) -> Response:
-    max_failure_tries = 2
-    manifest = get_manifest(plugin, version)
-    if 'process_count' in manifest:
-        if manifest['process_count'] >= max_failure_tries:
-            return app.make_response(("Plugin Manifest Not Found", 404))
-        elif manifest['process_count'] < max_failure_tries:
-            response = app.make_response(("Temporarily Unavailable", 503))
-            response.headers["Retry-After"] = 300
-            return response
-    else:
-        return yaml.dump(manifest)
 
 
 @app.route('/shields/<plugin>')

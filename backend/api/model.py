@@ -7,7 +7,7 @@ from collections import defaultdict
 
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
-from api.s3 import get_cache, cache, write_cache_manifest
+from api.s3 import get_cache, cache
 from utils.utils import render_description, send_alert, get_attribute, get_category_mapping
 from utils.datadog import report_metrics
 from api.zulip import notify_new_packages
@@ -61,37 +61,16 @@ def get_plugin(plugin: str, version: str = None) -> dict:
     :param version: version of the plugin
     :return: plugin metadata dictionary
     """
-    if version is None:
-        plugins = get_valid_plugins()
-        if plugin not in plugins:
-            return {}
+    plugins = get_valid_plugins()
+    if plugin not in plugins:
+        return {}
+    elif version is None:
         version = plugins[plugin]
     plugin = get_cache(f'cache/{plugin}/{version}.json')
     if plugin:
         return plugin
     else:
         return {}
-
-
-def get_manifest(plugin: str, version: str = None) -> dict:
-    """
-    Get plugin manifest file for a particular plugin, get latest if version is None.
-
-    :param plugin: name of the plugin to get
-    :param version: version of the plugin manifest
-    :return: plugin manifest dictionary
-    """
-    plugins = get_valid_plugins()
-    if plugin not in plugins:
-        return {}
-    elif version is None:
-        version = plugins[plugin]
-    plugin = get_cache(f'cache/{plugin}/{version}.yaml', 'yaml')
-    if plugin:
-        return plugin
-    else:
-        write_cache_manifest({"process_count": 0}, f'cache/{plugin}/{version}.yaml')
-        return {"process_count": 0}
 
 
 def get_index() -> dict:
