@@ -69,17 +69,18 @@ def versioned_plugin(plugin: str, version: str = None) -> Response:
 @app.route('/manifest/<plugin>/versions/<version>')
 def plugin_manifest(plugin: str, version: str = None) -> Response:
     max_failure_tries = 2
-    print(plugin)
     manifest = get_manifest(plugin, version)
 
     if 'process_count' in manifest:
-        print("Oops")
         if manifest['process_count'] >= max_failure_tries:
-            return app.make_response(("Plugin Manifest Not Found", 404))
+            return app.make_response(("Plugin Manifest Not Found. Installation failed or plugin does not implement npe2", 404))
         elif manifest['process_count'] < max_failure_tries:
-            response = app.make_response(("Temporarily Unavailable my plugin!", 503))
+            response = app.make_response(("Temporarily Unavailable. Attempting to build manifest. Please check back "
+                                          "in 5 minutes.", 503))
             response.headers["Retry-After"] = 300
             return response
+    elif manifest == {}:
+        return app.make_response(("Plugin does not exist", 404))
     else:
         return yaml.dump(manifest)
 

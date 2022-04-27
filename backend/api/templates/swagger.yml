@@ -132,7 +132,7 @@ paths:
                 $ref: '#/components/schemas/Shield'
   /manifest/{name}:
     get:
-      summary: Get the manifest file for plugin
+      summary: Get the manifest file for plugin. Schema here https://napari.org/plugins/manifest.html
       tags:
         - manifest
       parameters:
@@ -145,7 +145,7 @@ paths:
         example: napari-demo
       responses:
         200:
-          description: The return yaml object is the plugin's manifest, and is empty if the plugin name is invalid or disabled
+          description: The return yaml object is the plugin's manifest.
           content:
             application/x-yaml:
               schema:
@@ -277,5 +277,18 @@ components:
     Manifest:
       type: object
       properties:
+        name:
+          type: string
+        display_name:
+          type: string
         process_count:
           type: integer
+        schema_version:
+          type: integer
+        on_activate:
+          type: string
+        on_deactivate:
+          type: string
+        contributions:
+          type: array
+

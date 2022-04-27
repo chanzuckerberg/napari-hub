@@ -29,7 +29,6 @@ def get_cache(key: str, format: str = 'json') -> Union[Dict, List, None]:
     :return: file content for the key if exists, None otherwise
     """
     try:
-        print("Get Cache function ")
         if format == 'json':
             return json.loads(s3_client.get_object(Bucket=bucket, Key=os.path.join(bucket_path, key))['Body'].read())
         elif format == 'yaml':
@@ -62,7 +61,6 @@ def cache(content: Union[dict, list, IO[bytes]], key: str, mime: str = None, for
         s3_client.upload_fileobj(Fileobj=content, Bucket=bucket,
                                  Key=os.path.join(bucket_path, key), ExtraArgs=extra_args)
     else:
-        print("Write cache function")
         with io.BytesIO(json.dumps(content).encode('utf8') if format == 'json' else
                         yaml.dump(content).encode('utf8')) as stream:
             s3_client.upload_fileobj(Fileobj=stream, Bucket=bucket,

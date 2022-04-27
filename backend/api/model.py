@@ -86,14 +86,12 @@ def get_manifest(plugin: str, version: str = None) -> dict:
         return {}
     elif version is None:
         version = plugins[plugin]
-    print(version)
     plugin = get_cache(f'cache/{plugin}/{version}.yaml', 'yaml')
-    print(plugin)
     if plugin:
         return plugin
     else:
-        cache({"process_count": 3}, f'cache/{plugin}/{version}.yaml', format = 'yaml')
-        return {"process_count": 3}
+        cache({"process_count": 0}, f'cache/{plugin}/{version}.yaml', format='yaml')
+        return {"process_count": 0}
 
 
 def get_index() -> dict:
