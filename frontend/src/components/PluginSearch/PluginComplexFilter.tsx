@@ -32,7 +32,7 @@ import { useFilterLabels } from './useFilterLabels';
 import { useFilterOptionLabels } from './useFilterOptionLabels';
 import { useWorkflowStepGroups } from './useWorkflowStepGroups';
 
-const SEARCH_ENABLED_FILTERS = new Set<FilterKey>(['workflowStep']);
+const SEARCH_ENABLED_FILTERS = new Set<FilterKey>(['workflowStep', 'authors']);
 
 const CATEGORY_FILTERS = new Set<FilterKey>(['workflowStep', 'imageModality']);
 
@@ -94,6 +94,8 @@ function InputDropdown(props: InputDropdownProps) {
   );
 }
 
+const getFirstLetter = (value: string) => value[0].toUpperCase();
+
 /**
  * Complex filter component for filtering a specific part of the filter state.
  */
@@ -120,26 +122,39 @@ export function PluginComplexFilter({ filterKey }: Props) {
   // condition issue when re-rendering ComplexFilter when `options` and
   // `pendingValue` are updated at the same time.
   const optionsRef = useRef(
-    Object.keys(filterState).map((stateKey) => {
-      const optionLabel = filterOptionLabels[stateKey];
-      const categoryName = categoryNamesMap[stateKey];
+    Object.keys(filterState)
+      .map((stateKey) => {
+        const optionLabel = filterOptionLabels[stateKey];
+        const categoryName = categoryNamesMap[stateKey];
 
-      let name = stateKey;
-      let tooltip: string | undefined;
+        let name = stateKey;
+        let tooltip: string | undefined;
 
-      if (optionLabel) {
-        name = optionLabel.label;
-        tooltip = optionLabel.tooltip;
-      } else if (categoryName) {
-        name = categoryName;
-      }
+        if (optionLabel) {
+          name = optionLabel.label;
+          tooltip = optionLabel.tooltip;
+        } else if (categoryName) {
+          name = categoryName;
+        }
 
-      return {
-        name,
-        stateKey,
-        tooltip,
-      };
-    }),
+        return {
+          name,
+          stateKey,
+          tooltip,
+        };
+      })
+      .sort((option1, option2) => {
+        switch (filterKey) {
+          case 'authors': {
+            const firstLetter1 = getFirstLetter(option1.name);
+            const firstLetter2 = getFirstLetter(option2.name);
+            return firstLetter1.localeCompare(firstLetter2);
+          }
+
+          default:
+            return 0;
+        }
+      }),
   );
 
   const getEnabledOptions = useCallback(
@@ -283,9 +298,18 @@ export function PluginComplexFilter({ filterKey }: Props) {
         // Data attribute used for querying the tooltip for the current filter.
         'data-filter': filterKey,
 
-        groupBy: (option: PluginMenuSelectOption) =>
-          workflowStepGroups[option.stateKey] ?? '',
+        groupBy: (option: PluginMenuSelectOption) => {
+          switch (filterKey) {
+            case 'workflowStep':
+              return workflowStepGroups[option.stateKey] ?? '';
 
+            case 'authors':
+              return getFirstLetter(option.name);
+
+            default:
+              return null;
+          }
+        },
         renderOption: (
           option: PluginMenuSelectOption,
           { selected }: AutocompleteRenderOptionState,

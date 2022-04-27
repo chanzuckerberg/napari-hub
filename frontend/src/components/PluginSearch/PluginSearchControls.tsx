@@ -35,7 +35,12 @@ export function PluginSearchControls() {
     );
   }
 
-  requirementFilters.push('pythonVersions', 'operatingSystems', 'license');
+  requirementFilters.push(
+    'authors',
+    'pythonVersions',
+    'operatingSystems',
+    'license',
+  );
 
   return (
     <aside

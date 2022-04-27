@@ -62,6 +62,8 @@ export class SearchFilterStore implements Resettable {
 
   readerFileExtensions: FilterState<string> = {};
 
+  authors: FilterState<string> = {};
+
   private osiApprovedLicenseSet = new Set<string>();
 
   constructor(
@@ -73,6 +75,7 @@ export class SearchFilterStore implements Resettable {
     this.initOsiApprovedLicenseSet(licenses);
     this.initCategoryFilters(index);
     this.initFileExtensionFilters(index);
+    this.initAuthorFilter(index);
   }
 
   reset() {
@@ -133,6 +136,16 @@ export class SearchFilterStore implements Resettable {
         }
       }
     }
+  }
+
+  private initAuthorFilter(index: PluginIndexData[]) {
+    index.forEach(
+      (plugin) =>
+        isArray(plugin.authors) &&
+        plugin.authors.forEach((author) => {
+          this.authors[author.name] = false;
+        }),
+    );
   }
 
   private initFileExtensionFilters(index: PluginIndexData[]): void {

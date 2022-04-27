@@ -30,5 +30,6 @@ export function useFilterLabels() {
     pluginType: t('pluginData:labels.pluginType'),
     readerFileExtensions: t('pluginData:labels.readerFileExtensions'),
     writerFileExtensions: t('pluginData:labels.writerFileExtensions'),
+    authors: t('pluginData:labels.authors'),
   });
 }
