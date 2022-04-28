@@ -14,4 +14,4 @@ wheel
 pkginfo
 datadog-lambda
 build
-cryptography==36.0.2
+pyOpenSSL
