@@ -33,6 +33,8 @@ const DEFAULT_PLUGIN_TYPE_STATE = Object.values(PluginType).reduce(
   {} as Partial<FilterState<PluginType>>,
 ) as FilterState<PluginType>;
 
+export const SUPPORTED_PYTHON_VERSIONS = ['3.7', '3.8', '3.9'];
+
 export class SearchFilterStore implements Resettable {
   license = {
     openSource: false,
@@ -44,11 +46,10 @@ export class SearchFilterStore implements Resettable {
     windows: false,
   };
 
-  pythonVersions = {
-    3.7: false,
-    3.8: false,
-    3.9: false,
-  };
+  pythonVersions = SUPPORTED_PYTHON_VERSIONS.reduce(
+    (state, version) => set(state, [version], false),
+    {} as FilterState<string>,
+  );
 
   supportedData: FilterState<string> = {};
 

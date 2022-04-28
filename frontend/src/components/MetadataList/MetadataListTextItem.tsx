@@ -6,7 +6,7 @@ import { useQuery } from 'react-query';
 
 import { spdxLicenseDataAPI } from '@/axios';
 import { MetadataKeys } from '@/context/plugin';
-import { useSearchStore } from '@/store/search/context';
+import { SUPPORTED_PYTHON_VERSIONS } from '@/store/search/filter.store';
 import { PARAM_KEY_MAP, PARAM_VALUE_MAP } from '@/store/search/queryParameters';
 import { SpdxLicenseResponse } from '@/store/search/types';
 import { PluginType, PluginWriterSaveLayer } from '@/types';
@@ -69,7 +69,10 @@ function useMetadataValueLabel(
   }
 }
 
-const METADATA_FILTER_LINKS = new Set<MetadataLinkKeys>(['license']);
+const METADATA_FILTER_LINKS = new Set<MetadataLinkKeys>([
+  'license',
+  'pythonVersion',
+]);
 
 /**
  * Component for rendering text items in metadata lists.
@@ -103,6 +106,13 @@ export function MetadataListTextItem({
   if (isString(children)) {
     if (isOsiApproved) {
       filterValue = PARAM_VALUE_MAP.openSource;
+    } else if (metadataKey === 'pythonVersion') {
+      for (const version of SUPPORTED_PYTHON_VERSIONS) {
+        if (children.includes(version)) {
+          filterValue = version;
+          break;
+        }
+      }
     } else if (metadataKey !== 'license') {
       filterValue = PARAM_VALUE_MAP[children] ?? children;
     }
