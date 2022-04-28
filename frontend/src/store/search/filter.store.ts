@@ -20,7 +20,7 @@ import {
   SpdxLicenseData,
 } from './types';
 
-const FILTER_OS_PATTERN = {
+export const FILTER_OS_PATTERN = {
   linux: /Linux/,
   mac: /MacOS/,
   windows: /Windows/,
