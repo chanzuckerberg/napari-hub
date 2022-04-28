@@ -26,17 +26,17 @@ interface Props {
   metadataKey: MetadataLinkKeys;
 }
 
+/**
+ * Gets the the label to use when rendering a metadata value. If the metadata
+ * has no associated value label, then the value is used directly.
+ */
 function useMetadataValueLabel(
   key?: MetadataLinkKeys,
   value?: ReactNode,
 ): ReactNode {
   const { t } = useTranslation(['pluginData']);
 
-  if (!key) {
-    return value;
-  }
-
-  if (typeof value !== 'string') {
+  if (!key || typeof value !== 'string') {
     return value;
   }
 
@@ -76,6 +76,9 @@ function useMetadataValueLabel(
   }
 }
 
+/**
+ * Allowlist of metadata that has an associated filter on the search page.
+ */
 const METADATA_FILTER_LINKS = new Set<MetadataLinkKeys>([
   'authors',
   'license',
@@ -89,7 +92,7 @@ const METADATA_FILTER_LINKS = new Set<MetadataLinkKeys>([
 ]);
 
 /**
- * Component for rendering text items in metadata lists.
+ * Component for rendering a metadata value.
  */
 export function MetadataListMetadataItem({
   children: value,
@@ -121,27 +124,29 @@ export function MetadataListMetadataItem({
   const filterValue = useMemo(() => {
     let result: string | undefined;
 
-    if (isString(value)) {
-      if (isOsiApproved) {
-        result = PARAM_VALUE_MAP.openSource;
-      } else if (metadataKey === 'pythonVersion') {
-        for (const version of SUPPORTED_PYTHON_VERSIONS) {
-          if (value.includes(version)) {
-            result = version;
-            break;
-          }
+    if (!isString(value)) {
+      return result;
+    }
+
+    if (isOsiApproved) {
+      result = PARAM_VALUE_MAP.openSource;
+    } else if (metadataKey === 'pythonVersion') {
+      for (const version of SUPPORTED_PYTHON_VERSIONS) {
+        if (value.includes(version)) {
+          result = version;
+          break;
         }
-      } else if (metadataKey === 'operatingSystems') {
-        if (FILTER_OS_PATTERN.windows.exec(value)) {
-          result = 'windows';
-        } else if (FILTER_OS_PATTERN.mac.exec(value)) {
-          result = 'macos';
-        } else if (FILTER_OS_PATTERN.linux.exec(value)) {
-          result = 'linux';
-        }
-      } else if (metadataKey !== 'license') {
-        result = PARAM_VALUE_MAP[value] ?? value;
       }
+    } else if (metadataKey === 'operatingSystems') {
+      if (FILTER_OS_PATTERN.windows.exec(value)) {
+        result = 'windows';
+      } else if (FILTER_OS_PATTERN.mac.exec(value)) {
+        result = 'macos';
+      } else if (FILTER_OS_PATTERN.linux.exec(value)) {
+        result = 'linux';
+      }
+    } else if (metadataKey !== 'license') {
+      result = PARAM_VALUE_MAP[value] ?? value;
     }
 
     return result;

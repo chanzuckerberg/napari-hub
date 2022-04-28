@@ -32,6 +32,9 @@ import { useFilterLabels } from './useFilterLabels';
 import { useFilterOptionLabels } from './useFilterOptionLabels';
 import { useWorkflowStepGroups } from './useWorkflowStepGroups';
 
+/**
+ * Metadata filters that should have a search bar.
+ */
 const SEARCH_ENABLED_FILTERS = new Set<FilterKey>(['workflowStep', 'authors']);
 
 const CATEGORY_FILTERS = new Set<FilterKey>(['workflowStep', 'imageModality']);
@@ -145,10 +148,9 @@ export function PluginComplexFilter({ filterKey }: Props) {
       })
       .sort((option1, option2) => {
         switch (filterKey) {
+          // Sort authors alphabetically.
           case 'authors': {
-            const firstLetter1 = getFirstLetter(option1.name);
-            const firstLetter2 = getFirstLetter(option2.name);
-            return firstLetter1.localeCompare(firstLetter2);
+            return option1.name.localeCompare(option2.name);
           }
 
           default:
@@ -304,6 +306,7 @@ export function PluginComplexFilter({ filterKey }: Props) {
               return workflowStepGroups[option.stateKey] ?? '';
 
             case 'authors':
+              // Use first letter of name for author grouping.
               return getFirstLetter(option.name);
 
             default:
