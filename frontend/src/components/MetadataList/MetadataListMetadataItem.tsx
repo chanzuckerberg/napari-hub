@@ -13,6 +13,7 @@ import {
 import { PARAM_KEY_MAP, PARAM_VALUE_MAP } from '@/store/search/queryParameters';
 import { SpdxLicenseResponse } from '@/store/search/types';
 import { PluginType, PluginWriterSaveLayer } from '@/types';
+import { formatOperatingSystem } from '@/utils';
 
 import { Link } from '../common/Link';
 import styles from './MetadataList.module.scss';
@@ -69,7 +70,7 @@ function useMetadataValueLabel(
       }
 
     case 'operatingSystems':
-      return value.split(' :: ').at(-1);
+      return formatOperatingSystem(value);
 
     default:
       return value;
