@@ -14,7 +14,7 @@ import { useSearchStore } from '@/store/search/context';
 import { FilterCategoryKeys } from '@/store/search/search.store';
 import { SearchResultMatch } from '@/store/search/search.types';
 import { HubDimension, PluginIndexData } from '@/types';
-import { I18nPluginDataLabel } from '@/types/i18n';
+import { I18nKeys, I18nPluginDataLabel } from '@/types/i18n';
 import { createUrl, formatDate, formatOperatingSystem } from '@/utils';
 import { useIsFeatureFlagEnabled } from '@/utils/featureFlags';
 
@@ -103,7 +103,7 @@ export function PluginSearchResult({
   plugin,
   style,
 }: Props) {
-  const [t] = useTranslation(['pluginData']);
+  const [t] = useTranslation(['pluginData', 'homePage']);
   const isLoading = useLoadingState();
   const [isHoveringOverChip, setIsHoveringOverChip] = useState(false);
   const [debouncedIsHoveringOverChip] = useDebounce(isHoveringOverChip, 100);
@@ -159,19 +159,15 @@ export function PluginSearchResult({
         },
 
         {
-          label: t('pluginData:labels.license'),
-          value: plugin.license,
-        },
-
-        {
-          label: t('pluginData:labels.pythonVersion'),
-          value: plugin.python_version,
-        },
-
-        {
-          label: t('pluginData:labels.operatingSystem'),
-          value: isArray(plugin.operating_system)
-            ? plugin.operating_system.map(formatOperatingSystem).join(', ')
+          label: t('pluginData:labels.pluginType'),
+          value: isArray(plugin.plugin_types)
+            ? plugin.plugin_types
+                .map((pluginType) =>
+                  t(
+                    `homePage:filter.requirement.${pluginType}.label` as I18nKeys<'homePage'>,
+                  ),
+                )
+                .join(', ')
             : '',
         },
       );
@@ -292,7 +288,9 @@ export function PluginSearchResult({
                   key={`${item.label}-${item.value}`}
                   className="grid grid-cols-[auto,1fr]"
                 >
-                  <h5 className="inline whitespace-nowrap">{item.label}</h5>
+                  <h5 className="inline whitespace-nowrap lowercase">
+                    {item.label}
+                  </h5>
                   <span
                     className={clsx(
                       'ml-1',
