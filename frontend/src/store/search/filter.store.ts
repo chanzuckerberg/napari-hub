@@ -102,6 +102,7 @@ export class SearchFilterStore implements Resettable {
       this.filterByPluginType,
       this.filterByReaderFileExtensions,
       this.filterByWriterFileExtensions,
+      this.filterByAuthor,
     ].map((fn) => fn.bind(this));
 
     // `flow()` will execute a list of functions and provide successive results to
@@ -345,5 +346,17 @@ export class SearchFilterStore implements Resettable {
           selected.has(value),
         ),
       );
+  }
+
+  private filterByAuthor(results: SearchResult[]): SearchResult[] {
+    const selected = new Set(this.getSelectedKeys(this.authors));
+    if (selected.size === 0) {
+      return results;
+    }
+
+    return results.filter(
+      ({ plugin: { authors } }) =>
+        isArray(authors) && authors.some((author) => selected.has(author.name)),
+    );
   }
 }

@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { isString } from 'lodash';
 import { useTranslation } from 'next-i18next';
-import { ReactNode } from 'react';
+import { ReactNode, useMemo } from 'react';
 import { useQuery } from 'react-query';
 
 import { spdxLicenseDataAPI } from '@/axios';
@@ -77,6 +77,7 @@ function useMetadataValueLabel(
 }
 
 const METADATA_FILTER_LINKS = new Set<MetadataLinkKeys>([
+  'authors',
   'license',
   'operatingSystems',
   'pluginType',
@@ -107,39 +108,49 @@ export function MetadataListMetadataItem({
     { enabled: metadataKey === 'license' },
   );
 
-  const isOsiApproved =
-    metadataKey === 'license' &&
-    isString(value) &&
-    licenses?.some(
-      (license) => license.licenseId === value && license.isOsiApproved,
-    );
+  const isOsiApproved = useMemo(
+    () =>
+      metadataKey === 'license' &&
+      isString(value) &&
+      licenses?.some(
+        (license) => license.licenseId === value && license.isOsiApproved,
+      ),
+    [licenses, metadataKey, value],
+  );
 
-  let filterValue: string | undefined;
+  const filterValue = useMemo(() => {
+    let result: string | undefined;
 
-  if (isString(value)) {
-    if (isOsiApproved) {
-      filterValue = PARAM_VALUE_MAP.openSource;
-    } else if (metadataKey === 'pythonVersion') {
-      for (const version of SUPPORTED_PYTHON_VERSIONS) {
-        if (value.includes(version)) {
-          filterValue = version;
-          break;
+    if (isString(value)) {
+      if (isOsiApproved) {
+        result = PARAM_VALUE_MAP.openSource;
+      } else if (metadataKey === 'pythonVersion') {
+        for (const version of SUPPORTED_PYTHON_VERSIONS) {
+          if (value.includes(version)) {
+            result = version;
+            break;
+          }
         }
+      } else if (metadataKey === 'operatingSystems') {
+        if (FILTER_OS_PATTERN.windows.exec(value)) {
+          result = 'windows';
+        } else if (FILTER_OS_PATTERN.mac.exec(value)) {
+          result = 'macos';
+        } else if (FILTER_OS_PATTERN.linux.exec(value)) {
+          result = 'linux';
+        }
+      } else if (metadataKey !== 'license') {
+        result = PARAM_VALUE_MAP[value] ?? value;
       }
-    } else if (metadataKey === 'operatingSystems') {
-      if (FILTER_OS_PATTERN.windows.exec(value)) {
-        filterValue = 'windows';
-      } else if (FILTER_OS_PATTERN.mac.exec(value)) {
-        filterValue = 'macos';
-      } else if (FILTER_OS_PATTERN.linux.exec(value)) {
-        filterValue = 'linux';
-      }
-    } else if (metadataKey !== 'license') {
-      filterValue = PARAM_VALUE_MAP[value] ?? value;
     }
-  }
-  const paramKey = PARAM_KEY_MAP[metadataKey] ?? metadataKey;
-  const url = filterValue && `/?${paramKey}=${encodeURIComponent(filterValue)}`;
+
+    return result;
+  }, [isOsiApproved, metadataKey, value]);
+
+  const url = useMemo(() => {
+    const paramKey = PARAM_KEY_MAP[metadataKey] ?? metadataKey;
+    return filterValue && `/?${paramKey}=${encodeURIComponent(filterValue)}`;
+  }, [filterValue, metadataKey]);
 
   return (
     <MetadataListTextItem>
