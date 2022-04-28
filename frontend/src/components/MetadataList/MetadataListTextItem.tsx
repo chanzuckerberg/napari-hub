@@ -1,20 +1,29 @@
 import clsx from 'clsx';
+import { isString } from 'lodash';
 import { useTranslation } from 'next-i18next';
 import { ReactNode } from 'react';
+import { useQuery } from 'react-query';
 
+import { spdxLicenseDataAPI } from '@/axios';
 import { MetadataKeys } from '@/context/plugin';
+import { useSearchStore } from '@/store/search/context';
+import { PARAM_KEY_MAP, PARAM_VALUE_MAP } from '@/store/search/queryParameters';
+import { SpdxLicenseResponse } from '@/store/search/types';
 import { PluginType, PluginWriterSaveLayer } from '@/types';
 
+import { Link } from '../common/Link';
 import styles from './MetadataList.module.scss';
+
+type MetadataLinkKeys = MetadataKeys | 'supportedData';
 
 interface Props {
   children: ReactNode;
   className?: string;
-  metadataKey?: MetadataKeys;
+  metadataKey: MetadataLinkKeys;
 }
 
 function useMetadataValueLabel(
-  key?: MetadataKeys,
+  key?: MetadataLinkKeys,
   value?: ReactNode,
 ): ReactNode {
   const { t } = useTranslation(['pluginData']);
@@ -60,6 +69,8 @@ function useMetadataValueLabel(
   }
 }
 
+const METADATA_FILTER_LINKS = new Set<MetadataLinkKeys>(['license']);
+
 /**
  * Component for rendering text items in metadata lists.
  */
@@ -69,5 +80,48 @@ export function MetadataListTextItem({
   metadataKey,
 }: Props) {
   const valueLabel = useMetadataValueLabel(metadataKey, children);
-  return <li className={clsx(styles.textItem, className)}>{valueLabel}</li>;
+
+  // Fetch SDPX license data to check if current license is OSI Approved.
+  const { data: licenses } = useQuery(
+    ['spdx'],
+    async () => {
+      const { data } = await spdxLicenseDataAPI.get<SpdxLicenseResponse>('');
+      return data.licenses;
+    },
+    { enabled: metadataKey === 'license' },
+  );
+
+  const isOsiApproved =
+    metadataKey === 'license' &&
+    isString(children) &&
+    licenses?.some(
+      (license) => license.licenseId === children && license.isOsiApproved,
+    );
+
+  let filterValue: string | undefined;
+
+  if (isString(children)) {
+    if (isOsiApproved) {
+      filterValue = PARAM_VALUE_MAP.openSource;
+    } else if (metadataKey !== 'license') {
+      filterValue = PARAM_VALUE_MAP[children] ?? children;
+    }
+  }
+  const paramKey = PARAM_KEY_MAP[metadataKey] ?? metadataKey;
+  const url = filterValue && `/?${paramKey}=${encodeURIComponent(filterValue)}`;
+
+  return (
+    <li className={clsx(styles.textItem, className)}>
+      {url && METADATA_FILTER_LINKS.has(metadataKey) ? (
+        <Link
+          className={clsx(styles.textItem, className, 'underline')}
+          href={url}
+        >
+          {valueLabel}
+        </Link>
+      ) : (
+        valueLabel
+      )}
+    </li>
+  );
 }

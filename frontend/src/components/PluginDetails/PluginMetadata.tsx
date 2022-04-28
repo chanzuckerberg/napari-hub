@@ -132,10 +132,7 @@ function PluginMetadataBase({
         {...props}
       >
         {values.map((currentValue) => (
-          <MetadataListTextItem
-            key={currentValue}
-            metadataKey={key as MetadataKeys}
-          >
+          <MetadataListTextItem key={currentValue} metadataKey={key}>
             {currentValue}
           </MetadataListTextItem>
         ))}
