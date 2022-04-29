@@ -144,16 +144,17 @@ paths:
           type: string
         example: napari-demo
       responses:
-        200:
-          description: The return yaml object is the plugin's manifest.
-          content:
-            application/yaml:
-              schema:
-                $ref: '#/components/schemas/Manifest'
         404:
           description: Either the plugin name is incorrect or the manifest was not found. The latter could happen if the installation failed or if the plugin does not implement npe2 yet.
         503:
           description: The manifest is temporarily unavailable. Check back in 5 minutes.
+        200:
+          description: The return yaml object is the plugin's manifest.
+          content:
+            application/x-yaml:
+              schema:
+                $ref: '#/components/schemas/Manifest'
+
 components:
   schemas:
     Categories:
