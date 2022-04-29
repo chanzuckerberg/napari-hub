@@ -8,6 +8,7 @@ import { useEffect } from 'react';
 import { DeepPartial } from 'utility-types';
 
 import { PluginPage } from '@/components/PluginPage';
+import { PROD } from '@/constants/env';
 import { DEFAULT_PLUGIN_DATA, DEFAULT_REPO_DATA } from '@/constants/plugin';
 import { MetadataId, PluginStateProvider } from '@/context/plugin';
 import { previewStore } from '@/store/preview';
