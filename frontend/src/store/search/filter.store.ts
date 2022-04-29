@@ -46,7 +46,7 @@ export class SearchFilterStore implements Resettable {
     windows: false,
   };
 
-  pythonVersions = SUPPORTED_PYTHON_VERSIONS.reduce(
+  pythonVersion = SUPPORTED_PYTHON_VERSIONS.reduce(
     (state, version) => set(state, [version], false),
     {} as FilterState<string>,
   );
@@ -194,7 +194,7 @@ export class SearchFilterStore implements Resettable {
   }
 
   private filterByPythonVersion(results: SearchResult[]): SearchResult[] {
-    const state = this.pythonVersions;
+    const state = this.pythonVersion;
 
     // Collect all versions selected on the filter form
     const selectedVersions = this.getSelectedKeys(state);

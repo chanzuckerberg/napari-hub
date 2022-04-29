@@ -23,7 +23,7 @@ export function useFilterLabels() {
   return getLabels({
     license: t('pluginData:labels.license'),
     operatingSystems: t('pluginData:labels.operatingSystem'),
-    pythonVersions: t('pluginData:labels.pythonVersion'),
+    pythonVersion: t('pluginData:labels.pythonVersion'),
     supportedData: t('pluginData:labels.Supported data'),
     workflowStep: t('pluginData:labels.Workflow step'),
     imageModality: t('pluginData:labels.Image modality'),

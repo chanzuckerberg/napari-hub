@@ -37,7 +37,7 @@ export function PluginSearchControls() {
 
   requirementFilters.push(
     'authors',
-    'pythonVersions',
+    'pythonVersion',
     'operatingSystems',
     'license',
   );
