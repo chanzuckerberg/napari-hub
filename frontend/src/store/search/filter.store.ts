@@ -57,7 +57,7 @@ export class SearchFilterStore implements Resettable {
 
   imageModality: FilterState<string> = {};
 
-  pluginType: FilterState<PluginType> = DEFAULT_PLUGIN_TYPE_STATE;
+  pluginType: FilterState<PluginType> = { ...DEFAULT_PLUGIN_TYPE_STATE };
 
   writerFileExtensions: FilterState<string> = {};
 
