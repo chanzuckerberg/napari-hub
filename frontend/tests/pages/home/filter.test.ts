@@ -26,9 +26,10 @@ interface TestPluginFilterOptions {
 
 const FILTER_KEY_METADATA_LABEL_MAP: Partial<Record<FilterKey, MetadataLabel>> =
   {
-    license: MetadataLabel.License,
-    operatingSystems: MetadataLabel.OperatingSystem,
-    pythonVersions: MetadataLabel.PythonVersion,
+    // TODO Fix tests since metadata has been removed from search result
+    // license: MetadataLabel.License,
+    // operatingSystems: MetadataLabel.OperatingSystem,
+    // pythonVersions: MetadataLabel.PythonVersion,
   };
 
 const CATEGORY_FILTERS = new Set<FilterKey>(['imageModality', 'workflowStep']);
