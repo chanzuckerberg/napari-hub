@@ -14,3 +14,4 @@ wheel
 pkginfo
 datadog-lambda
 build
+pyOpenSSL

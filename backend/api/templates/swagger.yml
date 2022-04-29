@@ -26,6 +26,8 @@ tags:
     externalDocs:
       description: Find out more
       url: https://shields.io/
+  - name: manifest
+    description: The manifest file corresponding to npe2 for plugin
 paths:
   /plugins:
     get:
@@ -128,6 +130,30 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Shield'
+  /manifest/{name}:
+    get:
+      summary: Get the manifest file for plugin. Schema here https://napari.org/plugins/manifest.html
+      tags:
+        - manifest
+      parameters:
+      - name: name
+        in: path
+        description: name of plugin to query
+        required: true
+        schema:
+          type: string
+        example: napari-demo
+      responses:
+        200:
+          description: The return yaml object is the plugin's manifest.
+          content:
+            application/x-yaml:
+              schema:
+                $ref: '#/components/schemas/Manifest'
+        404:
+          description: Either the plugin name is incorrect or the manifest was not found. The latter could happen if the installation failed or if the plugin does not implement npe2 yet.
+        503:
+          description: The manifest is temporarily unavailable. Check back in 5 minutes.
 components:
   schemas:
     Categories:
@@ -252,3 +278,21 @@ components:
           type: integer
         style:
           type: string
+    Manifest:
+      type: object
+      properties:
+        name:
+          type: string
+        display_name:
+          type: string
+        process_count:
+          type: integer
+        schema_version:
+          type: integer
+        on_activate:
+          type: string
+        on_deactivate:
+          type: string
+        contributions:
+          type: array
+

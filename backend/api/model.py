@@ -73,6 +73,27 @@ def get_plugin(plugin: str, version: str = None) -> dict:
         return {}
 
 
+def get_manifest(plugin: str, version: str = None) -> dict:
+    """
+    Get plugin manifest file for a particular plugin, get latest if version is None.
+
+    :param plugin: name of the plugin to get
+    :param version: version of the plugin manifest
+    :return: plugin manifest dictionary
+    """
+    plugins = get_valid_plugins()
+    if plugin not in plugins:
+        return {}
+    elif version is None:
+        version = plugins[plugin]
+    plugin = get_cache(f'cache/{plugin}/{version}.yaml', 'yaml')
+    if plugin:
+        return plugin
+    else:
+        cache({"process_count": 0}, f'cache/{plugin}/{version}.yaml', format='yaml')
+        return {"process_count": 0}
+
+
 def get_index() -> dict:
     """
     Get the index page related metadata for all plugins.
