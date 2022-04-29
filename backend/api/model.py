@@ -263,7 +263,7 @@ def move_artifact_to_s3(payload, client):
             text = 'Preview page for your plugin is ready here:'
             comment_found = False
             for comment in pull_request.issue_comments():
-                if text in comment.body and comment.user == 'napari-hub[bot]':
+                if text in comment.body:
                     comment_found = True
                     comment.edit(text + f'\nhttps://preview.napari-hub.org/{owner}/{repo}/{pull_request_number}'
                                         f'\nUpdated at: {curr_clock}')
