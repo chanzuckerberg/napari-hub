@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { isArray, isEmpty } from 'lodash';
 import { useTranslation } from 'next-i18next';
-import { ReactNode } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { Divider } from '@/components/Divider';
 import {
@@ -79,19 +79,36 @@ function PluginGithubData() {
   );
 }
 
-interface CommonProps {
+interface PluginMetadataProps {
   /**
    * Class name to pass to root element.
    */
   className?: string;
-}
 
-interface PluginMetadataBaseProps extends CommonProps {
-  divider: ReactNode;
+  /**
+   * ID to pass to root element.
+   */
+  id?: string;
+
+  /**
+   * Render list items inline.
+   */
   inline?: boolean;
+
+  /**
+   * Whether to add ID to plugin metadata to allow scrolling to. This needs to
+   * be set manually by the parent component since this component is rendered in
+   * different places depending on the screen size. Since markup for all screen
+   * sizes are sent to the client, there will be multiple elements with the same
+   * ID if without this prop.
+   */
+  enableScrollID?: boolean;
 }
 
 type PickMetadataKey = MetadataKeys | 'supportedData';
+
+// ID is used to navigate to metadata using `View project data` link
+export const PLUGIN_METADATA_ID = 'pluginMetadata';
 
 /**
  * Utility type for picking keys that have a value that is a specific type. For
@@ -109,11 +126,11 @@ type PickMetadataKeys<T> = {
  * rendering the divider for vertical layouts and rendering headers / values
  * inline for smaller screens.
  */
-function PluginMetadataBase({
+export function PluginMetadata({
   className,
-  divider,
   inline,
-}: PluginMetadataBaseProps) {
+  enableScrollID,
+}: PluginMetadataProps) {
   const metadata = usePluginMetadata();
   const isNpe2Enabled = useIsFeatureFlagEnabled('npe2');
 
@@ -148,10 +165,18 @@ function PluginMetadataBase({
     'screen-1425:space-y-5',
   );
 
+  const metadataRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {}, []);
+
+  const divider = (
+    <Divider className="mb-2 screen-875:hidden screen-1425:block" />
+  );
+
   return (
     <div
       // ID is used to navigate to metadata using `View project data` link
-      id="pluginMetadata"
+      id={enableScrollID ? PLUGIN_METADATA_ID : undefined}
+      ref={metadataRef}
       className={clsx(
         className,
         spacingClassName,
@@ -260,28 +285,5 @@ function PluginMetadataBase({
         />
       </div>
     </div>
-  );
-}
-
-/**
- * Component for rendering plugin metadata responsively.  This handles
- * rendering the divider for vertical layouts and rendering headers / values
- * inline for smaller screens.
- */
-export function PluginMetadata(props: CommonProps) {
-  const divider = (
-    <Divider className="mb-2 screen-875:hidden screen-1425:block" />
-  );
-
-  return (
-    <>
-      <div className="screen-875:hidden">
-        <PluginMetadataBase {...props} divider={divider} inline />
-      </div>
-
-      <div className="hidden screen-875:block">
-        <PluginMetadataBase {...props} divider={divider} />
-      </div>
-    </>
   );
 }

@@ -15,7 +15,7 @@ import { SkeletonLoader } from '@/components/SkeletonLoader';
 import { TOCHeader } from '@/components/TableOfContents';
 import { useLoadingState } from '@/context/loading';
 import { usePluginState } from '@/context/plugin';
-import { usePlausible } from '@/hooks';
+import { useMediaQuery, usePlausible } from '@/hooks';
 import { usePreviewClickAway } from '@/hooks/usePreviewClickAway';
 import { HubDimension } from '@/types';
 import { useIsFeatureFlagEnabled } from '@/utils/featureFlags';
@@ -27,10 +27,13 @@ import { PluginMetadata } from './PluginMetadata';
 import { SupportInfo } from './SupportInfo';
 
 function PluginLeftColumn() {
+  const hasPluginMetadataScroll = useMediaQuery({ minWidth: 'screen-1425' });
+
   return (
-    <div className="hidden screen-1425:block">
-      <PluginMetadata />
-    </div>
+    <PluginMetadata
+      enableScrollID={hasPluginMetadataScroll}
+      className="hidden screen-1425:block"
+    />
   );
 }
 
@@ -39,6 +42,7 @@ function PluginCenterColumn() {
   const { plugin } = usePluginState();
   const [t] = useTranslation(['common', 'pluginPage', 'preview', 'pluginData']);
   const isNpe2Enabled = useIsFeatureFlagEnabled('npe2');
+  const hasPluginMetadataScroll = useMediaQuery({ maxWidth: 'screen-1425' });
 
   usePreviewClickAway(isNpe2Enabled ? 'metadata-displayName' : 'metadata-name');
   usePreviewClickAway('metadata-summary');
@@ -222,7 +226,11 @@ function PluginCenterColumn() {
         {plugin?.citations && <CitationInfo className="mt-10" />}
       </div>
 
-      <PluginMetadata className="screen-875:hidden" />
+      <PluginMetadata
+        enableScrollID={hasPluginMetadataScroll}
+        className="screen-1425:hidden"
+        inline
+      />
     </article>
   );
 }
