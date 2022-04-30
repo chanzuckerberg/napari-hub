@@ -10,11 +10,6 @@
     "@jridgewell/gen-mapping" "^0.1.0"
     "@jridgewell/trace-mapping" "^0.3.9"
 
-"@artsy/fresnel@^3.0.2":
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/@artsy/fresnel/-/fresnel-3.0.2.tgz#c52d03dfa385627174ef03d28b0a1a61eef13bfb"
-  integrity sha512-nx4oIX5jgwdYXtPydkBK3ZGwJ9mCGxaV/CRn7DzLFeKxW9qQPj56H1OvtMEm43UGCshXnLEu2ID/B2ozioMLrQ==
-
 "@babel/code-frame@7.12.11":
   version "7.12.11"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.12.11.tgz"

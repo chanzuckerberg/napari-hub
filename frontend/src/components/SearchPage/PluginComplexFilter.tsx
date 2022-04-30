@@ -13,16 +13,9 @@ import {
 import { get, isEqual } from 'lodash';
 import { useTranslation } from 'next-i18next';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { render } from 'react-dom';
 import { subscribe, useSnapshot } from 'valtio';
 
-import {
-  CheckboxIcon,
-  ChevronDown,
-  ChevronUp,
-  Info,
-  Search,
-} from '@/components/icons';
+import { CheckboxIcon, ChevronDown, ChevronUp, Info } from '@/components/icons';
 import { useSearchStore } from '@/store/search/context';
 import { FilterKey } from '@/store/search/search.store';
 import { appTheme } from '@/theme';
@@ -208,66 +201,66 @@ export function PluginComplexFilter({ filterKey }: Props) {
   // Effect that sets the max width of the tooltip container when it is added to
   // the DOM. This is required so that the width is only as wide as the filter
   // component. Otherwise, it would fill the whole screen.
-  useEffect(() => {
-    const observer = new MutationObserver((mutations) =>
-      mutations.forEach((mutation) =>
-        // Only observe added nodes.
-        mutation.addedNodes.forEach((node) => {
-          const tooltip = node as HTMLDivElement;
-          // Check if current added node is a tooltip
-          if (tooltip.getAttribute('role') === 'tooltip') {
-            // Flag for if the tooltip is for the current filter.
-            const isActiveFilter = !!tooltip.querySelector(
-              `[data-filter=${filterKey}]`,
-            );
+  // useEffect(() => {
+  //   const observer = new MutationObserver((mutations) =>
+  //     mutations.forEach((mutation) =>
+  //       // Only observe added nodes.
+  //       mutation.addedNodes.forEach((node) => {
+  //         const tooltip = node as HTMLDivElement;
+  //         // Check if current added node is a tooltip
+  //         if (tooltip.getAttribute('role') === 'tooltip') {
+  //           // Flag for if the tooltip is for the current filter.
+  //           const isActiveFilter = !!tooltip.querySelector(
+  //             `[data-filter=${filterKey}]`,
+  //           );
 
-            // Get the filter node for the current filter.
-            const complexFilterNode =
-              isActiveFilter &&
-              document.querySelector(
-                `[data-complex-filter][data-filter=${filterKey}]`,
-              );
+  //           // Get the filter node for the current filter.
+  //           const complexFilterNode =
+  //             isActiveFilter &&
+  //             document.querySelector(
+  //               `[data-complex-filter][data-filter=${filterKey}]`,
+  //             );
 
-            if (complexFilterNode) {
-              const width = complexFilterNode.clientWidth;
+  //           if (complexFilterNode) {
+  //             const width = complexFilterNode.clientWidth;
 
-              // Set the width of the tooltip to be the same width as the filter
-              // component. If the screen width is smaller than 300px, then
-              // default to 100% because the tooltip does not fill the screen
-              // for sizes <300px.
-              tooltip.style.maxWidth =
-                window.outerWidth < 300 ? '100%' : `${width}px`;
+  //             // Set the width of the tooltip to be the same width as the filter
+  //             // component. If the screen width is smaller than 300px, then
+  //             // default to 100% because the tooltip does not fill the screen
+  //             // for sizes <300px.
+  //             tooltip.style.maxWidth =
+  //               window.outerWidth < 300 ? '100%' : `${width}px`;
 
-              // Manually set the placeholder of the input component. This
-              // workaround is required until props are added to the
-              // ComplexFilter component that'll let us pass props to the nested
-              // Autocomplete input component.
-              const searchInput = tooltip.querySelector('input');
-              if (searchInput) {
-                searchInput.placeholder = 'search for a category';
-              }
+  //             // Manually set the placeholder of the input component. This
+  //             // workaround is required until props are added to the
+  //             // ComplexFilter component that'll let us pass props to the nested
+  //             // Autocomplete input component.
+  //             const searchInput = tooltip.querySelector('input');
+  //             if (searchInput) {
+  //               searchInput.placeholder = 'search for a category';
+  //             }
 
-              // Manually replace the filter input adornment. This workaround is
-              // required for the same reasons as above.
-              if (filterKey === 'workflowStep') {
-                const svgContainer = tooltip.querySelector(
-                  '.MuiInputAdornment-root',
-                );
+  //             // Manually replace the filter input adornment. This workaround is
+  //             // required for the same reasons as above.
+  //             if (filterKey === 'workflowStep') {
+  //               const svgContainer = tooltip.querySelector(
+  //                 '.MuiInputAdornment-root',
+  //               );
 
-                if (svgContainer) {
-                  render(<Search />, svgContainer);
-                }
-              }
-            }
-          }
-        }),
-      ),
-    );
+  //               if (svgContainer) {
+  //                 render(<Search />, svgContainer);
+  //               }
+  //             }
+  //           }
+  //         }
+  //       }),
+  //     ),
+  //   );
 
-    observer.observe(document.body, { childList: true });
+  //   observer.observe(document.body, { childList: true });
 
-    return () => observer.disconnect();
-  }, [filterKey]);
+  //   return () => observer.disconnect();
+  // }, [filterKey]);
 
   return (
     <ComplexFilter

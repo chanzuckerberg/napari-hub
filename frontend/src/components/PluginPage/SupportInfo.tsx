@@ -12,7 +12,6 @@ import {
   Quotes,
   Twitter,
 } from '@/components/icons';
-import { Media } from '@/components/media';
 import { MetadataList, MetadataListLinkItem } from '@/components/MetadataList';
 import { MetadataId, MetadataKeys, usePluginMetadata } from '@/context/plugin';
 
@@ -196,13 +195,13 @@ export function SupportInfoBase({ className, inline }: SupportInfoBaseProps) {
 export function SupportInfo(props: CommonProps) {
   return (
     <>
-      <Media greaterThanOrEqual="xl">
-        <SupportInfoBase {...props} />
-      </Media>
-
-      <Media lessThan="xl">
+      <div className="screen-875:hidden">
         <SupportInfoBase {...props} inline />
-      </Media>
+      </div>
+
+      <div className="hidden screen-875:block">
+        <SupportInfoBase {...props} />
+      </div>
     </>
   );
 }

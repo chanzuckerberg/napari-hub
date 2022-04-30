@@ -2,7 +2,6 @@ import Button from '@material-ui/core/Button';
 import clsx from 'clsx';
 import { createElement } from 'react';
 
-import { Media } from '@/components/media';
 import { MetadataStatus } from '@/components/MetadataStatus';
 import { previewStore } from '@/store/preview';
 import { setUrlHash } from '@/utils';
@@ -157,19 +156,16 @@ export function PreviewMetadataPanel({ missingFieldsOnly }: Props) {
         'py-4 screen-875:py-6',
       )}
     >
-      <Media
+      <div
         className={clsx(
+          'screen-875:hidden',
           'screen-725:grid screen-725:grid-cols-2 screen-725:gap-x-12',
         )}
-        lessThan="screen-875"
       >
         {renderSections()}
-      </Media>
+      </div>
 
-      <Media
-        className="grid grid-cols-napari-3 justify-center gap-12"
-        greaterThanOrEqual="screen-875"
-      >
+      <div className="hidden screen-875:grid grid-cols-napari-3 justify-center gap-12">
         <div
           className={clsx(
             'col-span-3',
@@ -179,7 +175,7 @@ export function PreviewMetadataPanel({ missingFieldsOnly }: Props) {
         >
           {renderSections()}
         </div>
-      </Media>
+      </div>
     </div>
   );
 }

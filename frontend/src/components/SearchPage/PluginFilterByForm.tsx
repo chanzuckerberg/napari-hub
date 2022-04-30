@@ -5,7 +5,6 @@ import { useTranslation } from 'next-i18next';
 import type { TFuncKey } from 'react-i18next';
 
 import { Accordion } from '@/components/Accordion';
-import { Media } from '@/components/media';
 import { useSearchStore } from '@/store/search/context';
 import { FilterKey } from '@/store/search/search.store';
 import { useIsFeatureFlagEnabled } from '@/utils/featureFlags';
@@ -79,16 +78,13 @@ function FilterForm(props: Props) {
       )}
     >
       {/* Only show label on larger screens. This is because the Accordion already includes a title. */}
-      <Media
-        className="flex items-center justify-between"
-        greaterThanOrEqual="screen-875"
-      >
+      <div className="hidden screen-875:flex items-center justify-between">
         <legend className="uppercase text-black font-semibold text-sm">
           {label}
         </legend>
 
         <ClearAllButton {...props} />
-      </Media>
+      </div>
 
       <div className="flex flex-col col-span-2 space-y-2">
         {filters.map((filterKey) => (
@@ -111,15 +107,15 @@ export function PluginFilterByForm(props: Props) {
 
   return (
     <>
-      <Media lessThan="screen-875">
+      <div className="screen-875:hidden">
         <Accordion className="uppercase" title={label}>
           <ClearAllButton {...props} />
 
           {form}
         </Accordion>
-      </Media>
+      </div>
 
-      <Media greaterThanOrEqual="screen-875">{form}</Media>
+      <div className="hidden screen-875:block">{form}</div>
     </>
   );
 }

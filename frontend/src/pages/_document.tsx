@@ -8,7 +8,6 @@ import Document, {
   NextScript,
 } from 'next/document';
 
-import { mediaStyles } from '@/components/media';
 import { theme } from '@/theme';
 
 const FAVICON = `${process.env.BASE_PATH || ''}/icons/favicon`;
@@ -68,12 +67,6 @@ export default class HubDocument extends Document {
             color="#009bf2"
           />
           <meta name="msapplication-TileColor" content="#009bf2" />
-
-          <style
-            type="text/css"
-            // eslint-disable-next-line react/no-danger
-            dangerouslySetInnerHTML={{ __html: mediaStyles }}
-          />
 
           {/*
             Fonts are optimized using Next.js:

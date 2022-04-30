@@ -4,7 +4,6 @@ import { useTranslation } from 'next-i18next';
 import { ReactNode } from 'react';
 
 import { Divider } from '@/components/Divider';
-import { Media } from '@/components/media';
 import {
   MetadataList,
   MetadataListTextItem,
@@ -218,7 +217,7 @@ function PluginMetadataBase({
 
       {divider}
 
-      <Media className={spacingClassName} greaterThan="screen-1425">
+      <div className={clsx(spacingClassName, 'hidden screen-1425:block')}>
         <SkeletonLoader
           className={clsx(
             'h-40',
@@ -229,9 +228,9 @@ function PluginMetadataBase({
         />
 
         {divider}
-      </Media>
+      </div>
 
-      <Media className={spacingClassName} lessThan="screen-875">
+      <div className={clsx(spacingClassName, 'screen-875:hidden')}>
         <SkeletonLoader
           className={clsx(
             'h-40',
@@ -242,16 +241,16 @@ function PluginMetadataBase({
         />
 
         {divider}
-      </Media>
+      </div>
 
       <div className={listClassName}>
         <SkeletonLoader
           className="h-56"
           render={() => (
             <>
-              <Media between={['screen-875', 'screen-1425']}>
+              <div className="hidden screen-875:block screen-1425:hidden">
                 <PluginGithubData />
-              </Media>
+              </div>
 
               {renderItemList('pythonVersion')}
               {renderItemList('operatingSystems')}
@@ -270,23 +269,19 @@ function PluginMetadataBase({
  * inline for smaller screens.
  */
 export function PluginMetadata(props: CommonProps) {
-  let divider = <Divider className="mb-2" />;
-  divider = (
-    <>
-      <Media greaterThanOrEqual="screen-1425">{divider}</Media>
-      <Media lessThan="screen-875">{divider}</Media>
-    </>
+  const divider = (
+    <Divider className="mb-2 screen-875:hidden screen-1425:block" />
   );
 
   return (
     <>
-      <Media lessThan="screen-875">
+      <div className="screen-875:hidden">
         <PluginMetadataBase {...props} divider={divider} inline />
-      </Media>
+      </div>
 
-      <Media greaterThanOrEqual="screen-875">
+      <div className="hidden screen-875:block">
         <PluginMetadataBase {...props} divider={divider} />
-      </Media>
+      </div>
     </>
   );
 }

@@ -9,7 +9,6 @@ import type { TFuncKey } from 'react-i18next';
 import { useSnapshot } from 'valtio';
 
 import { Accordion } from '@/components/Accordion';
-import { Media, MediaFragment } from '@/components/media';
 import { SearchSortType } from '@/store/search/constants';
 import { useSearchStore } from '@/store/search/context';
 
@@ -47,11 +46,9 @@ function SortForm() {
   return (
     <FormControl component="fieldset">
       {/* Only show label on larger screens. This is because the Accordion already includes a title. */}
-      <MediaFragment greaterThanOrEqual="screen-875">
-        <legend className="uppercase text-black font-semibold text-sm mb-2">
-          {t('homePage:sort.title')}
-        </legend>
-      </MediaFragment>
+      <legend className="uppercase text-black font-semibold text-sm mb-2 hidden screen-875:block">
+        {t('homePage:sort.title')}
+      </legend>
 
       <RadioGroup
         aria-label={t('homePage:ariaLabels.sortPlugins')}
@@ -105,13 +102,13 @@ export function PluginSortByForm() {
 
   return (
     <>
-      <Media lessThan="screen-875">
+      <div className="screen-875:hidden">
         <Accordion className="uppercase" title={t('homePage:sort.title')}>
           {form}
         </Accordion>
-      </Media>
+      </div>
 
-      <Media greaterThanOrEqual="screen-875">{form}</Media>
+      <div className="hidden screen-875:block">{form}</div>
     </>
   );
 }
