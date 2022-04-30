@@ -62,7 +62,7 @@ function SearchResultItems() {
         <PluginSearchResult
           className="col-span-2 screen-1425:col-span-3"
           key={plugin.name}
-          plugin={plugin}
+          plugin={plugin as PluginIndexData}
           matches={matches}
           style={
             isLoading && resultHeights[index]
