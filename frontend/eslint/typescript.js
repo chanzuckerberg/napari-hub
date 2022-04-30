@@ -55,6 +55,9 @@ module.exports = {
       (rule) => rule.selector !== 'ForOfStatement',
     ),
 
+    // Sometimes it's safe to call async functions and not handle their errors.
+    '@typescript-eslint/no-misused-promises': 'off',
+
     'unused-imports/no-unused-imports': 'error',
     'unused-imports/no-unused-vars': [
       'error',

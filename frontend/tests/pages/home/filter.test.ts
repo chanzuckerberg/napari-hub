@@ -139,7 +139,7 @@ async function testPluginFilter({
       const optionResults = await getOptions(options);
       const { node } =
         optionResults.find((result) => result.label === options[i]) ?? {};
-      node?.click();
+      await node?.click();
     }
 
     await clickOnFilterButton(filterKey);
