@@ -294,6 +294,8 @@ components:
           type: string
         on_deactivate:
           type: string
-#        contributions:
-#          type: array
+        contributions:
+          type: array
+          items:
+            type: string
 
