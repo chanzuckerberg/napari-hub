@@ -151,9 +151,9 @@ paths:
         200:
           description: The return yaml object is the plugin's manifest.
           content:
-            application/json:
+            application/x-yaml:
               schema:
-                $ref: '#/components/schemas/Manifest'
+                $ref: '#/components/schemas/Shield'
 
 components:
   schemas:
