@@ -18,9 +18,11 @@ function getResults(...plugins: PluginIndexData[]): SearchResult[] {
   }));
 }
 
+const TEST_PLUGIN = pluginIndex[0] as PluginIndexData;
+
 function getVersionResults(...versions: string[]): SearchResult[] {
   const plugins = versions.map((python_version) => ({
-    ...pluginIndex[0],
+    ...TEST_PLUGIN,
     python_version,
   }));
 
@@ -31,7 +33,7 @@ function getOperatingSystemResults(
   ...operatingSystems: string[][]
 ): SearchResult[] {
   const plugins = operatingSystems.map((operating_system) => ({
-    ...pluginIndex[0],
+    ...TEST_PLUGIN,
     operating_system,
   }));
 
@@ -40,7 +42,7 @@ function getOperatingSystemResults(
 
 function getLicenseResults(...licenses: string[]): SearchResult[] {
   const plugins = licenses.map((license) => ({
-    ...pluginIndex[0],
+    ...TEST_PLUGIN,
     license,
   }));
 
@@ -56,7 +58,7 @@ function getCategoryResults(
   ...categoryData: CategoryResultData[]
 ): SearchResult[] {
   const plugins = categoryData.map(({ category, category_hierarchy }) => ({
-    ...pluginIndex[0],
+    ...TEST_PLUGIN,
     category,
     category_hierarchy,
   }));

@@ -9,7 +9,7 @@ You're ready to share it with the world.
 It's time to write a description.
 
 The description is the main way for you to connect with your users through the napari hub.
-You can provide a description of your plugin by creating a markdown file in your repo at `.napari/DESCRIPTION.md`.
+You can provide a description of your plugin by creating a markdown file in your repo at `.napari-hub/DESCRIPTION.md`.
 If you've used napari's [cookiecutter template](https://github.com/napari/cookiecutter-napari-plugin), you'll
 find a template description already there for you.
 This description is the primary way for potential users learn about your plugin, understand what it does, and determine whether it might solve their problem.
@@ -32,7 +32,7 @@ Things to consider:
 - What kind of data does this plugin work on? 2D or 3D? Time series? Multichannel? If your plugin provides a reader or writer, what file types does it support?
 - What makes your plugin different from other plugins that do similar things? Is it faster? More robust?
 
-For example, see the [affinder summary](https://github.com/jni/affinder/blob/master/.napari/DESCRIPTION.md#description)
+For example, see the [affinder summary](https://github.com/jni/affinder/blob/master/.napari-hub/DESCRIPTION.md#description)
 
 ### An example or "quick start"
 
@@ -72,5 +72,5 @@ Unless your plugin has advanced installation requirements or pre-requisites, the
 
 For examples of strong descriptions, check out the following plugins:
 
-- [affinder](https://github.com/jni/affinder/blob/master/.napari/DESCRIPTION.md)
-- [ome-zarr](https://github.com/ome/napari-ome-zarr/blob/main/.napari/DESCRIPTION.md)
+- [affinder](https://github.com/jni/affinder/blob/master/.napari-hub/DESCRIPTION.md)
+- [ome-zarr](https://github.com/ome/napari-ome-zarr/blob/main/.napari-hub/DESCRIPTION.md)

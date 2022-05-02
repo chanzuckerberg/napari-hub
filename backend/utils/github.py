@@ -118,7 +118,9 @@ def get_github_metadata(repo_url: str, branch: str = 'HEAD') -> dict:
     if github_license is not None:
         github_metadata['license'] = github_license
 
-    description = get_file(repo_url, ".napari/DESCRIPTION.md", branch=branch)
+    description = get_file(repo_url,".napari-hub/DESCRIPTION.md", branch=branch)
+    if description is None:
+        description = get_file(repo_url, ".napari/DESCRIPTION.md", branch=branch)
 
     if description and default_description not in description:
         github_metadata['description'] = description
@@ -134,7 +136,9 @@ def get_github_metadata(repo_url: str, branch: str = 'HEAD') -> dict:
     elif github_metadata['visibility'] not in visibility_set:
         github_metadata['visibility'] = 'public'
 
-    yaml_file = get_file(repo_url, ".napari/config.yml", branch=branch)
+    yaml_file = get_file(repo_url, ".napari-hub/config.yml", branch=branch)
+    if yaml_file is None:
+        yaml_file = get_file(repo_url, ".napari/config.yml", branch=branch)
     if yaml_file:
         config = yaml.safe_load(yaml_file)
         hub_config = {key: config[key] for key in hub_config_keys if key in config}

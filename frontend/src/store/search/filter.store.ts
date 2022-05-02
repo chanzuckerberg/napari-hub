@@ -11,7 +11,7 @@ import {
 } from 'lodash';
 import { DeepPartial, NonFunctionKeys } from 'utility-types';
 
-import { ClassState, HubDimension, PluginIndexData } from '@/types';
+import { ClassState, HubDimension, PluginIndexData, PluginType } from '@/types';
 
 import { SearchResult } from './search.types';
 import {
@@ -25,6 +25,13 @@ const FILTER_OS_PATTERN = {
   mac: /MacOS/,
   windows: /Windows/,
 };
+
+type FilterState<K extends string> = Record<K, boolean>;
+
+const DEFAULT_PLUGIN_TYPE_STATE = Object.values(PluginType).reduce(
+  (state, pluginType) => set(state, pluginType, false),
+  {} as Partial<FilterState<PluginType>>,
+) as FilterState<PluginType>;
 
 export class SearchFilterStore implements Resettable {
   license = {
@@ -43,11 +50,17 @@ export class SearchFilterStore implements Resettable {
     3.9: false,
   };
 
-  supportedData: Record<string, boolean> = {};
+  supportedData: FilterState<string> = {};
 
-  workflowStep: Record<string, boolean> = {};
+  workflowStep: FilterState<string> = {};
 
-  imageModality: Record<string, boolean> = {};
+  imageModality: FilterState<string> = {};
+
+  pluginType: FilterState<PluginType> = DEFAULT_PLUGIN_TYPE_STATE;
+
+  writerFileExtensions: FilterState<string> = {};
+
+  readerFileExtensions: FilterState<string> = {};
 
   private osiApprovedLicenseSet = new Set<string>();
 
@@ -59,6 +72,7 @@ export class SearchFilterStore implements Resettable {
     merge(this, initialState);
     this.initOsiApprovedLicenseSet(licenses);
     this.initCategoryFilters(index);
+    this.initFileExtensionFilters(index);
   }
 
   reset() {
@@ -81,6 +95,9 @@ export class SearchFilterStore implements Resettable {
       this.filterByWorkflowStep,
       this.filterByImageModality,
       this.filterBySupportedData,
+      this.filterByPluginType,
+      this.filterByReaderFileExtensions,
+      this.filterByWriterFileExtensions,
     ].map((fn) => fn.bind(this));
 
     // `flow()` will execute a list of functions and provide successive results to
@@ -118,13 +135,44 @@ export class SearchFilterStore implements Resettable {
     }
   }
 
+  private initFileExtensionFilters(index: PluginIndexData[]): void {
+    function addToState(state: FilterState<string>, keys: string[]) {
+      for (const key of keys) {
+        // eslint-disable-next-line no-param-reassign
+        state[key] = false;
+      }
+    }
+
+    for (const plugin of index) {
+      if (
+        plugin.reader_file_extensions &&
+        plugin.plugin_types?.includes(PluginType.Reader)
+      ) {
+        addToState(
+          this.readerFileExtensions,
+          plugin.reader_file_extensions.sort(),
+        );
+      }
+
+      if (
+        plugin.writer_file_extensions &&
+        plugin.plugin_types?.includes(PluginType.Writer)
+      ) {
+        addToState(
+          this.writerFileExtensions,
+          plugin.writer_file_extensions.sort(),
+        );
+      }
+    }
+  }
+
   private initOsiApprovedLicenseSet(licenses: SpdxLicenseData[]) {
     licenses
       .filter((license) => license.isOsiApproved)
       .forEach((license) => this.osiApprovedLicenseSet.add(license.licenseId));
   }
 
-  private getSelectedKeys(state: Record<string, boolean>): string[] {
+  private getSelectedKeys(state: FilterState<string>): string[] {
     return Object.entries(state)
       .filter(([, enabled]) => enabled)
       .map(([version]) => version);
@@ -234,5 +282,54 @@ export class SearchFilterStore implements Resettable {
 
   private filterBySupportedData(results: SearchResult[]): SearchResult[] {
     return this.filterCategory('Supported data', this.supportedData, results);
+  }
+
+  private filterByPluginType(results: SearchResult[]): SearchResult[] {
+    const selected = new Set(this.getSelectedKeys(this.pluginType));
+    if (selected.size === 0) {
+      return results;
+    }
+
+    return results.filter((result) =>
+      result.plugin.plugin_types?.some((value) => selected.has(value)),
+    );
+  }
+
+  private filterByReaderFileExtensions(
+    results: SearchResult[],
+  ): SearchResult[] {
+    const selected = new Set(this.getSelectedKeys(this.readerFileExtensions));
+    if (selected.size === 0) {
+      return results;
+    }
+
+    return results
+      .filter((result) =>
+        result.plugin.plugin_types?.includes(PluginType.Reader),
+      )
+      .filter((result) =>
+        result.plugin.reader_file_extensions?.some((value) =>
+          selected.has(value),
+        ),
+      );
+  }
+
+  private filterByWriterFileExtensions(
+    results: SearchResult[],
+  ): SearchResult[] {
+    const selected = new Set(this.getSelectedKeys(this.writerFileExtensions));
+    if (selected.size === 0) {
+      return results;
+    }
+
+    return results
+      .filter((result) =>
+        result.plugin.plugin_types?.includes(PluginType.Writer),
+      )
+      .filter((result) =>
+        result.plugin.writer_file_extensions?.some((value) =>
+          selected.has(value),
+        ),
+      );
   }
 }

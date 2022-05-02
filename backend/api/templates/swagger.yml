@@ -154,7 +154,6 @@ paths:
             application/x-yaml:
               schema:
                 $ref: '#/components/schemas/Manifest'
-
 components:
   schemas:
     Categories:
@@ -298,5 +297,3 @@ components:
           type: array
           items:
             type: string
-
-

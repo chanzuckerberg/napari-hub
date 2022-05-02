@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import { createElement, HTMLProps, ReactHTML, ReactNode } from 'react';
+import { useMedia } from 'react-use';
 import { useSnapshot } from 'valtio';
 
 import { MetadataId } from '@/context/plugin';
@@ -35,6 +36,7 @@ export function MetadataHighlighter<T extends HTMLKey>({
   ...props
 }: Props<T>) {
   const snap = useSnapshot(previewStore);
+  const scaleHighlight = useMedia('(max-width: 875px), (min-width: 1425px)');
   const isActive = snap.activeMetadataField === metadataId;
   const highlightEnabled = process.env.PREVIEW && highlight;
 
@@ -77,7 +79,7 @@ export function MetadataHighlighter<T extends HTMLKey>({
           // model, so if we simply scale the highlighter a little bit and use
           // padding for alignment, we can achieve the overflow effect.
           variant === 'small' ? 'p-1' : 'p-2',
-          'scale-[1.03]',
+          scaleHighlight && 'scale-[1.03]',
 
           // Give button border initially so that the space is reserved.
           'border-2',

@@ -8,6 +8,8 @@ import {
   PluginData,
   PluginRepoData,
   PluginRepoFetchError,
+  PluginType,
+  PluginWriterSaveLayer,
 } from '@/types';
 import { I18nPluginDataLabel } from '@/types/i18n';
 import { formatDate } from '@/utils';
@@ -270,6 +272,26 @@ export function usePluginMetadata() {
     supportedData: {
       label: t('pluginData:labels.Supported data'),
       value: getCategoryValue('Supported data'),
+    },
+
+    pluginType: {
+      label: t('pluginData:labels.pluginType'),
+      value: (plugin?.plugin_types ?? []) as PluginType[],
+    },
+
+    readerFileExtensions: {
+      label: t('pluginData:labels.readerFileExtensions'),
+      value: (plugin?.reader_file_extensions ?? []) as string[],
+    },
+
+    writerFileExtensions: {
+      label: t('pluginData:labels.writerFileExtensions'),
+      value: (plugin?.writer_file_extensions ?? []) as string[],
+    },
+
+    writerSaveLayers: {
+      label: t('pluginData:labels.writerSaveLayers'),
+      value: (plugin?.writer_save_layers ?? []) as PluginWriterSaveLayer[],
     },
   });
 }

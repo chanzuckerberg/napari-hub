@@ -84,8 +84,8 @@ function PluginCenterColumn() {
                 !plugin?.name && 'text-napari-dark-gray',
               )}
             >
-              {(isNpe2Enabled ? plugin?.display_name : undefined) ??
-                plugin?.name ??
+              {(isNpe2Enabled ? plugin?.display_name : undefined) ||
+                plugin?.name ||
                 t('pluginData:labels.pluginName.label')}
             </h1>
           </MetadataHighlighter>
@@ -123,7 +123,7 @@ function PluginCenterColumn() {
                 !plugin?.summary && 'text-napari-dark-gray',
               )}
             >
-              {plugin?.summary ?? t('pluginData:labels.summary.preview')}
+              {plugin?.summary || t('pluginData:labels.summary.preview')}
             </h2>
           </MetadataHighlighter>
         )}
@@ -215,7 +215,7 @@ function PluginCenterColumn() {
             highlight={isEmptyDescription}
           >
             <Markdown disableHeader placeholder={isEmptyDescription}>
-              {plugin?.description ?? t('preview:emptyDescription')}
+              {plugin?.description || t('preview:emptyDescription')}
             </Markdown>
           </MetadataHighlighter>
         )}

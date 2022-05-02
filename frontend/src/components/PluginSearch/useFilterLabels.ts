@@ -27,5 +27,8 @@ export function useFilterLabels() {
     supportedData: t('pluginData:labels.Supported data'),
     workflowStep: t('pluginData:labels.Workflow step'),
     imageModality: t('pluginData:labels.Image modality'),
+    pluginType: t('pluginData:labels.pluginType'),
+    readerFileExtensions: t('pluginData:labels.readerFileExtensions'),
+    writerFileExtensions: t('pluginData:labels.writerFileExtensions'),
   });
 }
