@@ -245,7 +245,7 @@ export function usePluginMetadata() {
       value:
         plugin?.requirements && isArray(plugin.requirements)
           ? plugin.requirements.filter(
-              (req): req is string => !req?.includes('; extra == '),
+              (req): req is string => !req?.includes(' extra == '),
             )
           : [],
     },
