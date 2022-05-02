@@ -47,6 +47,10 @@ module.exports = {
   // Use SWC to minify code.
   swcMinify: true,
 
+  // TODO Re-enable font optimization until it's fixed for Next.js v12.1:
+  // https://github.com/vercel/next.js/issues/36498
+  optimizeFonts: false,
+
   webpack(config, { isServer }) {
     // Sets BABEL_ENV to `<[server|client]-[dev|prod]>` depending on the Next.js
     // build.  This is required for the Material UI + babel import plugin to work.
