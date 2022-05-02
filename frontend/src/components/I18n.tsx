@@ -36,7 +36,8 @@ export function I18n<N extends I18nNamespace>({
     <Trans
       {...props}
       ns={namespace}
-      i18nKey={key}
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any
+      i18nKey={key as any}
       // Components to use when replacing inline i18n JSX.
       components={{
         bold: <span className="font-bold" />,
