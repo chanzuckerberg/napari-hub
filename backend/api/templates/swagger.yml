@@ -150,8 +150,6 @@ paths:
           description: The manifest is temporarily unavailable. Check back in 5 minutes.
         200:
           description: The return yaml object is the plugin's manifest.
-          produces:
-            - application/x-yaml
           content:
             application/x-yaml:
               schema:
@@ -298,7 +296,6 @@ components:
           type: string
         contributions:
           type: array
-          default: []
           items:
             type: string
 
