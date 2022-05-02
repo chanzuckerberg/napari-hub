@@ -14,8 +14,8 @@ const ALLOWED_VIDEO_REGEX =
  * Component for rendering a paragraph element, or a video element if the
  * content is a GitHub video link.
  */
-export function MarkdownParagraph({ className, children }: Props) {
-  let result: ReactNode;
+export function MarkdownParagraph({ className, children, ...props }: Props) {
+  let content: ReactNode = children;
 
   if (
     Array.isArray(children) &&
@@ -32,7 +32,7 @@ export function MarkdownParagraph({ className, children }: Props) {
     const match = ALLOWED_VIDEO_REGEX.exec(href);
 
     if (match) {
-      result = (
+      content = (
         // eslint-disable-next-line jsx-a11y/media-has-caption
         <video
           data-testid="markdownVideo"
@@ -44,5 +44,9 @@ export function MarkdownParagraph({ className, children }: Props) {
     }
   }
 
-  return result ?? <p className={className}>{children}</p>;
+  return (
+    <p className={className} {...props}>
+      {content}
+    </p>
+  );
 }
