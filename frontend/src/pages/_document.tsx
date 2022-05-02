@@ -73,7 +73,7 @@ export default class HubDocument extends Document {
             https://nextjs.org/docs/basic-features/font-optimization
           */}
           <link
-            href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap"
             rel="stylesheet"
           />
         </Head>
