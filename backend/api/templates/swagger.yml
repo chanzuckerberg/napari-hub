@@ -295,4 +295,5 @@ components:
           type: string
         contributions:
           type: array
-
+          items:
+            type: string
