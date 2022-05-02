@@ -27,7 +27,7 @@ function ClearAllButton({ filters, filterType }: Props) {
 
   return (
     <Button
-      className="underline w-min"
+      className="underline w-min whitespace-nowrap"
       data-testid="clearAllButton"
       data-filter-type={filterType}
       onClick={() => {
