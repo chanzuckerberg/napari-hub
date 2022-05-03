@@ -6,14 +6,10 @@ import { useQuery } from 'react-query';
 
 import { spdxLicenseDataAPI } from '@/axios';
 import { MetadataKeys } from '@/context/plugin';
-import {
-  FILTER_OS_PATTERN,
-  SUPPORTED_PYTHON_VERSIONS,
-} from '@/store/search/filter.store';
+import { SUPPORTED_PYTHON_VERSIONS } from '@/store/search/filter.store';
 import { PARAM_KEY_MAP, PARAM_VALUE_MAP } from '@/store/search/queryParameters';
 import { SpdxLicenseResponse } from '@/store/search/types';
 import { PluginType, PluginWriterSaveLayer } from '@/types';
-import { formatOperatingSystem } from '@/utils';
 
 import { Link } from '../common/Link';
 import styles from './MetadataList.module.scss';
@@ -70,7 +66,19 @@ function useMetadataValueLabel(
       }
 
     case 'operatingSystems':
-      return formatOperatingSystem(value);
+      switch (value) {
+        case 'linux':
+          return 'Linux';
+
+        case 'windows':
+          return 'Windows';
+
+        case 'mac':
+          return 'MacOS';
+
+        default:
+          return value;
+      }
 
     default:
       return value;
@@ -137,14 +145,6 @@ export function MetadataListMetadataItem({
           result = version;
           break;
         }
-      }
-    } else if (metadataKey === 'operatingSystems') {
-      if (FILTER_OS_PATTERN.windows.exec(value)) {
-        result = 'windows';
-      } else if (FILTER_OS_PATTERN.mac.exec(value)) {
-        result = 'macos';
-      } else if (FILTER_OS_PATTERN.linux.exec(value)) {
-        result = 'linux';
       }
     } else if (metadataKey !== 'license') {
       result = PARAM_VALUE_MAP[value] ?? value;
