@@ -21,19 +21,27 @@ export class FuseSearchEngine implements SearchEngine {
 
   index(plugins: PluginIndexData[]): void {
     this.fuse = new Fuse(plugins, {
-      /*
-        Used to filter matches whose score is less than or equal to the
-        threshold value:
-        https://git.io/J3xRx
-      */
+      /**
+       * Used to match fields depending on how long they are. The shorter the
+       * field, the more relevant it is. The default 1, but we need to pass it
+       * here because TypeScript will throw an error.
+       * https://fusejs.io/concepts/scoring-theory.html#field-length-norm
+       */
+      fieldNormWeight: 1,
+
+      /**
+       * Used to filter matches whose score is less than or equal to the
+       * threshold value:
+       * https://git.io/J3xRx
+       */
       threshold: 0.16,
 
-      /*
-        Finds matches in string regardless of location. This would have the most
-        impact on searching the summary / description because without this, fuse
-        would only be able to match with plugins that have the word at the
-        beginning of the string.
-      */
+      /**
+       * Finds matches in string regardless of location. This would have the most
+       * impact on searching the summary / description because without this, fuse
+       * would only be able to match with plugins that have the word at the
+       * beginning of the string.
+       */
       ignoreLocation: true,
 
       keys: [
@@ -59,15 +67,15 @@ export class FuseSearchEngine implements SearchEngine {
         },
       ],
 
-      /*
-        Allow searching with extended search operators:
-        https://fusejs.io/examples.html#extended-search
-      */
+      /**
+       *  Allow searching with extended search operators:
+       *  https://fusejs.io/examples.html#extended-search
+       */
       useExtendedSearch: true,
 
-      /*
-        Include search result matches for text highlighting.
-      */
+      /**
+       * Include search result matches for text highlighting.
+       */
       includeMatches: true,
     });
   }
