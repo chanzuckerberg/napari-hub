@@ -67,6 +67,7 @@
     "@material-ui/styles": "^4.11.5",
     "@octokit/auth-oauth-app": "^4.3.1",
     "@octokit/rest": "^18.12.0",
+    "@octokit/types": "^6.34.0",
     "@renovate/pep440": "^1.0.0",
     "@types/unist": "^2.0.6",
     "axios": "^0.27.2",
@@ -115,8 +116,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.17.10",
-    "@next/eslint-plugin-next": "^12.1.5",
-    "@octokit/types": "^6.34.0",
+    "@next/eslint-plugin-next": "^12.1.6",
     "@tailwindcss/typography": "^0.5.2",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.2.0",
