@@ -4,14 +4,14 @@ import { useTranslation } from 'next-i18next';
 import { ReactNode, useMemo } from 'react';
 import { useQuery } from 'react-query';
 
-import { spdxLicenseDataAPI } from '@/utils/axios';
+import { Link } from '@/components/Link';
 import { MetadataKeys } from '@/context/plugin';
 import { SUPPORTED_PYTHON_VERSIONS } from '@/store/search/filter.store';
 import { PARAM_KEY_MAP, PARAM_VALUE_MAP } from '@/store/search/queryParameters';
 import { SpdxLicenseResponse } from '@/store/search/types';
 import { PluginType, PluginWriterSaveLayer } from '@/types';
+import { spdxLicenseDataAPI } from '@/utils/axios';
 
-import { Link } from '@/components/Link';
 import styles from './MetadataList.module.scss';
 import { MetadataListTextItem } from './MetadataListTextItem';
 

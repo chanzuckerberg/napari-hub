@@ -120,6 +120,7 @@
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.1.2",
     "@types/fs-extra": "^9.0.13",
+    "@types/glob": "^7.2.0",
     "@types/i18next": "^13.0.0",
     "@types/jest": "^27.0.2",
     "@types/node": "^16.11.2",
