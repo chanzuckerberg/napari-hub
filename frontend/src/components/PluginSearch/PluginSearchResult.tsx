@@ -15,7 +15,7 @@ import { FilterCategoryKeys } from '@/store/search/search.store';
 import { SearchResultMatch } from '@/store/search/search.types';
 import { HubDimension, PluginIndexData } from '@/types';
 import { I18nKeys, I18nPluginDataLabel } from '@/types/i18n';
-import { createUrl, formatDate } from '@/utils';
+import { createUrl, formatDate, formatOperatingSystem } from '@/utils';
 import { useIsFeatureFlagEnabled } from '@/utils/featureFlags';
 
 interface Props {
@@ -158,18 +158,41 @@ export function PluginSearchResult({
           value: formatDate(plugin.release_date),
         },
 
-        {
-          label: t('pluginData:labels.pluginType'),
-          value: isArray(plugin.plugin_types)
-            ? plugin.plugin_types
-                .map((pluginType) =>
-                  t(
-                    `homePage:filter.requirement.${pluginType}.label` as I18nKeys<'homePage'>,
-                  ),
-                )
-                .join(', ')
-            : '',
-        },
+        ...(isNpe2Enabled
+          ? [
+              {
+                label: t('pluginData:labels.pluginType'),
+                value: isArray(plugin.plugin_types)
+                  ? plugin.plugin_types
+                      .map((pluginType) =>
+                        t(
+                          `homePage:filter.requirement.${pluginType}.label` as I18nKeys<'homePage'>,
+                        ),
+                      )
+                      .join(', ')
+                  : '',
+              },
+            ]
+          : [
+              {
+                label: t('pluginData:labels.license'),
+                value: plugin.license,
+              },
+
+              {
+                label: t('pluginData:labels.pythonVersion'),
+                value: plugin.python_version,
+              },
+
+              {
+                label: t('pluginData:labels.operatingSystem'),
+                value: isArray(plugin.operating_system)
+                  ? plugin.operating_system
+                      .map(formatOperatingSystem)
+                      .join(', ')
+                  : '',
+              },
+            ]),
       );
 
   const isSearching = !isEmpty(matches);
