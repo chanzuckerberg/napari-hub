@@ -21,6 +21,8 @@ import {
 import { PluginType } from '@/types';
 import { useIsFeatureFlagEnabled } from '@/utils/featureFlags';
 
+import { MetadataListMetadataItem } from '../MetadataList/MetadataListMetadataItem';
+
 interface GithubMetadataItem {
   label: string;
   count: number;
@@ -132,12 +134,9 @@ function PluginMetadataBase({
         {...props}
       >
         {values.map((currentValue) => (
-          <MetadataListTextItem
-            key={currentValue}
-            metadataKey={key as MetadataKeys}
-          >
+          <MetadataListMetadataItem key={currentValue} metadataKey={key}>
             {currentValue}
-          </MetadataListTextItem>
+          </MetadataListMetadataItem>
         ))}
       </MetadataList>
     );

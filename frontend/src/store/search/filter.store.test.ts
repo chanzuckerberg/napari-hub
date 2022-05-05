@@ -101,7 +101,7 @@ describe('filterResults()', () => {
 
       testCases.forEach(({ input, output }) => {
         const store = new SearchFilterStore({
-          pythonVersions: { 3.9: true },
+          pythonVersion: { 3.9: true },
         });
         const result = store.filterResults(input);
         expect(result).toEqual(output);

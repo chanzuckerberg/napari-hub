@@ -1,8 +1,10 @@
+import { satisfies } from '@renovate/pep440';
 import { isArray, isString } from 'lodash';
 import { useTranslation } from 'next-i18next';
 import { createContext, ReactNode, useContext } from 'react';
 import { DeepPartial } from 'utility-types';
 
+import { SUPPORTED_PYTHON_VERSIONS } from '@/store/search/filter.store';
 import {
   HubDimension,
   PluginData,
@@ -225,19 +227,44 @@ export function usePluginMetadata() {
 
     pythonVersion: {
       label: t('pluginData:labels.pythonVersion'),
-      value: plugin?.python_version ?? '',
+      value: SUPPORTED_PYTHON_VERSIONS.filter((version) =>
+        satisfies(version, plugin?.python_version ?? ''),
+      ),
     },
 
     operatingSystems: {
       label: t('pluginData:labels.operatingSystem'),
-      value:
-        plugin?.operating_system && isArray(plugin.operating_system)
-          ? plugin.operating_system
-              .map((operatingSystem) =>
-                operatingSystem?.replace('Operating System :: ', ''),
-              )
-              .filter((value): value is string => !!value)
-          : [],
+      value: Array.from(
+        new Set(
+          plugin?.operating_system && isArray(plugin.operating_system)
+            ? plugin.operating_system
+                .map((operatingSystem) =>
+                  operatingSystem?.replace('Operating System :: ', ''),
+                )
+                .filter((value): value is string => !!value)
+                .flatMap((operatingSystem) => {
+                  switch (true) {
+                    case operatingSystem.includes('Linux') ||
+                      operatingSystem.includes('POSIX'):
+                      return 'linux';
+
+                    case operatingSystem.includes('Windows'):
+                      return 'windows';
+
+                    case operatingSystem.includes('MacOS'):
+                      return 'mac';
+
+                    case operatingSystem === 'OS Independent':
+                      return ['linux', 'windows', 'mac'];
+
+                    default:
+                      return operatingSystem;
+                  }
+                })
+                .sort()
+            : [],
+        ),
+      ),
     },
 
     requirements: {

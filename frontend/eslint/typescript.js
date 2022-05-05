@@ -32,7 +32,7 @@ module.exports = {
     },
   },
 
-  plugins: ['simple-import-sort'],
+  plugins: ['simple-import-sort', 'unused-imports'],
 
   rules: {
     // It's helpful to split functionality into multiple functions within a class.
@@ -54,5 +54,16 @@ module.exports = {
     'no-restricted-syntax': config.rules['no-restricted-syntax'].filter(
       (rule) => rule.selector !== 'ForOfStatement',
     ),
+
+    'unused-imports/no-unused-imports': 'error',
+    'unused-imports/no-unused-vars': [
+      'error',
+      {
+        vars: 'all',
+        varsIgnorePattern: '^_',
+        args: 'after-used',
+        argsIgnorePattern: '^_',
+      },
+    ],
   },
 };

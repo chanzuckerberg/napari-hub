@@ -13,13 +13,10 @@ import {
   Twitter,
 } from '@/components/common/icons';
 import { Media } from '@/components/common/media';
-import {
-  MetadataList,
-  MetadataListLinkItem,
-  MetadataListTextItem,
-} from '@/components/MetadataList';
+import { MetadataList, MetadataListLinkItem } from '@/components/MetadataList';
 import { MetadataId, MetadataKeys, usePluginMetadata } from '@/context/plugin';
 
+import { MetadataListMetadataItem } from '../MetadataList/MetadataListMetadataItem';
 import { ANCHOR } from './CitationInfo.constants';
 import styles from './SupportInfo.module.scss';
 
@@ -153,7 +150,9 @@ export function SupportInfoBase({ className, inline }: SupportInfoBaseProps) {
         inline={inline}
       >
         {metadata.authors.value.map((author) => (
-          <MetadataListTextItem key={author}>{author}</MetadataListTextItem>
+          <MetadataListMetadataItem key={author} metadataKey="authors">
+            {author}
+          </MetadataListMetadataItem>
         ))}
       </MetadataList>
 

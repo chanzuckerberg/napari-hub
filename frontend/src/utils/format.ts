@@ -23,8 +23,8 @@ export function formatOperatingSystem(operatingSystem: string): string {
   // arbitrary, so you can have a long string like "Operating Systems ::
   // Microsoft :: Windows :: Windows 10", or a short string like "Operating
   // Systems :: OS Independent".
-  const parts = operatingSystem.split(' :: ');
-  const name = parts[parts.length - 1];
-
-  return name.replace('OS Independent', 'All');
+  return (
+    operatingSystem.split(' :: ').at(-1)?.replace('OS Independent', 'All') ??
+    operatingSystem
+  );
 }

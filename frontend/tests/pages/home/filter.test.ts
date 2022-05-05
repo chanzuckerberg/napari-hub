@@ -29,7 +29,7 @@ const FILTER_KEY_METADATA_LABEL_MAP: Partial<Record<FilterKey, MetadataLabel>> =
     // TODO Fix tests since metadata has been removed from search result
     // license: MetadataLabel.License,
     // operatingSystems: MetadataLabel.OperatingSystem,
-    // pythonVersions: MetadataLabel.PythonVersion,
+    // pythonVersion: MetadataLabel.PythonVersion,
   };
 
 const CATEGORY_FILTERS = new Set<FilterKey>(['imageModality', 'workflowStep']);
@@ -176,7 +176,7 @@ describe('Plugin Filters', () => {
   it('should filter by python version', async () => {
     await testPluginFilter({
       options: ['3.7', '3.8'],
-      filterKey: 'pythonVersions',
+      filterKey: 'pythonVersion',
       params: [
         ['python', '3.7'],
         ['python', '3.8'],

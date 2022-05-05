@@ -20,7 +20,7 @@ import {
   SpdxLicenseData,
 } from './types';
 
-const FILTER_OS_PATTERN = {
+export const FILTER_OS_PATTERN = {
   linux: /Linux/,
   mac: /MacOS/,
   windows: /Windows/,
@@ -33,6 +33,8 @@ const DEFAULT_PLUGIN_TYPE_STATE = Object.values(PluginType).reduce(
   {} as Partial<FilterState<PluginType>>,
 ) as FilterState<PluginType>;
 
+export const SUPPORTED_PYTHON_VERSIONS = ['3.6', '3.7', '3.8', '3.9'];
+
 export class SearchFilterStore implements Resettable {
   license = {
     openSource: false,
@@ -44,11 +46,10 @@ export class SearchFilterStore implements Resettable {
     windows: false,
   };
 
-  pythonVersions = {
-    3.7: false,
-    3.8: false,
-    3.9: false,
-  };
+  pythonVersion = SUPPORTED_PYTHON_VERSIONS.reduce(
+    (state, version) => set(state, [version], false),
+    {} as FilterState<string>,
+  );
 
   supportedData: FilterState<string> = {};
 
@@ -56,11 +57,13 @@ export class SearchFilterStore implements Resettable {
 
   imageModality: FilterState<string> = {};
 
-  pluginType: FilterState<PluginType> = DEFAULT_PLUGIN_TYPE_STATE;
+  pluginType: FilterState<PluginType> = { ...DEFAULT_PLUGIN_TYPE_STATE };
 
   writerFileExtensions: FilterState<string> = {};
 
   readerFileExtensions: FilterState<string> = {};
+
+  authors: FilterState<string> = {};
 
   private osiApprovedLicenseSet = new Set<string>();
 
@@ -73,6 +76,7 @@ export class SearchFilterStore implements Resettable {
     this.initOsiApprovedLicenseSet(licenses);
     this.initCategoryFilters(index);
     this.initFileExtensionFilters(index);
+    this.initAuthorFilter(index);
   }
 
   reset() {
@@ -98,6 +102,7 @@ export class SearchFilterStore implements Resettable {
       this.filterByPluginType,
       this.filterByReaderFileExtensions,
       this.filterByWriterFileExtensions,
+      this.filterByAuthor,
     ].map((fn) => fn.bind(this));
 
     // `flow()` will execute a list of functions and provide successive results to
@@ -133,6 +138,16 @@ export class SearchFilterStore implements Resettable {
         }
       }
     }
+  }
+
+  private initAuthorFilter(index: PluginIndexData[]) {
+    index.forEach(
+      (plugin) =>
+        isArray(plugin.authors) &&
+        plugin.authors.forEach((author) => {
+          this.authors[author.name] = false;
+        }),
+    );
   }
 
   private initFileExtensionFilters(index: PluginIndexData[]): void {
@@ -179,7 +194,7 @@ export class SearchFilterStore implements Resettable {
   }
 
   private filterByPythonVersion(results: SearchResult[]): SearchResult[] {
-    const state = this.pythonVersions;
+    const state = this.pythonVersion;
 
     // Collect all versions selected on the filter form
     const selectedVersions = this.getSelectedKeys(state);
@@ -331,5 +346,17 @@ export class SearchFilterStore implements Resettable {
           selected.has(value),
         ),
       );
+  }
+
+  private filterByAuthor(results: SearchResult[]): SearchResult[] {
+    const selected = new Set(this.getSelectedKeys(this.authors));
+    if (selected.size === 0) {
+      return results;
+    }
+
+    return results.filter(
+      ({ plugin: { authors } }) =>
+        isArray(authors) && authors.some((author) => selected.has(author.name)),
+    );
   }
 }

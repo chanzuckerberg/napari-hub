@@ -12,7 +12,7 @@ import type { PluginSearchStore } from './search.store';
 
 export const PARAM_KEY_MAP: Record<string, string | undefined> = {
   operatingSystems: 'operatingSystem',
-  pythonVersions: 'python',
+  pythonVersion: 'python',
 };
 
 export const PARAM_VALUE_MAP: Record<string, string | undefined> = {
