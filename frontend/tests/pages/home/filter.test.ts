@@ -36,14 +36,14 @@ const CATEGORY_FILTERS = new Set<FilterKey>(['imageModality', 'workflowStep']);
 
 async function clickOnFilterButton(filterKey: FilterKey) {
   const filterButton = await page.$(
-    `[data-testid=pluginFilter][data-filter=${filterKey}]`,
+    `[data-testid=pluginFilter][data-filter=${filterKey}]:visible`,
   );
   await filterButton?.click();
 }
 
 async function getOptions(labels: string[]) {
   const labelSet = new Set(labels);
-  const optionNodes = await page.$$('[role=tooltip] [role=option]');
+  const optionNodes = await page.$$('[role=tooltip] [role=option]:visible');
 
   interface OptionResult {
     label: string;
@@ -71,11 +71,13 @@ async function getOptions(labels: string[]) {
 
 async function getChips(filterKey: FilterKey, labels: string[]) {
   const labelSet = new Set(labels);
-  const chipNodes = await page.$$(`[data-filter=${filterKey}] .MuiChip-root`);
+  const chipNodes = await page.$$(
+    `[data-filter=${filterKey}] .MuiChip-root:visible`,
+  );
   const result: string[] = [];
 
   for (const node of chipNodes) {
-    const labelNode = await node.$('.MuiChip-label');
+    const labelNode = await node.$('.MuiChip-label:visible');
     const label = await labelNode?.textContent();
     if (label && labelSet.has(label)) {
       result.push(label);
@@ -149,6 +151,7 @@ async function testPluginFilter({
   async function testClearAll() {
     await page.goto(getSearchUrl(...params));
     await openAccordion();
+    await page.waitForTimeout(500);
     let chipLabels = await getChips(filterKey, options);
     expect(chipLabels).toEqual(options);
 
@@ -156,7 +159,7 @@ async function testPluginFilter({
       ? 'category'
       : 'requirement';
     await page.click(
-      `[data-testid=clearAllButton][data-filter-type=${filterType}]`,
+      `[data-testid=clearAllButton][data-filter-type=${filterType}]:visible`,
     );
 
     chipLabels = await getChips(filterKey, options);

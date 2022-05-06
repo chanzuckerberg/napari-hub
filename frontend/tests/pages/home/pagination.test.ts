@@ -12,6 +12,7 @@ function hasPageQueryParameter(pageValue: number) {
 async function getResultNames() {
   const nameNodes = await getSearchResultNames();
   const names = await Promise.all(nameNodes.map((node) => node.textContent()));
+
   return names;
 }
 
@@ -160,6 +161,7 @@ describe('Plugin Pagination', () => {
     await page.waitForNavigation();
     await page.goBack();
     await page.waitForNavigation();
+    await page.waitForTimeout(500);
     await testResults({
       page: 2,
       totalPages: 3,

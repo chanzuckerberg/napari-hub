@@ -5,11 +5,11 @@ import { breakpoints } from '@/theme';
  * @returns The first search result name.
  */
 export function getFirstSearchResultName() {
-  return page.$('[data-testid=searchResultName]');
+  return page.$('[data-testid=searchResultName]:visible');
 }
 
 export function getSearchResultNames() {
-  return page.$$('[data-testid=searchResultName]');
+  return page.$$('[data-testid=searchResultName]:visible');
 }
 
 /**
