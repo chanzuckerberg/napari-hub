@@ -40,8 +40,17 @@ function formatTwitter(url: string): string {
 }
 
 function formatRepoName(repoUrl: string): string {
-  const match = /https:\/\/github\.com\/([^/]+)\/(?<name>[^/]+)/.exec(repoUrl);
-  return match?.groups?.name ?? '';
+  const match = /https:\/\/github\.com\/(?<owner>[^/]+)\/(?<name>[^/]+)/.exec(
+    repoUrl,
+  );
+  const owner = match?.groups?.owner ?? '';
+  const name = match?.groups?.name ?? '';
+
+  if (!owner || !name) {
+    return repoUrl;
+  }
+
+  return `${owner}/${name}`;
 }
 
 interface CommonProps {
