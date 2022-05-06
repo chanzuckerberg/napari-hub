@@ -4,7 +4,7 @@ import slug from 'rehype-slug';
 import html from 'rehype-stringify';
 import markdownParser from 'remark-parse';
 import remark2rehype from 'remark-rehype';
-import unified from 'unified';
+import { Plugin, Processor, unified } from 'unified';
 
 import { TOC_HEADER_TAG, TOCHeader } from '@/components/TableOfContents';
 
@@ -45,15 +45,15 @@ export function getHeadersFromMarkdown(markdown: string): TOCHeader[] {
   }
 
   // Create markdown processor with remark / rehype plugins.
-  const processor = UNIFIED_PLUGINS.reduce(
-    (currentProcessor, plugin) => currentProcessor.use(plugin),
+  const processor = UNIFIED_PLUGINS.reduce<Processor>(
+    (currentProcessor, plugin) => currentProcessor.use(plugin as Plugin),
     unified(),
   );
 
   // Create AST from markdown + plugins.
   const { children } = processor.runSync(
     processor.parse(markdown),
-  ) as MarkdownNode;
+  ) as unknown as MarkdownNode;
 
   // Convert all H2 headings into TOCHeader objects.
   return children

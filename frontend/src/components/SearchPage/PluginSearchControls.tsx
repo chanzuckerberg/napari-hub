@@ -2,7 +2,6 @@ import Divider from '@material-ui/core/Divider';
 import clsx from 'clsx';
 import { AnimateSharedLayout, motion } from 'framer-motion';
 
-import { Media } from '@/components/media';
 import { FilterKey } from '@/store/search/search.store';
 import { useIsFeatureFlagEnabled } from '@/utils/featureFlags';
 
@@ -14,9 +13,11 @@ import { PluginSortByForm } from './PluginSortByForm';
  */
 export function PluginSearchControls() {
   const divider = (
-    <Media className="my-6" greaterThanOrEqual="screen-875">
-      <Divider layout component={motion.div} className="bg-black h-1" />
-    </Media>
+    <Divider
+      layout
+      component={motion.div}
+      className="bg-black h-1 my-6 hidden screen-875:block"
+    />
   );
 
   const isCategoryFiltersEnabled = useIsFeatureFlagEnabled('categoryFilters');

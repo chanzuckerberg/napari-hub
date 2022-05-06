@@ -1,9 +1,9 @@
 import clsx from 'clsx';
 import { createElement, HTMLProps, ReactHTML, ReactNode } from 'react';
-import { useMedia } from 'react-use';
 import { useSnapshot } from 'valtio';
 
 import { MetadataId } from '@/context/plugin';
+import { useMediaQuery } from '@/hooks';
 import { previewStore } from '@/store/preview';
 import { setUrlHash } from '@/utils';
 
@@ -36,7 +36,9 @@ export function MetadataHighlighter<T extends HTMLKey>({
   ...props
 }: Props<T>) {
   const snap = useSnapshot(previewStore);
-  const scaleHighlight = useMedia('(max-width: 875px), (min-width: 1425px)');
+  const scaleHighlight = useMediaQuery({
+    around: ['screen-875', 'screen-1425'],
+  });
   const isActive = snap.activeMetadataField === metadataId;
   const highlightEnabled = process.env.PREVIEW && highlight;
 

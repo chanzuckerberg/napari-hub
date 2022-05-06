@@ -4,7 +4,6 @@ import { ReactNode } from 'react';
 
 import { ColumnLayout } from '@/components/ColumnLayout';
 import { Hub } from '@/components/icons';
-import { Media, MediaFragment } from '@/components/media';
 
 import styles from './AppBarLanding.module.scss';
 import { AppBarLinks } from './AppBarLinks';
@@ -30,16 +29,14 @@ function List({ children, className }: ListProps) {
 }
 
 /**
- * Component that renders the landing page variant of the AppBar.
+ * Component that renders the landing page variant of the AppBar.  On smaller
+ * layouts, the last list item is rendered below the icon and 2 preceding list
+ * items. To achieve this affect, the last list item is rendered in a separate
+ * list so that it can be rendered below everything.
  */
 export function AppBarLanding() {
   const links = useAppBarLinks();
   const [t] = useTranslation(['homePage']);
-
-  // On smaller layouts, the last list item is rendered below the icon and 2
-  // preceding list items. To achieve this affect, the last list item is
-  // rendered in a separate list so that it can be rendered below everything.
-  const lastListNode = <li>{t('homePage:appBar.share')}</li>;
 
   return (
     <ColumnLayout
@@ -51,13 +48,13 @@ export function AppBarLanding() {
       }}
       component="header"
     >
-      <Media greaterThanOrEqual="screen-1425">
+      <div className="hidden screen-1425:block">
         <AppBarLinks items={links} vertical />
-      </Media>
+      </div>
 
-      <Media lessThan="screen-1425">
+      <div className="screen-1425:hidden">
         <AppBarLinks className="mb-6" items={links} />
-      </Media>
+      </div>
 
       <h1
         className={clsx(
@@ -86,16 +83,18 @@ export function AppBarLanding() {
           <li>{t('homePage:appBar.learnHow')}</li>
 
           {/* Render in list if screen is wide enough. */}
-          <MediaFragment greaterThanOrEqual="screen-725">
-            {lastListNode}
-          </MediaFragment>
+          <li className="hidden screen-725:block">
+            {t('homePage:appBar.share')}
+          </li>
         </List>
       </div>
 
       {/* Render as separate list so that it renders below everything on smaller screens. */}
-      <MediaFragment lessThan="screen-725">
-        <List className="col-span-2 px-6 mt-4">{lastListNode}</List>
-      </MediaFragment>
+      <div className="screen-725:hidden">
+        <List className="col-span-2 px-6 mt-4">
+          <li>{t('homePage:appBar.share')}</li>
+        </List>
+      </div>
     </ColumnLayout>
   );
 }

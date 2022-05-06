@@ -1,6 +1,6 @@
 import clsx from 'clsx';
-import schema from 'hast-util-sanitize/lib/github.json';
-import ReactMarkdown, { PluggableList, TransformOptions } from 'react-markdown';
+import { defaultSchema } from 'hast-util-sanitize';
+import ReactMarkdown, { Options } from 'react-markdown';
 import raw from 'rehype-raw';
 import sanitize from 'rehype-sanitize';
 import slug from 'rehype-slug';
@@ -27,7 +27,7 @@ interface Props {
   placeholder?: boolean;
 }
 
-const REMARK_PLUGINS: PluggableList = [
+const REMARK_PLUGINS: Options['remarkPlugins'] = [
   // Add support for GitHub style markdown like checkboxes.
   gfm,
 
@@ -37,7 +37,7 @@ const REMARK_PLUGINS: PluggableList = [
   [externalLinks, { target: '_blank', rel: 'noreferrer' }],
 ];
 
-const REHYPE_PLUGINS: PluggableList = [
+const REHYPE_PLUGINS: Options['rehypePlugins'] = [
   // Parse inner HTML
   raw,
 
@@ -45,9 +45,9 @@ const REHYPE_PLUGINS: PluggableList = [
   [
     sanitize,
     {
-      ...schema,
+      ...defaultSchema,
       attributes: {
-        ...schema.attributes,
+        ...defaultSchema.attributes,
         // Enable class names for code blocks
         code: ['className'],
       },
@@ -67,7 +67,7 @@ export function Markdown({
   disableHeader,
   placeholder,
 }: Props) {
-  const components: TransformOptions['components'] = {
+  const components: Options['components'] = {
     code: MarkdownCode,
     p: MarkdownParagraph,
   };

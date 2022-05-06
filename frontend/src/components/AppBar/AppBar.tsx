@@ -5,7 +5,6 @@ import { useRef, useState } from 'react';
 
 import { ColumnLayout } from '@/components/ColumnLayout';
 import { Menu } from '@/components/icons';
-import { Media } from '@/components/media';
 import { MenuPopover } from '@/components/MenuPopover';
 import { SearchBar } from '@/components/SearchBar';
 
@@ -23,14 +22,14 @@ export function AppBar() {
 
   return (
     <>
-      <Media lessThan="screen-600">
+      <div className="screen-600:hidden">
         <MenuPopover
           anchorEl={anchorElRef.current}
           items={links}
           onClose={() => setVisible(false)}
           visible={visible}
         />
-      </Media>
+      </div>
 
       <ColumnLayout
         className={clsx(
@@ -50,13 +49,13 @@ export function AppBar() {
         )}
         component="header"
       >
-        <Media greaterThanOrEqual="screen-600">
+        <div className="hidden screen-600:block">
           <AppBarLinks items={links} />
-        </Media>
+        </div>
 
-        <Media lessThan="screen-600">
+        <div className="screen-600:hidden">
           <AppBarLinks />
-        </Media>
+        </div>
 
         <div
           className={clsx(
@@ -76,11 +75,11 @@ export function AppBar() {
           <SearchBar />
 
           {/* Menu button */}
-          <Media className="ml-6 flex" lessThan="screen-600">
+          <div className="ml-6 flex screen-600:hidden">
             <IconButton onClick={() => setVisible(true)} ref={anchorElRef}>
               <Menu alt={t('common:alt.sideMenu')} />
             </IconButton>
-          </Media>
+          </div>
         </div>
       </ColumnLayout>
     </>

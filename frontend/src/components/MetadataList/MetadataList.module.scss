@@ -22,7 +22,7 @@
 
       // Make icons inline.
       svg {
-        @apply inline;
+        display: inline;
       }
     }
   }

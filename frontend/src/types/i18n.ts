@@ -81,5 +81,5 @@ export interface I18nPreviewSection {
  * Helper type for getting a union of all i18n keys for a specific namespace.
  */
 export type I18nKeys<N extends I18nNamespace> = N extends I18nNamespace
-  ? `${N}:${TFuncKey<N>}`
+  ? TFuncKey<N[]>
   : never;

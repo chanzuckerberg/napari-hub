@@ -1,6 +1,13 @@
 import { over } from 'lodash';
 import { useRouter } from 'next/router';
-import { createContext, ReactNode, useContext, useEffect, useRef } from 'react';
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+} from 'react';
 import { proxy } from 'valtio';
 
 import { useLoadingState } from '@/context/loading';
@@ -101,8 +108,16 @@ export function SearchStoreProvider({
 
   usePlausibleSearchEvents(searchStore);
 
+  const context = useMemo(
+    () => ({
+      resultsStore,
+      searchStore,
+    }),
+    [resultsStore, searchStore],
+  );
+
   return (
-    <SearchStoreContext.Provider value={{ resultsStore, searchStore }}>
+    <SearchStoreContext.Provider value={context}>
       {children}
     </SearchStoreContext.Provider>
   );

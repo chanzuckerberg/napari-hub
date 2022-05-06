@@ -8,7 +8,6 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { Hydrate } from 'react-query/hydration';
 
-import { MediaContextProvider } from '@/components/media';
 import { PROD } from '@/constants/env';
 import { SearchStoreProvider } from '@/store/search/context';
 import { theme } from '@/theme';
@@ -131,13 +130,11 @@ export function ApplicationProvider({
 }: ApplicationProviderProps) {
   return (
     <ReactQueryProvider dehydratedState={dehydratedState}>
-      <MediaContextProvider>
-        <MaterialUIProvider>
-          <PlausibleProvider>
-            <StoreProvider>{children}</StoreProvider>
-          </PlausibleProvider>
-        </MaterialUIProvider>
-      </MediaContextProvider>
+      <MaterialUIProvider>
+        <PlausibleProvider>
+          <StoreProvider>{children}</StoreProvider>
+        </PlausibleProvider>
+      </MaterialUIProvider>
     </ReactQueryProvider>
   );
 }

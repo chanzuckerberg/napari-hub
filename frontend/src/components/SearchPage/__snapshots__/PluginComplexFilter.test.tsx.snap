@@ -10,7 +10,7 @@ exports[`<PluginComplexFilter /> should match snapshot 1`] = `
   >
     <button
       class="MuiButtonBase-root MuiButton-root MuiButton-text py-2 px-0 text-black w-full flex justify-between css-156jeld"
-      label="Operating system"
+      label="pluginData:labels.operatingSystem"
       sdsstage="default"
       tabindex="0"
       type="button"
@@ -21,7 +21,7 @@ exports[`<PluginComplexFilter /> should match snapshot 1`] = `
         <span
           class="font-semibold text-sm"
         >
-          Operating system
+          pluginData:labels.operatingSystem
         </span>
         <svg
           class="w-4 h-4"

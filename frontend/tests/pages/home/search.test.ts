@@ -46,7 +46,7 @@ describe('Plugin Search', () => {
 
   it('should clear query when clicking on app bar home link', async () => {
     await page.goto(getSearchUrl([SearchQueryParams.Search, 'video']));
-    await page.click('[data-testid=appBarHome]');
+    await page.click('[data-testid=appBarHome]:visible');
     await expect(await getFirstSearchResultName()).not.toHaveText(
       'napari_video',
     );
@@ -62,7 +62,8 @@ describe('Plugin Search', () => {
       [SearchQueryParams.Sort, SearchSortType.Relevance],
     );
     expect(page.url()).toEqual(expectedUrl);
-    await expect(await getFirstSearchResultName()).toHaveText('napari_video');
+    await page.waitForTimeout(500);
+    await expect(await getFirstSearchResultName()).toMatchText('napari_video');
   });
 
   it('should maintain search query when navigating back', async () => {
@@ -74,6 +75,7 @@ describe('Plugin Search', () => {
 
     await page.goBack();
     await page.waitForNavigation();
+    await page.waitForTimeout(500);
 
     expect(getQueryParameterValues(SearchQueryParams.Search)).toContain(query);
     await expect(await getFirstSearchResultName()).toHaveText('napari_video');

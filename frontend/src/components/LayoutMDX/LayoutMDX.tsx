@@ -5,7 +5,6 @@ import { ReactNode } from 'react';
 import { ColumnLayout } from '@/components/ColumnLayout';
 import styles from '@/components/Markdown/Markdown.module.scss';
 import syntaxHighlightingStyles from '@/components/Markdown/SyntaxHighlighter.module.scss';
-import { Media } from '@/components/media';
 import { TableOfContents, TOCHeader } from '@/components/TableOfContents';
 
 import { useHeaders } from './LayoutMDX.hooks';
@@ -38,9 +37,9 @@ export function LayoutMDX({ toc, title, children }: Props) {
           {children}
         </article>
         {toc && (
-          <Media greaterThanOrEqual="screen-1150">
+          <div className="hidden screen-1150:block">
             <TableOfContents headers={headers} />
-          </Media>
+          </div>
         )}
       </ColumnLayout>
     </>

@@ -52,7 +52,7 @@ async function testPluginSort({
     await page.goto(getSearchUrl());
     await maybeOpenAccordion(AccordionTitle.Sort);
     await preTestRadios?.();
-    await clickOnRadio(`input[value=${sortType}]`);
+    await clickOnRadio(`input[value=${sortType}]:visible`);
     await testSortResults();
   }
 
@@ -94,7 +94,7 @@ describe('Plugin Sort', () => {
         // Select different radio first because the `sort` parameter is not
         // populated on initial load.
         await clickOnRadio(
-          `[data-testid=sortByRadio][data-sort-type=${SearchSortType.PluginName}]`,
+          `[data-testid=sortByRadio][data-sort-type=${SearchSortType.PluginName}]:visible`,
         );
       },
 

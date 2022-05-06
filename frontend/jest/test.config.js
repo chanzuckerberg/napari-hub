@@ -3,8 +3,12 @@ const { createConfig } = require('./createConfig');
 module.exports = createConfig({
   rootDir: '..',
   setupFilesAfterEnv: ['<rootDir>/jest/setupTests.ts'],
-  testMatch: ['<rootDir>/src/**/*.test.ts?(x)'],
   testEnvironment: 'jsdom',
+
+  // Disable markdown tests for now until Jest supports ES modules natively:
+  // https://github.com/facebook/create-react-app/issues/11946#issuecomment-1045155651
+  // testMatch: ['<rootDir>/src/**/*.test.ts?(x)'],
+  testMatch: [`<rootDir>/src/**/(?!Markdown|Markdown.utils)*.test.ts?(x)`],
 
   moduleNameMapper: {
     /*

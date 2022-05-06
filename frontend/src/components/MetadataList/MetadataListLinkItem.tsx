@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { ReactNode } from 'react-markdown';
+import { ReactNode } from 'react';
 
 import { Link } from '@/components/Link/Link';
 import { MetadataHighlighter } from '@/components/MetadataHighlighter';

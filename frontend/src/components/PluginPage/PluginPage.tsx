@@ -9,14 +9,13 @@ import { CategoryChipContainer } from '@/components/CategoryChip';
 import { ColumnLayout } from '@/components/ColumnLayout';
 import { Link } from '@/components/Link';
 import { Markdown } from '@/components/Markdown';
-import { Media, MediaFragment } from '@/components/media';
 import { MetadataHighlighter } from '@/components/MetadataHighlighter';
 import { EmptyMetadataTooltip } from '@/components/MetadataHighlighter/EmptyMetadataTooltip';
 import { SkeletonLoader } from '@/components/SkeletonLoader';
 import { TOCHeader } from '@/components/TableOfContents';
 import { useLoadingState } from '@/context/loading';
 import { usePluginState } from '@/context/plugin';
-import { usePlausible } from '@/hooks';
+import { useMediaQuery, usePlausible } from '@/hooks';
 import { usePreviewClickAway } from '@/hooks/usePreviewClickAway';
 import { HubDimension } from '@/types';
 import { useIsFeatureFlagEnabled } from '@/utils/featureFlags';
@@ -28,10 +27,13 @@ import { PluginMetadata } from './PluginMetadata';
 import { SupportInfo } from './SupportInfo';
 
 function PluginLeftColumn() {
+  const hasPluginMetadataScroll = useMediaQuery({ minWidth: 'screen-1425' });
+
   return (
-    <Media greaterThanOrEqual="3xl">
-      <PluginMetadata />
-    </Media>
+    <PluginMetadata
+      enableScrollID={hasPluginMetadataScroll}
+      className="hidden screen-1425:block"
+    />
   );
 }
 
@@ -40,6 +42,7 @@ function PluginCenterColumn() {
   const { plugin } = usePluginState();
   const [t] = useTranslation(['common', 'pluginPage', 'preview', 'pluginData']);
   const isNpe2Enabled = useIsFeatureFlagEnabled('npe2');
+  const hasPluginMetadataScroll = useMediaQuery({ maxWidth: 'screen-1425' });
 
   usePreviewClickAway(isNpe2Enabled ? 'metadata-displayName' : 'metadata-name');
   usePreviewClickAway('metadata-summary');
@@ -155,22 +158,19 @@ function PluginCenterColumn() {
 
       <br />
 
-      <Media
+      <div
         className={clsx(
           // Layout
-          'flex flex-col',
+          'flex screen-875:hidden flex-col',
 
           // Align CTA and metadata link horizontally for lg layouts
-          'lg:flex-row lg:items-center',
+          'screen-600:flex-row screen-600:items-center',
 
           // Margins
           'my-6 screen-495:mt-30 screen-600:mb-12',
         )}
-        lessThan="3xl"
       >
-        <MediaFragment lessThan="2xl">
-          <CallToActionButton />
-        </MediaFragment>
+        <CallToActionButton className="screen-875:hidden" />
 
         <SkeletonLoader
           className="screen-600:ml-12 screen-1150:ml-0 mt-6 screen-600:mt-0 h-8 w-24"
@@ -199,7 +199,7 @@ function PluginCenterColumn() {
             </a>
           )}
         />
-      </Media>
+      </div>
 
       <SkeletonLoader
         className="h-[228px] my-6"
@@ -226,9 +226,11 @@ function PluginCenterColumn() {
         {plugin?.citations && <CitationInfo className="mt-10" />}
       </div>
 
-      <MediaFragment lessThan="3xl">
-        <PluginMetadata />
-      </MediaFragment>
+      <PluginMetadata
+        enableScrollID={hasPluginMetadataScroll}
+        className="screen-1425:hidden"
+        inline
+      />
     </article>
   );
 }
@@ -244,10 +246,7 @@ function PluginRightColumn() {
   };
 
   return (
-    <Media
-      className="col-start-4 screen-1425:col-start-5"
-      greaterThanOrEqual="2xl"
-    >
+    <div className="col-start-4 screen-1425:col-start-5 hidden screen-1150:block">
       {/*  Keep CTA button and TOC on screen when scrolling on 2xl. */}
       <div className="sticky top-12">
         <CallToActionButton />
@@ -272,7 +271,7 @@ function PluginRightColumn() {
           )}
         />
       </div>
-    </Media>
+    </div>
   );
 }
 
@@ -306,7 +305,7 @@ export function PluginPage() {
       {process.env.PREVIEW && <AppBarPreview />}
 
       <ColumnLayout
-        className="p-6 md:p-12 2xl:px-0"
+        className="p-6 md:p-12 screen-875:px-0"
         data-testid="pluginDetails"
       >
         <PluginLeftColumn />

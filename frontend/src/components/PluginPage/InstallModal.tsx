@@ -10,7 +10,6 @@ import { useDebouncedCallback } from 'use-debounce';
 
 import { I18n } from '@/components/I18n';
 import { Close, Copy } from '@/components/icons';
-import { Media } from '@/components/media';
 import { usePluginMetadata } from '@/context/plugin';
 import { usePlausible } from '@/hooks';
 
@@ -103,11 +102,11 @@ function InstallModalHeader({ onClose }: Closeable) {
       </h2>
 
       {/* Close button */}
-      <Media greaterThanOrEqual="sm">
+      <div className="hidden screen-375:block">
         <IconButton onClick={onClose}>
           <Close className={styles.closeIcon} />
         </IconButton>
-      </Media>
+      </div>
     </header>
   );
 }

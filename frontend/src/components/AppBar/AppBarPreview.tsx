@@ -7,7 +7,6 @@ import { ReactNode, useState } from 'react';
 import { I18n } from '@/components/I18n';
 import { ChevronDown, ChevronUp, ViewPullRequest } from '@/components/icons';
 import { Link } from '@/components/Link';
-import { Media } from '@/components/media';
 import { MetadataStatus } from '@/components/MetadataStatus';
 import { usePluginMetadata } from '@/context/plugin';
 
@@ -56,10 +55,12 @@ function AppBarPreviewLeftColumn() {
       newTab
     >
       <ViewPullRequest />
-      <Media greaterThanOrEqual="screen-495">
+      <span className="hidden screen-495:block">
         {t('preview:appBar.viewPR')}
-      </Media>
-      <Media lessThan="screen-495">{t('preview:appBar.editInGitHub')}</Media>
+      </span>
+      <span className="screen-495:hidden">
+        {t('preview:appBar.editInGitHub')}
+      </span>
     </Link>
   );
 }
@@ -91,9 +92,9 @@ function AppBarPreviewCenterColumn() {
         })}
       </span>
 
-      <Media className="text-sm font-semibold" greaterThanOrEqual="screen-875">
+      <span className="text-sm font-semibold hidden screen-875:block">
         <I18n i18nKey="preview:appBar.learnHow" />
-      </Media>
+      </span>
     </>
   );
 }
@@ -130,23 +131,23 @@ function AppBarPreviewRightColumn({
 
   return (
     <>
-      <Media
+      <div
         className={clsx(
+          'hidden screen-1150:block',
           'opacity-0 transition-opacity',
           !expanded && 'opacity-100',
         )}
-        greaterThanOrEqual="screen-1150"
       >
         <MetadataStatusBar />
-      </Media>
+      </div>
 
       {/* Always render expand button on larger screens. */}
-      <Media greaterThanOrEqual="screen-495">{renderExpandButton()}</Media>
+      <div className="hidden screen-495:block">{renderExpandButton()}</div>
 
       {/* Only render expand button if there are missing fields. */}
-      <Media lessThan="screen-495">
+      <div className="screen-495:hidden">
         {hasMissingFields(sections) && renderExpandButton()}
-      </Media>
+      </div>
     </>
   );
 }
@@ -214,40 +215,31 @@ export function AppBarPreview() {
           <div className="flex space-x-6">
             <AppBarPreviewLeftColumn />
 
-            <Media
-              className="flex items-center space-x-6"
-              lessThan="screen-1425"
-            >
+            <div className="flex screen-1425:hidden items-center space-x-6">
               <AppBarPreviewCenterColumn />
-            </Media>
+            </div>
           </div>
 
-          <Media lessThan="screen-1150">{renderRightColumn()}</Media>
+          <div className="screen-1150:hidden">{renderRightColumn()}</div>
         </div>
 
-        <Media
-          className="flex items-center space-x-6 col-span-3"
-          greaterThanOrEqual="screen-1425"
-        >
+        <div className="hidden: screen-1425:flex items-center space-x-6 col-span-3">
           <AppBarPreviewCenterColumn />
-        </Media>
+        </div>
 
-        <Media
-          className="flex items-center justify-between"
-          greaterThanOrEqual="screen-1150"
-        >
+        <div className="hidden screen-1150:flex items-center justify-between">
           {renderRightColumn()}
-        </Media>
+        </div>
       </header>
 
       <Collapse in={expanded} unmountOnExit>
-        <Media lessThan="screen-495">
+        <div className="screen-495:hidden">
           <PreviewMetadataPanel missingFieldsOnly />
-        </Media>
+        </div>
 
-        <Media greaterThanOrEqual="screen-495">
+        <div className="hidden screen-495:block">
           <PreviewMetadataPanel />
-        </Media>
+        </div>
       </Collapse>
 
       <div
