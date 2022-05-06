@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import { useTranslation } from 'next-i18next';
 import { ForwardedRef, forwardRef, Fragment, useRef, useState } from 'react';
 
-import { Link } from '@/components/common/Link';
+import { Link } from '@/components/Link';
 import { useSearchStore } from '@/store/search/context';
 import { HubDimension } from '@/types';
 import { I18nKeys } from '@/types/i18n';

@@ -2,8 +2,8 @@ import { GetStaticPropsContext } from 'next';
 import { useRouter } from 'next/router';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
-import { ErrorMessage } from '@/components/common/ErrorMessage';
-import { I18n } from '@/components/common/I18n';
+import { ErrorMessage } from '@/components/ErrorMessage';
+import { I18n } from '@/components/I18n';
 import { I18nNamespace } from '@/types/i18n';
 import { createUrl } from '@/utils';
 

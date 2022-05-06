@@ -1,6 +1,6 @@
 import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
 
-import { Accordion } from '@/components/common/Accordion';
+import { Accordion } from '@/components/Accordion';
 import { LayoutMDX } from '@/components/LayoutMDX';
 
 import { MDXLinkNode } from './MDXLinkNode';

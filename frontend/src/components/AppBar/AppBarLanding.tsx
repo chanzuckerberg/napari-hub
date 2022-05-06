@@ -2,9 +2,9 @@ import clsx from 'clsx';
 import { useTranslation } from 'next-i18next';
 import { ReactNode } from 'react';
 
-import { ColumnLayout } from '@/components/common/ColumnLayout';
-import { Hub } from '@/components/common/icons';
-import { Media, MediaFragment } from '@/components/common/media';
+import { ColumnLayout } from '@/components/ColumnLayout';
+import { Hub } from '@/components/icons';
+import { Media, MediaFragment } from '@/components/media';
 
 import styles from './AppBarLanding.module.scss';
 import { AppBarLinks } from './AppBarLinks';

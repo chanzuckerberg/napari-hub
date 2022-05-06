@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import { useTranslation } from 'next-i18next';
 import React, { useRef, useState } from 'react';
 
-import { ColumnLayout } from '@/components/common/ColumnLayout';
+import { ColumnLayout } from '@/components/ColumnLayout';
 import { usePlausible } from '@/hooks';
 
 // MailChimp form target

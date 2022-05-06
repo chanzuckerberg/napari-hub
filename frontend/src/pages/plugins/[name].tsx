@@ -5,15 +5,15 @@ import { SSRConfig, useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { ParsedUrlQuery } from 'node:querystring';
 
-import { hubAPI } from '@/axios';
-import { ErrorMessage } from '@/components/common/ErrorMessage';
-import { PageMetadata } from '@/components/common/PageMetadata';
-import { PluginDetails } from '@/components/PluginDetails';
+import { ErrorMessage } from '@/components/ErrorMessage';
+import { PageMetadata } from '@/components/PageMetadata';
+import { PluginPage } from '@/components/PluginPage';
 import { useLoadingState } from '@/context/loading';
 import { PluginStateProvider } from '@/context/plugin';
 import { PluginData } from '@/types';
 import { I18nNamespace } from '@/types/i18n';
 import { fetchRepoData, FetchRepoDataResult } from '@/utils';
+import { hubAPI } from '@/utils/axios';
 
 /**
  * Interface for parameters in URL.
@@ -105,12 +105,7 @@ export async function getServerSideProps({
  * This page fetches plugin data from the hub API and renders it in the
  * PluginDetails component.
  */
-export default function PluginPage({
-  error,
-  plugin,
-  repo,
-  repoFetchError,
-}: Props) {
+export default function Plugin({ error, plugin, repo, repoFetchError }: Props) {
   const isLoading = useLoadingState();
   const [t] = useTranslation(['pageTitles', 'pluginPage']);
 
@@ -153,7 +148,7 @@ export default function PluginPage({
               repo={repo}
               repoFetchError={repoFetchError}
             >
-              <PluginDetails />
+              <PluginPage />
             </PluginStateProvider>
           ) : (
             <ErrorMessage>{t('pluginPage:errors.emptyPlugin')}</ErrorMessage>

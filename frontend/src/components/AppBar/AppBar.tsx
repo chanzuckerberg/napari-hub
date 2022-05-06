@@ -3,9 +3,9 @@ import clsx from 'clsx';
 import { useTranslation } from 'next-i18next';
 import { useRef, useState } from 'react';
 
-import { ColumnLayout } from '@/components/common/ColumnLayout';
-import { Menu } from '@/components/common/icons';
-import { Media } from '@/components/common/media';
+import { ColumnLayout } from '@/components/ColumnLayout';
+import { Menu } from '@/components/icons';
+import { Media } from '@/components/media';
 import { MenuPopover } from '@/components/MenuPopover';
 import { SearchBar } from '@/components/SearchBar';
 

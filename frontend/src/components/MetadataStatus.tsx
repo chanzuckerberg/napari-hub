@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 
-import { Check, PriorityHigh } from '@/components/common/icons';
+import { Check, PriorityHigh } from '@/components/icons';
 
 interface MetadataStatusProps {
   className?: string;

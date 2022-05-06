@@ -5,7 +5,7 @@ import { useTranslation } from 'next-i18next';
 import { HTMLProps, useEffect, useState } from 'react';
 import { useSnapshot } from 'valtio';
 
-import { Close, Search } from '@/components/common/icons';
+import { Close, Search } from '@/components/icons';
 import { BEGINNING_PAGE } from '@/constants/search';
 import { resetLoadingState } from '@/store/loading';
 import {

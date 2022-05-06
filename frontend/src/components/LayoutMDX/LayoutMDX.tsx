@@ -2,14 +2,11 @@ import clsx from 'clsx';
 import Head from 'next/head';
 import { ReactNode } from 'react';
 
-import { ColumnLayout } from '@/components/common/ColumnLayout';
-import styles from '@/components/common/Markdown/Markdown.module.scss';
-import syntaxHighlightingStyles from '@/components/common/Markdown/SyntaxHighlighter.module.scss';
-import { Media } from '@/components/common/media';
-import {
-  TableOfContents,
-  TOCHeader,
-} from '@/components/common/TableOfContents';
+import { ColumnLayout } from '@/components/ColumnLayout';
+import styles from '@/components/Markdown/Markdown.module.scss';
+import syntaxHighlightingStyles from '@/components/Markdown/SyntaxHighlighter.module.scss';
+import { Media } from '@/components/media';
+import { TableOfContents, TOCHeader } from '@/components/TableOfContents';
 
 import { useHeaders } from './LayoutMDX.hooks';
 

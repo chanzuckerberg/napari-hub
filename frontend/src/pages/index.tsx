@@ -5,13 +5,13 @@ import { SSRConfig, useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { ReactNode } from 'react';
 
-import { hubAPI, spdxLicenseDataAPI } from '@/axios';
-import { ErrorMessage } from '@/components/common/ErrorMessage';
-import { PluginSearch } from '@/components/PluginSearch';
+import { ErrorMessage } from '@/components/ErrorMessage';
+import { SearchPage } from '@/components/SearchPage';
 import { SearchStoreProvider } from '@/store/search/context';
 import { SpdxLicenseData, SpdxLicenseResponse } from '@/store/search/types';
 import { PluginIndexData } from '@/types';
 import { I18nNamespace } from '@/types/i18n';
+import { hubAPI, spdxLicenseDataAPI } from '@/utils/axios';
 
 interface Props extends Partial<SSRConfig> {
   licenses?: SpdxLicenseData[];
@@ -62,7 +62,7 @@ export default function Home({ error, index, licenses }: Props) {
         index &&
         licenses && (
           <SearchStoreProvider index={index} licenses={licenses}>
-            <PluginSearch />
+            <SearchPage />
           </SearchStoreProvider>
         )
       )}

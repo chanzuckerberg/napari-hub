@@ -2,7 +2,7 @@ import { GetStaticPropsContext } from 'next';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
-import { ErrorMessage } from '@/components/common/ErrorMessage';
+import { ErrorMessage } from '@/components/ErrorMessage';
 import { I18nNamespace } from '@/types/i18n';
 
 export async function getStaticProps({ locale = 'en' }: GetStaticPropsContext) {

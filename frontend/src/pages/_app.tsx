@@ -4,9 +4,9 @@
   @typescript-eslint/no-unsafe-member-access,
 */
 
-import '@/axios';
-import '@/tailwind.scss';
-import '@/global.scss';
+import '@/scss/global.scss';
+import '@/scss/tailwind.scss';
+import '@/utils/axios';
 
 import { AppProps } from 'next/app';
 import Head from 'next/head';
@@ -15,11 +15,11 @@ import { appWithTranslation } from 'next-i18next';
 import { ComponentType, ReactNode } from 'react';
 
 import { ApplicationProvider } from '@/components/ApplicationProvider';
-import { PageMetadata } from '@/components/common/PageMetadata';
 import { Layout } from '@/components/Layout';
+import { PageMetadata } from '@/components/PageMetadata';
+import { PROD } from '@/constants/env';
 import { DEFAULT_PLUGIN_DATA, DEFAULT_REPO_DATA } from '@/constants/plugin';
 import { LoadingStateProvider } from '@/context/loading';
-import { PROD } from '@/env';
 import { usePageTransitions } from '@/hooks';
 import SearchPage from '@/pages/index';
 import PluginPage from '@/pages/plugins/[name]';

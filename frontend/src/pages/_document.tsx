@@ -8,7 +8,7 @@ import Document, {
   NextScript,
 } from 'next/document';
 
-import { mediaStyles } from '@/components/common/media';
+import { mediaStyles } from '@/components/media';
 import { theme } from '@/theme';
 
 const FAVICON = `${process.env.BASE_PATH || ''}/icons/favicon`;

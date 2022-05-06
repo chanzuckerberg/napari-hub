@@ -1,6 +1,6 @@
 import { get } from 'lodash';
 
-import { Link, Props as LinkProps } from '@/components/common/Link';
+import { Link, Props as LinkProps } from '@/components/Link';
 import { useLinks } from '@/hooks/useLinks';
 import { LinkInfo } from '@/types';
 import { isExternalUrl } from '@/utils';
