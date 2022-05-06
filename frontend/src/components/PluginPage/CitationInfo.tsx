@@ -8,6 +8,7 @@ import { useTranslation } from 'next-i18next';
 import { useEffect, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 
+import { AnchorHeading } from '@/components/AnchorHeading';
 import { I18n } from '@/components/I18n';
 import { usePluginState } from '@/context/plugin';
 import { CitationData } from '@/types';
@@ -56,7 +57,9 @@ export function CitationInfo({ className }: Props) {
   return (
     <div className={className}>
       <div className="prose max-w-none mb-6">
-        <h2 id={ANCHOR}>{t('pluginPage:citations.title')}</h2>
+        <AnchorHeading id={ANCHOR}>
+          {t('pluginPage:citations.title')}
+        </AnchorHeading>
         <p>
           <I18n i18nKey="pluginPage:citations.body" />
         </p>

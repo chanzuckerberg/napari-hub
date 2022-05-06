@@ -8,6 +8,7 @@ import externalLinks from 'remark-external-links';
 import gfm from 'remark-gfm';
 import removeComments from 'remark-remove-comments';
 
+import { AnchorHeading } from '../AnchorHeading';
 import styles from './Markdown.module.scss';
 import { MarkdownCode } from './MarkdownCode';
 import { MarkdownParagraph } from './MarkdownParagraph';
@@ -70,6 +71,7 @@ export function Markdown({
   const components: Options['components'] = {
     code: MarkdownCode,
     p: MarkdownParagraph,
+    h2: AnchorHeading,
   };
 
   if (disableHeader) {
