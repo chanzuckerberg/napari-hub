@@ -3556,10 +3556,10 @@ data-urls@^2.0.0:
     whatwg-mimetype "^2.3.0"
     whatwg-url "^8.0.0"
 
-dayjs@^1.11.1:
-  version "1.11.1"
-  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.11.1.tgz#90b33a3dda3417258d48ad2771b415def6545eb0"
-  integrity sha512-ER7EjqVAMkRRsxNCC5YqJ9d9VQYuWdGt7aiH2qA5R5wt8ZmWaP2dLUSIK6y/kVzLMlmh1Tvu5xUf4M/wdGJ5KA==
+dayjs@^1.11.2:
+  version "1.11.2"
+  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.11.2.tgz#fa0f5223ef0d6724b3d8327134890cfe3d72fbe5"
+  integrity sha512-F4LXf1OeU9hrSYRPTTj/6FbO4HTjPKXvEIC1P2kcnFurViINCVk3ZV0xAS3XVx9MkMsXbbqlK6hjseaYbgKEHw==
 
 debug@2.6.9, debug@^2.6.9:
   version "2.6.9"
@@ -4966,10 +4966,10 @@ functions-have-names@^1.2.2:
   resolved "https://registry.yarnpkg.com/functions-have-names/-/functions-have-names-1.2.3.tgz#0404fe4ee2ba2f607f0e0ec3c80bae994133b834"
   integrity sha512-xckBUXyTIqT97tq2x2AMb+g163b5JFysYk0x4qxNFwbfQkmNZoiRHb6sPzI9/QV33WeuvVYBUIiD4NzNIyqaRQ==
 
-fuse.js@^6.6.0:
-  version "6.6.0"
-  resolved "https://registry.yarnpkg.com/fuse.js/-/fuse.js-6.6.0.tgz#9c0dd9337731ebc6541abf44aa3aa9bb6cb5acb6"
-  integrity sha512-4CvUk6GBo1b00xIcCLEoHQX3xwaYIwUX0lD8hDaYUavvSgE8aaySe9Z+fb4bdvzXXbYUfrllwN34U3wwUsG+oA==
+fuse.js@^6.6.1:
+  version "6.6.1"
+  resolved "https://registry.yarnpkg.com/fuse.js/-/fuse.js-6.6.1.tgz#6b94cb80eb064f1b9c31bbe651f6e5857702c0a8"
+  integrity sha512-3PXxXYsdKm68JHY6o2I9gIY+z9LcPs/ROITSzwFZyo0McjShwPFJU2i81Iu4h4si5X7JrrgXtOLDkeiTjdnWFQ==
 
 generate-robotstxt@^8.0.3:
   version "8.0.3"
@@ -10871,10 +10871,10 @@ url-parse-lax@^3.0.0:
   dependencies:
     prepend-http "^2.0.0"
 
-use-debounce@^8.0.0:
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/use-debounce/-/use-debounce-8.0.0.tgz#fd8d24858dd0d1986bb9a45af4d0aa6ce99226d2"
-  integrity sha512-rKavD/3NxRR8MnCBhcS+TiBEqLQHEFRPjm/MYKYZsRE8Z8u1einvgqRKcBTNkt4SfIXfYZNTJe3YSDBC+Vhz5g==
+use-debounce@^8.0.1:
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/use-debounce/-/use-debounce-8.0.1.tgz#5f3e11b067bdf9f2c554a20b4764e38b48022664"
+  integrity sha512-6tGAFJKJ0qCalecaV7/gm/M6n238nmitNppvR89ff1yfwSFjwFKR7IQZzIZf1KZRQhqNireBzytzU6jgb29oVg==
 
 use-subscription@1.5.1:
   version "1.5.1"
