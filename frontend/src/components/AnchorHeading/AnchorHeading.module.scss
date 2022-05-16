@@ -1,0 +1,5 @@
+.heading2 {
+  &:hover .anchor {
+    @apply opacity-100;
+  }
+}
