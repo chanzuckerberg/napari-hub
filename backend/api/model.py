@@ -4,7 +4,6 @@ from typing import Tuple, Dict, List
 from zipfile import ZipFile
 from io import BytesIO
 from collections import defaultdict
-import time
 
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
@@ -268,7 +267,7 @@ def move_artifact_to_s3(payload, client):
             return
 
     artifact_url = get_attribute(payload, ["workflow_run", "artifacts_url"])
-    curr_clock = time.strftime("%m/%d/%Y , %H:%M:%S", time.localtime())
+    curr_clock = datetime.utcnow().isoformat()
     if artifact_url:
         artifact = get_artifact(artifact_url, client.session.auth.token)
         if artifact:
@@ -287,12 +286,12 @@ def move_artifact_to_s3(payload, client):
                 if text in comment.body and comment.user.login == 'napari-hub[bot]':
                     comment_found = True
                     comment.edit(text + f'\nhttps://preview.napari-hub.org/{owner}/{repo}/{pull_request_number}'
-                                        f'\nUpdated at: {curr_clock}')
+                                        f'\n_Updated: {curr_clock}_')
                     break
             if not comment_found:
                 pull_request.create_comment(
                     text + f'\nhttps://preview.napari-hub.org/{owner}/{repo}/{pull_request_number}'
-                           f'\nCreated at: {curr_clock}')
+                           f'\n_Created: {curr_clock}_')
 
 
 def get_categories_mapping(version: str) -> Dict[str, List]:
