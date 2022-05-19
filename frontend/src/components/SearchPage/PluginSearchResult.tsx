@@ -216,7 +216,7 @@ export function PluginSearchResult({
       <article
         data-testid="searchResult"
         className={clsx(
-          'grid gap-x-6 md:gap-x-12',
+          'grid gap-x-6 screen-495:gap-x-12',
           'screen-600:grid-cols-2',
           'screen-1425:grid-cols-napari-3',
         )}

@@ -35,15 +35,6 @@ const breakpoints = {
   'screen-875': 875,
   'screen-1150': 1150,
   'screen-1425': 1425,
-
-  // TODO Remove when breakpoint existing usages are renamed.
-  xs: 300,
-  sm: 375,
-  md: 495,
-  lg: 600,
-  xl: 875,
-  '2xl': 1150,
-  '3xl': 1425,
 };
 
 const fontFamily = ['Barlow', 'sans-serif'];

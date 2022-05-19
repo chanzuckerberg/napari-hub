@@ -305,7 +305,7 @@ export function PluginPage() {
       {process.env.PREVIEW && <AppBarPreview />}
 
       <ColumnLayout
-        className="p-6 md:p-12 screen-875:px-0"
+        className="p-6 screen-495:p-12 screen-875:px-0"
         data-testid="pluginDetails"
       >
         <PluginLeftColumn />
