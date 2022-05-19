@@ -22,7 +22,10 @@ def lambda_handler(event, context):
     command = [sys.executable, "-m", "pip", "install", f'{pluginName}=={version}']
     print(command)
     try:
-        result = subprocess.run(command, check=True, capture_output=True)
+        p = subprocess.Popen(command, stdout=subprocess.PIPE)
+        while p.poll() is None:
+            l = p.stdout.readline()  # This blocks until it receives a newline.
+            print(l)
     except subprocess.CalledProcessError as e:
         print(e.output)
     manifest = PluginManifest.from_distribution(pluginName)
