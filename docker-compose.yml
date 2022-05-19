@@ -86,7 +86,7 @@ services:
     build:
       context: plugins
       cache_from:
-        - '${DOCKER_REPO}napari-hub-dev-plugins:branch-main'
+        - '${DOCKER_REPO}napari-hub-dev-plugins:latest'
       args:
         - BUILDKIT_INLINE_CACHE=1
         - HAPPY_COMMIT
