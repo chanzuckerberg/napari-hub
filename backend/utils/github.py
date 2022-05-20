@@ -25,7 +25,7 @@ elif github_client_id and github_client_secret:
 
 visibility_set = {'public', 'disabled', 'hidden'}
 github_pattern = re.compile("https://github\\.com/([^/]+)/([^/]+)")
-hub_config_keys = {'summary', 'authors', 'labels', 'visibility'}
+hub_config_keys = {'summary', 'authors', 'labels', 'visibility', 'conda'}
 default_description = 'The developer has not yet provided a napari-hub specific description.'
 project_url_names = {
     'Project Site': 'project_site',
