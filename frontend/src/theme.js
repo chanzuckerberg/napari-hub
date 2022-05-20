@@ -22,8 +22,6 @@ const colors = {
 };
 
 const breakpoints = {
-  // Special screen size for fresnel when using `lessThan` queries.
-  zero: 0,
   'screen-300': 300, // if there's a smaller breakpoint, update global.scss
   'screen-375': 375,
   'screen-495': 495,
