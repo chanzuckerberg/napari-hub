@@ -13,9 +13,9 @@ def lambda_handler(event, context):
     # Get the object from the event and show its content type
     bucket = event['Records'][0]['s3']['bucket']['name']
     key = urllib.parse.unquote_plus(event['Records'][0]['s3']['object']['key'], encoding='utf-8')
-    response = s3.get_object(Bucket=bucket, Key=key)
-    myBody = response["Body"]
-    myYaml = yaml.safe_load(myBody)
+    #response = s3.get_object(Bucket=bucket, Key=key)
+    #myBody = response["Body"]
+    #myYaml = yaml.safe_load(myBody)
     splitPath = str(key).split("/")
     pluginName = splitPath[-2]
     version = splitPath[-1][:-5]
@@ -30,4 +30,3 @@ def lambda_handler(event, context):
         print(e.output)
     manifest = PluginManifest.from_distribution(pluginName)
     print(manifest.contributions)
-    return context.done(None, "Function is finished")
