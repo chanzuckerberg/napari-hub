@@ -19,7 +19,7 @@ def lambda_handler(event, context):
     splitPath = str(key).split("/")
     pluginName = splitPath[-2]
     version = splitPath[-1][:-5]
-    command = [sys.executable, "-m", "pip", "install", f'{pluginName}=={version}']
+    command = [sys.executable, "-m", "pip", "install", f'{pluginName}=={version}', "--target=/tmp/" + pluginName]
     print(command)
     try:
         p = subprocess.Popen(command, stdout=subprocess.PIPE)
