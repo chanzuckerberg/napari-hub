@@ -50,18 +50,13 @@ def lambda_handler(event, context):
             plugin_types = ['writer']
             writer_file_extensions = manifest.contributions.writers[0].filename_extensions
             writer_save_layers = manifest.contributions.writers[0].layer_types
-        body = f'''{
-        'display_name': ${display_name},
-            'plugin_types': ${plugin_types},
-            'reader_file_extensions': ${reader_file_extensions},
-            'writer_file_extensions': ${writer_file_extensions},
-            'writer_save_layers': ${writer_save_layers},
-        }'''
         s3_client = boto3.client('s3')
         response = s3_client.delete_object(
             Bucket=bucket,
             Key=key
         )
+        body = \
+            f'${display_name},${plugin_types},${reader_file_extensions},${writer_file_extensions},${writer_save_layers}'
         s3_client.put_object(Body=body, Bucket=bucket, Key=key)
 
 
