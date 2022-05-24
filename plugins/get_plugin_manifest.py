@@ -55,10 +55,10 @@ def lambda_handler(event, context):
             Bucket=bucket,
             Key=key
         )
-        body = '{\n' + f'display_name: {display_name},\n' + f'plugin_types: {plugin_types},\n' \
-               + f'reader_file_extensions: {reader_file_extensions},\n' \
-               + f'writer_file_extensions: {writer_file_extensions},\n' \
-               + f'writer_save_layers: {writer_save_layers},\n' + '}'
+        body = '{' + f'"display_name": {display_name}, ' + f'"plugin_types": {plugin_types}, ' \
+               + f'"reader_file_extensions": {reader_file_extensions}, ' \
+               + f'"writer_file_extensions": {writer_file_extensions}, ' \
+               + f'"writer_save_layers": {writer_save_layers}' + '}'
         s3_client.put_object(Body=body, Bucket=bucket, Key=key)
 
 
