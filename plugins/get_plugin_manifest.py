@@ -17,6 +17,9 @@ def lambda_handler(event, context):
     response = s3.get_object(Bucket=bucket, Key=key)
     myBody = response["Body"]
     myYaml = yaml.safe_load(myBody)
+    print("inside lambda handler")
+    print(myYaml)
+    raise ValueError
     if 'process_count' in myYaml and myYaml['process_count'] < max_failure_tries:
         splitPath = str(key).split("/")
         pluginName = splitPath[-2]
