@@ -22,7 +22,6 @@ def lambda_handler(event, context):
         pluginName = splitPath[-2]
         version = splitPath[-1][:-5]
         command = [sys.executable, "-m", "pip", "install", f'{pluginName}=={version}', "--target=/tmp/" + pluginName]
-        print(command)
         try:
             p = subprocess.Popen(command, stdout=subprocess.PIPE)
             while p.poll() is None:
@@ -37,15 +36,18 @@ def lambda_handler(event, context):
         writer_file_extensions = []
         if manifest.contributions.readers and manifest.contributions.writers:
             plugin_types = ['reader', 'writer']
-            print(manifest.contributions.readers)
-            print(manifest.contributions.writers)
+            reader_file_extensions = manifest.contributions.readers.filename_patterns
+            writer_file_extensions = manifest.contributions.writers.filename_extensions
         elif manifest.contributions.readers:
             plugin_types = ['reader']
+            reader_file_extensions = manifest.contributions.readers.filename_patterns
         elif manifest.contributions.writers:
             plugin_types = ['writer']
+            writer_file_extensions = manifest.contributions.writers.filename_extensions
         print(display_name)
         print(plugin_types)
-        print("manifest: " + manifest)
+        print(reader_file_extensions)
+        print(writer_file_extensions)
 
 def failure_handler(event, context):
     yaml_path = event['requestPayload']['Records'][0]['s3']['object']['key']
