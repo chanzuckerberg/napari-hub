@@ -5,7 +5,7 @@ import yaml
 import requests
 import subprocess
 import sys
-from npe2 import PluginManifest
+from npe2 import PluginManager
 
 s3 = boto3.client('s3')
 
@@ -27,7 +27,9 @@ def lambda_handler(event, context):
         while p.poll() is None:
             l = p.stdout.readline()  # This blocks until it receives a newline.
         sys.path.insert(0, "/tmp/" + pluginName)
-        manifest = PluginManifest.from_distribution(pluginName)
+        pm = PluginManager()
+        pm.discover(include_npe1=False)
+        manifest = pm.get_manifest(pluginName)
         s3_client = boto3.client('s3')
         response = s3_client.delete_object(
             Bucket=bucket,
