@@ -44,7 +44,6 @@ def failure_handler(event, context):
     print(myYaml)
     print(yaml_path)
     print(bucket)
-    s3.Object(Bucket=bucket, Key=yaml_path).delete()
     s3_client = boto3.client('s3')
     response = s3_client.delete_object(
         Bucket=bucket,
