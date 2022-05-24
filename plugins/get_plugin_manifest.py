@@ -42,4 +42,8 @@ def failure_handler(event, context):
     myBody = response["Body"]
     myYaml = yaml.safe_load(myBody)
     print(myYaml)
+    print(yaml_path)
+    print(bucket)
+    s3.Object(Bucket=bucket, Key=yaml_path).delete()
+    print("deleted")
 
