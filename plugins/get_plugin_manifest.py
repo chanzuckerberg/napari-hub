@@ -28,5 +28,6 @@ def lambda_handler(event, context):
             print(l)
     except subprocess.CalledProcessError as e:
         print(e.output)
+    sys.path.insert(0, "/tmp/" + pluginName)
     manifest = PluginManifest.from_distribution(pluginName)
     print(manifest.contributions)
