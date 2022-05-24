@@ -36,5 +36,10 @@ def lambda_handler(event, context):
         print(manifest.contributions)
 
 def failure_handler(event, context):
-    print(event)
-    print(context)
+    yaml_path = context['requestPayload']['Records'][0]['s3']['object']['key']
+    bucket = context['requestPayload']['Records'][0]['s3']['bucket']['name']
+    response = s3.get_object(Bucket=bucket, Key=yaml_path)
+    myBody = response["Body"]
+    myYaml = yaml.safe_load(myBody)
+    print(myYaml)
+
