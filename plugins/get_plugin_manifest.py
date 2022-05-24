@@ -27,14 +27,13 @@ def lambda_handler(event, context):
             p = subprocess.Popen(command, stdout=subprocess.PIPE)
             while p.poll() is None:
                 l = p.stdout.readline()  # This blocks until it receives a newline.
-                print(l)
         except subprocess.CalledProcessError as e:
             print(e.output)
         sys.path.insert(0, "/tmp/" + pluginName)
         manifest = PluginManifest.from_distribution(pluginName)
-        print(manifest.display_name)
-        print(manifest.contributions)
-        print(manifest)
+        print("display name: " + manifest.display_name)
+        print("contributions: " + manifest.contributions)
+        print("manifest: " + manifest)
 
 def failure_handler(event, context):
     yaml_path = event['requestPayload']['Records'][0]['s3']['object']['key']
