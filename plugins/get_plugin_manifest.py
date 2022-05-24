@@ -17,7 +17,6 @@ def lambda_handler(event, context):
     response = s3.get_object(Bucket=bucket, Key=key)
     myBody = response["Body"]
     myYaml = yaml.safe_load(myBody)
-    raise ValueError("test error")
     if 'process_count' in myYaml and myYaml['process_count'] < max_failure_tries:
         splitPath = str(key).split("/")
         pluginName = splitPath[-2]
@@ -33,7 +32,9 @@ def lambda_handler(event, context):
             print(e.output)
         sys.path.insert(0, "/tmp/" + pluginName)
         manifest = PluginManifest.from_distribution(pluginName)
+        print(manifest.display_name)
         print(manifest.contributions)
+        print(manifest)
 
 def failure_handler(event, context):
     yaml_path = event['requestPayload']['Records'][0]['s3']['object']['key']
