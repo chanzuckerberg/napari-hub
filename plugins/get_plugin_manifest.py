@@ -36,6 +36,7 @@ def lambda_handler(event, context):
         writer_file_extensions = []
         if manifest.contributions.readers and manifest.contributions.writers:
             plugin_types = ['reader', 'writer']
+            print(manifest.contributions.readers[0])
             reader_file_extensions = manifest.contributions.readers.filename_patterns
             writer_file_extensions = manifest.contributions.writers.filename_extensions
         elif manifest.contributions.readers:
