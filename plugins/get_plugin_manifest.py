@@ -58,6 +58,10 @@ def lambda_handler(event, context):
             'writer_save_layers': ${writer_save_layers},
         }'''
         s3_client = boto3.client('s3')
+        response = s3_client.delete_object(
+            Bucket=bucket,
+            Key=key
+        )
         s3_client.put_object(Body=body, Bucket=bucket, Key=key)
 
 
