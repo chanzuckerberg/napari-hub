@@ -31,8 +31,20 @@ def lambda_handler(event, context):
             print(e.output)
         sys.path.insert(0, "/tmp/" + pluginName)
         manifest = PluginManifest.from_distribution(pluginName)
-        print("display name: " + manifest.display_name)
-        print("contributions: " + manifest.contributions)
+        display_name = manifest.display_name
+        plugin_types = []
+        reader_file_extensions = []
+        writer_file_extensions = []
+        if manifest.contributions.readers and manifest.contributions.writers:
+            plugin_types = ['reader', 'writer']
+            print(manifest.contributions.readers)
+            print(manifest.contributions.writers)
+        elif manifest.contributions.readers:
+            plugin_types = ['reader']
+        elif manifest.contributions.writers:
+            plugin_types = ['writer']
+        print(display_name)
+        print(plugin_types)
         print("manifest: " + manifest)
 
 def failure_handler(event, context):
