@@ -10,7 +10,7 @@ from npe2 import PluginManifest
 s3 = boto3.client('s3')
 
 def lambda_handler(event, context):
-    max_tries = 2
+    max_failure_tries = 2
     # Get the object from the event and show its content type
     bucket = event['Records'][0]['s3']['bucket']['name']
     key = urllib.parse.unquote_plus(event['Records'][0]['s3']['object']['key'], encoding='utf-8')
@@ -18,7 +18,7 @@ def lambda_handler(event, context):
     myBody = response["Body"]
     myYaml = yaml.safe_load(myBody)
     raise ValueError("test error")
-    if 'process_count' in myYaml and myYaml['process_count'] < max_tries:
+    if 'process_count' in myYaml and myYaml['process_count'] < max_failure_tries:
         splitPath = str(key).split("/")
         pluginName = splitPath[-2]
         version = splitPath[-1][:-5]
@@ -41,13 +41,11 @@ def failure_handler(event, context):
     response = s3.get_object(Bucket=bucket, Key=yaml_path)
     myBody = response["Body"]
     myYaml = yaml.safe_load(myBody)
-    print(myYaml)
-    print(yaml_path)
-    print(bucket)
     s3_client = boto3.client('s3')
     response = s3_client.delete_object(
         Bucket=bucket,
         Key=yaml_path
     )
-    print("deleted")
+    body = "{'process_count': 1}"
+    s3_client.put_object(Body=body, Bucket=bucket, Key=yaml_path)
 
