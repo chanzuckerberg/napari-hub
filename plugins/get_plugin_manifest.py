@@ -60,6 +60,7 @@ def failure_handler(event, context):
         Bucket=bucket,
         Key=yaml_path
     )
-    body = "{'process_count': 1}"
+    count = myYaml['process_count'] + 1
+    body = "{'process_count': " + str(count) + "}"
     s3_client.put_object(Body=body, Bucket=bucket, Key=yaml_path)
 
