@@ -36,15 +36,14 @@ def lambda_handler(event, context):
         writer_file_extensions = []
         if manifest.contributions.readers and manifest.contributions.writers:
             plugin_types = ['reader', 'writer']
-            print(manifest.contributions.readers[0])
-            reader_file_extensions = manifest.contributions.readers.filename_patterns
-            writer_file_extensions = manifest.contributions.writers.filename_extensions
+            reader_file_extensions = manifest.contributions.readers[0].filename_patterns
+            writer_file_extensions = manifest.contributions.writers[0].filename_extensions
         elif manifest.contributions.readers:
             plugin_types = ['reader']
-            reader_file_extensions = manifest.contributions.readers.filename_patterns
+            reader_file_extensions = manifest.contributions.readers[0].filename_patterns
         elif manifest.contributions.writers:
             plugin_types = ['writer']
-            writer_file_extensions = manifest.contributions.writers.filename_extensions
+            writer_file_extensions = manifest.contributions.writers[0].filename_extensions
         print(display_name)
         print(plugin_types)
         print(reader_file_extensions)
