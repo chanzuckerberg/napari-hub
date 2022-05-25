@@ -29,18 +29,19 @@ def lambda_handler(event, context):
         sys.path.insert(0, "/tmp/" + pluginName)
         pm = PluginManager()
         pm.discover(include_npe1=False)
-        if pluginName not in [pm.iter_manifests()]:
+        body = "#npe2\n"
+        try:
+            manifest = pm.get_manifest(pluginName)
+        except KeyError:
             pm.discover(include_npe1=True)
-            print("npe1 plugin")
-        else:
-            print("npe2 plugin")
-        manifest = pm.get_manifest(pluginName)
+            body = "#npe1\n"
+            manifest = pm.get_manifest(pluginName)
         s3_client = boto3.client('s3')
         response = s3_client.delete_object(
             Bucket=bucket,
             Key=key
         )
-        s3_client.put_object(Body=manifest.yaml(), Bucket=bucket, Key=key)
+        s3_client.put_object(Body=body+manifest.yaml(), Bucket=bucket, Key=key)
 
 
 def failure_handler(event, context):
