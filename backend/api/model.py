@@ -91,9 +91,9 @@ def get_manifest(plugin: str, version: str = None) -> dict:
         return {}
     elif version is None:
         version = plugins[plugin]
-    plugin = get_cache(f'cache/{plugin}/{version}.yaml', 'yaml')
-    if plugin:
-        return plugin
+    plugin_metadata = get_cache(f'cache/{plugin}/{version}.yaml', 'yaml')
+    if plugin_metadata:
+        return plugin_metadata
     else:
         cache({"process_count": 0}, f'cache/{plugin}/{version}.yaml', format='yaml')
         return {"process_count": 0}
