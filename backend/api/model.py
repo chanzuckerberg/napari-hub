@@ -5,10 +5,12 @@ from zipfile import ZipFile
 from io import BytesIO
 from collections import defaultdict
 
+from npe2 import PluginManifest
+
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
-from api.s3 import get_cache, cache
-from utils.utils import render_description, send_alert, get_attribute, get_category_mapping
+from api.s3 import get_cache, cache, is_npe2_plugin
+from utils.utils import render_description, send_alert, get_attribute, get_category_mapping, parse_manifest
 from utils.datadog import report_metrics
 from api.zulip import notify_new_packages
 
@@ -68,6 +70,14 @@ def get_plugin(plugin: str, version: str = None) -> dict:
         version = plugins[plugin]
     plugin = get_cache(f'cache/{plugin}/{version}.json')
     if plugin:
+        manifest_yaml_dict = get_manifest(plugin, version)
+        manifest_obj = PluginManifest(**manifest_yaml_dict)
+        manifest_attributes = parse_manifest(manifest_obj)
+        plugin.update(manifest_attributes)
+        if is_npe2_plugin(plugin, version):
+            plugin['npe2'] = True
+        else:
+            plugin['npe2'] = False
         return plugin
     else:
         return {}
