@@ -1,6 +1,6 @@
 from concurrent import futures
 from datetime import datetime
-from typing import Tuple, Dict, List
+from typing import Tuple, Dict, List, Callable
 from zipfile import ZipFile
 from io import BytesIO
 from collections import defaultdict
@@ -17,7 +17,8 @@ from api.zulip import notify_new_packages
 index_subset = {'name', 'summary', 'description_text', 'description_content_type',
                 'authors', 'license', 'python_version', 'operating_system',
                 'release_date', 'version', 'first_released',
-                'development_status', 'category'}
+                'development_status', 'category', 'display_name', 'plugin_types', 'reader_file_extensions',
+                'writer_file_extensions', 'writer_save_layers'}
 
 
 def get_public_plugins() -> Dict[str, str]:
@@ -70,14 +71,8 @@ def get_plugin(plugin: str, version: str = None) -> dict:
         version = plugins[plugin]
     plugin = get_cache(f'cache/{plugin}/{version}.json')
     if plugin:
-        manifest_yaml_dict = get_manifest(plugin, version)
-        manifest_obj = PluginManifest(**manifest_yaml_dict)
-        manifest_attributes = parse_manifest(manifest_obj)
+        manifest_attributes = build_manifest_metadata(plugin, version)
         plugin.update(manifest_attributes)
-        if is_npe2_plugin(plugin, version):
-            plugin['npe2'] = True
-        else:
-            plugin['npe2'] = False
         return plugin
     else:
         return {}
@@ -174,6 +169,17 @@ def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
     return plugin, metadata
 
 
+def build_manifest_metadata(plugin: str, version: str):
+    manifest_yaml_dict = get_manifest(plugin, version)
+    manifest_obj = PluginManifest(**manifest_yaml_dict)
+    manifest_attributes = parse_manifest(manifest_obj)
+    if is_npe2_plugin(plugin, version):
+        manifest_attributes['npe2'] = True
+    else:
+        manifest_attributes['npe2'] = False
+    return plugin, manifest_attributes
+
+
 def update_cache():
     """
     Update existing caches to reflect new/updated plugins. Files updated:
@@ -184,8 +190,11 @@ def update_cache():
     - cache/{plugin}/{version}.json (skip if exists)
     """
     plugins = query_pypi()
-    plugins_metadata = get_plugin_metadata_async(plugins)
+    plugins_metadata = get_plugin_metadata_async(plugins, build_plugin_metadata)
     excluded_plugins = get_updated_plugin_exclusion(plugins_metadata)
+    manifest_metadata = get_plugin_metadata_async(plugins, build_manifest_metadata)
+    for plugin in plugins_metadata:
+        plugins_metadata[plugin].update(manifest_metadata[plugin])
 
     visibility_plugins = {"public": {}, "hidden": {}}
     for plugin, version in plugins.items():
@@ -240,16 +249,17 @@ def get_updated_plugin_exclusion(plugins_metadata):
     return excluded_plugins
 
 
-def get_plugin_metadata_async(plugins: Dict[str, str]) -> dict:
+def get_plugin_metadata_async(plugins: Dict[str, str], metadata_builder: Callable) -> dict:
     """
     Query plugin metadata async.
 
     :param plugins: plugin name and versions to query
+    :param metadata_builder: function to read and parse metadata files
     :return: plugin metadata list
     """
     plugins_metadata = {}
     with futures.ThreadPoolExecutor(max_workers=32) as executor:
-        plugin_futures = [executor.submit(build_plugin_metadata, k, v)
+        plugin_futures = [executor.submit(metadata_builder, k, v)
                           for k, v in plugins.items()]
     for future in futures.as_completed(plugin_futures):
         plugins_metadata[future.result()[0]] = (future.result()[1])
