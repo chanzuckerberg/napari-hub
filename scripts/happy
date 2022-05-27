@@ -149,7 +149,7 @@ class StackMeta:
     def parameters(self):
         return {v: self.meta[k] for k, v in self.parameter_map.items()}
 
-    def update(self, tag, stack_mgr):
+    def update(self, tag, stack_tags, slice_name, stack_mgr):
         stacks = stack_mgr.stacks
 
         # Track timestamps for this stack
@@ -158,7 +158,9 @@ class StackMeta:
             self.created = now
 
         self.imagetag = tag
+        self.imagetags = stack_tags
         self.updated = now
+        self.slice = slice_name
 
         if not self.owner:
             self.owner = resolve_owner(self.ctx)
@@ -906,27 +908,39 @@ def logs(ctx, stack_name, service, since):
 @click.option("--tag", help="Tag name for docker image. Leave empty to generate one automatically.", default=None)
 @click.option("--wait/--no-wait", is_flag=True, default=True, help="wait for this to complete")
 @click.option("--force", is_flag=True, default=False, help="Ignore already-exists errors")
+@click.option("--skip-check-tag", is_flag=True, default=False, help="Skip checking that the specified tag exists (requires --tag)")
+@click.option("--slice", "-s", "slice_name", help="If you only need to test a slice of the app, specify it here")
+@click.option("--slice-default-tag", help="For stacks using slices, override the default tag for any images that aren't being built & pushed by the slice")
 @click.pass_context
-def create(ctx, stack_name, tag, wait, force):
+def create(ctx, stack_name, tag, wait, force, skip_check_tag, slice_name, slice_default_tag):
     """Create a new stack with a given tag"""
+
     stackmgr = ctx.obj["stack_mgr"]
+    config = ctx.obj["config"]
+
     if stack_name in stackmgr.stacks:
         if force:
             print(f"Stack {stack_name} already exists")
         else:
             raise CliError(f"Stack {stack_name} already exists")
+    if tag and not skip_check_tag:
+        check_images_exist(ctx, tag)
+
+    stacktags = {}
+    if slice_name:
+        stacktags, tag = build_slice(ctx, slice_name, slice_default_tag)
 
     stack_meta = StackMeta(ctx, stack_name)
-    stack_meta.load({"happy/meta/configsecret": ctx.obj["config"].secret_arn})
+    stack_meta.load({"happy/meta/configsecret": config.secret_arn})
     if not tag:
         tag = generate_tag(ctx)
         ctx.invoke(push, tag=tag)
-    stack_meta.update(tag, stackmgr)
+    stack_meta.update(tag, stacktags, slice_name, stackmgr)
     print(f"creating {stack_name}")
 
     stack = stackmgr.add(stack_name)
     stack._meta = stack_meta  # TODO(mbarrien): Hack!
-    success = stack.apply(wait)
+    success = stack.apply(stack_name, wait, ctx.obj["orchestrator"], services=config.services)
     if not success:
         raise CliError("Apply failed, skipping migrations")
     if should_auto_migrate(ctx):
@@ -960,25 +974,37 @@ def config_tarball(source_dir):
 @click.option("--tag", help="Tag name for docker image. Leave empty to generate one automatically.", default=None)
 @click.option("--wait/--no-wait", is_flag=True, default=True, help="wait for this to complete")
 @click.option("--skip-migrations/--do-migrations", is_flag=True, default=False, help="Skip running migrations")
+@click.option("--skip-check-tag", is_flag=True, default=False, help="Skip checking that the specified tag exists (requires --tag)")
 @click.pass_context
-def update(ctx, stack_name, tag, wait, skip_migrations):
+@click.option("--slice", "-s", "slice_name", help="If you only need to test a slice of the app, specify it here")
+@click.option("--slice-default-tag", help="For stacks using slices, override the default tag for any images that aren't being built & pushed by the slice")
+def update(ctx, stack_name, tag, wait, skip_migrations, skip_check_tag, slice_name, slice_default_tag):
     """Update a dev stack tag version"""
     stackmgr = ctx.obj["stack_mgr"]
+    config = ctx.obj["config"]
     try:
         stack = stackmgr.stacks[stack_name]
     except KeyError:
         raise CliError(f"Stack {stack_name} does not exist")
 
+    if tag and not skip_check_tag:
+        check_images_exist(ctx, tag)
+
     print(f"updating {stack_name}")
+
+    stacktags = {}
+    if slice_name:
+        stacktags, tag = build_slice(ctx, slice_name, slice_default_tag)
+
     if not tag:
         tag = generate_tag(ctx)
         ctx.invoke(push, tag=tag)
 
     stack_meta = stack.meta
     # Reset the configsecret if it has changed
-    stack_meta.load({"happy/meta/configsecret": ctx.obj["config"].secret_arn})
-    stack_meta.update(tag, stackmgr)
-    success = stack.apply(wait or not skip_migrations)
+    stack_meta.load({"happy/meta/configsecret": config.secret_arn})
+    stack_meta.update(tag, stacktags, slice_name, stackmgr)
+    success = stack.apply(stack_name, wait or not skip_migrations, ctx.obj["orchestrator"], services=config.services)
     if not success:
         raise CliError("Apply failed, skipping migrations")
     if not skip_migrations and should_auto_migrate(ctx):
