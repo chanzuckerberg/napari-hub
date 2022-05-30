@@ -4,6 +4,11 @@
     "default_env": "dev",
     "app": "napari-hub",
     "default_compose_env": ".env.ecr",
+    "services": [
+        "frontend",
+        "backend"
+    ],
+    "slice_default_tag": "branch-trunk",
     "environments": {
         "dev": {
             "aws_profile": "sci-imaging",
