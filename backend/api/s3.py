@@ -71,7 +71,8 @@ def is_npe2_plugin(plugin, version):
     key = f'cache/{plugin}/{version}.yaml'
     try:
         manifest_body = s3_client.get_object(Bucket=bucket, Key=os.path.join(bucket_path, key))['Body']
-        if manifest_body.startswith('#npe2'):
+        manifest_body_str = manifest_body.read().decode('utf-8')
+        if manifest_body_str.startswith('#npe2'):
             return True
     except ClientError:
         print(f"Not cached: {key}")
