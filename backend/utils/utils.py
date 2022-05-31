@@ -1,5 +1,5 @@
 import os
-from typing import List, Dict
+from typing import List, Dict, Optional
 
 import requests
 from bs4 import BeautifulSoup
@@ -127,7 +127,7 @@ def get_category_mapping(category: str, mappings: Dict[str, List]) -> List[Dict]
         return mappings[category]
 
 
-def parse_manifest(manifest: PluginManifest):
+def parse_manifest(manifest: Optional[PluginManifest] = None):
     """
     Convert raw manifest into dictionary of npe2 attributes.
 
@@ -138,20 +138,29 @@ def parse_manifest(manifest: PluginManifest):
     reader_file_extensions = []
     writer_file_extensions = []
     writer_save_layers = []
-    manifest_attributes = {}
+    manifest_attributes = {
+        'display_name': display_name,
+        'plugin_types': plugin_types,
+        'reader_file_extensions': reader_file_extensions,
+        'writer_file_extensions': writer_file_extensions,
+        'writer_save_layers': writer_save_layers,
+    }
+    if manifest is None:
+        return manifest_attributes
+
     if manifest.display_name:
-        display_name = manifest.display_name
+        manifest_attributes['display_name'] = manifest.display_name
     if manifest.contributions.readers:
         readers = manifest.contributions.readers
-        plugin_types.append('reader')
+        manifest_attributes['plugin_types'].append('reader')
         reader_file_extensions = set()
         for reader in readers:
             for ext in reader.filename_patterns:
                 reader_file_extensions.add(ext)
-        reader_file_extensions = list(reader_file_extensions)
+        manifest_attributes['reader_file_extensions'] = list(reader_file_extensions)
     if manifest.contributions.writers:
         writers = manifest.contributions.writers
-        plugin_types.append('writer')
+        manifest_attributes['plugin_types'].append('writer')
         writer_file_extensions = set()
         writer_save_layers = set()
         for writer in writers:
@@ -159,15 +168,10 @@ def parse_manifest(manifest: PluginManifest):
                 writer_file_extensions.add(ext)
             for ext in writer.layer_types:
                 writer_save_layers.add(ext)
-        writer_file_extensions = list(writer_file_extensions)
-        writer_save_layers = list(writer_save_layers)
+        manifest_attributes['writer_file_extensions'] = list(writer_file_extensions)
+        manifest_attributes['writer_save_layers'] = list(writer_save_layers)
     if manifest.contributions.themes:
-        plugin_types.append('theme')
+        manifest_attributes['plugin_types'].append('theme')
     if manifest.contributions.widgets:
-        plugin_types.append('widget')
-    manifest_attributes['display_name'] = display_name
-    manifest_attributes['plugin_types'] = plugin_types
-    manifest_attributes['reader_file_extensions'] = reader_file_extensions
-    manifest_attributes['writer_file_extensions'] = writer_file_extensions
-    manifest_attributes['writer_save_layers'] = writer_save_layers
+        manifest_attributes['plugin_types'].append('widget')
     return manifest_attributes

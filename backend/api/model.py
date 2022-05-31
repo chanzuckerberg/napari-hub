@@ -171,6 +171,11 @@ def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
 
 def build_manifest_metadata(plugin: str, version: str):
     manifest_yaml_dict = get_manifest(plugin, version)
+    if 'process_count' in manifest_yaml_dict:
+        default_vals = parse_manifest()
+        default_vals['npe2'] = False
+        return plugin, default_vals
+
     manifest_obj = PluginManifest(**manifest_yaml_dict)
     manifest_attributes = parse_manifest(manifest_obj)
     if is_npe2_plugin(plugin, version):

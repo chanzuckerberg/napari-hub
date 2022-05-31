@@ -62,3 +62,12 @@ def test_writer_fn():
     manifest_attributes = parse_manifest(sample_plugin.manifest)
     assert sorted(manifest_attributes['writer_save_layers']) == sorted(['image', 'points', 'shapes'])
     assert sorted(manifest_attributes['writer_file_extensions']) == sorted(['.pdf', '.tif', '.csv', '.jpg'])
+
+
+def test_parse_with_none_returns_default():
+    vals = parse_manifest()
+    assert vals['display_name'] == ''
+    assert vals['plugin_types'] == []
+    assert vals['reader_file_extensions'] == []
+    assert vals['writer_file_extensions'] == []
+    assert vals['writer_save_layers'] == []
