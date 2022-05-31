@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 import random
+from dateutil import tz
 from base64 import b64decode
 from contextlib import contextmanager
-from datetime import datetime
+from datetime import datetime, timedelta
 import io
 import json
 import os
@@ -58,6 +59,8 @@ class HappyConfig:
             raise CliError(error)
 
     def __getattr__(self, field):
+        if field == "default_compose_env":
+            return self._data["default_compose_env_file"]
         if field == "ecrs":
             return self.ctx.obj["secret_mgr"].secrets["ecrs"]
         if field in self._data:
@@ -100,7 +103,9 @@ class StackMeta:
         "instance": "happy/instance",
         "owner": "happy/meta/owner",
         "priority": "happy/meta/priority",
+        "slice": "happy/meta/slice",
         "imagetag": "happy/meta/imagetag",
+        "imagetags": "happy/meta/imagetags",
         "configsecret": "happy/meta/configsecret",
         "created": "happy/meta/created-at",
         "updated": "happy/meta/updated-at",
@@ -108,8 +113,10 @@ class StackMeta:
 
     parameter_map = {
         "instance": "stack_name",
+        "slice": "slice",
         "priority": "priority",
         "imagetag": "image_tag",
+        "imagetags": "image_tags",
         "configsecret": "happy_config_secret",
     }
 
@@ -276,9 +283,6 @@ class Stack:
 
     def destroy(self):
         self._ensure_workspace()
-        if not self.workspace.latest_config_version_id:
-            print("WARNING: No latest version of workspace to destroy. Assuming already empty and continuing.")
-            return True
         self.workspace.run(is_destroy=True)
         return self.workspace.wait()
 
@@ -544,17 +548,12 @@ class TFEWorkspace:
         if self._outputs:
             return self._outputs
         try:
-            state_version = self.tfc.state_versions.get_current(self.workspace_id)
+            state_version = self.tfc.state_versions.get_current(self.workspace_id, include=["outputs"])
         except exceptions.TFCHTTPNotFound:
             return {}
-        # terrasnek api lacks a way to append ?include=outputs to state_version requests,
-        # so we have to iterate through all outputs and get them individually
-        # TODO(mbarrien): Add code to Terrasnek
-        outputs = state_version["data"]["relationships"]["outputs"]["data"]
-        state_version_output_ids = (output["id"] for output in outputs)
+        outputs = (item.get("attributes") for item in state_version.get("included", {}) if item.get("type") == "state-version-outputs")
         self._outputs = {}
-        for state_version_output_id in state_version_output_ids:
-            state_version_output = self.tfc.state_version_outputs.show(state_version_output_id)["data"]["attributes"]
+        for state_version_output in outputs:
             if not state_version_output["sensitive"]:
                 key = state_version_output["name"]
                 value = state_version_output["value"]
@@ -707,17 +706,28 @@ class Orchestrator:
         containers = []
         for task in taskinfo:
             task_id = task["taskArn"].split("/")[-1]
-            tp.add_row([task_id, task["startedAt"].strftime("%m/%d %H:%M"), task["lastStatus"]])
-            containers.append(
-                {
-                    "host": task["containerInstanceArn"],
-                    "container": task["containers"][0]["runtimeId"],
-                    "arn": task["taskArn"],
-                }
-            )
+            started_at = "-"
+            if task.get("startedAt"):
+                started_at = task["startedAt"].strftime("%m/%d %H:%M")
+                containers.append(
+                    {
+                        "host": task.get("containerInstanceArn"),
+                        "container": task["containers"][0]["runtimeId"],
+                        "task_id": task_id,
+                        "arn": task["taskArn"],
+                        "launch_type": task["launchType"],
+                        "container_name": task["containers"][0]["name"],
+                    }
+                )
+            tp.add_row([task_id, started_at, task["lastStatus"]])
         tp.print()
         print()
         for container in containers:
+            if container['launch_type'] == 'FARGATE':
+                profile_name = self.ctx.obj["aws_profile"]
+                print(f"Connecting to {container['task_id']}:{container['container_name']}")
+                cmd = ["aws", "--profile", profile_name, "ecs", "execute-command", "--cluster", cluster_arn, "--container", container["container_name"], "--command", "/bin/bash", "--interactive", "--task", container["task_id"]]
+                os.execvp("aws", cmd)
             instance_info = ecs_client.describe_container_instances(
                 cluster=cluster_arn, containerInstances=[container["host"]]
             )
@@ -739,7 +749,45 @@ class Orchestrator:
             json_output=False,
         )
 
-    def run_task(self, taskdef_arn, wait=False, show_logs=True):
+    def get_events(self, stack, services=None):
+        """Get a list of recent events for a given ECS service to help debug problems"""
+        secrets = self.secrets
+        cluster_arn = secrets["cluster_arn"]
+        ecs_client = AwsSession.get_client(self.ctx, "ecs")
+        if not services:
+            return
+        output = ecs_client.describe_services(
+            cluster=cluster_arn,
+            services=[f"{stack}-{service}" for service in services]
+        )
+        for service in output["services"]:
+            incomplete = [deploy["rolloutState"] for deploy in service["deployments"] if deploy["rolloutState"] != "COMPLETED"]
+            if not incomplete:
+                continue
+            # If we've made it to this point, we have a deployment that isn't complete, and we should print an event log.
+            print(f"Incomplete deployment of service {service['serviceName']} / Current status {', '.join(incomplete)}:")
+            events = service["events"]
+            events.reverse() # These were in newest-first order, but terminal output should be newest-last
+            deregistered = 0
+            for event in events:
+                event_time = event["createdAt"]
+                if event_time < datetime.now().replace(tzinfo=tz.tzlocal()) - timedelta(seconds=600):
+                    continue
+                message = re.sub(r'^\(service ([^ ]+)\)', r"\1", event["message"])
+                message = re.sub(r'\(([^ ]+) .*?\)', r'\1', message)
+                message = re.sub(r':.*', '', message)
+                if "deregistered" in message:
+                    deregistered += 1
+                print(f'  {event_time:%H:%M} {message}')
+            # TODO -- this value really shouldn't be hardcoded, but it's a start.
+            if deregistered > 3:
+                print()
+                print("Many \"deregistered\" events - please check to see whether your service is crashing:")
+                service_name = service['serviceName'].replace(f"{stack}-", "", 1)
+                print(f"  ./scripts/happy --env {self.ctx.obj['config'].env} logs {stack} {service_name}")
+            return
+
+    def run_task(self, taskdef_arn, launch_type, wait=False, show_logs=True):
         """Run a one-off ECS task and optionally wait"""
         secrets = self.secrets
         cluster_arn = secrets["cluster_arn"]
@@ -749,6 +797,7 @@ class Orchestrator:
         ecs_client = AwsSession.get_client(self.ctx, "ecs")
         output = ecs_client.run_task(
             cluster=cluster_arn,
+            launchType=launch_type,
             taskDefinition=taskdef_arn,
             networkConfiguration={
                 "awsvpcConfiguration": {
@@ -795,8 +844,12 @@ class Orchestrator:
         print("getting taskdef info")
         result = ecs_client.describe_task_definition(taskDefinition=taskdef_arn)
         taskdef = result["taskDefinition"]
-        container = taskdef["containerDefinitions"][0]
-        log_group = container["logConfiguration"]["options"]["awslogs-group"]
+        container_def = taskdef["containerDefinitions"][0]
+        log_group = container_def["logConfiguration"]["options"]["awslogs-group"]
+        if launch_type == "FARGATE":
+            log_prefix = container_def["logConfiguration"]["options"]["awslogs-stream-prefix"]
+            task_id = container["taskArn"].split("/")[-1]
+            log_stream = f"{log_prefix}/{container_def['name']}/{task_id}"
         print("Log Events:")
         logs_client = AwsSession.get_client(self.ctx, "logs")
         result = logs_client.get_log_events(logGroupName=log_group, logStreamName=log_stream)
@@ -814,7 +867,7 @@ def subprocess_output_with_default(cmd, default="unknown"):
 
 
 class ArtifactBuilder:
-    """Builds artifacts such asx Docker containers. For now, this is hard coded to use docker-compose as the backend."""
+    """Builds artifacts such as Docker containers. For now, this is hard coded to use docker-compose as the backend."""
 
     DEFAULT_CONFIG = {"compose_file": "docker-compose.yml", "env": None}
 
@@ -829,32 +882,41 @@ class ArtifactBuilder:
         env["DOCKER_REPO"] = f"{self.config['ecr_repo']}/"
         env["HAPPY_COMMIT"] = subprocess_output_with_default(["git", "rev-parse", "--verify", "HEAD"])
         env["HAPPY_BRANCH"] = subprocess_output_with_default(["git", "branch", "--show-current"])
-        env["HAPPY_TAG"] = subprocess_output_with_default(["git", "describe"])
         return env
 
     def build(self, artifacts=None):
         env = self.get_env()
-        compose_args = ["--file", self.config["compose_file"]]
-        if self.config["env"]:
-            compose_args += ["--env", self.config["env"]]
-        cmd = ["docker-compose"] + compose_args + ["build"]
-        if artifacts:
-            cmd += artifacts
-        subprocess.check_call(cmd, env=env)
 
-        cmd = ["docker-compose"] + compose_args + ["config"]
-        config_file = subprocess.check_output(cmd, env=env)
-        result = yaml.load(config_file, Loader=yaml.Loader)
         images = {}
-        for service_name, service in result["services"].items():
+        for service_name, service in self.get_compose_services().items():
             if "build" in service:
                 if artifacts and service_name not in artifacts:
                     continue
                 images[service_name] = service["image"]
+
+        compose_args = self.get_compose_args()
+        cmd = ["docker-compose"] + compose_args + ["build"] + list(images.keys())
+        if artifacts:
+            cmd += artifacts
+        subprocess.check_call(cmd, env=env)
+
         return images
 
+    def get_compose_args(self):
+        compose_args = ["--file", self.config["compose_file"]]
+        if self.config["env"]:
+            compose_args += ["--env-file", self.config["env"]]
+        return compose_args
+
+    def get_compose_services(self):
+        env = self.get_env()
+        cmd = ["docker-compose"] + self.get_compose_args() + ["config"]
+        config_file = subprocess.check_output(cmd, env=env)
+        result = yaml.load(config_file, Loader=yaml.Loader)
+        return result["services"]
+
     def push(self, ecrs, images, tags):
-        print("Tagging images...")
+        print(f"Tagging images with tags {tags}")
         env = self.get_env()
         for artifact_id, registry in ecrs.items():
             if images and artifact_id not in images:
@@ -875,6 +937,11 @@ def run_tasks(ctx, stack, task_type, wait=False, show_logs=True):
     config = ctx.obj["config"]
     orchestrator = ctx.obj["orchestrator"]
     task_outputs = config.tasks.get(task_type, [])
+    launch_type = "EC2"
+    try:
+        launch_type = config.task_launch_type.upper()
+    except KeyError:
+        pass
     if not task_outputs:
         print(f"Found no tasks for {task_type}")
     try:
@@ -882,7 +949,28 @@ def run_tasks(ctx, stack, task_type, wait=False, show_logs=True):
     except KeyError as exc:
         raise CliError(f"Stack {stack.stack_name} is missing output field '{exc.args[0]}' for task {task_type}")
     for task in tasks:
-        orchestrator.run_task(task, wait=wait, show_logs=show_logs)
+        orchestrator.run_task(task, launch_type, wait=wait, show_logs=show_logs)
+
+def check_images_exist(ctx, tag):
+    """Make sure all of our service images actually exist if we're trying to deploy via tag"""
+    ecrs = ctx.obj["config"].ecrs
+    ecr_client = AwsSession.get_client(ctx, "ecr")
+    # Use a list of images managed by docker-compose
+    builder_config = {"ecr_repo": "", "env": ""}  # We don't need ECR names here.
+    builder = ArtifactBuilder(builder_config)
+    images = builder.get_compose_services().keys()
+    for image_name, repository in ecrs.items():
+        if image_name not in images:
+            continue
+        registry_id = repository["url"].split(".")[0]
+        repo_name = "/".join(repository["url"].split("/")[1:])
+
+        manifest = ecr_client.batch_get_image(
+            registryId=registry_id, repositoryName=repo_name, imageIds=[{"imageTag": tag}]
+        )
+        if manifest and manifest["images"]:
+            continue
+        raise CliError(f"Tag {tag} doesn't exist for {repository['url']}! Please use a valid tag")
 
 
 @cli.command()
@@ -918,6 +1006,20 @@ def logs(ctx, stack_name, service, since):
     orchestrator = ctx.obj["orchestrator"]
     orchestrator.logs(stack_name, service, since)
 
+def build_slice(ctx, slice_name, default_tag=None):
+    config = ctx.obj["config"]
+    if slice_name not in config.slices:
+        valid_slices = ", ".join(config["slices"].keys())
+        raise CliError(f"Slice {slice_name} is invalid - valid names: {valid_slices}")
+
+    build_images = config.slices[slice_name]["build_images"]
+    slice_tag = generate_tag(ctx)
+    ctx.invoke(push, images=build_images, tag=slice_tag)
+
+    if not default_tag:
+        default_tag = config.slice_default_tag
+    stacktags = {slice_img: slice_tag for slice_img in build_images}
+    return stacktags, default_tag
 
 @cli.command()
 @click.argument("stack_name")
@@ -1087,12 +1189,18 @@ def list_command(ctx):
     env = ctx.obj["config"].env
     stackmgr = ctx.obj["stack_mgr"]
     print(f"Listing stacks in environment '{env}'")
-    headings = ["Name", "Owner", "Tag", "Status", "URLs"]
+    headings = ["Name", "Owner", "Tags", "Status", "URLs"]
     tp = TablePrinter(headings)
     for name, info in stackmgr.stacks.items():
         url = info.outputs.get("frontend_url", "")
         status = info.status
-        tp.add_row([name, info.meta.owner, info.meta.imagetag, status, url])
+        tag = info.meta.imagetag
+        if info.meta.imagetags:
+            tags = {}
+            if isinstance(info.meta.imagetags, str):
+                tags = json.loads(info.meta.imagetags)
+            tag = ", ".join(set(tags.values()) | {tag})
+        tp.add_row([name, info.meta.owner, tag, status, url])
     tp.print()
 
 
@@ -1111,8 +1219,14 @@ def addtags(ctx, images, source_tag, dest_tag):
     config = ctx.obj["config"]
     ecrs = config.ecrs
     ecr_client = AwsSession.get_client(ctx, "ecr")
+    # Use a list of images managed by docker-compose by default.
+    if not images:
+        builder_config = {"ecr_repo": "", "env": ""}  # We don't need ECR names here.
+        builder = ArtifactBuilder(builder_config)
+        images = builder.get_compose_services().keys()
     for image_name, repository in ecrs.items():
-        if images and image_name not in images:
+        if image_name not in images:
+            print(f"Skipping {image_name}")
             continue
         print(f"retagging {image_name} from {source_tag} to {', '.join(dest_tag)}")
         registry_id = repository["url"].split(".")[0]
@@ -1141,34 +1255,6 @@ def get_ecr_repo(config):
     first_registry = first_repo["url"].split("/")[0]
     return first_registry
 
-def login_ecrs(images, ecrs, ecr_client):
-    """Login to all registries associated with images.
-
-    An item in images must be a key in ecrs, skipping any that is not, with a warning msg.
-
-    If images list is empty, assume that we are building and pushing everything, so
-    login everywhere.
-    """
-
-    registry_logins = set()
-    if not images:
-        registry_logins = set([entry["url"].split("/")[0] for entry in ecrs.values()])
-    else:
-        for image_name in images:
-            if image_name not in ecrs:
-                print(f"WARNING: Registry url for image {image_name} not found, please check config. Skipping...")
-                continue
-            registry_logins.add(ecrs[image_name]["url"].split("/")[0])
-
-    print("logging in to ECR...")
-    for registry in registry_logins:
-        # Equivalent to aws get-login-password
-        # We need to do this *before* a build now for buildkit's build cache to work.
-        auth = ecr_client.get_authorization_token()["authorizationData"][0]
-        auth_token = b64decode(auth["authorizationToken"]).decode()
-        pwd = auth_token.split(":")[1].encode()
-        cmd = subprocess.run(["docker", "login", "--username", "AWS", "--password-stdin", registry], input=pwd)
-        print(f"login to {registry}, done!")
 
 @cli.command()
 @click.argument("images", nargs=-1, default=None)
@@ -1184,7 +1270,15 @@ def push(ctx, images, tag, extra_tag, compose_env):
     ecrs = config.ecrs
     ecr_client = AwsSession.get_client(ctx, "ecr")
 
-    login_ecrs(images, ecrs, ecr_client)
+    # Equivalent to aws get-login-password
+    # We need to do this *before* a build now for buildkit's build cache to work.
+    print("logging in to ECR...")
+    first_registry = get_ecr_repo(config)
+    auth = ecr_client.get_authorization_token()["authorizationData"][0]
+    auth_token = b64decode(auth["authorizationToken"]).decode()
+    pwd = auth_token.split(":")[1].encode()
+    cmd = subprocess.run(["docker", "login", "--username", "AWS", "--password-stdin", first_registry], input=pwd)
+    print("login done!")
 
     if not tag:
         tag = generate_tag(ctx)
@@ -1192,16 +1286,9 @@ def push(ctx, images, tag, extra_tag, compose_env):
     builder_config = {}
     if compose_env:
         builder_config["env"] = compose_env
-    elif os.path.isfile(config.default_compose_env):
-        builder_config["env"] = config.default_compose_env
-
-    # NOTE: It's OK to set an arbitrary repo here because it's only
-    # used for buildkit caching during image building.
-    # Image pushing does not care about this setting, and will push
-    # images to the right places with some re-tagging.
-    first_registry = get_ecr_repo(config)
+    elif os.path.isfile(config.default_compose_env_file):
+        builder_config["env"] = config.default_compose_env_file
     builder_config["ecr_repo"] = first_registry  # TODO this is a leak in our abstraction, need to fix.
-
     builder = ArtifactBuilder(builder_config)
     artifacts = builder.build(images)
     print("Build complete")
