@@ -71,9 +71,13 @@ def get_plugin(plugin: str, version: str = None) -> dict:
         version = plugins[plugin]
     plugin_metadata = get_cache(f'cache/{plugin}/{version}.json')
     if plugin_metadata:
-        _, manifest_attributes = build_manifest_metadata(plugin, version)
-        plugin_metadata.update(manifest_attributes)
-        return plugin_metadata
+        try:
+            _, manifest_attributes = build_manifest_metadata(plugin, version)
+            plugin_metadata.update(manifest_attributes)
+            return plugin_metadata
+        except Exception as e:
+            error = str(e)
+            return {'error': error}
     else:
         return {}
 
