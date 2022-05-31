@@ -8,7 +8,6 @@
         "frontend",
         "backend"
     ],
-    "slice_default_tag": "branch-trunk",
     "environments": {
         "dev": {
             "aws_profile": "sci-imaging",
