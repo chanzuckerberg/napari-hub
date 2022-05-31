@@ -245,6 +245,11 @@ class Stack:
         if not self.workspace:
             raise Exception(f"Could not find TFE workspace for stack {self.stack_name}")
 
+    def wait(self, stack_name, wait, orchestrator, services=None):
+        """Saves the variables and applies the workspace"""
+        self._ensure_workspace()
+        return self.workspace.wait(stack_name, orchestrator, services)
+
     def apply(self, stack_name, wait, orchestrator, services=None):
         """Saves the variables and applies the workspace"""
         self._ensure_workspace()
@@ -467,16 +472,24 @@ class TFEWorkspace:
         self._outputs = None
         return True
 
-    def wait(self):
+    def wait(self, stack_name=None, orchestrator=None, services=None):
         RUN_DONE_STATUSES = {"applied", "discarded", "errored", "canceled", "force_canceled", "policy_soft_failed"}
         last_status = ""
+        status_start = time.time()
+        alert_after = 300 # How long to wait for an apply to complete before printing debug info
+        printed_alert = False
         while last_status not in RUN_DONE_STATUSES:
             if last_status:  # Skip sleep on first time
                 time.sleep(5)
             run = self.tfc.runs.show(self.latest_run_id)
             status = run["data"]["attributes"]["status"]
+            if not printed_alert and stack_name and status == "applying" and time.time() > status_start + alert_after:
+                print("This apply is taking an unusually long time. Are your containers crashing?")
+                orchestrator.get_events(stack_name, services)
+                printed_alert = True
             if status != last_status:
                 print(f"{datetime.now().strftime('%H:%M:%S')} - {status}")
+                status_start = time.time()
                 last_status = status
 
         if last_status != "applied":
