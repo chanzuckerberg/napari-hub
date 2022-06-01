@@ -28,6 +28,12 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v2
 
+      - name: Setup Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.9'
+          cache: 'pip'
+
       - name: Install dependencies
         run: |
           pip install --upgrade pip
