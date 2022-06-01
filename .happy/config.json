@@ -3,7 +3,11 @@
     "terraform_version": "0.13.5",
     "default_env": "dev",
     "app": "napari-hub",
-    "default_compose_env": ".env.ecr",
+    "default_compose_env_file": ".env.ecr",
+    "services": [
+        "frontend",
+        "backend"
+    ],
     "environments": {
         "dev": {
             "aws_profile": "sci-imaging",
