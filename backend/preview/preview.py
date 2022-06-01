@@ -1,4 +1,3 @@
-from time import sleep
 from typing import Union
 from git import Repo
 from pkginfo import Wheel
@@ -299,11 +298,6 @@ def get_manifest_attributes(plugin_name, repo_pth):
     or manifest discovery fails, return default empty values.
     """
     try:
-        # command = [sys.executable, "-m", "pip", "install", "-e", f'{repo_pth}']
-        # p = subprocess.Popen(command, stdout=subprocess.PIPE)
-        # while p.poll() is None:
-        #     l = p.stdout.readline()  # This blocks until it receives a newline.
-        #     print(l)
         manifest, is_npe2 = discover_manifest(plugin_name)
     except Exception as e:
         manifest = None
