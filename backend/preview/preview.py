@@ -285,10 +285,17 @@ def get_manifest_attributes(plugin_name, repo_pth):
     try:
         command = [sys.executable, "-m", "pip", "install", f'{repo_pth}']
         p = subprocess.Popen(command, stdout=subprocess.PIPE)
+        while p.poll() is None:
+            l = p.stdout.readline()  # This blocks until it receives a newline.
+            print(l)
         manifest, is_npe2 = discover_manifest(plugin_name)
-    except Exception:
+    except Exception as e:
         manifest = None
         is_npe2 = False
+        print(e)
     manifest_attributes = parse_manifest(manifest)
     manifest_attributes['npe2'] = is_npe2
     return manifest_attributes
+
+manifest_attributes = get_manifest_attributes('zarpaint', '/Users/klai/Desktop/zarpaint')
+print(manifest_attributes)
