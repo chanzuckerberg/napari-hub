@@ -40,7 +40,7 @@ jobs:
         with:
           python-version: '3.9'
           cache: 'pip'
-      - name: Install pip dependencies
+      - name: Install happy dependencies
         run: |
           pip install -r .happy/requirements.txt
       - name: Create update dev
