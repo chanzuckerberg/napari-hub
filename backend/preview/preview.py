@@ -296,6 +296,3 @@ def get_manifest_attributes(plugin_name, repo_pth):
     manifest_attributes = parse_manifest(manifest)
     manifest_attributes['npe2'] = is_npe2
     return manifest_attributes
-
-manifest_attributes = get_manifest_attributes('zarpaint', '/Users/klai/Desktop/zarpaint')
-print(manifest_attributes)
