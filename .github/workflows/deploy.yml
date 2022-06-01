@@ -32,6 +32,7 @@ jobs:
         with:
           python-version: '3.9'
           cache: 'pip'
+      - name: Install pip dependencies
         run: |
           pip install --upgrade pip
           pip install -r .happy/requirements.txt
@@ -66,6 +67,7 @@ jobs:
         with:
           python-version: '3.9'
           cache: 'pip'
+      - name: Install pip dependencies
         run: |
           pip install --upgrade pip
           pip install -r .happy/requirements.txt
