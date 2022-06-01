@@ -6,9 +6,12 @@ name: Frontend Tests
 on:
   push:
     branches:
-      - main
-    paths:
-      - 'frontend/**'
+      - 'dev-*'
+  #push:
+  #  branches:
+  #    - main
+  #  paths:
+  #    - 'frontend/**'
   pull_request:
     branches:
       - '**'
@@ -98,6 +101,7 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 16.x
+          cache: 'npm'
 
       - name: Get Yarn cache directory path
         id: yarn-cache-dir-path
