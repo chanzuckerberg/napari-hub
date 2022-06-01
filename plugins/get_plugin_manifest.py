@@ -9,6 +9,11 @@ s3 = boto3.client('s3')
 
 
 def lambda_handler(event, context):
+    """
+    Inspects the yaml file of the plugin to retrieve the value of process_count. If the value of process_count
+    is in the yaml file and it is less than max_failure_tries, then the method attempts to pip install the plugin
+    with its version, calls discover_manifest to return manifest and is_npe2, then write to designated location on s3.
+    """
     max_failure_tries = 2
     # Get the object from the event and show its content type
     bucket = event['Records'][0]['s3']['bucket']['name']
@@ -36,6 +41,10 @@ def lambda_handler(event, context):
 
 
 def failure_handler(event, context):
+    """
+    Inspects the yaml file of the plugin, and if process_count is in the yaml file, then the method
+    increments the value of process_count in the yaml file, then write to designated location on s3.
+    """
     yaml_path = event['requestPayload']['Records'][0]['s3']['object']['key']
     bucket = event['requestPayload']['Records'][0]['s3']['bucket']['name']
     response = s3.get_object(Bucket=bucket, Key=yaml_path)
