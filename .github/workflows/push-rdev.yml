@@ -35,6 +35,12 @@ jobs:
           registry: ${{ secrets.ECR_REPO }}
       - name: Checkout Repo
         uses: actions/checkout@v2
+      - name: Cache Pip
+        uses: actions/checkout@v3
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.9'
+          cache: 'pip'
       - name: Create update dev
         if: ${{ github.event_name == 'push' }}
         env:
