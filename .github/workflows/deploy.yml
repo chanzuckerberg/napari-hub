@@ -34,6 +34,7 @@ jobs:
           cache: 'pip'
       - name: Install happy dependencies
         run: |
+          pip install --upgrade pip
           pip install -r .happy/requirements.txt
       - name: Deploy Changes
         shell: bash
@@ -68,6 +69,7 @@ jobs:
           cache: 'pip'
       - name: Install happy dependencies
         run: |
+         pip install --upgrade pip
           pip install -r .happy/requirements.txt
       - name: Deploy Changes
         shell: bash
