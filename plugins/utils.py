@@ -13,4 +13,5 @@ def discover_manifest(plugin_name):
         # forcing lazy discovery to run
         list(pm.iter_widgets())
         manifest = pm.get_manifest(plugin_name)
+    print(manifest.yaml())
     return manifest, is_npe2
