@@ -35,8 +35,8 @@ def lambda_handler(event, context):
         except KeyError:
             pm.discover(include_npe1=True)
             body = "#npe1\n"
-            # discovery seems to be on access; trying this here to improve results
-            pm.get_manifest(pluginName)._load_contributions()
+            # forcing lazy discovery to run
+            list(pm.iter_widgets())
             manifest = pm.get_manifest(pluginName)
         s3_client = boto3.client('s3')
         response = s3_client.delete_object(
