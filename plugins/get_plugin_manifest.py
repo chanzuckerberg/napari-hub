@@ -36,6 +36,8 @@ def lambda_handler(event, context):
             pm.discover(include_npe1=True)
             body = "#npe1\n"
             manifest = pm.get_manifest(pluginName)
+        # discovery seems to be on access; trying this here to improve results
+        manifest.contributions
         s3_client = boto3.client('s3')
         response = s3_client.delete_object(
             Bucket=bucket,
