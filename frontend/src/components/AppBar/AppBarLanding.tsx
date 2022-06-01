@@ -44,7 +44,7 @@ export function AppBarLanding() {
       classes={{
         // Use 3-column layout instead of 4-column.
         fourColumn: 'screen-1150:grid-cols-napari-3',
-        gap: 'gap-x-6 md:gap-x-12',
+        gap: 'gap-x-6 screen-495:gap-x-12',
       }}
       component="header"
     >

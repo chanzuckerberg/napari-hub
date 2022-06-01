@@ -38,7 +38,7 @@ interface Props<T extends HTMLKey, Ref> extends HTMLProps<ReactHTML[T]> {
 }
 
 const defaultClasses: Classes = {
-  gap: 'gap-6 md:gap-12',
+  gap: 'gap-6 screen-495:gap-12',
   twoColumn: 'grid-cols-2',
   threeColumn: 'screen-875:grid-cols-napari-3',
   fourColumn: 'screen-1150:grid-cols-napari-4',

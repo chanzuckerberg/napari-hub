@@ -48,7 +48,7 @@ body {
     Limit minimum width to 300px so that the the body will begin overflowing
     for viewports smaller than 300px.
   */
-  @apply min-w-napari-xs;
+  min-width: 300px;
 }
 /* stylelint-enable */
 

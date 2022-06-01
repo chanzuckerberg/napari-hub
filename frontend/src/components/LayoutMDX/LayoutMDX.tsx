@@ -24,7 +24,7 @@ export function LayoutMDX({ toc, title, children }: Props) {
         <title>napari hub | {title}</title>
       </Head>
 
-      <ColumnLayout className="p-6 md:p-12 screen-1150:px-0">
+      <ColumnLayout className="p-6 screen-495:p-12 screen-1150:px-0">
         <article
           className={clsx(
             styles.markdown,

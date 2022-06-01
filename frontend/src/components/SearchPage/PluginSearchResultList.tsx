@@ -90,7 +90,7 @@ export function PluginSearchResultList() {
           threeColumn: '',
           fiveColumn: '',
           fourColumn: '',
-          gap: 'gap-x-6 md:gap-x-12',
+          gap: 'gap-x-6 screen-495:gap-x-12',
         }}
       >
         <SearchResultItems />
