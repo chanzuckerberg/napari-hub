@@ -18,7 +18,7 @@ index_subset = {'name', 'summary', 'description_text', 'description_content_type
                 'authors', 'license', 'python_version', 'operating_system',
                 'release_date', 'version', 'first_released',
                 'development_status', 'category', 'display_name', 'plugin_types', 'reader_file_extensions',
-                'writer_file_extensions', 'writer_save_layers'}
+                'writer_file_extensions', 'writer_save_layers', 'npe2'}
 
 
 def get_public_plugins() -> Dict[str, str]:
