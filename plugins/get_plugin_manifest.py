@@ -1,11 +1,9 @@
-import json
 import urllib.parse
 import boto3
 import yaml
-import requests
 import subprocess
 import sys
-from npe2 import PluginManager
+from .utils import discover_manifest
 
 s3 = boto3.client('s3')
 
@@ -27,17 +25,8 @@ def lambda_handler(event, context):
         while p.poll() is None:
             l = p.stdout.readline()  # This blocks until it receives a newline.
         sys.path.insert(0, "/tmp/" + pluginName)
-        pm = PluginManager()
-        pm.discover(include_npe1=False)
-        body = "#npe2\n"
-        try:
-            manifest = pm.get_manifest(pluginName)
-        except KeyError:
-            pm.discover(include_npe1=True)
-            body = "#npe1\n"
-            # forcing lazy discovery to run
-            list(pm.iter_widgets())
-            manifest = pm.get_manifest(pluginName)
+        manifest, is_npe2 = discover_manifest(pluginName)
+        body = '#npe2' if is_npe2 else "#npe1"
         s3_client = boto3.client('s3')
         response = s3_client.delete_object(
             Bucket=bucket,

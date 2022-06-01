@@ -9,9 +9,10 @@ import glob
 import os
 import json
 import requests
-from utils.utils import get_category_mapping
+from utils.utils import get_category_mapping, parse_manifest
 from utils.github import github_pattern, get_github_metadata, get_github_repo_url
 from utils.pypi import get_plugin_pypi_metadata
+from plugins.utils import discover_manifest
 
 
 def get_plugin_preview(repo_pth: str, dest_dir: str, is_local: bool = False, branch: str = 'HEAD'):
@@ -72,6 +73,8 @@ def get_plugin_preview(repo_pth: str, dest_dir: str, is_local: bool = False, bra
     meta.update(github_metadata)
     # get release date and first released
     get_pypi_date_meta(meta)
+    manifest_attributes = get_manifest_attributes(meta['name'], repo_pth)
+    meta.update(manifest_attributes)
 
     # write json
     with open(os.path.join(dest_dir, "preview_meta.json"), "w") as f:
@@ -262,6 +265,7 @@ def get_pypi_date_meta(meta):
     meta["release_date"] = release_date
     meta["first_released"] = first_released
 
+
 def populate_source_code_url(meta):
     """Pattern match project_site as GitHub URL when source code url missing
 
@@ -271,3 +275,20 @@ def populate_source_code_url(meta):
         match = github_pattern.match(meta["project_site"])
         if match:
             meta["code_repository"] = match.group(0)
+
+
+def get_manifest_attributes(plugin_name, repo_pth):
+    """
+    Try to install plugin and discover manifest values. If install
+    or manifest discovery fails, return default empty values.
+    """
+    try:
+        command = [sys.executable, "-m", "pip", "install", f'{repo_pth}']
+        p = subprocess.Popen(command, stdout=subprocess.PIPE)
+        manifest, is_npe2 = discover_manifest(plugin_name)
+    except Exception:
+        manifest = None
+        is_npe2 = False
+    manifest_attributes = parse_manifest(manifest)
+    manifest_attributes['npe2'] = is_npe2
+    return manifest_attributes
