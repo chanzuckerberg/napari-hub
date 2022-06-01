@@ -68,6 +68,13 @@ def cache(content: Union[dict, list, IO[bytes]], key: str, mime: str = None, for
 
 
 def is_npe2_plugin(plugin, version):
+    """
+    Return True if the plugin is npe2, False otherwise.
+
+    :param plugin: name of plugin
+    :param version: version of plugin
+    :return: True if npe2, False otherwise
+    """
     key = f'cache/{plugin}/{version}.yaml'
     try:
         manifest_body = s3_client.get_object(Bucket=bucket, Key=os.path.join(bucket_path, key))['Body']

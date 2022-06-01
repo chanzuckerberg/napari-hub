@@ -306,4 +306,3 @@ def get_manifest_attributes(plugin_name, repo_pth):
     manifest_attributes = parse_manifest(manifest)
     manifest_attributes['npe2'] = is_npe2
     return manifest_attributes
-

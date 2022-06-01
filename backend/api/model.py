@@ -58,7 +58,7 @@ def get_valid_plugins() -> Dict[str, str]:
 
 def get_plugin(plugin: str, version: str = None) -> dict:
     """
-    Get plugin metadata for a particular plugin, get latest if version is None.
+    Get plugin and manifest metadata for a particular plugin, get latest if version is None.
 
     :param plugin: name of the plugin to get
     :param version: version of the plugin
@@ -174,6 +174,11 @@ def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
 
 
 def build_manifest_metadata(plugin: str, version: str):
+    """
+    Build manifest metadata given plugin and version, return default values if unavailable.
+
+    :return: dict for aggregated plugin metadata
+    """
     manifest_yaml_dict = get_manifest(plugin, version)
     if not manifest_yaml_dict or 'process_count' in manifest_yaml_dict:
         default_vals = parse_manifest()
