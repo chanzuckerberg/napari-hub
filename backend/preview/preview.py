@@ -1,3 +1,4 @@
+from time import sleep
 from typing import Union
 from git import Repo
 from pkginfo import Wheel
@@ -12,8 +13,6 @@ import requests
 from utils.utils import get_category_mapping, parse_manifest
 from utils.github import github_pattern, get_github_metadata, get_github_repo_url
 from utils.pypi import get_plugin_pypi_metadata
-from plugins.utils import discover_manifest
-
 
 def get_plugin_preview(repo_pth: str, dest_dir: str, is_local: bool = False, branch: str = 'HEAD'):
     """Get plugin preview metadata of package at repo_pth.
@@ -276,6 +275,23 @@ def populate_source_code_url(meta):
         if match:
             meta["code_repository"] = match.group(0)
 
+def discover_manifest(plugin_name):
+    from npe2 import PluginManager
+    pm = PluginManager()
+    print("Discovering npe2")
+    pm.discover(include_npe1=False)
+    is_npe2 = True
+    try:
+        manifest = pm.get_manifest(plugin_name)
+    except KeyError:
+        print("Discovering npe1...")
+        pm.discover(include_npe1=True)
+        is_npe2 = False
+        # forcing lazy discovery to run
+        my_widgs = list(pm.iter_widgets())
+        manifest = pm.get_manifest(plugin_name)
+    return manifest, is_npe2
+
 
 def get_manifest_attributes(plugin_name, repo_pth):
     """
@@ -283,11 +299,11 @@ def get_manifest_attributes(plugin_name, repo_pth):
     or manifest discovery fails, return default empty values.
     """
     try:
-        command = [sys.executable, "-m", "pip", "install", f'{repo_pth}']
-        p = subprocess.Popen(command, stdout=subprocess.PIPE)
-        while p.poll() is None:
-            l = p.stdout.readline()  # This blocks until it receives a newline.
-            print(l)
+        # command = [sys.executable, "-m", "pip", "install", "-e", f'{repo_pth}']
+        # p = subprocess.Popen(command, stdout=subprocess.PIPE)
+        # while p.poll() is None:
+        #     l = p.stdout.readline()  # This blocks until it receives a newline.
+        #     print(l)
         manifest, is_npe2 = discover_manifest(plugin_name)
     except Exception as e:
         manifest = None
@@ -297,5 +313,3 @@ def get_manifest_attributes(plugin_name, repo_pth):
     manifest_attributes['npe2'] = is_npe2
     return manifest_attributes
 
-manifest_attributes = get_manifest_attributes('zarpaint', '/Users/klai/Desktop/zarpaint')
-print(manifest_attributes)
