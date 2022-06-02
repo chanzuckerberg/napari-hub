@@ -19,8 +19,13 @@ def discover_manifest(plugin_name):
         pm.discover(include_npe1=True)
         is_npe2 = False
         # forcing lazy discovery to run
+        list(pm.iter_compatible_readers(['my_path.tif']))
+        list(pm.iter_compatible_writers(['image']))
         list(pm.iter_widgets())
+        list(pm.iter_themes())
         manifest = pm.get_manifest(plugin_name)
+        manifest_contr = manifest.contributions
+        print(manifest_contr)
     return manifest, is_npe2
 
 
