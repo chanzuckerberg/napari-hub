@@ -35,11 +35,8 @@ jobs:
 
       - name: Setup Node
         uses: actions/setup-node@v2
-        #id: yarn-cache
         with:
           node-version: 16.x
-          #cache: yarn
-          #cache-dependency-path: frontend
 
       - name: Get Yarn cache directory path
         id: yarn-cache-dir-path
@@ -57,12 +54,6 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
-
-      # added a one line yarn cacher from https://github.com/c-hive/gha-yarn-cache
-      #- name: Setup Yarn cache in one liner
-      #  uses: c-hive/gha-yarn-cache@v2
-      #  with:
-      #    directory: frontend
 
       - name: Install dependencies with yarn
         run: yarn install --prefer-offline
@@ -145,7 +136,6 @@ jobs:
           NODE_ENV: production
 
       - name: Run E2E Tests for ${{ matrix.browser }}
-        if: steps.yarn-cache.outputs.cache-hit != 'true' 
         env:
           BROWSER: ${{ matrix.browser }}
         run: yarn e2e
