@@ -40,7 +40,7 @@ jobs:
 
       # added a one line yarn cacher from https://github.com/c-hive/gha-yarn-cache
       - name: Setup Yarn cache in one liner
-      - uses: c-hive/gha-yarn-cache@v2
+        uses: c-hive/gha-yarn-cache@v2
         with:
           directory: frontend
 
