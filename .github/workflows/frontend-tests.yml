@@ -38,20 +38,10 @@ jobs:
         with:
           node-version: 16.x
 
-      - name: Get Yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-
-      - name: Setup Yarn cache
-        uses: actions/cache@v2
-        # use this to check for `cache-hit`:
-        # (`steps.yarn-cache.outputs.cache-hit != 'true'`)
-        id: yarn-cache
+      # added a one line yarn cacher from https://github.com/c-hive/gha-yarn-cache
+      - uses: c-hive/gha-yarn-cache@v2
         with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
+          directory: frontend
 
       - name: Install dependencies with yarn
         run: yarn install
@@ -118,11 +108,9 @@ jobs:
             ${{ runner.os }}-yarn-
 
       - name: Install dependencies with yarn
-        if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: yarn install
 
       - name: Build for production
-        if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: yarn build
 
       - name: Start mock server on port 8081
