@@ -1,0 +1,11 @@
+{
+  "collectionsPage": {
+    "title": "Collections",
+    "intro": "Useful, awesome, and interesting plugins curated by the napari community.",
+    "protocols": "<bold>Protocols</bold> show how to use a set of plugins to complete an image analysis workflow",
+    "toolkits": "<bold>Toolkits</bold> are great for getting started within a research domain",
+    "assortments": "<bold>Assortments</bold> are connected by a central theme",
+    "createCollection": "Create a new collection",
+    "fetchError": "Server Error: Unable to get collections"
+  }
+}

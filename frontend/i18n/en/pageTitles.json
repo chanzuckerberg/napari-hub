@@ -2,6 +2,7 @@
   "base": "napari hub",
   "home": "$t(base) | search",
   "preview": "preview",
+  "collections": "$t(base) | collections",
   "plugin": {
     "base": "$t(base) | plugins",
     "loading": "loading",
