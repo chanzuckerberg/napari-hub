@@ -115,6 +115,7 @@ jobs:
         with:
           path: |
             **/node_modules
+            **/.jest-cache
             ${{ steps.yarn-cache-dir-path.outputs.dir }}
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |

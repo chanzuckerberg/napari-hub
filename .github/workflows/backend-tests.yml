@@ -43,12 +43,11 @@ jobs:
           python-version: "3.9"
 
       - name: Cache Python environment
-      - uses: 'actions/cache@v2'
+        uses: 'actions/cache@v2'
         id: pip-cache
         with:
           path: ${{ env.pythonLocation }}
           key: ${{ env.pythonLocation }}-${{ hashFiles('setup.py') }}-${{ hashFiles('dev-requirements.txt') }}
-
 
       - name: Install dependencies
         run: |
