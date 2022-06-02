@@ -5,9 +5,12 @@ name: Backend Tests
 on:
   push:
     branches:
-      - main
-    paths:
-      - 'backend/**'
+      - 'dev-*'
+  #push:
+  #  branches:
+  #    - main
+  #  paths:
+  #    - 'backend/**'
   pull_request:
     branches:
       - '**'
@@ -28,14 +31,8 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v2
 
-      #- name: Setup Python
-      #  uses: actions/setup-python@v3
-      #  with:
-      #    python-version: '3.9'
-      #    cache: 'pip'
-
       - name: Setup Python
-        uses: 'actions/setup-python@v2'
+        uses: 'actions/setup-python@v3'
         with:
           python-version: "3.9"
 
