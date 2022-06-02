@@ -52,6 +52,7 @@ jobs:
             **/node_modules
             **/.eslintcache
             **/jest_rs
+            **/.jest-cache
             ${{ steps.yarn-cache-dir-path.outputs.dir }}
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
