@@ -15,4 +15,4 @@ pkginfo
 datadog-lambda
 build
 pyOpenSSL
-npe2 # for npe2 manifest work and could potentially be moved to installation at runtime
+npe2

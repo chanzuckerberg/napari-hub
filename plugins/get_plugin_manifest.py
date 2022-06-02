@@ -8,7 +8,7 @@ from .utils import discover_manifest
 s3 = boto3.client('s3')
 
 
-def lambda_handler(event, context):
+def generate_manifest(event, context):
     """
     Inspects the yaml file of the plugin to retrieve the value of process_count. If the value of process_count
     is in the yaml file and it is less than max_failure_tries, then the method attempts to pip install the plugin

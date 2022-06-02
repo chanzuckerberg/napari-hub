@@ -133,17 +133,12 @@ def parse_manifest(manifest: Optional[PluginManifest] = None):
 
     :param manifest: raw manifest
     """
-    display_name = ''
-    plugin_types = []
-    reader_file_extensions = []
-    writer_file_extensions = []
-    writer_save_layers = []
     manifest_attributes = {
-        'display_name': display_name,
-        'plugin_types': plugin_types,
-        'reader_file_extensions': reader_file_extensions,
-        'writer_file_extensions': writer_file_extensions,
-        'writer_save_layers': writer_save_layers,
+        'display_name': '',
+        'plugin_types': [],
+        'reader_file_extensions': [],
+        'writer_file_extensions': [],
+        'writer_save_layers': [],
     }
     if manifest is None:
         return manifest_attributes
