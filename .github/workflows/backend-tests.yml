@@ -5,12 +5,9 @@ name: Backend Tests
 on:
   push:
     branches:
-      - 'dev-*'
-  #push:
-  #  branches:
-  #    - main
-  #  paths:
-  #    - 'backend/**'
+      - main
+    paths:
+      - 'backend/**'
   pull_request:
     branches:
       - '**'

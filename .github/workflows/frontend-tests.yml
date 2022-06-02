@@ -6,12 +6,9 @@ name: Frontend Tests
 on:
   push:
     branches:
-      - 'dev-*'
-  #push:
-  #  branches:
-  #    - main
-  #  paths:
-  #    - 'frontend/**'
+      - main
+    paths:
+      - 'frontend/**'
   pull_request:
     branches:
       - '**'
