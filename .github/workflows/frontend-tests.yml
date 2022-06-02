@@ -138,4 +138,6 @@ jobs:
       - name: Run E2E Tests for ${{ matrix.browser }}
         env:
           BROWSER: ${{ matrix.browser }}
-        run: yarn e2e
+        run: |
+          npx playwright install
+          yarn e2e
