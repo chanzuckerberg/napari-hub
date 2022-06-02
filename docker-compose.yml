@@ -24,7 +24,7 @@ services:
     build:
       context: frontend
       cache_from:
-        - '${DOCKER_REPO}napari-hub-dev-frontend'
+        - '${HAPPY_BRANCH}'
       args:
         - BUILDKIT_INLINE_CACHE=1
         - HAPPY_COMMIT
@@ -55,7 +55,7 @@ services:
     build:
       context: backend
       cache_from:
-        - '${DOCKER_REPO}napari-hub-dev-backend'
+        - '${HAPPY_BRANCH}'
       args:
         - BUILDKIT_INLINE_CACHE=1
         - HAPPY_COMMIT
