@@ -19,19 +19,6 @@ export function usePageMetadata(pathname: string): PageMetadata | undefined {
   const [t] = useTranslation(['common']);
 
   const pageMetadata = {
-    home: {
-      regex: /^\/$/,
-      keywords: [
-        ...COMMON_KEYWORDS,
-        'workflow',
-        'find',
-        'python',
-        'pypi',
-        'algorithm',
-      ],
-      description: t('common:htmlMeta.home.description'),
-    },
-
     about: {
       regex: /^\/about$/,
       keywords: [...COMMON_KEYWORDS, 'about'],
@@ -68,6 +55,31 @@ export function usePageMetadata(pathname: string): PageMetadata | undefined {
       regex: /^\/plugins\/.*$/,
       keywords: [...COMMON_KEYWORDS],
       description: '',
+    },
+
+    collections: {
+      regex: /^\/collections$/,
+      keywords: [...COMMON_KEYWORDS, 'collections'],
+      description: t('common:htmlMeta.collections.description'),
+    },
+
+    collection: {
+      regex: /^\/collections\/.*$/,
+      keywords: [...COMMON_KEYWORDS, 'collections'],
+      description: '',
+    },
+
+    home: {
+      regex: /^\/$/,
+      keywords: [
+        ...COMMON_KEYWORDS,
+        'workflow',
+        'find',
+        'python',
+        'pypi',
+        'algorithm',
+      ],
+      description: t('common:htmlMeta.home.description'),
     },
   };
 
