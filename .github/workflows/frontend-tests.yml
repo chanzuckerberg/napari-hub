@@ -39,9 +39,9 @@ jobs:
           node-version: 16.x
 
       # added a one line yarn cacher from https://github.com/c-hive/gha-yarn-cache
-       - uses: c-hive/gha-yarn-cache@v2
-         with:
-           directory: frontend
+      - uses: c-hive/gha-yarn-cache@v2
+        with:
+          directory: frontend
 
       - name: Install dependencies with yarn
         run: yarn install
