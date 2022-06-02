@@ -48,8 +48,7 @@ jobs:
       #    directory: frontend
 
       - name: Install dependencies with yarn
-        if: steps.yarn-cache.outputs.cache-hit != 'true' 
-        run: yarn install --prefer-offline
+        run: yarn install --frozen-lockfile --prefer-offline
 
       - name: ${{ matrix.name }}
         run: ${{ matrix.run }}
