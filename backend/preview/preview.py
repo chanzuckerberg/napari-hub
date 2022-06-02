@@ -13,6 +13,7 @@ from utils.utils import get_category_mapping, parse_manifest
 from utils.github import github_pattern, get_github_metadata, get_github_repo_url
 from utils.pypi import get_plugin_pypi_metadata
 
+
 def get_plugin_preview(repo_pth: str, dest_dir: str, is_local: bool = False, branch: str = 'HEAD'):
     """Get plugin preview metadata of package at repo_pth.
 

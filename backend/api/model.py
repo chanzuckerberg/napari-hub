@@ -19,6 +19,7 @@ index_subset = {'name', 'summary', 'description_text', 'description_content_type
                 'development_status', 'category', 'display_name', 'plugin_types', 'reader_file_extensions',
                 'writer_file_extensions', 'writer_save_layers', 'npe2',  'conda'}
 
+
 def get_public_plugins() -> Dict[str, str]:
     """
     Get the dictionary of public plugins and versions.
