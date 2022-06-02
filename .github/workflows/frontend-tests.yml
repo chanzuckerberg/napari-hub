@@ -38,6 +38,7 @@ jobs:
         with:
           node-version: 16.x
           cache: yarn
+          cache-dependency-path: frontend
 
       # added a one line yarn cacher from https://github.com/c-hive/gha-yarn-cache
       #- name: Setup Yarn cache in one liner
