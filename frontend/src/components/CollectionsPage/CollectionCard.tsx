@@ -42,12 +42,7 @@ export function CollectionCard({ collection }: Props) {
       >
         {collection.title}
       </h2>
-      <p
-        className={clsx(
-          'text-[11px] screen-495:text-[14px]',
-          LINE_HEIGHT_CLASS_NAME,
-        )}
-      >
+      <p className="text-[11px] screen-495:text-[14px] leading-[150%]">
         {collection.summary}
       </p>
 

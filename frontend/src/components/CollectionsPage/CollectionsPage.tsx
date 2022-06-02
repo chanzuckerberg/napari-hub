@@ -23,7 +23,7 @@ function Intro() {
   return (
     <div
       className={clsx(
-        'mt-6 screen-495:mt-12',
+        'pt-[14px] screen-495:pt-[40px]',
         'col-span-2 screen-875:col-span-3',
         'screen-1425:row-start-2 screen-1425:col-start-2',
         'text-[11px] screen-495:text-[17px]',
@@ -112,7 +112,7 @@ export function CollectionsPage() {
     <div
       className={clsx(
         'pt-[14px] screen-495:pt-[40px]',
-        'pb-6 px-6 screen-495:pb-12 screen-495:px-12',
+        'pb-[75px] px-6 screen-495:px-12',
         'grid grid-cols-2 screen-875:grid-cols-3 screen-1425:grid-cols-napari-5',
         'justify-center',
         'gap-x-6 screen-495:gap-x-12',
