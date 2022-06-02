@@ -109,7 +109,6 @@ jobs:
             ${{ runner.os }}-yarn-
 
       - name: Install dependencies with yarn
-        if: steps.yarn-cache.outputs.cache-hit != 'true' 
         run: yarn install
 
       - name: Build for production
@@ -124,6 +123,7 @@ jobs:
           NODE_ENV: production
 
       - name: Run E2E Tests for ${{ matrix.browser }}
+        if: steps.yarn-cache.outputs.cache-hit != 'true' 
         env:
           BROWSER: ${{ matrix.browser }}
         run: yarn e2e
