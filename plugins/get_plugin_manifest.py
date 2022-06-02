@@ -3,12 +3,32 @@ import boto3
 import yaml
 import subprocess
 import sys
-from .utils import discover_manifest
+from npe2 import PluginManager
 
 s3 = boto3.client('s3')
 
 
-def lambda_handler(event, context):
+def discover_manifest(plugin_name):
+    pm = PluginManager()
+    pm.discover(include_npe1=False)
+    is_npe2 = True
+    try:
+        manifest = pm.get_manifest(plugin_name)
+    except KeyError:
+        pm.discover(include_npe1=True)
+        is_npe2 = False
+        # forcing lazy discovery to run
+        list(pm.iter_compatible_readers(['my_path.tif']))
+        list(pm.iter_compatible_writers(['image']))
+        list(pm.iter_widgets())
+        list(pm.iter_themes())
+        manifest = pm.get_manifest(plugin_name)
+        manifest_contr = manifest.contributions
+        print(manifest_contr)
+    return manifest, is_npe2
+
+
+def generate_manifest(event, context):
     """
     Inspects the yaml file of the plugin to retrieve the value of process_count. If the value of process_count
     is in the yaml file and it is less than max_failure_tries, then the method attempts to pip install the plugin
@@ -37,7 +57,7 @@ def lambda_handler(event, context):
             Bucket=bucket,
             Key=key
         )
-        s3_client.put_object(Body=body+manifest.yaml(), Bucket=bucket, Key=key)
+        s3_client.put_object(Body=body+"\n"+manifest.yaml(), Bucket=bucket, Key=key)
 
 
 def failure_handler(event, context):

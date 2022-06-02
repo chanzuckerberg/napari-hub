@@ -19,6 +19,7 @@ index_subset = {'name', 'summary', 'description_text', 'description_content_type
                 'development_status', 'category', 'display_name', 'plugin_types', 'reader_file_extensions',
                 'writer_file_extensions', 'writer_save_layers', 'npe2',  'conda'}
 
+
 def get_public_plugins() -> Dict[str, str]:
     """
     Get the dictionary of public plugins and versions.
@@ -69,13 +70,9 @@ def get_plugin(plugin: str, version: str = None) -> dict:
         version = plugins[plugin]
     plugin_metadata = get_cache(f'cache/{plugin}/{version}.json')
     if plugin_metadata:
-        try:
-            _, manifest_attributes = build_manifest_metadata(plugin, version)
-            plugin_metadata.update(manifest_attributes)
-            return plugin_metadata
-        except Exception as e:
-            error = str(e)
-            return {'error': error}
+        _, manifest_attributes = build_manifest_metadata(plugin, version)
+        plugin_metadata.update(manifest_attributes)
+        return plugin_metadata
     else:
         return {}
 
@@ -207,8 +204,8 @@ def update_cache():
     """
     plugins = query_pypi()
     plugins_metadata = get_plugin_metadata_async(plugins, build_plugin_metadata)
-    excluded_plugins = get_updated_plugin_exclusion(plugins_metadata)
     manifest_metadata = get_plugin_metadata_async(plugins, build_manifest_metadata)
+    excluded_plugins = get_updated_plugin_exclusion(plugins_metadata)
     for plugin in plugins_metadata:
         plugins_metadata[plugin].update(manifest_metadata[plugin])
 
