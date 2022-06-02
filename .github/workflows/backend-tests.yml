@@ -37,7 +37,7 @@ jobs:
           python-version: "3.9"
 
       - name: Cache Python environment
-        uses: 'actions/cache@v2'
+        uses: 'actions/cache@v3'
         id: pip-cache
         with:
           path: ${{ env.pythonLocation }}
