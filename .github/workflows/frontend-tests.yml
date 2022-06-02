@@ -6,9 +6,12 @@ name: Frontend Tests
 on:
   push:
     branches:
-      - main
-    paths:
-      - 'frontend/**'
+      - 'dev-*'
+  #push:
+  #  branches:
+  #    - main
+  #  paths:
+  #    - 'frontend/**'
   pull_request:
     branches:
       - '**'
@@ -41,7 +44,7 @@ jobs:
 
       # cache both yarn-lock and node_modules
       - name: Setup Yarn cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         id: yarn-cache
         with:
           path: |
@@ -107,7 +110,7 @@ jobs:
 
       # cache both yarn-lock and node_modules
       - name: Setup Yarn cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         id: yarn-cache
         with:
           path: |

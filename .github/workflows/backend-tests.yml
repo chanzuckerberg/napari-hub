@@ -32,12 +32,12 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Setup Python
-        uses: 'actions/setup-python@v3'
+        uses: actions/setup-python@v3
         with:
           python-version: "3.9"
 
       - name: Cache Python environment
-        uses: 'actions/cache@v3'
+        uses: actions/cache@v3
         id: pip-cache
         with:
           path: ${{ env.pythonLocation }}
