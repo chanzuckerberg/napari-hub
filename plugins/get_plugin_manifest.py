@@ -1,4 +1,3 @@
-print("hi")
 import urllib.parse
 import boto3
 import yaml
