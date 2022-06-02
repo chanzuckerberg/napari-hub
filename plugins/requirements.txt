@@ -4,3 +4,4 @@ pyyaml
 napari
 npe2
 numpy
+pyqt5
