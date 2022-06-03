@@ -135,9 +135,10 @@ jobs:
         env:
           NODE_ENV: production
 
+      - name: Install playwright
+        run: npx playwright install
+
       - name: Run E2E Tests for ${{ matrix.browser }}
         env:
           BROWSER: ${{ matrix.browser }}
-        run: |
-          npx playwright install
-          yarn e2e
+        run: yarn e2e
