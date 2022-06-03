@@ -3,9 +3,8 @@
   "home": "$t(base) | search",
   "preview": "preview",
   "collections": "$t(base) | collections",
-  "plugin": {
-    "base": "$t(base) | plugins",
-    "loading": "loading",
-    "by": "by"
-  }
+  "by": "by",
+  "loading": "loading",
+  "collection": "$t(base) | collection",
+  "plugin": "$t(base) | plugin"
 }
