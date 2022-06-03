@@ -4,6 +4,7 @@ import { Link } from 'src/components/Link';
 
 import { formatDate } from '@/utils';
 
+import { CollectionLinks } from './CollectionLinks';
 import { useCollection } from './context';
 
 export function CollectionInfo() {
@@ -58,6 +59,8 @@ export function CollectionInfo() {
           </Link>
         )}
       </p>
+
+      <CollectionLinks />
 
       <p
         className={clsx(
