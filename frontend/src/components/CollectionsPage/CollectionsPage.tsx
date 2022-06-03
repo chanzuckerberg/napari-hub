@@ -113,7 +113,7 @@ export function CollectionsPage() {
       className={clsx(
         'pt-[14px] screen-495:pt-[40px]',
         'pb-[75px] px-6 screen-495:px-12',
-        'grid grid-cols-2 screen-875:grid-cols-3 screen-1425:grid-cols-napari-5',
+        'grid grid-cols-2 screen-875:grid-cols-napari-3 screen-1425:grid-cols-napari-5',
         'justify-center',
         'gap-x-6 screen-495:gap-x-12',
       )}
