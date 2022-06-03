@@ -110,15 +110,15 @@ export default function Plugin({ error, plugin, repo, repoFetchError }: Props) {
   const [t] = useTranslation(['pageTitles', 'pluginPage']);
 
   const keywords: string[] = [];
-  let title = t('pageTitles:plugin.base');
+  let title = t('pageTitles:plugin');
   if (isLoading) {
-    title = `${title} | ${t('pageTitles:plugin.loading')}...`;
+    title = `${title} | ${t('pageTitles:loading')}...`;
   } else if (plugin?.name && plugin?.authors) {
     title = `${title} | ${plugin.name}`;
 
     const authors = plugin.authors.map(({ name }) => name).join(', ');
     if (authors) {
-      title = `${title} ${t('pageTitles:plugin.by')} ${authors}`;
+      title = `${title} ${t('pageTitles:by')} ${authors}`;
     }
 
     for (const { name } of plugin.authors ?? []) {
