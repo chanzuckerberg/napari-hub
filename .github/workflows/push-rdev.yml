@@ -42,11 +42,11 @@ jobs:
           echo "Stack name : $STACK_NAME"
           echo "::set-output name=stack::$STACK_NAME"
           TAG_NAME=${GITHUB_REF#refs/heads/}
-          echo "Stack name : $TAG_NAME"
+          echo "Tag name : $TAG_NAME"
           echo "::set-output name=tag::$TAG_NAME"
       - name: Create update dev
         if: ${{ github.event_name == 'push' }}
-        uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.2.1
+        uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.3.1
         with:
           stack-name: ${{ steps.names.outputs.stack }}
           tag: ${{ steps.names.outputs.tag }}
