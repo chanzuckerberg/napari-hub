@@ -42,7 +42,7 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install -r .happy/requirements.txt
-          DEV_NAME=${GITHUB_REF#refs/heads/dev-}
+          DEV_NAME=${HAPPY_BRANCH}
           if $(./scripts/happy --profile="" list | grep -q $DEV_NAME); then
             echo "Updating stack $DEV_NAME"
             ./scripts/happy --profile="" update $DEV_NAME

@@ -4,9 +4,9 @@ FROM node:16-alpine AS builder
 WORKDIR /app
 
 # Install dependencies
+COPY postinstall.js /app/
 COPY package.json /app/
 COPY yarn.lock /app/
-COPY postinstall.js /app/
 COPY eslint/ /app/eslint/
 RUN yarn install
 
@@ -21,9 +21,9 @@ FROM node:16-alpine
 WORKDIR /app
 
 # Install dependencies for production
+COPY postinstall.js /app/
 COPY package.json /app/
 COPY yarn.lock /app/
-COPY postinstall.js /app/
 COPY eslint/ /app/eslint/
 ENV NODE_ENV=production
 RUN yarn install
