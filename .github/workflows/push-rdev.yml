@@ -43,9 +43,6 @@ jobs:
           tag: ${GITHUB_REF#refs/heads/}
           tfe-token: ${{ secrets.TFE_TOKEN }}
           happy_version: "0.20.0"
-  env:
-    description: "The environment to update or create"
-    required: false
       - name: Delete dev
         if: ${{ github.event_name == 'delete' && startsWith(github.event.ref, 'dev-') }}
         env:
