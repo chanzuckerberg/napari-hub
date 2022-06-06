@@ -4,7 +4,6 @@ import yaml
 import subprocess
 import sys
 from npe2 import PluginManager
-from PyQt5.QtWidgets import QLabel
 
 s3 = boto3.client('s3')
 
