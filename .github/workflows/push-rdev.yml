@@ -35,12 +35,21 @@ jobs:
           registry: ${{ secrets.ECR_REPO }}
       - name: Checkout Repo
         uses: actions/checkout@v2
+      - name: Create Stack and tag name
+        id: names
+        run: |
+          STACK_NAME=${GITHUB_REF#refs/heads/dev-}
+          echo "Stack name : $STACK_NAME"
+          echo "::set-output name=stack::$STACK_NAME"
+          TAG_NAME=${GITHUB_REF#refs/heads/}
+          echo "Stack name : $TAG_NAME"
+          echo "::set-output name=tag::$TAG_NAME"
       - name: Create update dev
         if: ${{ github.event_name == 'push' }}
         uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.2.1
         with:
-          stack-name: ${GITHUB_REF#refs/heads/dev-}
-          tag: ${GITHUB_REF#refs/heads/}
+          stack-name: ${{ steps.names.outputs.stack }}
+          tag: ${{ steps.names.outputs.tag }}
           tfe-token: ${{ secrets.TFE_TOKEN }}
           happy_version: "0.20.0"
       - name: Delete dev
