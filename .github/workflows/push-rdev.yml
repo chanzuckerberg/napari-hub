@@ -49,9 +49,11 @@ jobs:
         uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.3.1
         with:
           stack-name: ${{ steps.names.outputs.stack }}
+          create-tag: "true"
           tag: ${{ steps.names.outputs.tag }}
           tfe-token: ${{ secrets.TFE_TOKEN }}
           happy_version: "0.20.0"
+          env: "dev"
       - name: Delete dev
         if: ${{ github.event_name == 'delete' && startsWith(github.event.ref, 'dev-') }}
         env:
