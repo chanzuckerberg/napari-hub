@@ -37,20 +37,15 @@ jobs:
         uses: actions/checkout@v2
       - name: Create update dev
         if: ${{ github.event_name == 'push' }}
-        env:
-          TFE_TOKEN: ${{ secrets.TFE_TOKEN }}
-        run: |
-          pip install --upgrade pip
-          pip install -r .happy/requirements.txt
-          DEV_NAME=${GITHUB_REF#refs/heads/dev-}
-          HAPPY_BRANCH=${GITHUB_REF#refs/heads/}
-          if $(./scripts/happy --profile="" list | grep -q $DEV_NAME); then
-            echo "Updating stack $DEV_NAME"
-            ./scripts/happy --profile="" update $DEV_NAME --tag $HAPPY_BRANCH
-          else
-            echo "Creating stack $DEV_NAME"
-            ./scripts/happy --profile="" create $DEV_NAME
-          fi
+        uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1
+        with:
+          stack-name: ${GITHUB_REF#refs/heads/dev-}
+          tag: ${GITHUB_REF#refs/heads/}
+          tfe-token: ${{ secrets.TFE_TOKEN }}
+          happy_version: "0.20.0"
+  env:
+    description: "The environment to update or create"
+    required: false
       - name: Delete dev
         if: ${{ github.event_name == 'delete' && startsWith(github.event.ref, 'dev-') }}
         env:
