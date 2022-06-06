@@ -3,7 +3,6 @@ import clsx from 'clsx';
 import { useTranslation } from 'next-i18next';
 import { useRef, useState } from 'react';
 
-import { ColumnLayout } from '@/components/ColumnLayout';
 import { Menu } from '@/components/icons';
 import { MenuPopover } from '@/components/MenuPopover';
 import { SearchBar } from '@/components/SearchBar';
@@ -31,8 +30,14 @@ export function AppBar() {
         />
       </div>
 
-      <ColumnLayout
+      <header
         className={clsx(
+          'grid grid-cols-[min-content,1fr]',
+          'screen-875:grid-cols-napari-3',
+          'screen-1150:grid-cols-napari-4',
+          'screen-1425:grid-cols-napari-5',
+          'gap-6 screen-495:gap-12',
+
           // Color and height
           'bg-napari-primary h-napari-app-bar',
 
@@ -41,13 +46,7 @@ export function AppBar() {
 
           // Padding
           'px-6 screen-495:px-12 screen-1150:p-0',
-
-          // Grid layout for smaller screens. This allows the search bar to
-          // extend to its max width to the left. The `zero:` modifier is used
-          // to increase specificity over ColumnLayout.
-          'zero:grid-cols-[min-content,1fr]',
         )}
-        component="header"
       >
         <div className="hidden screen-600:block">
           <AppBarLinks items={links} />
@@ -81,7 +80,7 @@ export function AppBar() {
             </IconButton>
           </div>
         </div>
-      </ColumnLayout>
+      </header>
     </>
   );
 }
