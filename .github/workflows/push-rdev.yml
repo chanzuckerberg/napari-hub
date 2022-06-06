@@ -37,7 +37,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Create update dev
         if: ${{ github.event_name == 'push' }}
-        uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1
+        uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.2.1
         with:
           stack-name: ${GITHUB_REF#refs/heads/dev-}
           tag: ${GITHUB_REF#refs/heads/}
