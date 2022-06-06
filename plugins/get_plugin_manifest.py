@@ -41,6 +41,7 @@ def generate_manifest(event, context):
     myBody = response["Body"]
     myYaml = yaml.safe_load(myBody)
     s3_client = boto3.client('s3')
+    s3_body = ''
     if 'process_count' not in myYaml or myYaml['process_count'] >= max_failure_tries:
         return
     try:
