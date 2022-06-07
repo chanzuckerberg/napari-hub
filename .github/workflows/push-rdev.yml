@@ -51,7 +51,7 @@ jobs:
         uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.3.1
         with:
           stack-name: ${{ env.STACK_NAME }}
-          create-tag: "false"
+          create-tag: "true"
           tag: ${{ env.HAPPY_BRANCH }}
           tfe-token: ${{ secrets.TFE_TOKEN }}
           happy_version: "0.20.0"
