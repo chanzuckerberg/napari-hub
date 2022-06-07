@@ -56,9 +56,7 @@ def generate_manifest(event, context):
         body = '#npe2' if is_npe2 else "#npe1"
         s3_body = body + "\n" + manifest.yaml()
     except Exception as e:
-        count_body = 'process_count: ' + str(myYaml['process_count']) + '\n'
-        error_body = 'error_message: ' + str(e)
-        s3_body = '{' + count_body + error_body + '}'
+        s3_body = 'process_count: ' + str(myYaml['process_count']) + ',\n' + 'error_message: ' + str(e)
         raise e
     finally:
         response = s3_client.delete_object(
