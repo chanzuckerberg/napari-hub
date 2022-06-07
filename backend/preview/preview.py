@@ -9,7 +9,8 @@ import glob
 import os
 import json
 import requests
-from utils.utils import get_category_mapping, parse_manifest
+from plugins.get_plugin_manifest import parse_manifest
+from utils.utils import get_category_mapping
 from utils.github import github_pattern, get_github_metadata, get_github_repo_url
 from utils.pypi import get_plugin_pypi_metadata
 

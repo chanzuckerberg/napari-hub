@@ -1,4 +1,4 @@
-from utils.utils import parse_manifest
+from plugins.get_plugin_manifest import parse_manifest
 from npe2 import PluginManifest, DynamicPlugin, PluginManager
 
 
@@ -10,6 +10,7 @@ def test_manifest():
     assert 'reader_file_extensions' in sample_manifest_attributes
     assert 'writer_file_extensions' in sample_manifest_attributes
     assert 'writer_save_layers' in sample_manifest_attributes
+    assert 'npe2' in sample_manifest_attributes
 
 
 def test_manifest_plugin_types():
@@ -71,3 +72,4 @@ def test_parse_with_none_returns_default():
     assert vals['reader_file_extensions'] == []
     assert vals['writer_file_extensions'] == []
     assert vals['writer_save_layers'] == []
+    assert not vals['npe2']
