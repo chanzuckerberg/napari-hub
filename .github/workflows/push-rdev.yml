@@ -35,12 +35,12 @@ jobs:
           registry: ${{ secrets.ECR_REPO }}
       - name: Create update dev
         if: ${{ github.event_name == 'push' }}
-        env:
+        env: 
           HAPPY_BRANCH: ${GITHUB_REF#refs/heads/}
-          STACK_NAME: ${GITHUB_REF#refs/heads/dev-}
+          # STACK_NAME: ${GITHUB_REF#refs/heads/dev-}
         uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.3.1
         with:
-          stack-name: ${{ env.STACK_NAME }}
+          stack-name: ${{ env.GITHUB_REF_NAME }}
           create-tag: "false"
           tag: ${{ env.HAPPY_BRANCH }}
           tfe-token: ${{ secrets.TFE_TOKEN }}
