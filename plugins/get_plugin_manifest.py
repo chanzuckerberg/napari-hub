@@ -24,7 +24,6 @@ def discover_manifest(plugin_name):
         list(pm.iter_themes())
         manifest = pm.get_manifest(plugin_name)
         manifest_contr = manifest.contributions
-        print(manifest_contr)
     return manifest, is_npe2
 
 

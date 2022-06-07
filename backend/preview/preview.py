@@ -278,13 +278,11 @@ def populate_source_code_url(meta):
 def discover_manifest(plugin_name):
     from npe2 import PluginManager
     pm = PluginManager()
-    print("Discovering npe2")
     pm.discover(include_npe1=False)
     is_npe2 = True
     try:
         manifest = pm.get_manifest(plugin_name)
     except KeyError:
-        print("Discovering npe1...")
         pm.discover(include_npe1=True)
         is_npe2 = False
         # forcing lazy discovery to run
@@ -303,7 +301,6 @@ def get_manifest_attributes(plugin_name, repo_pth):
     except Exception as e:
         manifest = None
         is_npe2 = False
-        print(e)
     manifest_attributes = parse_manifest(manifest)
     manifest_attributes['npe2'] = is_npe2
     return manifest_attributes
