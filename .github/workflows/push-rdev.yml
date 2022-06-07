@@ -19,6 +19,9 @@ jobs:
   create-update-dev:
     name: deploy dev branch
     runs-on: ubuntu-latest
+    env: 
+          HAPPY_BRANCH: ${GITHUB_REF#refs/heads/}
+          STACK_NAME: ${GITHUB_REF#refs/heads/dev-}
     if: github.repository == 'chanzuckerberg/napari-hub'
     steps:
       - name: Configure AWS Credentials
@@ -33,11 +36,13 @@ jobs:
         uses: docker/login-action@v1
         with:
           registry: ${{ secrets.ECR_REPO }}
+      - name: Print env variable names
+        run: |
+          echo "HAPPY_BRANCH: $HAPPY_BRANCH"
+          echo "STACK_NAME: $STACK_NAME"
+          echo "GITHUB_REF_NAME: $GITHUB_REF_NAME"
       - name: Create update dev
         if: ${{ github.event_name == 'push' }}
-        env: 
-          HAPPY_BRANCH: ${GITHUB_REF#refs/heads/}
-          # STACK_NAME: ${GITHUB_REF#refs/heads/dev-}
         uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.3.1
         with:
           stack-name: ${{ env.GITHUB_REF_NAME }}
