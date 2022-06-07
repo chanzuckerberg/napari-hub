@@ -20,8 +20,8 @@ jobs:
     name: deploy dev branch
     runs-on: ubuntu-latest
     env: 
-          HAPPY_BRANCH: ${GITHUB_REF#refs/heads/}
-          STACK_NAME: ${GITHUB_REF#refs/heads/dev-}
+          HAPPY_BRANCH: $GITHUB_REF#refs/heads/
+          STACK_NAME: $GITHUB_REF#refs/heads/dev-
     if: github.repository == 'chanzuckerberg/napari-hub'
     steps:
       - name: Configure AWS Credentials
