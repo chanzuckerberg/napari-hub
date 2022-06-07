@@ -19,9 +19,6 @@ jobs:
   create-update-dev:
     name: deploy dev branch
     runs-on: ubuntu-latest
-    #env: 
-    #      HAPPY_BRANCH: ${GITHUB_REF#refs/heads/}
-    #      STACK_NAME: ${GITHUB_REF#refs/heads/dev-}
     if: github.repository == 'chanzuckerberg/napari-hub'
     steps:
       - name: Configure AWS Credentials
@@ -39,13 +36,8 @@ jobs:
       # https://stackoverflow.com/questions/60432844/how-to-perform-string-manipulation-while-declaring-env-vars-in-github-actions
       - name: Set STACK_NAME env variable name
         run: |
-          echo STACK_NAME= ${GITHUB_REF#refs/heads/dev-} >> $GITHUB_ENV
-          echo HAPPY_BRANCH= ${GITHUB_REF_NAME} >> $GITHUB_ENV
-      - name: Print env variable names
-        run: |
-          echo "STACK_NAME: ${{ env.STACK_NAME }}"
-          echo "GITHUB_REF_NAME: ${{ env.GITHUB_REF_NAME }}"
-          echo "HAPPY_BRANCH: ${{ env.HAPPY_BRANCH }}"
+          echo STACK_NAME=${GITHUB_REF#refs/heads/dev-} >> $GITHUB_ENV
+          echo HAPPY_BRANCH=${GITHUB_REF_NAME} >> $GITHUB_ENV
       - name: Create update dev
         if: ${{ github.event_name == 'push' }}
         uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.3.1
