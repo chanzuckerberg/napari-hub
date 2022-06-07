@@ -45,7 +45,7 @@ export function CollectionInfo() {
           'space-x-1',
           'mt-5 screen-495:mt-6',
           'text-[11px] screen-495:text-[14px]',
-          'leading-[150%] screen-495:leading-[118%]',
+          'leading-normal',
         )}
       >
         <strong>{curator.name}</strong>
