@@ -33,25 +33,16 @@ jobs:
         uses: docker/login-action@v1
         with:
           registry: ${{ secrets.ECR_REPO }}
-      - name: Checkout Repo
-        uses: actions/checkout@v2
-      # created names for stack and tag name to be used in Create update dev
-      - name: Create Stack and tag name
-        id: names
-        run: |
-          STACK_NAME=${GITHUB_REF#refs/heads/dev-}
-          echo "Stack name : $STACK_NAME"
-          echo "::set-output name=stack::$STACK_NAME"
-          TAG_NAME=${GITHUB_REF#refs/heads/}
-          echo "Tag name : $TAG_NAME"
-          echo "::set-output name=tag::$TAG_NAME"
       - name: Create update dev
         if: ${{ github.event_name == 'push' }}
+        env:
+          HAPPY_BRANCH: ${GITHUB_REF#refs/heads/}
+          STACK_NAME: ${GITHUB_REF#refs/heads/dev-}
         uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.3.1
         with:
-          stack-name: ${{ steps.names.outputs.stack }}
+          stack-name: $STACK_NAME
           create-tag: "false"
-          tag: ${{ steps.names.outputs.tag }}
+          tag: $HAPPY_BRANCH
           tfe-token: ${{ secrets.TFE_TOKEN }}
           happy_version: "0.20.0"
           env: "dev"
