@@ -36,8 +36,8 @@ jobs:
       - name: Create update dev
         if: ${{ github.event_name == 'push' }}
         env:
-          HAPPY_BRANCH: ${GITHUB_REF#refs/heads/}
-          STACK_NAME: ${GITHUB_REF#refs/heads/dev-}
+          HAPPY_BRANCH: ${{GITHUB_REF#refs/heads/}}
+          STACK_NAME: ${{GITHUB_REF#refs/heads/dev-}}
         uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.3.1
         with:
           stack-name: $STACK_NAME
