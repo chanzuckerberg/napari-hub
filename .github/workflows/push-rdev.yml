@@ -40,9 +40,9 @@ jobs:
           STACK_NAME: ${GITHUB_REF#refs/heads/dev-}
         uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.3.1
         with:
-          stack-name: ${STACK_NAME}
+          stack-name: ${{ STACK_NAME }}
           create-tag: "false"
-          tag: ${HAPPY_BRANCH}
+          tag: ${{ HAPPY_BRANCH }}
           tfe-token: ${{ secrets.TFE_TOKEN }}
           happy_version: "0.20.0"
           env: "dev"
