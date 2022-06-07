@@ -37,18 +37,20 @@ jobs:
         with:
           registry: ${{ secrets.ECR_REPO }}
       # https://stackoverflow.com/questions/60432844/how-to-perform-string-manipulation-while-declaring-env-vars-in-github-actions
-      - name: Set HAPPY_BRANCH env variable name
+      - name: Set STACK_NAME env variable name
         run: |
-          echo HAPPY_BRANCH= ${GITHUB_REF#refs/heads/} >> $GITHUB_ENV
+          echo STACK_NAME= ${GITHUB_REF#refs/heads/dev-} >> $GITHUB_ENV
+          echo HAPPY_BRANCH= ${GITHUB_REF_NAME} >> $GITHUB_ENV
       - name: Print env variable names
         run: |
-          echo "HAPPY_BRANCH: $HAPPY_BRANCH"
-          echo "GITHUB_REF_NAME: $GITHUB_REF_NAME"
+          echo "STACK_NAME: ${{ env.STACK_NAME }}"
+          echo "GITHUB_REF_NAME: ${{ env.GITHUB_REF_NAME }}"
+          echo "HAPPY_BRANCH: ${{ env.HAPPY_BRANCH }}"
       - name: Create update dev
         if: ${{ github.event_name == 'push' }}
         uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.3.1
         with:
-          stack-name: ${{ env.GITHUB_REF_NAME }}
+          stack-name: ${{ env.STACK_NAME }}
           create-tag: "false"
           tag: ${{ env.HAPPY_BRANCH }}
           tfe-token: ${{ secrets.TFE_TOKEN }}
