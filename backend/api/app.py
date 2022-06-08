@@ -1,4 +1,6 @@
 import os
+import traceback
+
 from apig_wsgi import make_lambda_handler
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
 from flask import Flask, Response, jsonify, render_template
@@ -125,6 +127,10 @@ def handle_exception(e) -> Response:
 @app.errorhandler(Exception)
 def handle_exception(e) -> Response:
     send_alert(f"An unexpected error has occurred in napari hub: {e}")
+    try:
+        raise e
+    except:
+        print(traceback.format_exc())
     return app.make_response(("Internal Server Error", 500))
 
 
