@@ -202,10 +202,10 @@ def update_cache():
     """
     plugins = query_pypi()
     plugins_metadata = get_plugin_metadata_async(plugins, build_plugin_metadata)
-    for plugin in plugins:
-        version = plugins[plugin]
-        manifest_metadata = get_cache(f'cache/{plugin}/{version}.manifest.json')
-        plugins_metadata[plugin].update(manifest_metadata)
+    #for plugin in plugins:
+        #version = plugins[plugin]
+        #manifest_metadata = get_cache(f'cache/{plugin}/{version}.manifest.json')
+        #plugins_metadata[plugin].update(manifest_metadata)
     excluded_plugins = get_updated_plugin_exclusion(plugins_metadata)
     visibility_plugins = {"public": {}, "hidden": {}}
     for plugin, version in plugins.items():
