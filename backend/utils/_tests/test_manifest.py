@@ -1,5 +1,5 @@
 from plugins.get_plugin_manifest import parse_manifest
-from npe2 import PluginManifest, DynamicPlugin, PluginManager
+from npe2 import DynamicPlugin, PluginManifest, PluginManager
 
 
 def test_manifest():

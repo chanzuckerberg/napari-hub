@@ -6,7 +6,7 @@ import sys
 from typing import Optional
 from xmlrpc.client import Boolean
 from npe2 import PluginManager, PluginManifest
-from api.s3 import cache
+from backend.api.s3 import cache
 
 s3 = boto3.client('s3')
 
