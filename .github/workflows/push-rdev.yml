@@ -34,7 +34,7 @@ jobs:
         with:
           registry: ${{ secrets.ECR_REPO }}
       # https://stackoverflow.com/questions/60432844/how-to-perform-string-manipulation-while-declaring-env-vars-in-github-actions
-      - name: Set STACK_NAME env variable name
+      - name: Set env variable names
         run: |
           echo STACK_NAME=${GITHUB_REF#refs/heads/dev-} >> $GITHUB_ENV
           echo HAPPY_BRANCH=${GITHUB_REF_NAME} >> $GITHUB_ENV
