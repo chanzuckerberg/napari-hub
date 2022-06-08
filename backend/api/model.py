@@ -4,13 +4,13 @@ from typing import Tuple, Dict, List, Callable
 from zipfile import ZipFile
 from io import BytesIO
 from collections import defaultdict
-from backend.utils.conda import get_conda_forge_package
-from backend.utils.github import get_github_metadata, get_artifact
-from backend.utils.pypi import query_pypi, get_plugin_pypi_metadata
-from backend.api.s3 import get_cache, cache
-from backend.utils.utils import render_description, send_alert, get_attribute, get_category_mapping
-from backend.utils.datadog import report_metrics
-from backend.api.zulip import notify_new_packages
+from utils.conda import get_conda_forge_package
+from utils.github import get_github_metadata, get_artifact
+from utils.pypi import query_pypi, get_plugin_pypi_metadata
+from api.s3 import get_cache, cache
+from utils.utils import render_description, send_alert, get_attribute, get_category_mapping
+from utils.datadog import report_metrics
+from api.zulip import notify_new_packages
 
 index_subset = {'name', 'summary', 'description_text', 'description_content_type',
                 'authors', 'license', 'python_version', 'operating_system',

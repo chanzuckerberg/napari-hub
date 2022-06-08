@@ -9,10 +9,9 @@ import glob
 import os
 import json
 import requests
-from plugins.get_plugin_manifest import parse_manifest
-from backend.utils.utils import get_category_mapping
-from backend.utils.github import github_pattern, get_github_metadata, get_github_repo_url
-from backend.utils.pypi import get_plugin_pypi_metadata
+from utils.utils import get_category_mapping
+from utils.github import github_pattern, get_github_metadata, get_github_repo_url
+from utils.pypi import get_plugin_pypi_metadata
 
 
 def get_plugin_preview(repo_pth: str, dest_dir: str, is_local: bool = False, branch: str = 'HEAD'):
@@ -305,6 +304,7 @@ def get_manifest_attributes(plugin_name, repo_pth):
         manifest = None
         is_npe2 = False
         print(e)
-    manifest_attributes = parse_manifest(manifest)
+    #TODO manifest_attributes = parse_manifest(manifest)
+    manifest_attributes = {}
     manifest_attributes['npe2'] = is_npe2
     return manifest_attributes
