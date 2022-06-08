@@ -27,12 +27,6 @@ services:
       context: frontend
       cache_from:
         - '${DOCKER_REPO}napari-hub-dev-frontend:${DOCKER_TAG}'
-      args:
-        - BUILDKIT_INLINE_CACHE=1
-        - HAPPY_COMMIT
-        - DOCKER_TAG
-        - HAPPY_TAG
-        - ENV
     restart: always
     depends_on:
       - backend
@@ -59,11 +53,6 @@ services:
       context: backend
       cache_from:
         - '${DOCKER_REPO}napari-hub-dev-backend:${DOCKER_TAG}'
-      args:
-        - BUILDKIT_INLINE_CACHE=1
-        - HAPPY_COMMIT
-        - DOCKER_TAG
-        - HAPPY_TAG
     restart: always
     depends_on:
       - localstack
