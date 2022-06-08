@@ -51,8 +51,6 @@ jobs:
         env:
           TFE_TOKEN: ${{ secrets.TFE_TOKEN }}
         run: |
-          pip install --upgrade pip
-          pip install -r .happy/requirements.txt
           BRANCH=${{ github.event.ref }}
           DEV_NAME=${BRANCH#dev-}
           echo "Deleting stack $DEV_NAME"
