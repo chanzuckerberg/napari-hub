@@ -35,7 +35,7 @@ jobs:
           registry: ${{ secrets.ECR_REPO }}
       - name: Set up docker build environment
         run: |
-          echo STACK_NAME=${GITHUB_REF_NAME#/dev-} >> $GITHUB_ENV
+          echo STACK_NAME=${GITHUB_REF_NAME#dev-} >> $GITHUB_ENV
           echo DOCKER_TAG=${GITHUB_REF_NAME} >> $GITHUB_ENV
       - name: Print names
         id: names
