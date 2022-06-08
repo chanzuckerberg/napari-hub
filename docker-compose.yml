@@ -26,7 +26,7 @@ services:
     build:
       context: frontend
       cache_from:
-        - '${DOCKER_REPO}napari-hub-dev-frontend:${GITHUB_REF#refs/heads/}'
+        - '${DOCKER_REPO}napari-hub-dev-frontend:$${GITHUB_REF#refs/heads/}'
       args:
         - BUILDKIT_INLINE_CACHE=1
         - HAPPY_COMMIT
