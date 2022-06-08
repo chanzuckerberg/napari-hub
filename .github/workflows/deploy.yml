@@ -25,17 +25,19 @@ jobs:
         uses: docker/login-action@v1
         with:
           registry: ${{ secrets.ECR_REPO }}
-      - name: Checkout Repo
-        uses: actions/checkout@v2
-      - name: Deploy Changes
-        shell: bash
-        env:
-          ENV: prod
-          TFE_TOKEN: ${{ secrets.TFE_TOKEN }}
+      - name: Set STACK_NAME and DOCKER_TAG environment variable names
         run: |
-          pip install --upgrade pip
-          pip install -r .happy/requirements.txt
-          scripts/happy --profile="" --env prod update prod
+          echo STACK_NAME=${GITHUB_REF#refs/tags} >> $GITHUB_ENV
+          echo DOCKER_TAG=${GITHUB_REF_NAME} >> $GITHUB_ENV
+      - name: Deploy Changes to Prod
+        if: ${{ github.event_name == 'push' }}
+        uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.3.1
+        with:
+          stack-name: ${{ env.STACK_NAME }}
+          create-tag: "true"
+          tag: ${{ env.DOCKER_TAG }}
+          tfe-token: ${{ secrets.TFE_TOKEN }}
+          env: "prod"
   staging:
     name: deploy to staging
     runs-on: ubuntu-latest
@@ -53,14 +55,16 @@ jobs:
         uses: docker/login-action@v1
         with:
           registry: ${{ secrets.ECR_REPO }}
-      - name: Checkout Repo
-        uses: actions/checkout@v2
-      - name: Deploy Changes
-        shell: bash
-        env:
-          ENV: staging
-          TFE_TOKEN: ${{ secrets.TFE_TOKEN }}
+      - name: Set STACK_NAME and DOCKER_TAG environment variable names
         run: |
-          pip install --upgrade pip
-          pip install -r .happy/requirements.txt
-          scripts/happy --profile="" --env staging update staging
+          echo STACK_NAME=${GITHUB_REF} >> $GITHUB_ENV
+          echo DOCKER_TAG=${GITHUB_REF_NAME} >> $GITHUB_ENV
+      - name: Deploy Changes to Staging
+        if: ${{ github.event_name == 'push' }}
+        uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.3.1
+        with:
+          stack-name: ${{ env.STACK_NAME }}
+          create-tag: "true"
+          tag: ${{ env.DOCKER_TAG }}
+          tfe-token: ${{ secrets.TFE_TOKEN }}
+          env: "staging"

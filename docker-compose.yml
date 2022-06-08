@@ -26,11 +26,11 @@ services:
     build:
       context: frontend
       cache_from:
-        - '${DOCKER_REPO}napari-hub-dev-frontend:$${{GITHUB_REF#refs/heads/}}'
+        - '${DOCKER_REPO}napari-hub-dev-frontend:${DOCKER_TAG}'
       args:
         - BUILDKIT_INLINE_CACHE=1
         - HAPPY_COMMIT
-        - HAPPY_BRANCH
+        - DOCKER_TAG
         - HAPPY_TAG
         - ENV
     restart: always
@@ -58,11 +58,11 @@ services:
     build:
       context: backend
       cache_from:
-        - '${DOCKER_REPO}napari-hub-dev-backend:$${{GITHUB_REF#refs/heads/}}'
+        - '${DOCKER_REPO}napari-hub-dev-backend:${DOCKER_TAG}'
       args:
         - BUILDKIT_INLINE_CACHE=1
         - HAPPY_COMMIT
-        - HAPPY_BRANCH
+        - DOCKER_TAG
         - HAPPY_TAG
     restart: always
     depends_on:

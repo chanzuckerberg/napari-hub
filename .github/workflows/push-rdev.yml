@@ -33,17 +33,17 @@ jobs:
         uses: docker/login-action@v1
         with:
           registry: ${{ secrets.ECR_REPO }}
-      - name: Set STACK_NAME and HAPPY_BRANCH environment variable names
+      - name: Set STACK_NAME and DOCKER_TAG environment variable names
         run: |
           echo STACK_NAME=${GITHUB_REF#refs/heads/dev-} >> $GITHUB_ENV
-          echo HAPPY_BRANCH=${GITHUB_REF_NAME} >> $GITHUB_ENV
+          echo DOCKER_TAG=${GITHUB_REF_NAME} >> $GITHUB_ENV
       - name: Create update dev
         if: ${{ github.event_name == 'push' }}
         uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.3.1
         with:
           stack-name: ${{ env.STACK_NAME }}
           create-tag: "true"
-          tag: ${{ env.HAPPY_BRANCH }}
+          tag: ${{ env.DOCKER_TAG }}
           tfe-token: ${{ secrets.TFE_TOKEN }}
           env: "dev"
       - name: Delete dev
