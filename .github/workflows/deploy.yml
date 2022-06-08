@@ -26,14 +26,13 @@ jobs:
         with:
           registry: ${{ secrets.ECR_REPO }}
       - name: Set STACK_NAME and DOCKER_TAG environment variable names
-        run: |
-          echo STACK_NAME=${GITHUB_REF#refs/tags} >> $GITHUB_ENV
+        run: | 
           echo DOCKER_TAG=${GITHUB_REF_NAME} >> $GITHUB_ENV
       - name: Deploy Changes to Prod
         if: ${{ github.event_name == 'push' }}
         uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.3.1
         with:
-          stack-name: ${{ env.STACK_NAME }}
+          stack-name: "prod"
           create-tag: "true"
           tag: ${{ env.DOCKER_TAG }}
           tfe-token: ${{ secrets.TFE_TOKEN }}
@@ -56,14 +55,13 @@ jobs:
         with:
           registry: ${{ secrets.ECR_REPO }}
       - name: Set STACK_NAME and DOCKER_TAG environment variable names
-        run: |
-          echo STACK_NAME=${GITHUB_REF} >> $GITHUB_ENV
+        run: | 
           echo DOCKER_TAG=${GITHUB_REF_NAME} >> $GITHUB_ENV
       - name: Deploy Changes to Staging
         if: ${{ github.event_name == 'push' }}
         uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.3.1
         with:
-          stack-name: ${{ env.STACK_NAME }}
+          stack-name: "staging"
           create-tag: "true"
           tag: ${{ env.DOCKER_TAG }}
           tfe-token: ${{ secrets.TFE_TOKEN }}
