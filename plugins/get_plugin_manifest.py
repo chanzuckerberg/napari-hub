@@ -1,4 +1,3 @@
-import json
 import urllib.parse
 import boto3
 import yaml
@@ -6,8 +5,6 @@ import subprocess
 import sys
 from typing import Optional
 from npe2 import PluginManager, PluginManifest
-
-from backend.api.s3 import cache
 
 s3 = boto3.client('s3')
 
