@@ -27,14 +27,21 @@ jobs:
           registry: ${{ secrets.ECR_REPO }}
       - name: Checkout Repo
         uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.9'
+          cache: 'pip'
+      - name: Install happy dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r .happy/requirements.txt
       - name: Deploy Changes
         shell: bash
         env:
           ENV: prod
           TFE_TOKEN: ${{ secrets.TFE_TOKEN }}
         run: |
-          pip install --upgrade pip
-          pip install -r .happy/requirements.txt
           scripts/happy --profile="" --env prod update prod
   staging:
     name: deploy to staging
@@ -55,12 +62,19 @@ jobs:
           registry: ${{ secrets.ECR_REPO }}
       - name: Checkout Repo
         uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.9'
+          cache: 'pip'
+      - name: Install happy dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r .happy/requirements.txt
       - name: Deploy Changes
         shell: bash
         env:
           ENV: staging
           TFE_TOKEN: ${{ secrets.TFE_TOKEN }}
         run: |
-          pip install --upgrade pip
-          pip install -r .happy/requirements.txt
           scripts/happy --profile="" --env staging update staging
