@@ -5,8 +5,8 @@ import yaml
 import subprocess
 import sys
 from typing import Optional
-from xmlrpc.client import Boolean
 from npe2 import PluginManager, PluginManifest
+
 from backend.api.s3 import cache
 
 s3 = boto3.client('s3')
@@ -61,10 +61,9 @@ def generate_manifest(event, context):
             Key=key
         )
         s3_client.put_object(Body=manifest.yaml(), Bucket=bucket, Key=key)
-        cache(json.dump(manifest_attributes), f'cache/{plugin}/{version}.manifest.json', format='json')
 
 
-def parse_manifest(manifest: Optional[PluginManifest] = None, is_npe2=Boolean):
+def parse_manifest(manifest: Optional[PluginManifest] = None, is_npe2: bool = False):
     """
     Convert raw manifest into dictionary of npe2 attributes.
     :param manifest: raw manifest
