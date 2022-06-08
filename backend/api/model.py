@@ -17,7 +17,7 @@ index_subset = {'name', 'summary', 'description_text', 'description_content_type
                 'authors', 'license', 'python_version', 'operating_system',
                 'release_date', 'version', 'first_released',
                 'development_status', 'category', 'display_name', 'plugin_types', 'reader_file_extensions',
-                'writer_file_extensions', 'writer_save_layers', 'npe2',  'conda'}
+                'writer_file_extensions', 'writer_save_layers', 'npe2',  'error_message', 'conda'}
 
 
 def get_public_plugins() -> Dict[str, str]:
@@ -182,6 +182,7 @@ def build_manifest_metadata(plugin: str, version: str):
     if not manifest_yaml_dict or 'process_count' in manifest_yaml_dict:
         default_vals = parse_manifest()
         default_vals['npe2'] = False
+        default_vals['error_message'] = manifest_yaml_dict.get('error_message')
         return plugin, default_vals
 
     manifest_obj = PluginManifest(**manifest_yaml_dict)
@@ -190,6 +191,7 @@ def build_manifest_metadata(plugin: str, version: str):
         manifest_attributes['npe2'] = True
     else:
         manifest_attributes['npe2'] = False
+    manifest_attributes['error_message'] = None
     return plugin, manifest_attributes
 
 
