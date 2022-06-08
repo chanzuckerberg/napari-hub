@@ -1,3 +1,4 @@
+import json
 import urllib.parse
 import boto3
 import yaml
@@ -60,7 +61,7 @@ def generate_manifest(event, context):
             Key=key
         )
         s3_client.put_object(Body=manifest.yaml(), Bucket=bucket, Key=key)
-        cache(manifest_attributes, f'cache/{plugin}/{version}.manifest.json', format='json')
+        cache(json.dump(manifest_attributes), f'cache/{plugin}/{version}.manifest.json', format='json')
 
 
 def parse_manifest(manifest: Optional[PluginManifest] = None, is_npe2=Boolean):
