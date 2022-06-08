@@ -33,10 +33,15 @@ jobs:
         uses: docker/login-action@v1
         with:
           registry: ${{ secrets.ECR_REPO }}
-      - name: Set stack and tag name inputs for deploy-happy-stack, DOCKER_TAG is needed to allow cache_from in docker-compose.yml to work
+      - name: Set up docker build environment
         run: |
-          echo STACK_NAME=${GITHUB_REF#refs/heads/dev-} >> $GITHUB_ENV
+          echo STACK_NAME=${GITHUB_REF_NAME#/dev-} >> $GITHUB_ENV
           echo DOCKER_TAG=${GITHUB_REF_NAME} >> $GITHUB_ENV
+      - name: Print names
+        id: names
+        run: |
+          echo "Stack name : $STACK_NAME"
+          echo "Tag name : $DOCKER_TAG"
       - name: Create update dev
         if: ${{ github.event_name == 'push' }}
         uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.3.1

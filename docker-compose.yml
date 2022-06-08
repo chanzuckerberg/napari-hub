@@ -27,6 +27,8 @@ services:
       context: frontend
       cache_from:
         - '${DOCKER_REPO}napari-hub-dev-frontend:${DOCKER_TAG}'
+      args:
+        - BUILDKIT_INLINE_CACHE=1
     restart: always
     depends_on:
       - backend
@@ -53,6 +55,8 @@ services:
       context: backend
       cache_from:
         - '${DOCKER_REPO}napari-hub-dev-backend:${DOCKER_TAG}'
+      args:
+        - BUILDKIT_INLINE_CACHE=1
     restart: always
     depends_on:
       - localstack
