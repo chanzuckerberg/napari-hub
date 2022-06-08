@@ -39,7 +39,7 @@ jobs:
           echo DOCKER_TAG=${GITHUB_REF_NAME} >> $GITHUB_ENV
       - name: Create update dev
         if: ${{ github.event_name == 'push' }}
-        uses: lgan-czi/github-actions/.github/actions/deploy-happy-stack@0010de008efa0dfc55e6f0e2e3156810a79cb02f
+        uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.3.1
         with:
           stack-name: ${{ env.STACK_NAME }}
           create-tag: "true"
