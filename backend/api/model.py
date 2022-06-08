@@ -4,13 +4,13 @@ from typing import Tuple, Dict, List, Callable
 from zipfile import ZipFile
 from io import BytesIO
 from collections import defaultdict
-from utils.conda import get_conda_forge_package
-from utils.github import get_github_metadata, get_artifact
-from utils.pypi import query_pypi, get_plugin_pypi_metadata
-from api.s3 import get_cache, cache, is_npe2_plugin
-from utils.utils import render_description, send_alert, get_attribute, get_category_mapping
-from utils.datadog import report_metrics
-from api.zulip import notify_new_packages
+from backend.utils.conda import get_conda_forge_package
+from backend.utils.github import get_github_metadata, get_artifact
+from backend.utils.pypi import query_pypi, get_plugin_pypi_metadata
+from backend.api.s3 import get_cache, cache, is_npe2_plugin
+from backend.utils.utils import render_description, send_alert, get_attribute, get_category_mapping
+from backend.utils.datadog import report_metrics
+from backend.api.zulip import notify_new_packages
 
 index_subset = {'name', 'summary', 'description_text', 'description_content_type',
                 'authors', 'license', 'python_version', 'operating_system',
@@ -204,7 +204,7 @@ def update_cache():
     plugins_metadata = get_plugin_metadata_async(plugins, build_plugin_metadata)
     for plugin in plugins:
         version = plugins[plugin]
-        manifest_metadata = get_cache(f'cache/{plugin}/{version}.json')
+        manifest_metadata = get_cache(f'cache/{plugin}/{version}.manifest.json')
         plugins_metadata[plugin].update(manifest_metadata)
     excluded_plugins = get_updated_plugin_exclusion(plugins_metadata)
     visibility_plugins = {"public": {}, "hidden": {}}

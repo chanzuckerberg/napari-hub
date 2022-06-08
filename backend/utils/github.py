@@ -9,8 +9,8 @@ from cffconvert.citation import Citation
 from requests.auth import HTTPBasicAuth
 from requests.exceptions import HTTPError
 
-from utils.utils import get_attribute, render_description
-from utils.auth import HTTPBearerAuth
+from backend.utils.utils import get_attribute, render_description
+from backend.utils.auth import HTTPBearerAuth
 
 # Environment variable set through ecs stack terraform module
 github_client_id = os.environ.get('GITHUB_CLIENT_ID', None)

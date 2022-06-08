@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch
 
-from api import model
+from backend.api import model
 
 
 @patch.object(
@@ -10,7 +10,7 @@ from api import model
 class TestShield(unittest.TestCase):
 
     def test_get_shield(self, mock_get_valid_plugins):
-        from api.shield import get_shield
+        from backend.api.shield import get_shield
         result = get_shield('package1')
         assert result['message'] == 'package1'
         assert 'label' in result
@@ -18,7 +18,7 @@ class TestShield(unittest.TestCase):
         assert 'color' in result
 
     def test_get_shield_for_non_plugin(self, mock_get_valid_plugins):
-        from api.shield import get_shield
+        from backend.api.shield import get_shield
         result = get_shield('not-a-package')
         assert result['message'] == 'plugin not found'
         assert 'label' in result

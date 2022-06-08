@@ -10,9 +10,9 @@ import os
 import json
 import requests
 from plugins.get_plugin_manifest import parse_manifest
-from utils.utils import get_category_mapping
-from utils.github import github_pattern, get_github_metadata, get_github_repo_url
-from utils.pypi import get_plugin_pypi_metadata
+from backend.utils.utils import get_category_mapping
+from backend.utils.github import github_pattern, get_github_metadata, get_github_repo_url
+from backend.utils.pypi import get_plugin_pypi_metadata
 
 
 def get_plugin_preview(repo_pth: str, dest_dir: str, is_local: bool = False, branch: str = 'HEAD'):

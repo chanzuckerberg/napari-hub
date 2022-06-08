@@ -5,8 +5,7 @@ import pkginfo
 import requests
 import dateutil.parser
 from datetime import datetime
-
-from ..preview import clone_repo, build_dist, parse_meta, get_plugin_preview, get_pypi_date_meta, populate_source_code_url
+from backend.preview.preview import clone_repo, build_dist, parse_meta, get_plugin_preview, get_pypi_date_meta, populate_source_code_url
 
 code_plugin_url = "https://github.com/chanzuckerberg/napari-demo"
 hub_plugin_url = "https://api.napari-hub.org/plugins/napari-demo"
