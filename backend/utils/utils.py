@@ -140,16 +140,17 @@ def parse_manifest(manifest: Optional[dict] = None):
     if manifest is None:
         return manifest_attributes
     manifest_attributes['display_name'] = manifest.get('display_name', '')
-    if manifest['contributions']['readers']:
-        readers = manifest['contributions']['readers']
+    manifest_contributions = manifest['contributions']
+    if manifest_contributions.get('readers'):
+        readers = manifest_contributions['readers']
         manifest_attributes['plugin_types'].append('reader')
         reader_file_extensions = set()
         for reader in readers:
             for ext in reader['filename_patterns']:
                 reader_file_extensions.add(ext)
         manifest_attributes['reader_file_extensions'] = list(reader_file_extensions)
-    if manifest['contributions']['writers']:
-        writers = manifest['contributions']['writers']
+    if manifest_contributions.get('writers'):
+        writers = manifest_contributions['writers']
         manifest_attributes['plugin_types'].append('writer')
         writer_file_extensions = set()
         writer_save_layers = set()
@@ -160,8 +161,8 @@ def parse_manifest(manifest: Optional[dict] = None):
                 writer_save_layers.add(ext)
         manifest_attributes['writer_file_extensions'] = list(writer_file_extensions)
         manifest_attributes['writer_save_layers'] = list(writer_save_layers)
-    if manifest['contributions']['themes']:
+    if manifest_contributions.get('themes'):
         manifest_attributes['plugin_types'].append('theme')
-    if manifest['contributions']['widgets']:
+    if manifest_contributions.get('widgets'):
         manifest_attributes['plugin_types'].append('widget')
     return manifest_attributes
