@@ -56,7 +56,7 @@ def generate_manifest(event, context):
             Bucket=bucket,
             Key=key
         )
-        s3_client.put_object(Body=body+manifest.yaml(), Bucket=bucket, Key=key)
+        s3_client.put_object(Body=body+'\n'+manifest.yaml(), Bucket=bucket, Key=key)
 
 
 def failure_handler(event, context):
