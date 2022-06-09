@@ -125,11 +125,10 @@ def get_category_mapping(category: str, mappings: Dict[str, List]) -> List[Dict]
         return mappings[category]
 
 
-def parse_manifest(manifest: Optional[dict] = None, is_npe2: bool = False):
+def parse_manifest(manifest: Optional[dict] = None):
     """
     Convert raw manifest into dictionary of npe2 attributes.
     :param manifest: raw manifest
-    :param is_npe2: boolean flag for npe2 plugin
     """
     manifest_attributes = {
         'display_name': '',
@@ -137,35 +136,32 @@ def parse_manifest(manifest: Optional[dict] = None, is_npe2: bool = False):
         'reader_file_extensions': [],
         'writer_file_extensions': [],
         'writer_save_layers': [],
-        'npe2': False
     }
     if manifest is None:
         return manifest_attributes
-    if manifest.display_name:
-        manifest_attributes['display_name'] = manifest.display_name
-    if manifest.contributions.readers:
-        readers = manifest.contributions.readers
+    manifest_attributes['display_name'] = manifest.get('display_name', '')
+    if manifest['contributions']['readers']:
+        readers = manifest['contributions']['readers']
         manifest_attributes['plugin_types'].append('reader')
         reader_file_extensions = set()
         for reader in readers:
-            for ext in reader.filename_patterns:
+            for ext in reader['filename_patterns']:
                 reader_file_extensions.add(ext)
         manifest_attributes['reader_file_extensions'] = list(reader_file_extensions)
-    if manifest.contributions.writers:
-        writers = manifest.contributions.writers
+    if manifest['contributions']['writers']:
+        writers = manifest['contributions']['writers']
         manifest_attributes['plugin_types'].append('writer')
         writer_file_extensions = set()
         writer_save_layers = set()
         for writer in writers:
-            for ext in writer.filename_extensions:
+            for ext in writer['filename_extensions']:
                 writer_file_extensions.add(ext)
-            for ext in writer.layer_types:
+            for ext in writer['layer_types']:
                 writer_save_layers.add(ext)
         manifest_attributes['writer_file_extensions'] = list(writer_file_extensions)
         manifest_attributes['writer_save_layers'] = list(writer_save_layers)
-    if manifest.contributions.themes:
+    if manifest['contributions']['themes']:
         manifest_attributes['plugin_types'].append('theme')
-    if manifest.contributions.widgets:
+    if manifest['contributions']['widgets']:
         manifest_attributes['plugin_types'].append('widget')
-    manifest_attributes['npe2'] = is_npe2
     return manifest_attributes
