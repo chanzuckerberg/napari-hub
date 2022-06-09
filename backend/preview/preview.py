@@ -9,7 +9,8 @@ import glob
 import os
 import json
 import requests
-from utils.utils import get_category_mapping
+import yaml
+from utils.utils import get_category_mapping, parse_manifest
 from utils.github import github_pattern, get_github_metadata, get_github_repo_url
 from utils.pypi import get_plugin_pypi_metadata
 
@@ -276,21 +277,24 @@ def populate_source_code_url(meta):
             meta["code_repository"] = match.group(0)
 
 def discover_manifest(plugin_name):
+    # to avoid depending on npe2 in the backend, we delay this import to runtime
+    # this dependency will be satisfied by the preview action
+    # see https://github.com/chanzuckerberg/napari-hub-preview-action
     from npe2 import PluginManager
     pm = PluginManager()
     print("Discovering npe2")
     pm.discover(include_npe1=False)
     is_npe2 = True
     try:
-        manifest = pm.get_manifest(plugin_name)
+        manifest_dict = yaml.load(pm.get_manifest(plugin_name).yaml(), Loader=yaml.Loader)
     except KeyError:
         print("Discovering npe1...")
         pm.discover(include_npe1=True)
         is_npe2 = False
         # forcing lazy discovery to run
         my_widgs = list(pm.iter_widgets())
-        manifest = pm.get_manifest(plugin_name)
-    return manifest, is_npe2
+        manifest_dict = yaml.load(pm.get_manifest(plugin_name).yaml(), Loader=yaml.Loader)
+    return manifest_dict, is_npe2
 
 
 def get_manifest_attributes(plugin_name, repo_pth):
@@ -303,8 +307,6 @@ def get_manifest_attributes(plugin_name, repo_pth):
     except Exception as e:
         manifest = None
         is_npe2 = False
-        print(e)
-    #TODO manifest_attributes = parse_manifest(manifest)
-    manifest_attributes = {}
+    manifest_attributes = parse_manifest(manifest)
     manifest_attributes['npe2'] = is_npe2
     return manifest_attributes
