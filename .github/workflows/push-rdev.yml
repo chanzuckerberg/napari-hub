@@ -21,9 +21,6 @@ jobs:
     runs-on: ubuntu-latest
     if: github.repository == 'chanzuckerberg/napari-hub'
     steps:
-      - name: Instantly fail
-        shell: bash
-        run: exit 1
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
