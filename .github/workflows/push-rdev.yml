@@ -39,7 +39,7 @@ jobs:
           echo DOCKER_TAG=${GITHUB_REF_NAME} >> $GITHUB_ENV
       - name: Create update dev
         if: ${{ github.event_name == 'push' }}
-        uses: lgan-czi/github-actions/.github/actions/deploy-happy-stack@46cb12c0de18a830313b7542336bed1a5e598681
+        uses: lgan-czi/github-actions/.github/actions/deploy-happy-stack@4e4f48f23f57181ca029d578454069ed0049084d
         #uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.3.1
         with:
           stack-name: ${{ env.STACK_NAME }}
@@ -49,7 +49,7 @@ jobs:
           env: "dev"
       - name: Delete dev
         if: ${{ github.event_name == 'delete' && startsWith(github.event.ref, 'dev-') }}
-        uses: lgan-czi/github-actions/.github/actions/deploy-happy-stack@46cb12c0de18a830313b7542336bed1a5e598681
+        uses: lgan-czi/github-actions/.github/actions/deploy-happy-stack@4e4f48f23f57181ca029d578454069ed0049084d
         #uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.3.1
         with:
           stack-name: ${{ env.STACK_NAME }}
