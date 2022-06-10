@@ -35,8 +35,13 @@ jobs:
           registry: ${{ secrets.ECR_REPO }}
       - name: Set up docker build environment
         run: |
-          echo STACK_NAME=${GITHUB_REF_NAME#dev-} >> $GITHUB_ENV
-          echo DOCKER_TAG=${GITHUB_REF_NAME} >> $GITHUB_ENV
+          if [[ ${#GITHUB_REF_NAME} -gt 33 ]]; then
+            echo "branch name is too long, please use a branch name 32 characters or shorter"
+            exit 1
+          else 
+            echo STACK_NAME=${GITHUB_REF_NAME#dev-} >> $GITHUB_ENV
+            echo DOCKER_TAG=${GITHUB_REF_NAME} >> $GITHUB_ENV
+          fi
       - name: Create update dev
         if: ${{ github.event_name == 'push' }}
         uses: lgan-czi/github-actions/.github/actions/deploy-happy-stack@4e4f48f23f57181ca029d578454069ed0049084d
