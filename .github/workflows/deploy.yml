@@ -29,7 +29,6 @@ jobs:
         run: | 
           echo DOCKER_TAG=${GITHUB_REF_NAME} >> $GITHUB_ENV
       - name: Deploy Changes to Prod
-        if: ${{ github.event_name == 'push' }}
         uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.3.1
         with:
           stack-name: "prod"
@@ -58,7 +57,6 @@ jobs:
         run: | 
           echo DOCKER_TAG=${GITHUB_REF_NAME} >> $GITHUB_ENV
       - name: Deploy Changes to Staging
-        if: ${{ github.event_name == 'push' }}
         uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.3.1
         with:
           stack-name: "staging"
