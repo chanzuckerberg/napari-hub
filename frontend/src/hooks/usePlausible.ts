@@ -54,6 +54,8 @@ export type Events = {
     url: string;
     categoryDimension: string;
   };
+
+  'Create a new collection': unknown;
 };
 
 export type PlausibleEventKey = keyof Events;

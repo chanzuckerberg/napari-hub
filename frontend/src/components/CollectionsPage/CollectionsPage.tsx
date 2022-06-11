@@ -3,6 +3,7 @@ import { Button } from 'czifui';
 import { useTranslation } from 'react-i18next';
 
 import { I18n } from '@/components/I18n';
+import { usePlausible } from '@/hooks';
 import { I18nKeys } from '@/types/i18n';
 
 import { CollectionCard } from './CollectionCard';
@@ -52,6 +53,7 @@ function Intro() {
  */
 function CreateCollectionButton() {
   const { t } = useTranslation(['collections']);
+  const plausible = usePlausible();
 
   return (
     <Button
@@ -66,6 +68,7 @@ function CreateCollectionButton() {
         'screen-1425:col-start-2',
       )}
       href="https://github.com/chanzuckerberg/napari-hub-collections"
+      onClick={() => plausible('Create a new collection')}
       target="_blank"
       rel="noreferrer"
     >
