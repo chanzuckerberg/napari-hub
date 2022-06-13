@@ -106,3 +106,9 @@ variable description {
   type    = string
   default = ""
 }
+
+variable destination_on_failure {
+  type        = string
+  description = "Amazon Resource Name (ARN) of the destination resource for failed asynchronous invocations"
+  default     = null
+}

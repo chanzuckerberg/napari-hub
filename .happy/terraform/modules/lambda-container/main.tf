@@ -26,6 +26,7 @@ module lambda {
   attach_network_policy             = true
   reserved_concurrent_executions    = var.reserved_concurrent_executions
   allowed_triggers                  = var.allowed_triggers
+  destination_on_failure            = var.destination_on_failure
 }
 
 resource "aws_lambda_provisioned_concurrency_config" "provisioned" {

@@ -145,6 +145,7 @@ module plugins_lambda {
   memory_size           = 10240
   ephemeral_storage_size = 10240
   maximum_retry_attempts = 0
+  destination_on_failure = module.failure_lambda.function_arn
 }
 
 module failure_lambda {
