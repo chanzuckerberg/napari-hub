@@ -7,5 +7,17 @@
     "assortments": "<bold>Assortments</bold> are connected by a central theme",
     "createCollection": "Create a new collection",
     "fetchError": "Server Error: Unable to get collections"
+  },
+
+  "collectionPage": {
+    "lastUpdated": "Collection last updated: {{date}}",
+    "fetchError": "Server Error: Unable to get collection",
+
+    "tooltips": {
+      "visitOrcId": "Visit ORCiD profile",
+      "visitTwitter": "Visit Twitter profile",
+      "visitGithub": "Visit GitHub profile",
+      "visitWebsite": "Visit website"
+    }
   }
 }

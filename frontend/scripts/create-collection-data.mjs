@@ -3,9 +3,17 @@
  * reproducible way.
  */
 
-import { sample } from 'lodash-es';
+import { random, sample } from 'lodash-es';
 import fs from 'fs';
 import path from 'path';
+
+const rootDir = path.resolve(new URL(import.meta.url).pathname, '../..');
+const pluginIndex = JSON.parse(
+  fs.readFileSync(path.resolve(rootDir, 'src/fixtures/index.json'), 'utf-8'),
+);
+
+const lorem =
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer porta mauris eget convallis efficitur. Donec ultrices ligula turpis, sit amet laoreet erat aliquet vitae. In quis pellentesque ex. Vestibulum eu metus laoreet, blandit dolor sit amet, tristique leo. Sed sollicitudin elit vel venenatis lacinia. Mauris tempor nisl odio, sed placerat ligula dignissim eu. Ut et commodo felis, a pellentesque ipsum. Nulla eu nisi nec eros dapibus iaculis nec sit amet magna. Nam consectetur interdum pharetra. Donec sollicitudin ornare mi at aliquam. Fusce tortor eros, aliquet non ipsum ut, congue pretium quam. In rutrum vestibulum nibh ut eleifend. Nullam quam magna, eleifend et eleifend id, ultricies vel diam.';
 
 const titles = [
   'Time-saving segmentation plugins',
@@ -89,6 +97,22 @@ const images = [
   'national-cancer-institute-rvDeUG7YV64-unsplash.jpg',
 ];
 
+const comments = [
+  undefined,
+  'This is a cool plugin is cool',
+  'This is an awesome plugin is',
+  'This is the best plugin there was',
+  'This is a plugin that has really long description because we should be testing plugins with long descriptions by adding long description to the data so that it can be tested with long descriptions in comparison to the short descriptions which are not as long, so it makes sense for it to be tested at the same time, regardless of length, because the length of the description is important and can reveal edge cases that would otherwise not be found with only a short description, hence the really long description that is being written right now.',
+];
+
+const allPlugins = pluginIndex.map((plugin) => ({
+  display_name: plugin.display_name,
+  name: plugin.name,
+  summary: plugin.summary,
+  comment: sample(comments),
+  authors: plugin.authors,
+}));
+
 const data = {
   title: '',
   updated_date: '2022-05-30',
@@ -108,12 +132,27 @@ const result = [];
 
 for (let i = 0; i < titles.length; i += 1) {
   const coverImage = `https://raw.githubusercontent.com/chanzuckerberg/napari-hub-collections/main/images/${images[i]}`;
+  let pluginCount = random(1, 10);
+  const plugins = [];
+  const pluginSet = new Set();
+
+  while (pluginCount > 0) {
+    const plugin = sample(allPlugins);
+
+    if (!pluginSet.has(plugin.name)) {
+      pluginSet.add(plugin.name);
+      plugins.push(sample(allPlugins));
+      pluginCount--;
+    }
+  }
 
   result.push({
     ...data,
+    plugins,
     title: titles[i],
     symbol: titles[i].toLowerCase().replaceAll(' ', '-').replaceAll('’', ''),
     summary: summaries[i],
+    description: lorem,
     cover_image: coverImage,
     curator: {
       ...data.curator,
@@ -127,6 +166,5 @@ for (let i = 0; i < titles.length; i += 1) {
   });
 }
 
-const rootDir = path.resolve(new URL(import.meta.url).pathname, '../..');
 const indexFile = path.resolve(rootDir, 'src/fixtures/collections.json');
 fs.writeFileSync(indexFile, JSON.stringify(result, null, 2));

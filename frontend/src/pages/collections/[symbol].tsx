@@ -3,18 +3,24 @@ import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import { SSRConfig, useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { ParsedUrlQuery } from 'querystring';
 
-import { CollectionsPage } from '@/components/CollectionsPage';
-import { CollectionsContextProvider } from '@/components/CollectionsPage/context';
+import { CollectionPage } from '@/components/CollectionPage';
+import { CollectionContextProvider } from '@/components/CollectionPage/context';
 import { ErrorMessage } from '@/components/ErrorMessage';
-import { CollectionIndexData } from '@/types/collections';
+import { useLoadingState } from '@/context/loading';
+import { CollectionData } from '@/types/collections';
 import { I18nNamespace } from '@/types/i18n';
 import { hubAPI } from '@/utils/axios';
 import { isFeatureFlagEnabled } from '@/utils/featureFlags';
 
 interface Props extends Partial<SSRConfig> {
-  collections?: CollectionIndexData[];
+  collection?: CollectionData;
   error?: string;
+}
+
+interface Params extends ParsedUrlQuery {
+  symbol: string;
 }
 
 /**
@@ -22,8 +28,9 @@ interface Props extends Partial<SSRConfig> {
  */
 export async function getServerSideProps({
   req,
+  params,
   locale,
-}: GetServerSidePropsContext) {
+}: GetServerSidePropsContext<Params>) {
   if (!req.url || !isFeatureFlagEnabled('collections', req.url)) {
     return {
       redirect: {
@@ -45,10 +52,11 @@ export async function getServerSideProps({
   const props: Props = { ...translationProps };
 
   try {
-    const { data: collections } = await hubAPI.get<CollectionIndexData[]>(
-      '/collections',
+    const symbol = String(params?.symbol);
+    const { data: collection } = await hubAPI.get<CollectionData>(
+      `/collections/${symbol}`,
     );
-    props.collections = collections;
+    props.collection = collection;
   } catch (err) {
     const error = err as AxiosError;
     props.error = error.message;
@@ -57,24 +65,32 @@ export async function getServerSideProps({
   return { props };
 }
 
-export default function Collections({ collections, error }: Props) {
+export default function Collections({ collection, error }: Props) {
+  const isLoading = useLoadingState();
   const [t] = useTranslation(['pageTitles', 'collections']);
+
+  let title = `${t('pageTitles:collection')}`;
+  if (isLoading) {
+    title = `${title} | ${t('pageTitles:loading')}...`;
+  } else if (collection) {
+    title = `${title} | ${collection.title} by ${collection.curator.name}`;
+  }
 
   return (
     <>
       <Head>
-        <title>{t('pageTitles:collections')}</title>
+        <title>{title}</title>
       </Head>
 
       {error ? (
         <ErrorMessage error={error}>
-          {t('collections:collectionsPage.fetchError')}
+          {t('collections:collectionPage.fetchError')}
         </ErrorMessage>
       ) : (
-        collections && (
-          <CollectionsContextProvider collections={collections}>
-            <CollectionsPage />
-          </CollectionsContextProvider>
+        collection && (
+          <CollectionContextProvider collection={collection}>
+            <CollectionPage />
+          </CollectionContextProvider>
         )
       )}
     </>

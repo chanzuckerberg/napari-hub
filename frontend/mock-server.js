@@ -52,4 +52,16 @@ app.get('/collections', async (_, res) => {
   );
 });
 
+app.get('/collections/:symbol', async (req, res) => {
+  const collection = collections.find(
+    ({ symbol }) => symbol === req.params.symbol,
+  );
+
+  if (collection) {
+    res.json(collection);
+  } else {
+    res.status(404).send('not found');
+  }
+});
+
 app.listen(8081, () => console.log('Started mock API server'));
