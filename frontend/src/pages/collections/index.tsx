@@ -10,6 +10,7 @@ import { ErrorMessage } from '@/components/ErrorMessage';
 import { CollectionIndexData } from '@/types/collections';
 import { I18nNamespace } from '@/types/i18n';
 import { hubAPI } from '@/utils/axios';
+import { isFeatureFlagEnabled } from '@/utils/featureFlags';
 
 interface Props extends Partial<SSRConfig> {
   collections?: CollectionIndexData[];
@@ -20,8 +21,19 @@ interface Props extends Partial<SSRConfig> {
  * Fetches i18n and collections API data from the backend for SSR.
  */
 export async function getServerSideProps({
+  req,
   locale,
 }: GetServerSidePropsContext) {
+  if (!req.url || !isFeatureFlagEnabled('collections', req.url)) {
+    return {
+      redirect: {
+        permanent: false,
+        source: '/collections',
+        destination: '/',
+      },
+    };
+  }
+
   const translationProps = await serverSideTranslations(locale ?? 'en', [
     'common',
     'footer',
@@ -67,6 +79,4 @@ export default function Collections({ collections, error }: Props) {
       )}
     </>
   );
-
-  return <h1>yuh</h1>;
 }
