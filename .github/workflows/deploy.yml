@@ -29,7 +29,7 @@ jobs:
         run: | 
           echo DOCKER_TAG=${GITHUB_REF_NAME} >> $GITHUB_ENV
       - name: Deploy Changes to Prod
-        uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.3.1
+        uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.4.0
         with:
           stack-name: "prod"
           create-tag: "true"
@@ -57,7 +57,7 @@ jobs:
         run: | 
           echo DOCKER_TAG=${GITHUB_REF_NAME} >> $GITHUB_ENV
       - name: Deploy Changes to Staging
-        uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.3.1
+        uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.4.0
         with:
           stack-name: "staging"
           create-tag: "true"
