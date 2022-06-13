@@ -123,7 +123,7 @@ module backend_lambda {
   timeout               = 300
 }
 
-module plugin_lambda {
+module plugins_lambda {
   source             = "../lambda-container"
   function_name      = local.plugins_function_name
   image              = "${local.plugins_image_repo}:${local.image_tag}"
