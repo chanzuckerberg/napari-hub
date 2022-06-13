@@ -12,6 +12,7 @@ import { useLoadingState } from '@/context/loading';
 import { CollectionData } from '@/types/collections';
 import { I18nNamespace } from '@/types/i18n';
 import { hubAPI } from '@/utils/axios';
+import { isFeatureFlagEnabled } from '@/utils/featureFlags';
 
 interface Props extends Partial<SSRConfig> {
   collection?: CollectionData;
@@ -26,9 +27,20 @@ interface Params extends ParsedUrlQuery {
  * Fetches i18n and collections API data from the backend for SSR.
  */
 export async function getServerSideProps({
+  req,
   params,
   locale,
 }: GetServerSidePropsContext<Params>) {
+  if (!req.url || !isFeatureFlagEnabled('collections', req.url)) {
+    return {
+      redirect: {
+        permanent: false,
+        source: req.url,
+        destination: '/',
+      },
+    };
+  }
+
   const translationProps = await serverSideTranslations(locale ?? 'en', [
     'common',
     'footer',

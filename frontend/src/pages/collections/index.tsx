@@ -28,7 +28,7 @@ export async function getServerSideProps({
     return {
       redirect: {
         permanent: false,
-        source: '/collections',
+        source: req.url,
         destination: '/',
       },
     };
