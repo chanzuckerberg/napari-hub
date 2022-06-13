@@ -26,6 +26,11 @@ variable log_retention_in_days {
   default = null
 }
 
+variable maximum_retry_attempts {
+  type    = number
+  default = 2
+}
+
 variable function_description {
   type        = string
   description = "Description for lambda function."
@@ -70,6 +75,12 @@ variable memory_size {
   type        = number
   description = "Amount of memory to allocate to the lambda"
   default     = 128
+}
+
+variable ephemeral_storage_size {
+  type        = number
+  description = "Amount of ephemeral storage (/tmp) in MB your Lambda Function can use at runtime."
+  default     = 512
 }
 
 variable allowed_triggers {

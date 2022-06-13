@@ -142,6 +142,9 @@ module plugins_lambda {
 
   log_retention_in_days = 14
   timeout               = 900
+  memory_size           = 10240
+  ephemeral_storage_size = 10240
+  maximum_retry_attempts = 0
 }
 
 module failure_lambda {
@@ -163,6 +166,7 @@ module failure_lambda {
 
   log_retention_in_days = 14
   timeout               = 900
+  maximum_retry_attempts = 0
 }
 
 module api_gateway_proxy_stage {
@@ -196,7 +200,7 @@ resource "aws_s3_bucket_notification" "plugins_notification" {
   bucket = local.data_bucket_name
 
   lambda_function {
-    lambda_function_arn = module.backend_lambda.function_arn
+    lambda_function_arn = module.plugins_lambda.function_arn
     events              = ["s3:ObjectCreated:*"]
     filter_prefix       = var.env == "dev" ? local.custom_stack_name : ""
     filter_suffix       = ".yaml"

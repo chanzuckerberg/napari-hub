@@ -16,6 +16,8 @@ module lambda {
   vpc_security_group_ids = var.vpc_config == null ? null : var.vpc_config.security_group_ids
 
   memory_size                       = var.memory_size
+  ephemeral_storage_size            = var.ephemeral_storage_size
+  maximum_retry_attempts            = var.maximum_retry_attempts
   kms_key_arn                       = var.kms_key_arn
   role_name                         = var.function_name
   role_path                         = var.lambda_role_path
