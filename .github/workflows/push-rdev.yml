@@ -44,7 +44,6 @@ jobs:
           fi
       - name: Create update dev
         if: ${{ github.event_name == 'push' }}
-        #uses: lgan-czi/github-actions/.github/actions/deploy-happy-stack@0a2d3dd36e8027eaf7818c3a93686d972124bd4b
         uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.4.0
         with:
           stack-name: ${{ env.STACK_NAME }}
@@ -54,7 +53,6 @@ jobs:
           env: "dev"
       - name: Delete dev
         if: ${{ github.event_name == 'delete' && startsWith(github.event.ref, 'dev-') }}
-        #uses: lgan-czi/github-actions/.github/actions/deploy-happy-stack@0a2d3dd36e8027eaf7818c3a93686d972124bd4b
         uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.4.0
         with:
           stack-name: ${{ env.STACK_NAME }}
