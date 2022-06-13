@@ -1,0 +1,182 @@
+[
+  {
+    "title": "Time-saving segmentation plugins",
+    "updated_date": "2022-05-30",
+    "summary": "Hand-picked plugins to help you segment your cells ever so efficiently.",
+    "cover_image": "https://raw.githubusercontent.com/chanzuckerberg/napari-hub-collections/main/images/national-cancer-institute-4zA4w-dr5WM-unsplash.jpg",
+    "curator": {
+      "name": "Vivien Donovan",
+      "title": "Product Manager",
+      "affiliation": {
+        "institution": "Imaging Scientist, Cell Core Research Facility",
+        "website": "https://example.com"
+      }
+    },
+    "symbol": "time-saving-segmentation-plugins"
+  },
+  {
+    "title": "Allen Cell Institute’s plugins",
+    "updated_date": "2022-05-30",
+    "summary": "All plugins made public by the Allen Cell Institute; primarily aimed at cell biologists.",
+    "cover_image": "https://raw.githubusercontent.com/chanzuckerberg/napari-hub-collections/main/images/national-cancer-institute-J28Nn-CDbII-unsplash.jpg",
+    "curator": {
+      "name": "Quigley Schoolcraft",
+      "title": "Imaging Scientist",
+      "affiliation": {
+        "institution": "Machine Learning Engineer, Allen Cell Institute",
+        "website": "https://example.com"
+      }
+    },
+    "symbol": "allen-cell-institutes-plugins"
+  },
+  {
+    "title": "ABRF biology workflow",
+    "updated_date": "2022-05-30",
+    "summary": "Plugins filling the gap in the ABRF workflow in napari.",
+    "cover_image": "https://raw.githubusercontent.com/chanzuckerberg/napari-hub-collections/main/images/national-cancer-institute-LnvCEXQwC-o-unsplash.jpg",
+    "curator": {
+      "name": "Moab Luminoso",
+      "title": "Imaging Scientist",
+      "affiliation": {
+        "institution": "Imaging Research Scientist, Association of Biomolecular Resource Facilities",
+        "website": "https://example.com"
+      }
+    },
+    "symbol": "abrf-biology-workflow"
+  },
+  {
+    "title": "Point-detection plugins",
+    "updated_date": "2022-05-30",
+    "summary": "The most accurate point-detection plugins for napari; list actively updated.",
+    "cover_image": "https://raw.githubusercontent.com/chanzuckerberg/napari-hub-collections/main/images/national-cancer-institute-NbZQYileaOI-unsplash.jpg",
+    "curator": {
+      "name": "Kinshasa Kosette Mickelthwait-Venkatesh",
+      "title": "Imaging Scientist",
+      "affiliation": {
+        "institution": "Research Biologist, Low Anchor Center for Human Disease and Study",
+        "website": "https://example.com"
+      }
+    },
+    "symbol": "point-detection-plugins"
+  },
+  {
+    "title": "The most essential readers and writers for biologists",
+    "updated_date": "2022-05-30",
+    "summary": "Open and save to most any file format you'll need as a biologist in napari with this list.",
+    "cover_image": "https://raw.githubusercontent.com/chanzuckerberg/napari-hub-collections/main/images/national-cancer-institute-TX9pU27p6D0-unsplash.jpg",
+    "curator": {
+      "name": "Fritz Curiel",
+      "title": "Product Manager",
+      "affiliation": {
+        "institution": "Cell Innovation Expert, University of Catania",
+        "website": "https://example.com"
+      }
+    },
+    "symbol": "the-most-essential-readers-and-writers-for-biologists"
+  },
+  {
+    "title": "Neuro-pathway detection",
+    "updated_date": "2022-05-30",
+    "summary": "napari plugins specifically for neurobiologists looking to detect neural pathways.",
+    "cover_image": "https://raw.githubusercontent.com/chanzuckerberg/napari-hub-collections/main/images/national-cancer-institute-W2OVh2w2Kpo-unsplash.jpg",
+    "curator": {
+      "name": "Zed Wexler",
+      "title": "Imaging Scientist",
+      "affiliation": {
+        "institution": "Research Biologist, Cardiff College of Microbiology",
+        "website": "https://example.com"
+      }
+    },
+    "symbol": "neuro-pathway-detection"
+  },
+  {
+    "title": "The best sample datasets for cell biology",
+    "updated_date": "2022-05-30",
+    "summary": "Sample datasets with several pre-identified features to test workflows against.",
+    "cover_image": "https://raw.githubusercontent.com/chanzuckerberg/napari-hub-collections/main/images/national-cancer-institute-dMZC6hdobnk-unsplash.jpg",
+    "curator": {
+      "name": "Faisal Farooq",
+      "title": "Imaging Scientist",
+      "affiliation": {
+        "institution": "Cell Disease Specialist, University of Washington Medical Center",
+        "website": "https://example.com"
+      }
+    },
+    "symbol": "the-best-sample-datasets-for-cell-biology"
+  },
+  {
+    "title": "napari themes",
+    "updated_date": "2022-05-30",
+    "summary": "Every plugin capable of changing napari's theme, from fonts to colors.",
+    "cover_image": "https://raw.githubusercontent.com/chanzuckerberg/napari-hub-collections/main/images/national-cancer-institute-evhLgfOjU5Y-unsplash.jpg",
+    "curator": {
+      "name": "Brigitta Fleet",
+      "title": "Product Manager",
+      "affiliation": {
+        "institution": "Chan Zuckerberg Initiative",
+        "website": "https://example.com"
+      }
+    },
+    "symbol": "napari-themes"
+  },
+  {
+    "title": "Segmentify any cell type",
+    "updated_date": "2022-05-30",
+    "summary": "From plant cells to paramecia, these plugins have you and your obscure cell types covered",
+    "cover_image": "https://raw.githubusercontent.com/chanzuckerberg/napari-hub-collections/main/images/national-cancer-institute-irmUWEcjIz4-unsplash.jpg",
+    "curator": {
+      "name": "Guster Talltooth",
+      "title": "Imaging Scientist",
+      "affiliation": {
+        "institution": "Orinda Medical Center Fellow, Orinda Medical Center",
+        "website": "https://example.com"
+      }
+    },
+    "symbol": "segmentify-any-cell-type"
+  },
+  {
+    "title": "Contrast-enhancing plugins for microscopy analysis",
+    "updated_date": "2022-05-30",
+    "summary": "Reduce noise and enhance signal; some included plugins also de-blur impressively.",
+    "cover_image": "https://raw.githubusercontent.com/chanzuckerberg/napari-hub-collections/main/images/national-cancer-institute-lsxKuARrQXI-unsplash.jpg",
+    "curator": {
+      "name": "Via Levine",
+      "title": "Product Manager",
+      "affiliation": {
+        "institution": "Imaging Specialist, Hobie Swingle Institute for Cell Science",
+        "website": "https://example.com"
+      }
+    },
+    "symbol": "contrast-enhancing-plugins-for-microscopy-analysis"
+  },
+  {
+    "title": "Segmentify anything you can imagine",
+    "updated_date": "2022-05-30",
+    "summary": "From pumpkins to penguins to jelly beans in jars, let the ML do the counting for you!",
+    "cover_image": "https://raw.githubusercontent.com/chanzuckerberg/napari-hub-collections/main/images/national-cancer-institute-mbL91Lg56zc-unsplash.jpg",
+    "curator": {
+      "name": "Alfredo Angelopolous",
+      "title": "Head Research Engineer",
+      "affiliation": {
+        "institution": "Research Scientist, ML for the Cell",
+        "website": "https://example.com"
+      }
+    },
+    "symbol": "segmentify-anything-you-can-imagine"
+  },
+  {
+    "title": "Feature detection plugins",
+    "updated_date": "2022-05-30",
+    "summary": "Just a few favorite featurization plugins from the community.",
+    "cover_image": "https://raw.githubusercontent.com/chanzuckerberg/napari-hub-collections/main/images/national-cancer-institute-rvDeUG7YV64-unsplash.jpg",
+    "curator": {
+      "name": "Greggor Golightly",
+      "title": "Imaging Scientist",
+      "affiliation": {
+        "institution": "Cell Innovation Scientist, Carpati Institution",
+        "website": "https://example.com"
+      }
+    },
+    "symbol": "feature-detection-plugins"
+  }
+]

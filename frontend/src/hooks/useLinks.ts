@@ -102,5 +102,13 @@ export function useLinks() {
       link: 'https://chanzuckerberg.com/eoss/',
       newTab: true,
     },
+    PLUGINS: {
+      title: t('common:plugins'),
+      link: '/',
+    },
+    COLLECTIONS: {
+      title: t('common:collections'),
+      link: '/collections',
+    },
   });
 }
