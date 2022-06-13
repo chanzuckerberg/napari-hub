@@ -3,11 +3,17 @@ FROM node:16-alpine AS builder
 
 WORKDIR /app
 
-# Install dependencies
+# Copy over dependency folders
 COPY postinstall.js /app/
 COPY package.json /app/
 COPY yarn.lock /app/
 COPY eslint/ /app/eslint/
+
+# cache yarn 
+ENV YARN_CACHE_FOLDER=/usr/local/yarn-cache
+VOLUME /usr/local/yarn-cache
+
+# Install dependencies
 RUN yarn install
 
 # Build for production
@@ -20,11 +26,17 @@ FROM node:16-alpine
 
 WORKDIR /app
 
-# Install dependencies for production
+# Copy over dependency folders for production
 COPY postinstall.js /app/
 COPY package.json /app/
 COPY yarn.lock /app/
 COPY eslint/ /app/eslint/
+
+# cache yarn 
+ENV YARN_CACHE_FOLDER=/usr/local/yarn-cache
+VOLUME /usr/local/yarn-cache
+
+# Install dependencies for production
 ENV NODE_ENV=production
 RUN yarn install
 
