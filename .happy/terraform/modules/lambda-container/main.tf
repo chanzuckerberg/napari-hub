@@ -1,6 +1,6 @@
 module lambda {
   source  = "terraform-aws-modules/lambda/aws"
-  version = "2.0.0"
+  version = "3.2.1"
   publish = var.provisioned_lambda == -1 ? false : true
 
   function_name          = var.function_name
