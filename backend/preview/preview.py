@@ -282,13 +282,11 @@ def discover_manifest(plugin_name):
     # see https://github.com/chanzuckerberg/napari-hub-preview-action
     from npe2 import PluginManager
     pm = PluginManager()
-    print("Discovering npe2")
     pm.discover(include_npe1=False)
     is_npe2 = True
     try:
         manifest_dict = yaml.load(pm.get_manifest(plugin_name).yaml(), Loader=yaml.Loader)
     except KeyError:
-        print("Discovering npe1...")
         pm.discover(include_npe1=True)
         is_npe2 = False
         # forcing lazy discovery to run

@@ -21,7 +21,7 @@ def discover_manifest(plugin_name):
         pm.discover(include_npe1=True)
         is_npe2 = False
         # forcing lazy discovery to run
-        list(pm.iter_widgets())
+        pm.index_npe1_adapters()
         manifest = pm.get_manifest(plugin_name)
     return manifest, is_npe2
 
@@ -33,13 +33,16 @@ def generate_manifest(event, context):
     with its version, calls discover_manifest to return manifest and is_npe2, then write to designated location on s3.
     """
     max_failure_tries = 2
-    # Get the object from the event and show its content type
     bucket = event['Records'][0]['s3']['bucket']['name']
     key = urllib.parse.unquote_plus(event['Records'][0]['s3']['object']['key'], encoding='utf-8')
     response = s3.get_object(Bucket=bucket, Key=key)
     myBody = response["Body"]
     myYaml = yaml.safe_load(myBody)
-    if 'process_count' in myYaml and myYaml['process_count'] < max_failure_tries:
+    s3_client = boto3.client('s3')
+    s3_body = ''
+    if 'process_count' not in myYaml or myYaml['process_count'] >= max_failure_tries:
+        return
+    try:
         splitPath = str(key).split("/")
         plugin = splitPath[-2]
         version = splitPath[-1][:-5]
@@ -50,13 +53,18 @@ def generate_manifest(event, context):
         sys.path.insert(0, "/tmp/" + plugin)
         manifest, is_npe2 = discover_manifest(plugin)
         body = '#npe2' if is_npe2 else "#npe1"
-        # write manifest attributes
-        s3_client = boto3.client('s3')
+        s3_body = body + "\n" + manifest.yaml()
+    except Exception as e:
+        str_e = str(e).replace('"', "")
+        str_e = str_e.replace("'", "")
+        s3_body = 'process_count: ' + str(myYaml['process_count']) + '\n' + 'error_message: ' + f"'{str_e}'"
+        raise e
+    finally:
         response = s3_client.delete_object(
             Bucket=bucket,
             Key=key
         )
-        s3_client.put_object(Body=body+'\n'+manifest.yaml(), Bucket=bucket, Key=key)
+        s3_client.put_object(Body=s3_body, Bucket=bucket, Key=key)
 
 
 def failure_handler(event, context):
@@ -75,6 +83,5 @@ def failure_handler(event, context):
             Bucket=bucket,
             Key=yaml_path
         )
-        count = myYaml['process_count'] + 1
-        body = "{'process_count': " + str(count) + "}"
-        s3_client.put_object(Body=body, Bucket=bucket, Key=yaml_path)
+        myYaml['process_count'] += 1
+        s3_client.put_object(Body=yaml.dump(myYaml), Bucket=bucket, Key=yaml_path)

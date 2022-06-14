@@ -16,13 +16,12 @@ index_subset = {'name', 'summary', 'description_text', 'description_content_type
                 'authors', 'license', 'python_version', 'operating_system',
                 'release_date', 'version', 'first_released',
                 'development_status', 'category', 'display_name', 'plugin_types', 'reader_file_extensions',
-                'writer_file_extensions', 'writer_save_layers', 'npe2',  'conda'}
+                'writer_file_extensions', 'writer_save_layers', 'npe2',  'error_message', 'conda'}
 
 
 def get_public_plugins() -> Dict[str, str]:
     """
     Get the dictionary of public plugins and versions.
-
     :return: dict of public plugins and their versions
     """
     public_plugins = get_cache('cache/public-plugins.json')
@@ -35,7 +34,6 @@ def get_public_plugins() -> Dict[str, str]:
 def get_hidden_plugins() -> Dict[str, str]:
     """
     Get the dictionary of hidden plugins and versions.
-
     :return: dict of hidden plugins and their versions
     """
     hidden_plugins = get_cache('cache/hidden-plugins.json')
@@ -48,7 +46,6 @@ def get_hidden_plugins() -> Dict[str, str]:
 def get_valid_plugins() -> Dict[str, str]:
     """
     Get the dictionary of valid plugins and versions.
-
     :return: dict of valid plugins and their versions
     """
     return {**get_hidden_plugins(), **get_public_plugins()}
@@ -57,7 +54,6 @@ def get_valid_plugins() -> Dict[str, str]:
 def get_plugin(plugin: str, version: str = None) -> dict:
     """
     Get plugin and manifest metadata for a particular plugin, get latest if version is None.
-
     :param plugin: name of the plugin to get
     :param version: version of the plugin
     :return: plugin metadata dictionary
@@ -90,7 +86,6 @@ def get_frontend_manifest_metadata(plugin, version):
 def get_manifest(plugin: str, version: str = None) -> dict:
     """
     Get plugin manifest file for a particular plugin, get latest if version is None.
-
     :param plugin: name of the plugin to get
     :param version: version of the plugin manifest
     :return: plugin manifest dictionary
@@ -111,7 +106,6 @@ def get_manifest(plugin: str, version: str = None) -> dict:
 def get_index() -> dict:
     """
     Get the index page related metadata for all plugins.
-
     :return: dict for index page metadata
     """
     index = get_cache('cache/index.json')
@@ -124,7 +118,6 @@ def get_index() -> dict:
 def slice_metadata_to_index_columns(plugins_metadata: List[dict]) -> List[dict]:
     """
     slice index to only include specified indexing related columns.
-
     :param plugins_metadata: plugin metadata dictionary
     :return: sliced dict metadata for the plugin
     """
@@ -135,7 +128,6 @@ def slice_metadata_to_index_columns(plugins_metadata: List[dict]) -> List[dict]:
 def get_excluded_plugins() -> Dict[str, str]:
     """
     Get the excluded plugins.
-
     :return: dict for excluded plugins and their exclusion status
     """
     excluded_plugins = get_cache('excluded_plugins.json')
@@ -152,7 +144,6 @@ def build_manifest_metadata(plugin: str, version: str) -> Tuple[str, dict]:
 def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
     """
     Build plugin metadata from multiple sources, reuse cached ones if available.
-
     :return: dict for aggregated plugin metadata
     """
     cached_plugin = get_cache(f'cache/{plugin}/{version}.json')
@@ -182,7 +173,6 @@ def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
         metadata['conda'] = get_conda_forge_package(plugin)
     cache(metadata, f'cache/{plugin}/{version}.json')
     return plugin, metadata
-
 
 def update_cache():
     """
