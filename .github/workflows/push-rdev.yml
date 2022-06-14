@@ -33,36 +33,27 @@ jobs:
         uses: docker/login-action@v1
         with:
           registry: ${{ secrets.ECR_REPO }}
-      - name: Checkout Repo
-        uses: actions/checkout@v2
-      - name: Setup Python
-        uses: actions/setup-python@v3
-        with:
-          python-version: '3.9'
-          cache: 'pip'
-      - name: Install happy dependencies
+      - name: Set up docker build environment
         run: |
-          pip install --upgrade pip
-          pip install -r .happy/requirements.txt
+          if [[ ${#GITHUB_REF_NAME} -gt 32 ]]; then
+            echo "branch name: ${GITHUB_REF_NAME}, length ${#GITHUB_REF_NAME}, is $((${#GITHUB_REF_NAME} - 32)) characters too long, please use a branch name that's 32 characters or shorter"
+            exit 1
+          else 
+            echo STACK_NAME=${GITHUB_REF_NAME#dev-} >> $GITHUB_ENV
+            echo DOCKER_TAG=${GITHUB_REF_NAME} >> $GITHUB_ENV
+          fi
       - name: Create update dev
         if: ${{ github.event_name == 'push' }}
-        env:
-          TFE_TOKEN: ${{ secrets.TFE_TOKEN }}
-        run: |
-          DEV_NAME=${GITHUB_REF#refs/heads/dev-}
-          if $(./scripts/happy --profile="" list | grep -q $DEV_NAME); then
-            echo "Updating stack $DEV_NAME"
-            ./scripts/happy --profile="" update $DEV_NAME
-          else
-            echo "Creating stack $DEV_NAME"
-            ./scripts/happy --profile="" create $DEV_NAME
-          fi
+        uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.4.0
+        with:
+          stack-name: ${{ env.STACK_NAME }}
+          create-tag: "true"
+          tag: ${{ env.DOCKER_TAG }}
+          tfe-token: ${{ secrets.TFE_TOKEN }}
+          env: "dev"
       - name: Delete dev
         if: ${{ github.event_name == 'delete' && startsWith(github.event.ref, 'dev-') }}
-        env:
-          TFE_TOKEN: ${{ secrets.TFE_TOKEN }}
-        run: |
-          BRANCH=${{ github.event.ref }}
-          DEV_NAME=${BRANCH#dev-}
-          echo "Deleting stack $DEV_NAME"
-          ./scripts/happy --profile="" delete $DEV_NAME
+        uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.4.0
+        with:
+          stack-name: ${{ env.STACK_NAME }}
+          operation: "delete"
