@@ -1,6 +1,6 @@
 module lambda {
   source  = "terraform-aws-modules/lambda/aws"
-  version = "2.0.0"
+  version = "3.2.1"
   publish = var.provisioned_lambda == -1 ? false : true
 
   function_name          = var.function_name
@@ -16,6 +16,8 @@ module lambda {
   vpc_security_group_ids = var.vpc_config == null ? null : var.vpc_config.security_group_ids
 
   memory_size                       = var.memory_size
+  ephemeral_storage_size            = var.ephemeral_storage_size
+  maximum_retry_attempts            = var.maximum_retry_attempts
   kms_key_arn                       = var.kms_key_arn
   role_name                         = var.function_name
   role_path                         = var.lambda_role_path
@@ -24,6 +26,7 @@ module lambda {
   attach_network_policy             = true
   reserved_concurrent_executions    = var.reserved_concurrent_executions
   allowed_triggers                  = var.allowed_triggers
+  destination_on_failure            = var.destination_on_failure
 }
 
 resource "aws_lambda_provisioned_concurrency_config" "provisioned" {

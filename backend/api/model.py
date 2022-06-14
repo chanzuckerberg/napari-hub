@@ -7,8 +7,8 @@ from collections import defaultdict
 from utils.conda import get_conda_forge_package
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
-from api.s3 import get_cache, cache
-from utils.utils import render_description, send_alert, get_attribute, get_category_mapping
+from api.s3 import get_cache, cache, is_npe2_plugin
+from utils.utils import render_description, send_alert, get_attribute, get_category_mapping, parse_manifest
 from utils.datadog import report_metrics
 from api.zulip import notify_new_packages
 
@@ -78,24 +78,13 @@ def get_plugin(plugin: str, version: str = None) -> dict:
 
 def get_frontend_manifest_metadata(plugin, version):
 
-    # the existence of manifest.json means the manifest has been processed and contains
-    # valid metadata
-    manifest_metadata = get_cache(f'cache/{plugin}/{version}.manifest.json')
-    if manifest_metadata:
-        return manifest_metadata
-
-    # manifest has not been processed yet
-    # FIXME: this function call is strictly here to trigger the manifest building process.
-    #   Once we move to triggering the manifest building via SQS, this should be removed
-    get_manifest(plugin, version)
-    return {
-        'display_name': '',
-        'plugin_types': [],
-        'reader_file_extensions': [],
-        'writer_file_extensions': [],
-        'writer_save_layers': [],
-        'npe2': False
-    }
+    # load manifest from yaml (triggering build)
+    raw_metadata = get_manifest(plugin, version)
+    if 'process_count' in raw_metadata:
+        raw_metadata = None
+    interpreted_metadata = parse_manifest(raw_metadata)
+    interpreted_metadata['npe2'] = is_npe2_plugin(plugin, version)
+    return interpreted_metadata
 
 
 def get_manifest(plugin: str, version: str = None) -> dict:
@@ -155,6 +144,10 @@ def get_excluded_plugins() -> Dict[str, str]:
     else:
         return {}
 
+def build_manifest_metadata(plugin: str, version: str) -> Tuple[str, dict]:
+    metadata = get_frontend_manifest_metadata(plugin, version)
+    return plugin, metadata
+
 
 def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
     """
@@ -202,10 +195,8 @@ def update_cache():
     """
     plugins = query_pypi()
     plugins_metadata = get_plugin_metadata_async(plugins, build_plugin_metadata)
-    #for plugin in plugins:
-        #version = plugins[plugin]
-        #manifest_metadata = get_cache(f'cache/{plugin}/{version}.manifest.json')
-        #plugins_metadata[plugin].update(manifest_metadata)
+    manifest_metdata = get_plugin_metadata_async(plugins, build_manifest_metadata)
+    plugins_metadata.update(manifest_metdata)
     excluded_plugins = get_updated_plugin_exclusion(plugins_metadata)
     visibility_plugins = {"public": {}, "hidden": {}}
     for plugin, version in plugins.items():

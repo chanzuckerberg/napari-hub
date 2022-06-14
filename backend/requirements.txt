@@ -15,4 +15,3 @@ pkginfo
 datadog-lambda
 build
 pyOpenSSL
-npe2
