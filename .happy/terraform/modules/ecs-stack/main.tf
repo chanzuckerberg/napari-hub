@@ -212,7 +212,7 @@ resource "aws_s3_bucket_notification" "plugins_notification" {
 
 resource "aws_lambda_permission" "allow_lambda_invoke" {
   statement_id  = "AllowExecutionFromPluginsLambda"
-  action        = "lambda:InvokeFunction"
+  action        = ["lambda:InvokeFunctionUrl", "lambda:InvokeFunction", "lambda:InvokeAsync"]
   function_name = module.failure_lambda.function_arn
   principal     = "lambda.amazonaws.com"
   source_arn    = module.plugins_lambda.function_arn

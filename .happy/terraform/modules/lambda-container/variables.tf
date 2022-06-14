@@ -28,7 +28,7 @@ variable log_retention_in_days {
 
 variable maximum_retry_attempts {
   type    = number
-  default = 2
+  default = 0
 }
 
 variable function_description {
