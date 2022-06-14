@@ -79,6 +79,7 @@ services:
           - backend.naparinet.local
   plugins:
     image: '${DOCKER_REPO}napari-hub-dev-plugins'
+    platform: linux/amd64
     build:
       context: plugins
       cache_from:
