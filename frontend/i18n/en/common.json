@@ -1,6 +1,7 @@
 {
   "about": "About",
   "close": "Close",
+  "collections": "Collections",
   "contact": "Contact",
   "cziOss": "Chan Zuckerberg Initiative EOSS Program",
   "download": "Download",
@@ -17,6 +18,7 @@
   "napariMainWebsite": "napari main website",
   "napariPlausible": "napari.dev analytics dashboard",
   "plausiblePrivacy": "Plausible.io Privacy Policy",
+  "plugins": "Plugins",
   "privacy": "Privacy",
 
   "ariaLabels": {

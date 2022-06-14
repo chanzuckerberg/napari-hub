@@ -4,10 +4,11 @@ if (process.env.MOCK_SERVER === 'false') {
 }
 
 const express = require('express');
-const { set } = require('lodash');
+const { set, pick } = require('lodash');
 
 const napariPlugin = require('./src/fixtures/plugin.json');
 const pluginIndex = require('./src/fixtures/index.json');
+const collections = require('./src/fixtures/collections.json');
 
 const app = express();
 
@@ -32,6 +33,32 @@ app.get('/plugins/:name', async (req, res) => {
       ...napariPlugin,
       ...plugin,
     });
+  } else {
+    res.status(404).send('not found');
+  }
+});
+
+app.get('/collections', async (_, res) => {
+  res.json(
+    collections.map((collection) =>
+      pick(collection, [
+        'title',
+        'cover_image',
+        'summary',
+        'curator',
+        'symbol',
+      ]),
+    ),
+  );
+});
+
+app.get('/collections/:symbol', async (req, res) => {
+  const collection = collections.find(
+    ({ symbol }) => symbol === req.params.symbol,
+  );
+
+  if (collection) {
+    res.json(collection);
   } else {
     res.status(404).send('not found');
   }

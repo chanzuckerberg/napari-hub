@@ -39,19 +39,21 @@ jobs:
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
 
+      # cache both yarn-lock and node_modules
       - name: Setup Yarn cache
-        uses: actions/cache@v2
-        # use this to check for `cache-hit`:
-        # (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        uses: actions/cache@v3
         id: yarn-cache
         with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          path: |
+            **/node_modules
+            ${{ steps.yarn-cache-dir-path.outputs.dir }}
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
 
+      # --prefer-offline forces yarn to use cache if available
       - name: Install dependencies with yarn
-        run: yarn install
+        run: yarn install --prefer-offline --frozen-lockfile
 
       - name: ${{ matrix.name }}
         run: ${{ matrix.run }}
@@ -103,19 +105,21 @@ jobs:
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
 
+      # cache both yarn-lock and node_modules
       - name: Setup Yarn cache
-        uses: actions/cache@v2
-        # use this to check for `cache-hit`:
-        # (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        uses: actions/cache@v3
         id: yarn-cache
         with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          path: |
+            **/node_modules
+            ${{ steps.yarn-cache-dir-path.outputs.dir }}
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
 
+      # --prefer-offline forces yarn to use cache if available
       - name: Install dependencies with yarn
-        run: yarn install
+        run: yarn install --prefer-offline --frozen-lockfile
 
       - name: Build for production
         run: yarn build
@@ -127,6 +131,9 @@ jobs:
         run: yarn start &
         env:
           NODE_ENV: production
+
+      - name: Install playwright
+        run: npx playwright install --with-deps
 
       - name: Run E2E Tests for ${{ matrix.browser }}
         env:

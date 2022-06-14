@@ -4,6 +4,7 @@ import { NonFunctionKeys } from 'utility-types';
 export interface PluginAuthor {
   name: string;
   email?: string;
+  orcid?: string;
 }
 
 /**
