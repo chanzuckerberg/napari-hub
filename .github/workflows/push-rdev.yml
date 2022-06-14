@@ -35,7 +35,7 @@ jobs:
           registry: ${{ secrets.ECR_REPO }}
       - name: Set up docker build environment
         run: |
-          if [[ ${#GITHUB_REF_NAME} -gt 28 ]]; then
+          if [[ ${#GITHUB_REF_NAME} -gt 32 ]]; then
             echo "branch name: ${GITHUB_REF_NAME}, length ${#GITHUB_REF_NAME}, is $((${#GITHUB_REF_NAME} - 32)) characters too long, please use a branch name that's 32 characters or shorter"
             exit 1
           else 
