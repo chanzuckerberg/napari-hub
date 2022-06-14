@@ -127,10 +127,6 @@ def handle_exception(e) -> Response:
 @app.errorhandler(Exception)
 def handle_exception(e) -> Response:
     send_alert(f"An unexpected error has occurred in napari hub: {e}")
-    try:
-        raise e
-    except:
-        print(traceback.format_exc())
     return app.make_response(("Internal Server Error", 500))
 
 

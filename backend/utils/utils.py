@@ -141,13 +141,14 @@ def parse_manifest(manifest: Optional[dict] = None):
         return manifest_attributes
     manifest_attributes['display_name'] = manifest.get('display_name', '')
     if 'contributions' in manifest:
-        manifest_contributions = manifest['contributions']
+        manifest_contributions = manifest.get('contributions', dict())
         if 'readers' in manifest_contributions:
             readers = manifest_contributions['readers']
             manifest_attributes['plugin_types'].append('reader')
             reader_file_extensions = set()
             for reader in readers:
-                for ext in reader['filename_patterns']:
+                filename_patterns = reader.get('filename_patterns', [])
+                for ext in filename_patterns:
                     reader_file_extensions.add(ext)
             manifest_attributes['reader_file_extensions'] = list(reader_file_extensions)
         if 'writers' in manifest_contributions:
@@ -156,9 +157,11 @@ def parse_manifest(manifest: Optional[dict] = None):
             writer_file_extensions = set()
             writer_save_layers = set()
             for writer in writers:
-                for ext in writer['filename_extensions']:
+                filename_extensions = writer.get('filename_extensions', [])
+                layer_types = writer.get('layer_types', [])
+                for ext in filename_extensions:
                     writer_file_extensions.add(ext)
-                for ext in writer['layer_types']:
+                for ext in layer_types:
                     writer_save_layers.add(ext)
             manifest_attributes['writer_file_extensions'] = list(writer_file_extensions)
             manifest_attributes['writer_save_layers'] = list(writer_save_layers)
