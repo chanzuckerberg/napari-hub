@@ -1,0 +1,789 @@
+[
+  {
+    "title": "Time-saving segmentation plugins",
+    "updated_date": "2022-05-30",
+    "summary": "Hand-picked plugins to help you segment your cells ever so efficiently.",
+    "cover_image": "https://raw.githubusercontent.com/chanzuckerberg/napari-hub-collections/main/images/national-cancer-institute-4zA4w-dr5WM-unsplash.jpg",
+    "curator": {
+      "name": "Vivien Donovan",
+      "title": "Product Manager",
+      "affiliation": {
+        "institution": "Imaging Scientist, Cell Core Research Facility",
+        "website": "https://example.com"
+      }
+    },
+    "plugins": [
+      {
+        "name": "napari-mri",
+        "summary": "A simple plugin to use with napari for 3D-viewing of                  Magnetic Resonance Imaging file formats",
+        "comment": "This is an awesome plugin is",
+        "authors": [
+          {
+            "name": "SUSMITA SAHA",
+            "email": "susmi06@yahoo.com"
+          }
+        ]
+      },
+      {
+        "name": "napari-czifile2",
+        "summary": "Carl Zeiss Image (.czi) file support for napari",
+        "comment": "This is the best plugin there was",
+        "authors": [
+          {
+            "name": "Jonas Windhager",
+            "email": "jonas.windhager@uzh.ch"
+          }
+        ]
+      },
+      {
+        "name": "napari-lazy-openslide",
+        "summary": "A plugin to lazily load multiscale whole-slide images with openslide and dask.",
+        "comment": "This is the best plugin there was",
+        "authors": [
+          {
+            "name": "Trevor Manz",
+            "email": "trevor.j.manz@gmail.com"
+          }
+        ]
+      },
+      {
+        "name": "napari-nikon-nd2",
+        "summary": "Opens Nikon ND2 files into napari.",
+        "authors": [
+          {
+            "name": "Chris Wood",
+            "email": "cwood1967@gmail.com"
+          }
+        ]
+      }
+    ],
+    "symbol": "time-saving-segmentation-plugins",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer porta mauris eget convallis efficitur. Donec ultrices ligula turpis, sit amet laoreet erat aliquet vitae. In quis pellentesque ex. Vestibulum eu metus laoreet, blandit dolor sit amet, tristique leo. Sed sollicitudin elit vel venenatis lacinia. Mauris tempor nisl odio, sed placerat ligula dignissim eu. Ut et commodo felis, a pellentesque ipsum. Nulla eu nisi nec eros dapibus iaculis nec sit amet magna. Nam consectetur interdum pharetra. Donec sollicitudin ornare mi at aliquam. Fusce tortor eros, aliquet non ipsum ut, congue pretium quam. In rutrum vestibulum nibh ut eleifend. Nullam quam magna, eleifend et eleifend id, ultricies vel diam."
+  },
+  {
+    "title": "Allen Cell Institute’s plugins",
+    "updated_date": "2022-05-30",
+    "summary": "All plugins made public by the Allen Cell Institute; primarily aimed at cell biologists.",
+    "cover_image": "https://raw.githubusercontent.com/chanzuckerberg/napari-hub-collections/main/images/national-cancer-institute-J28Nn-CDbII-unsplash.jpg",
+    "curator": {
+      "name": "Quigley Schoolcraft",
+      "title": "Imaging Scientist",
+      "affiliation": {
+        "institution": "Machine Learning Engineer, Allen Cell Institute",
+        "website": "https://example.com"
+      }
+    },
+    "plugins": [
+      {
+        "name": "napari-svg",
+        "summary": "A plugin for reading and writing svg files with napari",
+        "comment": "This is a cool plugin is cool",
+        "authors": [
+          {
+            "name": "Nicholas Sofroniew",
+            "email": "sofroniewn@gmail.com"
+          }
+        ]
+      },
+      {
+        "name": "napari-czifile2",
+        "summary": "Carl Zeiss Image (.czi) file support for napari",
+        "comment": "This is the best plugin there was",
+        "authors": [
+          {
+            "name": "Jonas Windhager",
+            "email": "jonas.windhager@uzh.ch"
+          }
+        ]
+      },
+      {
+        "name": "napari-minimal-plugin",
+        "summary": "A minimal plugin",
+        "comment": "This is the best plugin there was",
+        "authors": [
+          {
+            "name": "Manan Lalit",
+            "email": "lalit@mpi-cbg.de"
+          }
+        ]
+      },
+      {
+        "name": "napari-dzi-zarr",
+        "summary": "An experimental plugin for viewing Deep Zoom Images (DZI) with napari and zarr.",
+        "comment": "This is the best plugin there was",
+        "authors": [
+          {
+            "name": "Trevor Manz",
+            "email": "trevor.j.manz@gmail.com"
+          }
+        ]
+      },
+      {
+        "name": "napping",
+        "summary": "Control point mapping and coordination transformation using napari",
+        "comment": "This is the best plugin there was",
+        "authors": [
+          {
+            "name": "Jonas Windhager",
+            "email": "jonas.windhager@uzh.ch"
+          }
+        ]
+      }
+    ],
+    "symbol": "allen-cell-institutes-plugins",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer porta mauris eget convallis efficitur. Donec ultrices ligula turpis, sit amet laoreet erat aliquet vitae. In quis pellentesque ex. Vestibulum eu metus laoreet, blandit dolor sit amet, tristique leo. Sed sollicitudin elit vel venenatis lacinia. Mauris tempor nisl odio, sed placerat ligula dignissim eu. Ut et commodo felis, a pellentesque ipsum. Nulla eu nisi nec eros dapibus iaculis nec sit amet magna. Nam consectetur interdum pharetra. Donec sollicitudin ornare mi at aliquam. Fusce tortor eros, aliquet non ipsum ut, congue pretium quam. In rutrum vestibulum nibh ut eleifend. Nullam quam magna, eleifend et eleifend id, ultricies vel diam."
+  },
+  {
+    "title": "ABRF biology workflow",
+    "updated_date": "2022-05-30",
+    "summary": "Plugins filling the gap in the ABRF workflow in napari.",
+    "cover_image": "https://raw.githubusercontent.com/chanzuckerberg/napari-hub-collections/main/images/national-cancer-institute-LnvCEXQwC-o-unsplash.jpg",
+    "curator": {
+      "name": "Moab Luminoso",
+      "title": "Product Manager",
+      "affiliation": {
+        "institution": "Imaging Research Scientist, Association of Biomolecular Resource Facilities",
+        "website": "https://example.com"
+      }
+    },
+    "plugins": [
+      {
+        "name": "napari-dv",
+        "summary": "Deltavision/MRC file reader for napari",
+        "comment": "This is the best plugin there was",
+        "authors": [
+          {
+            "name": "Talley Lambert",
+            "email": "talley.lambert@gmail.com"
+          }
+        ]
+      },
+      {
+        "name": "napari_video",
+        "summary": "napari plugin for reading videos.",
+        "comment": "This is the best plugin there was",
+        "authors": [
+          {
+            "name": "Jan Clemens",
+            "email": "clemensjan@googlemail.com"
+          }
+        ]
+      },
+      {
+        "name": "napari-dv",
+        "summary": "Deltavision/MRC file reader for napari",
+        "comment": "This is the best plugin there was",
+        "authors": [
+          {
+            "name": "Talley Lambert",
+            "email": "talley.lambert@gmail.com"
+          }
+        ]
+      },
+      {
+        "name": "napari-lazy-openslide",
+        "summary": "A plugin to lazily load multiscale whole-slide images with openslide and dask.",
+        "comment": "This is the best plugin there was",
+        "authors": [
+          {
+            "name": "Trevor Manz",
+            "email": "trevor.j.manz@gmail.com"
+          }
+        ]
+      },
+      {
+        "name": "napari-yapic-prediction",
+        "summary": "Napari widget plugin to perform yapic model segmentation prediction in the napari window",
+        "comment": "This is the best plugin there was",
+        "authors": [
+          {
+            "name": "Duway Nicolas Lesmes Leon",
+            "email": "dlesmesleon@hotmail.com"
+          }
+        ]
+      }
+    ],
+    "symbol": "abrf-biology-workflow",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer porta mauris eget convallis efficitur. Donec ultrices ligula turpis, sit amet laoreet erat aliquet vitae. In quis pellentesque ex. Vestibulum eu metus laoreet, blandit dolor sit amet, tristique leo. Sed sollicitudin elit vel venenatis lacinia. Mauris tempor nisl odio, sed placerat ligula dignissim eu. Ut et commodo felis, a pellentesque ipsum. Nulla eu nisi nec eros dapibus iaculis nec sit amet magna. Nam consectetur interdum pharetra. Donec sollicitudin ornare mi at aliquam. Fusce tortor eros, aliquet non ipsum ut, congue pretium quam. In rutrum vestibulum nibh ut eleifend. Nullam quam magna, eleifend et eleifend id, ultricies vel diam."
+  },
+  {
+    "title": "Point-detection plugins",
+    "updated_date": "2022-05-30",
+    "summary": "The most accurate point-detection plugins for napari; list actively updated.",
+    "cover_image": "https://raw.githubusercontent.com/chanzuckerberg/napari-hub-collections/main/images/national-cancer-institute-NbZQYileaOI-unsplash.jpg",
+    "curator": {
+      "name": "Kinshasa Kosette Mickelthwait-Venkatesh",
+      "title": "Product Manager",
+      "affiliation": {
+        "institution": "Research Biologist, Low Anchor Center for Human Disease and Study",
+        "website": "https://example.com"
+      }
+    },
+    "plugins": [
+      {
+        "name": "napari-imc",
+        "summary": "Imaging Mass Cytometry (IMC) file type support for napari",
+        "comment": "This is a cool plugin is cool",
+        "authors": [
+          {
+            "name": "Jonas Windhager",
+            "email": "jonas.windhager@uzh.ch"
+          }
+        ]
+      },
+      {
+        "name": "napari-properties-viewer",
+        "summary": "A viewer for napari layer properties",
+        "authors": [
+          {
+            "name": "Kevin Yamauchi",
+            "email": "kevin.yamauchi@gmail.com"
+          }
+        ]
+      },
+      {
+        "display_name": "Test Plugin",
+        "name": "napari-test-plugin",
+        "summary": "Test plugin that is for testing.",
+        "comment": "This is an awesome plugin is",
+        "authors": [
+          {
+            "name": "Test Author",
+            "email": "test.author@example.com"
+          }
+        ]
+      },
+      {
+        "name": "napari-medical-image-formats",
+        "summary": "A Plugin in order to read medical image formats such as DICOM and NIfTI",
+        "comment": "This is a cool plugin is cool",
+        "authors": [
+          {
+            "name": "Marc Boucsein, Marc Buckmakowski",
+            "email": ""
+          }
+        ]
+      },
+      {
+        "name": "napari_video",
+        "summary": "napari plugin for reading videos.",
+        "comment": "This is the best plugin there was",
+        "authors": [
+          {
+            "name": "Jan Clemens",
+            "email": "clemensjan@googlemail.com"
+          }
+        ]
+      }
+    ],
+    "symbol": "point-detection-plugins",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer porta mauris eget convallis efficitur. Donec ultrices ligula turpis, sit amet laoreet erat aliquet vitae. In quis pellentesque ex. Vestibulum eu metus laoreet, blandit dolor sit amet, tristique leo. Sed sollicitudin elit vel venenatis lacinia. Mauris tempor nisl odio, sed placerat ligula dignissim eu. Ut et commodo felis, a pellentesque ipsum. Nulla eu nisi nec eros dapibus iaculis nec sit amet magna. Nam consectetur interdum pharetra. Donec sollicitudin ornare mi at aliquam. Fusce tortor eros, aliquet non ipsum ut, congue pretium quam. In rutrum vestibulum nibh ut eleifend. Nullam quam magna, eleifend et eleifend id, ultricies vel diam."
+  },
+  {
+    "title": "The most essential readers and writers for biologists",
+    "updated_date": "2022-05-30",
+    "summary": "Open and save to most any file format you'll need as a biologist in napari with this list.",
+    "cover_image": "https://raw.githubusercontent.com/chanzuckerberg/napari-hub-collections/main/images/national-cancer-institute-TX9pU27p6D0-unsplash.jpg",
+    "curator": {
+      "name": "Fritz Curiel",
+      "title": "Software Engineer",
+      "affiliation": {
+        "institution": "Cell Innovation Expert, University of Catania",
+        "website": "https://example.com"
+      }
+    },
+    "plugins": [
+      {
+        "name": "napari-brainreg",
+        "summary": "Visualise brainreg registration output",
+        "comment": "This is the best plugin there was",
+        "authors": [
+          {
+            "name": "Adam Tyson",
+            "email": "adam.tyson@ucl.ac.uk"
+          }
+        ]
+      },
+      {
+        "name": "napari-cellfinder",
+        "summary": "Visualise cellfinder results with napari",
+        "authors": [
+          {
+            "name": "Adam Tyson",
+            "email": "adam.tyson@ucl.ac.uk"
+          }
+        ]
+      },
+      {
+        "name": "napari-minimal-plugin",
+        "summary": "A minimal plugin",
+        "comment": "This is the best plugin there was",
+        "authors": [
+          {
+            "name": "Manan Lalit",
+            "email": "lalit@mpi-cbg.de"
+          }
+        ]
+      },
+      {
+        "name": "napari-imc",
+        "summary": "Imaging Mass Cytometry (IMC) file type support for napari",
+        "comment": "This is a cool plugin is cool",
+        "authors": [
+          {
+            "name": "Jonas Windhager",
+            "email": "jonas.windhager@uzh.ch"
+          }
+        ]
+      },
+      {
+        "name": "napari-brainreg",
+        "summary": "Visualise brainreg registration output",
+        "comment": "This is the best plugin there was",
+        "authors": [
+          {
+            "name": "Adam Tyson",
+            "email": "adam.tyson@ucl.ac.uk"
+          }
+        ]
+      },
+      {
+        "name": "napari-demo",
+        "summary": "demo plugin",
+        "comment": "This is a cool plugin is cool",
+        "authors": [
+          {
+            "name": "Ziyang Liu",
+            "email": "zliu@chanzuckerberg.com"
+          },
+          {
+            "name": "Justin T. Kiggins",
+            "orcid": "0000-0002-4638-7015"
+          }
+        ]
+      }
+    ],
+    "symbol": "the-most-essential-readers-and-writers-for-biologists",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer porta mauris eget convallis efficitur. Donec ultrices ligula turpis, sit amet laoreet erat aliquet vitae. In quis pellentesque ex. Vestibulum eu metus laoreet, blandit dolor sit amet, tristique leo. Sed sollicitudin elit vel venenatis lacinia. Mauris tempor nisl odio, sed placerat ligula dignissim eu. Ut et commodo felis, a pellentesque ipsum. Nulla eu nisi nec eros dapibus iaculis nec sit amet magna. Nam consectetur interdum pharetra. Donec sollicitudin ornare mi at aliquam. Fusce tortor eros, aliquet non ipsum ut, congue pretium quam. In rutrum vestibulum nibh ut eleifend. Nullam quam magna, eleifend et eleifend id, ultricies vel diam."
+  },
+  {
+    "title": "Neuro-pathway detection",
+    "updated_date": "2022-05-30",
+    "summary": "napari plugins specifically for neurobiologists looking to detect neural pathways.",
+    "cover_image": "https://raw.githubusercontent.com/chanzuckerberg/napari-hub-collections/main/images/national-cancer-institute-W2OVh2w2Kpo-unsplash.jpg",
+    "curator": {
+      "name": "Zed Wexler",
+      "title": "Software Engineer",
+      "affiliation": {
+        "institution": "Research Biologist, Cardiff College of Microbiology",
+        "website": "https://example.com"
+      }
+    },
+    "plugins": [
+      {
+        "name": "nd2-dask",
+        "summary": "Plugin to load nd2 data into napari",
+        "comment": "This is an awesome plugin is",
+        "authors": [
+          {
+            "name": "Draga Doncila Pop",
+            "email": "ddon0001@student.monash.edu"
+          }
+        ]
+      },
+      {
+        "name": "napari-console",
+        "summary": "A plugin that adds a console to napari",
+        "comment": "This is the best plugin there was",
+        "authors": [
+          {
+            "name": "Nicholas Sofroniew",
+            "email": "sofroniewn@gmail.com"
+          }
+        ]
+      },
+      {
+        "name": "napari-brainreg",
+        "summary": "Visualise brainreg registration output",
+        "comment": "This is the best plugin there was",
+        "authors": [
+          {
+            "name": "Adam Tyson",
+            "email": "adam.tyson@ucl.ac.uk"
+          }
+        ]
+      }
+    ],
+    "symbol": "neuro-pathway-detection",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer porta mauris eget convallis efficitur. Donec ultrices ligula turpis, sit amet laoreet erat aliquet vitae. In quis pellentesque ex. Vestibulum eu metus laoreet, blandit dolor sit amet, tristique leo. Sed sollicitudin elit vel venenatis lacinia. Mauris tempor nisl odio, sed placerat ligula dignissim eu. Ut et commodo felis, a pellentesque ipsum. Nulla eu nisi nec eros dapibus iaculis nec sit amet magna. Nam consectetur interdum pharetra. Donec sollicitudin ornare mi at aliquam. Fusce tortor eros, aliquet non ipsum ut, congue pretium quam. In rutrum vestibulum nibh ut eleifend. Nullam quam magna, eleifend et eleifend id, ultricies vel diam."
+  },
+  {
+    "title": "The best sample datasets for cell biology",
+    "updated_date": "2022-05-30",
+    "summary": "Sample datasets with several pre-identified features to test workflows against.",
+    "cover_image": "https://raw.githubusercontent.com/chanzuckerberg/napari-hub-collections/main/images/national-cancer-institute-dMZC6hdobnk-unsplash.jpg",
+    "curator": {
+      "name": "Faisal Farooq",
+      "title": "Head Research Engineer",
+      "affiliation": {
+        "institution": "Cell Disease Specialist, University of Washington Medical Center",
+        "website": "https://example.com"
+      }
+    },
+    "plugins": [
+      {
+        "name": "napari-lazy-openslide",
+        "summary": "A plugin to lazily load multiscale whole-slide images with openslide and dask.",
+        "comment": "This is the best plugin there was",
+        "authors": [
+          {
+            "name": "Trevor Manz",
+            "email": "trevor.j.manz@gmail.com"
+          }
+        ]
+      },
+      {
+        "name": "napari_video",
+        "summary": "napari plugin for reading videos.",
+        "comment": "This is the best plugin there was",
+        "authors": [
+          {
+            "name": "Jan Clemens",
+            "email": "clemensjan@googlemail.com"
+          }
+        ]
+      },
+      {
+        "name": "napari-medical-image-formats",
+        "summary": "A Plugin in order to read medical image formats such as DICOM and NIfTI",
+        "comment": "This is a cool plugin is cool",
+        "authors": [
+          {
+            "name": "Marc Boucsein, Marc Buckmakowski",
+            "email": ""
+          }
+        ]
+      }
+    ],
+    "symbol": "the-best-sample-datasets-for-cell-biology",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer porta mauris eget convallis efficitur. Donec ultrices ligula turpis, sit amet laoreet erat aliquet vitae. In quis pellentesque ex. Vestibulum eu metus laoreet, blandit dolor sit amet, tristique leo. Sed sollicitudin elit vel venenatis lacinia. Mauris tempor nisl odio, sed placerat ligula dignissim eu. Ut et commodo felis, a pellentesque ipsum. Nulla eu nisi nec eros dapibus iaculis nec sit amet magna. Nam consectetur interdum pharetra. Donec sollicitudin ornare mi at aliquam. Fusce tortor eros, aliquet non ipsum ut, congue pretium quam. In rutrum vestibulum nibh ut eleifend. Nullam quam magna, eleifend et eleifend id, ultricies vel diam."
+  },
+  {
+    "title": "napari themes",
+    "updated_date": "2022-05-30",
+    "summary": "Every plugin capable of changing napari's theme, from fonts to colors.",
+    "cover_image": "https://raw.githubusercontent.com/chanzuckerberg/napari-hub-collections/main/images/national-cancer-institute-evhLgfOjU5Y-unsplash.jpg",
+    "curator": {
+      "name": "Brigitta Fleet",
+      "title": "Product Manager",
+      "affiliation": {
+        "institution": "Chan Zuckerberg Initiative",
+        "website": "https://example.com"
+      }
+    },
+    "plugins": [
+      {
+        "name": "napari-nikon-nd2",
+        "summary": "Opens Nikon ND2 files into napari.",
+        "authors": [
+          {
+            "name": "Chris Wood",
+            "email": "cwood1967@gmail.com"
+          }
+        ]
+      }
+    ],
+    "symbol": "napari-themes",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer porta mauris eget convallis efficitur. Donec ultrices ligula turpis, sit amet laoreet erat aliquet vitae. In quis pellentesque ex. Vestibulum eu metus laoreet, blandit dolor sit amet, tristique leo. Sed sollicitudin elit vel venenatis lacinia. Mauris tempor nisl odio, sed placerat ligula dignissim eu. Ut et commodo felis, a pellentesque ipsum. Nulla eu nisi nec eros dapibus iaculis nec sit amet magna. Nam consectetur interdum pharetra. Donec sollicitudin ornare mi at aliquam. Fusce tortor eros, aliquet non ipsum ut, congue pretium quam. In rutrum vestibulum nibh ut eleifend. Nullam quam magna, eleifend et eleifend id, ultricies vel diam."
+  },
+  {
+    "title": "Segmentify any cell type",
+    "updated_date": "2022-05-30",
+    "summary": "From plant cells to paramecia, these plugins have you and your obscure cell types covered",
+    "cover_image": "https://raw.githubusercontent.com/chanzuckerberg/napari-hub-collections/main/images/national-cancer-institute-irmUWEcjIz4-unsplash.jpg",
+    "curator": {
+      "name": "Guster Talltooth",
+      "title": "Product Manager",
+      "affiliation": {
+        "institution": "Orinda Medical Center Fellow, Orinda Medical Center",
+        "website": "https://example.com"
+      }
+    },
+    "plugins": [
+      {
+        "name": "PlatyMatch",
+        "summary": "`PlatyMatch` allows registration of volumetric images of embryos by establishing correspondences between cells",
+        "comment": "This is a cool plugin is cool",
+        "authors": [
+          {
+            "name": "Manan Lalit",
+            "email": "lalit@mpi-cbg.de"
+          }
+        ]
+      },
+      {
+        "name": "affinder",
+        "summary": "Quickly find the affine matrix mapping one image to another using manual correspondence points annotation",
+        "comment": "This is the best plugin there was",
+        "authors": [
+          {
+            "name": "Juan Nunez-Iglesias",
+            "email": "juan.nunez-iglesias@monash.edu"
+          }
+        ]
+      },
+      {
+        "name": "PartSeg",
+        "summary": "PartSeg is python GUI for bio imaging analysis especially nucleus analysis,",
+        "authors": [
+          {
+            "name": "Grzegorz Bokota",
+            "email": "g.bokota@cent.uw.edu.pl"
+          }
+        ]
+      },
+      {
+        "name": "napari-demo",
+        "summary": "demo plugin",
+        "comment": "This is a cool plugin is cool",
+        "authors": [
+          {
+            "name": "Ziyang Liu",
+            "email": "zliu@chanzuckerberg.com"
+          },
+          {
+            "name": "Justin T. Kiggins",
+            "orcid": "0000-0002-4638-7015"
+          }
+        ]
+      },
+      {
+        "name": "napari-lazy-openslide",
+        "summary": "A plugin to lazily load multiscale whole-slide images with openslide and dask.",
+        "comment": "This is the best plugin there was",
+        "authors": [
+          {
+            "name": "Trevor Manz",
+            "email": "trevor.j.manz@gmail.com"
+          }
+        ]
+      },
+      {
+        "name": "napari-cellfinder",
+        "summary": "Visualise cellfinder results with napari",
+        "authors": [
+          {
+            "name": "Adam Tyson",
+            "email": "adam.tyson@ucl.ac.uk"
+          }
+        ]
+      },
+      {
+        "name": "napari-dv",
+        "summary": "Deltavision/MRC file reader for napari",
+        "comment": "This is the best plugin there was",
+        "authors": [
+          {
+            "name": "Talley Lambert",
+            "email": "talley.lambert@gmail.com"
+          }
+        ]
+      },
+      {
+        "name": "napari-medical-image-formats",
+        "summary": "A Plugin in order to read medical image formats such as DICOM and NIfTI",
+        "comment": "This is a cool plugin is cool",
+        "authors": [
+          {
+            "name": "Marc Boucsein, Marc Buckmakowski",
+            "email": ""
+          }
+        ]
+      },
+      {
+        "name": "cellfinder-napari",
+        "summary": "Efficient cell detection in large images",
+        "comment": "This is an awesome plugin is",
+        "authors": [
+          {
+            "name": "Adam Tyson",
+            "email": "code@adamltyson.com"
+          }
+        ]
+      },
+      {
+        "name": "napari-hdf5-labels-io",
+        "summary": "Napari plugin to store set of layers in a .h5 file. Label layer are stored in a sparse representation",
+        "comment": "This is the best plugin there was",
+        "authors": [
+          {
+            "name": "Duway Nicolas Lesmes Leon",
+            "email": "dlesmesleon@hotmail.com"
+          }
+        ]
+      }
+    ],
+    "symbol": "segmentify-any-cell-type",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer porta mauris eget convallis efficitur. Donec ultrices ligula turpis, sit amet laoreet erat aliquet vitae. In quis pellentesque ex. Vestibulum eu metus laoreet, blandit dolor sit amet, tristique leo. Sed sollicitudin elit vel venenatis lacinia. Mauris tempor nisl odio, sed placerat ligula dignissim eu. Ut et commodo felis, a pellentesque ipsum. Nulla eu nisi nec eros dapibus iaculis nec sit amet magna. Nam consectetur interdum pharetra. Donec sollicitudin ornare mi at aliquam. Fusce tortor eros, aliquet non ipsum ut, congue pretium quam. In rutrum vestibulum nibh ut eleifend. Nullam quam magna, eleifend et eleifend id, ultricies vel diam."
+  },
+  {
+    "title": "Contrast-enhancing plugins for microscopy analysis",
+    "updated_date": "2022-05-30",
+    "summary": "Reduce noise and enhance signal; some included plugins also de-blur impressively.",
+    "cover_image": "https://raw.githubusercontent.com/chanzuckerberg/napari-hub-collections/main/images/national-cancer-institute-lsxKuARrQXI-unsplash.jpg",
+    "curator": {
+      "name": "Via Levine",
+      "title": "Software Engineer",
+      "affiliation": {
+        "institution": "Imaging Specialist, Hobie Swingle Institute for Cell Science",
+        "website": "https://example.com"
+      }
+    },
+    "plugins": [
+      {
+        "name": "napari-demo",
+        "summary": "demo plugin",
+        "comment": "This is a cool plugin is cool",
+        "authors": [
+          {
+            "name": "Ziyang Liu",
+            "email": "zliu@chanzuckerberg.com"
+          },
+          {
+            "name": "Justin T. Kiggins",
+            "orcid": "0000-0002-4638-7015"
+          }
+        ]
+      },
+      {
+        "name": "napari-console",
+        "summary": "A plugin that adds a console to napari",
+        "comment": "This is the best plugin there was",
+        "authors": [
+          {
+            "name": "Nicholas Sofroniew",
+            "email": "sofroniewn@gmail.com"
+          }
+        ]
+      },
+      {
+        "name": "cellpose-napari",
+        "summary": "a generalist algorithm for anatomical segmentation",
+        "comment": "This is an awesome plugin is",
+        "authors": [
+          {
+            "name": "Carsen Stringer",
+            "email": "stringerc@janelia.hhmi.org"
+          }
+        ]
+      },
+      {
+        "name": "napari-dv",
+        "summary": "Deltavision/MRC file reader for napari",
+        "comment": "This is the best plugin there was",
+        "authors": [
+          {
+            "name": "Talley Lambert",
+            "email": "talley.lambert@gmail.com"
+          }
+        ]
+      },
+      {
+        "name": "elastix-napari",
+        "summary": "A toolbox for rigid and nonrigid registration of images.",
+        "comment": "This is a cool plugin is cool",
+        "authors": [
+          {
+            "name": "Viktor van der Valk",
+            "email": "v.o.van_der_valk@lumc.nl"
+          }
+        ]
+      }
+    ],
+    "symbol": "contrast-enhancing-plugins-for-microscopy-analysis",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer porta mauris eget convallis efficitur. Donec ultrices ligula turpis, sit amet laoreet erat aliquet vitae. In quis pellentesque ex. Vestibulum eu metus laoreet, blandit dolor sit amet, tristique leo. Sed sollicitudin elit vel venenatis lacinia. Mauris tempor nisl odio, sed placerat ligula dignissim eu. Ut et commodo felis, a pellentesque ipsum. Nulla eu nisi nec eros dapibus iaculis nec sit amet magna. Nam consectetur interdum pharetra. Donec sollicitudin ornare mi at aliquam. Fusce tortor eros, aliquet non ipsum ut, congue pretium quam. In rutrum vestibulum nibh ut eleifend. Nullam quam magna, eleifend et eleifend id, ultricies vel diam."
+  },
+  {
+    "title": "Segmentify anything you can imagine",
+    "updated_date": "2022-05-30",
+    "summary": "From pumpkins to penguins to jelly beans in jars, let the ML do the counting for you!",
+    "cover_image": "https://raw.githubusercontent.com/chanzuckerberg/napari-hub-collections/main/images/national-cancer-institute-mbL91Lg56zc-unsplash.jpg",
+    "curator": {
+      "name": "Alfredo Angelopolous",
+      "title": "Imaging Scientist",
+      "affiliation": {
+        "institution": "Research Scientist, ML for the Cell",
+        "website": "https://example.com"
+      }
+    },
+    "plugins": [
+      {
+        "name": "napari-demo",
+        "summary": "demo plugin",
+        "comment": "This is a cool plugin is cool",
+        "authors": [
+          {
+            "name": "Ziyang Liu",
+            "email": "zliu@chanzuckerberg.com"
+          },
+          {
+            "name": "Justin T. Kiggins",
+            "orcid": "0000-0002-4638-7015"
+          }
+        ]
+      },
+      {
+        "name": "napari-yapic-prediction",
+        "summary": "Napari widget plugin to perform yapic model segmentation prediction in the napari window",
+        "comment": "This is the best plugin there was",
+        "authors": [
+          {
+            "name": "Duway Nicolas Lesmes Leon",
+            "email": "dlesmesleon@hotmail.com"
+          }
+        ]
+      },
+      {
+        "name": "brainglobe-napari-io",
+        "summary": "Read and write files from the BrainGlobe neuroanatomy suite",
+        "authors": [
+          {
+            "name": "Adam Tyson",
+            "email": "adam.tyson@ucl.ac.uk"
+          }
+        ]
+      }
+    ],
+    "symbol": "segmentify-anything-you-can-imagine",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer porta mauris eget convallis efficitur. Donec ultrices ligula turpis, sit amet laoreet erat aliquet vitae. In quis pellentesque ex. Vestibulum eu metus laoreet, blandit dolor sit amet, tristique leo. Sed sollicitudin elit vel venenatis lacinia. Mauris tempor nisl odio, sed placerat ligula dignissim eu. Ut et commodo felis, a pellentesque ipsum. Nulla eu nisi nec eros dapibus iaculis nec sit amet magna. Nam consectetur interdum pharetra. Donec sollicitudin ornare mi at aliquam. Fusce tortor eros, aliquet non ipsum ut, congue pretium quam. In rutrum vestibulum nibh ut eleifend. Nullam quam magna, eleifend et eleifend id, ultricies vel diam."
+  },
+  {
+    "title": "Feature detection plugins",
+    "updated_date": "2022-05-30",
+    "summary": "Just a few favorite featurization plugins from the community.",
+    "cover_image": "https://raw.githubusercontent.com/chanzuckerberg/napari-hub-collections/main/images/national-cancer-institute-rvDeUG7YV64-unsplash.jpg",
+    "curator": {
+      "name": "Greggor Golightly",
+      "title": "Head Research Engineer",
+      "affiliation": {
+        "institution": "Cell Innovation Scientist, Carpati Institution",
+        "website": "https://example.com"
+      }
+    },
+    "plugins": [
+      {
+        "name": "ome-zarr",
+        "summary": "Implementation of images in Zarr files.",
+        "comment": "This is an awesome plugin is",
+        "authors": [
+          {
+            "name": "The Open Microscopy Team",
+            "email": ""
+          }
+        ]
+      }
+    ],
+    "symbol": "feature-detection-plugins",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer porta mauris eget convallis efficitur. Donec ultrices ligula turpis, sit amet laoreet erat aliquet vitae. In quis pellentesque ex. Vestibulum eu metus laoreet, blandit dolor sit amet, tristique leo. Sed sollicitudin elit vel venenatis lacinia. Mauris tempor nisl odio, sed placerat ligula dignissim eu. Ut et commodo felis, a pellentesque ipsum. Nulla eu nisi nec eros dapibus iaculis nec sit amet magna. Nam consectetur interdum pharetra. Donec sollicitudin ornare mi at aliquam. Fusce tortor eros, aliquet non ipsum ut, congue pretium quam. In rutrum vestibulum nibh ut eleifend. Nullam quam magna, eleifend et eleifend id, ultricies vel diam."
+  }
+]

@@ -2,9 +2,9 @@
   "base": "napari hub",
   "home": "$t(base) | search",
   "preview": "preview",
-  "plugin": {
-    "base": "$t(base) | plugins",
-    "loading": "loading",
-    "by": "by"
-  }
+  "collections": "$t(base) | collections",
+  "by": "by",
+  "loading": "loading",
+  "collection": "$t(base) | collection",
+  "plugin": "$t(base) | plugin"
 }

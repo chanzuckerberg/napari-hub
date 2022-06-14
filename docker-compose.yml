@@ -3,6 +3,7 @@ version: '3.8'
 services:
   localstack:
     image: localstack/localstack@sha256:7c6635493185d25165979995fb073fd789c72b6d8b17ef3a70b798d55576732f
+    platform: linux/amd64
     ports:
       - '4566:4566'
     environment:
@@ -21,16 +22,13 @@ services:
           - localstack.naparinet.local
   frontend:
     image: '${DOCKER_REPO}napari-hub-dev-frontend'
+    platform: linux/amd64
     build:
       context: frontend
       cache_from:
-        - '${DOCKER_REPO}napari-hub-dev-frontend:branch-main'
+        - '${DOCKER_REPO}napari-hub-dev-frontend:${STACK_NAME}'
       args:
         - BUILDKIT_INLINE_CACHE=1
-        - HAPPY_COMMIT
-        - HAPPY_BRANCH
-        - HAPPY_TAG
-        - ENV
     restart: always
     depends_on:
       - backend
@@ -52,15 +50,13 @@ services:
           - frontend.naparinet.local
   backend:
     image: '${DOCKER_REPO}napari-hub-dev-backend'
+    platform: linux/amd64
     build:
       context: backend
       cache_from:
-        - '${DOCKER_REPO}napari-hub-dev-backend:branch-main'
+        - '${DOCKER_REPO}napari-hub-dev-backend:${STACK_NAME}'
       args:
         - BUILDKIT_INLINE_CACHE=1
-        - HAPPY_COMMIT
-        - HAPPY_BRANCH
-        - HAPPY_TAG
     restart: always
     depends_on:
       - localstack

@@ -31,7 +31,11 @@ const previewOptions = isPreview
         };
       },
     }
-  : {};
+  : {
+      images: {
+        domains: ['raw.githubusercontent.com', 'github.com'],
+      },
+    };
 
 if (isPreview) {
   console.log('Building preview page for plugin file', PREVIEW);
