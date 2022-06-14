@@ -265,6 +265,18 @@ data aws_iam_policy_document backend_policy {
   }
 }
 
+data aws_iam_policy_document plugin_policy {
+  statement {
+    actions = [
+      "s3:PutObject",
+      "s3:GetObject",
+      "s3:DeleteObject",
+    ]
+
+    resources = ["${local.data_bucket_arn}/*"]
+  }
+}
+
 resource aws_iam_role_policy policy {
   name     = "${local.custom_stack_name}-${var.env}-policy"
   role     = module.backend_lambda.role_name
@@ -274,13 +286,13 @@ resource aws_iam_role_policy policy {
 resource aws_iam_role_policy plugins_lambda_policy {
   name     = "${local.custom_stack_name}-${var.env}-plugins-lambda-policy"
   role     = module.plugins_lambda.role_name
-  policy   = data.aws_iam_policy_document.backend_policy.json
+  policy   = data.aws_iam_policy_document.plugin_policy.json
 }
 
 resource aws_iam_role_policy failure_lambda_policy {
   name     = "${local.custom_stack_name}-${var.env}-failure-lambda-policy"
   role     = module.failure_lambda.role_name
-  policy   = data.aws_iam_policy_document.backend_policy.json
+  policy   = data.aws_iam_policy_document.plugin_policy.json
 }
 
 resource aws_acm_certificate cert {
