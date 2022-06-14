@@ -54,7 +54,8 @@ jobs:
         with:
           registry: ${{ secrets.ECR_REPO }}
       - name: Set up docker build environment
-        run: | 
+        run: |
+          echo STACK_NAME=${GITHUB_REF_NAME} >> $GITHUB_ENV
           echo DOCKER_TAG=${GITHUB_REF_NAME} >> $GITHUB_ENV
       - name: Deploy Changes to Staging
         uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.4.0
