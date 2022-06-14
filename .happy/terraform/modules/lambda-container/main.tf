@@ -27,6 +27,7 @@ module lambda {
   reserved_concurrent_executions    = var.reserved_concurrent_executions
   allowed_triggers                  = var.allowed_triggers
   destination_on_failure            = var.destination_on_failure
+  create_async_event_config         = var.create_async_event_config
 }
 
 resource "aws_lambda_provisioned_concurrency_config" "provisioned" {
