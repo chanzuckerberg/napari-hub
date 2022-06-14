@@ -219,7 +219,7 @@ resource "aws_lambda_permission" "allow_lambda_invoke" {
 }
 
 resource "aws_lambda_permission" "allow_lambda_invoke_async" {
-  statement_id  = "AllowExecutionFromPluginsLambda"
+  statement_id  = "AllowExecutionFromPluginsLambdaAsync"
   action        = "lambda:InvokeAsync"
   function_name = module.failure_lambda.function_arn
   principal     = "lambda.amazonaws.com"
