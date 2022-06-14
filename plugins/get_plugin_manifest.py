@@ -57,8 +57,7 @@ def generate_manifest(event, context):
     except Exception as e:
         str_e = str(e).replace('"', "")
         str_e = str_e.replace("'", "")
-        #s3_body = 'process_count: ' + str(myYaml['process_count']) + '\n' + 'error_message: ' + f"'{str_e}'"
-        s3_body = 'process_count: 4' + '\n' + 'error_message: ' + f"'{str_e}'"
+        s3_body = 'process_count: ' + str(myYaml['process_count']) + '\n' + 'error_message: ' + f"'{str_e}'"
         raise e
     finally:
         response = s3_client.delete_object(
