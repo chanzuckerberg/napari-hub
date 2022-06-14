@@ -16,7 +16,7 @@ index_subset = {'name', 'summary', 'description_text', 'description_content_type
                 'authors', 'license', 'python_version', 'operating_system',
                 'release_date', 'version', 'first_released',
                 'development_status', 'category', 'display_name', 'plugin_types', 'reader_file_extensions',
-                'writer_file_extensions', 'writer_save_layers', 'npe2',  'error_message', 'conda'}
+                'writer_file_extensions', 'writer_save_layers', 'npe2', 'error_message', 'conda'}
 
 
 def get_public_plugins() -> Dict[str, str]:
@@ -73,7 +73,6 @@ def get_plugin(plugin: str, version: str = None) -> dict:
 
 
 def get_frontend_manifest_metadata(plugin, version):
-
     # load manifest from yaml (triggering build)
     raw_metadata = get_manifest(plugin, version)
     if 'process_count' in raw_metadata:
@@ -136,6 +135,7 @@ def get_excluded_plugins() -> Dict[str, str]:
     else:
         return {}
 
+
 def build_manifest_metadata(plugin: str, version: str) -> Tuple[str, dict]:
     metadata = get_frontend_manifest_metadata(plugin, version)
     return plugin, metadata
@@ -173,6 +173,7 @@ def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
         metadata['conda'] = get_conda_forge_package(plugin)
     cache(metadata, f'cache/{plugin}/{version}.json')
     return plugin, metadata
+
 
 def update_cache():
     """
