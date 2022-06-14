@@ -145,6 +145,7 @@ module plugins_lambda {
   memory_size           = 10240
   ephemeral_storage_size = 10240
   maximum_retry_attempts = 0
+  destination_on_failure = module.failure_lambda.function_arn
 }
 
 module failure_lambda {
@@ -215,15 +216,6 @@ resource "aws_lambda_permission" "allow_lambda_invoke" {
   function_name = module.failure_lambda.function_arn
   principal     = "lambda.amazonaws.com"
   source_arn    = module.plugins_lambda.function_arn
-}
-
-resource "aws_lambda_function_event_invoke_config" "failure_destination" {
-  function_name = module.plugins_lambda.function_arn
-  destination_config {
-    on_failure {
-      destination = module.failure_lambda.function_arn
-    }
-  }
 }
 
 resource "aws_cloudwatch_event_target" "update_target" {
