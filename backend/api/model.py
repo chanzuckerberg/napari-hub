@@ -153,7 +153,7 @@ def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
     """
     Build plugin metadata from multiple sources, reuse cached ones if available.
 
-    :return: dict for aggregated plugin metadata.
+    :return: dict for aggregated plugin metadata
     """
     cached_plugin = get_cache(f'cache/{plugin}/{version}.json')
     if cached_plugin:
