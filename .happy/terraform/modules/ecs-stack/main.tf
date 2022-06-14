@@ -210,22 +210,6 @@ resource "aws_s3_bucket_notification" "plugins_notification" {
   depends_on = [aws_lambda_permission.allow_bucket]
 }
 
-resource "aws_lambda_permission" "allow_lambda_invoke" {
-  statement_id  = "AllowExecutionFromPluginsLambda"
-  action        = "lambda:InvokeFunction"
-  function_name = module.failure_lambda.function_arn
-  principal     = "lambda.amazonaws.com"
-  source_arn    = module.plugins_lambda.function_arn
-}
-
-resource "aws_lambda_permission" "allow_lambda_invoke_async" {
-  statement_id  = "AllowExecutionFromPluginsLambdaAsync"
-  action        = "lambda:InvokeAsync"
-  function_name = module.failure_lambda.function_arn
-  principal     = "lambda.amazonaws.com"
-  source_arn    = module.plugins_lambda.function_arn
-}
-
 resource "aws_cloudwatch_event_target" "update_target" {
     rule = aws_cloudwatch_event_rule.update_rule.name
     arn = module.backend_lambda.function_arn
@@ -273,7 +257,28 @@ data aws_iam_policy_document backend_policy {
   }
 }
 
-data aws_iam_policy_document plugin_policy {
+data aws_iam_policy_document plugins_policy {
+  statement {
+    actions = [
+      "s3:PutObject",
+      "s3:GetObject",
+      "s3:DeleteObject",
+    ]
+
+    resources = ["${local.data_bucket_arn}/*"]
+  }
+
+  statement {
+    actions = [
+      "lambda:InvokeFunction",
+      "lambda:InvokeAsync",
+    ]
+
+    resources = [module.failure_lambda.function_arn]
+  }
+}
+
+data aws_iam_policy_document failure_policy {
   statement {
     actions = [
       "s3:PutObject",
@@ -294,13 +299,13 @@ resource aws_iam_role_policy policy {
 resource aws_iam_role_policy plugins_lambda_policy {
   name     = "${local.custom_stack_name}-${var.env}-plugins-lambda-policy"
   role     = module.plugins_lambda.role_name
-  policy   = data.aws_iam_policy_document.plugin_policy.json
+  policy   = data.aws_iam_policy_document.plugins_policy.json
 }
 
 resource aws_iam_role_policy failure_lambda_policy {
   name     = "${local.custom_stack_name}-${var.env}-failure-lambda-policy"
   role     = module.failure_lambda.role_name
-  policy   = data.aws_iam_policy_document.plugin_policy.json
+  policy   = data.aws_iam_policy_document.failure_policy.json
 }
 
 resource aws_acm_certificate cert {
