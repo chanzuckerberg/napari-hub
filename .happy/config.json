@@ -28,5 +28,8 @@
             "log_group_prefix": "/napari-hub/prod"
         }
     },
-    "tasks": {}
+    "tasks": {
+        "migrate": [],
+        "delete": []
+    }
 }
