@@ -4,7 +4,6 @@ from typing import Tuple, Dict, List, Callable
 from zipfile import ZipFile
 from io import BytesIO
 from collections import defaultdict
-from npe2 import PluginManifest
 from utils.conda import get_conda_forge_package
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
@@ -65,12 +64,23 @@ def get_plugin(plugin: str, version: str = None) -> dict:
     elif version is None:
         version = plugins[plugin]
     plugin_metadata = get_cache(f'cache/{plugin}/{version}.json')
+    manifest_metadata = get_frontend_manifest_metadata(plugin, version)
+    plugin_metadata.update(manifest_metadata)
     if plugin_metadata:
-        _, manifest_attributes = build_manifest_metadata(plugin, version)
-        plugin_metadata.update(manifest_attributes)
         return plugin_metadata
     else:
         return {}
+
+
+def get_frontend_manifest_metadata(plugin, version):
+
+    # load manifest from yaml (triggering build)
+    raw_metadata = get_manifest(plugin, version)
+    if 'process_count' in raw_metadata:
+        raw_metadata = None
+    interpreted_metadata = parse_manifest(raw_metadata)
+    interpreted_metadata['npe2'] = is_npe2_plugin(plugin, version)
+    return interpreted_metadata
 
 
 def get_manifest(plugin: str, version: str = None) -> dict:
@@ -126,6 +136,10 @@ def get_excluded_plugins() -> Dict[str, str]:
     else:
         return {}
 
+def build_manifest_metadata(plugin: str, version: str) -> Tuple[str, dict]:
+    metadata = get_frontend_manifest_metadata(plugin, version)
+    return plugin, metadata
+
 
 def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
     """
@@ -155,35 +169,10 @@ def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
         metadata['category'] = categories
         metadata['category_hierarchy'] = category_hierarchy
         del metadata['labels']
-
     if 'conda' not in metadata:
         metadata['conda'] = get_conda_forge_package(plugin)
-
     cache(metadata, f'cache/{plugin}/{version}.json')
     return plugin, metadata
-
-
-def build_manifest_metadata(plugin: str, version: str):
-    """
-    Build manifest metadata given plugin and version, return default values if unavailable.
-    :return: dict for aggregated plugin metadata
-    """
-    manifest_yaml_dict = get_manifest(plugin, version)
-    if not manifest_yaml_dict or 'process_count' in manifest_yaml_dict:
-        default_vals = parse_manifest()
-        default_vals['npe2'] = False
-        default_vals['error_message'] = manifest_yaml_dict.get('error_message')
-        return plugin, default_vals
-
-    manifest_obj = PluginManifest(**manifest_yaml_dict)
-    manifest_attributes = parse_manifest(manifest_obj)
-    if is_npe2_plugin(plugin, version):
-        manifest_attributes['npe2'] = True
-    else:
-        manifest_attributes['npe2'] = False
-    manifest_attributes['error_message'] = None
-    return plugin, manifest_attributes
-
 
 def update_cache():
     """
@@ -196,11 +185,9 @@ def update_cache():
     """
     plugins = query_pypi()
     plugins_metadata = get_plugin_metadata_async(plugins, build_plugin_metadata)
-    manifest_metadata = get_plugin_metadata_async(plugins, build_manifest_metadata)
+    manifest_metdata = get_plugin_metadata_async(plugins, build_manifest_metadata)
+    plugins_metadata.update(manifest_metdata)
     excluded_plugins = get_updated_plugin_exclusion(plugins_metadata)
-    for plugin in plugins_metadata:
-        plugins_metadata[plugin].update(manifest_metadata[plugin])
-
     visibility_plugins = {"public": {}, "hidden": {}}
     for plugin, version in plugins.items():
         visibility = plugins_metadata[plugin].get('visibility', 'public')

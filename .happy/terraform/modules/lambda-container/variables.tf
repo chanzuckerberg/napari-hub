@@ -26,6 +26,11 @@ variable log_retention_in_days {
   default = null
 }
 
+variable maximum_retry_attempts {
+  type    = number
+  default = 0
+}
+
 variable function_description {
   type        = string
   description = "Description for lambda function."
@@ -72,6 +77,12 @@ variable memory_size {
   default     = 128
 }
 
+variable ephemeral_storage_size {
+  type        = number
+  description = "Amount of ephemeral storage (/tmp) in MB your Lambda Function can use at runtime."
+  default     = 512
+}
+
 variable allowed_triggers {
   description = "Map of allowed triggers to create Lambda permissions"
   type        = map(any)
@@ -94,4 +105,10 @@ variable cmd {
 variable description {
   type    = string
   default = ""
+}
+
+variable destination_on_failure {
+  type        = string
+  description = "Amazon Resource Name (ARN) of the destination resource for failed asynchronous invocations"
+  default     = null
 }

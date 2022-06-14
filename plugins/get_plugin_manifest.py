@@ -9,6 +9,9 @@ s3 = boto3.client('s3')
 
 
 def discover_manifest(plugin_name):
+    """
+    Discovers manifest via npe2 library and fetches metadata related to plugin's manifest file.
+    """
     pm = PluginManager()
     pm.discover(include_npe1=False)
     is_npe2 = True
@@ -41,14 +44,14 @@ def generate_manifest(event, context):
         return
     try:
         splitPath = str(key).split("/")
-        pluginName = splitPath[-2]
+        plugin = splitPath[-2]
         version = splitPath[-1][:-5]
-        cmd = [sys.executable, "-m", "pip", "install", f'{pluginName}=={version}', "--target=/tmp/" + pluginName]
-        p = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+        command = [sys.executable, "-m", "pip", "install", f'{plugin}=={version}', "--target=/tmp/" + plugin]
+        p = subprocess.Popen(command, stdout=subprocess.PIPE)
         while p.poll() is None:
             l = p.stdout.readline()  # This blocks until it receives a newline.
-        sys.path.insert(0, "/tmp/" + pluginName)
-        manifest, is_npe2 = discover_manifest(pluginName)
+        sys.path.insert(0, "/tmp/" + plugin)
+        manifest, is_npe2 = discover_manifest(plugin)
         body = '#npe2' if is_npe2 else "#npe1"
         s3_body = body + "\n" + manifest.yaml()
     except Exception as e:
