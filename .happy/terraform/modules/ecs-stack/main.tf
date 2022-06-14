@@ -218,6 +218,15 @@ resource "aws_lambda_permission" "allow_lambda_invoke" {
   source_arn    = module.plugins_lambda.function_arn
 }
 
+resource "aws_lambda_function_event_invoke_config" "failure_destination" {
+  function_name = module.plugins_lambda.function_arn
+  destination_config {
+    on_failure {
+      destination = module.failure_lambda.function_arn
+    }
+  }
+}
+
 resource "aws_cloudwatch_event_target" "update_target" {
     rule = aws_cloudwatch_event_rule.update_rule.name
     arn = module.backend_lambda.function_arn
