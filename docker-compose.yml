@@ -26,7 +26,7 @@ services:
     build:
       context: frontend
       cache_from:
-        - '${DOCKER_REPO}napari-hub-dev-frontend:${DOCKER_TAG}'
+        - '${DOCKER_REPO}napari-hub-dev-frontend:${STACK_NAME}'
       args:
         - BUILDKIT_INLINE_CACHE=1
     restart: always
@@ -54,7 +54,7 @@ services:
     build:
       context: backend
       cache_from:
-        - '${DOCKER_REPO}napari-hub-dev-backend:${DOCKER_TAG}'
+        - '${DOCKER_REPO}napari-hub-dev-backend:${STACK_NAME}'
       args:
         - BUILDKIT_INLINE_CACHE=1
     restart: always
