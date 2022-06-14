@@ -15,3 +15,4 @@ pkginfo
 datadog-lambda
 build
 pyOpenSSL
+jupyter
