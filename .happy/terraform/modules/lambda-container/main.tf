@@ -42,6 +42,6 @@ resource "aws_lambda_provisioned_concurrency_config" "provisioned" {
 }
 
 data "aws_ecr_image" "image" {
-  repository_name = split(var.image_repo, "/")[1]
+  repository_name = split("/", var.image_repo)[1]
   image_tag       = var.image_tag
 }
