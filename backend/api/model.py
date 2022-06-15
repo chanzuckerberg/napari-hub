@@ -87,7 +87,7 @@ def get_manifest(plugin: str, version: str = None) -> dict:
     Get plugin manifest file for a particular plugin, get latest if version is None.
     :param plugin: name of the plugin to get
     :param version: version of the plugin manifest
-    :return: plugin manifest dictionary
+    :return: plugin manifest dictionary.
     """
     plugins = get_valid_plugins()
     if plugin not in plugins:
