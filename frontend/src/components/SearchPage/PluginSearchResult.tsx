@@ -230,7 +230,7 @@ export function PluginSearchResult({
               <SkeletonLoader
                 render={() =>
                   renderText(
-                    (isNpe2Enabled ? plugin.display_name : undefined) ??
+                    (isNpe2Enabled ? plugin.display_name : undefined) ||
                       plugin.name,
 
                     isNpe2Enabled && plugin.display_name
