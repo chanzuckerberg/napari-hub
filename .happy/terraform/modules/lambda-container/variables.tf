@@ -104,7 +104,7 @@ variable cmd {
 
 variable description {
   type    = string
-  default = timestamp()
+  default = ""
 }
 
 variable create_async_event_config {
