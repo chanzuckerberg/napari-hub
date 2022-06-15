@@ -7,7 +7,7 @@ module lambda {
   description            = var.description
   tags                   = var.tags
   create_package         = false
-  image_uri              = "${data.aws_ecr_repository.registry.repository_url}@${data.aws_ecr_image.image.image_digest}"
+  image_uri              = "${var.image_repo}@${data.aws_ecr_image.image.image_digest}"
   package_type           = "Image"
   timeout                = var.timeout
   image_config_command   = var.cmd
