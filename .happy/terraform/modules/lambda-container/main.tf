@@ -29,7 +29,7 @@ module lambda {
   destination_on_failure            = var.destination_on_failure
   create_async_event_config         = var.create_async_event_config
 
-  lambda_function_source_code_hash  = random_string.random_md5.result
+  hash_extra                        = random_string.random_md5.result
 }
 
 resource "aws_lambda_provisioned_concurrency_config" "provisioned" {
