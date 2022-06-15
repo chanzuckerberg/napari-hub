@@ -92,7 +92,8 @@ module frontend_service {
 module backend_lambda {
   source             = "../lambda-container"
   function_name      = local.backend_function_name
-  image              = "${local.backend_image_repo}:${local.image_tag}"
+  image_repo         = local.backend_image_repo
+  image_tag          = local.image_tag
   cmd                = local.backend_cmd
   tags               = var.tags
   provisioned_lambda = var.env == "prod" ? 1 : -1
@@ -126,7 +127,8 @@ module backend_lambda {
 module plugins_lambda {
   source             = "../lambda-container"
   function_name      = local.plugins_function_name
-  image              = "${local.plugins_image_repo}:${local.image_tag}"
+  image_repo         = local.plugins_image_repo
+  image_tag          = local.image_tag
   cmd                = local.plugins_cmd
   tags               = var.tags
 
@@ -152,7 +154,8 @@ module plugins_lambda {
 module failure_lambda {
   source             = "../lambda-container"
   function_name      = local.failure_function_name
-  image              = "${local.plugins_image_repo}:${local.image_tag}"
+  image_repo         = local.plugins_image_repo
+  image_tag          = local.image_tag
   cmd                = local.failure_cmd
   tags               = var.tags
 

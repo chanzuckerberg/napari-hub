@@ -4,10 +4,10 @@ module lambda {
   publish = var.provisioned_lambda == -1 ? false : true
 
   function_name          = var.function_name
-  description            = timestamp()
+  description            = var.description
   tags                   = var.tags
   create_package         = false
-  image_uri              = var.image
+  image_uri              = "${data.aws_ecr_repository.registry.repository_url}@${data.aws_ecr_image.image.image_digest}"
   package_type           = "Image"
   timeout                = var.timeout
   image_config_command   = var.cmd
@@ -39,4 +39,9 @@ resource "aws_lambda_provisioned_concurrency_config" "provisioned" {
   lifecycle {
     create_before_destroy = true
   }
+}
+
+data "aws_ecr_image" "image" {
+  repository_name = var.image_repo
+  image_tag       = var.image_tag
 }

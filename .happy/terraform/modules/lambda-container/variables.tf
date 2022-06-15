@@ -94,7 +94,11 @@ variable tags {
   default = {}
 }
 
-variable image {
+variable image_repo {
+  type = string
+}
+
+variable image_tag {
   type = string
 }
 
