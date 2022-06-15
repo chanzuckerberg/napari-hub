@@ -93,5 +93,5 @@ variable cmd {
 
 variable description {
   type    = string
-  default = ""
+  default = timestamp()
 }
