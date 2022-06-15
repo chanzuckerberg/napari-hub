@@ -24,7 +24,7 @@ export const FEATURE_FLAGS = createFeatureFlags({
   },
 
   npe2: {
-    environments: ['dev'],
+    environments: ['dev', 'staging', 'prod', 'preview'],
   },
 
   collections: {
