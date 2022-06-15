@@ -28,6 +28,8 @@ module lambda {
   allowed_triggers                  = var.allowed_triggers
   destination_on_failure            = var.destination_on_failure
   create_async_event_config         = var.create_async_event_config
+
+  lambda_function_source_code_hash  = random_string.random_md5.result
 }
 
 resource "aws_lambda_provisioned_concurrency_config" "provisioned" {
@@ -39,4 +41,10 @@ resource "aws_lambda_provisioned_concurrency_config" "provisioned" {
   lifecycle {
     create_before_destroy = true
   }
+}
+
+# create random md5 so that the lambda would be refreshed
+resource "random_string" "random_md5" {
+  length           = 64
+  special          = false
 }
