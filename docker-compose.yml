@@ -29,6 +29,10 @@ services:
         - '${DOCKER_REPO}napari-hub-dev-frontend:${STACK_NAME}'
       args:
         - BUILDKIT_INLINE_CACHE=1
+        - HAPPY_COMMIT
+        - HAPPY_BRANCH
+        - HAPPY_TAG
+        - ENV
     restart: always
     depends_on:
       - backend
@@ -57,6 +61,9 @@ services:
         - '${DOCKER_REPO}napari-hub-dev-backend:${STACK_NAME}'
       args:
         - BUILDKIT_INLINE_CACHE=1
+        - HAPPY_COMMIT
+        - HAPPY_BRANCH
+        - HAPPY_TAG
     restart: always
     depends_on:
       - localstack
