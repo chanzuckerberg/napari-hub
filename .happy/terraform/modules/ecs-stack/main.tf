@@ -69,7 +69,8 @@ module frontend_service {
   custom_stack_name = local.custom_stack_name
   app_name          = "napari-hub-frontend"
   vpc               = local.cloud_env.vpc_id
-  image             = "${local.frontend_image_repo}:${local.image_tag}"
+  image_repo         = local.frontend_image_repo
+  image_tag          = local.image_tag
   cluster           = local.cluster
   desired_count     = var.frontend_instance_count
   listener          = local.frontend_listener_arn

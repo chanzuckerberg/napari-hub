@@ -34,7 +34,7 @@ resource aws_ecs_task_definition task_definition {
   {
     "name": "web",
     "essential": true,
-    "image": "${var.image}",
+    "image": "${var.image_repo}@${data.aws_ecr_image.image.image_digest}",
     "memoryReservation": ${var.memory},
     "environment": [
       {
@@ -134,4 +134,9 @@ resource aws_lb_listener_rule listener_rule {
     target_group_arn = aws_lb_target_group.target_group.id
     type             = "forward"
   }
+}
+
+data "aws_ecr_image" "image" {
+  repository_name = split("/", var.image_repo)[1]
+  image_tag       = var.image_tag
 }

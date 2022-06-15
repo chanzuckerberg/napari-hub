@@ -18,9 +18,12 @@ variable cluster {
   description = "Please provide the ECS Cluster ID that this service should run on"
 }
 
-variable image {
-  type        = string
-  description = "Image name"
+variable image_repo {
+  type = string
+}
+
+variable image_tag {
+  type = string
 }
 
 variable service_port {
