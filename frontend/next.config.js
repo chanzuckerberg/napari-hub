@@ -6,6 +6,10 @@ const { PREVIEW } = process.env;
 const PROD = process.env.NODE_ENV === 'production';
 const isPreview = !!(PROD && PREVIEW);
 
+console.log('Building frontend');
+console.log(`NODE_ENV=${process.env.NODE_ENV}`);
+console.log(`ENV=${process.env.ENV}`);
+
 // Enable static HTML export of the preview page in production and if the
 // preview file is provided.
 const previewOptions = isPreview
