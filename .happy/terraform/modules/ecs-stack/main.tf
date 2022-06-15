@@ -16,12 +16,15 @@ locals {
 
   frontend_cmd = []
   backend_cmd  = []
+  plugins_cmd  = []
+  failure_cmd  = ["get_plugin_manifest.failure_handler"]
 
   security_groups     = local.secret["security_groups"]
   zone                = local.secret["zone_id"]
   cluster             = local.secret["cluster_arn"]
   frontend_image_repo = local.secret["ecrs"]["frontend"]["url"]
   backend_image_repo  = local.secret["ecrs"]["backend"]["url"]
+  plugins_image_repo  = local.secret["ecrs"]["plugins"]["url"]
   external_dns        = local.secret["external_zone_name"]
   internal_dns        = local.secret["internal_zone_name"]
   rest_api_id         = local.secret["api_gateway"]["rest_api_id"]
@@ -48,6 +51,8 @@ locals {
 
   frontend_url = var.frontend_url != "" ? var.frontend_url: try(join("", ["https://", module.frontend_dns.dns_prefix, ".", local.external_dns]), var.frontend_url)
   backend_function_name = "${local.custom_stack_name}-backend"
+  plugins_function_name = "${local.custom_stack_name}-plugins"
+  failure_function_name = "${local.custom_stack_name}-failure"
 }
 
 module frontend_dns {
@@ -118,6 +123,54 @@ module backend_lambda {
   timeout               = 300
 }
 
+module plugins_lambda {
+  source             = "../lambda-container"
+  function_name      = local.plugins_function_name
+  image              = "${local.plugins_image_repo}:${local.image_tag}"
+  cmd                = local.plugins_cmd
+  tags               = var.tags
+
+  vpc_config = {
+    subnet_ids         = local.cloud_env.private_subnets
+    security_group_ids = local.security_groups
+  }
+
+  environment = {
+    "BUCKET" = local.data_bucket_name
+    "BUCKET_PATH" = var.env == "dev" ? local.custom_stack_name : ""
+  }
+
+  log_retention_in_days = 14
+  timeout               = 900
+  memory_size           = 10240
+  ephemeral_storage_size = 10240
+  maximum_retry_attempts = 0
+  create_async_event_config = true
+  destination_on_failure = module.failure_lambda.function_arn
+}
+
+module failure_lambda {
+  source             = "../lambda-container"
+  function_name      = local.failure_function_name
+  image              = "${local.plugins_image_repo}:${local.image_tag}"
+  cmd                = local.failure_cmd
+  tags               = var.tags
+
+  vpc_config = {
+    subnet_ids         = local.cloud_env.private_subnets
+    security_group_ids = local.security_groups
+  }
+
+  environment = {
+    "BUCKET" = local.data_bucket_name
+    "BUCKET_PATH" = var.env == "dev" ? local.custom_stack_name : ""
+  }
+
+  log_retention_in_days = 14
+  timeout               = 900
+  maximum_retry_attempts = 0
+}
+
 module api_gateway_proxy_stage {
   source               = "../api-gateway-proxy-stage"
   lambda_function_name = local.backend_function_name
@@ -135,6 +188,27 @@ resource "aws_cloudwatch_event_rule" "update_rule" {
   description         = "Schedule update for backend"
   schedule_expression = "rate(5 minutes)"
   tags                = var.tags
+}
+
+resource "aws_lambda_permission" "allow_bucket" {
+  statement_id  = "AllowExecutionFromS3Bucket"
+  action        = "lambda:InvokeFunction"
+  function_name = module.plugins_lambda.function_arn
+  principal     = "s3.amazonaws.com"
+  source_arn    = local.data_bucket_arn
+}
+
+resource "aws_s3_bucket_notification" "plugins_notification" {
+  bucket = local.data_bucket_name
+
+  lambda_function {
+    lambda_function_arn = module.plugins_lambda.function_arn
+    events              = ["s3:ObjectCreated:*"]
+    filter_prefix       = var.env == "dev" ? local.custom_stack_name : ""
+    filter_suffix       = ".yaml"
+  }
+
+  depends_on = [aws_lambda_permission.allow_bucket]
 }
 
 resource "aws_cloudwatch_event_target" "update_target" {
@@ -184,10 +258,55 @@ data aws_iam_policy_document backend_policy {
   }
 }
 
+data aws_iam_policy_document plugins_policy {
+  statement {
+    actions = [
+      "s3:PutObject",
+      "s3:GetObject",
+      "s3:DeleteObject",
+    ]
+
+    resources = ["${local.data_bucket_arn}/*"]
+  }
+
+  statement {
+    actions = [
+      "lambda:InvokeFunction",
+      "lambda:InvokeAsync",
+    ]
+
+    resources = [module.failure_lambda.function_arn]
+  }
+}
+
+data aws_iam_policy_document failure_policy {
+  statement {
+    actions = [
+      "s3:PutObject",
+      "s3:GetObject",
+      "s3:DeleteObject",
+    ]
+
+    resources = ["${local.data_bucket_arn}/*"]
+  }
+}
+
 resource aws_iam_role_policy policy {
   name     = "${local.custom_stack_name}-${var.env}-policy"
   role     = module.backend_lambda.role_name
   policy   = data.aws_iam_policy_document.backend_policy.json
+}
+
+resource aws_iam_role_policy plugins_lambda_policy {
+  name     = "${local.custom_stack_name}-${var.env}-plugins-lambda-policy"
+  role     = module.plugins_lambda.role_name
+  policy   = data.aws_iam_policy_document.plugins_policy.json
+}
+
+resource aws_iam_role_policy failure_lambda_policy {
+  name     = "${local.custom_stack_name}-${var.env}-failure-lambda-policy"
+  role     = module.failure_lambda.role_name
+  policy   = data.aws_iam_policy_document.failure_policy.json
 }
 
 resource aws_acm_certificate cert {

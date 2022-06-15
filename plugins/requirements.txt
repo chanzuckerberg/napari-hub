@@ -1,0 +1,7 @@
+boto3
+requests
+pyyaml
+napari
+npe2
+numpy
+pyqt5

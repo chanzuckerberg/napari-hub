@@ -65,3 +65,22 @@ def cache(content: Union[dict, list, IO[bytes]], key: str, mime: str = None, for
                         yaml.dump(content).encode('utf8')) as stream:
             s3_client.upload_fileobj(Fileobj=stream, Bucket=bucket,
                                      Key=os.path.join(bucket_path, key), ExtraArgs=extra_args)
+
+
+def is_npe2_plugin(plugin, version):
+    """
+    Return True if the plugin is npe2, False otherwise.
+
+    :param plugin: name of plugin
+    :param version: version of plugin
+    :return: True if npe2, False otherwise
+    """
+    key = f'cache/{plugin}/{version}.yaml'
+    try:
+        manifest_body = s3_client.get_object(Bucket=bucket, Key=os.path.join(bucket_path, key))['Body']
+        manifest_body_str = manifest_body.read().decode('utf-8')
+        if manifest_body_str.startswith('#npe2'):
+            return True
+    except ClientError:
+        print(f"Not cached: {key}")
+    return False

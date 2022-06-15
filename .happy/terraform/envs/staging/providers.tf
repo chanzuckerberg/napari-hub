@@ -1,5 +1,5 @@
 provider aws {
-  version = "~> 3.39.0"
+  version = "~> 4.18.0"
   region  = "us-west-2"
   assume_role {
     role_arn = "arn:aws:iam::${var.aws_account_id}:role/${var.aws_role}"
