@@ -55,7 +55,7 @@ export type Events = {
     categoryDimension: string;
   };
 
-  'Create a new collection': unknown;
+  'CTA: New Collection': unknown;
 };
 
 export type PlausibleEventKey = keyof Events;
