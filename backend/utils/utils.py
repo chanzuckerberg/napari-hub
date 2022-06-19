@@ -140,6 +140,7 @@ def parse_manifest(manifest: Optional[dict] = None):
     if manifest is None:
         return manifest_attributes
     manifest_attributes['display_name'] = manifest.get('display_name', '')
+    manifest_attributes['npe2'] = not manifest.get('npe1_shim', False)
     if 'contributions' in manifest:
         manifest_contributions = manifest.get('contributions', dict())
         if 'readers' in manifest_contributions:

@@ -73,12 +73,11 @@ def get_plugin(plugin: str, version: str = None) -> dict:
 
 
 def get_frontend_manifest_metadata(plugin, version):
-    # load manifest from yaml (triggering build)
+    # load manifest from json (triggering build)
     raw_metadata = get_manifest(plugin, version)
     if 'process_count' in raw_metadata:
         raw_metadata = None
     interpreted_metadata = parse_manifest(raw_metadata)
-    interpreted_metadata['npe2'] = is_npe2_plugin(plugin, version)
     return interpreted_metadata
 
 
@@ -94,11 +93,11 @@ def get_manifest(plugin: str, version: str = None) -> dict:
         return {}
     elif version is None:
         version = plugins[plugin]
-    plugin_metadata = get_cache(f'cache/{plugin}/{version}.yaml', 'yaml')
+    plugin_metadata = get_cache(f'cache/{plugin}/{version}-manifest.json')
     if plugin_metadata:
         return plugin_metadata
     else:
-        cache({"process_count": 0}, f'cache/{plugin}/{version}.yaml', format='yaml')
+        cache({"process_count": 0}, f'cache/{plugin}/{version}-manifest.json')
         return {"process_count": 0}
 
 
