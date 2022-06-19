@@ -28,8 +28,7 @@ def get_cache(key: str) -> Union[Dict, List, None]:
     :return: file content for the key if exists, None otherwise
     """
     try:
-        if format == 'json':
-            return json.loads(s3_client.get_object(Bucket=bucket, Key=os.path.join(bucket_path, key))['Body'].read())
+        return json.loads(s3_client.get_object(Bucket=bucket, Key=os.path.join(bucket_path, key))['Body'].read())
     except ClientError:
         print(f"Not cached: {key}")
         return None

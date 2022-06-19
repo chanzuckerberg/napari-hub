@@ -7,7 +7,7 @@ from collections import defaultdict
 from utils.conda import get_conda_forge_package
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
-from api.s3 import get_cache, cache, is_npe2_plugin
+from api.s3 import get_cache, cache
 from utils.utils import render_description, send_alert, get_attribute, get_category_mapping, parse_manifest
 from utils.datadog import report_metrics
 from api.zulip import notify_new_packages
