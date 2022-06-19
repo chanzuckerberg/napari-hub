@@ -139,36 +139,35 @@ def parse_manifest(manifest: Optional[dict] = None):
     }
     if manifest is None:
         return manifest_attributes
-    manifest_attributes['display_name'] = manifest['display_name'] or ''
-    manifest_attributes['npe2'] = not (manifest['npe1_shim'] or False)
-    manifest_contributions = manifest['contributions']
-
-    readers = manifest_contributions['readers'] or []
-    if readers:
-        manifest_attributes['plugin_types'].append('reader')
-        reader_file_extensions = set()
-        for reader in readers:
-            filename_patterns = reader.get('filename_patterns', [])
-            for ext in filename_patterns:
-                reader_file_extensions.add(ext)
-        manifest_attributes['reader_file_extensions'] = list(reader_file_extensions)
-
-    writers = manifest_contributions['writers'] or []
-    if writers:
-        manifest_attributes['plugin_types'].append('writer')
-        writer_file_extensions = set()
-        writer_save_layers = set()
-        for writer in writers:
-            filename_extensions = writer['filename_extensions'] or []
-            layer_types = writer['filename_extensions'] or []
-            for ext in filename_extensions:
-                writer_file_extensions.add(ext)
-            for ext in layer_types:
-                writer_save_layers.add(ext)
-        manifest_attributes['writer_file_extensions'] = list(writer_file_extensions)
-        manifest_attributes['writer_save_layers'] = list(writer_save_layers)
-    if manifest_contributions['themes']:
-        manifest_attributes['plugin_types'].append('theme')
-    if manifest_contributions['widgets']:
-        manifest_attributes['plugin_types'].append('widget')
+    manifest_attributes['display_name'] = manifest.get('display_name', '')
+    manifest_attributes['npe2'] = not manifest.get('npe1_shim', False)
+    if 'contributions' in manifest:
+        manifest_contributions = manifest.get('contributions', dict())
+        if 'readers' in manifest_contributions:
+            readers = manifest_contributions['readers']
+            manifest_attributes['plugin_types'].append('reader')
+            reader_file_extensions = set()
+            for reader in readers:
+                filename_patterns = reader.get('filename_patterns', [])
+                for ext in filename_patterns:
+                    reader_file_extensions.add(ext)
+            manifest_attributes['reader_file_extensions'] = list(reader_file_extensions)
+        if 'writers' in manifest_contributions:
+            writers = manifest_contributions['writers']
+            manifest_attributes['plugin_types'].append('writer')
+            writer_file_extensions = set()
+            writer_save_layers = set()
+            for writer in writers:
+                filename_extensions = writer.get('filename_extensions', [])
+                layer_types = writer.get('layer_types', [])
+                for ext in filename_extensions:
+                    writer_file_extensions.add(ext)
+                for ext in layer_types:
+                    writer_save_layers.add(ext)
+            manifest_attributes['writer_file_extensions'] = list(writer_file_extensions)
+            manifest_attributes['writer_save_layers'] = list(writer_save_layers)
+        if 'themes' in manifest_contributions:
+            manifest_attributes['plugin_types'].append('theme')
+        if 'widgets' in manifest_contributions:
+            manifest_attributes['plugin_types'].append('widget')
     return manifest_attributes
