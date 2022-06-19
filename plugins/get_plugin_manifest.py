@@ -77,10 +77,12 @@ def failure_handler(event, context):
     increments the value of process_count in the json file, then write to designated location on s3.
     """
     manifest_path = event['requestPayload']['Records'][0]['s3']['object']['key']
+    print(manifest_path)
     bucket = event['requestPayload']['Records'][0]['s3']['bucket']['name']
     response = s3.get_object(Bucket=bucket, Key=manifest_path)
     myBody = response["Body"]
     body_dict = json.loads(myBody.read().decode("utf-8"))
+    print(body_dict)
     s3_client = boto3.client('s3')
     if 'process_count' in body_dict:
         response = s3_client.delete_object(
