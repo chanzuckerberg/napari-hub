@@ -45,7 +45,7 @@ def generate_manifest(event, context):
     try:
         splitPath = str(key).split("/")
         plugin = splitPath[-2]
-        version = splitPath[-1][:-5]
+        version = splitPath[-1].strip('-manifest.json')
         command = [sys.executable, "-m", "pip", "install", f'{plugin}=={version}', "--target=/tmp/" + plugin]
         p = subprocess.Popen(command, stdout=subprocess.PIPE)
         while p.poll() is None:
