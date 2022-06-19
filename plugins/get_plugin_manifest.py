@@ -37,7 +37,7 @@ def generate_manifest(event, context):
     key = urllib.parse.unquote_plus(event['Records'][0]['s3']['object']['key'], encoding='utf-8')
     response = s3.get_object(Bucket=bucket, Key=key)
     myBody = response["Body"]
-    body_dict = json.loads(myBody)
+    body_dict = json.loads(myBody.read().decode("utf-8"))
     s3_client = boto3.client('s3')
     s3_body = ''
     if 'process_count' not in body_dict or body_dict['process_count'] >= max_failure_tries:
@@ -80,7 +80,7 @@ def failure_handler(event, context):
     bucket = event['requestPayload']['Records'][0]['s3']['bucket']['name']
     response = s3.get_object(Bucket=bucket, Key=manifest_path)
     myBody = response["Body"]
-    body_dict = json.loads(myBody)
+    body_dict = json.loads(myBody.read().decode("utf-8"))
     s3_client = boto3.client('s3')
     if 'process_count' in body_dict:
         response = s3_client.delete_object(
