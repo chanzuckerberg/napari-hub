@@ -212,7 +212,7 @@ resource "aws_s3_bucket_notification" "plugins_notification" {
     filter_suffix       = ".yaml"
   }
 
-  depends_on = [aws_lambda_permission.allow_bucket]
+  depends_on = [aws_lambda_permission.allow_bucket, module.plugins_lambda]
 }
 
 resource "aws_cloudwatch_event_target" "update_target" {
