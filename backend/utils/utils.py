@@ -152,7 +152,7 @@ def parse_manifest(manifest: Optional[dict] = None):
                     filename_patterns = reader.get('filename_patterns', [])
                     for ext in filename_patterns:
                         reader_file_extensions.add(ext)
-            manifest_attributes['reader_file_extensions'] = list(reader_file_extensions)
+                manifest_attributes['reader_file_extensions'] = list(reader_file_extensions)
         if 'writers' in manifest_contributions:
             writers = manifest_contributions['writers']
             if writers:
