@@ -169,6 +169,6 @@ def parse_manifest(manifest: Optional[dict] = None):
             manifest_attributes['plugin_types'].append('theme')
         if 'widgets' in manifest_contributions:
             manifest_attributes['plugin_types'].append('widget')
-        if 'sample_data' in manifest_contributions:
+        if 'sample_data' in manifest_contributions and manifest_contributions['sample_data']:
             manifest_attributes['plugin_types'].append('sample_data')
     return manifest_attributes
