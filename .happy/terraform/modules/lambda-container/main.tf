@@ -44,6 +44,7 @@ data "aws_ecr_image" "image" {
   image_tag       = var.image_tag
 }
 
+# worked around unfixed issue https://github.com/terraform-aws-modules/terraform-aws-lambda/issues/263
 resource "aws_lambda_function_event_invoke_config" "this" {
   count = var.create_async_event_config ? 1 : 0
 
