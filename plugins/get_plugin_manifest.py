@@ -1,3 +1,4 @@
+import contextlib
 import json
 import urllib.parse
 import boto3
@@ -21,7 +22,8 @@ def discover_manifest(plugin_name):
         pm.discover(include_npe1=True)
         is_npe2 = False
         # forcing lazy discovery to run
-        pm.index_npe1_adapters()
+        with contextlib.suppress(OSError):
+            pm.index_npe1_adapters()
         manifest = pm.get_manifest(plugin_name)
     return manifest, is_npe2
 
