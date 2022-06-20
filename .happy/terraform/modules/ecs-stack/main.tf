@@ -149,6 +149,7 @@ module plugins_lambda {
   ephemeral_storage_size = 10240
   maximum_retry_attempts = 0
   create_async_event_config = true
+  create_current_version_async_event_config = false
   destination_on_failure = module.failure_lambda.function_arn
 }
 
@@ -212,7 +213,7 @@ resource "aws_s3_bucket_notification" "plugins_notification" {
     filter_suffix       = ".yaml"
   }
 
-  depends_on = [aws_lambda_permission.allow_bucket, module.plugins_lambda]
+  depends_on = [aws_lambda_permission.allow_bucket]
 }
 
 resource "aws_cloudwatch_event_target" "update_target" {
