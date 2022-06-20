@@ -25,6 +25,8 @@ def discover_manifest(plugin_name):
         with contextlib.suppress(OSError):
             pm.index_npe1_adapters()
         manifest = pm.get_manifest(plugin_name)
+        if not manifest.contributions:
+            raise RuntimeError(f"Manifest {plugin_name} exists but has no contributions.")
     return manifest, is_npe2
 
 
