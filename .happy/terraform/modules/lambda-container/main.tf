@@ -26,9 +26,6 @@ module lambda {
   attach_network_policy             = true
   reserved_concurrent_executions    = var.reserved_concurrent_executions
   allowed_triggers                  = var.allowed_triggers
-  destination_on_failure            = var.destination_on_failure
-  create_async_event_config         = var.create_async_event_config
-  create_current_version_async_event_config = var.create_current_version_async_event_config
 }
 
 resource "aws_lambda_provisioned_concurrency_config" "provisioned" {
@@ -45,4 +42,16 @@ resource "aws_lambda_provisioned_concurrency_config" "provisioned" {
 data "aws_ecr_image" "image" {
   repository_name = split("/", var.image_repo)[1]
   image_tag       = var.image_tag
+}
+
+resource "aws_lambda_function_event_invoke_config" "this" {
+  count = var.create_async_event_config ? 1 : 0
+
+  function_name = var.function_name
+
+  "destination_config" {
+    "on_failure" {
+      destination = var.destination_on_failure
+    }
+  }
 }

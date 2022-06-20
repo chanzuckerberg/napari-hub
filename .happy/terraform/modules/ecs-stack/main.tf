@@ -149,7 +149,6 @@ module plugins_lambda {
   ephemeral_storage_size = 10240
   maximum_retry_attempts = 0
   create_async_event_config = true
-  create_current_version_async_event_config = false
   destination_on_failure = module.failure_lambda.function_arn
 }
 
