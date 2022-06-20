@@ -1,6 +1,6 @@
 module lambda {
   source  = "terraform-aws-modules/lambda/aws"
-  version = "3.2.1"
+  version = "3.3.1"
   publish = var.provisioned_lambda == -1 ? false : true
 
   function_name          = var.function_name
@@ -28,6 +28,7 @@ module lambda {
   allowed_triggers                  = var.allowed_triggers
   destination_on_failure            = var.destination_on_failure
   create_async_event_config         = var.create_async_event_config
+  create_current_version_async_event_config = var.create_current_version_async_event_config
 }
 
 resource "aws_lambda_provisioned_concurrency_config" "provisioned" {

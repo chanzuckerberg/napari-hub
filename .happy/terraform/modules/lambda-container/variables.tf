@@ -117,6 +117,12 @@ variable create_async_event_config {
   default     = false
 }
 
+variable create_current_version_async_event_config {
+  type        = bool
+  description = "Whether to allow async event configuration on current version of Lambda Function (this will revoke permissions from previous version because Terraform manages only current resources)"
+  default     = true
+}
+
 variable destination_on_failure {
   type        = string
   description = "Amazon Resource Name (ARN) of the destination resource for failed asynchronous invocations"
