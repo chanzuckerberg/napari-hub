@@ -7,7 +7,7 @@ from collections import defaultdict
 from utils.conda import get_conda_forge_package
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
-from api.s3 import get_cache, cache, is_npe2_plugin
+from api.s3 import get_cache, cache
 from utils.utils import render_description, send_alert, get_attribute, get_category_mapping, parse_manifest
 from utils.datadog import report_metrics
 from api.zulip import notify_new_packages
@@ -73,12 +73,11 @@ def get_plugin(plugin: str, version: str = None) -> dict:
 
 
 def get_frontend_manifest_metadata(plugin, version):
-    # load manifest from yaml (triggering build)
+    # load manifest from json (triggering build)
     raw_metadata = get_manifest(plugin, version)
     if 'process_count' in raw_metadata:
         raw_metadata = None
     interpreted_metadata = parse_manifest(raw_metadata)
-    interpreted_metadata['npe2'] = is_npe2_plugin(plugin, version)
     return interpreted_metadata
 
 
@@ -94,11 +93,11 @@ def get_manifest(plugin: str, version: str = None) -> dict:
         return {}
     elif version is None:
         version = plugins[plugin]
-    plugin_metadata = get_cache(f'cache/{plugin}/{version}.yaml', 'yaml')
+    plugin_metadata = get_cache(f'cache/{plugin}/{version}-manifest.json')
     if plugin_metadata:
         return plugin_metadata
     else:
-        cache({"process_count": 0}, f'cache/{plugin}/{version}.yaml', format='yaml')
+        cache({"process_count": 0}, f'cache/{plugin}/{version}-manifest.json')
         return {"process_count": 0}
 
 

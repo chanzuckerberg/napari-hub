@@ -209,7 +209,7 @@ resource "aws_s3_bucket_notification" "plugins_notification" {
     lambda_function_arn = module.plugins_lambda.function_arn
     events              = ["s3:ObjectCreated:*"]
     filter_prefix       = var.env == "dev" ? local.custom_stack_name : ""
-    filter_suffix       = ".yaml"
+    filter_suffix       = "manifest.json"
   }
 
   depends_on = [aws_lambda_permission.allow_bucket]
