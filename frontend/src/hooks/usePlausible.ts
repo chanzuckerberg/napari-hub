@@ -54,6 +54,8 @@ export type Events = {
     url: string;
     categoryDimension: string;
   };
+
+  'CTA: New Collection': unknown;
 };
 
 export type PlausibleEventKey = keyof Events;
