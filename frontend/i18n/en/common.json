@@ -60,6 +60,10 @@
 
     "privacy": {
       "description": "Information about napari hub's website privacy notice."
+    },
+
+    "collections": {
+      "description": "Useful, awesome, and interesting plugins curated by the napari community."
     }
   }
 }
