@@ -82,7 +82,9 @@ function App({ Component, pageProps }: AppProps) {
         // The plugin page has plugin specific content that needs to be added
         // to the Page Metadata, so skip adding it here in `_app.tsx` so that
         // the data can be fetched by the plugin page.
-        !/\/preview|plugins/.exec(router.pathname) && <PageMetadata />
+        !/\/preview|plugins|(collections\/.*)/.exec(router.pathname) && (
+          <PageMetadata />
+        )
       }
 
       <Head>

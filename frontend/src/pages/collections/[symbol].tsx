@@ -8,6 +8,7 @@ import { ParsedUrlQuery } from 'querystring';
 import { CollectionPage } from '@/components/CollectionPage';
 import { CollectionContextProvider } from '@/components/CollectionPage/context';
 import { ErrorMessage } from '@/components/ErrorMessage';
+import { PageMetadata } from '@/components/PageMetadata';
 import { useLoadingState } from '@/context/loading';
 import { CollectionData } from '@/types/collections';
 import { I18nNamespace } from '@/types/i18n';
@@ -76,10 +77,38 @@ export default function Collections({ collection, error }: Props) {
     title = `${title} | ${collection.title} by ${collection.curator.name}`;
   }
 
+  const curatorTwitter = /https:\/\/twitter.com\/([\w]+)/.exec(
+    collection?.curator.links?.twitter ?? '',
+  )?.[1];
+
   return (
     <>
+      <PageMetadata description={collection?.summary} />
+
       <Head>
         <title>{title}</title>
+
+        {collection && (
+          <>
+            <meta property="og:title" content={collection.title} />
+            <meta property="og:type" content="article" />
+            <meta
+              property="og:url"
+              content={`https://napari-hub.org/collections/${collection.title}`}
+            />
+            <meta property="og:image" content={collection.cover_image} />
+            <meta property="og:description" content={collection.summary} />
+
+            <meta name="twitter:card" content="summary_large_image" />
+            <meta name="twitter:site" content="@napari_imaging" />
+            <meta name="twitter:title" content={collection.title} />
+            <meta name="twitter:description" content={collection.summary} />
+            <meta name="twitter:image" content={collection.cover_image} />
+            {curatorTwitter && (
+              <meta name="twitter:creator" content={`@${curatorTwitter}`} />
+            )}
+          </>
+        )}
       </Head>
 
       {error ? (

@@ -162,6 +162,12 @@ for (let i = 0; i < titles.length; i += 1) {
         ...data.curator.affiliation,
         institution: curatorInstitutions[i],
       },
+      links: {
+        orcid: '0000-0002-4638-7015',
+        twitter: 'https://twitter.com/neuromusic',
+        github: 'https://github.com/neuromusic',
+        website: 'https://justinkiggins.com',
+      },
     },
   });
 }

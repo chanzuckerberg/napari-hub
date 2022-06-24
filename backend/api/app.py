@@ -76,7 +76,7 @@ def plugin_manifest(plugin: str, version: str = None) -> Response:
         return app.make_response(("Plugin does not exist", 404))
 
     if 'process_count' not in manifest:
-        return yaml.dump(manifest)
+        return jsonify(manifest)
 
     current_tries = manifest['process_count']
     if current_tries >= max_failure_tries:
