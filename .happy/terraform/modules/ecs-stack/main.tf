@@ -194,27 +194,6 @@ resource "aws_cloudwatch_event_rule" "update_rule" {
   tags                = var.tags
 }
 
-resource "aws_lambda_permission" "allow_bucket" {
-  statement_id  = "AllowExecutionFromS3Bucket"
-  action        = "lambda:InvokeFunction"
-  function_name = module.plugins_lambda.function_arn
-  principal     = "s3.amazonaws.com"
-  source_arn    = local.data_bucket_arn
-}
-
-resource "aws_s3_bucket_notification" "plugins_notification" {
-  bucket = local.data_bucket_name
-
-  lambda_function {
-    lambda_function_arn = module.plugins_lambda.function_arn
-    events              = ["s3:ObjectCreated:*"]
-    filter_prefix       = var.env == "dev" ? local.custom_stack_name : ""
-    filter_suffix       = ".yaml"
-  }
-
-  depends_on = [aws_lambda_permission.allow_bucket]
-}
-
 resource "aws_cloudwatch_event_target" "update_target" {
     rule = aws_cloudwatch_event_rule.update_rule.name
     arn = module.backend_lambda.function_arn
