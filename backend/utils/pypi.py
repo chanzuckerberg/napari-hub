@@ -73,14 +73,14 @@ def format_plugin(plugin: dict) -> dict:
     version = get_attribute(plugin, ["info", "version"])
 
     # parse raw author names string
-    #raw_name = get_attribute(plugin, ["info", "author"])
+    raw_name = get_attribute(plugin, ["info", "author"])
     #parsed_name = raw_name.replace('&',',')
     #parsed_name = parsed_name.replace(' and ',',')
-    #author_names = re.split('and', raw_name)
-    #author_names = [name.strip() for name in author_names if name is not None]
-    #authors = []
-    #for name in author_names:
-    #    authors.append({"name": name, "email": get_attribute(plugin, ["info", "author_email"])})
+    author_names = re.split('&|,| and ', raw_name)
+    author_names = [name.strip() for name in author_names if name is not None]
+    authors = []
+    for name in author_names:
+        authors.append({'name': name, 'email': get_attribute(plugin, ["info", "author_email"])})
 
 
     return {
@@ -88,8 +88,7 @@ def format_plugin(plugin: dict) -> dict:
         "summary": get_attribute(plugin, ["info", "summary"]),
         "description": get_attribute(plugin, ["info", "description"]),
         "description_content_type": f'{get_attribute(plugin, ["info", "description_content_type"])}',
-        "authors": [{"name":get_attribute(plugin, ["info", "author"]), 
-                     "emali": get_attribute(plugin, ["info", "author_email"])}],
+        "authors": authors,
         "license": get_attribute(plugin, ["info", "license"]),
         "python_version": get_attribute(plugin, ["info", "requires_python"]),
         "operating_system": filter_prefix(
