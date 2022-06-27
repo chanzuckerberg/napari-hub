@@ -74,13 +74,13 @@ def format_plugin(plugin: dict) -> dict:
 
     # parse raw author names string
     raw_name = get_attribute(plugin, ["info", "author"])
-    parsed_name = raw_name.replace('&| and ',',')
+    parsed_name = raw_name.replace('&',',')
+    parsed_name = raw_name.replace(' and ',',')
     author_names = parsed_name.split(',')
     author_names = [name.strip() for name in author_names]
     authors = []
-    email = get_attribute(plugin, ["info", "author_email"])
     for name in author_names:
-        authors.append({'name': name, 'email': email})
+        authors.append({'name': name, 'email': get_attribute(plugin, ["info", "author_email"])})
 
 
     return {
