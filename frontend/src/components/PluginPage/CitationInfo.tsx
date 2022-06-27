@@ -57,7 +57,7 @@ export function CitationInfo({ className }: Props) {
   return (
     <div className={className}>
       <div className="prose max-w-none mb-6">
-        <AnchorHeading id={ANCHOR}>
+        <AnchorHeading element="h2" id={ANCHOR}>
           {t('pluginPage:citations.title')}
         </AnchorHeading>
         <p>
