@@ -7,8 +7,8 @@ import slug from 'rehype-slug';
 import externalLinks from 'remark-external-links';
 import gfm from 'remark-gfm';
 import removeComments from 'remark-remove-comments';
+import { getAnchorHeading } from 'src/components/AnchorHeading';
 
-import { getAnchorHeading } from '../AnchorHeading';
 import styles from './Markdown.module.scss';
 import { MarkdownCode } from './MarkdownCode';
 import { MarkdownParagraph } from './MarkdownParagraph';
