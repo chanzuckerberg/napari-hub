@@ -20,7 +20,7 @@ export function AnchorHeading({
     element,
     {
       id,
-      className: clsx(className, styles.heading2, 'flex space-x-2'),
+      className: clsx(className, styles.heading, 'flex space-x-2'),
       ...props,
     },
     <>

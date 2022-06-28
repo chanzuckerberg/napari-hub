@@ -1,6 +1,6 @@
 export type Styles = {
   anchor: string;
-  heading2: string;
+  heading: string;
 };
 
 export type ClassNames = keyof Styles;
