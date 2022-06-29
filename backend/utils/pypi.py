@@ -74,7 +74,8 @@ def format_plugin(plugin: dict) -> dict:
 
     # parse raw author names string
     raw_name = get_attribute(plugin, ["info", "author"])
-    author_names = re.split(r'&|,|\sand\s', raw_name)
+    regexp = r'&|,|\sand\s'
+    author_names = re.split(regexp, raw_name)
     author_names = [name.strip() for name in author_names if name is not None]
     authors = []
     for name in author_names:
