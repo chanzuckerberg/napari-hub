@@ -130,15 +130,11 @@ def get_github_metadata(repo_url: str, branch: str = 'HEAD') -> dict:
         citation = get_citations(citation_file)
         if citation:
             github_metadata['citations'] = citation
-
-    # Try to parse names fron citation
-    #citation_yaml = yaml.safe_load(citation_file)
-    #authors = []
-    #for author_entry in citation_yaml['authors']:
-    #    authors.append({'name':author_entry['given-names'] + " " + author_entry['family-names']})
-    authors = get_citation_author(citation_file)
-    # update github metadata author info
-    github_metadata.update({"authors": authors})
+        # Try to parse names fron citation
+        authors = get_citation_author(citation_file)
+        # update github metadata author info
+        if authors:
+            github_metadata.update({"authors": authors})
 
     if 'visibility' not in github_metadata:
         github_metadata['visibility'] = 'public'
