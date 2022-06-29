@@ -143,3 +143,8 @@ repository-code: "https://example.com/example"
 title: testing
 version: "0.0.0"
 """
+
+complete_author_citations = [
+  {'name':"Gi N. Fa"},
+  {'name':"Given Family"}
+]

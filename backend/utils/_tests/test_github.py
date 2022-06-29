@@ -1,8 +1,9 @@
 import unittest
 from unittest.mock import patch
+from backend.utils.github import get_citation_author
 
 from utils.github import get_github_repo_url, get_license, get_citations
-from utils.test_utils import FakeResponse, license_response, no_license_response, citation_string
+from utils.test_utils import FakeResponse, license_response, no_license_response, citation_string, complete_author_citations
 
 
 class TestGithub(unittest.TestCase):
@@ -60,3 +61,7 @@ class TestGithub(unittest.TestCase):
         citation_str = """Ha? What is this?"""
         citations = get_citations(citation_str)
         assert citations is None
+
+    def test_citation_name_filtering(self):
+        author = get_citation_author(citation_string)
+        assert author == complete_author_citations

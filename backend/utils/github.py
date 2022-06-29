@@ -131,6 +131,15 @@ def get_github_metadata(repo_url: str, branch: str = 'HEAD') -> dict:
         if citation:
             github_metadata['citations'] = citation
 
+    # Try to parse names fron citation
+    #citation_yaml = yaml.safe_load(citation_file)
+    #authors = []
+    #for author_entry in citation_yaml['authors']:
+    #    authors.append({'name':author_entry['given-names'] + " " + author_entry['family-names']})
+    authors = get_citation_author(citation_file)
+    # update github metadata author info
+    github_metadata.update({"authors": authors})
+
     if 'visibility' not in github_metadata:
         github_metadata['visibility'] = 'public'
     elif github_metadata['visibility'] not in visibility_set:
@@ -186,3 +195,11 @@ def get_artifact(url: str, token: str) -> Union[IO[bytes], None]:
                 return None
             return response.raw
     return None
+
+def get_citation_author(citation_str: str) -> Union[Dict[str, str], None]:
+    citation_yaml = yaml.safe_load(citation_str)
+    authors = []
+    for author_entry in citation_yaml['authors']:
+        if author_entry['given-names'] and author_entry['family-names']:
+            authors.append({'name':author_entry['given-names'] + " " + author_entry['family-names']})
+    return authors
