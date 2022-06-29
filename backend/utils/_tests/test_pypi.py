@@ -5,8 +5,12 @@ from requests import HTTPError
 from backend.utils.pypi import format_plugin
 
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
-from utils.test_utils import FakeResponse, plugin, plugin_list, split_comma_correct_result, split_comma_plugin, split_and_correct_result, split_and_plugin, split_ampersand_correct_result, split_ampersand_plugin, empty_split_plugin, empty_split_correct_result
-
+from utils.test_utils import (
+    FakeResponse, 
+    plugin, plugin_list, split_comma_correct_result, split_comma_plugin, 
+    split_and_correct_result, split_and_plugin, split_ampersand_correct_result, 
+    split_ampersand_plugin, empty_split_plugin, empty_split_correct_result
+    ) 
 
 class TestPypi(unittest.TestCase):
 
