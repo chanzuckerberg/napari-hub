@@ -2,9 +2,10 @@ import unittest
 from unittest.mock import patch
 
 from requests import HTTPError
+from backend.utils.pypi import format_plugin
 
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
-from utils.test_utils import FakeResponse, plugin, plugin_list
+from utils.test_utils import FakeResponse, plugin, plugin_list, split_comma_correct_result, split_comma_plugin, split_and_correct_result, split_and_plugin, split_ampersand_correct_result, split_ampersand_plugin
 
 
 class TestPypi(unittest.TestCase):
@@ -47,3 +48,24 @@ class TestPypi(unittest.TestCase):
     )
     def test_get_plugin_error(self, mock_get):
         assert ({} == get_plugin_pypi_metadata("test", "0.0.1"))
+
+    @patch(
+        'requests.get', return_value=FakeResponse(data=split_comma_plugin)
+    )
+    def test_format_plugin_filter_comma(self, mock_request_get):
+        result = get_plugin_pypi_metadata("test", "0.0.1")
+        assert result["authors"] == split_comma_correct_result
+
+    @patch(
+        'requests.get', return_value=FakeResponse(data=split_and_plugin)
+    )
+    def test_format_plugin_filter_and(self, mock_request_get):
+        result = get_plugin_pypi_metadata("test", "0.0.1")
+        assert result["authors"] == split_and_correct_result
+
+    @patch(
+        'requests.get', return_value=FakeResponse(data=split_ampersand_plugin)
+    )
+    def test_format_plugin_filter_ampersanda(self, mock_request_get):
+        result = get_plugin_pypi_metadata("test", "0.0.1")
+        assert result["authors"] == split_ampersand_correct_result
