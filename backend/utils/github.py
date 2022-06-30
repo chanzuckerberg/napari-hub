@@ -59,11 +59,11 @@ def get_file(download_url: str, file: str, branch: str = 'HEAD') -> [dict, None]
     try:
         url = f'{api_url}/{branch}/{file}'
         response = requests.get(url, auth=auth)
-        
-        
-        
-        
-        
+        print("url: ", url)
+        print("response: ", response)
+        print("response.text: ", response.text)
+        print("response.json_data: ", response.json_data)
+        print("response.status_code: ", response.status_code)
         if response.status_code != requests.codes.ok:
             response.raise_for_status()
         return response.text
@@ -131,14 +131,14 @@ def get_github_metadata(repo_url: str, branch: str = 'HEAD') -> dict:
         github_metadata['description'] = description
 
     citation_file = get_file(repo_url, "CITATION.cff", branch=branch)
-    
+    print('cit_file', citation_file)
     if citation_file is not None:
         citation = get_citations(citation_file)
         if citation:
             github_metadata['citations'] = citation
         # Try to parse names fron citation
         authors = get_citation_author(citation_file)
-        
+        print('authors', authors)
         # update github metadata author info
         if authors:
             github_metadata.update({"authors": authors})
