@@ -113,7 +113,7 @@ class TestGithub(unittest.TestCase):
     # test that authors field populates when citation exists
     @patch('requests.get', side_effect=mocked_requests_get_citation)
     @patch('os.getenv', return_value=False)
-    def test_get_github_metadata_with_citation(self, mock_requests_get):
+    def test_get_github_metadata_with_citation(self, mock_requests_get, mock_os_get):
         metadata = get_github_metadata("https://github.com")
         print(metadata)
         assert metadata["authors"] == [{'name': 'Gi N. Fa'}, {'name': 'Given Family'}]
@@ -121,7 +121,7 @@ class TestGithub(unittest.TestCase):
     # test that authors field doesn't populate when no citation exists and no config exists
     @patch('requests.get', side_effect=mocked_requests_no_citation_no_config)
     @patch('os.getenv', return_value=False)
-    def test_get_github_metadata_with_no_citation(self, mock_requests_get):
+    def test_get_github_metadata_with_no_citation(self, mock_requests_get, mock_os_get):
         metadata = get_github_metadata("https://github.com")
         print(metadata)
         assert "authors" not in metadata
@@ -129,7 +129,7 @@ class TestGithub(unittest.TestCase):
     # test that config.yml overrides citation when both exist
     @patch('requests.get', side_effect=mocked_requests_get_citation_and_config)
     @patch('os.getenv', return_value=False)
-    def test_get_github_metadata_with_config_override(self, mock_requests_get):
+    def test_get_github_metadata_with_config_override(self, mock_requests_get, mock_os_get):
         metadata = get_github_metadata("https://github.com")
         print(metadata)
         assert metadata["authors"] == [{'name': 'Test Author', 'orcid': '0000-0000-0000-0000'}]
@@ -137,7 +137,7 @@ class TestGithub(unittest.TestCase):
     # test that config.yml populates authors field
     @patch('requests.get', side_effect=mocked_requests_get_config)
     @patch('os.getenv', return_value=False)
-    def test_get_github_metadata_with_config(self, mock_requests_get):
+    def test_get_github_metadata_with_config(self, mock_requests_get, mock_os_get):
         metadata = get_github_metadata("https://github.com")
         print(metadata)
         assert metadata["authors"] == [{'name': 'Test Author', 'orcid': '0000-0000-0000-0000'}]
