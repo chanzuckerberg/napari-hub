@@ -148,3 +148,17 @@ complete_author_citations = [
   {'name':"Gi N. Fa"},
   {'name':"Given Family"}
 ]
+
+config_yaml = """
+visibility: public
+summary: The napari adaptation of the ImageJ/Fiji plugin AnnotatorJ for easy and fun image annotation.
+authors:
+  - name: Test Author
+    orcid: 0000-0000-0000-0000
+labels:
+  ontology: NAPARI:1
+  terms:
+  - Term 1
+  - Term 2
+  - Term 3
+"""

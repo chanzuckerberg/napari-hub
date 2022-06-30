@@ -1,10 +1,54 @@
 import unittest
 from unittest.mock import patch
-from backend.utils.github import get_citation_author
+import requests
+from backend.utils.github import get_citation_author, get_github_metadata
 
 from utils.github import get_github_repo_url, get_license, get_citations
-from utils.test_utils import FakeResponse, license_response, no_license_response, citation_string, complete_author_citations
+from utils.test_utils import FakeResponse, license_response, no_license_response, citation_string, complete_author_citations, config_yaml
 
+class MockResponse:
+    def __init__(self, text, json_data, status_code):
+        self.text = text
+        self.json_data = json_data
+        self.status_code = status_code
+
+    def json(self):
+        return self.json_data
+
+    def raise_for_status(self):
+        return None
+
+def mocked_requests_get_citation(*args, **kwargs):
+    if args[0] == 'https://github.com/HEAD/CITATION.cff':
+        return MockResponse(citation_string, {"text": citation_string}, 200)
+    elif args[0] == 'https://github.com/license?ref=HEAD':
+        return MockResponse(license_response, {"text": license_response}, 200)
+
+    return MockResponse(None, None, 200)
+
+def mocked_requests_no_citation_no_config(*args, **kwargs):
+    if args[0] == 'https://github.com/license?ref=HEAD':
+        return MockResponse(license_response, {"text": license_response}, 200)
+
+    return MockResponse(None, None, 400)
+
+def mocked_requests_get_citation_and_config(*args, **kwargs):
+    if args[0] == 'https://github.com/HEAD/CITATION.cff':
+        return MockResponse(citation_string, {"text": citation_string}, 200)
+    elif args[0] == 'https://github.com/license?ref=HEAD':
+        return MockResponse(license_response, {"text": license_response}, 200)
+    elif args[0] == 'https://github.com/HEAD/.napari-hub/config.yml':
+        return MockResponse(config_yaml, {"text": config_yaml}, 200)
+
+    return MockResponse(None, None, 200)
+
+def mocked_requests_get_config(*args, **kwargs):
+    if args[0] == 'https://github.com/license?ref=HEAD':
+        return MockResponse(license_response, {"text": license_response}, 200)
+    elif args[0] == 'https://github.com/HEAD/.napari-hub/config.yml':
+        return MockResponse(config_yaml, {"text": config_yaml}, 200)
+
+    return MockResponse(None, None, 200)
 
 class TestGithub(unittest.TestCase):
 
@@ -65,3 +109,27 @@ class TestGithub(unittest.TestCase):
     def test_citation_name_filtering(self):
         author = get_citation_author(citation_string)
         assert author == complete_author_citations
+
+    # test that authors field populates when citation exists
+    @patch('requests.get', side_effect=mocked_requests_get_citation)
+    def test_get_github_metadata_with_citation(self, mock_requests_get):
+        metadata = get_github_metadata("https://github.com")
+        assert metadata["authors"] == [{'name': 'Gi N. Fa'}, {'name': 'Given Family'}]
+
+    # test that authors field doesn't populate when no citation exists and no config exists
+    @patch('requests.get', side_effect=mocked_requests_no_citation_no_config)
+    def test_get_github_metadata_with_no_citation(self, mock_requests_get):
+        metadata = get_github_metadata("https://github.com")
+        assert "authors" not in metadata
+
+    # test that config.yml overrides citation when both exist
+    @patch('requests.get', side_effect=mocked_requests_get_citation_and_config)
+    def test_get_github_metadata_with_config_override(self, mock_requests_get):
+        metadata = get_github_metadata("https://github.com")
+        assert metadata["authors"] == [{'name': 'Test Author', 'orcid': '0000-0000-0000-0000'}]
+
+    # test that config.yml populates authors field
+    @patch('requests.get', side_effect=mocked_requests_get_config)
+    def test_get_github_metadata_with_config(self, mock_requests_get):
+        metadata = get_github_metadata("https://github.com")
+        assert metadata["authors"] == [{'name': 'Test Author', 'orcid': '0000-0000-0000-0000'}]
