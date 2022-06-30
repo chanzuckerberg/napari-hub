@@ -32,7 +32,7 @@ class TestPypi(unittest.TestCase):
         assert (result["summary"] == "A test plugin")
         assert (result["description"] == "# description [example](http://example.com)")
         assert (result["description_content_type"] == "")
-        assert (result["authors"] == [{'email': 'test@test.com', 'name': 'Test Author'}])
+        assert (result["authors"] == [{'name': 'Test Author'}])
         assert (result["license"] == "BSD-3")
         assert (result["python_version"] == ">=3.6")
         assert (result["operating_system"] == ['Operating System :: OS Independent'])

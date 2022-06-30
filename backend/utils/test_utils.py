@@ -188,11 +188,11 @@ split_comma_plugin = """
   "url":"","yanked":false,"yanked_reason":null}]}}"""
 
 split_comma_correct_result = [
-  {'email': 'test@test.com', 'name': 'Test Author 1'},
-  {'email': 'test@test.com', 'name': 'Test Author 2'},
-  {'email': 'test@test.com', 'name': 'Test Author 3'},
-  {'email': 'test@test.com', 'name': 'Test Author 4'},
-  {'email': 'test@test.com', 'name': 'Test Author 5'}
+  {'name': 'Test Author 1'},
+  {'name': 'Test Author 2'},
+  {'name': 'Test Author 3'},
+  {'name': 'Test Author 4'},
+  {'name': 'Test Author 5'}
 ]
 
 # test splitting with ampersand
@@ -238,11 +238,11 @@ split_ampersand_plugin = """
   "url":"","yanked":false,"yanked_reason":null}]}}"""
 
 split_ampersand_correct_result = [
-  {'email': 'test@test.com', 'name': 'Test Author 1'},
-  {'email': 'test@test.com', 'name': 'Test Author 2'},
-  {'email': 'test@test.com', 'name': 'Test Author 3'},
-  {'email': 'test@test.com', 'name': 'Test Author 4'},
-  {'email': 'test@test.com', 'name': 'Test Author 5'}
+  {'name': 'Test Author 1'},
+  {'name': 'Test Author 2'},
+  {'name': 'Test Author 3'},
+  {'name': 'Test Author 4'},
+  {'name': 'Test Author 5'}
 ]
 
 # test splitting with and
@@ -288,11 +288,11 @@ split_and_plugin = """
   "url":"","yanked":false,"yanked_reason":null}]}}"""
 
 split_and_correct_result = [
-  {'email': 'test@test.com', 'name': 'Test Author 1'},
-  {'email': 'test@test.com', 'name': 'Test Author 2'},
-  {'email': 'test@test.com', 'name': 'andy'},
-  {'email': 'test@test.com', 'name': 'yand'},
-  {'email': 'test@test.com', 'name': 'sandra'}
+  {'name': 'Test Author 1'},
+  {'name': 'Test Author 2'},
+  {'name': 'andy'},
+  {'name': 'yand'},
+  {'name': 'sandra'}
 ]
 
 # test empyy splitting
@@ -338,7 +338,7 @@ empty_split_plugin = """
   "url":"","yanked":false,"yanked_reason":null}]}}"""
 
 empty_split_correct_result = [
-  {'email': 'test@test.com', 'name': 'and'},
-  {'email': 'test@test.com', 'name': 'and'},
-  {'email': 'test@test.com', 'name': 'and'}
+  {'name': 'and'},
+  {'name': 'and'},
+  {'name': 'and'}
 ]
