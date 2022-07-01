@@ -19,7 +19,7 @@ class MockResponse:
         return None
 
 def mocked_requests_get_citation(*args, **kwargs):
-    if args[0] == 'https://github.com/HEAD/CITATION.cff':
+    if args[0] != None and "CITATION.cff" in args[0]:
         return MockResponse(citation_string, {"text": citation_string}, 200)
     elif args[0] == 'https://github.com/license?ref=HEAD':
         return MockResponse(license_response, {"text": license_response}, 200)
@@ -33,11 +33,11 @@ def mocked_requests_no_citation_no_config(*args, **kwargs):
     return MockResponse(None, None, 400)
 
 def mocked_requests_get_citation_and_config(*args, **kwargs):
-    if args[0] == 'https://github.com/HEAD/CITATION.cff':
+    if args[0] != None and "CITATION.cff" in args[0]:
         return MockResponse(citation_string, {"text": citation_string}, 200)
     elif args[0] == 'https://github.com/license?ref=HEAD':
         return MockResponse(license_response, {"text": license_response}, 200)
-    elif args[0] == 'https://github.com/HEAD/.napari-hub/config.yml':
+    elif args[0] != None and ".napari-hub/config.yml" in args[0]:
         return MockResponse(config_yaml, {"text": config_yaml}, 200)
 
     return MockResponse(None, None, 200)
@@ -45,7 +45,7 @@ def mocked_requests_get_citation_and_config(*args, **kwargs):
 def mocked_requests_get_config(*args, **kwargs):
     if args[0] == 'https://github.com/license?ref=HEAD':
         return MockResponse(license_response, {"text": license_response}, 200)
-    elif args[0] == 'https://github.com/HEAD/.napari-hub/config.yml':
+    elif args[0] != None and ".napari-hub/config.yml" in args[0]:
         return MockResponse(config_yaml, {"text": config_yaml}, 200)
 
     return MockResponse(None, None, 200)
@@ -115,7 +115,6 @@ class TestGithub(unittest.TestCase):
     @patch('os.getenv', return_value=False)
     def test_get_github_metadata_with_citation(self, mock_requests_get, mock_os_get):
         metadata = get_github_metadata("https://github.com")
-        print(metadata)
         assert metadata["authors"] == [{'name': 'Gi N. Fa'}, {'name': 'Given Family'}]
 
     # test that authors field doesn't populate when no citation exists and no config exists
@@ -123,7 +122,6 @@ class TestGithub(unittest.TestCase):
     @patch('os.getenv', return_value=False)
     def test_get_github_metadata_with_no_citation(self, mock_requests_get, mock_os_get):
         metadata = get_github_metadata("https://github.com")
-        print(metadata)
         assert "authors" not in metadata
 
     # test that config.yml overrides citation when both exist
@@ -131,7 +129,6 @@ class TestGithub(unittest.TestCase):
     @patch('os.getenv', return_value=False)
     def test_get_github_metadata_with_config_override(self, mock_requests_get, mock_os_get):
         metadata = get_github_metadata("https://github.com")
-        print(metadata)
         assert metadata["authors"] == [{'name': 'Test Author', 'orcid': '0000-0000-0000-0000'}]
 
     # test that config.yml populates authors field
@@ -139,5 +136,4 @@ class TestGithub(unittest.TestCase):
     @patch('os.getenv', return_value=False)
     def test_get_github_metadata_with_config(self, mock_requests_get, mock_os_get):
         metadata = get_github_metadata("https://github.com")
-        print(metadata)
         assert metadata["authors"] == [{'name': 'Test Author', 'orcid': '0000-0000-0000-0000'}]
