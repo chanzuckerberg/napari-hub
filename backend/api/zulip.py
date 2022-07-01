@@ -26,30 +26,19 @@ def notify_new_packages(existing_packages: Dict[str, str], new_packages: Dict[st
         key = zulip_credentials.split(":")[1]
     # go through plugin dict
     for package, version in new_packages.items():
-        release_notes = ''
         if "code_repository" in packages_metadata[package]:
             github_link = packages_metadata[package]["code_repository"]
             owner_and_repo = github_link.replace('https://github.com/', '')
             github_api_endpoint = f'https://api.github.com/repos/{owner_and_repo}/releases/tags/{version}'
-            try:
-                response = requests.get(github_api_endpoint)
-                if response.status_code != requests.codes.ok:
-                    github_api_endpoint = f'https://api.github.com/repos/{owner_and_repo}/releases/tags/v{version}'
-                    response = requests.get(github_api_endpoint)
-                    if response.status_code != requests.codes.ok:
-                        release_notes = ''
-                    else:
-                        info = json.loads(response.text.strip())
-                        release_notes = info["body"]
-                else:
-                        info = json.loads(response.text.strip())
-                        release_notes = info["body"]
-                
-            except HTTPError:
-                print("http error")
-                release_notes = ''
-
-            # link_to_release = f' With release notes at ' + github_link + '/releases/tag/{version}'
+            release_notes = get_release_notes_from(github_api_endpoint)
+            # link_to_release = f'With release notes at ' + github_link + '/releases/tag/{version}'
+            # sometimes our version number has a v in the front, so we check for that if first try fails
+            if not release_notes:
+                github_api_endpoint_with_v = f'https://api.github.com/repos/{owner_and_repo}/releases/tags/v{version}'
+                release_notes = get_release_notes_from(github_api_endpoint_with_v)
+                # link_to_release = f'With release notes at ' + github_link + '/releases/tag/v{version}'
+        else:
+            release_notes = ''
         
         # deal with new plugin
         if package not in existing_packages:
@@ -107,3 +96,15 @@ def send_zulip_message(username: str, key: str, topic: str, message: str):
             response.raise_for_status()
     except HTTPError:
         pass
+
+def get_release_notes_from(endpoint):
+    try:
+        response = requests.get(endpoint)
+        if response.status_code != requests.codes.ok:
+            response.raise_for_status()
+        info = json.loads(response.text.strip())
+        if "body" in info:
+            return info["body"]
+        return ''
+    except HTTPError:
+        return ''
