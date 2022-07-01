@@ -205,7 +205,7 @@ def update_cache():
         cache(visibility_plugins['public'], 'cache/public-plugins.json')
         cache(visibility_plugins['hidden'], 'cache/hidden-plugins.json')
         cache(slice_metadata_to_index_columns(list(plugins_metadata.values())), 'cache/index.json')
-        notify_new_packages(existing_public_plugins, visibility_plugins['public'])
+        notify_new_packages(existing_public_plugins, visibility_plugins['public'], plugins_metadata)
         report_metrics('napari_hub.plugins.count', len(visibility_plugins['public']), ['visibility:public'])
         report_metrics('napari_hub.plugins.count', len(visibility_plugins['hidden']), ['visibility:hidden'])
         report_metrics('napari_hub.plugins.excluded', len(excluded_plugins))

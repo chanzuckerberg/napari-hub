@@ -1,4 +1,6 @@
+import json
 import os
+from struct import pack
 from typing import Dict
 
 import requests
@@ -9,7 +11,7 @@ from requests.exceptions import HTTPError
 zulip_credentials = os.environ.get('ZULIP_CREDENTIALS', "")
 
 
-def notify_new_packages(existing_packages: Dict[str, str], new_packages: Dict[str, str]):
+def notify_new_packages(existing_packages: Dict[str, str], new_packages: Dict[str, str], packages_metadata):
     """
     Notify zulip about new packages.
 
@@ -24,7 +26,31 @@ def notify_new_packages(existing_packages: Dict[str, str], new_packages: Dict[st
         key = zulip_credentials.split(":")[1]
     # go through plugin dict
     for package, version in new_packages.items():
-        release_notes = f' With release notes at https://github.com/{package}/releases/tag/{version}'
+        release_notes = ''
+        if "code_repository" in packages_metadata[package]:
+            github_link = packages_metadata[package]["code_repository"]
+            owner_and_repo = github_link.replace('https://github.com/', '')
+            github_api_endpoint = f'https://api.github.com/repos/{owner_and_repo}/releases/tags/{version}'
+            try:
+                response = requests.get(github_api_endpoint)
+                if response.status_code != requests.codes.ok:
+                    github_api_endpoint = f'https://api.github.com/repos/{owner_and_repo}/releases/tags/v{version}'
+                    response = requests.get(github_api_endpoint)
+                    if response.status_code != requests.codes.ok:
+                        release_notes = ''
+                    else:
+                        info = json.loads(response.text.strip())
+                        release_notes = info["body"]
+                else:
+                        info = json.loads(response.text.strip())
+                        release_notes = info["body"]
+                
+            except HTTPError:
+                print("http error")
+                release_notes = ''
+
+            # link_to_release = f' With release notes at ' + github_link + '/releases/tag/{version}'
+        
         # deal with new plugin
         if package not in existing_packages:
             # make message
