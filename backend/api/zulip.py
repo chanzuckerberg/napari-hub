@@ -29,12 +29,13 @@ def notify_new_packages(existing_packages: Dict[str, str], new_packages: Dict[st
         if "code_repository" in packages_metadata[package]:
             github_link = packages_metadata[package]["code_repository"]
             owner_and_repo = github_link.replace('https://github.com/', '')
-            github_api_endpoint = f'https://api.github.com/repos/{owner_and_repo}/releases/tags/{version}'
+            general_github_api_endpoint = f'https://api.github.com/repos/{owner_and_repo}/releases/tags/'
+            github_api_endpoint = general_github_api_endpoint + version
             release_notes = get_release_notes_from(github_api_endpoint)
             # link_to_release = f'With release notes at ' + github_link + '/releases/tag/{version}'
             # sometimes our version number has a v in the front, so we check for that if first try fails
             if not release_notes:
-                github_api_endpoint_with_v = f'https://api.github.com/repos/{owner_and_repo}/releases/tags/v{version}'
+                github_api_endpoint_with_v = general_github_api_endpoint + f'v{version}'
                 release_notes = get_release_notes_from(github_api_endpoint_with_v)
                 # link_to_release = f'With release notes at ' + github_link + '/releases/tag/v{version}'
         else:
