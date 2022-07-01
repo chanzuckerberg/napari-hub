@@ -6,49 +6,37 @@ from backend.utils.github import get_citation_author, get_github_metadata
 from utils.github import get_github_repo_url, get_license, get_citations
 from utils.test_utils import FakeResponse, license_response, no_license_response, citation_string, complete_author_citations, config_yaml
 
-class MockResponse:
-    def __init__(self, text, json_data, status_code):
-        self.text = text
-        self.json_data = json_data
-        self.status_code = status_code
-
-    def json(self):
-        return self.json_data
-
-    def raise_for_status(self):
-        return None
-
 def mocked_requests_get_citation(*args, **kwargs):
     if args[0] != None and "CITATION.cff" in args[0]:
-        return MockResponse(citation_string, {"text": citation_string}, 200)
-    elif args[0] == 'https://github.com/license?ref=HEAD':
-        return MockResponse(license_response, {"text": license_response}, 200)
+        return FakeResponse(data=citation_string)
+    elif args[0] != None and "/license?ref=" in args[0]:
+        return FakeResponse(data=license_response)
 
-    return MockResponse(None, None, 200)
+    return FakeResponse(data=None)
 
 def mocked_requests_no_citation_no_config(*args, **kwargs):
-    if args[0] == 'https://github.com/license?ref=HEAD':
-        return MockResponse(license_response, {"text": license_response}, 200)
+    if args[0] != None and "/license?ref=" in args[0]:
+        return FakeResponse(data=license_response)
 
-    return MockResponse(None, None, 400)
+    return FakeResponse(data=None)
 
 def mocked_requests_get_citation_and_config(*args, **kwargs):
     if args[0] != None and "CITATION.cff" in args[0]:
-        return MockResponse(citation_string, {"text": citation_string}, 200)
-    elif args[0] == 'https://github.com/license?ref=HEAD':
-        return MockResponse(license_response, {"text": license_response}, 200)
+        return FakeResponse(data=citation_string)
+    elif args[0] != None and "/license?ref=" in args[0]:
+        return FakeResponse(data=license_response)
     elif args[0] != None and ".napari-hub/config.yml" in args[0]:
-        return MockResponse(config_yaml, {"text": config_yaml}, 200)
+        return FakeResponse(data=config_yaml)
 
-    return MockResponse(None, None, 200)
+    return FakeResponse(data=None)
 
 def mocked_requests_get_config(*args, **kwargs):
-    if args[0] == 'https://github.com/license?ref=HEAD':
-        return MockResponse(license_response, {"text": license_response}, 200)
+    if args[0] != None and "/license?ref=" in args[0]:
+        return FakeResponse(data=license_response)
     elif args[0] != None and ".napari-hub/config.yml" in args[0]:
-        return MockResponse(config_yaml, {"text": config_yaml}, 200)
+        return FakeResponse(data=config_yaml)
 
-    return MockResponse(None, None, 200)
+    return FakeResponse(data=None)
 
 class TestGithub(unittest.TestCase):
 
