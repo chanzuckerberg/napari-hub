@@ -6,8 +6,8 @@ from backend.utils.pypi import format_plugin
 
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
 from utils.test_utils import (
-    FakeResponse, 
-    plugin, plugin_list, split_comma_correct_result, split_comma_plugin, 
+    FakeResponse, plugin, plugin_list,
+    split_comma_correct_result, split_comma_plugin, 
     split_and_correct_result, split_and_plugin, split_ampersand_correct_result, 
     split_ampersand_plugin, empty_split_plugin, empty_split_correct_result
     ) 
@@ -57,6 +57,10 @@ class TestPypi(unittest.TestCase):
         'requests.get', return_value=FakeResponse(data=split_comma_plugin)
     )
     def test_format_plugin_filter_comma(self, mock_request_get):
+        """
+        Expect input of response from pypi with authors split by commas
+        Checks that format_plugin correctly splits the input's author field into a list of 'name'-'{author name}' mappings
+        """
         result = get_plugin_pypi_metadata("test", "0.0.1")
         assert result["authors"] == split_comma_correct_result
 
@@ -64,6 +68,10 @@ class TestPypi(unittest.TestCase):
         'requests.get', return_value=FakeResponse(data=split_and_plugin)
     )
     def test_format_plugin_filter_and(self, mock_request_get):
+        """
+        Expect input of response from pypi with authors split by ' and ' along with names containing 'and'
+        Checks that format_plugin correctly splits the input's author field into a list of 'name'-'{author name}' mappings
+        """
         result = get_plugin_pypi_metadata("test", "0.0.1")
         assert result["authors"] == split_and_correct_result
 
@@ -71,6 +79,10 @@ class TestPypi(unittest.TestCase):
         'requests.get', return_value=FakeResponse(data=split_ampersand_plugin)
     )
     def test_format_plugin_filter_ampersanda(self, mock_request_get):
+        """
+        Expect input of response from pypi with authors split by &
+        Checks that format_plugin correctly splits the input's author field into a list of 'name'-'{author name}' mappings
+        """
         result = get_plugin_pypi_metadata("test", "0.0.1")
         assert result["authors"] == split_ampersand_correct_result
 
@@ -78,5 +90,9 @@ class TestPypi(unittest.TestCase):
         'requests.get', return_value=FakeResponse(data=empty_split_plugin)
     )
     def test_format_plugin_empty_filter(self, mock_request_get):
+        """
+        Expect input of response from pypi with authors field designed to create empty strings when split
+        Checks that format_plugin doesn't include empty strings when splitting
+        """
         result = get_plugin_pypi_metadata("test", "0.0.1")
         assert result["authors"] == empty_split_correct_result

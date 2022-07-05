@@ -247,7 +247,7 @@ split_ampersand_correct_result = [
 
 # test splitting with and
 split_and_plugin = """
-{"info":{"author":"Test Author 1 and Test Author 2, andy, yand, sandra","author_email":"test@test.com",
+{"info":{"author":"Test Author 1 and Test Author 2, andy& yand & sandra","author_email":"test@test.com",
 "bugtrack_url":null,"classifiers":["Development Status :: 4 - Beta",
 "Intended Audience :: Developers","License :: OSI Approved :: BSD License",
 "Operating System :: OS Independent","Programming Language :: Python",
