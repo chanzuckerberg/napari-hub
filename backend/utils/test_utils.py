@@ -144,11 +144,6 @@ title: testing
 version: "0.0.0"
 """
 
-complete_author_citations = [
-  {'name':"Gi N. Fa"},
-  {'name':"Given Family"}
-]
-
 config_yaml = """
 visibility: public
 summary: The napari adaptation of the ImageJ/Fiji plugin AnnotatorJ for easy and fun image annotation.
@@ -162,3 +157,12 @@ labels:
   - Term 2
   - Term 3
 """
+
+citations_authors_result = [
+  {'name':"Gi N. Fa"},
+  {'name':"Given Family"}
+]
+
+config_yaml_authors_result = [
+  {'name': 'Test Author', 'orcid': '0000-0000-0000-0000'}
+]
