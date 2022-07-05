@@ -99,6 +99,10 @@ def send_zulip_message(username: str, key: str, topic: str, message: str):
         pass
 
 def get_release_notes_from(endpoint):
+    """
+    Call github actions api and parse through the response to return the release notes text
+    :param endpoint: Github actions endpoint
+    """
     try:
         response = requests.get(endpoint)
         if response.status_code != requests.codes.ok:
