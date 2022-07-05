@@ -197,4 +197,6 @@ def get_citation_author(citation_str: str) -> Union[Dict[str, str], None]:
     for author_entry in citation_yaml['authors']:
         if author_entry['given-names'] and author_entry['family-names']:
             authors.append({'name':author_entry['given-names'] + " " + author_entry['family-names']})
+        elif author_entry['name']:
+            authors.append({'name':author_entry['name']})
     return authors
