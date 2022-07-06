@@ -30,7 +30,7 @@ $code-theme-palette: (
 
 pre.code,
 article.code pre {
-  @apply text-base m-0 p-4 rounded-none;
+  @apply text-base m-0 p-sds-l rounded-none;
   @apply overflow-auto relative break-words;
 
   background: map-get($code-theme-palette, 'background');
