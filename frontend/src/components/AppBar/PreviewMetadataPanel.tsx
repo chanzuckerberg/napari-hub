@@ -62,7 +62,7 @@ function MetadataField({ field }: MetadataFieldProps) {
 
           className: clsx(
             PREVIEW_METADATA_FIELD_CLASS_NAME,
-            'flex items-start justify-start text-left m-0 p-1 flex-grow',
+            'flex items-start justify-start text-left m-0 p-sds-xxs flex-grow',
           ),
 
           // Attach click listener if field is a button.
@@ -150,10 +150,10 @@ export function PreviewMetadataPanel({ missingFieldsOnly }: Props) {
         'bg-napari-hover-gray',
 
         // Horizontal padding
-        'px-9 screen-495:px-12',
+        'px-sds-xxl screen-495:px-12',
 
         // Vertical padding
-        'py-4 screen-875:py-6',
+        'py-sds-l screen-875:py-sds-xl',
       )}
     >
       <div

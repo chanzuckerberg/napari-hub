@@ -133,7 +133,7 @@ export function CategoryChipContainer({
 
       {overflowIndex !== Infinity && (
         <button
-          className="underline hover:bg-napari-hover-gray p-1"
+          className="underline hover:bg-napari-hover-gray p-sds-xxs"
           onClick={(event) => {
             event.preventDefault();
             setOverrideOverflow((state) => {

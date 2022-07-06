@@ -27,7 +27,7 @@ export function MenuPopover({ anchorEl, items, onClose, visible }: Props) {
         paper: clsx(
           styles.menuPopover,
           'bg-black static flex flex-row',
-          'p-6 h-[min-content] max-w-[325px]',
+          'p-sds-xl  h-[min-content] max-w-[325px]',
         ),
       }}
       onClose={onClose}

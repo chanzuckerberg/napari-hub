@@ -56,7 +56,7 @@ function CollectionLink({ linkKey }: CollectionLinkProps) {
       classes={{
         tooltip: clsx(
           '!bg-[#f1f1ec] !border !border-[#dcdcdc]',
-          '!p-1 !shadow-none',
+          '!p-sds-xxs !shadow-none',
           '!text-[#5b5b5b] !text-xs',
         ),
       }}

@@ -45,7 +45,7 @@ export function AppBar() {
           'justify-center items-center',
 
           // Padding
-          'px-6 screen-495:px-12 screen-1150:p-0',
+          'px-sds-xl screen-495:px-12 screen-1150:p-0',
         )}
       >
         <div className="hidden screen-600:block">

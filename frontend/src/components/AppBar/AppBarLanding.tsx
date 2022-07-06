@@ -40,7 +40,7 @@ export function AppBarLanding() {
 
   return (
     <ColumnLayout
-      className="bg-napari-primary p-6 screen-495:p-12"
+      className="bg-napari-primary p-sds-xl screen-495:p-12"
       classes={{
         // Use 3-column layout instead of 4-column.
         fourColumn: 'screen-1150:grid-cols-napari-3',
@@ -91,7 +91,7 @@ export function AppBarLanding() {
 
       {/* Render as separate list so that it renders below everything on smaller screens. */}
       <div className="screen-725:hidden">
-        <List className="col-span-2 px-6 mt-4">
+        <List className="col-span-2 px-sds-xl mt-4">
           <li>{t('homePage:appBar.share')}</li>
         </List>
       </div>

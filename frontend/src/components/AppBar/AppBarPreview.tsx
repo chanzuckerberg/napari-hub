@@ -194,7 +194,7 @@ export function AppBarPreview() {
           'bg-napari-preview-gray h-20',
 
           // Horizontal padding
-          'px-9 screen-495:px-12',
+          'px-sds-xxl screen-495:px-12',
 
           // Vertical padding
           'grid grid-cols-2',
@@ -244,7 +244,7 @@ export function AppBarPreview() {
 
       <div
         className={clsx(
-          'flex justify-center py-1',
+          'flex justify-center py-sds-xxs',
 
           // Sticky header on scroll.
           'sticky top-0',
@@ -259,7 +259,7 @@ export function AppBarPreview() {
           'z-20',
         )}
       >
-        <p className="text-napari-preview-orange text-center px-6 screen-495:px-12">
+        <p className="text-napari-preview-orange text-center px-sds-xl screen-495:px-12">
           <div>
             <I18n
               i18nKey="preview:appBar.previewMessage"

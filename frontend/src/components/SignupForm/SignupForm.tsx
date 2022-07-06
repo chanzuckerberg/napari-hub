@@ -60,7 +60,7 @@ export function SignupForm({ onSubmit, variant = 'default' }: Props) {
 
   return (
     <ColumnLayout
-      className="bg-napari-light p-6 screen-495:p-12"
+      className="bg-napari-light p-sds-xl screen-495:p-12"
       // Use 3-column layout instead of 4-column layout.
       classes={isHome ? { fourColumn: 'screen-1150:grid-cols-napari-3' } : {}}
     >
@@ -99,7 +99,7 @@ export function SignupForm({ onSubmit, variant = 'default' }: Props) {
               // font
               'text-sm',
               // make underline align with submit button
-              'pt-0.5',
+              'pt-sds-xxxs',
               // sizing
               'h-8 screen-495:h-[35px] col-span-2 screen-495:col-span-1 screen-875:col-span-2',
             )}

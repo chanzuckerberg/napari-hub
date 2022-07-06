@@ -141,7 +141,7 @@ export function SupportInfoBase({ className, inline }: SupportInfoBaseProps) {
     <div
       className={clsx(
         className,
-        'text-black bg-gray-100 p-5',
+        'text-black bg-gray-100 p-sds-xl',
 
         // Overflow on x-axis in case of really long twitter names.
         'overflow-x-auto',

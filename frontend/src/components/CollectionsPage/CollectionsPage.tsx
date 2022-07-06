@@ -24,7 +24,7 @@ function Intro() {
   return (
     <div
       className={clsx(
-        'pt-[14px] screen-495:pt-[40px]',
+        'pt-sds-l screen-495:pt-sds-xxl',
         'col-span-2 screen-875:col-span-3',
         'screen-1425:row-start-2 screen-1425:col-start-2',
         'text-[11px] screen-495:text-[17px]',
@@ -114,8 +114,8 @@ export function CollectionsPage() {
   return (
     <div
       className={clsx(
-        'pt-[14px] screen-495:pt-[40px]',
-        'pb-[75px] px-6 screen-495:px-12',
+        'pt-sds-l screen-495:pt-sds-xxl',
+        'pb-[75px] px-sds-xl screen-495:px-12',
         'grid grid-cols-2 screen-875:grid-cols-napari-3 screen-1425:grid-cols-napari-5',
         'justify-center',
         'gap-x-6 screen-495:gap-x-12',

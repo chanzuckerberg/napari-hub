@@ -74,7 +74,7 @@ function FilterForm(props: Props) {
         'grid grid-cols-1',
         'screen-600:grid-cols-2 screen-875:grid-cols-1',
         'space-y-4',
-        'px-2 screen-875:px-0',
+        'px-sds-s screen-875:px-0',
       )}
     >
       {/* Only show label on larger screens. This is because the Accordion already includes a title. */}

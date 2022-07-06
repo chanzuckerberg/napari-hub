@@ -366,7 +366,7 @@ export function PluginSearchResult({
   const resultClassName = clsx(
     className,
     'searchResult',
-    'py-5 border-black border-t-2 last:border-b-2',
+    'py-sds-xl border-black border-t-2 last:border-b-2',
   );
 
   // Convert to link when loading so that user can't click on result.

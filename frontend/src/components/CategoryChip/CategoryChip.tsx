@@ -85,7 +85,7 @@ function BaseCategoryChip(
         ],
       )}
       classes={{
-        label: clsx('pl-2', hasTooltip && 'pr-0'),
+        label: clsx('pl-sds-s', hasTooltip && 'pr-0'),
       }}
       onClick={(event) => {
         event.preventDefault();
@@ -132,7 +132,7 @@ function BaseCategoryChip(
               }
             >
               <button
-                className="p-2 pr-3 flex items-center justify-center"
+                className="p-sds-s pr-sds-l flex items-center justify-center"
                 ref={iconRef}
                 onClick={(event) => {
                   // Open tooltip when clicking on tooltip info button.

@@ -82,7 +82,7 @@ export function Footer() {
         'bg-napari-primary',
 
         // spacing
-        'p-6 screen-495:px-12',
+        'p-sds-xl  screen-495:px-12',
       )}
     >
       <div

@@ -84,7 +84,7 @@ export function SearchPage() {
 
       <div className="flex-grow min-h-screen">
         <ColumnLayout
-          className="p-6 screen-495:p-12"
+          className="p-sds-xl  screen-495:p-12"
           classes={{
             gap: 'gap-x-6 screen-495:gap-x-12',
             // Use 3-column layout instead of 4-column layout.
