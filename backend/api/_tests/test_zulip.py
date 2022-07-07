@@ -37,3 +37,6 @@ class TestZulip(unittest.TestCase):
         """
         result = get_release_notes_from("mock_endpoint")
         assert result == ''
+
+    def test_notify_new_packages(self):
+        

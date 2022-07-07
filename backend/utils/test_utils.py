@@ -227,3 +227,9 @@ github_api_response_no_body = """
   "url": "https://api.github.com/repos/octocat/Hello-World/releases/1"
 }
 """
+
+github_api_response_no_body = """
+{
+  "url": "https://api.github.com/repos/octocat/Hello-World/releases/1"
+}
+"""

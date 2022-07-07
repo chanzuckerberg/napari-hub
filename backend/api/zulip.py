@@ -17,6 +17,7 @@ def notify_new_packages(existing_packages: Dict[str, str], new_packages: Dict[st
 
     :param existing_packages: existing packages in cache
     :param new_packages: new packages found
+    :param packages_metadata: metadata for the packages, contains information about github links
     """
     username = None
     key = None
@@ -24,29 +25,8 @@ def notify_new_packages(existing_packages: Dict[str, str], new_packages: Dict[st
         username = zulip_credentials.split(":")[0]
         key = zulip_credentials.split(":")[1]
     for package, version in new_packages.items():
-        # checks if plugin has a "code_repository" and that the "code_repository" is not none
-        if "code_repository" in packages_metadata[package] and packages_metadata[package]["code_repository"]:
-            github_link = packages_metadata[package]["code_repository"]
-            owner_and_repo = github_link.replace('https://github.com/', '')
-            general_github_api_endpoint = f'https://api.github.com/repos/{owner_and_repo}/releases/tags/'
-            github_api_endpoint = general_github_api_endpoint + version
-            release_notes = get_release_notes_from(github_api_endpoint)
-            link_to_release = f'[{version}]({github_link}/releases/tag/{version})'
-            # sometimes our version number has a v in the front, so we check for that if first attempt without a v fails
-            if not release_notes:
-                github_api_endpoint_with_v = general_github_api_endpoint + f'v{version}'
-                release_notes = get_release_notes_from(github_api_endpoint_with_v)
-                # if the 2nd attempt fails, we default to using the old link
-                if not release_notes:
-                    link_to_release = f'[{version}](https://napari-hub.org/plugins/{package})'
-                # else we use the new link
-                else:
-                    link_to_release = f'[v{version}]({github_link}/releases/tag/v{version})'
-        # sometimes the plugin doesn't have a github repo
-        else:
-            release_notes = ''
-            link_to_release = f'[{version}](https://napari-hub.org/plugins/{package})'
-        
+        release_notes, link_to_release = generate_release_notes_and_link_to_release(package, version, packages_metadata)
+        message = create_message()
         if package not in existing_packages:
             if not release_notes:
                 link_to_release = ''
@@ -115,3 +95,38 @@ def get_release_notes_from(endpoint):
         return ''
     except HTTPError:
         return ''
+
+def generate_release_notes_and_link_to_release(package, version, packages_metadata):
+    """
+    Parses through the metadata 
+
+    :param existing_packages: existing packages in cache
+    :param new_packages: new packages found
+    :param packages_metadata: metadata for the packages, contains information about github links
+    """
+    # checks if plugin has a "code_repository" and that the "code_repository" is not none
+    if "code_repository" in packages_metadata[package] and packages_metadata[package]["code_repository"]:
+        github_link = packages_metadata[package]["code_repository"]
+        owner_and_repo = github_link.replace('https://github.com/', '')
+        general_github_api_endpoint = f'https://api.github.com/repos/{owner_and_repo}/releases/tags/'
+        github_api_endpoint = general_github_api_endpoint + version
+        release_notes = get_release_notes_from(github_api_endpoint)
+        link_to_release = f'[{version}]({github_link}/releases/tag/{version})'
+        # sometimes our version number has a v in the front, so we check for that if first attempt without a v fails
+        if not release_notes:
+            github_api_endpoint_with_v = general_github_api_endpoint + f'v{version}'
+            release_notes = get_release_notes_from(github_api_endpoint_with_v)
+            # if the 2nd attempt fails, we default to using the old link
+            if not release_notes:
+                link_to_release = f'[{version}](https://napari-hub.org/plugins/{package})'
+            # else we use the new link
+            else:
+                link_to_release = f'[v{version}]({github_link}/releases/tag/v{version})'
+    # sometimes the plugin doesn't have a github repo
+    else:
+        release_notes = ''
+        link_to_release = f'[{version}](https://napari-hub.org/plugins/{package})'
+    return release_notes, link_to_release
+
+def create_message():
+
