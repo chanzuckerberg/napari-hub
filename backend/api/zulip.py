@@ -26,28 +26,11 @@ def notify_new_packages(existing_packages: Dict[str, str], new_packages: Dict[st
         key = zulip_credentials.split(":")[1]
     for package, version in new_packages.items():
         release_notes, link_to_release = generate_release_notes_and_link_to_release(package, version, packages_metadata)
-        message = create_message()
-        if package not in existing_packages:
-            if not release_notes:
-                link_to_release = ''
-            else:
-                link_to_release = '\nAlso check out its release notes for version ' + link_to_release + '!\n\n'
-            # this string needs reformatting
-            message = f'A new plugin has been published on the napari hub! ' \
-                      f'Check out [{package}](https://napari-hub.org/plugins/{package})!' \
-                      + link_to_release + release_notes
-            if username and key:
-                send_zulip_message(username, key, package, message)
-            else:
-                print(message)
-        elif existing_packages[package] != version:
-            message = f'A new version of [{package}](https://napari-hub.org/plugins/{package}) is available on the ' \
-                      f'napari hub! Check out the release notes for {link_to_release}!\n\n' \
-                      + release_notes
-            if username and key:
-                send_zulip_message(username, key, package, message)
-            else:
-                print(message)
+        message = create_message(package, version, existing_packages, release_notes, link_to_release)
+        if username and key and message:
+            send_zulip_message(username, key, package, message)
+        else:
+            print(message)
 
     for package, version in existing_packages.items():
         if package not in new_packages:
@@ -128,5 +111,21 @@ def generate_release_notes_and_link_to_release(package, version, packages_metada
         link_to_release = f'[{version}](https://napari-hub.org/plugins/{package})'
     return release_notes, link_to_release
 
-def create_message():
-
+def create_message(package, version, existing_packages, release_notes, link_to_release):
+    if package not in existing_packages:
+        if not release_notes:
+            link_to_release = ''
+        else:
+            link_to_release = '\nAlso check out its release notes for version ' + link_to_release + '!\n\n'
+        # this string needs reformatting
+        message = f'A new plugin has been published on the napari hub! ' \
+                    f'Check out [{package}](https://napari-hub.org/plugins/{package})!' \
+                    + link_to_release + release_notes
+    elif existing_packages[package] != version:
+        message = f'A new version of [{package}](https://napari-hub.org/plugins/{package}) is available on the ' \
+                    f'napari hub! Check out the release notes for {link_to_release}!\n\n' \
+                    + release_notes
+    else:
+        message = ''
+    return message
+    
