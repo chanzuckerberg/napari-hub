@@ -192,6 +192,11 @@ def get_artifact(url: str, token: str) -> Union[IO[bytes], None]:
     return None
 
 def get_citation_author(citation_str: str) -> Union[Dict[str, str], None]:
+    """
+    Parse author information from citation.
+    :param citation_str: citation string to parse
+    :return: list of mappings between the string 'name' and the author name
+    """
     citation_yaml = yaml.safe_load(citation_str)
     authors = []
     for author_entry in citation_yaml['authors']:
