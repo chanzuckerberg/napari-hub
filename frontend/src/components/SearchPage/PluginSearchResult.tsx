@@ -17,6 +17,7 @@ import { HubDimension, PluginIndexData } from '@/types';
 import { I18nKeys, I18nPluginDataLabel } from '@/types/i18n';
 import { createUrl, formatDate, formatOperatingSystem } from '@/utils';
 import { useIsFeatureFlagEnabled } from '@/utils/featureFlags';
+
 import styles from './PluginSearchResult.module.scss';
 
 interface Props {
