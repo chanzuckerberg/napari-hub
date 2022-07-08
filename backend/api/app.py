@@ -11,8 +11,6 @@ from api.model import get_public_plugins, get_index, get_plugin, get_excluded_pl
 from api.shield import get_shield
 from utils.utils import send_alert, reformat_ssh_key_to_pem_bytes
 
-import traceback
-
 GITHUB_APP_ID = os.getenv('GITHUBAPP_ID')
 GITHUB_APP_KEY = os.getenv("GITHUBAPP_KEY")
 GITHUB_APP_SECRET = os.getenv('GITHUBAPP_SECRET')
@@ -127,8 +125,7 @@ def handle_exception(e) -> Response:
 
 @app.errorhandler(Exception)
 def handle_exception(e) -> Response:
-    #send_alert(f"An unexpected error has occurred in napari hub: {e}")
-    send_alert(traceback.format_exc())
+    send_alert(f"An unexpected error has occurred in napari hub: {e}")
     return app.make_response(("Internal Server Error", 500))
 
 

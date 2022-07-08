@@ -48,7 +48,10 @@ def get_plugin_pypi_metadata(plugin: str, version: str) -> dict:
     :param version: version of the plugin
     :return: metadata dict for the plugin, empty if not found
     """
-    url = f"https://pypi.org/pypi/{plugin}/json"
+    if version:
+        url = f"https://pypi.org/pypi/{plugin}/{version}/json"
+    else:
+        url = f"https://pypi.org/pypi/{plugin}/json"
         
     try:
         response = requests.get(url)
@@ -68,15 +71,6 @@ def format_plugin(plugin: dict) -> dict:
     :return: formatted plugin dictionary
     """
     version = get_attribute(plugin, ["info", "version"])
-    print('attempting to get metadata for ', get_attribute(plugin, ["info", "name"]))
-    try:
-        first_released = min(
-                get_attribute(release, [0, "upload_time_iso_8601"])
-                for _, release in get_attribute(plugin, ["releases"]).items()
-                if get_attribute(release, [0, "upload_time_iso_8601"]))
-    except:
-        print(plugin)
-        pass
 
     return {
         "name": get_attribute(plugin, ["info", "name"]),
@@ -93,7 +87,10 @@ def format_plugin(plugin: dict) -> dict:
         "release_date": get_attribute(plugin, ["releases", version, 0,
                                                "upload_time_iso_8601"]),
         "version": version,
-        "first_released": first_released,
+        "first_released": min(
+            get_attribute(release, [0, "upload_time_iso_8601"])
+            for _, release in get_attribute(plugin, ["releases"]).items()
+            if get_attribute(release, [0, "upload_time_iso_8601"])),
         "development_status": filter_prefix(
             get_attribute(plugin, ["info", "classifiers"]),
             "Development Status"),
