@@ -17,6 +17,7 @@ import { HubDimension, PluginIndexData } from '@/types';
 import { I18nKeys, I18nPluginDataLabel } from '@/types/i18n';
 import { createUrl, formatDate, formatOperatingSystem } from '@/utils';
 import { useIsFeatureFlagEnabled } from '@/utils/featureFlags';
+import styles from './PluginSearchResult.module.scss';
 
 interface Props {
   /**
@@ -273,7 +274,7 @@ export function PluginSearchResult({
                 isArray(plugin.authors) &&
                 plugin.authors.map((author) => (
                   <li
-                    className="my-2 font-bold"
+                    className={clsx(['my-2 font-bold', styles.linkItem])}
                     key={author.name}
                     data-testid="searchResultAuthor"
                   >
