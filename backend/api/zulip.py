@@ -11,7 +11,7 @@ from requests.exceptions import HTTPError
 zulip_credentials = os.environ.get('ZULIP_CREDENTIALS', "")
 
 
-def notify_new_packages(existing_packages: Dict[str, str], new_packages: Dict[str, str], packages_metadata):
+def notify_new_packages(existing_packages: Dict[str, str], new_packages: Dict[str, str], packages_metadata: dict):
     """
     Notify zulip about new packages.
 
@@ -63,7 +63,7 @@ def send_zulip_message(username: str, key: str, topic: str, message: str):
     except HTTPError:
         pass
 
-def get_release_notes_from(endpoint):
+def get_release_notes_from(endpoint: str):
     """
     Call github actions api and parse through the response to return the release notes text
     :param endpoint: Github actions endpoint
@@ -79,9 +79,10 @@ def get_release_notes_from(endpoint):
     except HTTPError:
         return ''
 
-def generate_release_notes_and_link_to_release(package, version, packages_metadata):
+def generate_release_notes_and_link_to_release(package: str, version: str, packages_metadata: dict):
     """
-    Parses through the metadata 
+    Parses through the metadata of a plugin to find it's release notes if they exist
+    returns the release notes and a link for the zulip bot to add to its message
 
     :param existing_packages: existing packages in cache
     :param new_packages: new packages found
@@ -111,7 +112,16 @@ def generate_release_notes_and_link_to_release(package, version, packages_metada
         link_to_release = f'[{version}](https://napari-hub.org/plugins/{package})'
     return release_notes, link_to_release
 
-def create_message(package, version, existing_packages, release_notes, link_to_release):
+def create_message(package: str, version: str, existing_packages: Dict[str, str], release_notes: str, link_to_release: str):
+    """
+    generates a message for the zulip bot to send
+
+    :param package: plugin we're dealing with
+    :param version: version of the plugin we're dealing with
+    :param existing_packages: existing packages in cache
+    :param release_notes: release notes found from the github api
+    :param link_to_release: a link to the github release page, if it exists
+    """
     if package not in existing_packages:
         if not release_notes:
             link_to_release = ''
