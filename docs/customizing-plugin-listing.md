@@ -63,6 +63,8 @@ Fields that can be defined through the napari config include...
 Fields that come from the GitHub API
 - [License](#license)
 
+If a `CITATION.cff` file is included, we will attempt to get names from it. This will override data in the Authors field taken from pypi, but will NOT override Authors data from `.napari-hub/config.yml`.
+
 ## Fields
 
 For each of the fields in a plugin's listing, we outline below how the field is used and where we source the data.
@@ -194,6 +196,8 @@ authors:
 ```
 
 If you have not set this in `.napari-hub/config.yml`, we will source this from the `["info"]["author"]` field of the JSON returned by the PyPI API, which can set by setting the `author` value in your package metadata.
+
+Alternatively, if you have a `CITATION.cff` file, we will "explain how you combine this".
 
 ``` INI
 # setup.cfg
