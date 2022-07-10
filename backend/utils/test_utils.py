@@ -327,3 +327,85 @@ endpoint_to_release_notes = {
   'https://api.github.com/repos/haesleinhuepf/devbio-napari/releases/tags/0.5.8': """{"body":"devbio-napari release_notes"}""",
   'https://api.github.com/repos/volume-em/empanada-napari/releases/tags/v0.2.0': """{"body":"empanada-napari release_notes"}"""
 }
+
+metadata_if_code_repository_exists = """
+{
+  "napari-demo":{
+    "code_repository": "https://github.com/author/napari-demo"
+  }
+}
+"""
+
+metadata_if_code_repository_is_null = """
+{
+  "napari-demo":{
+    "code_repository": null
+  }
+}
+"""
+
+metadata_if_code_repository_does_not_exist = """
+{
+  "napari-demo":{
+    "empty": ""
+  }
+}
+"""
+
+test_package = "napari-demo"
+
+test_version = "0.0.1"
+
+test_github_link = "https://github.com/author/napari-demo"
+
+existing_demo_plugins = {
+    "napari-demo": "0.0.0"
+}
+
+list_of_demo_plugins = """
+{
+    "napari-demo": "0.0.1"
+}
+"""
+
+response_with_release_notes = """
+{
+    "body":"release_notes"
+}
+"""
+
+response_with_release_notes_with_v = """
+{
+    "body":"release_notes_with_v"
+}
+"""
+
+response_without_release_notes = """
+{
+    "b":"release_notes"
+}
+"""
+
+existing_release_notes = "release_notes"
+
+existing_link_to_release_no_v = f"[{test_version}]({test_github_link}/releases/tag/{test_version})"
+
+existing_message_with_release_no_v = f'A new version of [{test_package}](https://napari-hub.org/plugins/{test_package}) is available on the ' \
+                                f'napari hub! Check out the release notes for {existing_link_to_release_no_v}!\n\n' \
+                                + existing_release_notes
+
+existing_release_notes_with_v = "release_notes_with_v"
+
+existing_link_to_release_with_v = f"[v{test_version}]({test_github_link}/releases/tag/v{test_version})"
+
+existing_message_with_release_with_v = f'A new version of [{test_package}](https://napari-hub.org/plugins/{test_package}) is available on the ' \
+                                f'napari hub! Check out the release notes for {existing_link_to_release_with_v}!\n\n' \
+                                + existing_release_notes_with_v
+
+empty_release_notes = ''
+
+test_link_to_napari = f'[{test_version}](https://napari-hub.org/plugins/{test_package})'
+
+message_no_release_notes = f'A new version of [{test_package}](https://napari-hub.org/plugins/{test_package}) is available on the ' \
+                           f'napari hub! Check out the release notes for {test_link_to_napari}!\n\n' \
+                           + empty_release_notes

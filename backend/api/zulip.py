@@ -66,6 +66,7 @@ def send_zulip_message(username: str, key: str, topic: str, message: str):
 def get_release_notes_from(endpoint: str):
     """
     Call github actions api and parse through the response to return the release notes text
+    If no release notes text are found, we default to return an empty string
     :param endpoint: Github actions endpoint
     """
     try:
@@ -100,12 +101,12 @@ def generate_release_notes_and_link_to_release(package: str, version: str, packa
         if not release_notes:
             github_api_endpoint_with_v = general_github_api_endpoint + f'v{version}'
             release_notes = get_release_notes_from(github_api_endpoint_with_v)
-            # if the 2nd attempt fails, we default to using the old link
-            if not release_notes:
-                link_to_release = f'[{version}](https://napari-hub.org/plugins/{package})'
-            # else we use the new link
-            else:
+            # if the 2nd attempt gets release notes, we make a link with v in the version
+            if release_notes:
                 link_to_release = f'[v{version}]({github_link}/releases/tag/v{version})'
+            # if the 2nd attempt fails to get release notes, we default to using the napari-hub link
+            else:
+                link_to_release = f'[{version}](https://napari-hub.org/plugins/{package})'
     # sometimes the plugin doesn't have a github repo
     else:
         release_notes = ''
@@ -122,6 +123,9 @@ def create_message(package: str, version: str, existing_packages: Dict[str, str]
     :param release_notes: release notes found from the github api
     :param link_to_release: a link to the github release page, if it exists
     """
+    print("package: ", package)
+    print("version: ", version)
+    print("packages: ", existing_packages)
     if package not in existing_packages:
         if not release_notes:
             link_to_release = ''
