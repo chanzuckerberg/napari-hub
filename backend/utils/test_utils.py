@@ -354,3 +354,76 @@ message_no_release_notes = {
   "new-napari-plugin": f'A new plugin has been published on the napari hub! ' \
                     f'Check out [{test_package_new}](https://napari-hub.org/plugins/{test_package_new}) on the napari hub!' 
   }
+citation_string_no_auth_name = """# YAML 1.2
+---
+abstract: "Test"
+authors:
+  - name: The Research Software project
+cff-version: "1.0.3"
+date-released: 2019-11-12
+doi: 10.0000/something.0000000
+keywords:
+  - "citation"
+  - "test"
+  - "cff"
+  - "CITATION.cff"
+license: Apache-2.0
+message: "If you use this software, please cite it using these metadata."
+repository-code: "https://example.com/example"
+title: testing
+version: "0.0.0"
+"""
+
+citation_string_auth_names_and_name = """# YAML 1.2
+---
+abstract: "Test"
+authors:
+  - given-names: Gi N.
+    family-names: Fa
+    name: "The Research Software project"
+  - name: "The Research Software project"
+cff-version: "1.0.3"
+date-released: 2019-11-12
+doi: 10.0000/something.0000000
+keywords:
+  - "citation"
+  - "test"
+  - "cff"
+  - "CITATION.cff"
+license: Apache-2.0
+message: "If you use this software, please cite it using these metadata."
+repository-code: "https://example.com/example"
+title: testing
+version: "0.0.0"
+"""
+
+config_yaml = """
+visibility: public
+summary: The napari adaptation of the ImageJ/Fiji plugin AnnotatorJ for easy and fun image annotation.
+authors:
+  - name: Test Author
+    orcid: 0000-0000-0000-0000
+labels:
+  ontology: NAPARI:1
+  terms:
+  - Term 1
+  - Term 2
+  - Term 3
+"""
+
+citations_authors_result = [
+  {'name':"Gi N. Fa"},
+  {'name':"Given Family"}
+]
+
+citations_authors_auth_names_and_name_result = [
+  {'name':"Gi N. Fa"}, {'name':"The Research Software project"}
+]
+
+citations_no_authors_result = [
+  {'name':"The Research Software project"}
+]
+
+config_yaml_authors_result = [
+  {'name': 'Test Author', 'orcid': '0000-0000-0000-0000'}
+]
