@@ -145,7 +145,6 @@ title: testing
 version: "0.0.0"
 """
 
-<<<<<<< HEAD
 # test splitting with comma 
 split_comma_plugin = """
 {"info":{"author":"Test Author 1, Test Author 2 ,Test Author 3,Test Author 4 , Test Author 5","author_email":"test@test.com",
@@ -342,7 +341,7 @@ empty_split_correct_result = [
   {'name': 'and'},
   {'name': 'and'},
   {'name': 'and'}
-=======
+]
 citation_string_no_auth_name = """# YAML 1.2
 ---
 abstract: "Test"
@@ -415,5 +414,4 @@ citations_no_authors_result = [
 
 config_yaml_authors_result = [
   {'name': 'Test Author', 'orcid': '0000-0000-0000-0000'}
->>>>>>> main
 ]
