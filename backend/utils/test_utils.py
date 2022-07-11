@@ -302,22 +302,22 @@ plugins_and_expected_results = {
   "devbio-napari": {
     "release_notes": "devbio-napari release_notes",
     "link_to_release": "[0.5.8](https://github.com/haesleinhuepf/devbio-napari/releases/tag/0.5.8)",
-    "message": "A new plugin has been published on the napari hub! Check out [devbio-napari](https://napari-hub.org/plugins/devbio-napari)!\nAlso check out its release notes for version [0.5.8](https://github.com/haesleinhuepf/devbio-napari/releases/tag/0.5.8)!\n\ndevbio-napari release_notes"
+    "message": "A new plugin has been published on the napari hub! Check out [devbio-napari](https://napari-hub.org/plugins/devbio-napari) on the napari hub!\nAlso check out its release notes for version [0.5.8](https://github.com/haesleinhuepf/devbio-napari/releases/tag/0.5.8)!\n\ndevbio-napari release_notes"
     },
   "empanada-napari": {
     "release_notes": "empanada-napari release_notes",
     "link_to_release": "[v0.2.0](https://github.com/volume-em/empanada-napari/releases/tag/v0.2.0)",
-    "message": "A new plugin has been published on the napari hub! Check out [empanada-napari](https://napari-hub.org/plugins/empanada-napari)!\nAlso check out its release notes for version [v0.2.0](https://github.com/volume-em/empanada-napari/releases/tag/v0.2.0)!\n\nempanada-napari release_notes"
+    "message": "A new plugin has been published on the napari hub! Check out [empanada-napari](https://napari-hub.org/plugins/empanada-napari) on the napari hub!\nAlso check out its release notes for version [v0.2.0](https://github.com/volume-em/empanada-napari/releases/tag/v0.2.0)!\n\nempanada-napari release_notes"
      },
   "Image-Composer": {
     "release_notes": "",
     "link_to_release": "[0.0.19](https://napari-hub.org/plugins/Image-Composer)",
-    "message": "A new plugin has been published on the napari hub! Check out [Image-Composer](https://napari-hub.org/plugins/Image-Composer)!"
+    "message": "A new plugin has been published on the napari hub! Check out [Image-Composer](https://napari-hub.org/plugins/Image-Composer) on the napari hub!"
     },
   "grabber-ift": {
     "release_notes": "",
     "link_to_release": "[0.2.2](https://napari-hub.org/plugins/grabber-ift)",
-    "message": "A new plugin has been published on the napari hub! Check out [grabber-ift](https://napari-hub.org/plugins/grabber-ift)!"
+    "message": "A new plugin has been published on the napari hub! Check out [grabber-ift](https://napari-hub.org/plugins/grabber-ift) on the napari hub!"
     }
 }
 
@@ -384,6 +384,10 @@ list_of_demo_plugins = """
 }
 """
 
+number_of_plugins = 2
+
+currently_used_plugins = {"napari-demo", "new-napari-plugin"}
+
 response_with_release_notes = """
 {
     "body":"release_notes"
@@ -402,7 +406,7 @@ response_without_release_notes = """
 }
 """
 
-existing_release_notes = "release_notes"
+existing_release_notes_with_no_v = "release_notes"
 
 existing_link_to_release_no_v = {
   "napari-demo": f"[{test_version_existing}]({test_github_link_existing}/releases/tag/{test_version_existing})",
@@ -412,10 +416,10 @@ existing_link_to_release_no_v = {
 existing_message_with_release_no_v = {
   "napari-demo": f'A new version of [{test_package_existing}](https://napari-hub.org/plugins/{test_package_existing}) is available on the ' \
                  f'napari hub! Check out the release notes for {existing_link_to_release_no_v["napari-demo"]}!\n\n' \
-                 + existing_release_notes,
-  "new-napari-plugin": f'A new version of [{test_package_new}](https://napari-hub.org/plugins/{test_package_new}) is available on the ' \
-                 f'napari hub! Check out the release notes for {existing_link_to_release_no_v["new-napari-plugin"]}!\n\n' \
-                 + existing_release_notes
+                 + existing_release_notes_with_no_v,
+  "new-napari-plugin": f'A new plugin has been published on the napari hub! ' \
+                    f'Check out [{test_package_new}](https://napari-hub.org/plugins/{test_package_new}) on the napari hub!' \
+                    f'\nAlso check out its release notes for version {existing_link_to_release_no_v["new-napari-plugin"]}!\n\n' + existing_release_notes_with_no_v
 
   }
 
@@ -430,9 +434,9 @@ existing_message_with_release_with_v = {
   "napari-demo": f'A new version of [{test_package_existing}](https://napari-hub.org/plugins/{test_package_existing}) is available on the ' \
                  f'napari hub! Check out the release notes for {existing_link_to_release_with_v["napari-demo"]}!\n\n' \
                  + existing_release_notes_with_v,
-  "new-napari-plugin": f'A new version of [{test_package_new}](https://napari-hub.org/plugins/{test_package_new}) is available on the ' \
-                 f'napari hub! Check out the release notes for {existing_link_to_release_with_v["new-napari-plugin"]}!\n\n' \
-                 + existing_release_notes_with_v
+  "new-napari-plugin": f'A new plugin has been published on the napari hub! ' \
+                    f'Check out [{test_package_new}](https://napari-hub.org/plugins/{test_package_new}) on the napari hub!' \
+                    f'\nAlso check out its release notes for version {existing_link_to_release_with_v["new-napari-plugin"]}!\n\n' + existing_release_notes_with_v
   }
 
 empty_release_notes = ''
@@ -440,14 +444,12 @@ empty_release_notes = ''
 test_link_to_napari = {
   "napari-demo": f'[{test_version_existing}](https://napari-hub.org/plugins/{test_package_existing})',
   "new-napari-plugin": f'[{test_version_new}](https://napari-hub.org/plugins/{test_package_new})'
-
   }
 
 message_no_release_notes = {
   "napari-demo": f'A new version of [{test_package_existing}](https://napari-hub.org/plugins/{test_package_existing}) is available on the ' \
                  f'napari hub! Check out the release notes for {test_link_to_napari["napari-demo"]}!\n\n' \
                  + empty_release_notes, 
-  "new-napari-plugin": f'A new version of [{test_package_new}](https://napari-hub.org/plugins/{test_package_new}) is available on the ' \
-                 f'napari hub! Check out the release notes for {test_link_to_napari["new-napari-plugin"]}!\n\n' \
-                 + empty_release_notes
+  "new-napari-plugin": f'A new plugin has been published on the napari hub! ' \
+                    f'Check out [{test_package_new}](https://napari-hub.org/plugins/{test_package_new}) on the napari hub!' 
   }

@@ -133,7 +133,7 @@ def create_message(package: str, version: str, existing_packages: Dict[str, str]
             link_to_release = '\nAlso check out its release notes for version ' + link_to_release + '!\n\n'
         # this string needs reformatting
         message = f'A new plugin has been published on the napari hub! ' \
-                    f'Check out [{package}](https://napari-hub.org/plugins/{package})!' \
+                    f'Check out [{package}](https://napari-hub.org/plugins/{package}) on the napari hub!' \
                     + link_to_release + release_notes
     elif existing_packages[package] != version:
         message = f'A new version of [{package}](https://napari-hub.org/plugins/{package}) is available on the ' \
