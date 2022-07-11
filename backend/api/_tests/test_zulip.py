@@ -6,7 +6,6 @@ from requests import HTTPError
 from backend.api.zulip import get_release_notes_from, generate_release_notes_and_link_to_release, create_message
 from utils.test_utils import (
     FakeResponse, github_api_response, github_api_response_no_body,
-    list_of_plugins, plugins_metadata, existing_packages, plugins_and_expected_results, endpoint_to_release_notes,
     metadata_if_code_repository_exists, list_of_demo_plugins, response_with_release_notes, response_without_release_notes,
     existing_release_notes_with_no_v, existing_link_to_release_no_v, existing_message_with_release_no_v, existing_demo_plugins,
     response_with_release_notes_with_v, existing_release_notes_with_v, existing_link_to_release_with_v, existing_message_with_release_with_v,
@@ -15,15 +14,6 @@ from utils.test_utils import (
     metadata_if_code_repository_does_not_exist,
     number_of_plugins, currently_used_plugins
     )
-
-def mocked_requests_get_release_notes_from(*args, **kwargs):
-    """
-    Helps create mock responses getting release notes
-    Else returns response with no data 
-    """
-    if args[0] in endpoint_to_release_notes:
-        return FakeResponse(data=endpoint_to_release_notes[args[0]])
-    return FakeResponse(data=github_api_response_no_body)
 
 def mocked_requests_get_release_notes_from_with_release_no_v_update(*args, **kwargs):
     """
@@ -79,24 +69,13 @@ class TestZulip(unittest.TestCase):
         result = get_release_notes_from("mock_endpoint")
         assert result == ''
 
-    # testing zulip bot functionality here
-    # keeping the old test here because it may be more mudular...
-    @patch('requests.get', side_effect=mocked_requests_get_release_notes_from)
-    def test_create_correct_message(self, mock_get):
-        new_packages = json.loads(list_of_plugins)
-        packages_metadata = json.loads(plugins_metadata)
-        for package, version in new_packages.items():
-            release_notes, link_to_release = generate_release_notes_and_link_to_release(package, version, packages_metadata)
-            assert plugins_and_expected_results[package]["release_notes"] == release_notes
-            assert plugins_and_expected_results[package]["link_to_release"] == link_to_release
-            message = create_message(package, version, existing_packages, release_notes, link_to_release)
-            assert plugins_and_expected_results[package]["message"] == message
-
-
     @patch('requests.get', side_effect=mocked_requests_get_release_notes_from_with_release_no_v_update)
     def test_create_correct_message_with_release_no_v_update(self, mock_get):
         """
-        Test situation where package is updating, has release notes, and version doesn't have v
+        Test situation where package has release notes, and it's version doesn't have v
+        It will run through the release_notes, link_to_release, and message generation portions of the zulip bot code, 
+        and check that the strings match what is expected 
+        It also checks to make sure the right amount of plugins were tested
         """
         new_packages = json.loads(list_of_demo_plugins)
         packages_metadata = json.loads(metadata_if_code_repository_exists)
@@ -116,7 +95,10 @@ class TestZulip(unittest.TestCase):
     @patch('requests.get', side_effect=mocked_requests_get_release_notes_from_with_release_v_update)
     def test_create_correct_message_with_release_v_update(self, mock_get):
         """
-        Test situation where package is updating, has release notes, and version has a v
+        Test situation where package has release notes, and its version has a v
+        It will run through the release_notes, link_to_release, and message generation portions of the zulip bot code, 
+        and check that the strings match what is expected 
+        It also checks to make sure the right amount of plugins were tested
         """
         new_packages = json.loads(list_of_demo_plugins)
         packages_metadata = json.loads(metadata_if_code_repository_exists)
@@ -136,7 +118,10 @@ class TestZulip(unittest.TestCase):
     @patch('requests.get', return_value = FakeResponse(data=response_without_release_notes))
     def test_create_correct_message_with_no_release_update(self, mock_get):
         """
-        Test situation where package is existing, has release notes, and version doesn't have v
+        Test situation where package doesn't have release notes
+        It will run through the release_notes, link_to_release, and message generation portions of the zulip bot code, 
+        and check that the strings match what is expected 
+        It also checks to make sure the right amount of plugins were tested
         """
         new_packages = json.loads(list_of_demo_plugins)
         packages_metadata = json.loads(metadata_if_code_repository_exists)
@@ -156,7 +141,10 @@ class TestZulip(unittest.TestCase):
     @patch('requests.get', return_value = FakeResponse(data=response_with_release_notes))
     def test_create_correct_message_with_null_code_repo(self, mock_get):
         """
-        Test situation where package is existing, has release notes, and version doesn't have v
+        Test situation where package has a null "code_repository" field
+        It will run through the release_notes, link_to_release, and message generation portions of the zulip bot code, 
+        and check that the strings match what is expected 
+        It also checks to make sure the right amount of plugins were tested
         """
         new_packages = json.loads(list_of_demo_plugins)
         packages_metadata = json.loads(metadata_if_code_repository_is_null)
@@ -176,7 +164,10 @@ class TestZulip(unittest.TestCase):
     @patch('requests.get', return_value = FakeResponse(data=response_with_release_notes))
     def test_create_correct_message_with_no_code_repo(self, mock_get):
         """
-        Test situation where package is existing, has release notes, and version doesn't have v
+        Test situation where package doesn't contain a "code_repository" field
+        It will run through the release_notes, link_to_release, and message generation portions of the zulip bot code, 
+        and check that the strings match what is expected 
+        It also checks to make sure the right amount of plugins were tested
         """
         new_packages = json.loads(list_of_demo_plugins)
         packages_metadata = json.loads(metadata_if_code_repository_does_not_exist)
