@@ -351,7 +351,9 @@ export function PluginComplexFilter({ filterKey }: Props) {
           </div>
         ),
       }}
-      options={optionsRef.current}
+      options={optionsRef.current.filter(
+        (option) => option.name && option.stateKey,
+      )}
       value={pendingState}
       PopperComponent={StyledPopper}
     />
