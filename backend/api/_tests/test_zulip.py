@@ -31,6 +31,8 @@ def mocked_requests_get_release_notes_from_with_release_no_v_update(*args, **kwa
     """
     if args[0] == 'https://api.github.com/repos/author/napari-demo/releases/tags/0.0.1':
         return FakeResponse(data=response_with_release_notes)
+    elif args[0] == 'https://api.github.com/repos/author2/new-napari-plugin/releases/tags/0.0.1':
+        return FakeResponse(data=response_with_release_notes)
     return FakeResponse(data=response_without_release_notes)
 
 def mocked_requests_get_release_notes_from_with_release_v_update(*args, **kwargs):
@@ -39,6 +41,8 @@ def mocked_requests_get_release_notes_from_with_release_v_update(*args, **kwargs
     Else returns response with no data 
     """
     if args[0] == 'https://api.github.com/repos/author/napari-demo/releases/tags/v0.0.1':
+        return FakeResponse(data=response_with_release_notes_with_v)
+    elif args[0] == 'https://api.github.com/repos/author2/new-napari-plugin/releases/tags/v0.0.1':
         return FakeResponse(data=response_with_release_notes_with_v)
     return FakeResponse(data=response_without_release_notes)
 
@@ -98,9 +102,9 @@ class TestZulip(unittest.TestCase):
         for package, version in new_packages.items():
             release_notes, link_to_release = generate_release_notes_and_link_to_release(package, version, packages_metadata)
             assert existing_release_notes == release_notes
-            assert existing_link_to_release_no_v == link_to_release
+            assert existing_link_to_release_no_v[package] == link_to_release
             message = create_message(package, version, existing_demo_plugins, release_notes, link_to_release)
-            assert existing_message_with_release_no_v == message
+            assert existing_message_with_release_no_v[package] == message
 
     @patch('requests.get', side_effect=mocked_requests_get_release_notes_from_with_release_v_update)
     def test_create_correct_message_with_release_v_update(self, mock_get):
@@ -112,9 +116,9 @@ class TestZulip(unittest.TestCase):
         for package, version in new_packages.items():
             release_notes, link_to_release = generate_release_notes_and_link_to_release(package, version, packages_metadata)
             assert existing_release_notes_with_v == release_notes
-            assert existing_link_to_release_with_v == link_to_release
+            assert existing_link_to_release_with_v[package] == link_to_release
             message = create_message(package, version, existing_demo_plugins, release_notes, link_to_release)
-            assert existing_message_with_release_with_v == message
+            assert existing_message_with_release_with_v[package] == message
 
     @patch('requests.get', return_value = FakeResponse(data=response_without_release_notes))
     def test_create_correct_message_with_no_release_update(self, mock_get):
@@ -126,9 +130,9 @@ class TestZulip(unittest.TestCase):
         for package, version in new_packages.items():
             release_notes, link_to_release = generate_release_notes_and_link_to_release(package, version, packages_metadata)
             assert empty_release_notes == release_notes
-            assert test_link_to_napari == link_to_release
+            assert test_link_to_napari[package] == link_to_release
             message = create_message(package, version, existing_demo_plugins, release_notes, link_to_release)
-            assert message_no_release_notes == message
+            assert message_no_release_notes[package] == message
 
     @patch('requests.get', return_value = FakeResponse(data=response_with_release_notes))
     def test_create_correct_message_with_null_code_repo(self, mock_get):
@@ -140,9 +144,9 @@ class TestZulip(unittest.TestCase):
         for package, version in new_packages.items():
             release_notes, link_to_release = generate_release_notes_and_link_to_release(package, version, packages_metadata)
             assert empty_release_notes == release_notes
-            assert test_link_to_napari == link_to_release
+            assert test_link_to_napari[package] == link_to_release
             message = create_message(package, version, existing_demo_plugins, release_notes, link_to_release)
-            assert message_no_release_notes == message
+            assert message_no_release_notes[package] == message
 
     @patch('requests.get', return_value = FakeResponse(data=response_with_release_notes))
     def test_create_correct_message_with_no_code_repo(self, mock_get):
@@ -154,6 +158,6 @@ class TestZulip(unittest.TestCase):
         for package, version in new_packages.items():
             release_notes, link_to_release = generate_release_notes_and_link_to_release(package, version, packages_metadata)
             assert empty_release_notes == release_notes
-            assert test_link_to_napari == link_to_release
+            assert test_link_to_napari[package] == link_to_release
             message = create_message(package, version, existing_demo_plugins, release_notes, link_to_release)
-            assert message_no_release_notes == message
+            assert message_no_release_notes[package] == message

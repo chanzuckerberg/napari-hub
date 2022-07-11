@@ -332,6 +332,9 @@ metadata_if_code_repository_exists = """
 {
   "napari-demo":{
     "code_repository": "https://github.com/author/napari-demo"
+  },
+  "new-napari-plugin": {
+    "code_repository": "https://github.com/author2/new-napari-plugin"
   }
 }
 """
@@ -339,6 +342,9 @@ metadata_if_code_repository_exists = """
 metadata_if_code_repository_is_null = """
 {
   "napari-demo":{
+    "code_repository": null
+  },
+  "new-napari-plugin": {
     "code_repository": null
   }
 }
@@ -348,15 +354,24 @@ metadata_if_code_repository_does_not_exist = """
 {
   "napari-demo":{
     "empty": ""
+  },
+  "new-napari-plugin": {
+    "empty": ""
   }
 }
 """
 
-test_package = "napari-demo"
+test_package_existing = "napari-demo"
 
-test_version = "0.0.1"
+test_version_existing = "0.0.1"
 
-test_github_link = "https://github.com/author/napari-demo"
+test_github_link_existing = "https://github.com/author/napari-demo"
+
+test_package_new = "new-napari-plugin"
+
+test_version_new = "0.0.2"
+
+test_github_link_new = "https://github.com/author2/new-napari-plugin"
 
 existing_demo_plugins = {
     "napari-demo": "0.0.0"
@@ -364,7 +379,8 @@ existing_demo_plugins = {
 
 list_of_demo_plugins = """
 {
-    "napari-demo": "0.0.1"
+    "napari-demo": "0.0.1",
+    "new-napari-plugin": "0.0.2"
 }
 """
 
@@ -388,24 +404,50 @@ response_without_release_notes = """
 
 existing_release_notes = "release_notes"
 
-existing_link_to_release_no_v = f"[{test_version}]({test_github_link}/releases/tag/{test_version})"
+existing_link_to_release_no_v = {
+  "napari-demo": f"[{test_version_existing}]({test_github_link_existing}/releases/tag/{test_version_existing})",
+  "new-napari-plugin": f"[{test_version_new}]({test_github_link_new}/releases/tag/{test_version_new})"
+  }
 
-existing_message_with_release_no_v = f'A new version of [{test_package}](https://napari-hub.org/plugins/{test_package}) is available on the ' \
-                                f'napari hub! Check out the release notes for {existing_link_to_release_no_v}!\n\n' \
-                                + existing_release_notes
+existing_message_with_release_no_v = {
+  "napari-demo": f'A new version of [{test_package_existing}](https://napari-hub.org/plugins/{test_package_existing}) is available on the ' \
+                 f'napari hub! Check out the release notes for {existing_link_to_release_no_v["napari-demo"]}!\n\n' \
+                 + existing_release_notes,
+  "new-napari-plugin": f'A new version of [{test_package_new}](https://napari-hub.org/plugins/{test_package_new}) is available on the ' \
+                 f'napari hub! Check out the release notes for {existing_link_to_release_no_v["new-napari-plugin"]}!\n\n' \
+                 + existing_release_notes
+
+  }
 
 existing_release_notes_with_v = "release_notes_with_v"
 
-existing_link_to_release_with_v = f"[v{test_version}]({test_github_link}/releases/tag/v{test_version})"
+existing_link_to_release_with_v = {
+  "napari-demo": f"[v{test_version_existing}]({test_github_link_existing}/releases/tag/v{test_version_existing})",
+  "new-napari-plugin": f"[v{test_version_new}]({test_github_link_new}/releases/tag/v{test_version_new})"
+}
 
-existing_message_with_release_with_v = f'A new version of [{test_package}](https://napari-hub.org/plugins/{test_package}) is available on the ' \
-                                f'napari hub! Check out the release notes for {existing_link_to_release_with_v}!\n\n' \
-                                + existing_release_notes_with_v
+existing_message_with_release_with_v = {
+  "napari-demo": f'A new version of [{test_package_existing}](https://napari-hub.org/plugins/{test_package_existing}) is available on the ' \
+                 f'napari hub! Check out the release notes for {existing_link_to_release_with_v["napari-demo"]}!\n\n' \
+                 + existing_release_notes_with_v,
+  "new-napari-plugin": f'A new version of [{test_package_new}](https://napari-hub.org/plugins/{test_package_new}) is available on the ' \
+                 f'napari hub! Check out the release notes for {existing_link_to_release_with_v["new-napari-plugin"]}!\n\n' \
+                 + existing_release_notes_with_v
+  }
 
 empty_release_notes = ''
 
-test_link_to_napari = f'[{test_version}](https://napari-hub.org/plugins/{test_package})'
+test_link_to_napari = {
+  "napari-demo": f'[{test_version_existing}](https://napari-hub.org/plugins/{test_package_existing})',
+  "new-napari-plugin": f'[{test_version_new}](https://napari-hub.org/plugins/{test_package_new})'
 
-message_no_release_notes = f'A new version of [{test_package}](https://napari-hub.org/plugins/{test_package}) is available on the ' \
-                           f'napari hub! Check out the release notes for {test_link_to_napari}!\n\n' \
-                           + empty_release_notes
+  }
+
+message_no_release_notes = {
+  "napari-demo": f'A new version of [{test_package_existing}](https://napari-hub.org/plugins/{test_package_existing}) is available on the ' \
+                 f'napari hub! Check out the release notes for {test_link_to_napari["napari-demo"]}!\n\n' \
+                 + empty_release_notes, 
+  "new-napari-plugin": f'A new version of [{test_package_new}](https://napari-hub.org/plugins/{test_package_new}) is available on the ' \
+                 f'napari hub! Check out the release notes for {test_link_to_napari["new-napari-plugin"]}!\n\n' \
+                 + empty_release_notes
+  }
