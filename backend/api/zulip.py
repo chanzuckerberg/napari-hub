@@ -123,9 +123,6 @@ def create_message(package: str, version: str, existing_packages: Dict[str, str]
     :param release_notes: release notes found from the github api
     :param link_to_release: a link to the github release page, if it exists
     """
-    print("package: ", package)
-    print("version: ", version)
-    print("packages: ", existing_packages)
     if package not in existing_packages:
         if not release_notes:
             link_to_release = ''
