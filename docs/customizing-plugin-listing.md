@@ -197,7 +197,7 @@ authors:
 
 If you have not set this in `.napari-hub/config.yml`, we will source this from the `["info"]["author"]` field of the JSON returned by the PyPI API, which can set by setting the `author` value in your package metadata.
 
-Alternatively, if you have a `CITATION.cff` file, we will "explain how you combine this".
+Alternatively, if you have a `CITATION.cff` file, we will parse the `given-names` and `family-names` fields or the `name` field if `given-names` and `family-names` fields don't exist, and override pypi data with that information. Information gathered from `config.yml` will override data from `CITATION.cff`.
 
 ``` INI
 # setup.cfg
