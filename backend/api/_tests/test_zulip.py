@@ -3,7 +3,7 @@ import unittest
 from unittest.mock import patch
 
 from requests import HTTPError
-from backend.api.zulip import get_release_notes_from, generate_release_notes_and_link_to_release, create_message
+from backend.api.zulip import get_release_notes_from, generate_release_notes_and_link_to_release, create_message, send_zulip_message
 from utils.test_utils import (
     FakeResponse, github_api_response, github_api_response_no_body,
     metadata_if_code_repository_exists, list_of_demo_plugins, response_with_release_notes, response_without_release_notes,
@@ -39,6 +39,7 @@ def mocked_requests_get_release_notes_from_with_release_v_update(*args, **kwargs
 
 class TestZulip(unittest.TestCase):
 
+    # these tests test the get_release_notes_from(endpoint) method
     @patch(
         'requests.get', return_value=FakeResponse(data=github_api_response)
     )
@@ -69,6 +70,7 @@ class TestZulip(unittest.TestCase):
         result = get_release_notes_from("mock_endpoint")
         assert result == ''
 
+    # these tests test the logic that goes into creating messages for the zulip bot to send
     @patch('requests.get', side_effect=mocked_requests_get_release_notes_from_with_release_no_v_update)
     def test_create_correct_message_with_release_no_v_update(self, mock_get):
         """
