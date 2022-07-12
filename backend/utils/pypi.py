@@ -40,7 +40,7 @@ def query_pypi() -> Dict[str, str]:
     return packages
 
 
-def get_plugin_pypi_metadata(plugin: str) -> dict:
+def get_plugin_pypi_metadata(plugin: str, version: str) -> dict:
     """
     Get plugin metadata through pypi API.
 
@@ -48,7 +48,10 @@ def get_plugin_pypi_metadata(plugin: str) -> dict:
     :param version: version of the plugin
     :return: metadata dict for the plugin, empty if not found
     """
-    url = f"https://pypi.org/pypi/{plugin}/json"
+    if version:
+        url = f"https://pypi.org/pypi/{plugin}/{version}/json"
+    else:
+        url = f"https://pypi.org/pypi/{plugin}/json"
         
     try:
         response = requests.get(url)
