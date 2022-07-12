@@ -1,0 +1,9 @@
+.linkItem {
+  @apply inline-flex items-center mt-0;
+
+  // Add commas for every item except the last.
+  &:not(:last-child)::after {
+    @apply mr-1;
+    content: ', ';
+  }
+}
