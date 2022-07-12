@@ -22,7 +22,7 @@ class TestPypi(unittest.TestCase):
         'requests.get', return_value=FakeResponse(data=plugin)
     )
     def test_get_plugin_pypi_metadata(self, mock_request_get):
-        result = get_plugin_pypi_metadata("test", "0.0.1")
+        result = get_plugin_pypi_metadata("test")
         assert (result["name"] == "test")
         assert (result["summary"] == "A test plugin")
         assert (result["description"] == "# description [example](http://example.com)")
@@ -46,4 +46,4 @@ class TestPypi(unittest.TestCase):
         'requests.get', side_effect=HTTPError()
     )
     def test_get_plugin_error(self, mock_get):
-        assert ({} == get_plugin_pypi_metadata("test", "0.0.1"))
+        assert ({} == get_plugin_pypi_metadata("test"))
