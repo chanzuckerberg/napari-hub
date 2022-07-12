@@ -148,7 +148,7 @@ def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
     cached_plugin = get_cache(f'cache/{plugin}/{version}.json')
     if cached_plugin:
         return plugin, cached_plugin
-    metadata = get_plugin_pypi_metadata(plugin, version)
+    metadata = get_plugin_pypi_metadata(plugin, version=None)
     github_repo_url = metadata.get('code_repository')
     if github_repo_url:
         metadata = {**metadata, **get_github_metadata(github_repo_url)}
