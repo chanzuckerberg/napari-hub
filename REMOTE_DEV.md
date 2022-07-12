@@ -23,30 +23,46 @@ Each developer can run as many remote development *stacks* as they like. Each st
 The general remote dev workflow is:
 
 1. Make some code changes
-1. Run `./scripts/happy create <your-stack-name>` to create a new stack
+1. Run `happy create <your-stack-name>` to create a new stack
 1. Visit the URL printed by the create step, share it with the team, etc.
-1. Run `./scripts/happy logs <your-stack-name> backend` to tail the logs of the napari hub api.
+1. Run `happy logs <your-stack-name> backend` to tail the logs of the napari hub api.
 1. Make some more code changes
-1. Run `./scripts/happy update <your-stack-name>` to update the remote stack with your latest changes.
-1. When you don't need your stack anymore, run `./scripts/happy delete <your-stack-name>` to free up remote dev resources.
+1. Run `happy update <your-stack-name>` to update the remote stack with your latest changes.
+1. When you don't need your stack anymore, run `happy delete <your-stack-name>` to free up remote dev resources.
 
-If you forget which stacks you've created, just run `./scripts/happy list` at any time to list the current remote dev stacks.
+If you forget which stacks you've created, just run `happy list` at any time to list the current remote dev stacks.
 
 ### General CLI Usage
 The CLI utility is evolving rapidly, so the best reference for which commands are available and how to use them is the CLI itself. All commands support a `--help` flag to print usage docs. For example:
 
 ```
-% ./scripts/happy create --help
-Usage: happy create [OPTIONS] STACK_NAME
+% happy create --help
+Create a new stack with a given tag.
 
-  Create a dev stack with a given tag
+Usage:
+  happy create STACK_NAME [flags]
 
-Options:
-  --tag TEXT          Tag name for docker image. Leave empty to generate one
-                      automatically.
+Flags:
+      --aws-profile string                  Override the AWS profile to use. If speficied but empty, will use the default credentil chain.
+      --config-path string                  Specify the path to your Happy project's config file
+      --create-tag                          Will build, tag, and push images when set. Otherwise, assumes images already exist. (default true)
+      --do-migrations                       Specify if you want to force migrations to run (default true)
+      --docker-compose-config-path string   Specify the path to your Happy project's docker compose file
+      --docker-compose-env-file string      Environment file to pass to docker compose
+      --dry-run                             Plan all infrastructure changes, but do not apply them
+      --env string                          Specify a Happy env
+      --force                               Ignore the already-exists errors
+  -h, --help                                help for create
+      --project-root string                 Specify the root of your Happy project
+      --skip-check-tag                      Skip checking that the specified tag exists (requires --tag)
+      --skip-migrations                     Specify if you want to skip migrations
+  -s, --slice string                        If you only need to test a slice of the app, specify it here
+      --slice-default-tag string            For stacks using slices, override the default tag for any images that aren't being built & pushed by the slice
+      --tag string                          Specify the tag for the docker images. If not specified we will generate a default tag.
 
-  --wait / --no-wait  wait for this to complete
-  --help              Show this message and exit.
+Global Flags:
+      --no-color   Use this to disable ANSI colors
+  -v, --verbose    Use this to enable verbose mode
 ```
 
 ### GitHub Action Integration
