@@ -4,8 +4,9 @@
 
 1. [install docker](https://docs.docker.com/get-docker/). If brew is installed run `brew install docker`.
 1. [install chamber](https://github.com/segmentio/chamber). If brew is installed run `brew install chamber`. (This is needed for running functional tests.)
+1. [install happy](https://github.com/chanzuckerberg/happy). If brew is installed run `brew install chanzuckerberg/tap/happy`
 1. Follow the steps in [./REMOTE_DEV.md] under "Remote Dev Pre-requisites".
-1. Run `scripts/happy install` to setup the appropriate DNS entries locally for the local development environment.
+1. Run `happy install` to setup the appropriate DNS entries locally for the local development environment.
 1. From the root of this repository, run `make local-init` to build and run the dev environment. The first build takes awhile, but subsequent runs will use cached artifacts.
 1. Visit [http://backend.naparinet.local:5000](http://backend.naparinet.local:5000) to view the backend, and [http://frontend.naparinet.local:3000](http://frontend.naparinet.local:3000) for the frontend.
 1. **Open the source code and start editing!**
