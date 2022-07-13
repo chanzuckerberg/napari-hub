@@ -195,9 +195,7 @@ authors:
 # ...
 ```
 
-If you have not set this in `.napari-hub/config.yml`, we will source this from the `["info"]["author"]` field of the JSON returned by the PyPI API, which can set by setting the `author` value in your package metadata. We currently use regex to split up the `author` string into individual authors on these characters: `',', '&', ' and '`. For example, if the `author` value was originally `'author 1, author 2'`, we will split that up into a list containing `'author 1'` and `'author 2'`, similar to the result of setting authors in `.napari-hub/config.yml`. Any empty strings or strings containing only whitespace existing before and after the splitting process will be removed.
-
-Alternatively, if you have a `CITATION.cff` file, we will get author names from the `given-names` and `family-names` fields or just the `name` field if `given-names` and `family-names` fields don't exist, and override pypi data with that information. `given-names` and `family-names` take priority over `names`. Information gathered from `config.yml` will override data from `CITATION.cff`.
+If you have not set this in `.napari-hub/config.yml`, we will source this from the `["info"]["author"]` field of the JSON returned by the PyPI API, which can set by setting the `author` value in your package metadata. 
 
 ``` INI
 # setup.cfg
@@ -207,6 +205,9 @@ author=Deep Ganguli
 # ...
 ```
 
+We currently use regex to split up the `author` string into individual authors on these characters: `',', '&', ' and '`. For example, if the `author` value was originally `'author 1, author 2'`, we will split that up into a list containing `'author 1'` and `'author 2'`, similar to the result of setting authors in `.napari-hub/config.yml`. Any empty strings or strings containing only whitespace existing before and after the splitting process will be removed.
+
+Alternatively, if you have a `CITATION.cff` file, we will get author names from the `given-names` and `family-names` fields or just the `name` field if `given-names` and `family-names` fields don't exist, and override pypi data with that information. `given-names` and `family-names` take priority over `names`. Information gathered from `config.yml` will override data from `CITATION.cff`.
 
 ### License
 
