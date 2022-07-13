@@ -7,6 +7,8 @@ import requests
 from requests.auth import HTTPBasicAuth
 from requests.exceptions import HTTPError
 
+from utils.test_utils import message_separator
+
 # Environment variable set through ecs stack terraform module
 zulip_credentials = os.environ.get('ZULIP_CREDENTIALS', "")
 
@@ -94,12 +96,12 @@ def generate_release_notes_and_link_to_release(package: str, version: str, packa
         github_link = packages_metadata[package]["code_repository"]
         owner_and_repo = github_link.replace('https://github.com/', '')
         general_github_api_endpoint = f'https://api.github.com/repos/{owner_and_repo}/releases/tags/'
-        github_api_endpoint = general_github_api_endpoint + version
+        github_api_endpoint = f'{general_github_api_endpoint}{version}'
         release_notes = get_release_notes_from(github_api_endpoint)
         link_to_release = f'[{version}]({github_link}/releases/tag/{version})'
         # sometimes our version number has a v in the front, so we check for that if first attempt without a v fails
         if not release_notes:
-            github_api_endpoint_with_v = general_github_api_endpoint + f'v{version}'
+            github_api_endpoint_with_v = f'{general_github_api_endpoint}v{version}'
             release_notes = get_release_notes_from(github_api_endpoint_with_v)
             # if the 2nd attempt gets release notes, we make a link with v in the version
             if release_notes:
@@ -125,14 +127,18 @@ def create_message(package: str, version: str, existing_packages: Dict[str, str]
     """
     if package not in existing_packages:
         if not release_notes:
-            link_to_release = ''
+            message_add_on = ''
         else:
-            link_to_release = f'\nAlso check out its release notes for version {link_to_release}!\n\n'
+            message_add_on = f'\nAlso check out its release notes for version {link_to_release}:{message_separator}{release_notes}'
         message = f'A new plugin has been published on the napari hub! ' \
-                    f'Check out [{package}](https://napari-hub.org/plugins/{package}) on the napari hub!{link_to_release}{release_notes}'
+                    f'Check out [{package}](https://napari-hub.org/plugins/{package})!{message_add_on}'
     elif existing_packages[package] != version:
+        if not release_notes:
+            message_add_on = ''
+        else:
+            message_add_on = f'Check out the release notes for {link_to_release}:{message_separator}{release_notes}'
         message = f'A new version of [{package}](https://napari-hub.org/plugins/{package}) is available on the ' \
-                    f'napari hub! Check out the release notes for {link_to_release}!\n\n{release_notes}'
+                    f'napari hub! {message_add_on}'
     else:
         message = ''
     return message

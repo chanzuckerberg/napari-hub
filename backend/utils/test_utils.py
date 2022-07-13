@@ -308,6 +308,8 @@ response_without_release_notes = """
 }
 """
 
+message_separator = '\n-------------------------------\n'
+
 existing_release_notes_with_no_v = "release_notes"
 
 existing_link_to_release_no_v = {
@@ -317,11 +319,11 @@ existing_link_to_release_no_v = {
 
 existing_message_with_release_no_v = {
   "napari-demo": f'A new version of [{test_package_existing}](https://napari-hub.org/plugins/{test_package_existing}) is available on the ' \
-                 f'napari hub! Check out the release notes for {existing_link_to_release_no_v["napari-demo"]}!\n\n' \
+                 f'napari hub! Check out the release notes for {existing_link_to_release_no_v["napari-demo"]}:{message_separator}' \
                  + existing_release_notes_with_no_v,
   "new-napari-plugin": f'A new plugin has been published on the napari hub! ' \
-                    f'Check out [{test_package_new}](https://napari-hub.org/plugins/{test_package_new}) on the napari hub!' \
-                    f'\nAlso check out its release notes for version {existing_link_to_release_no_v["new-napari-plugin"]}!\n\n' + existing_release_notes_with_no_v
+                    f'Check out [{test_package_new}](https://napari-hub.org/plugins/{test_package_new})!' \
+                    f'\nAlso check out its release notes for version {existing_link_to_release_no_v["new-napari-plugin"]}:{message_separator}' + existing_release_notes_with_no_v
 
   }
 
@@ -334,11 +336,11 @@ existing_link_to_release_with_v = {
 
 existing_message_with_release_with_v = {
   "napari-demo": f'A new version of [{test_package_existing}](https://napari-hub.org/plugins/{test_package_existing}) is available on the ' \
-                 f'napari hub! Check out the release notes for {existing_link_to_release_with_v["napari-demo"]}!\n\n' \
+                 f'napari hub! Check out the release notes for {existing_link_to_release_with_v["napari-demo"]}:{message_separator}' \
                  + existing_release_notes_with_v,
   "new-napari-plugin": f'A new plugin has been published on the napari hub! ' \
-                    f'Check out [{test_package_new}](https://napari-hub.org/plugins/{test_package_new}) on the napari hub!' \
-                    f'\nAlso check out its release notes for version {existing_link_to_release_with_v["new-napari-plugin"]}!\n\n' + existing_release_notes_with_v
+                    f'Check out [{test_package_new}](https://napari-hub.org/plugins/{test_package_new})!' \
+                    f'\nAlso check out its release notes for version {existing_link_to_release_with_v["new-napari-plugin"]}:{message_separator}' + existing_release_notes_with_v
   }
 
 empty_release_notes = ''
@@ -350,10 +352,10 @@ test_link_to_napari = {
 
 message_no_release_notes = {
   "napari-demo": f'A new version of [{test_package_existing}](https://napari-hub.org/plugins/{test_package_existing}) is available on the ' \
-                 f'napari hub! Check out the release notes for {test_link_to_napari["napari-demo"]}!\n\n' \
+                 f'napari hub! '\
                  + empty_release_notes, 
   "new-napari-plugin": f'A new plugin has been published on the napari hub! ' \
-                    f'Check out [{test_package_new}](https://napari-hub.org/plugins/{test_package_new}) on the napari hub!' 
+                    f'Check out [{test_package_new}](https://napari-hub.org/plugins/{test_package_new})!' 
   }
 # test splitting with comma 
 split_comma_plugin = """
