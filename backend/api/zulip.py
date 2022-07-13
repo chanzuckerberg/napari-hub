@@ -85,7 +85,8 @@ def get_release_notes_from(endpoint: str):
 def generate_release_notes_and_link_to_release(package: str, version: str, packages_metadata: dict):
     """
     Parses through the metadata of a plugin to find it's release notes if they exist
-    returns the release notes and a link for the zulip bot to add to its message
+    If they don't exist, return a blank string and a link to napari-hub
+    Returns the release notes and a link for the zulip bot to add to its message
 
     :param existing_packages: existing packages in cache
     :param new_packages: new packages found
@@ -117,13 +118,14 @@ def generate_release_notes_and_link_to_release(package: str, version: str, packa
 
 def create_message(package: str, version: str, existing_packages: Dict[str, str], release_notes: str, link_to_release: str):
     """
-    generates a message for the zulip bot to send
+    Generates the message for the zulip bot to send. Checks if the plugin already exists and whetehr or not it has release notes.
+    Returns the message for the zulip bot to send, if there's no message, we'll return a blank string and the zulip bot will not send the message
 
     :param package: plugin we're dealing with
     :param version: version of the plugin we're dealing with
     :param existing_packages: existing packages in cache
     :param release_notes: release notes found from the github api
-    :param link_to_release: a link to the github release page, if it exists
+    :param link_to_release: a link to the github release page
     """
     if package not in existing_packages:
         if not release_notes:
