@@ -90,8 +90,8 @@ export function AppBarLanding() {
       </div>
 
       {/* Render as separate list so that it renders below everything on smaller screens. */}
-      <div className="screen-725:hidden">
-        <List className="col-span-2 px-sds-xl mt-sds-l">
+      <div className="col-span-2 screen-725:hidden">
+        <List className="px-sds-xl mt-sds-l">
           <li>{t('homePage:appBar.share')}</li>
         </List>
       </div>
