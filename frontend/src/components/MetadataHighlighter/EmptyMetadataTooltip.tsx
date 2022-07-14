@@ -144,7 +144,7 @@ export function EmptyMetadataTooltip({
 
           <p>{tooltipLabels[metadataKey] ?? ''}</p>
 
-          <p className="text-xs mt-5 mb-3">
+          <p className="text-xs mt-sds-xl mb-sds-l">
             <I18n
               i18nKey="preview:appBar.learnHow"
               components={{

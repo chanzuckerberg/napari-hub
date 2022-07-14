@@ -21,7 +21,7 @@ function LinkList({ items, vertical }: LinkListProps) {
     <div className={clsx('flex', vertical && 'flex-col')}>
       {items.map((item) => (
         <Link
-          className={clsx(vertical ? 'mt-4' : 'ml-6')}
+          className={clsx(vertical ? 'mt-sds-l' : 'ml-sds-xl')}
           key={item.link}
           href={item.link}
           onClick={resetLoadingState}

@@ -52,7 +52,7 @@ export function Accordion({
           ...(isFAQ
             ? {}
             : {
-                content: '!ml-6',
+                content: '!ml-sds-xl',
               }),
         }}
         expandIcon={isFAQ ? <Add className="text-black" /> : <Expand />}

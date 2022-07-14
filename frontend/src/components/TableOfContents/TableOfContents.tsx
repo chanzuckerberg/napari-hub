@@ -69,7 +69,7 @@ export function TableOfContents({ className, onClick, headers, free }: Props) {
               'min-h-6 h-auto',
 
               // Apply top/bottom margins except for first/last items
-              'my-2 first:mt-0 last:mb-0',
+              'my-sds-l first:mt-0 last:mb-0',
 
               // Smooth transition for border color
               'transition-colors',

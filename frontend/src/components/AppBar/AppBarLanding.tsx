@@ -78,7 +78,7 @@ export function AppBarLanding() {
       >
         <Hub className={styles.logo} />
 
-        <List className="ml-7">
+        <List className="ml-sds-xl">
           <li>{t('homePage:appBar.discover')}</li>
           <li>{t('homePage:appBar.learnHow')}</li>
 
@@ -91,7 +91,7 @@ export function AppBarLanding() {
 
       {/* Render as separate list so that it renders below everything on smaller screens. */}
       <div className="screen-725:hidden">
-        <List className="col-span-2 px-sds-xl mt-4">
+        <List className="col-span-2 px-sds-xl mt-sds-l">
           <li>{t('homePage:appBar.share')}</li>
         </List>
       </div>

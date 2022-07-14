@@ -37,7 +37,7 @@ function SearchResultCount() {
 
   return (
     <SkeletonLoader
-      className="ml-2 w-6 inline-block"
+      className="ml-sds-xxs w-6 inline-block"
       render={() => totalPlugins}
     />
   );

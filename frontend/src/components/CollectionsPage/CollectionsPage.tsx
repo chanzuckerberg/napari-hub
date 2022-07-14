@@ -32,7 +32,7 @@ function Intro() {
     >
       <p>{t('collections:collectionsPage.intro')}</p>
 
-      <ul className="list-disc ml-4 mt-[1.0625rem] leading-[175%]">
+      <ul className="list-disc ml-sds-l mt-[1.0625rem] leading-[175%]">
         {items.map((item) => (
           <li key={item}>
             <I18n
@@ -87,7 +87,7 @@ function CollectionGridList() {
   return (
     <div
       className={clsx(
-        'mt-6 screen-495:mt-12',
+        'mt-sds-xl screen-495:mt-12',
         'col-span-2 screen-875:col-span-3',
         'grid grid-cols-1 screen-600:grid-cols-2 screen-875:grid-cols-3',
         'screen-1425:col-start-2',

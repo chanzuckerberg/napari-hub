@@ -66,7 +66,7 @@ function PluginGithubData() {
     >
       {error ? (
         <li>
-          <p className="text-napari-error mt-2">{error}</p>
+          <p className="text-napari-error mt-sds-s">{error}</p>
         </li>
       ) : (
         items.map((item) => (
@@ -169,7 +169,7 @@ export function PluginMetadata({
   useEffect(() => {}, []);
 
   const divider = (
-    <Divider className="mb-2 screen-875:hidden screen-1425:block" />
+    <Divider className="mb-sds-s screen-875:hidden screen-1425:block" />
   );
 
   return (

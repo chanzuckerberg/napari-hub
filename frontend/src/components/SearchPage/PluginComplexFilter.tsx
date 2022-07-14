@@ -287,7 +287,7 @@ export function PluginComplexFilter({ filterKey }: Props) {
           root: clsx(
             'px-sds-l',
             styles.autoComplete,
-            isSearchEnabled && 'mb-3',
+            isSearchEnabled && 'mb-sds-l',
           ),
           noOptions: 'text-[0.875rem]',
         },
@@ -323,7 +323,7 @@ export function PluginComplexFilter({ filterKey }: Props) {
 
               <p
                 className={clsx(
-                  '-mt-1 text-[0.875rem] break-words leading-normal',
+                  '-mt-sds-xxs text-[0.875rem] break-words leading-normal',
                   selected && 'text-black',
                 )}
               >

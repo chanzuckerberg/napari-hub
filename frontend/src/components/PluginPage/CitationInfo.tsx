@@ -77,7 +77,7 @@ export function CitationInfo({ className }: Props) {
                   label={item}
                   value={item}
                   key={item}
-                  className="min-w-0 min-h-0 p-0 mr-6 text-black font-semibold opacity-100"
+                  className="min-w-0 min-h-0 p-0 mr-sds-xl text-black font-semibold opacity-100"
                 />
               );
             })}
@@ -87,7 +87,7 @@ export function CitationInfo({ className }: Props) {
               <TabPanel
                 value={item}
                 key={item}
-                className="px-sds-l px-6 mt-6 bg-napari-hover-gray"
+                className="px-sds-l mt-sds-xl bg-napari-hover-gray"
               >
                 <div className="whitespace-pre-wrap overflow-y-auto max-h-32">
                   {plugin?.citations?.[item]}
@@ -97,7 +97,7 @@ export function CitationInfo({ className }: Props) {
           })}
         </TabContext>
 
-        <div className="grid screen-600:grid-cols-napari-3 gap-6 screen-600:gap-12 mt-6">
+        <div className="grid screen-600:grid-cols-napari-3 gap-6 screen-600:gap-12 mt-sds-xl">
           <Button
             className={BUTTON_STYLES}
             variant="outlined"

@@ -120,7 +120,7 @@ function BaseCategoryChip(
                   className={clsx(
                     'leading-normal',
                     'flex flex-col',
-                    'mx-3 my-2 space-y-2',
+                    'mx-sds-l my-sds-s space-y-2',
                   )}
                 >
                   <span className="font-semibold text-sm">{categoryType}</span>

@@ -38,12 +38,12 @@ export function MenuPopover({ anchorEl, items, onClose, visible }: Props) {
       <ul className="text-white flex-grow">
         {items.map((item) => (
           <li
-            className="flex items-center mb-5 last:m-0"
+            className="flex items-center mb-sds-xl last:m-0"
             key={item.title}
             data-testid="menuItem"
           >
             <Link
-              className="mr-1"
+              className="mr-sds-xxs"
               href={item.link}
               newTab={item.newTab}
               onClick={onClose}

@@ -1,7 +1,7 @@
 .list {
   .textItem,
   .linkItem {
-    @apply mt-3;
+    @apply mt-sds-l;
   }
 
   &.inline {
@@ -11,7 +11,7 @@
 
       // Add commas for every item except the last.
       &:not(:last-child)::after {
-        @apply mr-1;
+        @apply mr-sds-xxs;
         content: ', ';
       }
     }
@@ -28,6 +28,6 @@
   }
 
   &.preview .linkItem.empty:not(:first-child) {
-    @apply mt-1;
+    @apply mt-sds-xxs;
   }
 }

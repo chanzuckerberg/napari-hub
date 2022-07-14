@@ -22,7 +22,7 @@ export function PluginSearchBar() {
       <div className="col-span-2 screen-875:col-span-3 screen-1425:col-start-2">
         <h2
           id="plugin-search-title"
-          className="font-bold text-xl mb-4 whitespace-nowrap"
+          className="font-bold text-xl mb-sds-l whitespace-nowrap"
         >
           {t('homePage:searchBar')}
         </h2>

@@ -44,7 +44,7 @@ function FooterLinks() {
             // alignment if icon present
             item.icon && 'flex flex-row items-center',
             // spacing (TODO: replace with flex-gap once iOS 14.6 is old)
-            'mr-6 last:mr-0',
+            'mr-sds-xl last:mr-0',
           )}
           key={item.link}
           href={item.link}
@@ -117,7 +117,7 @@ export function Footer() {
           'screen-1150:row-start-1 screen-1150:col-start-3',
         )}
       >
-        <Link href="https://napari.org" className="mr-2" newTab>
+        <Link href="https://napari.org" className="mr-sds-s" newTab>
           <NapariLogo
             className="w-[1.625rem] h-[1.625rem] screen-495:w-[2.375rem] screen-495:h-[2.375rem]"
             alt={t('footer:alt.goToNapari')}
@@ -126,7 +126,7 @@ export function Footer() {
 
         <div className="border-r-[1px] border-black" />
 
-        <Link href="https://chanzuckerberg.com" className="ml-2" newTab>
+        <Link href="https://chanzuckerberg.com" className="ml-sds-xxs" newTab>
           <CZI
             className="w-[3.3125rem] h-[1.625rem] screen-495:w-[4.625rem] screen-495:h-[2.375rem]"
             variant="large"

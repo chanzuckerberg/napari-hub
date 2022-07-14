@@ -32,7 +32,7 @@ export function CollectionInfo() {
 
       <p
         className={clsx(
-          'mt-6 screen-495:mt-[35px]',
+          'mt-sds-xl screen-495:mt-[35px]',
           'text-[11px] screen-495:text-[17px]',
           'leading-[175%] screen-495:leading-[150%]',
         )}
@@ -43,7 +43,7 @@ export function CollectionInfo() {
       <p
         className={clsx(
           'space-x-1',
-          'mt-5 screen-495:mt-6',
+          'mt-sds-xl',
           'text-[11px] screen-495:text-[14px]',
           'leading-normal',
         )}
@@ -64,7 +64,7 @@ export function CollectionInfo() {
 
       <p
         className={clsx(
-          'mt-6 screen-495:mt-[35px]',
+          'mt-sds-xl screen-495:mt-[35px]',
           'text-[9px] screen-495:text-[14px]',
           'leading-[150%] screen-495:leading-[200%]',
         )}

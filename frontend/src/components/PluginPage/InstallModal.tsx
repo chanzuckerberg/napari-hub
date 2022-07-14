@@ -73,7 +73,7 @@ function CopyPluginNameButton() {
     >
       <span>{pluginName}</span>
 
-      <span className="ml-2 inline-flex">
+      <span className="ml-sds-xxs inline-flex">
         {clicked ? (
           <CheckCircle className="w-4" />
         ) : (
@@ -97,7 +97,7 @@ function InstallModalHeader({ onClose }: Closeable) {
 
   return (
     <header className="flex justify-between mb-6 pt-sds-l px-sds-xl">
-      <h2 className="font-bold text-2xl screen-495:ml-6 mt-6">
+      <h2 className="font-bold text-2xl screen-495:ml-sds-xl mt-sds-xl">
         {t('pluginPage:installModal.title')}
       </h2>
 
@@ -125,7 +125,7 @@ function InstallModalBody() {
           {t('pluginPage:installModal.steps.step1')}
         </p>
 
-        <div className="my-3">
+        <div className="my-sds-l">
           <Image
             src="/images/plugin-install-menu.png"
             alt={t('pluginPage:alt.installMenu')}
@@ -145,7 +145,7 @@ function InstallModalBody() {
           />
         </p>
 
-        <div className="my-3">
+        <div className="my-sds-l">
           <Image
             src="/images/plugin-list.png"
             alt={t('pluginPage:alt.pluginList')}

@@ -212,7 +212,7 @@ export function AppBarPreview() {
             'screen-1425:col-span-1',
           )}
         >
-          <div className="flex space-x-6">
+          <div className="flex mt-sds-xl space-x-6">
             <AppBarPreviewLeftColumn />
 
             <div className="flex screen-1425:hidden items-center space-x-6">

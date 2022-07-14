@@ -64,7 +64,7 @@ export function MetadataList({
               'font-bold whitespace-nowrap',
 
               // Render title inline with values.
-              inline && 'inline mr-2',
+              inline && 'inline mr-sds-s',
             )}
           >
             {label}:

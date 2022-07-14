@@ -43,7 +43,7 @@ function MetadataField({ field }: MetadataFieldProps) {
 
       <span
         className={clsx(
-          'text-sm ml-3',
+          'text-sm ml-sds-l',
           !field.hasValue && 'font-semibold leading-[17.5px]',
         )}
       >
@@ -114,7 +114,7 @@ export function PreviewMetadataPanel({ missingFieldsOnly }: Props) {
               'space-y-4 relative',
 
               // Spacing for vertical list layout.
-              'first:mt-0 mt-8',
+              'first:mt-0 mt-sds-xxl',
 
               // Add margin to last item for "masonry" layout.
               'screen-725:mt-0 screen-725:last:mt-12',

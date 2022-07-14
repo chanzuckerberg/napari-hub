@@ -58,7 +58,7 @@ export function CollectionPluginList() {
               </span>
               <p
                 className={clsx(
-                  'mt-3 text-[11px] screen-495:text-[14px]',
+                  'mt-sds-l text-[11px] screen-495:text-[14px]',
                   'col-span-2 screen-600:col-span-1 screen-600:row-start-3',
                   'screen-875:col-span-2',
                 )}
@@ -68,7 +68,7 @@ export function CollectionPluginList() {
 
               <p
                 className={clsx(
-                  'font-semibold mt-3 mb-5',
+                  'font-semibold mt-sds-l mb-sds-xl',
                   'col-span-2 screen-600:col-span-1 screen-600:row-start-4',
                   'screen-875:col-span-2',
                   'text-[11px]',

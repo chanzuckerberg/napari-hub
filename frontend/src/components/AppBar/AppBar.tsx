@@ -74,7 +74,7 @@ export function AppBar() {
           <SearchBar />
 
           {/* Menu button */}
-          <div className="ml-6 flex screen-600:hidden">
+          <div className="ml-sds-xl flex screen-600:hidden">
             <IconButton onClick={() => setVisible(true)} ref={anchorElRef}>
               <Menu alt={t('common:alt.sideMenu')} />
             </IconButton>

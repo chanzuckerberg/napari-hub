@@ -65,7 +65,7 @@ export function SignupForm({ onSubmit, variant = 'default' }: Props) {
       classes={isHome ? { fourColumn: 'screen-1150:grid-cols-napari-3' } : {}}
     >
       <div className="col-span-2 screen-495:col-span-3 screen-1425:col-start-2">
-        <h3 className="text-lg font-semibold mb-1 screen-495:mb-4">
+        <h3 className="text-lg font-semibold mb-sds-xxs screen-495:mb-sds-l">
           {t('footer:signUp.title')}
         </h3>
         <form
