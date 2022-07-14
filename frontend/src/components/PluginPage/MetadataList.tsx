@@ -56,7 +56,12 @@ function MetadataListItem({ inline, title, values }: MetadataListItemProps) {
         {title}:
       </h4>
 
-      <ul className={clsx('list-none space-y-5', inline ? 'inline' : 'block')}>
+      <ul
+        className={clsx(
+          'list-none space-y-sds-xl ',
+          inline ? 'inline' : 'block',
+        )}
+      >
         {isEmpty && (
           <li
             // Preview orange overlay if isValueEmpty is true

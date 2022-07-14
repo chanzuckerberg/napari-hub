@@ -86,7 +86,7 @@ export function SearchPage() {
         <ColumnLayout
           className="p-sds-xl  screen-495:p-12"
           classes={{
-            gap: 'gap-x-6 screen-495:gap-x-12',
+            gap: 'gap-x-sds-xl screen-495:gap-x-12',
             // Use 3-column layout instead of 4-column layout.
             fourColumn: 'screen-1150:grid-cols-napari-3',
           }}

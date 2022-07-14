@@ -48,7 +48,7 @@ export function CollectionCard({ collection }: Props) {
 
       <p
         className={clsx(
-          'space-x-1 mt-[10px] screen-495:mt-[20px]',
+          'space-x-sds-xxs mt-[10px] screen-495:mt-[20px]',
           'text-[9px] screen-495:text-[11px]',
           LINE_HEIGHT_CLASS_NAME,
         )}

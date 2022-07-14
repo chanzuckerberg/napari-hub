@@ -148,7 +148,7 @@ export function SupportInfoBase({ className, inline }: SupportInfoBaseProps) {
 
         // Grid layout.
         'grid',
-        inline ? 'grid-cols-1 gap-4' : 'grid-cols-3 gap-12',
+        inline ? 'grid-cols-1 gap-sds-l' : 'grid-cols-3 gap-12',
       )}
     >
       <MetadataList

@@ -96,8 +96,8 @@ function BaseCategoryChip(
         }
       }}
       label={
-        <div className="flex items-center space-x-1">
-          <span className="font-semibold space-x-1">{chipBody}</span>
+        <div className="flex items-center space-x-sds-xxs">
+          <span className="font-semibold space-x-sds-xxs">{chipBody}</span>
           {hasTooltip && (
             <Tooltip
               arrow
@@ -120,7 +120,7 @@ function BaseCategoryChip(
                   className={clsx(
                     'leading-normal',
                     'flex flex-col',
-                    'mx-sds-l my-sds-s space-y-2',
+                    'mx-sds-l my-sds-s space-y-sds-s',
                   )}
                 >
                   <span className="font-semibold text-sm">{categoryType}</span>

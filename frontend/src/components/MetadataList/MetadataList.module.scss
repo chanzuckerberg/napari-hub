@@ -18,7 +18,7 @@
 
     .linkItem {
       // Limit inline link items to be as long as the content.
-      @apply w-max space-x-2;
+      @apply w-max space-x-sds-s;
 
       // Make icons inline.
       svg {

@@ -76,7 +76,7 @@ export function Footer() {
         'grid grid-cols-2',
         'screen-655:grid-cols-[1fr,min-content]',
         'screen-1150:grid-cols-[1fr,max-content,min-content]',
-        'gap-4',
+        'gap-sds-l',
 
         // color
         'bg-napari-primary',

@@ -77,7 +77,7 @@ function SearchResultItems() {
 
 export function PluginSearchResultList() {
   return (
-    <section className="col-span-2 screen-1425:col-span-3 space-y-5">
+    <section className="col-span-2 screen-1425:col-span-3 space-y-sds-xl ">
       <h3 className={clsx('flex items-center font-bold text-xl')}>
         <I18n
           i18nKey="homePage:browsePlugins"
@@ -90,7 +90,7 @@ export function PluginSearchResultList() {
           threeColumn: '',
           fiveColumn: '',
           fourColumn: '',
-          gap: 'gap-x-6 screen-495:gap-x-12',
+          gap: 'gap-x-sds-xl screen-495:gap-x-12',
         }}
       >
         <SearchResultItems />

@@ -315,7 +315,7 @@ export function PluginComplexFilter({ filterKey }: Props) {
           { selected }: AutocompleteRenderOptionState,
         ) => (
           <div className="flex flex-auto justify-between py-sds-xxs px-sds-l">
-            <div className="flex space-x-2">
+            <div className="flex space-x-sds-s">
               <CheckboxIcon
                 className="min-w-[0.875rem] min-h-[0.875rem]"
                 checked={selected}

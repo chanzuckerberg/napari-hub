@@ -42,7 +42,7 @@ export function CollectionInfo() {
 
       <p
         className={clsx(
-          'space-x-1',
+          'space-x-sds-xxs',
           'mt-sds-xl',
           'text-[11px] screen-495:text-[14px]',
           'leading-normal',

@@ -92,7 +92,7 @@ function CollectionGridList() {
         'grid grid-cols-1 screen-600:grid-cols-2 screen-875:grid-cols-3',
         'screen-1425:col-start-2',
         'screen-875:row-start-4',
-        'gap-6 screen-495:gap-12',
+        'gap-sds-xl  screen-495:gap-12',
       )}
     >
       {collections.map((collection, index) => (
@@ -118,7 +118,7 @@ export function CollectionsPage() {
         'pb-[75px] px-sds-xl screen-495:px-12',
         'grid grid-cols-2 screen-875:grid-cols-napari-3 screen-1425:grid-cols-napari-5',
         'justify-center',
-        'gap-x-6 screen-495:gap-x-12',
+        'gap-x-sds-xl screen-495:gap-x-12',
       )}
     >
       <h1

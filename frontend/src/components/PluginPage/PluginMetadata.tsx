@@ -158,11 +158,13 @@ export function PluginMetadata({
     );
   }
 
-  const listClassName = clsx(process.env.PREVIEW ? 'space-y-2' : 'space-y-5');
+  const listClassName = clsx(
+    process.env.PREVIEW ? 'space-y-sds-s' : 'space-y-sds-xl ',
+  );
   const spacingClassName = clsx(
-    'space-y-5',
+    'space-y-sds-xl ',
     'screen-875:space-y-0',
-    'screen-1425:space-y-5',
+    'screen-1425:space-y-sds-xl ',
   );
 
   const metadataRef = useRef<HTMLDivElement>(null);

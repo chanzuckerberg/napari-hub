@@ -218,7 +218,7 @@ export function PluginSearchResult({
       <article
         data-testid="searchResult"
         className={clsx(
-          'grid gap-x-6 screen-495:gap-x-12',
+          'grid gap-x-sds-xl screen-495:gap-x-12',
           'screen-600:grid-cols-2',
           'screen-1425:grid-cols-napari-3',
         )}
@@ -338,7 +338,7 @@ export function PluginSearchResult({
         <ul
           className={clsx(
             'mt-sds-xl text-xs',
-            'flex flex-col gap-2',
+            'flex flex-col gap-sds-s',
             'col-span-2 screen-1425:col-span-3',
           )}
         >

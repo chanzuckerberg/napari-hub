@@ -36,7 +36,7 @@ export function AppBar() {
           'screen-875:grid-cols-napari-3',
           'screen-1150:grid-cols-napari-4',
           'screen-1425:grid-cols-napari-5',
-          'gap-6 screen-495:gap-12',
+          'gap-sds-xl screen-495:gap-12',
 
           // Color and height
           'bg-napari-primary h-napari-app-bar',

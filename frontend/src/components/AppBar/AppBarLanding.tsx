@@ -18,7 +18,7 @@ function List({ children, className }: ListProps) {
   return (
     <ul
       className={clsx(
-        'list-disc font-semibold space-y-4',
+        'list-disc font-semibold space-y-sds-l',
         styles.list,
         className,
       )}
@@ -44,7 +44,7 @@ export function AppBarLanding() {
       classes={{
         // Use 3-column layout instead of 4-column.
         fourColumn: 'screen-1150:grid-cols-napari-3',
-        gap: 'gap-x-6 screen-495:gap-x-12',
+        gap: 'gap-x-sds-xl screen-495:gap-x-12',
       }}
       component="header"
     >
@@ -70,7 +70,7 @@ export function AppBarLanding() {
       <div
         className={clsx(
           'grid grid-cols-[min-content,1fr]',
-          'gap-6 screen-655:gap-12',
+          'gap-sds-xl  screen-655:gap-12',
           'col-span-2 screen-875:col-span-3',
           'screen-1425:col-start-2',
           'items-center',

@@ -79,7 +79,7 @@ export function MetadataList({
 
               // Vertical and horizontal spacing.
               (inline || inlineList) && [
-                'inline space-y-2',
+                'inline space-y-sds-s',
                 empty && 'flex-grow',
                 styles.inline,
               ],

@@ -1,7 +1,7 @@
 /* stylelint-disable selector-class-pattern */
 
 div.complexFilter {
-  @apply w-full space-y-2;
+  @apply w-full space-y-sds-s;
 
   // TODO Replace with CSS classes if / when czifui exposes an API for it.
   // https://v4.mui.com/customization/components/#overriding-styles-with-classes

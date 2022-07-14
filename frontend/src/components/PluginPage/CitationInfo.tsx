@@ -97,7 +97,7 @@ export function CitationInfo({ className }: Props) {
           })}
         </TabContext>
 
-        <div className="grid screen-600:grid-cols-napari-3 gap-6 screen-600:gap-12 mt-sds-xl">
+        <div className="grid screen-600:grid-cols-napari-3 gap-sds-xl  screen-600:gap-12 mt-sds-xl">
           <Button
             className={BUTTON_STYLES}
             variant="outlined"

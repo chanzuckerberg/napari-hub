@@ -117,14 +117,14 @@ export function CategoryChipContainer({
     ));
 
   return (
-    <div className="flex gap-2 flex-wrap items-center">
+    <div className="flex gap-sds-s flex-wrap items-center">
       <span className="font-semibold text-xs whitespace-nowrap inline">
         {dimension}:
       </span>
 
       <div
         className={clsx(
-          'inline-flex gap-2 max-w-full',
+          'inline-flex gap-sds-s max-w-full',
           overrideOverflow && 'flex-wrap',
         )}
       >

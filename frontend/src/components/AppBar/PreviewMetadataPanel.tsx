@@ -111,7 +111,7 @@ export function PreviewMetadataPanel({ missingFieldsOnly }: Props) {
           <section
             key={section.title}
             className={clsx(
-              'space-y-4 relative',
+              'space-y-sds-l relative',
 
               // Spacing for vertical list layout.
               'first:mt-0 mt-sds-xxl',
