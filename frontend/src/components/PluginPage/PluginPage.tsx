@@ -103,7 +103,7 @@ function PluginCenterColumn() {
           leaveDelay={0}
         >
           <Link
-            className="mt-[10px] screen-495:mt-sds-l text-[0.6875rem] underline"
+            className="mt-sds-m screen-495:mt-sds-l text-[0.6875rem] underline"
             href={`https://pypi.org/project/${plugin?.name}`}
             newTab
           >

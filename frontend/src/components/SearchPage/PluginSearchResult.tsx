@@ -255,7 +255,7 @@ export function PluginSearchResult({
             {/* Plugin summary */}
             <p
               className={clsx(
-                isNpe2Enabled ? 'mt-[17px] screen-495:mt-sds-xl ' : 'mt-sds-s',
+                isNpe2Enabled ? 'mt-sds-xl screen-495:mt-sds-xl ' : 'mt-sds-s',
               )}
               data-testid="searchResultSummary"
             >

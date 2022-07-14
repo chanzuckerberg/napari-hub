@@ -32,7 +32,7 @@ function Intro() {
     >
       <p>{t('collections:collectionsPage.intro')}</p>
 
-      <ul className="list-disc ml-sds-l mt-[1.0625rem] leading-[175%]">
+      <ul className="list-disc ml-sds-l mt-sds-xl leading-[175%]">
         {items.map((item) => (
           <li key={item}>
             <I18n
@@ -58,7 +58,7 @@ function CreateCollectionButton() {
   return (
     <Button
       className={clsx(
-        'mt-[17px] screen-495:mt-[35px]',
+        'mt-sds-xl screen-495:mt-sds-xxl',
         'bg-napari-primary hover:bg-napari-hover',
         'font-semibold text-center',
         'w-full h-[35px] screen-495:h-12',

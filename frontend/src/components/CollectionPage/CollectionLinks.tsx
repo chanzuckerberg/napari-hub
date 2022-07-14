@@ -76,7 +76,7 @@ export function CollectionLinks() {
   const orderedLinks: LinkKey[] = ['orcid', 'twitter', 'github', 'website'];
 
   return (
-    <div className="flex space-x-sds-xl mt-[17px]">
+    <div className="flex space-x-sds-xl mt-sds-xl">
       {orderedLinks.map((key) => (
         <CollectionLink linkKey={key} />
       ))}
