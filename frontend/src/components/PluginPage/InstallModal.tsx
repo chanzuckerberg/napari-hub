@@ -125,7 +125,7 @@ function InstallModalBody() {
           {t('pluginPage:installModal.steps.step1')}
         </p>
 
-        <div className="my-sds-l">
+        <div className="my-sds-s">
           <Image
             src="/images/plugin-install-menu.png"
             alt={t('pluginPage:alt.installMenu')}
@@ -145,7 +145,7 @@ function InstallModalBody() {
           />
         </p>
 
-        <div className="my-sds-l">
+        <div className="my-sds-s">
           <Image
             src="/images/plugin-list.png"
             alt={t('pluginPage:alt.pluginList')}

@@ -275,7 +275,7 @@ export function PluginSearchResult({
                 isArray(plugin.authors) &&
                 plugin.authors.map((author) => (
                   <li
-                    className={clsx(['my-sds-l font-bold', styles.linkItem])}
+                    className={clsx(['my-sds-s font-bold', styles.linkItem])}
                     key={author.name}
                     data-testid="searchResultAuthor"
                   >
