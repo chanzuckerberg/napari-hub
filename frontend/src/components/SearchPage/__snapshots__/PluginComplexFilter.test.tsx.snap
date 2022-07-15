@@ -9,14 +9,14 @@ exports[`<PluginComplexFilter /> should match snapshot 1`] = `
     data-testid="pluginFilter"
   >
     <button
-      class="MuiButtonBase-root MuiButton-root MuiButton-text py-2 px-0 text-black w-full flex justify-between css-156jeld"
+      class="MuiButtonBase-root MuiButton-root MuiButton-text py-sds-s px-0 text-black w-full flex justify-between css-12izm5m"
       label="pluginData:labels.operatingSystem"
       sdsstage="default"
       tabindex="0"
       type="button"
     >
       <span
-        class="MuiButton-label border-b border-black pb-2"
+        class="MuiButton-label border-b border-black pb-sds-s"
       >
         <span
           class="font-semibold text-sm"
@@ -42,7 +42,9 @@ exports[`<PluginComplexFilter /> should match snapshot 1`] = `
         class="MuiTouchRipple-root"
       />
     </button>
-    <div>
+    <div
+      class="css-1flrym7"
+    >
       <div
         class="MuiChip-root css-1mixguo MuiChip-deletable"
         role="button"
