@@ -555,7 +555,8 @@ existing_demo_plugins = {
 
 existing_demo_plugins_version_unchanged = {
     "napari-demo": "0.0.1",
-    "new-napari-plugin": "0.0.2"
+    "new-napari-plugin": "0.0.2",
+    "unchanged-napari-plugin": "0.0.0"
 }
 
 list_of_demo_plugins = """
@@ -565,7 +566,17 @@ list_of_demo_plugins = """
 }
 """
 
+list_of_demo_plugins_no_version_change = """
+{
+    "napari-demo": "0.0.1",
+    "new-napari-plugin": "0.0.2",
+    "unchanged-napari-plugin": "0.0.0"
+}
+"""
+
 currently_used_plugins = {"napari-demo", "new-napari-plugin"}
+
+currently_used_plugins_no_version_change = {"napari-demo", "new-napari-plugin", "unchanged-napari-plugin"}
 
 response_with_release_notes = """
 {

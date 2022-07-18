@@ -13,7 +13,7 @@ from utils.test_utils import (
     metadata_if_code_repository_is_null,
     metadata_if_code_repository_does_not_exist,
     currently_used_plugins,
-    existing_demo_plugins_version_unchanged
+    list_of_demo_plugins_no_version_change, existing_demo_plugins_version_unchanged, currently_used_plugins_no_version_change
     )
 
 def mocked_requests_get_release_notes_from_with_release_no_v_update(*args, **kwargs):
@@ -193,7 +193,7 @@ class TestZulip(unittest.TestCase):
         It will check that blank messages are created when the version of plugins has not changed
         It also checks to make sure the right amount of plugins were tested
         """
-        new_packages = json.loads(list_of_demo_plugins)
+        new_packages = json.loads(list_of_demo_plugins_no_version_change)
         packages_metadata = json.loads(metadata_if_code_repository_exists)
         plugins_used_in_test = set()
         for package, version in new_packages.items():
@@ -202,4 +202,4 @@ class TestZulip(unittest.TestCase):
             assert message == ''
             plugins_used_in_test.add(package)
         # check that we used all the plugins we wanted to 
-        assert plugins_used_in_test == currently_used_plugins
+        assert plugins_used_in_test == currently_used_plugins_no_version_change

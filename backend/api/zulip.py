@@ -1,6 +1,5 @@
 import json
 import os
-from struct import pack
 from typing import Dict
 
 import requests
@@ -104,7 +103,7 @@ def generate_release_notes_and_link_to_release(package: str, version: str, packa
             else:
                 link_to_release = f'[{version}](https://napari-hub.org/plugins/{package})'
     else:
-        # sometimes the plugin doesn't have a github repo, will use link to napari hub instead in that case
+        # link to napari hub will be used unstead of link to github if the plugin doesn't have a github repo
         release_notes = ''
         link_to_release = f'[{version}](https://napari-hub.org/plugins/{package})'
     return release_notes, link_to_release
@@ -112,7 +111,7 @@ def generate_release_notes_and_link_to_release(package: str, version: str, packa
 def get_release_notes_from(endpoint: str):
     """
     Call github actions api and parse through the response to return the release notes text
-    If no release notes text are found, we default to return an empty string
+    If no release notes text are found, or in th event of an error, return an empty string
 
     :param endpoint: Github actions endpoint
     """
