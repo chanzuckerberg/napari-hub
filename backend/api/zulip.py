@@ -41,47 +41,39 @@ def notify_new_packages(existing_packages: Dict[str, str], new_packages: Dict[st
             else:
                 print(message)
 
-
-def send_zulip_message(username: str, key: str, topic: str, message: str):
+def create_message(package: str, version: str, existing_packages: Dict[str, str], packages_metadata: dict):
     """
-    Send message to zulip
+    Generates the message for the zulip bot to send. Checks if the plugin already exists and whether or not it has release notes.
+    Returns the message for the zulip bot to send, if there's no change in version number, we'll return a blank string and the zulip bot will not send the message
 
-    :param username: username for the user to post message
-    :param key: api key for the user
-    :param topic: topic in zulip stream to send
-    :param message: message to send
+    :param package: name of plugin we're making the me
+    :param version: version of the plugin we're dealing with
+    :param existing_packages: existing packages in cache
+    :param release_notes: release notes found from the github api
+    :param link_to_release: a link to the github release page
     """
-    try:
-        data = {
-            'type': 'stream',
-            'to': 'hub-updates',
-            'topic': topic,
-            'content': message
-        }
-        response = requests.post('https://napari.zulipchat.com/api/v1/messages',
-                                 auth=HTTPBasicAuth(username, key), data=data)
-        if response.status_code != requests.codes.ok:
-            response.raise_for_status()
-    except HTTPError:
-        pass
-
-def get_release_notes_from(endpoint: str):
-    """
-    Call github actions api and parse through the response to return the release notes text
-    If no release notes text are found, we default to return an empty string
-
-    :param endpoint: Github actions endpoint
-    """
-    try:
-        response = requests.get(endpoint)
-        if response.status_code != requests.codes.ok:
-            response.raise_for_status()
-        info = json.loads(response.text.strip())
-        if "body" in info:
-            return info["body"]
-        return ''
-    except HTTPError:
-        return ''
+    if package not in existing_packages:
+        release_notes, link_to_release = generate_release_notes_and_link_to_release(package, version, packages_metadata)
+        # handles case with new plugins
+        if not release_notes:
+            message_add_on = ''
+        else:
+            message_add_on = f'\nAlso check out its release notes for version {link_to_release}:{message_separator}{release_notes}'
+        message = f'A new plugin has been published on the napari hub! ' \
+                    f'Check out [{package}](https://napari-hub.org/plugins/{package})!{message_add_on}'
+    elif existing_packages[package] != version:
+        release_notes, link_to_release = generate_release_notes_and_link_to_release(package, version, packages_metadata)
+        # handles case with updating plugins
+        if not release_notes:
+            message_add_on = ''
+        else:
+            message_add_on = f'Check out the release notes for {link_to_release}:{message_separator}{release_notes}'
+        message = f'A new version of [{package}](https://napari-hub.org/plugins/{package}) is available on the ' \
+                    f'napari hub! {message_add_on}'
+    else:
+        # handles case where the version is the same, so we don't send a message
+        message = ''
+    return message
 
 def generate_release_notes_and_link_to_release(package: str, version: str, packages_metadata: dict):
     """
@@ -117,37 +109,43 @@ def generate_release_notes_and_link_to_release(package: str, version: str, packa
         link_to_release = f'[{version}](https://napari-hub.org/plugins/{package})'
     return release_notes, link_to_release
 
-def create_message(package: str, version: str, existing_packages: Dict[str, str], packages_metadata: dict):
+def get_release_notes_from(endpoint: str):
     """
-    Generates the message for the zulip bot to send. Checks if the plugin already exists and whether or not it has release notes.
-    Returns the message for the zulip bot to send, if there's no change in version number, we'll return a blank string and the zulip bot will not send the message
+    Call github actions api and parse through the response to return the release notes text
+    If no release notes text are found, we default to return an empty string
 
-    :param package: name of plugin we're making the me
-    :param version: version of the plugin we're dealing with
-    :param existing_packages: existing packages in cache
-    :param release_notes: release notes found from the github api
-    :param link_to_release: a link to the github release page
+    :param endpoint: Github actions endpoint
     """
-    if package not in existing_packages:
-        release_notes, link_to_release = generate_release_notes_and_link_to_release(package, version, packages_metadata)
-        # handles case with new plugins
-        if not release_notes:
-            message_add_on = ''
-        else:
-            message_add_on = f'\nAlso check out its release notes for version {link_to_release}:{message_separator}{release_notes}'
-        message = f'A new plugin has been published on the napari hub! ' \
-                    f'Check out [{package}](https://napari-hub.org/plugins/{package})!{message_add_on}'
-    elif existing_packages[package] != version:
-        release_notes, link_to_release = generate_release_notes_and_link_to_release(package, version, packages_metadata)
-        # handles case with updating plugins
-        if not release_notes:
-            message_add_on = ''
-        else:
-            message_add_on = f'Check out the release notes for {link_to_release}:{message_separator}{release_notes}'
-        message = f'A new version of [{package}](https://napari-hub.org/plugins/{package}) is available on the ' \
-                    f'napari hub! {message_add_on}'
-    else:
-        # handles case where the version is the same, so we don't send a message
-        message = ''
-    return message
-    
+    try:
+        response = requests.get(endpoint)
+        if response.status_code != requests.codes.ok:
+            response.raise_for_status()
+        info = json.loads(response.text.strip())
+        if "body" in info:
+            return info["body"]
+        return ''
+    except HTTPError:
+        return ''
+
+def send_zulip_message(username: str, key: str, topic: str, message: str):
+    """
+    Send message to zulip
+
+    :param username: username for the user to post message
+    :param key: api key for the user
+    :param topic: topic in zulip stream to send
+    :param message: message to send
+    """
+    try:
+        data = {
+            'type': 'stream',
+            'to': 'hub-updates',
+            'topic': topic,
+            'content': message
+        }
+        response = requests.post('https://napari.zulipchat.com/api/v1/messages',
+                                 auth=HTTPBasicAuth(username, key), data=data)
+        if response.status_code != requests.codes.ok:
+            response.raise_for_status()
+    except HTTPError:
+        pass
