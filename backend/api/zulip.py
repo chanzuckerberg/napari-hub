@@ -27,8 +27,7 @@ def notify_new_packages(existing_packages: Dict[str, str], new_packages: Dict[st
         username = zulip_credentials.split(":")[0]
         key = zulip_credentials.split(":")[1]
     for package, version in new_packages.items():
-        release_notes, link_to_release = generate_release_notes_and_link_to_release(package, version, packages_metadata)
-        message = create_message(package, version, existing_packages, release_notes, link_to_release)
+        message = create_message(package, version, existing_packages, packages_metadata)
         if username and key and message:
             send_zulip_message(username, key, package, message)
         else:
@@ -70,7 +69,7 @@ def get_release_notes_from(endpoint: str):
     """
     Call github actions api and parse through the response to return the release notes text
     If no release notes text are found, we default to return an empty string
-    
+
     :param endpoint: Github actions endpoint
     """
     try:
@@ -118,7 +117,7 @@ def generate_release_notes_and_link_to_release(package: str, version: str, packa
         link_to_release = f'[{version}](https://napari-hub.org/plugins/{package})'
     return release_notes, link_to_release
 
-def create_message(package: str, version: str, existing_packages: Dict[str, str], release_notes: str, link_to_release: str):
+def create_message(package: str, version: str, existing_packages: Dict[str, str], packages_metadata: dict):
     """
     Generates the message for the zulip bot to send. Checks if the plugin already exists and whether or not it has release notes.
     Returns the message for the zulip bot to send, if there's no change in version number, we'll return a blank string and the zulip bot will not send the message
@@ -130,6 +129,7 @@ def create_message(package: str, version: str, existing_packages: Dict[str, str]
     :param link_to_release: a link to the github release page
     """
     if package not in existing_packages:
+        release_notes, link_to_release = generate_release_notes_and_link_to_release(package, version, packages_metadata)
         # handles case with new plugins
         if not release_notes:
             message_add_on = ''
@@ -138,6 +138,7 @@ def create_message(package: str, version: str, existing_packages: Dict[str, str]
         message = f'A new plugin has been published on the napari hub! ' \
                     f'Check out [{package}](https://napari-hub.org/plugins/{package})!{message_add_on}'
     elif existing_packages[package] != version:
+        release_notes, link_to_release = generate_release_notes_and_link_to_release(package, version, packages_metadata)
         # handles case with updating plugins
         if not release_notes:
             message_add_on = ''

@@ -12,7 +12,8 @@ from utils.test_utils import (
     empty_release_notes, test_link_to_napari, message_no_release_notes,
     metadata_if_code_repository_is_null,
     metadata_if_code_repository_does_not_exist,
-    currently_used_plugins
+    currently_used_plugins,
+    existing_demo_plugins_version_unchanged
     )
 
 def mocked_requests_get_release_notes_from_with_release_no_v_update(*args, **kwargs):
@@ -74,109 +75,131 @@ class TestZulip(unittest.TestCase):
     @patch('requests.get', side_effect=mocked_requests_get_release_notes_from_with_release_no_v_update)
     def test_create_correct_message_with_release_no_v_update(self, mock_get):
         """
-        Test situation where package has release notes, and it's version doesn't have v
-        It will run through the release_notes, link_to_release, and message generation portions of the zulip bot code, 
+        Test situation where package has release notes, and it's version doesn't have v for both new and existing packages
+        It will test the generate_release_notes_and_link_to_release method and then the create_message method separately from each other
         and check that the strings match what is expected 
         It also checks to make sure the right amount of plugins were tested
         """
         new_packages = json.loads(list_of_demo_plugins)
         packages_metadata = json.loads(metadata_if_code_repository_exists)
-        number_of_plugins_looped_through = 0
         plugins_used_in_test = set()
         for package, version in new_packages.items():
+            # first tests release notes generation works as expected separately from message generation
             release_notes, link_to_release = generate_release_notes_and_link_to_release(package, version, packages_metadata)
             assert existing_release_notes_with_no_v == release_notes
             assert existing_link_to_release_no_v[package] == link_to_release
-            message = create_message(package, version, existing_demo_plugins, release_notes, link_to_release)
+            # then tests that message generation works as expected 
+            message = create_message(package, version, existing_demo_plugins, packages_metadata)
             assert existing_message_with_release_no_v[package] == message
-            number_of_plugins_looped_through += 1
             plugins_used_in_test.add(package)
+        # check that we used all the plugins we wanted to 
         assert plugins_used_in_test == currently_used_plugins
 
     @patch('requests.get', side_effect=mocked_requests_get_release_notes_from_with_release_v_update)
     def test_create_correct_message_with_release_v_update(self, mock_get):
         """
-        Test situation where package has release notes, and its version has a v
-        It will run through the release_notes, link_to_release, and message generation portions of the zulip bot code, 
+        Test situation where package has release notes, and its version has a v for both new and existing packages
+        It will test the generate_release_notes_and_link_to_release method and then the create_message method separately from each other
         and check that the strings match what is expected 
         It also checks to make sure the right amount of plugins were tested
         """
         new_packages = json.loads(list_of_demo_plugins)
         packages_metadata = json.loads(metadata_if_code_repository_exists)
-        number_of_plugins_looped_through = 0
         plugins_used_in_test = set()
         for package, version in new_packages.items():
+            # first tests release notes generation works as expected separately from message generation
             release_notes, link_to_release = generate_release_notes_and_link_to_release(package, version, packages_metadata)
             assert existing_release_notes_with_v == release_notes
             assert existing_link_to_release_with_v[package] == link_to_release
-            message = create_message(package, version, existing_demo_plugins, release_notes, link_to_release)
+            # then tests that message generation works as expected 
+            message = create_message(package, version, existing_demo_plugins, packages_metadata)
             assert existing_message_with_release_with_v[package] == message
-            number_of_plugins_looped_through += 1
             plugins_used_in_test.add(package)
+        # check that we used all the plugins we wanted to 
         assert plugins_used_in_test == currently_used_plugins
 
     @patch('requests.get', return_value = FakeResponse(data=response_without_release_notes))
     def test_create_correct_message_with_no_release_update(self, mock_get):
         """
-        Test situation where package doesn't have release notes
-        It will run through the release_notes, link_to_release, and message generation portions of the zulip bot code, 
+        Test situation where package doesn't have release notes for both new and existing packages
+        It will test the generate_release_notes_and_link_to_release method and then the create_message method separately from each other
         and check that the strings match what is expected 
         It also checks to make sure the right amount of plugins were tested
         """
         new_packages = json.loads(list_of_demo_plugins)
         packages_metadata = json.loads(metadata_if_code_repository_exists)
-        number_of_plugins_looped_through = 0
         plugins_used_in_test = set()
         for package, version in new_packages.items():
+            # first tests release notes generation works as expected separately from message generation
             release_notes, link_to_release = generate_release_notes_and_link_to_release(package, version, packages_metadata)
             assert empty_release_notes == release_notes
             assert test_link_to_napari[package] == link_to_release
-            message = create_message(package, version, existing_demo_plugins, release_notes, link_to_release)
+            # then tests that message generation works as expected 
+            message = create_message(package, version, existing_demo_plugins, packages_metadata)
             assert message_no_release_notes[package] == message
-            number_of_plugins_looped_through += 1
             plugins_used_in_test.add(package)
+        # check that we used all the plugins we wanted to 
         assert plugins_used_in_test == currently_used_plugins
 
     @patch('requests.get', return_value = FakeResponse(data=response_with_release_notes))
     def test_create_correct_message_with_null_code_repo(self, mock_get):
         """
-        Test situation where package has a null "code_repository" field
-        It will run through the release_notes, link_to_release, and message generation portions of the zulip bot code, 
+        Test situation where package has a null "code_repository" field for both new and existing packages
+        It will test the generate_release_notes_and_link_to_release method and then the create_message method separately from each other
         and check that the strings match what is expected 
         It also checks to make sure the right amount of plugins were tested
         """
         new_packages = json.loads(list_of_demo_plugins)
         packages_metadata = json.loads(metadata_if_code_repository_is_null)
-        number_of_plugins_looped_through = 0
         plugins_used_in_test = set()
         for package, version in new_packages.items():
+            # first tests release notes generation works as expected separately from message generation
             release_notes, link_to_release = generate_release_notes_and_link_to_release(package, version, packages_metadata)
             assert empty_release_notes == release_notes
             assert test_link_to_napari[package] == link_to_release
-            message = create_message(package, version, existing_demo_plugins, release_notes, link_to_release)
+            # then tests that message generation works as expected 
+            message = create_message(package, version, existing_demo_plugins, packages_metadata)
             assert message_no_release_notes[package] == message
-            number_of_plugins_looped_through += 1
             plugins_used_in_test.add(package)
+        # check that we used all the plugins we wanted to 
         assert plugins_used_in_test == currently_used_plugins
 
     @patch('requests.get', return_value = FakeResponse(data=response_with_release_notes))
     def test_create_correct_message_with_no_code_repo(self, mock_get):
         """
-        Test situation where package doesn't contain a "code_repository" field
-        It will run through the release_notes, link_to_release, and message generation portions of the zulip bot code, 
+        Test situation where package doesn't contain a "code_repository" field for both new and existing packages
+        It will test the generate_release_notes_and_link_to_release method and then the create_message method separately from each other
         and check that the strings match what is expected 
         It also checks to make sure the right amount of plugins were tested
         """
         new_packages = json.loads(list_of_demo_plugins)
         packages_metadata = json.loads(metadata_if_code_repository_does_not_exist)
-        number_of_plugins_looped_through = 0
         plugins_used_in_test = set()
         for package, version in new_packages.items():
+            # first tests release notes generation works as expected separately from message generation
             release_notes, link_to_release = generate_release_notes_and_link_to_release(package, version, packages_metadata)
             assert empty_release_notes == release_notes
             assert test_link_to_napari[package] == link_to_release
-            message = create_message(package, version, existing_demo_plugins, release_notes, link_to_release)
+            # then tests that message generation works as expected 
+            message = create_message(package, version, existing_demo_plugins, packages_metadata)
             assert message_no_release_notes[package] == message
-            number_of_plugins_looped_through += 1
             plugins_used_in_test.add(package)
+        # check that we used all the plugins we wanted to 
+        assert plugins_used_in_test == currently_used_plugins
+
+    def test_ignores_message_generation_when_no_version_change(self):
+        """
+        Test situation where version has not changed
+        It will check that blank messages are created when the version of plugins has not changed
+        It also checks to make sure the right amount of plugins were tested
+        """
+        new_packages = json.loads(list_of_demo_plugins)
+        packages_metadata = json.loads(metadata_if_code_repository_exists)
+        plugins_used_in_test = set()
+        for package, version in new_packages.items():
+            # check that a blank message is generated each time
+            message = create_message(package, version, existing_demo_plugins_version_unchanged, packages_metadata)
+            assert message == ''
+            plugins_used_in_test.add(package)
+        # check that we used all the plugins we wanted to 
         assert plugins_used_in_test == currently_used_plugins

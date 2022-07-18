@@ -276,7 +276,12 @@ test_version_new = "0.0.2"
 test_github_link_new = "https://github.com/author2/new-napari-plugin"
 
 existing_demo_plugins = {
-    "napari-demo": "0.0.0"
+    "napari-demo": "0.0.0",
+}
+
+existing_demo_plugins_version_unchanged = {
+    "napari-demo": "0.0.1",
+    "new-napari-plugin": "0.0.2"
 }
 
 list_of_demo_plugins = """
