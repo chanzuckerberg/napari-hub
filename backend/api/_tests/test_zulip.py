@@ -12,7 +12,7 @@ from utils.test_utils import (
     empty_release_notes, test_link_to_napari, message_no_release_notes,
     metadata_if_code_repository_is_null,
     metadata_if_code_repository_does_not_exist,
-    number_of_plugins, currently_used_plugins
+    currently_used_plugins
     )
 
 def mocked_requests_get_release_notes_from_with_release_no_v_update(*args, **kwargs):
@@ -92,7 +92,6 @@ class TestZulip(unittest.TestCase):
             number_of_plugins_looped_through += 1
             plugins_used_in_test.add(package)
         assert plugins_used_in_test == currently_used_plugins
-        assert number_of_plugins == number_of_plugins_looped_through
 
     @patch('requests.get', side_effect=mocked_requests_get_release_notes_from_with_release_v_update)
     def test_create_correct_message_with_release_v_update(self, mock_get):
@@ -115,7 +114,6 @@ class TestZulip(unittest.TestCase):
             number_of_plugins_looped_through += 1
             plugins_used_in_test.add(package)
         assert plugins_used_in_test == currently_used_plugins
-        assert number_of_plugins == number_of_plugins_looped_through
 
     @patch('requests.get', return_value = FakeResponse(data=response_without_release_notes))
     def test_create_correct_message_with_no_release_update(self, mock_get):
@@ -138,7 +136,6 @@ class TestZulip(unittest.TestCase):
             number_of_plugins_looped_through += 1
             plugins_used_in_test.add(package)
         assert plugins_used_in_test == currently_used_plugins
-        assert number_of_plugins == number_of_plugins_looped_through
 
     @patch('requests.get', return_value = FakeResponse(data=response_with_release_notes))
     def test_create_correct_message_with_null_code_repo(self, mock_get):
@@ -161,7 +158,6 @@ class TestZulip(unittest.TestCase):
             number_of_plugins_looped_through += 1
             plugins_used_in_test.add(package)
         assert plugins_used_in_test == currently_used_plugins
-        assert number_of_plugins == number_of_plugins_looped_through
 
     @patch('requests.get', return_value = FakeResponse(data=response_with_release_notes))
     def test_create_correct_message_with_no_code_repo(self, mock_get):
@@ -184,4 +180,3 @@ class TestZulip(unittest.TestCase):
             number_of_plugins_looped_through += 1
             plugins_used_in_test.add(package)
         assert plugins_used_in_test == currently_used_plugins
-        assert number_of_plugins == number_of_plugins_looped_through

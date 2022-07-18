@@ -46,6 +46,7 @@ def notify_new_packages(existing_packages: Dict[str, str], new_packages: Dict[st
 def send_zulip_message(username: str, key: str, topic: str, message: str):
     """
     Send message to zulip
+
     :param username: username for the user to post message
     :param key: api key for the user
     :param topic: topic in zulip stream to send
@@ -69,6 +70,7 @@ def get_release_notes_from(endpoint: str):
     """
     Call github actions api and parse through the response to return the release notes text
     If no release notes text are found, we default to return an empty string
+    
     :param endpoint: Github actions endpoint
     """
     try:
@@ -92,8 +94,8 @@ def generate_release_notes_and_link_to_release(package: str, version: str, packa
     :param new_packages: new packages found
     :param packages_metadata: metadata for the packages, contains information about github links
     """
-    # checks if plugin has a "code_repository" and that the "code_repository" is not none
     if "code_repository" in packages_metadata[package] and packages_metadata[package]["code_repository"]:
+        # if plugin has a "code_repository" entry we'll parse their username information to call the github api
         github_link = packages_metadata[package]["code_repository"]
         owner_and_repo = github_link.replace('https://github.com/', '')
         general_github_api_endpoint = f'https://api.github.com/repos/{owner_and_repo}/releases/tags/'
@@ -110,24 +112,25 @@ def generate_release_notes_and_link_to_release(package: str, version: str, packa
             # if the 2nd attempt fails to get release notes, we default to using the napari-hub link
             else:
                 link_to_release = f'[{version}](https://napari-hub.org/plugins/{package})'
-    # sometimes the plugin doesn't have a github repo
     else:
+        # sometimes the plugin doesn't have a github repo, will use link to napari hub instead in that case
         release_notes = ''
         link_to_release = f'[{version}](https://napari-hub.org/plugins/{package})'
     return release_notes, link_to_release
 
 def create_message(package: str, version: str, existing_packages: Dict[str, str], release_notes: str, link_to_release: str):
     """
-    Generates the message for the zulip bot to send. Checks if the plugin already exists and whetehr or not it has release notes.
-    Returns the message for the zulip bot to send, if there's no message, we'll return a blank string and the zulip bot will not send the message
+    Generates the message for the zulip bot to send. Checks if the plugin already exists and whether or not it has release notes.
+    Returns the message for the zulip bot to send, if there's no change in version number, we'll return a blank string and the zulip bot will not send the message
 
-    :param package: plugin we're dealing with
+    :param package: name of plugin we're making the me
     :param version: version of the plugin we're dealing with
     :param existing_packages: existing packages in cache
     :param release_notes: release notes found from the github api
     :param link_to_release: a link to the github release page
     """
     if package not in existing_packages:
+        # handles case with new plugins
         if not release_notes:
             message_add_on = ''
         else:
@@ -135,6 +138,7 @@ def create_message(package: str, version: str, existing_packages: Dict[str, str]
         message = f'A new plugin has been published on the napari hub! ' \
                     f'Check out [{package}](https://napari-hub.org/plugins/{package})!{message_add_on}'
     elif existing_packages[package] != version:
+        # handles case with updating plugins
         if not release_notes:
             message_add_on = ''
         else:
@@ -142,6 +146,7 @@ def create_message(package: str, version: str, existing_packages: Dict[str, str]
         message = f'A new version of [{package}](https://napari-hub.org/plugins/{package}) is available on the ' \
                     f'napari hub! {message_add_on}'
     else:
+        # handles case where the version is the same, so we don't send a message
         message = ''
     return message
     

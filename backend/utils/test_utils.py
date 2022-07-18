@@ -286,8 +286,6 @@ list_of_demo_plugins = """
 }
 """
 
-number_of_plugins = 2
-
 currently_used_plugins = {"napari-demo", "new-napari-plugin"}
 
 response_with_release_notes = """
