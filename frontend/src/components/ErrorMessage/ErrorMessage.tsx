@@ -15,12 +15,12 @@ export function ErrorMessage({ children, error }: Props) {
   const [t] = useTranslation(['common']);
 
   return (
-    <div className="flex flex-auto flex-col items-center justify-center mt-6 screen-495:mt-12">
+    <div className="flex flex-auto flex-col items-center justify-center mt-sds-xl screen-495:mt-12">
       <h1 className="text-4xl">
         {t('common:error')}: {children}
       </h1>
 
-      {error && <pre className="mt-6 screen-495:mt-12">{error}</pre>}
+      {error && <pre className="mt-sds-xl screen-495:mt-12">{error}</pre>}
     </div>
   );
 }

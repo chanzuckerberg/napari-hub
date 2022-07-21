@@ -11,11 +11,11 @@ export function CollectionPage() {
 
       <div
         className={clsx(
-          'pt-[14px] px-6 pb-[75px]',
-          'screen-495:pt-[38px] screen-495:px-12',
+          'pt-sds-l px-sds-xl pb-[75px]',
+          'screen-495:pt-sds-xxl screen-495:px-12',
 
           // Grid layout
-          'gap-x-6 screen-495:gap-x-12',
+          'gap-x-sds-xl screen-495:gap-x-12',
           'grid justify-center grid-cols-2',
           'screen-875:grid-cols-3',
           'screen-1150:grid-cols-napari-5',

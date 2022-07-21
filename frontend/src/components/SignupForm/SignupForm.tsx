@@ -60,12 +60,12 @@ export function SignupForm({ onSubmit, variant = 'default' }: Props) {
 
   return (
     <ColumnLayout
-      className="bg-napari-light p-6 screen-495:p-12"
+      className="bg-napari-light p-sds-xl screen-495:p-12"
       // Use 3-column layout instead of 4-column layout.
       classes={isHome ? { fourColumn: 'screen-1150:grid-cols-napari-3' } : {}}
     >
       <div className="col-span-2 screen-495:col-span-3 screen-1425:col-start-2">
-        <h3 className="text-lg font-semibold mb-1 screen-495:mb-4">
+        <h3 className="text-lg font-semibold mb-sds-xxs screen-495:mb-sds-l">
           {t('footer:signUp.title')}
         </h3>
         <form
@@ -80,7 +80,7 @@ export function SignupForm({ onSubmit, variant = 'default' }: Props) {
             // spacing
             'screen-495:gap-x-12',
             // make room for error message in vertical layout
-            error ? 'gap-y-8' : 'gap-y-3.5',
+            error ? 'gap-y-sds-xxl' : 'gap-y-sds-l',
           )}
         >
           <TextField
@@ -99,7 +99,7 @@ export function SignupForm({ onSubmit, variant = 'default' }: Props) {
               // font
               'text-sm',
               // make underline align with submit button
-              'pt-0.5',
+              'pt-sds-xxxs',
               // sizing
               'h-8 screen-495:h-[35px] col-span-2 screen-495:col-span-1 screen-875:col-span-2',
             )}

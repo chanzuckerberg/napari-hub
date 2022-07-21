@@ -3537,10 +3537,10 @@ cwd@^0.10.0:
     find-pkg "^0.1.2"
     fs-exists-sync "^0.1.0"
 
-czifui@3.2.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/czifui/-/czifui-3.2.0.tgz#aab1682eb21debb24b8a3db293e609a272f95b40"
-  integrity sha512-QGsBbkw7tMaIttv4LUQA8QKVA6CM7sIMFsj3cxENl/Ez3FKhybWPnwaFGApo2TMZEjP8/gJZ/DeWMpdIRcMSpg==
+czifui@6.8.1:
+  version "6.8.1"
+  resolved "https://registry.yarnpkg.com/czifui/-/czifui-6.8.1.tgz#2493a58c96a2b462fa5240a151521239eecfe7eb"
+  integrity sha512-XXydHR4LgdPy9493NN6c82mVHzQUSCwAaICVZa4+5GGojjPO87+WE+xaL/NydbYxgpm3kJbdfFY5dAnB7pOSnQ==
 
 damerau-levenshtein@^1.0.7:
   version "1.0.8"
@@ -7865,12 +7865,7 @@ minimist-options@4.1.0:
     is-plain-obj "^1.1.0"
     kind-of "^6.0.3"
 
-minimist@^1.1.1, minimist@^1.2.0, minimist@^1.2.5:
-  version "1.2.6"
-  resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.6.tgz#8637a5b759ea0d6e98702cfb3a9283323c93af44"
-  integrity sha512-Jsjnk4bw3YJqYzbdyBiNsPWHPfO++UGG749Cxs6peCu5Xg4nrena6OVxOYxrQTqww0Jmwt+Ref8rggumkTLz9Q==
-
-minimist@^1.2.6:
+minimist@^1.1.1, minimist@^1.2.0, minimist@^1.2.5, minimist@^1.2.6:
   version "1.2.6"
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.6.tgz#8637a5b759ea0d6e98702cfb3a9283323c93af44"
   integrity sha512-Jsjnk4bw3YJqYzbdyBiNsPWHPfO++UGG749Cxs6peCu5Xg4nrena6OVxOYxrQTqww0Jmwt+Ref8rggumkTLz9Q==

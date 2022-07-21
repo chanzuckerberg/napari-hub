@@ -43,7 +43,7 @@ function MetadataField({ field }: MetadataFieldProps) {
 
       <span
         className={clsx(
-          'text-sm ml-3',
+          'text-sm ml-sds-l',
           !field.hasValue && 'font-semibold leading-[17.5px]',
         )}
       >
@@ -62,7 +62,7 @@ function MetadataField({ field }: MetadataFieldProps) {
 
           className: clsx(
             PREVIEW_METADATA_FIELD_CLASS_NAME,
-            'flex items-start justify-start text-left m-0 p-1 flex-grow',
+            'flex items-start justify-start text-left m-0 p-sds-xxs flex-grow',
           ),
 
           // Attach click listener if field is a button.
@@ -111,10 +111,10 @@ export function PreviewMetadataPanel({ missingFieldsOnly }: Props) {
           <section
             key={section.title}
             className={clsx(
-              'space-y-4 relative',
+              'space-y-sds-l relative',
 
               // Spacing for vertical list layout.
-              'first:mt-0 mt-8',
+              'first:mt-0 mt-sds-xxl',
 
               // Add margin to last item for "masonry" layout.
               'screen-725:mt-0 screen-725:last:mt-12',
@@ -150,10 +150,10 @@ export function PreviewMetadataPanel({ missingFieldsOnly }: Props) {
         'bg-napari-hover-gray',
 
         // Horizontal padding
-        'px-9 screen-495:px-12',
+        'px-sds-xxl screen-495:px-12',
 
         // Vertical padding
-        'py-4 screen-875:py-6',
+        'py-sds-l screen-875:py-sds-xl',
       )}
     >
       <div

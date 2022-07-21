@@ -24,7 +24,7 @@ function Intro() {
   return (
     <div
       className={clsx(
-        'pt-[14px] screen-495:pt-[40px]',
+        'pt-sds-l screen-495:pt-sds-xxl',
         'col-span-2 screen-875:col-span-3',
         'screen-1425:row-start-2 screen-1425:col-start-2',
         'text-[11px] screen-495:text-[17px]',
@@ -32,7 +32,7 @@ function Intro() {
     >
       <p>{t('collections:collectionsPage.intro')}</p>
 
-      <ul className="list-disc ml-4 mt-[1.0625rem] leading-[175%]">
+      <ul className="list-disc ml-sds-l mt-sds-xl leading-[175%]">
         {items.map((item) => (
           <li key={item}>
             <I18n
@@ -58,7 +58,7 @@ function CreateCollectionButton() {
   return (
     <Button
       className={clsx(
-        'mt-[17px] screen-495:mt-[35px]',
+        'mt-sds-xl screen-495:mt-sds-xxl',
         'bg-napari-primary hover:bg-napari-hover',
         'font-semibold text-center',
         'w-full h-[35px] screen-495:h-12',
@@ -87,12 +87,12 @@ function CollectionGridList() {
   return (
     <div
       className={clsx(
-        'mt-6 screen-495:mt-12',
+        'mt-sds-xl screen-495:mt-12',
         'col-span-2 screen-875:col-span-3',
         'grid grid-cols-1 screen-600:grid-cols-2 screen-875:grid-cols-3',
         'screen-1425:col-start-2',
         'screen-875:row-start-4',
-        'gap-6 screen-495:gap-12',
+        'gap-sds-xl  screen-495:gap-12',
       )}
     >
       {collections.map((collection, index) => (
@@ -114,11 +114,11 @@ export function CollectionsPage() {
   return (
     <div
       className={clsx(
-        'pt-[14px] screen-495:pt-[40px]',
-        'pb-[75px] px-6 screen-495:px-12',
+        'pt-sds-l screen-495:pt-sds-xxl',
+        'pb-[75px] px-sds-xl screen-495:px-12',
         'grid grid-cols-2 screen-875:grid-cols-napari-3 screen-1425:grid-cols-napari-5',
         'justify-center',
-        'gap-x-6 screen-495:gap-x-12',
+        'gap-x-sds-xl screen-495:gap-x-12',
       )}
     >
       <h1

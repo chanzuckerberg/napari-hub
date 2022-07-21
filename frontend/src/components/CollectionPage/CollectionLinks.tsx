@@ -56,7 +56,7 @@ function CollectionLink({ linkKey }: CollectionLinkProps) {
       classes={{
         tooltip: clsx(
           '!bg-[#f1f1ec] !border !border-[#dcdcdc]',
-          '!p-1 !shadow-none',
+          '!p-sds-xxs !shadow-none',
           '!text-[#5b5b5b] !text-xs',
         ),
       }}
@@ -76,7 +76,7 @@ export function CollectionLinks() {
   const orderedLinks: LinkKey[] = ['orcid', 'twitter', 'github', 'website'];
 
   return (
-    <div className="flex space-x-5 mt-[17px]">
+    <div className="flex space-x-sds-xl mt-sds-xl">
       {orderedLinks.map((key) => (
         <CollectionLink linkKey={key} />
       ))}

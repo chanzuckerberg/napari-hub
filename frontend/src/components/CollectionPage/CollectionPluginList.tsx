@@ -11,7 +11,7 @@ export function CollectionPluginList() {
   return (
     <ul
       className={clsx(
-        'pt-6 screen-495:pt-[35px]',
+        'pt-sds-xl screen-495:pt-sds-xxl',
         'col-span-2 screen-875:col-span-3',
         'screen-1150:col-start-2',
       )}
@@ -23,7 +23,7 @@ export function CollectionPluginList() {
         return (
           <li
             className={clsx(
-              'py-5 hover:bg-napari-hover-gray',
+              'py-sds-xl hover:bg-napari-hover-gray',
               'border-black border-t-2 last:border-b-2',
             )}
             key={plugin.name}
@@ -58,7 +58,7 @@ export function CollectionPluginList() {
               </span>
               <p
                 className={clsx(
-                  'mt-3 text-[11px] screen-495:text-[14px]',
+                  'mt-sds-l text-[11px] screen-495:text-[14px]',
                   'col-span-2 screen-600:col-span-1 screen-600:row-start-3',
                   'screen-875:col-span-2',
                 )}
@@ -68,7 +68,7 @@ export function CollectionPluginList() {
 
               <p
                 className={clsx(
-                  'font-semibold mt-3 mb-5',
+                  'font-semibold mt-sds-l mb-sds-xl',
                   'col-span-2 screen-600:col-span-1 screen-600:row-start-4',
                   'screen-875:col-span-2',
                   'text-[11px]',

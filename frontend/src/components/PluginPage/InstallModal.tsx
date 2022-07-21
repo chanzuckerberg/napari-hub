@@ -49,7 +49,7 @@ function CopyPluginNameButton() {
         'text-base',
 
         // Padding
-        'py-px px-1',
+        'py-px px-sds-xxs',
 
         // Animate colors when hovering over button
         'transition-colors',
@@ -73,7 +73,7 @@ function CopyPluginNameButton() {
     >
       <span>{pluginName}</span>
 
-      <span className="ml-2 inline-flex">
+      <span className="ml-sds-xxs inline-flex">
         {clicked ? (
           <CheckCircle className="w-4" />
         ) : (
@@ -96,8 +96,8 @@ function InstallModalHeader({ onClose }: Closeable) {
   const [t] = useTranslation(['pluginPage']);
 
   return (
-    <header className="flex justify-between mb-6 pt-6 px-6">
-      <h2 className="font-bold text-2xl screen-495:ml-6 mt-6">
+    <header className="flex justify-between mb-6 pt-sds-l px-sds-xl">
+      <h2 className="font-bold text-2xl screen-495:ml-sds-xl mt-sds-xl">
         {t('pluginPage:installModal.title')}
       </h2>
 
@@ -119,13 +119,13 @@ function InstallModalBody() {
   const [t] = useTranslation(['pluginPage']);
 
   return (
-    <ol className="list-decimal font-bold px-6 screen-495:px-12 leading-normal">
+    <ol className="list-decimal font-bold px-sds-xl screen-495:px-12 leading-normal">
       <li>
         <p className="font-normal inline">
           {t('pluginPage:installModal.steps.step1')}
         </p>
 
-        <div className="my-3">
+        <div className="my-sds-s">
           <Image
             src="/images/plugin-install-menu.png"
             alt={t('pluginPage:alt.installMenu')}
@@ -145,7 +145,7 @@ function InstallModalBody() {
           />
         </p>
 
-        <div className="my-3">
+        <div className="my-sds-s">
           <Image
             src="/images/plugin-list.png"
             alt={t('pluginPage:alt.pluginList')}
@@ -171,9 +171,9 @@ function InstallModalFooter({ onClose }: Closeable) {
   const [t] = useTranslation(['common']);
 
   return (
-    <div className="flex justify-end p-6 screen-495:p-12 pt-0 screen-495:pt-0">
+    <div className="flex justify-end p-sds-xl  screen-495:p-12 pt-0 screen-495:pt-0">
       <Button
-        className="border-2 border-napari-primary py-3 px-6"
+        className="border-2 border-napari-primary py-sds-l px-sds-xl"
         onClick={onClose}
         variant="outlined"
       >

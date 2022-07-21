@@ -80,7 +80,7 @@ export function MetadataHighlighter<T extends HTMLKey>({
           // negative margins. However, CSS transforms do not affect the box
           // model, so if we simply scale the highlighter a little bit and use
           // padding for alignment, we can achieve the overflow effect.
-          variant === 'small' ? 'p-1' : 'p-2',
+          variant === 'small' ? 'p-sds-xxs' : 'p-sds-s',
           scaleHighlight && 'scale-[1.03]',
 
           // Give button border initially so that the space is reserved.

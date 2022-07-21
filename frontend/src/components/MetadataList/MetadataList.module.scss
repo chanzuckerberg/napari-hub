@@ -1,7 +1,7 @@
 .list {
   .textItem,
   .linkItem {
-    @apply mt-3;
+    @apply mt-sds-l;
   }
 
   &.inline {
@@ -11,14 +11,14 @@
 
       // Add commas for every item except the last.
       &:not(:last-child)::after {
-        @apply mr-1;
+        @apply mr-sds-xxs;
         content: ', ';
       }
     }
 
     .linkItem {
       // Limit inline link items to be as long as the content.
-      @apply w-max space-x-2;
+      @apply w-max space-x-sds-s;
 
       // Make icons inline.
       svg {
@@ -28,6 +28,6 @@
   }
 
   &.preview .linkItem.empty:not(:first-child) {
-    @apply mt-1;
+    @apply mt-sds-xxs;
   }
 }

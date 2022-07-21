@@ -36,7 +36,7 @@ export function AppBar() {
           'screen-875:grid-cols-napari-3',
           'screen-1150:grid-cols-napari-4',
           'screen-1425:grid-cols-napari-5',
-          'gap-6 screen-495:gap-12',
+          'gap-sds-xl screen-495:gap-12',
 
           // Color and height
           'bg-napari-primary h-napari-app-bar',
@@ -45,7 +45,7 @@ export function AppBar() {
           'justify-center items-center',
 
           // Padding
-          'px-6 screen-495:px-12 screen-1150:p-0',
+          'px-sds-xl screen-495:px-12 screen-1150:p-0',
         )}
       >
         <div className="hidden screen-600:block">
@@ -74,7 +74,7 @@ export function AppBar() {
           <SearchBar />
 
           {/* Menu button */}
-          <div className="ml-6 flex screen-600:hidden">
+          <div className="ml-sds-xl flex screen-600:hidden">
             <IconButton onClick={() => setVisible(true)} ref={anchorElRef}>
               <Menu alt={t('common:alt.sideMenu')} />
             </IconButton>

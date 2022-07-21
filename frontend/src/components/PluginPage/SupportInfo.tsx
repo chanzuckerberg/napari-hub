@@ -141,14 +141,14 @@ export function SupportInfoBase({ className, inline }: SupportInfoBaseProps) {
     <div
       className={clsx(
         className,
-        'text-black bg-gray-100 p-5',
+        'text-black bg-gray-100 p-sds-xl',
 
         // Overflow on x-axis in case of really long twitter names.
         'overflow-x-auto',
 
         // Grid layout.
         'grid',
-        inline ? 'grid-cols-1 gap-4' : 'grid-cols-3 gap-12',
+        inline ? 'grid-cols-1 gap-sds-l' : 'grid-cols-3 gap-12',
       )}
     >
       <MetadataList

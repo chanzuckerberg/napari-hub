@@ -46,7 +46,7 @@ function SortForm() {
   return (
     <FormControl component="fieldset">
       {/* Only show label on larger screens. This is because the Accordion already includes a title. */}
-      <legend className="uppercase text-black font-semibold text-sm mb-2 hidden screen-875:block">
+      <legend className="uppercase text-black font-semibold text-sm mb-sds-s hidden screen-875:block">
         {t('homePage:sort.title')}
       </legend>
 

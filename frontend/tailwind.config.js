@@ -1,5 +1,6 @@
 const { reduce } = require('lodash');
 const typography = require('@tailwindcss/typography');
+const sds = require('czifui/dist/tailwind.json');
 
 const { breakpoints, colors, fontFamily } = require('./src/theme');
 
@@ -25,11 +26,14 @@ module.exports = {
   theme: {
     screens,
     extend: {
+      ...sds,
+
       fontFamily: {
         barlow: fontFamily,
       },
 
       spacing: {
+        ...sds.spacing,
         // Use 25px and 50px for margins, paddings, gaps, etc.
         6: pixelsToRem(25),
         12: pixelsToRem(50),
@@ -52,11 +56,13 @@ module.exports = {
       },
 
       width: (theme) => ({
+        ...sds.height,
         'napari-xs': theme('screens.xs'),
         'napari-col': pixelsToRem(225),
       }),
 
       height: {
+        ...sds.width,
         'napari-app-bar': '75px',
       },
 

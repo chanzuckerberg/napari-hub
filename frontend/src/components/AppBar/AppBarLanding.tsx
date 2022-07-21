@@ -18,7 +18,7 @@ function List({ children, className }: ListProps) {
   return (
     <ul
       className={clsx(
-        'list-disc font-semibold space-y-4',
+        'list-disc font-semibold space-y-sds-l',
         styles.list,
         className,
       )}
@@ -40,11 +40,11 @@ export function AppBarLanding() {
 
   return (
     <ColumnLayout
-      className="bg-napari-primary p-6 screen-495:p-12"
+      className="bg-napari-primary p-sds-xl screen-495:p-12"
       classes={{
         // Use 3-column layout instead of 4-column.
         fourColumn: 'screen-1150:grid-cols-napari-3',
-        gap: 'gap-x-6 screen-495:gap-x-12',
+        gap: 'gap-x-sds-xl screen-495:gap-x-12',
       }}
       component="header"
     >
@@ -70,7 +70,7 @@ export function AppBarLanding() {
       <div
         className={clsx(
           'grid grid-cols-[min-content,1fr]',
-          'gap-6 screen-655:gap-12',
+          'gap-sds-xl  screen-655:gap-12',
           'col-span-2 screen-875:col-span-3',
           'screen-1425:col-start-2',
           'items-center',
@@ -78,7 +78,7 @@ export function AppBarLanding() {
       >
         <Hub className={styles.logo} />
 
-        <List className="ml-7">
+        <List className="ml-sds-xl">
           <li>{t('homePage:appBar.discover')}</li>
           <li>{t('homePage:appBar.learnHow')}</li>
 
@@ -90,8 +90,8 @@ export function AppBarLanding() {
       </div>
 
       {/* Render as separate list so that it renders below everything on smaller screens. */}
-      <div className="screen-725:hidden">
-        <List className="col-span-2 px-6 mt-4">
+      <div className="col-span-2 screen-725:hidden">
+        <List className="px-sds-xl mt-sds-l">
           <li>{t('homePage:appBar.share')}</li>
         </List>
       </div>

@@ -73,8 +73,8 @@ function FilterForm(props: Props) {
       className={clsx(
         'grid grid-cols-1',
         'screen-600:grid-cols-2 screen-875:grid-cols-1',
-        'space-y-4',
-        'px-2 screen-875:px-0',
+        'space-y-sds-l',
+        'px-sds-s screen-875:px-0',
       )}
     >
       {/* Only show label on larger screens. This is because the Accordion already includes a title. */}
@@ -86,7 +86,7 @@ function FilterForm(props: Props) {
         <ClearAllButton {...props} />
       </div>
 
-      <div className="flex flex-col col-span-2 space-y-2">
+      <div className="flex flex-col col-span-2 space-y-sds-s">
         {filters.map((filterKey) => (
           <PluginComplexFilter key={filterKey} filterKey={filterKey} />
         ))}

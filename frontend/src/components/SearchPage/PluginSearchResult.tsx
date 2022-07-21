@@ -218,7 +218,7 @@ export function PluginSearchResult({
       <article
         data-testid="searchResult"
         className={clsx(
-          'grid gap-x-6 screen-495:gap-x-12',
+          'grid gap-x-sds-xl screen-495:gap-x-12',
           'screen-600:grid-cols-2',
           'screen-1425:grid-cols-napari-3',
         )}
@@ -244,7 +244,7 @@ export function PluginSearchResult({
             </h4>
 
             {isNpe2Enabled && (
-              <span className="mt-[10px] screen-495:mt-3 text-[0.6875rem]">
+              <span className="mt-sds-m screen-495:mt-sds-l text-[0.6875rem]">
                 <SkeletonLoader
                   className="h-12"
                   render={() => renderText(plugin.name, matches.name?.match)}
@@ -255,7 +255,7 @@ export function PluginSearchResult({
             {/* Plugin summary */}
             <p
               className={clsx(
-                isNpe2Enabled ? 'mt-[17px] screen-495:mt-6' : 'mt-2',
+                isNpe2Enabled ? 'mt-sds-xl screen-495:mt-sds-xl ' : 'mt-sds-s',
               )}
               data-testid="searchResultSummary"
             >
@@ -269,13 +269,13 @@ export function PluginSearchResult({
           </div>
 
           {/* Plugin authors */}
-          <ul className="mt-5 text-xs">
+          <ul className="mt-sds-xl text-xs">
             <SkeletonLoader
               render={() =>
                 isArray(plugin.authors) &&
                 plugin.authors.map((author) => (
                   <li
-                    className={clsx(['my-2 font-bold', styles.linkItem])}
+                    className={clsx(['my-sds-s font-bold', styles.linkItem])}
                     key={author.name}
                     data-testid="searchResultAuthor"
                   >
@@ -301,7 +301,7 @@ export function PluginSearchResult({
         </div>
 
         {/* Plugin metadata */}
-        <ul className="mt-4 screen-600:m-0 space-y-1 text-sm">
+        <ul className="mt-sds-l screen-600:m-0 space-y-1 text-sm">
           <SkeletonLoader
             className="h-full"
             render={() =>
@@ -318,7 +318,7 @@ export function PluginSearchResult({
                   </h5>
                   <span
                     className={clsx(
-                      'ml-1',
+                      'ml-sds-xxs',
                       item.value ? 'font-bold' : 'text-napari-gray',
                     )}
                   >
@@ -333,8 +333,8 @@ export function PluginSearchResult({
         {/* Plugin categories */}
         <ul
           className={clsx(
-            'mt-5 text-xs',
-            'flex flex-col gap-2',
+            'mt-sds-xl text-xs',
+            'flex flex-col gap-sds-s',
             'col-span-2 screen-1425:col-span-3',
           )}
         >
@@ -366,7 +366,7 @@ export function PluginSearchResult({
   const resultClassName = clsx(
     className,
     'searchResult',
-    'py-5 border-black border-t-2 last:border-b-2',
+    'py-sds-xl border-black border-t-2 last:border-b-2',
   );
 
   // Convert to link when loading so that user can't click on result.

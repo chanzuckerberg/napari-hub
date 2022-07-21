@@ -78,9 +78,9 @@ function InputDropdown(props: InputDropdownProps) {
   return (
     <Button
       {...props}
-      className="py-2 px-0 text-black w-full flex justify-between"
+      className="py-sds-s px-0 text-black w-full flex justify-between"
       classes={{
-        label: 'border-b border-black pb-2',
+        label: 'border-b border-black pb-sds-s',
       }}
     >
       <span className="font-semibold text-sm">{label}</span>
@@ -284,7 +284,11 @@ export function PluginComplexFilter({ filterKey }: Props) {
         classes: {
           groupLabel:
             'text-[0.875rem] leading-normal text-black font-semibold top-0',
-          root: clsx('px-4', styles.autoComplete, isSearchEnabled && 'mb-3'),
+          root: clsx(
+            'px-sds-l',
+            styles.autoComplete,
+            isSearchEnabled && 'mb-sds-l',
+          ),
           noOptions: 'text-[0.875rem]',
         },
 
@@ -310,8 +314,8 @@ export function PluginComplexFilter({ filterKey }: Props) {
           option: PluginMenuSelectOption,
           { selected }: AutocompleteRenderOptionState,
         ) => (
-          <div className="flex flex-auto justify-between py-1 px-4">
-            <div className="flex space-x-2">
+          <div className="flex flex-auto justify-between py-sds-xxs px-sds-l">
+            <div className="flex space-x-sds-s">
               <CheckboxIcon
                 className="min-w-[0.875rem] min-h-[0.875rem]"
                 checked={selected}
@@ -319,7 +323,7 @@ export function PluginComplexFilter({ filterKey }: Props) {
 
               <p
                 className={clsx(
-                  '-mt-1 text-[0.875rem] break-words leading-normal',
+                  '-mt-sds-xxs text-[0.875rem] break-words leading-normal',
                   selected && 'text-black',
                 )}
               >

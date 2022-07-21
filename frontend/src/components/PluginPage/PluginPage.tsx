@@ -103,7 +103,7 @@ function PluginCenterColumn() {
           leaveDelay={0}
         >
           <Link
-            className="mt-[10px] screen-495:mt-3 text-[0.6875rem] underline"
+            className="mt-sds-m screen-495:mt-sds-l text-[0.6875rem] underline"
             href={`https://pypi.org/project/${plugin?.name}`}
             newTab
           >
@@ -133,7 +133,7 @@ function PluginCenterColumn() {
       />
 
       {/* Plugin categories */}
-      <ul className="mt-5 text-xs flex flex-wrap gap-2">
+      <ul className="mt-sds-xl text-xs flex flex-wrap gap-sds-s">
         <SkeletonLoader
           render={() =>
             plugin?.category_hierarchy &&
@@ -173,7 +173,7 @@ function PluginCenterColumn() {
         <CallToActionButton className="screen-875:hidden" />
 
         <SkeletonLoader
-          className="screen-600:ml-12 screen-1150:ml-0 mt-6 screen-600:mt-0 h-8 w-24"
+          className="screen-600:ml-12 screen-1150:ml-0 mt-sds-xl screen-600:mt-0 h-8 w-24"
           render={() => (
             <a
               className={clsx(
@@ -184,7 +184,7 @@ function PluginCenterColumn() {
                   Top margins: This is used for smaller layouts because the CTA
                   button is above the metadata link.
                 */
-                'mt-6 screen-600:mt-0',
+                'mt-sds-xl screen-600:mt-0',
 
                 /*
                   Left margins: This is used when the CTA and metadata link are
@@ -207,11 +207,11 @@ function PluginCenterColumn() {
       />
 
       <SkeletonLoader
-        className="h-[600px] mb-10"
+        className="h-[600px] mb-sds-xxl"
         render={() => (
           <MetadataHighlighter
             metadataId="metadata-description"
-            className="flex items-center justify-between mb-10"
+            className="flex items-center justify-between mb-sds-xxl"
             highlight={isEmptyDescription}
           >
             <Markdown disableHeader placeholder={isEmptyDescription}>
@@ -223,7 +223,7 @@ function PluginCenterColumn() {
 
       <div className="mb-6 screen-495:mb-12 screen-1150:mb-20">
         <CallToActionButton />
-        {plugin?.citations && <CitationInfo className="mt-10" />}
+        {plugin?.citations && <CitationInfo className="mt-sds-xxl" />}
       </div>
 
       <PluginMetadata
@@ -252,10 +252,10 @@ function PluginRightColumn() {
         <CallToActionButton />
 
         <SkeletonLoader
-          className="h-56 mt-9"
+          className="h-56 mt-sds-xxl"
           render={() => (
             <Markdown.TOC
-              className="mt-9"
+              className="mt-sds-xxl"
               markdown={plugin?.description ?? ''}
               onClick={(section) => {
                 if (plugin?.name) {
@@ -305,7 +305,7 @@ export function PluginPage() {
       {process.env.PREVIEW && <AppBarPreview />}
 
       <ColumnLayout
-        className="p-6 screen-495:p-12 screen-875:px-0"
+        className="p-sds-xl  screen-495:p-12 screen-875:px-0"
         data-testid="pluginDetails"
       >
         <PluginLeftColumn />

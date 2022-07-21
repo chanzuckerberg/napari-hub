@@ -64,7 +64,7 @@ export function MetadataList({
               'font-bold whitespace-nowrap',
 
               // Render title inline with values.
-              inline && 'inline mr-2',
+              inline && 'inline mr-sds-s',
             )}
           >
             {label}:
@@ -79,7 +79,7 @@ export function MetadataList({
 
               // Vertical and horizontal spacing.
               (inline || inlineList) && [
-                'inline space-y-2',
+                'inline space-y-sds-s',
                 empty && 'flex-grow',
                 styles.inline,
               ],

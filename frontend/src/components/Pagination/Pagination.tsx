@@ -46,7 +46,7 @@ export function Pagination({
           'focus-visible:bg-napari-hover-gray hover:bg-napari-hover-gray',
 
           isDisabled && 'opacity-0 cursor-default',
-          type === 'left' ? 'mr-2' : 'ml-2',
+          type === 'left' ? 'mr-sds-s' : 'ml-sds-xxs',
         )}
         data-testid={`pagination${upperFirst(type)}`}
         disabled={isDisabled}
@@ -73,7 +73,7 @@ export function Pagination({
 
       <span className={styles.value} data-testid="paginationValue">
         <span className={PAGE_VALUE_CLASSES}>{page}</span>
-        <span className="mx-4">/</span>
+        <span className="mx-sds-l">/</span>
         <span className={PAGE_VALUE_CLASSES}>{totalPages}</span>
       </span>
 

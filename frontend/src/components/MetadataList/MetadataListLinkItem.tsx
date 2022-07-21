@@ -35,7 +35,7 @@ export function MetadataListLinkItem({
   const { plugin } = usePluginState();
   const { inline } = useMetadataContext();
 
-  const itemClassName = 'ml-2 -mt-1 flex-grow';
+  const itemClassName = 'ml-sds-xxs -mt-sds-xxs flex-grow';
   const internalLink = !isExternalUrl(href);
 
   return (
@@ -56,7 +56,7 @@ export function MetadataListLinkItem({
 
             // Add extra margins for non-highlighted boxes so that they don't
             // overlap with highlighted boxes.
-            href ? 'ml-3' : 'ml-2',
+            href ? 'ml-sds-l ' : 'ml-sds-xxs',
           ],
         ],
       )}

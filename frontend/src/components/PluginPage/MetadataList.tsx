@@ -40,11 +40,11 @@ function MetadataListItem({ inline, title, values }: MetadataListItemProps) {
   const isEmpty = values.filter(Boolean).length === 0;
 
   return (
-    <li className="mb-4 text-sm">
+    <li className="mb-sds-l text-sm">
       <h4
         className={clsx(
           // Inline styles
-          inline ? 'inline mr-2' : 'block mb-2',
+          inline ? 'inline mr-sds-s' : 'block mb-sds-s',
 
           // Font
           'font-bold whitespace-nowrap',
@@ -56,7 +56,12 @@ function MetadataListItem({ inline, title, values }: MetadataListItemProps) {
         {title}:
       </h4>
 
-      <ul className={clsx('list-none space-y-5', inline ? 'inline' : 'block')}>
+      <ul
+        className={clsx(
+          'list-none space-y-sds-xl ',
+          inline ? 'inline' : 'block',
+        )}
+      >
         {isEmpty && (
           <li
             // Preview orange overlay if isValueEmpty is true
@@ -101,7 +106,7 @@ function MetadataListItem({ inline, title, values }: MetadataListItemProps) {
                   {iconNode}
 
                   <Link
-                    className="ml-2 underline inline -mt-1"
+                    className="ml-sds-xxs underline inline -mt-sds-xxs"
                     href={value.href}
                     newTab={!internalLink}
                     onClick={
@@ -131,7 +136,7 @@ function MetadataListItem({ inline, title, values }: MetadataListItemProps) {
                   {iconNode}
 
                   <Tooltip placement="right" title="Information not submitted">
-                    <span className="ml-2 cursor-not-allowed -mt-1">
+                    <span className="ml-sds-xxs cursor-not-allowed -mt-sds-xxs">
                       {value.text}
                     </span>
                   </Tooltip>

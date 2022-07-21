@@ -3,37 +3,37 @@
 exports[`<Footer /> should match snapshot 1`] = `
 <DocumentFragment>
   <div
-    class="grid grid-cols-2 screen-655:grid-cols-[1fr,min-content] screen-1150:grid-cols-[1fr,max-content,min-content] gap-4 bg-napari-primary p-6 screen-495:px-12"
+    class="grid grid-cols-2 screen-655:grid-cols-[1fr,min-content] screen-1150:grid-cols-[1fr,max-content,min-content] gap-sds-l bg-napari-primary p-sds-xl  screen-495:px-12"
   >
     <div
       class="w-full flex-1 flex flex-row items-center justify-start mb-6 screen-655:mb-0 screen-655:mr-12"
     >
       <a
-        class="whitespace-nowrap font-semibold text-sm mr-6 last:mr-0"
+        class="whitespace-nowrap font-semibold text-sm mr-sds-xl last:mr-0"
         href="/about"
       >
         About
       </a>
       <a
-        class="whitespace-nowrap font-semibold text-sm mr-6 last:mr-0"
+        class="whitespace-nowrap font-semibold text-sm mr-sds-xl last:mr-0"
         href="/faq"
       >
         FAQ
       </a>
       <a
-        class="whitespace-nowrap font-semibold text-sm mr-6 last:mr-0"
+        class="whitespace-nowrap font-semibold text-sm mr-sds-xl last:mr-0"
         href="/privacy"
       >
         Privacy
       </a>
       <a
-        class="whitespace-nowrap font-semibold text-sm mr-6 last:mr-0"
+        class="whitespace-nowrap font-semibold text-sm mr-sds-xl last:mr-0"
         href="/contact"
       >
         Contact
       </a>
       <a
-        class="whitespace-nowrap font-semibold text-sm flex flex-row items-center mr-6 last:mr-0"
+        class="whitespace-nowrap font-semibold text-sm flex flex-row items-center mr-sds-xl last:mr-0"
         href="https://github.com/chanzuckerberg/napari-hub"
         rel="noreferrer"
         target="_blank"
@@ -63,7 +63,7 @@ exports[`<Footer /> should match snapshot 1`] = `
       class="flex flex-row justify-end row-start-3 col-start-2 screen-655:row-start-2 screen-655:col-start-2 screen-1150:row-start-1 screen-1150:col-start-3"
     >
       <a
-        class="mr-2"
+        class="mr-sds-s"
         href="https://napari.org"
         rel="noreferrer"
         target="_blank"
@@ -200,7 +200,7 @@ exports[`<Footer /> should match snapshot 1`] = `
         class="border-r-[1px] border-black"
       />
       <a
-        class="ml-2"
+        class="ml-sds-xxs"
         href="https://chanzuckerberg.com"
         rel="noreferrer"
         target="_blank"
