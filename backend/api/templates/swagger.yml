@@ -132,7 +132,7 @@ paths:
                 $ref: '#/components/schemas/Shield'
   /manifest/{name}:
     get:
-      summary: Get the manifest file for plugin. Schema here https://napari.org/plugins/manifest.html
+      summary: Get the manifest file for plugin. Schema here https://napari.org/stable/plugins/manifest.html
       tags:
         - manifest
       parameters:
