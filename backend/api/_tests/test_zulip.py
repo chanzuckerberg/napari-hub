@@ -3,7 +3,7 @@ import unittest
 from unittest.mock import patch
 
 from requests import HTTPError
-from backend.api.zulip import get_release_notes_from, generate_release_notes_and_link_to_release, create_message, send_zulip_message
+from backend.api.zulip import create_github_endpoint, get_owner_and_name, get_release_notes, generate_release_notes_and_link_to_release, create_message, send_zulip_message
 from utils.test_utils import (
     FakeResponse, github_api_response, github_api_response_no_body,
     metadata_if_code_repository_exists, list_of_demo_plugins, response_with_release_notes, response_without_release_notes,
@@ -16,7 +16,7 @@ from utils.test_utils import (
     list_of_demo_plugins_no_version_change, existing_demo_plugins_version_unchanged, currently_used_plugins_no_version_change
     )
 
-def mocked_requests_get_release_notes_from_with_release_no_v_update(*args, **kwargs):
+def mocked_requests_get_release_notes_with_release_no_v_update(*args, **kwargs):
     """
     Helps create mock responses getting release notes
     Else returns response with no data 
@@ -27,7 +27,7 @@ def mocked_requests_get_release_notes_from_with_release_no_v_update(*args, **kwa
         return FakeResponse(data=response_with_release_notes)
     return FakeResponse(data=response_without_release_notes)
 
-def mocked_requests_get_release_notes_from_with_release_v_update(*args, **kwargs):
+def mocked_requests_get_release_notes_with_release_v_update(*args, **kwargs):
     """
     Helps create mock responses getting release notes
     Else returns response with no data 
@@ -40,39 +40,49 @@ def mocked_requests_get_release_notes_from_with_release_v_update(*args, **kwargs
 
 class TestZulip(unittest.TestCase):
 
-    # these tests test the get_release_notes_from(endpoint) method
+    def test_get_owner_and_name_works(self):
+        owner_and_name = get_owner_and_name('https://github.com/author/plugin')
+        assert owner_and_name == 'author/plugin'
+
+    def test_create_github_endpoint(self):
+        endpoint = create_github_endpoint('author/plugin', '0.0.1', with_v = False)
+        assert endpoint == 'https://api.github.com/repos/author/plugin/releases/tags/0.0.1'
+        endpoint = create_github_endpoint('author/plugin', '0.0.1', with_v = True)
+        assert endpoint == 'https://api.github.com/repos/author/plugin/releases/tags/v0.0.1'
+
+    # these tests test the get_release_notes(endpoint) method
     @patch(
         'requests.get', return_value=FakeResponse(data=github_api_response)
     )
-    def test_get_release_notes_from_works(self, mock_get):
+    def test_get_release_notes_works(self, mock_get):
         """
-        Checks that get_release_notes_from can get release notes from github api response
+        Checks that get_release_notes can get release notes from github api response
         """
-        result = get_release_notes_from("mock_endpoint")
+        result = get_release_notes("mock_endpoint")
         assert result == "Description of the release"
 
     @patch(
         'requests.get', return_value=FakeResponse(data=github_api_response_no_body)
     )
-    def test_get_release_notes_from_handles_lack_of_body(self, mock_get):
+    def test_get_release_notes_handles_lack_of_body(self, mock_get):
         """
-        Checks that get_release_notes_from can return an empty string if github api response does not include a description
+        Checks that get_release_notes can return an empty string if github api response does not include a description
         """
-        result = get_release_notes_from("mock_endpoint")
+        result = get_release_notes("mock_endpoint")
         assert result == ''
 
     @patch(
         'requests.get', side_effect=HTTPError()
     )
-    def test_get_release_notes_from_handles_errors(self, mock_get):
+    def test_get_release_notes_handles_errors(self, mock_get):
         """
-        Checks that get_release_notes_from can return an empty string if the request errors
+        Checks that get_release_notes can return an empty string if the request errors
         """
-        result = get_release_notes_from("mock_endpoint")
+        result = get_release_notes("mock_endpoint")
         assert result == ''
 
     # these tests test the logic that goes into creating messages for the zulip bot to send
-    @patch('requests.get', side_effect=mocked_requests_get_release_notes_from_with_release_no_v_update)
+    @patch('requests.get', side_effect=mocked_requests_get_release_notes_with_release_no_v_update)
     def test_create_correct_message_with_release_no_v_update(self, mock_get):
         """
         Test situation where package has release notes, and it's version doesn't have v for both new and existing packages
@@ -95,7 +105,7 @@ class TestZulip(unittest.TestCase):
         # check that we used all the plugins we wanted to 
         assert plugins_used_in_test == currently_used_plugins
 
-    @patch('requests.get', side_effect=mocked_requests_get_release_notes_from_with_release_v_update)
+    @patch('requests.get', side_effect=mocked_requests_get_release_notes_with_release_v_update)
     def test_create_correct_message_with_release_v_update(self, mock_get):
         """
         Test situation where package has release notes, and its version has a v for both new and existing packages
