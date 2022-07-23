@@ -640,8 +640,7 @@ test_link_to_napari = {
 
 message_no_release_notes = {
   "napari-demo": f'A new version of [{test_package_existing}](https://napari-hub.org/plugins/{test_package_existing}) is available on the ' \
-                 f'napari hub! '\
-                 + empty_release_notes, 
+                 f'napari hub! Check out [0.0.1](https://napari-hub.org/plugins/{test_package_existing})!', 
   "new-napari-plugin": f'A new plugin has been published on the napari hub! ' \
-                    f'Check out [{test_package_new}](https://napari-hub.org/plugins/{test_package_new})!' 
+                    f'Check out [{test_package_new}](https://napari-hub.org/plugins/{test_package_new}) with version [{test_version_new}](https://napari-hub.org/plugins/{test_package_new})!' 
   }

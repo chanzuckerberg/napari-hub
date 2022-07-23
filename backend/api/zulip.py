@@ -55,16 +55,16 @@ def create_message(package: str, version: str, existing_packages: Dict[str, str]
     if package not in existing_packages:
         release_notes, link_to_release = generate_release_notes_and_link_to_release(package, version, packages_metadata)
         if not release_notes:
-            message_add_on = ''
+            message_add_on = f' with version {link_to_release}!'
         else:
-            message_add_on = f'\nAlso check out its release notes for version {link_to_release}:{message_separator}{release_notes}'
+            message_add_on = f'!\nAlso check out its release notes for version {link_to_release}:{message_separator}{release_notes}'
         message = f'A new plugin has been published on the napari hub! ' \
-                    f'Check out [{package}](https://napari-hub.org/plugins/{package})!{message_add_on}'
+                    f'Check out [{package}](https://napari-hub.org/plugins/{package}){message_add_on}'
     # handles case with updating plugins
     elif existing_packages[package] != version:
         release_notes, link_to_release = generate_release_notes_and_link_to_release(package, version, packages_metadata)
         if not release_notes:
-            message_add_on = ''
+            message_add_on = f'Check out {link_to_release}!'
         else:
             message_add_on = f'Check out the release notes for {link_to_release}:{message_separator}{release_notes}'
         message = f'A new version of [{package}](https://napari-hub.org/plugins/{package}) is available on the ' \
