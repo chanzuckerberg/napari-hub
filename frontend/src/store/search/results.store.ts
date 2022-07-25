@@ -42,11 +42,13 @@ export function getResultsStore(
 
       // Return full list of plugins if the engine or query aren't defined.
       if (!query) {
-        results = index.map<SearchResult>((plugin, pluginIndex) => ({
-          plugin,
-          index: pluginIndex,
-          matches: {},
-        }));
+        results = index
+          .filter((plugin) => !!plugin.name)
+          .map<SearchResult>((plugin, pluginIndex) => ({
+            plugin,
+            index: pluginIndex,
+            matches: {},
+          }));
       } else {
         const { duration, result } = measureExecution(() =>
           searchStore.search.search(),
