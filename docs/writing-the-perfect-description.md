@@ -28,16 +28,16 @@ The best plugin descriptions start with a clear summary of the plugin that lets 
 
 Things to consider:
 
-- Who is this plugin for? Is it for cell biologists or neuroscientists? For Python novices or folks with advanced computational experience?
-- What kind of data does this plugin work on? 2D or 3D? Time series? Multichannel? If your plugin provides a reader or writer, what file types does it support?
-- What makes your plugin different from other plugins that do similar things? Is it faster? More robust?
+- WHO: Who is this plugin for? Is it for cell biologists or neuroscientists? For Python novices or folks with advanced computational experience?
+- WHAT: What kind of data does this plugin work on? 2D or 3D? Time series? Multichannel? If your plugin provides a reader or writer, what file types does it support?
+- WHY: What problems can this plugin solve? What makes your plugin different from other plugins that do similar things, if they exist? Is it faster? More robust?
 
 For example, see the [affinder summary](https://github.com/jni/affinder/blob/master/.napari-hub/DESCRIPTION.md#description)
 
 ### An example or "quick start"
 
 A quick start guide can help users get a sense of how your plugin works without even having to install it.
-Include images, GIFs, or video so they can see exactly what your plugin does.
+Include images, GIFs, or videos so they can see exactly what your plugin does.
 
 [Include some sample data with your plugin](https://napari.org/plugins/stable/hook_specifications.html#napari.plugins.hook_specifications.napari_provide_sample_data) and they can follow along when they first try your plugin!
 
