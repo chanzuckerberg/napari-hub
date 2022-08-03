@@ -48,16 +48,18 @@ def get_plugin_pypi_metadata(plugin: str, version: str) -> dict:
     :param version: version of the plugin
     :return: metadata dict for the plugin, empty if not found
     """
-    if version:
-        url = f"https://pypi.org/pypi/{plugin}/{version}/json"
-    else:
-        url = f"https://pypi.org/pypi/{plugin}/json"
-        
+    # versioned url https://pypi.org/pypi/{plugin}/{version}/json does not track history anymore.
+    # see https://github.com/chanzuckerberg/napari-hub/issues/598
+    url = f"https://pypi.org/pypi/{plugin}/json"
+
     try:
         response = requests.get(url)
         if response.status_code != requests.codes.ok:
             response.raise_for_status()
         info = format_plugin(json.loads(response.text.strip()))
+        if version and info['version'] != version:
+            print(f"Index Error: Skipping {plugin}:{version}, mismatching PyPI version {info['version']}")
+            return {}
         return info
     except HTTPError:
         return {}
