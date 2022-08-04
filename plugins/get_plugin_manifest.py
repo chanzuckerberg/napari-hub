@@ -73,23 +73,3 @@ def generate_manifest(event, context):
             Key=key
         )
         s3_client.put_object(Body=s3_body, Bucket=bucket, Key=key)
-
-
-def failure_handler(event, context):
-    """
-    Inspects the manifest json file of the plugin, and if process_count is in the json file, then the method
-    increments the value of process_count in the json file, then write to designated location on s3.
-    """
-    manifest_path = event['requestPayload']['Records'][0]['s3']['object']['key']
-    bucket = event['requestPayload']['Records'][0]['s3']['bucket']['name']
-    response = s3.get_object(Bucket=bucket, Key=manifest_path)
-    myBody = response["Body"]
-    body_dict = json.loads(myBody.read().decode("utf-8"))
-    s3_client = boto3.client('s3')
-    if 'process_count' in body_dict:
-        response = s3_client.delete_object(
-            Bucket=bucket,
-            Key=manifest_path
-        )
-        body_dict['process_count'] += 1
-        s3_client.put_object(Body=json.dumps(body_dict), Bucket=bucket, Key=manifest_path)

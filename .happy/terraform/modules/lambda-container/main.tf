@@ -50,9 +50,4 @@ resource "aws_lambda_function_event_invoke_config" "this" {
 
   function_name = var.function_name
 
-  destination_config {
-    on_failure {
-      destination = var.destination_on_failure
-    }
-  }
 }

@@ -116,9 +116,3 @@ variable create_async_event_config {
   description = "Controls whether async event configuration for Lambda Function/Alias should be created"
   default     = false
 }
-
-variable destination_on_failure {
-  type        = string
-  description = "Amazon Resource Name (ARN) of the destination resource for failed asynchronous invocations"
-  default     = null
-}
