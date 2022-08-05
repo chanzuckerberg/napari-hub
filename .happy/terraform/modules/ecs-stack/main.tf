@@ -142,11 +142,16 @@ module plugins_lambda {
   }
 
   log_retention_in_days = 14
-  timeout               = 900
+  timeout               = 300
   memory_size           = 10240
   ephemeral_storage_size = 10240
-  maximum_retry_attempts = 0
+
   create_async_event_config = true
+  attach_async_event_policy = true
+
+  maximum_event_age_in_seconds = 300
+  maximum_retry_attempts       = 0
+
 }
 
 module api_gateway_proxy_stage {
@@ -225,7 +230,7 @@ data aws_iam_policy_document plugins_policy {
 
     resources = ["${local.data_bucket_arn}/*"]
   }
-  
+
 }
 
 resource aws_iam_role_policy policy {

@@ -111,8 +111,3 @@ variable description {
   default = ""
 }
 
-variable create_async_event_config {
-  type        = bool
-  description = "Controls whether async event configuration for Lambda Function/Alias should be created"
-  default     = false
-}
