@@ -225,14 +225,7 @@ data aws_iam_policy_document plugins_policy {
 
     resources = ["${local.data_bucket_arn}/*"]
   }
-
-  statement {
-    actions = [
-      "lambda:InvokeFunction",
-      "lambda:InvokeAsync",
-    ]
-
-  }
+  
 }
 
 resource aws_iam_role_policy policy {
