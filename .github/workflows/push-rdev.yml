@@ -1,6 +1,8 @@
 name: Push Remote Dev
 
 on:
+  pull_request:
+    types: [labeled, unlabeled]
   push:
     branches:
       - 'dev-*'
@@ -19,8 +21,66 @@ jobs:
   create-update-dev:
     name: deploy dev branch
     runs-on: ubuntu-latest
-    if: github.repository == 'chanzuckerberg/napari-hub'
+    if: |
+      ${{
+        github.repository == 'chanzuckerberg/napari-hub' && (
+          github.event_name == 'push' ||
+          github.event_name == 'delete' ||
+          (github.event_name == 'labeled' && github.event.label.name == 'deploy-dev') ||
+          (github.event_name == 'unlabeled' && github.event.label.name == 'deploy-dev')
+        )
+      }}
     steps:
+      - name: Find deploy comment
+        uses: peter-evans/find-comment@v2
+        id: deploy
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: hub dev deployment
+
+      - name: Set up docker build environment
+        run: |
+          if [[ ${#GITHUB_REF_NAME} -gt 32 ]]; then
+            echo "branch name: ${GITHUB_REF_NAME}, length ${#GITHUB_REF_NAME}, is $((${#GITHUB_REF_NAME} - 32)) characters too long, please use a branch name that's 32 characters or shorter"
+            echo INVALID_NAME=true
+          else
+            echo STACK_NAME=${GITHUB_REF_NAME} >> $GITHUB_ENV
+          fi
+
+      - name: Post invalid name comment
+        if: ${{ env.INVALID_NAME == 'true' }}
+        uses: peter-evans/create-or-update-comment@v2
+        with:
+          edit-mode: replace
+          comment-id: ${{ steps.fc.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            # hub dev deployment
+
+            Branch name is too long for deployment. Please use a name that is at most 32 characters.
+
+      - name: Exit if invalid name
+        run: |
+          if [[ ${INVALID_NAME} = true ]]; then
+            exit -1
+          else
+            echo STACK_NAME=${GITHUB_REF_NAME} >> $GITHUB_ENV
+          fi
+
+      - name: Post deploy started comment
+        uses: peter-evans/create-or-update-comment@v2
+        with:
+          edit-mode: replace
+          comment-id: ${{ steps.fc.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            # hub dev deployment
+
+            | URL                                                                 | Status       |
+            | ------------------------------------------------------------------- | ------------ |
+            | https://${{ github.event.ref }}-frontend.dev.imaging.cziscience.com | Deploying ⏳ |
+
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -29,18 +89,12 @@ jobs:
           aws-region: us-west-2
           role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
           role-duration-seconds: 900
+
       - name: Login to ECR
         uses: docker/login-action@v1
         with:
           registry: ${{ secrets.ECR_REPO }}
-      - name: Set up docker build environment
-        run: |
-          if [[ ${#GITHUB_REF_NAME} -gt 32 ]]; then
-            echo "branch name: ${GITHUB_REF_NAME}, length ${#GITHUB_REF_NAME}, is $((${#GITHUB_REF_NAME} - 32)) characters too long, please use a branch name that's 32 characters or shorter"
-            exit 1
-          else
-            echo STACK_NAME=${GITHUB_REF_NAME} >> $GITHUB_ENV
-          fi
+
       - name: Create update dev
         if: ${{ github.event_name == 'push' }}
         uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.4.0
@@ -52,8 +106,27 @@ jobs:
           tag: ${{ env.STACK_NAME }}
           tfe-token: ${{ secrets.TFE_TOKEN }}
           env: 'dev'
+
+      - name: Post deploy created comment
+        if: ${{ github.event_name == 'push' || github.event_name == 'labeled' }}
+        uses: peter-evans/create-or-update-comment@v2
+        with:
+          edit-mode: replace
+          comment-id: ${{ steps.fc.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            # hub dev deployment
+
+            | URL                                                                 | Status       |
+            | ------------------------------------------------------------------- | ------------ |
+            | https://${{ github.event.ref }}-frontend.dev.imaging.cziscience.com | Deployed ✅  |
+
       - name: Delete dev
-        if: ${{ github.event_name == 'delete' && startsWith(github.event.ref, 'dev-') }}
+        if: |
+          ${{
+            (github.event_name == 'delete' && startsWith(github.event.ref, 'dev-')) ||
+            github.event_name == 'unlabeled'
+          }}
         uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.4.0
         env:
           ENV: dev
@@ -62,3 +135,17 @@ jobs:
           operation: 'delete'
           tfe-token: ${{ secrets.TFE_TOKEN }}
           env: 'dev'
+
+      - name: Post deploy started comment
+        if: ${{ github.event_name == 'push' || github.event_name == 'labeled' }}
+        uses: peter-evans/create-or-update-comment@v2
+        with:
+          edit-mode: replace
+          comment-id: ${{ steps.fc.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            # hub dev deployment
+
+            | URL                                                                 | Status       |
+            | ------------------------------------------------------------------- | ------------ |
+            | https://${{ github.event.ref }}-frontend.dev.imaging.cziscience.com | Deleted ♻️    |
