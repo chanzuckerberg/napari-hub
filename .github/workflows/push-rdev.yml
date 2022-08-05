@@ -38,7 +38,7 @@ jobs:
           if [[ ${#GITHUB_REF_NAME} -gt 32 ]]; then
             echo "branch name: ${GITHUB_REF_NAME}, length ${#GITHUB_REF_NAME}, is $((${#GITHUB_REF_NAME} - 32)) characters too long, please use a branch name that's 32 characters or shorter"
             exit 1
-          else 
+          else
             echo STACK_NAME=${GITHUB_REF_NAME} >> $GITHUB_ENV
           fi
       - name: Create update dev
@@ -48,10 +48,10 @@ jobs:
           ENV: dev
         with:
           stack-name: ${{ env.STACK_NAME }}
-          create-tag: "true"
+          create-tag: 'true'
           tag: ${{ env.STACK_NAME }}
           tfe-token: ${{ secrets.TFE_TOKEN }}
-          env: "dev"
+          env: 'dev'
       - name: Delete dev
         if: ${{ github.event_name == 'delete' && startsWith(github.event.ref, 'dev-') }}
         uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.4.0
@@ -59,6 +59,6 @@ jobs:
           ENV: dev
         with:
           stack-name: ${{ github.event.ref }}
-          operation: "delete"
+          operation: 'delete'
           tfe-token: ${{ secrets.TFE_TOKEN }}
-          env: "dev"
+          env: 'dev'
