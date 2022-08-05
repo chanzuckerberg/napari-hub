@@ -4,8 +4,8 @@ from apig_wsgi import make_lambda_handler
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
 from flask import Flask, Response, jsonify, render_template
 from flask_githubapp.core import GitHubApp
-import yaml
 
+from api.collections import get_collections
 from api.model import get_public_plugins, get_index, get_plugin, get_excluded_plugins, update_cache, \
     move_artifact_to_s3, get_category_mapping, get_categories_mapping, get_manifest, get_installs, get_installs_stats, \
     update_activity_data
@@ -124,6 +124,10 @@ def get_plugin_installs(plugin: str) -> Response:
 @app.route('/activity/<plugin>/stats')
 def get_plugin_installs_stats(plugin: str) -> Response:
     return jsonify(get_installs_stats(plugin))
+
+@app.route('/collections')
+def collections() -> Response:
+    return get_collections()
 
 
 @app.errorhandler(404)
