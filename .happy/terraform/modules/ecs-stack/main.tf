@@ -146,12 +146,6 @@ module plugins_lambda {
   memory_size           = 10240
   ephemeral_storage_size = 10240
 
-  create_async_event_config = true
-  attach_async_event_policy = true
-
-  maximum_event_age_in_seconds = 300
-  maximum_retry_attempts       = 0
-
 }
 
 module api_gateway_proxy_stage {
@@ -280,4 +274,10 @@ resource aws_lb_listener_certificate cert {
   depends_on      = [aws_acm_certificate_validation.cert]
   listener_arn    = local.frontend_listener_arn
   certificate_arn = aws_acm_certificate.cert.arn
+}
+
+resource "aws_lambda_function_event_invoke_config" "async-config" {
+  function_name                = module.plugins_lambda.function_name
+  maximum_event_age_in_seconds = 500
+  maximum_retry_attempts       = 0
 }
