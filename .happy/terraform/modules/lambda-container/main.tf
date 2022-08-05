@@ -43,3 +43,11 @@ data "aws_ecr_image" "image" {
   repository_name = split("/", var.image_repo)[1]
   image_tag       = var.image_tag
 }
+
+# worked around unfixed issue https://github.com/terraform-aws-modules/terraform-aws-lambda/issues/263
+resource "aws_lambda_function_event_invoke_config" "this" {
+  function_name = var.function_name
+  maximum_event_age_in_seconds = 60
+  maximum_retry_attempts       = 0
+
+}
