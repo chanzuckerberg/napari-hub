@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 import { AnimateSharedLayout, motion } from 'framer-motion';
 
+import { useIsFeatureFlagEnabled } from '@/store/featureFlags';
 import { FilterKey } from '@/store/search/search.store';
-import { useIsFeatureFlagEnabled } from '@/utils/featureFlags';
 
 import { PluginFilterByForm } from './PluginFilterByForm';
 import { PluginSortByForm } from './PluginSortByForm';
@@ -15,13 +15,8 @@ export function PluginSearchControls() {
     <motion.hr layout className="bg-black h-1 my-6 hidden screen-875:block" />
   );
 
-  const isCategoryFiltersEnabled = useIsFeatureFlagEnabled('categoryFilters');
   const isNpe2Enabled = useIsFeatureFlagEnabled('npe2');
-  const requirementFilters: FilterKey[] = [];
-
-  if (isCategoryFiltersEnabled) {
-    requirementFilters.push('supportedData');
-  }
+  const requirementFilters: FilterKey[] = ['supportedData'];
 
   if (isNpe2Enabled) {
     requirementFilters.push(
@@ -53,18 +48,14 @@ export function PluginSearchControls() {
 
         {divider}
 
-        {isCategoryFiltersEnabled && (
-          <>
-            <motion.div layout>
-              <PluginFilterByForm
-                filterType="category"
-                filters={['workflowStep', 'imageModality']}
-              />
-            </motion.div>
+        <motion.div layout>
+          <PluginFilterByForm
+            filterType="category"
+            filters={['workflowStep', 'imageModality']}
+          />
+        </motion.div>
 
-            {divider}
-          </>
-        )}
+        {divider}
 
         <motion.div layout>
           <PluginFilterByForm

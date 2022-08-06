@@ -2,8 +2,8 @@ import { isArray, isEmpty, isString } from 'lodash';
 import { useTranslation } from 'next-i18next';
 
 import { MetadataId, MetadataKeys, usePluginMetadata } from '@/context/plugin';
+import { useIsFeatureFlagEnabled } from '@/store/featureFlags';
 import { I18nPreviewSection } from '@/types/i18n';
-import { useIsFeatureFlagEnabled } from '@/utils/featureFlags';
 
 export interface MetadataSectionField {
   id: MetadataId;

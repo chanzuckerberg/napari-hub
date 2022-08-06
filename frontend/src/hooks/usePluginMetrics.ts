@@ -1,8 +1,8 @@
 import { AxiosError } from 'axios';
 import { useQuery, UseQueryOptions } from 'react-query';
 
+import { useIsFeatureFlagEnabled } from '@/store/featureFlags';
 import { PluginMetrics } from '@/types/stats';
-import { useIsFeatureFlagEnabled } from '@/utils/featureFlags';
 import { hubAPI } from '@/utils/HubAPIClient';
 
 export function usePluginMetrics(
