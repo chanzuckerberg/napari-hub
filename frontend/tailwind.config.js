@@ -2,7 +2,9 @@ const { reduce } = require('lodash');
 const typography = require('@tailwindcss/typography');
 const sds = require('czifui/dist/tailwind.json');
 
-const { breakpoints, colors, fontFamily } = require('./src/theme');
+const { breakpoints } = require('./src/theme/breakpoints');
+const { colors } = require('./src/theme/colors');
+const { fontFamily } = require('./src/theme/fontFamily');
 
 // Add px unit to all breakpoint values.
 const screens = reduce(

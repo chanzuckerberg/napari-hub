@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useMedia } from 'react-use';
 
-import { breakpoints } from '@/theme';
+import { breakpoints } from '@/theme/breakpoints';
 
 type BreakpointKey = keyof typeof breakpoints;
 type Breakpoint = number | BreakpointKey;
@@ -65,5 +65,5 @@ export function useMediaQuery({
     return '';
   }, [around, between, maxWidth, minWidth]);
 
-  return useMedia(query);
+  return useMedia(query, false);
 }

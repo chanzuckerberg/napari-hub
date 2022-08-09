@@ -1,6 +1,6 @@
 const { set } = require('lodash');
 const { createConfig } = require('./createConfig');
-const { breakpoints } = require('../src/theme');
+const { breakpoints } = require('../src/theme/breakpoints');
 
 const isHeadful =
   process.env.HEADFUL === 'true' || process.env.HEADLESS === 'false';

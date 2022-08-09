@@ -1,5 +1,5 @@
 import { SEARCH_PAGE } from '@/store/search/constants';
-import { breakpoints } from '@/theme';
+import { breakpoints } from '@/theme/breakpoints';
 
 /**
  * @returns The first search result name.
