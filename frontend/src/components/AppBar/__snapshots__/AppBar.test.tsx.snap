@@ -26,15 +26,15 @@ exports[`<AppBar /> should match snapshot 1`] = `
         >
           <a
             class="ml-sds-xl"
-            href="/"
+            href="/about"
           >
-            Plugins
+            About
           </a>
           <a
             class="ml-sds-xl"
-            href="/collections"
+            href="/faq"
           >
-            Collections
+            FAQ
           </a>
         </div>
       </nav>
@@ -69,31 +69,27 @@ exports[`<AppBar /> should match snapshot 1`] = `
         />
         <button
           aria-label="Submit search query"
-          class="MuiButtonBase-root MuiIconButton-root"
+          class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeLarge css-mf1cb5-MuiButtonBase-root-MuiIconButton-root"
           data-testid="submitQueryButton"
           tabindex="0"
           type="button"
         >
-          <span
-            class="MuiIconButton-label"
+          <svg
+            class="h-5 w-5"
+            fill="none"
+            height="16"
+            viewBox="0 0 16 16"
+            width="16"
+            xmlns="http://www.w3.org/2000/svg"
           >
-            <svg
-              class="h-5 w-5"
-              fill="none"
-              height="16"
-              viewBox="0 0 16 16"
-              width="16"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M8.32004 7.68001L0.746704 15.2533M10.6667 9.60001C13.0134 9.60001 14.9334 7.68001 14.9334 5.33335C14.9334 2.98668 13.0134 1.06668 10.6667 1.06668C8.32004 1.06668 6.40004 2.98668 6.40004 5.33335C6.40004 7.68001 8.32004 9.60001 10.6667 9.60001Z"
-                stroke="black"
-                stroke-width="2"
-              />
-            </svg>
-          </span>
+            <path
+              d="M8.32004 7.68001L0.746704 15.2533M10.6667 9.60001C13.0134 9.60001 14.9334 7.68001 14.9334 5.33335C14.9334 2.98668 13.0134 1.06668 10.6667 1.06668C8.32004 1.06668 6.40004 2.98668 6.40004 5.33335C6.40004 7.68001 8.32004 9.60001 10.6667 9.60001Z"
+              stroke="black"
+              stroke-width="2"
+            />
+          </svg>
           <span
-            class="MuiTouchRipple-root"
+            class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
           />
         </button>
       </form>
@@ -101,42 +97,38 @@ exports[`<AppBar /> should match snapshot 1`] = `
         class="ml-sds-xl flex screen-600:hidden"
       >
         <button
-          class="MuiButtonBase-root MuiIconButton-root"
+          class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeLarge css-mf1cb5-MuiButtonBase-root-MuiIconButton-root"
           tabindex="0"
           type="button"
         >
-          <span
-            class="MuiIconButton-label"
+          <svg
+            fill="none"
+            height="16"
+            viewBox="0 0 16 16"
+            width="16"
+            xmlns="http://www.w3.org/2000/svg"
           >
-            <svg
-              fill="none"
-              height="16"
-              viewBox="0 0 16 16"
-              width="16"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <title>
-                Icon for opening side menu.
-              </title>
-              <path
-                d="M16 1H0"
-                stroke="black"
-                stroke-width="1.98857"
-              />
-              <path
-                d="M16 7.99924H0"
-                stroke="black"
-                stroke-width="1.98857"
-              />
-              <path
-                d="M16 15H0"
-                stroke="black"
-                stroke-width="1.98857"
-              />
-            </svg>
-          </span>
+            <title>
+              Icon for opening side menu.
+            </title>
+            <path
+              d="M16 1H0"
+              stroke="black"
+              stroke-width="1.98857"
+            />
+            <path
+              d="M16 7.99924H0"
+              stroke="black"
+              stroke-width="1.98857"
+            />
+            <path
+              d="M16 15H0"
+              stroke="black"
+              stroke-width="1.98857"
+            />
+          </svg>
           <span
-            class="MuiTouchRipple-root"
+            class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
           />
         </button>
       </div>
