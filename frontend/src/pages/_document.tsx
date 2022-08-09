@@ -40,7 +40,7 @@ export default class HubDocument extends Document {
     const isPreview = !!process.env.PREVIEW;
 
     return (
-      <Html className={clsx(isPreview && 'preview')} lang="en">
+      <Html id="napari-hub" className={clsx(isPreview && 'preview')} lang="en">
         <Head>
           <meta name="theme-color" content={theme.palette.primary.main} />
           <link

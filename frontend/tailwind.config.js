@@ -25,6 +25,7 @@ module.exports = {
   darkMode: 'media',
   content: ['./src/**/*.{mdx,tsx,scss}'],
   plugins: [typography],
+  important: '#napari-hub',
   theme: {
     screens,
     extend: {
@@ -55,6 +56,22 @@ module.exports = {
         'napari-preview-orange-overlay-active':
           colors.previewOrangeOverlayActive,
         'napari-category-blue': colors.categoryBlue,
+
+        'hub-gray': {
+          100: '#f7f7f7',
+          200: '#eaeaea',
+          300: '#cccccc',
+          400: '#999999',
+          500: '#686868',
+        },
+
+        'hub-primary': {
+          100: '#ecf8ff',
+          200: '#d2efff',
+          400: '#80d1ff',
+          500: '#68c8ff',
+          600: '#686868',
+        },
       },
 
       width: (theme) => ({
