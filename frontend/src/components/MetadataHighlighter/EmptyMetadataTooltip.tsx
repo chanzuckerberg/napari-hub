@@ -1,6 +1,6 @@
-import useTheme from '@material-ui/core/styles/useTheme';
-import Tooltip from '@material-ui/core/Tooltip';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { useTheme } from '@mui/material/styles';
+import Tooltip from '@mui/material/Tooltip';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import clsx from 'clsx';
 import { useTranslation } from 'next-i18next';
 import { useEffect, useMemo } from 'react';
@@ -137,7 +137,6 @@ export function EmptyMetadataTooltip({
         ),
       }}
       placement="bottom"
-      interactive
       title={
         <>
           <h2 className="font-semibold">{metadata[metadataKey].label}</h2>

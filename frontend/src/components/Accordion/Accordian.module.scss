@@ -1,12 +1,14 @@
+/* stylelint-disable selector-class-pattern */
+
 .expandIcon {
   @apply transition-transform;
 
   &.expanded {
-    transform: rotate(90deg);
+    transform: rotate(90deg) !important;
   }
 }
 
-.accordion {
+:global(.MuiPaper-root).accordion {
   &.expanded::before {
     opacity: 1;
   }
@@ -17,7 +19,13 @@
 
   &.expanded + & {
     &::before {
-      display: initial;
+      display: initial !important;
+    }
+  }
+
+  .expandIcon {
+    &.expanded {
+      transform: rotate(136deg) !important;
     }
   }
 }

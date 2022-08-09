@@ -66,6 +66,7 @@ function CreateCollectionButton() {
         'screen-875:row-start-3 screen-1425:row-start-3',
         'text-[11px] screen-495:text-[14px]',
         'screen-1425:col-start-2',
+        'text-black',
       )}
       href="https://github.com/chanzuckerberg/napari-hub-collections"
       onClick={() => plausible('CTA: New Collection')}

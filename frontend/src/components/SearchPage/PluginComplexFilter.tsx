@@ -1,24 +1,30 @@
 import styled from '@emotion/styled';
-import Popper from '@material-ui/core/Popper';
-import { AutocompleteRenderOptionState } from '@material-ui/lab/Autocomplete';
+import { AutocompleteRenderOptionState } from '@mui/material/Autocomplete';
+import IconButton from '@mui/material/IconButton';
 import clsx from 'clsx';
 import {
   Button,
   ComplexFilter,
   DefaultMenuSelectOption,
-  IconButton,
+  DropdownPopper,
   InputDropdownProps,
   Tooltip,
 } from 'czifui';
 import { get, isEqual } from 'lodash';
 import { useTranslation } from 'next-i18next';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import {
+  ComponentProps,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { subscribe, useSnapshot } from 'valtio';
 
 import { CheckboxIcon, ChevronDown, ChevronUp, Info } from '@/components/icons';
 import { useSearchStore } from '@/store/search/context';
 import { FilterKey } from '@/store/search/search.store';
-import { appTheme } from '@/theme';
+import { theme } from '@/theme';
 
 import styles from './PluginComplexFilter.module.scss';
 import { useFilterLabels } from './useFilterLabels';
@@ -51,14 +57,32 @@ interface PluginMenuSelectOption extends DefaultMenuSelectOption {
   tooltip?: string;
 }
 
+function Popper({
+  className,
+  ...props
+}: ComponentProps<typeof DropdownPopper>) {
+  return (
+    <DropdownPopper className={clsx(className, styles.popper)} {...props} />
+  );
+}
+
 const StyledPopper = styled(Popper)`
   background: #fff;
-  box-shadow: ${appTheme.shadows?.[10]};
+  box-shadow: ${theme.shadows[10]};
   display: flex;
   flex-direction: column;
-  max-width: 225px;
   padding: 0.75rem 0;
   width: 100%;
+
+  max-width: calc(100vw - 50px - 8px);
+
+  @media (min-width: 495px) {
+    max-width: calc(100vw - 100px - 16px);
+  }
+
+  @media (min-width: 875px) {
+    max-width: calc(225px);
+  }
 
   .MuiAutocomplete-popper {
     background: #fff;
@@ -76,17 +100,20 @@ function InputDropdown(props: InputDropdownProps) {
   const iconSizeClassName = 'w-4 h-4';
 
   return (
-    <Button
-      {...props}
-      className="py-sds-s px-0 text-black w-full flex justify-between"
-      classes={{
-        label: 'border-b border-black pb-sds-s',
-      }}
-    >
-      <span className="font-semibold text-sm">{label}</span>
-      {sdsStage === 'default' && <ChevronDown className={iconSizeClassName} />}
-      {sdsStage === 'userInput' && <ChevronUp className={iconSizeClassName} />}
-    </Button>
+    <div className="border-b border-black">
+      <Button
+        {...props}
+        className="text-black w-full flex justify-between p-0 pb-2"
+      >
+        <span className="font-semibold text-sm">{label}</span>
+        {sdsStage === 'default' && (
+          <ChevronDown className={iconSizeClassName} />
+        )}
+        {sdsStage === 'userInput' && (
+          <ChevronUp className={iconSizeClassName} />
+        )}
+      </Button>
+    </div>
   );
 }
 
@@ -198,74 +225,12 @@ export function PluginComplexFilter({ filterKey }: Props) {
 
   const isSearchEnabled = SEARCH_ENABLED_FILTERS.has(filterKey);
 
-  // Effect that sets the max width of the tooltip container when it is added to
-  // the DOM. This is required so that the width is only as wide as the filter
-  // component. Otherwise, it would fill the whole screen.
-  // useEffect(() => {
-  //   const observer = new MutationObserver((mutations) =>
-  //     mutations.forEach((mutation) =>
-  //       // Only observe added nodes.
-  //       mutation.addedNodes.forEach((node) => {
-  //         const tooltip = node as HTMLDivElement;
-  //         // Check if current added node is a tooltip
-  //         if (tooltip.getAttribute('role') === 'tooltip') {
-  //           // Flag for if the tooltip is for the current filter.
-  //           const isActiveFilter = !!tooltip.querySelector(
-  //             `[data-filter=${filterKey}]`,
-  //           );
-
-  //           // Get the filter node for the current filter.
-  //           const complexFilterNode =
-  //             isActiveFilter &&
-  //             document.querySelector(
-  //               `[data-complex-filter][data-filter=${filterKey}]`,
-  //             );
-
-  //           if (complexFilterNode) {
-  //             const width = complexFilterNode.clientWidth;
-
-  //             // Set the width of the tooltip to be the same width as the filter
-  //             // component. If the screen width is smaller than 300px, then
-  //             // default to 100% because the tooltip does not fill the screen
-  //             // for sizes <300px.
-  //             tooltip.style.maxWidth =
-  //               window.outerWidth < 300 ? '100%' : `${width}px`;
-
-  //             // Manually set the placeholder of the input component. This
-  //             // workaround is required until props are added to the
-  //             // ComplexFilter component that'll let us pass props to the nested
-  //             // Autocomplete input component.
-  //             const searchInput = tooltip.querySelector('input');
-  //             if (searchInput) {
-  //               searchInput.placeholder = 'search for a category';
-  //             }
-
-  //             // Manually replace the filter input adornment. This workaround is
-  //             // required for the same reasons as above.
-  //             if (filterKey === 'workflowStep') {
-  //               const svgContainer = tooltip.querySelector(
-  //                 '.MuiInputAdornment-root',
-  //               );
-
-  //               if (svgContainer) {
-  //                 render(<Search />, svgContainer);
-  //               }
-  //             }
-  //           }
-  //         }
-  //       }),
-  //     ),
-  //   );
-
-  //   observer.observe(document.body, { childList: true });
-
-  //   return () => observer.disconnect();
-  // }, [filterKey]);
-
   return (
     <ComplexFilter
       className={clsx(
+        'py-2 hover:bg-hub-gray-100',
         styles.complexFilter,
+
         CATEGORY_FILTERS.has(filterKey) && styles.categories,
       )}
       data-testid="pluginFilter"
@@ -280,16 +245,22 @@ export function PluginComplexFilter({ filterKey }: Props) {
         setPendingState(nextOptions as PluginMenuSelectOption[])
       }
       InputDropdownComponent={InputDropdown}
-      MenuSelectProps={{
+      DropdownMenuProps={{
+        PopperBaseProps: {
+          // className: 'bg-red-100',
+        },
+
         classes: {
-          groupLabel:
-            'text-[0.875rem] leading-normal text-black font-semibold top-0',
-          root: clsx(
-            'px-sds-l',
-            styles.autoComplete,
-            isSearchEnabled && 'mb-sds-l',
+          groupLabel: clsx(
+            '!text-sm leading-normal text-black font-semibold top-0 px-2',
+
+            !(filterKey === 'workflowStep' || filterKey === 'authors') &&
+              'hidden',
           ),
-          noOptions: 'text-[0.875rem]',
+
+          root: clsx(styles.autoComplete, isSearchEnabled && 'mb-sds-l'),
+
+          noOptions: 'text-sm',
         },
 
         noOptionsText: 'No categories',
@@ -310,11 +281,19 @@ export function PluginComplexFilter({ filterKey }: Props) {
               return null;
           }
         },
+
         renderOption: (
+          optionProps: Record<string, unknown>,
           option: PluginMenuSelectOption,
           { selected }: AutocompleteRenderOptionState,
         ) => (
-          <div className="flex flex-auto justify-between py-sds-xxs px-sds-l">
+          <div
+            {...optionProps}
+            className={clsx(
+              'flex flex-auto justify-between p-2',
+              'cursor-pointer hover:bg-hub-gray-100',
+            )}
+          >
             <div className="flex space-x-sds-s">
               <CheckboxIcon
                 className="min-w-[0.875rem] min-h-[0.875rem]"
@@ -333,7 +312,7 @@ export function PluginComplexFilter({ filterKey }: Props) {
 
             {option.tooltip && (
               <Tooltip
-                interactive={false}
+                disableInteractive
                 leaveDelay={0}
                 title={
                   <div>

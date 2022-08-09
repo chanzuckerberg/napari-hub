@@ -1,5 +1,40 @@
 /* stylelint-disable selector-class-pattern */
 
+.popper {
+  &:global(.MuiPopperUnstyled-root) {
+    padding: 12px 8px;
+  }
+
+  :global {
+    .MuiAutocomplete-popper .MuiAutocomplete-groupUl {
+      border: 0 !important;
+    }
+
+    div.MuiAutocomplete-popper div.MuiPaper-root,
+    .MuiInputBase-input,
+    .MuiInputBase-root {
+      padding: 0 !important;
+    }
+
+    .MuiInputAdornment-root path {
+      fill: #000;
+    }
+  }
+
+  .autoComplete {
+    @apply px-2;
+
+    > div {
+      @apply p-0 m-0;
+      @apply border-b border-black rounded-none;
+    }
+
+    fieldset {
+      border: 0 !important;
+    }
+  }
+}
+
 div.complexFilter {
   @apply w-full space-y-sds-s;
 
@@ -7,15 +42,26 @@ div.complexFilter {
   // https://v4.mui.com/customization/components/#overriding-styles-with-classes
   :global {
     .MuiChip-root {
-      @apply bg-napari-hover-gray hover:bg-napari-gray max-w-napari-col;
+      background: theme('colors.hub-gray.100') !important;
+
+      // &:hover {
+      //   background: theme('colors.hub-gray.200') !important;
+      // }
+
       @apply rounded-xl;
 
       .MuiChip-label {
-        @apply text-black font-normal text-[0.6875rem];
+        @apply text-black font-semibold;
+
+        font-size: 11px;
       }
 
       .MuiChip-deleteIcon {
-        @apply text-black w-4 h-4;
+        @apply w-4 h-4;
+
+        path {
+          fill: #000;
+        }
       }
     }
   }
@@ -25,12 +71,6 @@ div.complexFilter {
       @apply bg-napari-category-blue hover:bg-napari-hover;
     }
   }
-}
-
-.autoComplete > div {
-  @apply p-0 m-0;
-  @apply border-t-0 border-l-0 border-r-0;
-  @apply border-black rounded-none;
 }
 
 .hiddenInputCaret {

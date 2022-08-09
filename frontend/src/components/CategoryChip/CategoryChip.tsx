@@ -1,6 +1,6 @@
-import Chip, { ChipProps } from '@material-ui/core/Chip';
-import Tooltip from '@material-ui/core/Tooltip';
-import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import Chip, { ChipProps } from '@mui/material/Chip';
+import Tooltip from '@mui/material/Tooltip';
 import clsx from 'clsx';
 import { useTranslation } from 'next-i18next';
 import { ForwardedRef, forwardRef, Fragment, useRef, useState } from 'react';

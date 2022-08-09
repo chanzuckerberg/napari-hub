@@ -3,6 +3,7 @@ export type Styles = {
   categories: string;
   complexFilter: string;
   hiddenInputCaret: string;
+  popper: string;
 };
 
 export type ClassNames = keyof Styles;

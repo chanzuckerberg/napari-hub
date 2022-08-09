@@ -1,7 +1,6 @@
 import { ThemeProvider as EmotionThemeProvider } from '@emotion/react';
-import StylesProvider from '@material-ui/styles/StylesProvider';
-import ThemeProvider from '@material-ui/styles/ThemeProvider';
-import { defaultTheme } from 'czifui';
+import StylesProvider from '@mui/styles/StylesProvider';
+import ThemeProvider from '@mui/styles/ThemeProvider';
 import NextPlausibleProvider from 'next-plausible';
 import { ReactNode, useEffect, useRef } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -54,7 +53,7 @@ function MaterialUIProvider({ children }: ProviderProps) {
   }, []);
 
   return (
-    <EmotionThemeProvider theme={defaultTheme}>
+    <EmotionThemeProvider theme={theme}>
       <ThemeProvider theme={theme}>
         <StylesProvider
           // By default, Material UI will inject styles at the bottom of the

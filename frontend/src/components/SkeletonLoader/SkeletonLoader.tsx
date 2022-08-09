@@ -1,4 +1,4 @@
-import Skeleton from '@material-ui/lab/Skeleton';
+import Skeleton from '@mui/lab/Skeleton';
 import { ReactNode } from 'react';
 
 import { useLoadingState } from '@/context/loading';
@@ -27,7 +27,7 @@ export function SkeletonLoader({ className, render }: Props) {
     <Skeleton
       className={className}
       data-testid="skeleton-loader"
-      variant="rect"
+      variant="rectangular"
     />
   );
 }

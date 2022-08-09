@@ -1,4 +1,4 @@
-import IconButton from '@material-ui/core/IconButton';
+import IconButton from '@mui/material/IconButton';
 import clsx from 'clsx';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
@@ -166,6 +166,7 @@ export function SearchBar({ large, ...props }: Props) {
 
           await submitForm(searchQuery);
         }}
+        size="large"
       >
         {/* Render close button if the user submitted a query. */}
         {query && isSearchPage(currentPathname) ? (

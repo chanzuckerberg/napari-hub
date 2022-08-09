@@ -1,4 +1,4 @@
-import IconButton from '@material-ui/core/IconButton';
+import IconButton from '@mui/material/IconButton';
 import clsx from 'clsx';
 import { useTranslation } from 'next-i18next';
 import { useRef, useState } from 'react';
@@ -75,7 +75,11 @@ export function AppBar() {
 
           {/* Menu button */}
           <div className="ml-sds-xl flex screen-600:hidden">
-            <IconButton onClick={() => setVisible(true)} ref={anchorElRef}>
+            <IconButton
+              onClick={() => setVisible(true)}
+              ref={anchorElRef}
+              size="large"
+            >
               <Menu alt={t('common:alt.sideMenu')} />
             </IconButton>
           </div>

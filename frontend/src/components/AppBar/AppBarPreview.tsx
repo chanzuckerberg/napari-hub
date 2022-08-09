@@ -1,5 +1,5 @@
-import Collapse from '@material-ui/core/Collapse';
-import IconButton from '@material-ui/core/IconButton';
+import Collapse from '@mui/material/Collapse';
+import IconButton from '@mui/material/IconButton';
 import clsx from 'clsx';
 import { useTranslation } from 'next-i18next';
 import { ReactNode, useState } from 'react';
@@ -120,6 +120,7 @@ function AppBarPreviewRightColumn({
     <IconButton
       className="rounded-none"
       onClick={() => setExpanded((prevExpanded) => !prevExpanded)}
+      size="large"
     >
       {expanded ? (
         <ChevronUp className="h-6 w-6" />

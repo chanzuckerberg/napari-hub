@@ -1,6 +1,6 @@
-import Button from '@material-ui/core/Button';
-import { FormHelperTextProps } from '@material-ui/core/FormHelperText';
-import TextField from '@material-ui/core/TextField';
+import Button from '@mui/material/Button';
+import { FormHelperTextProps } from '@mui/material/FormHelperText';
+import TextField from '@mui/material/TextField';
 import clsx from 'clsx';
 import { useTranslation } from 'next-i18next';
 import React, { useRef, useState } from 'react';
@@ -107,6 +107,7 @@ export function SignupForm({ onSubmit, variant = 'default' }: Props) {
             FormHelperTextProps={
               { 'data-testid': 'emailError' } as FormHelperTextProps
             }
+            variant="standard"
           />
           <Button
             type="submit"
@@ -117,7 +118,7 @@ export function SignupForm({ onSubmit, variant = 'default' }: Props) {
             className={clsx(
               'bg-napari-primary',
               // font & colors
-              'text-sm font-semibold',
+              'text-sm font-semibold text-black',
               // sizing
               'h-[35px] col-span-2 screen-495:col-span-1',
             )}

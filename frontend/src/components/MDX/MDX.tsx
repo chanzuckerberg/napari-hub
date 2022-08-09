@@ -1,4 +1,5 @@
 import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
+import { ComponentProps } from 'react';
 
 import { Accordion } from '@/components/Accordion';
 import { LayoutMDX } from '@/components/LayoutMDX';
@@ -7,6 +8,10 @@ import { MDXLinkNode } from './MDXLinkNode';
 
 interface Props {
   mdxSource: MDXRemoteSerializeResult;
+}
+
+function MDXAccordion(props: ComponentProps<typeof Accordion>) {
+  return <Accordion variant="faq" {...props} />;
 }
 
 /**
@@ -20,8 +25,8 @@ export function MDX({ mdxSource }: Props) {
     <MDXRemote
       {...mdxSource}
       components={{
-        Accordion,
         LayoutMDX,
+        Accordion: MDXAccordion,
         a: MDXLinkNode,
       }}
     />
