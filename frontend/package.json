@@ -10,6 +10,8 @@
     "build:preview": "yarn preview:build",
     "// Run frontend in dev mode at http://localhost:8080": "",
     "dev": "nodemon -x 'run-p dev:*' -w tailwind.config.js",
+    "prod": "API_URL='https://api.napari-hub.org' yarn dev",
+    "staging": "API_URL='https://api.staging.napari-hub.org' yarn dev",
     "// Runs mock server. Use MOCK_SERVER=false to disable server for `yarn dev`": "",
     "dev:api": "nodemon mock-server",
     "// Runs next.js server in dev mode on port 8080": "",
