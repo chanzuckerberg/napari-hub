@@ -18,7 +18,7 @@ rules:
     - message: 'Classes should be camelCase'
 
   max-nesting-depth:
-    - 3
+    - 4
     - ignore:
         - blockless-at-rules
         - pseudo-classes
