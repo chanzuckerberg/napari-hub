@@ -7,11 +7,11 @@ module.exports = {
             const value = node.source.value || '';
             if (
               typeof value === 'string' &&
-              /@material-ui\/(\w+)$/.exec(node.source.value)
+              /@mui\/(\w+)$/.exec(node.source.value)
             ) {
               context.report(
                 node,
-                "Don't use root `@material-ui/*` imports for better build performance.",
+                "Don't use root `@mui/*` imports for better build performance.",
               );
             }
           },
