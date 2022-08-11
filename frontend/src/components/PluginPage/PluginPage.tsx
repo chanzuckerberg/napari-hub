@@ -99,7 +99,7 @@ function PluginCenterColumn() {
         <Tooltip
           title={t('pluginPage:tooltips.viewPypiPackage')}
           placement="right"
-          interactive={false}
+          disableInteractive
           leaveDelay={0}
         >
           <Link
