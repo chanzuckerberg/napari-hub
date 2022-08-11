@@ -26,15 +26,15 @@ exports[`<AppBar /> should match snapshot 1`] = `
         >
           <a
             class="ml-sds-xl"
-            href="/about"
+            href="/"
           >
-            About
+            Plugins
           </a>
           <a
             class="ml-sds-xl"
-            href="/faq"
+            href="/collections"
           >
-            FAQ
+            Collections
           </a>
         </div>
       </nav>
