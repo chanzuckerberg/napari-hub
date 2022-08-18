@@ -1,7 +1,7 @@
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import IconButton from '@material-ui/core/IconButton';
-import CheckCircle from '@material-ui/icons/CheckCircle';
+import CheckCircle from '@mui/icons-material/CheckCircle';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import IconButton from '@mui/material/IconButton';
 import clsx from 'clsx';
 import Image from 'next/image';
 import { useTranslation } from 'next-i18next';
@@ -46,7 +46,7 @@ function CopyPluginNameButton() {
 
         // Show button inline with text.
         'inline-flex items-center',
-        'text-base',
+        'text-base text-black font-normal',
 
         // Padding
         'py-px px-sds-xxs',
@@ -173,7 +173,7 @@ function InstallModalFooter({ onClose }: Closeable) {
   return (
     <div className="flex justify-end p-sds-xl  screen-495:p-12 pt-0 screen-495:pt-0">
       <Button
-        className="border-2 border-napari-primary py-sds-l px-sds-xl"
+        className="border-2 border-napari-primary py-sds-l px-sds-xl text-black"
         onClick={onClose}
         variant="outlined"
       >

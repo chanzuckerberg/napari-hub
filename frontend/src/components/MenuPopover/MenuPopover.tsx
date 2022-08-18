@@ -1,5 +1,5 @@
-import IconButton from '@material-ui/core/IconButton';
-import Popover from '@material-ui/core/Popover';
+import IconButton from '@mui/material/IconButton';
+import Popover from '@mui/material/Popover';
 import clsx from 'clsx';
 
 import { Close } from '@/components/icons';
@@ -58,6 +58,7 @@ export function MenuPopover({ anchorEl, items, onClose, visible }: Props) {
         className="self-start p-0"
         data-testid="menuClose"
         onClick={onClose}
+        size="large"
       >
         <Close />
       </IconButton>

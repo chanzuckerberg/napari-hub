@@ -2,7 +2,9 @@ const { reduce } = require('lodash');
 const typography = require('@tailwindcss/typography');
 const sds = require('czifui/dist/tailwind.json');
 
-const { breakpoints, colors, fontFamily } = require('./src/theme');
+const { breakpoints } = require('./src/theme/breakpoints');
+const { colors } = require('./src/theme/colors');
+const { fontFamily } = require('./src/theme/fontFamily');
 
 // Add px unit to all breakpoint values.
 const screens = reduce(
@@ -23,6 +25,7 @@ module.exports = {
   darkMode: 'media',
   content: ['./src/**/*.{mdx,tsx,scss}'],
   plugins: [typography],
+  important: '#napari-hub',
   theme: {
     screens,
     extend: {
@@ -53,6 +56,22 @@ module.exports = {
         'napari-preview-orange-overlay-active':
           colors.previewOrangeOverlayActive,
         'napari-category-blue': colors.categoryBlue,
+
+        'hub-gray': {
+          100: '#f7f7f7',
+          200: '#eaeaea',
+          300: '#cccccc',
+          400: '#999999',
+          500: '#686868',
+        },
+
+        'hub-primary': {
+          100: '#ecf8ff',
+          200: '#d2efff',
+          400: '#80d1ff',
+          500: '#68c8ff',
+          600: '#686868',
+        },
       },
 
       width: (theme) => ({

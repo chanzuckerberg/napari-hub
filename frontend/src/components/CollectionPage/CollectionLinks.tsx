@@ -62,7 +62,7 @@ function CollectionLink({ linkKey }: CollectionLinkProps) {
       }}
       title={tooltip}
       placement="bottom"
-      interactive={false}
+      disableInteractive
       leaveDelay={0}
     >
       <Link newTab href={link}>

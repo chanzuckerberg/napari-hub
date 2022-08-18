@@ -2,111 +2,117 @@
 
 exports[`<PluginComplexFilter /> should match snapshot 1`] = `
 <DocumentFragment>
-  <div
-    class="complexFilter css-end8kr"
-    data-complex-filter="true"
-    data-filter="operatingSystems"
-    data-testid="pluginFilter"
-  >
-    <button
-      class="MuiButtonBase-root MuiButton-root MuiButton-text py-sds-s px-0 text-black w-full flex justify-between css-12izm5m"
-      label="pluginData:labels.operatingSystem"
-      sdsstage="default"
-      tabindex="0"
-      type="button"
-    >
-      <span
-        class="MuiButton-label border-b border-black pb-sds-s"
-      >
-        <span
-          class="font-semibold text-sm"
-        >
-          pluginData:labels.operatingSystem
-        </span>
-        <svg
-          class="w-4 h-4"
-          fill="none"
-          height="35"
-          viewBox="0 0 35 35"
-          width="35"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M6 12L17.8587 23.8587L29.7173 12"
-            stroke="black"
-            stroke-width="3"
-          />
-        </svg>
-      </span>
-      <span
-        class="MuiTouchRipple-root"
-      />
-    </button>
+  <div>
     <div
-      class="css-1flrym7"
+      class="py-2 hover:bg-hub-gray-100 complexFilter css-end8kr"
+      data-complex-filter="true"
+      data-filter="operatingSystems"
+      data-testid="pluginFilter"
     >
       <div
-        class="MuiChip-root css-1mixguo MuiChip-deletable"
-        role="button"
-        tabindex="0"
+        class="border-b border-black"
       >
-        <span
-          class="MuiChip-label"
+        <button
+          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium text-black w-full flex justify-between p-0 pb-2 css-1kjmhix-MuiButtonBase-root-MuiButton-root"
+          data-testid="button"
+          label="pluginData:labels.operatingSystem"
+          sdsstage="default"
+          tabindex="0"
+          type="button"
         >
-          Linux
-        </span>
-        <svg
-          aria-hidden="true"
-          class="MuiSvgIcon-root MuiChip-deleteIcon"
-          focusable="false"
-          viewBox="0 0 24 24"
-        >
-          <path
-            d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+          <span
+            class="font-semibold text-sm"
+          >
+            pluginData:labels.operatingSystem
+          </span>
+          <svg
+            class="w-4 h-4"
+            fill="none"
+            height="35"
+            viewBox="0 0 35 35"
+            width="35"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M6 12L17.8587 23.8587L29.7173 12"
+              stroke="black"
+              stroke-width="3"
+            />
+          </svg>
+          <span
+            class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
           />
-        </svg>
+        </button>
       </div>
       <div
-        class="MuiChip-root css-1mixguo MuiChip-deletable"
-        role="button"
-        tabindex="0"
+        class="css-1flrym7"
       >
-        <span
-          class="MuiChip-label"
+        <div
+          class="MuiButtonBase-root MuiChip-root MuiChip-filled MuiChip-sizeMedium MuiChip-colorPrimary MuiChip-deletable MuiChip-deletableColorPrimary MuiChip-filledPrimary css-1r16p8w-MuiButtonBase-root-MuiChip-root"
+          role="button"
+          tabindex="0"
         >
-          macOS
-        </span>
-        <svg
-          aria-hidden="true"
-          class="MuiSvgIcon-root MuiChip-deleteIcon"
-          focusable="false"
-          viewBox="0 0 24 24"
+          <span
+            class="MuiChip-label MuiChip-labelMedium css-6od3lo-MuiChip-label"
+          >
+            Linux
+          </span>
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium MuiChip-deleteIcon MuiChip-deleteIconMedium MuiChip-deleteIconColorPrimary MuiChip-deleteIconFilledColorPrimary css-i4bv87-MuiSvgIcon-root"
+            data-testid="ClearIcon"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+            />
+          </svg>
+        </div>
+        <div
+          class="MuiButtonBase-root MuiChip-root MuiChip-filled MuiChip-sizeMedium MuiChip-colorPrimary MuiChip-deletable MuiChip-deletableColorPrimary MuiChip-filledPrimary css-1r16p8w-MuiButtonBase-root-MuiChip-root"
+          role="button"
+          tabindex="0"
         >
-          <path
-            d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
-          />
-        </svg>
-      </div>
-      <div
-        class="MuiChip-root css-1mixguo MuiChip-deletable"
-        role="button"
-        tabindex="0"
-      >
-        <span
-          class="MuiChip-label"
+          <span
+            class="MuiChip-label MuiChip-labelMedium css-6od3lo-MuiChip-label"
+          >
+            macOS
+          </span>
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium MuiChip-deleteIcon MuiChip-deleteIconMedium MuiChip-deleteIconColorPrimary MuiChip-deleteIconFilledColorPrimary css-i4bv87-MuiSvgIcon-root"
+            data-testid="ClearIcon"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+            />
+          </svg>
+        </div>
+        <div
+          class="MuiButtonBase-root MuiChip-root MuiChip-filled MuiChip-sizeMedium MuiChip-colorPrimary MuiChip-deletable MuiChip-deletableColorPrimary MuiChip-filledPrimary css-1r16p8w-MuiButtonBase-root-MuiChip-root"
+          role="button"
+          tabindex="0"
         >
-          Windows
-        </span>
-        <svg
-          aria-hidden="true"
-          class="MuiSvgIcon-root MuiChip-deleteIcon"
-          focusable="false"
-          viewBox="0 0 24 24"
-        >
-          <path
-            d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
-          />
-        </svg>
+          <span
+            class="MuiChip-label MuiChip-labelMedium css-6od3lo-MuiChip-label"
+          >
+            Windows
+          </span>
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium MuiChip-deleteIcon MuiChip-deleteIconMedium MuiChip-deleteIconColorPrimary MuiChip-deleteIconFilledColorPrimary css-i4bv87-MuiSvgIcon-root"
+            data-testid="ClearIcon"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+            />
+          </svg>
+        </div>
       </div>
     </div>
   </div>

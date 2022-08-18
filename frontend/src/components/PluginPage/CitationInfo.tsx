@@ -1,8 +1,8 @@
-import Button from '@material-ui/core/Button';
-import Tab from '@material-ui/core/Tab';
-import TabContext from '@material-ui/lab/TabContext';
-import TabList from '@material-ui/lab/TabList';
-import TabPanel from '@material-ui/lab/TabPanel';
+import TabContext from '@mui/lab/TabContext';
+import TabList from '@mui/lab/TabList';
+import TabPanel from '@mui/lab/TabPanel';
+import Button from '@mui/material/Button';
+import Tab from '@mui/material/Tab';
 import clsx from 'clsx';
 import { useTranslation } from 'next-i18next';
 import { useEffect, useState } from 'react';
@@ -32,7 +32,7 @@ const CITATION_EXTS: Record<CitationKeys, string> = {
 const COPY_FEEDBACK_DEBOUNCE_DURATION_MS = 2_000;
 
 const BUTTON_STYLES =
-  'border-2 border-napari-primary py-sds-l  px-sds-xl font-semibold h-12 col-span-1';
+  'border-2 border-napari-primary py-sds-l px-sds-xl font-semibold h-12 col-span-1 text-black';
 
 export function CitationInfo({ className }: Props) {
   const [t] = useTranslation(['common', 'pluginPage']);
@@ -70,6 +70,9 @@ export function CitationInfo({ className }: Props) {
             onChange={handleChange}
             className="min-h-0"
             indicatorColor="primary"
+            classes={{
+              indicator: 'bg-napari-primary',
+            }}
           >
             {CITATION_TYPES.map((item) => {
               return (
@@ -77,7 +80,7 @@ export function CitationInfo({ className }: Props) {
                   label={item}
                   value={item}
                   key={item}
-                  className="min-w-0 min-h-0 p-0 mr-sds-xl text-black font-semibold opacity-100"
+                  className="min-w-0 min-h-0 p-0 pb-1 mr-sds-xl text-black font-semibold opacity-100"
                 />
               );
             })}

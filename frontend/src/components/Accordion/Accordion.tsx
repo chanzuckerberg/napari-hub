@@ -1,7 +1,7 @@
-import MUIAccordion from '@material-ui/core/Accordion';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import Add from '@material-ui/icons/Add';
+import Add from '@mui/icons-material/Add';
+import MUIAccordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
 import clsx from 'clsx';
 import { ReactNode, useState } from 'react';
 
@@ -47,7 +47,7 @@ export function Accordion({
           isDefault && 'flex-row-reverse',
         )}
         classes={{
-          expandIcon: styles.expandIcon,
+          expandIconWrapper: styles.expandIcon,
           expanded: clsx(styles.expanded),
           ...(isFAQ
             ? {}

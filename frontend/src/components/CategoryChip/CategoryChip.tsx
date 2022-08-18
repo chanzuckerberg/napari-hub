@@ -1,6 +1,6 @@
-import Chip, { ChipProps } from '@material-ui/core/Chip';
-import Tooltip from '@material-ui/core/Tooltip';
-import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import Chip, { ChipProps } from '@mui/material/Chip';
+import Tooltip from '@mui/material/Tooltip';
 import clsx from 'clsx';
 import { useTranslation } from 'next-i18next';
 import { ForwardedRef, forwardRef, Fragment, useRef, useState } from 'react';
@@ -85,7 +85,7 @@ function BaseCategoryChip(
         ],
       )}
       classes={{
-        label: clsx('pl-sds-s', hasTooltip && 'pr-0'),
+        label: clsx('pl-[12px]', hasTooltip && 'pr-0'),
       }}
       onClick={(event) => {
         event.preventDefault();
@@ -132,7 +132,7 @@ function BaseCategoryChip(
               }
             >
               <button
-                className="p-sds-s pr-sds-l flex items-center justify-center"
+                className="pr-[12px] flex items-center justify-center"
                 ref={iconRef}
                 onClick={(event) => {
                   // Open tooltip when clicking on tooltip info button.

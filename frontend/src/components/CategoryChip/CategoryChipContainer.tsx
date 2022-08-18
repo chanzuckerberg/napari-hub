@@ -103,7 +103,7 @@ export function CategoryChipContainer({
     .map((value, index) => (
       <CategoryChip
         className={clsx(
-          index >= overflowIndex && !overrideOverflow && 'hidden',
+          index >= overflowIndex && !overrideOverflow && '!hidden',
         )}
         isActive={activeMap[categories ? (value as string) : value[0]]}
         ref={(element) => set(categoryChipsRef.current, index, element)}

@@ -22,15 +22,16 @@ exports[`<SignupForm /> should match snapshot 1`] = `
       >
         <div
           aria-label="Email address"
-          class="MuiFormControl-root MuiTextField-root text-sm pt-sds-xxxs h-8 screen-495:h-[35px] col-span-2 screen-495:col-span-1 screen-875:col-span-2"
+          class="MuiFormControl-root MuiTextField-root text-sm pt-sds-xxxs h-8 screen-495:h-[35px] col-span-2 screen-495:col-span-1 screen-875:col-span-2 css-1u3bzj6-MuiFormControl-root-MuiTextField-root"
         >
           <div
-            class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
+            class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-formControl css-1ptx2yq-MuiInputBase-root-MuiInput-root"
           >
             <input
               aria-invalid="false"
-              class="MuiInputBase-input MuiInput-input"
+              class="MuiInputBase-input MuiInput-input css-1x51dt5-MuiInputBase-input-MuiInput-input"
               data-testid="emailField"
+              id=":r0:"
               name="EMAIL"
               placeholder="email"
               required=""
@@ -40,19 +41,15 @@ exports[`<SignupForm /> should match snapshot 1`] = `
           </div>
         </div>
         <button
-          class="MuiButtonBase-root MuiButton-root MuiButton-contained bg-napari-primary text-sm font-semibold h-[35px] col-span-2 screen-495:col-span-1 MuiButton-containedPrimary MuiButton-disableElevation"
+          class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-disableElevation bg-napari-primary text-sm font-semibold text-black h-[35px] col-span-2 screen-495:col-span-1 css-zddlty-MuiButtonBase-root-MuiButton-root"
           data-testid="submitButton"
           name="subscribe"
           tabindex="0"
           type="submit"
         >
+          Subscribe
           <span
-            class="MuiButton-label"
-          >
-            Subscribe
-          </span>
-          <span
-            class="MuiTouchRipple-root"
+            class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
           />
         </button>
       </form>
