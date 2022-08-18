@@ -4,6 +4,7 @@ import Head from 'next/head';
 import { SSRConfig, useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { ParsedUrlQuery } from 'node:querystring';
+import { z } from 'zod';
 
 import { ErrorMessage } from '@/components/ErrorMessage';
 import { PageMetadata } from '@/components/PageMetadata';
@@ -13,7 +14,8 @@ import { PluginStateProvider } from '@/context/plugin';
 import { PluginData } from '@/types';
 import { I18nNamespace } from '@/types/i18n';
 import { fetchRepoData, FetchRepoDataResult } from '@/utils';
-import { hubAPI } from '@/utils/axios';
+import { hubAPI } from '@/utils/HubAPIClient';
+import { getZodErrorMessage } from '@/utils/validate';
 
 /**
  * Interface for parameters in URL.
@@ -22,37 +24,12 @@ interface Params extends ParsedUrlQuery {
   name: string;
 }
 
-/**
- * Error returned by API server if a server error occurs.
- */
-interface RequestError {
-  errorMessage: string;
-  errorType: string;
-  stackTrace: string[];
-}
-
 interface BaseProps {
   error?: string;
   plugin?: PluginData;
 }
 
 type Props = FetchRepoDataResult & Partial<SSRConfig> & BaseProps;
-
-type RequestResponse = PluginData | RequestError;
-
-/**
- * Helper that checks if the request is an error on the server.
- */
-function isRequestError(data: RequestResponse): data is RequestError {
-  return !!(data as RequestError).errorType;
-}
-
-/**
- * Helper that checks if the plugin data is valid.
- */
-function isPlugin(data: RequestResponse): data is RequestError {
-  return !!(data as PluginData).name;
-}
 
 function isAxiosError(error: unknown): error is AxiosError {
   return !!(error as AxiosError).isAxiosError;
@@ -67,7 +44,6 @@ export async function getServerSideProps({
   locale,
 }: GetServerSidePropsContext<Params>) {
   const name = String(params?.name);
-  const url = `/plugins/${name}`;
   const translationProps = await serverSideTranslations(locale ?? 'en', [
     'common',
     'footer',
@@ -82,19 +58,18 @@ export async function getServerSideProps({
   const props: Partial<Props> = { ...translationProps };
 
   try {
-    const { data } = await hubAPI.get<PluginData | RequestError>(url);
+    const data = await hubAPI.getPlugin(name);
+    props.plugin = data;
 
-    if (isRequestError(data)) {
-      props.error = JSON.stringify(data, null, 2);
-    } else if (isPlugin(data)) {
-      props.plugin = data;
-
-      const result = await fetchRepoData(data.code_repository);
-      Object.assign(props, result);
-    }
+    const result = await fetchRepoData(data.code_repository);
+    Object.assign(props, result);
   } catch (err) {
-    if (isAxiosError(err)) {
+    if (isAxiosError(err) || err instanceof Error) {
       props.error = err.message;
+    }
+
+    if (err instanceof z.ZodError) {
+      props.error = getZodErrorMessage(err);
     }
   }
 

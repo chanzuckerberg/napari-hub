@@ -1,8 +1,7 @@
 import { GetServerSideProps } from 'next';
 
-import { PluginIndexData } from '@/types';
 import { Logger } from '@/utils';
-import { hubAPI } from '@/utils/axios';
+import { hubAPI } from '@/utils/HubAPIClient';
 import { getPreRenderManifest } from '@/utils/next';
 
 const logger = new Logger('sitemap.xml.ts');
@@ -84,7 +83,7 @@ async function getHubEntries(): Promise<SitemapEntry[]> {
  */
 async function getPluginEntries(): Promise<SitemapEntry[]> {
   try {
-    const { data } = await hubAPI.get<PluginIndexData[]>('/plugins/index');
+    const data = await hubAPI.getPluginIndex();
 
     return data.map((plugin) => {
       const url = `/plugins/${plugin.name}`;

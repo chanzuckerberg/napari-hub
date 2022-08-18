@@ -1,9 +1,10 @@
-import { AxiosError } from 'axios';
+import axios from 'axios';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import { SSRConfig, useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { ReactNode } from 'react';
+import { z } from 'zod';
 
 import { ErrorMessage } from '@/components/ErrorMessage';
 import { SearchPage } from '@/components/SearchPage';
@@ -11,7 +12,9 @@ import { SearchStoreProvider } from '@/store/search/context';
 import { SpdxLicenseData, SpdxLicenseResponse } from '@/store/search/types';
 import { PluginIndexData } from '@/types';
 import { I18nNamespace } from '@/types/i18n';
-import { hubAPI, spdxLicenseDataAPI } from '@/utils/axios';
+import { hubAPI } from '@/utils/HubAPIClient';
+import { spdxLicenseDataAPI } from '@/utils/spdx';
+import { getZodErrorMessage } from '@/utils/validate';
 
 interface Props extends Partial<SSRConfig> {
   licenses?: SpdxLicenseData[];
@@ -22,7 +25,6 @@ interface Props extends Partial<SSRConfig> {
 export async function getServerSideProps({
   locale,
 }: GetServerSidePropsContext) {
-  const url = '/plugins/index';
   const translationProps = await serverSideTranslations(locale ?? 'en', [
     'common',
     'footer',
@@ -33,15 +35,20 @@ export async function getServerSideProps({
   const props: Props = { ...translationProps };
 
   try {
-    const { data: index } = await hubAPI.get<PluginIndexData[]>(url);
+    const index = await hubAPI.getPluginIndex();
     const {
       data: { licenses },
     } = await spdxLicenseDataAPI.get<SpdxLicenseResponse>('');
 
     Object.assign(props, { index, licenses });
   } catch (err) {
-    const error = err as AxiosError;
-    props.error = error.message;
+    if (axios.isAxiosError(err)) {
+      props.error = err.message;
+    }
+
+    if (err instanceof z.ZodError) {
+      props.error = getZodErrorMessage(err);
+    }
   }
 
   return { props };
