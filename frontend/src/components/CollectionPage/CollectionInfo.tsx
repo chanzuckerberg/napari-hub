@@ -71,7 +71,7 @@ export function CollectionInfo() {
       >
         {t('collections:collectionPage.lastUpdated', {
           replace: {
-            date: formatDate(collection.updated_date.toString()),
+            date: formatDate(collection.updated_date),
           },
         })}
       </p>
