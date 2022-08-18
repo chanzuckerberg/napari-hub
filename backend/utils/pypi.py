@@ -72,10 +72,10 @@ def format_plugin(plugin: dict) -> dict:
     :param plugin: plugin dictionary from pypi
     :return: formatted plugin dictionary
     """
-    version = get_attribute(plugin, ["info", "version"])
+    version = get_attribute(plugin, ["info", "version"], "")
 
     # parse raw author names string 
-    raw_name = get_attribute(plugin, ["info", "author"])
+    raw_name = get_attribute(plugin, ["info", "author"], "")
     # currently splitting by "&", ",", and the word "and"
     regexp = r'&|,|\sand\s'
     author_names = re.split(regexp, raw_name)
