@@ -1,6 +1,6 @@
 import os
 import requests
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, Any
 from bs4 import BeautifulSoup
 from markdown import markdown
 from requests import HTTPError
@@ -9,12 +9,13 @@ from requests import HTTPError
 slack_url = os.environ.get('SLACK_URL')
 
 
-def get_attribute(obj: dict, path: list):
+def get_attribute(obj: dict, path: list, default_val: Any):
     """
     Get attribute iteratively from a json object.
 
     :param obj: object to iterate on
     :param path: list of string to get sub path within json
+    :param default_val: default value to return as passed in from attribute
     :return: the value if the path is accessible, empty string if not found
     """
     current_location = obj
@@ -24,7 +25,7 @@ def get_attribute(obj: dict, path: list):
         elif isinstance(current_location, list) and token < len(current_location):
             current_location = current_location[token]
         else:
-            return ""
+            return default_val
     return current_location
 
 

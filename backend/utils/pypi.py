@@ -83,7 +83,7 @@ def format_plugin(plugin: dict) -> dict:
     authors = [{'name': name} for name in author_names if name]
 
     return {
-        "name": get_attribute(plugin, ["info", "name"]),
+        "name": get_attribute(plugin, ["info", "name"], ""),
         "summary": get_attribute(plugin, ["info", "summary"]),
         "description": get_attribute(plugin, ["info", "description"]),
         "description_content_type": f'{get_attribute(plugin, ["info", "description_content_type"])}',
@@ -105,7 +105,7 @@ def format_plugin(plugin: dict) -> dict:
             "Development Status"),
 
         # below are plugin details
-        "requirements": get_attribute(plugin, ["info", "requires_dist"]),
+        "requirements": get_attribute(plugin, ["info", "requires_dist"], []),
         "project_site": get_attribute(plugin, ["info", "home_page"]),
         "documentation": get_attribute(plugin, ["info", "project_urls", "Documentation"]),
         "support": get_attribute(plugin, ["info", "project_urls", "User Support"]),
