@@ -91,7 +91,7 @@ def get_github_repo_url(project_urls: Dict[str, str]) -> [str, None]:
     :param project_urls: project urls to get github repo url from
     :return: repo url if one is available, else None
     """
-    source_code_url = get_attribute(project_urls, ["Source Code"])
+    source_code_url = get_attribute(project_urls, ["Source Code"], "")
     if source_code_url:
         return source_code_url
     elif isinstance(project_urls, dict):
