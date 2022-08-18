@@ -17,7 +17,7 @@ export const DEFAULT_PLUGIN_DATA: PluginData = {
   python_version: '',
   release_date: '',
   report_issues: '',
-  requirements: '',
+  requirements: [],
   summary: '',
   support: '',
   twitter: '',
