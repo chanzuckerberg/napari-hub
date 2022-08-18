@@ -67,7 +67,7 @@ export function getOptionalStringArraySanitizer<
   T extends PluginIndexData | PluginData,
 >(key: keyof PickByValue<T, string | undefined>) {
   return (result: T) => {
-    if (result[key] === '') {
+    if (get(result, key, '') === '') {
       delete result[key];
     }
   };
@@ -135,7 +135,7 @@ export function createValidatePluginTest<T, K extends keyof T = keyof T>({
         [key]: validData,
       });
 
-      const result = validatePlugin(plugin as T);
+      const result = validatePlugin(plugin as unknown as T);
       expect(result[key]).toEqual(get(plugin, key));
     });
 
@@ -144,7 +144,7 @@ export function createValidatePluginTest<T, K extends keyof T = keyof T>({
         [key]: invalidData,
       });
 
-      const result = validatePlugin(plugin as T);
+      const result = validatePlugin(plugin as unknown as T);
       if (expectedInvalidDataResult === DELETED) {
         expect(hasIn(result, key)).toBe(false);
       } else {
