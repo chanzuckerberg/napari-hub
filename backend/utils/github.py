@@ -75,7 +75,7 @@ def get_license(url: str, branch: str = 'HEAD') -> [str, None]:
         response = requests.get(f'{api_url}/license?ref={branch}', auth=auth)
         if response.status_code != requests.codes.ok:
             response.raise_for_status()
-        spdx_id = get_attribute(json.loads(response.text.strip()), ['license', "spdx_id"])
+        spdx_id = get_attribute(json.loads(response.text.strip()), ['license', "spdx_id"], "")
         if spdx_id == "NOASSERTION":
             return None
         else:
