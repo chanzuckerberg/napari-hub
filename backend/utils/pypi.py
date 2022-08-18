@@ -84,32 +84,32 @@ def format_plugin(plugin: dict) -> dict:
 
     return {
         "name": get_attribute(plugin, ["info", "name"], ""),
-        "summary": get_attribute(plugin, ["info", "summary"]),
-        "description": get_attribute(plugin, ["info", "description"]),
-        "description_content_type": f'{get_attribute(plugin, ["info", "description_content_type"])}',
+        "summary": get_attribute(plugin, ["info", "summary"], ""),
+        "description": get_attribute(plugin, ["info", "description"], ""),
+        "description_content_type": f'{get_attribute(plugin, ["info", "description_content_type"], "")}',
         "authors": authors,
-        "license": get_attribute(plugin, ["info", "license"]),
-        "python_version": get_attribute(plugin, ["info", "requires_python"]),
+        "license": get_attribute(plugin, ["info", "license"], ""),
+        "python_version": get_attribute(plugin, ["info", "requires_python"], ""),
         "operating_system": filter_prefix(
-            get_attribute(plugin, ["info", "classifiers"]),
+            get_attribute(plugin, ["info", "classifiers"], []),
             "Operating System"),
         "release_date": get_attribute(plugin, ["releases", version, 0,
-                                               "upload_time_iso_8601"]),
+                                               "upload_time_iso_8601"], ""),
         "version": version,
         "first_released": min(
-            get_attribute(release, [0, "upload_time_iso_8601"])
-            for _, release in get_attribute(plugin, ["releases"]).items()
-            if get_attribute(release, [0, "upload_time_iso_8601"])),
+            get_attribute(release, [0, "upload_time_iso_8601"], "")
+            for _, release in get_attribute(plugin, ["releases"], "").items()
+            if get_attribute(release, [0, "upload_time_iso_8601"], "")),
         "development_status": filter_prefix(
-            get_attribute(plugin, ["info", "classifiers"]),
+            get_attribute(plugin, ["info", "classifiers"], ""),
             "Development Status"),
 
         # below are plugin details
         "requirements": get_attribute(plugin, ["info", "requires_dist"], []),
-        "project_site": get_attribute(plugin, ["info", "home_page"]),
-        "documentation": get_attribute(plugin, ["info", "project_urls", "Documentation"]),
-        "support": get_attribute(plugin, ["info", "project_urls", "User Support"]),
-        "report_issues": get_attribute(plugin, ["info", "project_urls", "Bug Tracker"]),
-        "twitter": get_attribute(plugin, ["info", "project_urls", "Twitter"]),
-        "code_repository": get_github_repo_url(get_attribute(plugin, ["info", "project_urls"]))
+        "project_site": get_attribute(plugin, ["info", "home_page"], ""),
+        "documentation": get_attribute(plugin, ["info", "project_urls", "Documentation"], ""),
+        "support": get_attribute(plugin, ["info", "project_urls", "User Support"], ""),
+        "report_issues": get_attribute(plugin, ["info", "project_urls", "Bug Tracker"], ""),
+        "twitter": get_attribute(plugin, ["info", "project_urls", "Twitter"], ""),
+        "code_repository": get_github_repo_url(get_attribute(plugin, ["info", "project_urls"], ""))
     }
