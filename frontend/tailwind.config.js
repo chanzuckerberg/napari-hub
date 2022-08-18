@@ -33,6 +33,7 @@ module.exports = {
 
       fontFamily: {
         barlow: fontFamily,
+        jetbrains: 'JetBrains Mono, monospace',
       },
 
       spacing: {
