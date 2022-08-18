@@ -14,7 +14,7 @@ function LineNumbers({ length }: LineNumbersProps) {
     <div
       className={clsx(
         styles.lineNumbers,
-        'p-sds-l pr-sds-s shadow z-10 text-right',
+        'p-sds-l pr-sds-s shadow-sds-s z-10 text-right',
       )}
     >
       {Array.from({ length }, (_, index) => (
