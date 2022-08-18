@@ -133,7 +133,8 @@ function BaseCategoryChip(
     <Chip
       ref={ref}
       className={clsx(
-        'text-xs !rounded-full',
+        'text-xs !rounded-sds-l',
+        className,
 
         isActive && [
           'bg-napari-category-blue',
