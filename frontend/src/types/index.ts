@@ -34,17 +34,17 @@ export type PluginCategoryHierarchy = Partial<{
  * Plugin data used for indexing. This is a subset of the full plugin data.
  */
 export interface PluginIndexData {
-  authors: PluginAuthor[] | '';
-  category?: PluginCategory | '';
+  authors: PluginAuthor[];
+  category?: PluginCategory;
   description_content_type: string;
   description_text: string;
   description: string;
-  development_status: string[] | '';
+  development_status: string[];
   display_name?: string;
   first_released: string;
   license: string;
   name: string;
-  operating_system: string[] | '';
+  operating_system: string[];
   python_version: string;
   release_date: string;
   summary: string;
@@ -61,13 +61,13 @@ export interface PluginIndexData {
 export interface PluginData extends PluginIndexData {
   action_repository?: string;
   category_hierarchy?: PluginCategoryHierarchy;
-  citations?: CitationData | null;
+  citations?: CitationData;
   code_repository: string;
   documentation: string;
   project_site: string;
   release_date: string;
   report_issues: string;
-  requirements: string[] | '';
+  requirements: string[];
   support: string;
   twitter: string;
 }
