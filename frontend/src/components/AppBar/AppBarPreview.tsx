@@ -83,7 +83,7 @@ function AppBarPreviewCenterColumn() {
       <span
         className={clsx(
           styles.fieldInfo,
-          'font-bold bg-napari-primary whitespace-nowrap',
+          'font-bold bg-hub-primary-400 whitespace-nowrap',
           missingFieldsCount > 0 && 'bg-napari-preview-orange text-white',
         )}
       >

@@ -39,7 +39,7 @@ export function AppBar() {
           'gap-sds-xl screen-495:gap-12',
 
           // Color and height
-          'bg-napari-primary h-napari-app-bar',
+          'bg-hub-primary-400 h-napari-app-bar',
 
           // Centering
           'justify-center items-center',

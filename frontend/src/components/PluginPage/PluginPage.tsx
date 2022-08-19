@@ -198,7 +198,7 @@ function PluginCenterColumn() {
             <a
               className={clsx(
                 // Text styling
-                'underline hover:text-napari-primary',
+                'underline hover:text-hub-primary-400',
 
                 /*
                   Top margins: This is used for smaller layouts because the CTA

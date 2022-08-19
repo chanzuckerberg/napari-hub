@@ -31,7 +31,7 @@ export function AnchorHeading({
           className={clsx(
             styles.anchor,
             'opacity-0 !text-napari-dark-gray !no-underline',
-            'hover:!text-napari-primary',
+            'hover:!text-hub-primary-400',
           )}
           href={`#${id}`}
         >

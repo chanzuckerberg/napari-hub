@@ -32,7 +32,7 @@ const CITATION_EXTS: Record<CitationKeys, string> = {
 const COPY_FEEDBACK_DEBOUNCE_DURATION_MS = 2_000;
 
 const BUTTON_STYLES =
-  'border-2 border-napari-primary py-sds-l px-sds-xl font-semibold h-12 col-span-1 text-black';
+  'border-2 border-hub-primary-400 py-sds-l px-sds-xl font-semibold h-12 col-span-1 text-black';
 
 export function CitationInfo({ className }: Props) {
   const [t] = useTranslation(['common', 'pluginPage']);
@@ -71,7 +71,7 @@ export function CitationInfo({ className }: Props) {
             className="min-h-0"
             indicatorColor="primary"
             classes={{
-              indicator: 'bg-napari-primary',
+              indicator: 'bg-hub-primary-400',
             }}
           >
             {CITATION_TYPES.map((item) => {

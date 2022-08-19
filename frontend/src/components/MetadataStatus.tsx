@@ -18,7 +18,7 @@ export function MetadataStatus({
       className={clsx(
         'flex items-center justify-center',
         className,
-        hasValue ? 'bg-napari-primary' : 'bg-napari-preview-orange',
+        hasValue ? 'bg-hub-primary-400' : 'bg-napari-preview-orange',
         variant === 'small'
           ? 'w-[0.625rem] h-[0.625rem]'
           : 'w-[0.9375rem] h-[0.9375rem]',
