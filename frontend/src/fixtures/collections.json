@@ -293,14 +293,14 @@
     "summary": "The most accurate point-detection plugins for napari; list actively updated.",
     "cover_image": "https://raw.githubusercontent.com/chanzuckerberg/napari-hub-collections/main/images/national-cancer-institute-NbZQYileaOI-unsplash.jpg",
     "curator": {
-      "name": 42,
+      "name": "Kinshasa Kosette Mickelthwait-Venkatesh",
       "title": "Imaging Scientist",
       "affiliation": {
         "institution": "Research Biologist, Low Anchor Center for Human Disease and Study",
         "website": "https://example.com"
       },
       "links": {
-        "orcid": null,
+        "orcid": "0000-0002-4638-7015",
         "twitter": "https://twitter.com/neuromusic",
         "github": "https://github.com/neuromusic",
         "website": "https://justinkiggins.com"
