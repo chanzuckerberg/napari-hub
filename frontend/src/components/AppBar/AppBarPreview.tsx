@@ -251,7 +251,7 @@ export function AppBarPreview() {
           'sticky top-0',
 
           // Match the background of metadata panel.
-          'bg-napari-hover-gray',
+          'bg-hub-gray-100',
 
           // Bottom border
           'border-napari-preview-orange border-b-2',

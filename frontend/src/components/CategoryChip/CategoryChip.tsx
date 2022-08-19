@@ -143,9 +143,9 @@ function BaseCategoryChip(
         ],
 
         !isActive && [
-          'bg-napari-hover-gray',
-          'hover:bg-napari-hover-gray',
-          'focus:bg-napari-hover-gray',
+          'bg-hub-gray-100',
+          'hover:bg-hub-gray-100',
+          'focus:bg-hub-gray-100',
         ],
       )}
       classes={{

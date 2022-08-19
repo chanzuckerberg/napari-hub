@@ -23,7 +23,7 @@ export function CollectionPluginList() {
         return (
           <li
             className={clsx(
-              'py-sds-xl hover:bg-napari-hover-gray',
+              'py-sds-xl hover:bg-hub-gray-100',
               'border-black border-t-2 last:border-b-2',
             )}
             key={plugin.name}

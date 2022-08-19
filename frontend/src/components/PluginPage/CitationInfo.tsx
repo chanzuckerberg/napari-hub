@@ -90,7 +90,7 @@ export function CitationInfo({ className }: Props) {
               <TabPanel
                 value={item}
                 key={item}
-                className="px-sds-l mt-sds-xl bg-napari-hover-gray"
+                className="px-sds-l mt-sds-xl bg-hub-gray-100"
               >
                 <div className="whitespace-pre-wrap overflow-y-auto max-h-32">
                   {plugin?.citations?.[item]}

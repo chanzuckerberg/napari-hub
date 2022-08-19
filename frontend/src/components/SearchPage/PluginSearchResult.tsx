@@ -383,7 +383,7 @@ export function PluginSearchResult({
       data-testid="pluginSearchResult"
       className={clsx(
         resultClassName,
-        !debouncedIsHoveringOverChip && 'hover:bg-napari-hover-gray',
+        !debouncedIsHoveringOverChip && 'hover:bg-hub-gray-100',
       )}
       href={resultURL}
       style={style}
