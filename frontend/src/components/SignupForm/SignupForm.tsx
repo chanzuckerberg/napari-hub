@@ -106,7 +106,7 @@ export function SignupForm({ onSubmit, variant = 'default' }: Props) {
 
   return (
     <ColumnLayout
-      className="bg-napari-light p-sds-xl screen-495:p-12"
+      className="bg-hub-primary-200 p-sds-xl screen-495:p-12"
       // Use 3-column layout instead of 4-column layout.
       classes={isHome ? { fourColumn: 'screen-1150:grid-cols-napari-3' } : {}}
     >

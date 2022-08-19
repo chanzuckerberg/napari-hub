@@ -39,7 +39,7 @@ function CopyPluginNameButton() {
         // Button colors
         clicked
           ? 'bg-hub-primary-400 hover:bg-hub-primary-400'
-          : 'bg-napari-light hover:bg-hub-primary-400',
+          : 'bg-hub-primary-200 hover:bg-hub-primary-400',
 
         // Dimensions
         'min-h-6',

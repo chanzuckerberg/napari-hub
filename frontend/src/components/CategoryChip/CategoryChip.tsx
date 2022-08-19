@@ -138,8 +138,8 @@ function BaseCategoryChip(
 
         isActive && [
           'bg-napari-category-blue',
-          'hover:bg-napari-light',
-          'focus:bg-napari-light',
+          'hover:bg-hub-primary-200',
+          'focus:bg-hub-primary-200',
         ],
 
         !isActive && [
