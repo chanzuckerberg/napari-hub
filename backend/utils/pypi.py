@@ -101,7 +101,7 @@ def format_plugin(plugin: dict) -> dict:
             for _, release in get_attribute(plugin, ["releases"], "").items()
             if get_attribute(release, [0, "upload_time_iso_8601"], "")),
         "development_status": filter_prefix(
-            get_attribute(plugin, ["info", "classifiers"], ""),
+            get_attribute(plugin, ["info", "classifiers"], []),
             "Development Status"),
 
         # below are plugin details
