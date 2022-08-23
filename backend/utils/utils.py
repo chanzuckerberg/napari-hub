@@ -7,15 +7,36 @@ from requests import HTTPError
 
 # Environment variable set through ecs stack terraform module
 slack_url = os.environ.get('SLACK_URL')
+attribute_to_default_values_dict = {
+    "version": "",
+    "authors": [],
+    "name": "",
+    "summary": "",
+    "description": "",
+    "description_content_type": "",
+    "license": "",
+    "python_version": "",
+    "operating_system": [],
+    "release_date": "",
+    "first_released": "",
+    "development_status": [],
+    "requirements": [],
+    "project_site": "",
+    "documentation": "",
+    "support": "",
+    "report_issues": "",
+    "twitter": "",
+    "code_repository": ""
+}
 
 
-def get_attribute(obj: dict, path: list, default_val: Any):
+def get_attribute(obj: dict, path: list, attribute: str):
     """
     Get attribute iteratively from a json object.
 
     :param obj: object to iterate on
     :param path: list of string to get sub path within json
-    :param default_val: default value to return as passed in from attribute
+    :param attribute: attribute name to look up its default value
     :return: the value if the path is accessible, empty string if not found
     """
     current_location = obj
@@ -25,7 +46,7 @@ def get_attribute(obj: dict, path: list, default_val: Any):
         elif isinstance(current_location, list) and token < len(current_location):
             current_location = current_location[token]
         else:
-            return default_val
+            return attribute_to_default_values_dict[attribute]
     return current_location
 
 
