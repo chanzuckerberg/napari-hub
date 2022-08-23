@@ -26,7 +26,9 @@ attribute_to_default_values_dict = {
     "support": "",
     "report_issues": "",
     "twitter": "",
-    "code_repository": ""
+    "code_repository": "",
+    "spdx_id": "",
+    "source_code_url": ""
 }
 
 

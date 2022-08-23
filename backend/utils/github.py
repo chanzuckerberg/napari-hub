@@ -75,7 +75,7 @@ def get_license(url: str, branch: str = 'HEAD') -> [str, None]:
         response = requests.get(f'{api_url}/license?ref={branch}', auth=auth)
         if response.status_code != requests.codes.ok:
             response.raise_for_status()
-        spdx_id = get_attribute(json.loads(response.text.strip()), ['license', "spdx_id"], "")
+        spdx_id = get_attribute(json.loads(response.text.strip()), ['license', "spdx_id"], "spdx_id")
         if spdx_id == "NOASSERTION":
             return None
         else:
@@ -91,7 +91,7 @@ def get_github_repo_url(project_urls: Dict[str, str]) -> [str, None]:
     :param project_urls: project urls to get github repo url from
     :return: repo url if one is available, else None
     """
-    source_code_url = get_attribute(project_urls, ["Source Code"], "")
+    source_code_url = get_attribute(project_urls, ["Source Code"], "source_code_url")
     if source_code_url:
         return source_code_url
     elif isinstance(project_urls, dict):
