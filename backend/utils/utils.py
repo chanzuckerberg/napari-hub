@@ -10,7 +10,7 @@ slack_url = os.environ.get('SLACK_URL')
 # Dictionary in which the key is the last element in path of type list
 # and the value is the default value of the attribute. Keys that do not
 # exist in this dictionary will have the default value of the empty string
-path_to_default_values_dict = {
+pypi_field_default_values = {
     "classifiers": [],
     "requires_dist": []
 }
@@ -25,17 +25,14 @@ def get_attribute(obj: dict, path: list):
     :return: the value if the path is accessible, empty string if not found
     """
     current_location = obj
-    path_to_default_values_dict_key = path[len(path) - 1]
+    pypi_field_name = path[-1]
     for token in path:
         if isinstance(current_location, dict) and token in current_location:
             current_location = current_location[token]
         elif isinstance(current_location, list) and token < len(current_location):
             current_location = current_location[token]
         else:
-            if path_to_default_values_dict_key in path_to_default_values_dict:
-                return path_to_default_values_dict[path_to_default_values_dict_key]
-            else:
-                return ""
+            return pypi_field_default_values.get(pypi_field_name, "")
     return current_location
 
 
