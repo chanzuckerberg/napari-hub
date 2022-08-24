@@ -7,9 +7,8 @@ from requests import HTTPError
 
 # Environment variable set through ecs stack terraform module
 slack_url = os.environ.get('SLACK_URL')
-# Dictionary in which the key is the last element in path of type list
-# and the value is the default value of the attribute. Keys that do not
-# exist in this dictionary will have the default value of the empty string
+# Dictionary in which the key is the pypi field and the value is the default value of the attribute.
+# Keys that do not exist in this dictionary will have the default value of the empty string.
 pypi_field_default_values = {
     "classifiers": [],
     "requires_dist": []
