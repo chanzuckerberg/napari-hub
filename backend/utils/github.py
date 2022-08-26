@@ -145,6 +145,9 @@ def get_github_metadata(repo_url: str, branch: str = 'HEAD') -> dict:
         yaml_file = get_file(repo_url, ".napari/config.yml", branch=branch)
     if yaml_file:
         config = yaml.safe_load(yaml_file)
+        # if the yaml.safe_load method returns None, then assign {} to config
+        if config is None:
+            config = {}
         hub_config = {key: config[key] for key in hub_config_keys if key in config}
         github_metadata.update(hub_config)
 
