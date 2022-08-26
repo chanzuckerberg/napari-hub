@@ -148,7 +148,6 @@ def get_github_metadata(repo_url: str, branch: str = 'HEAD') -> dict:
         # if the yaml.safe_load method returns None, then assign {} to config
         if config is None:
             config = {}
-            print(yaml_file)
         hub_config = {key: config[key] for key in hub_config_keys if key in config}
         github_metadata.update(hub_config)
 
