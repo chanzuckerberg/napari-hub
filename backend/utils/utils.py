@@ -7,6 +7,12 @@ from requests import HTTPError
 
 # Environment variable set through ecs stack terraform module
 slack_url = os.environ.get('SLACK_URL')
+# Dictionary in which the key is the pypi field and the value is the default value of the attribute.
+# Keys that do not exist in this dictionary will have the default value of the empty string.
+pypi_field_default_values = {
+    "classifiers": [],
+    "requires_dist": []
+}
 
 
 def get_attribute(obj: dict, path: list):
@@ -18,13 +24,14 @@ def get_attribute(obj: dict, path: list):
     :return: the value if the path is accessible, empty string if not found
     """
     current_location = obj
+    pypi_field_name = path[-1]
     for token in path:
         if isinstance(current_location, dict) and token in current_location:
             current_location = current_location[token]
         elif isinstance(current_location, list) and token < len(current_location):
             current_location = current_location[token]
         else:
-            return ""
+            return pypi_field_default_values.get(pypi_field_name, "")
     return current_location
 
 
