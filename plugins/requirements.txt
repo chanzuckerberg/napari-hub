@@ -1,6 +1,4 @@
 boto3
 requests
-napari
 npe2
 numpy
-pyqt5
