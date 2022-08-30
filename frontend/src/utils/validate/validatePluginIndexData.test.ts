@@ -2,7 +2,7 @@ import { PickByValue } from 'utility-types';
 
 import { PluginIndexData, PluginType, PluginWriterSaveLayer } from '@/types';
 
-import { createValidatePluginTest, DELETED } from './helpers';
+import { createValidatePluginTest, DELETED } from './testHelpers';
 import { validatePluginIndexData } from './validatePluginIndexData';
 
 type PluginIndexDataKeys<T> = keyof PickByValue<PluginIndexData, T>;

@@ -2,7 +2,7 @@ import { PickByValue, SetDifference } from 'utility-types';
 
 import { PluginData, PluginIndexData } from '@/types';
 
-import { createValidatePluginTest, DELETED } from './helpers';
+import { createValidatePluginTest, DELETED } from './testHelpers';
 import { validatePluginData } from './validatePluginData';
 
 type PluginDataKeys<T> = SetDifference<
