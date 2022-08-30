@@ -17,7 +17,6 @@ locals {
   frontend_cmd = []
   backend_cmd  = []
   plugins_cmd  = []
-  failure_cmd  = ["get_plugin_manifest.failure_handler"]
 
   security_groups     = local.secret["security_groups"]
   zone                = local.secret["zone_id"]
@@ -52,7 +51,6 @@ locals {
   frontend_url = var.frontend_url != "" ? var.frontend_url: try(join("", ["https://", module.frontend_dns.dns_prefix, ".", local.external_dns]), var.frontend_url)
   backend_function_name = "${local.custom_stack_name}-backend"
   plugins_function_name = "${local.custom_stack_name}-plugins"
-  failure_function_name = "${local.custom_stack_name}-failure"
 }
 
 module frontend_dns {
@@ -144,35 +142,10 @@ module plugins_lambda {
   }
 
   log_retention_in_days = 14
-  timeout               = 900
+  timeout               = 150
   memory_size           = 10240
   ephemeral_storage_size = 10240
-  maximum_retry_attempts = 0
-  create_async_event_config = true
-  destination_on_failure = module.failure_lambda.function_arn
-}
 
-module failure_lambda {
-  source             = "../lambda-container"
-  function_name      = local.failure_function_name
-  image_repo         = local.plugins_image_repo
-  image_tag          = local.image_tag
-  cmd                = local.failure_cmd
-  tags               = var.tags
-
-  vpc_config = {
-    subnet_ids         = local.cloud_env.private_subnets
-    security_group_ids = local.security_groups
-  }
-
-  environment = {
-    "BUCKET" = local.data_bucket_name
-    "BUCKET_PATH" = var.env == "dev" ? local.custom_stack_name : ""
-  }
-
-  log_retention_in_days = 14
-  timeout               = 900
-  maximum_retry_attempts = 0
 }
 
 module api_gateway_proxy_stage {
@@ -252,26 +225,6 @@ data aws_iam_policy_document plugins_policy {
     resources = ["${local.data_bucket_arn}/*"]
   }
 
-  statement {
-    actions = [
-      "lambda:InvokeFunction",
-      "lambda:InvokeAsync",
-    ]
-
-    resources = [module.failure_lambda.function_arn]
-  }
-}
-
-data aws_iam_policy_document failure_policy {
-  statement {
-    actions = [
-      "s3:PutObject",
-      "s3:GetObject",
-      "s3:DeleteObject",
-    ]
-
-    resources = ["${local.data_bucket_arn}/*"]
-  }
 }
 
 resource aws_iam_role_policy policy {
@@ -284,12 +237,6 @@ resource aws_iam_role_policy plugins_lambda_policy {
   name     = "${local.custom_stack_name}-${var.env}-plugins-lambda-policy"
   role     = module.plugins_lambda.role_name
   policy   = data.aws_iam_policy_document.plugins_policy.json
-}
-
-resource aws_iam_role_policy failure_lambda_policy {
-  name     = "${local.custom_stack_name}-${var.env}-failure-lambda-policy"
-  role     = module.failure_lambda.role_name
-  policy   = data.aws_iam_policy_document.failure_policy.json
 }
 
 resource aws_acm_certificate cert {
@@ -327,4 +274,10 @@ resource aws_lb_listener_certificate cert {
   depends_on      = [aws_acm_certificate_validation.cert]
   listener_arn    = local.frontend_listener_arn
   certificate_arn = aws_acm_certificate.cert.arn
+}
+
+resource "aws_lambda_function_event_invoke_config" "async-config" {
+  function_name                = module.plugins_lambda.function_name
+  maximum_event_age_in_seconds = 500
+  maximum_retry_attempts       = 0
 }
