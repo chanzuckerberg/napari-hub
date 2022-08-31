@@ -33,10 +33,15 @@ export interface CollectionIndexData {
   symbol: string;
 }
 
+export enum CollectionVisibility {
+  Public = 'public',
+  Hidden = 'hidden',
+  Disabled = 'disabled',
+}
+
 export interface CollectionData extends CollectionIndexData {
   description: string;
-  updated_date: Date;
-  visible: boolean;
+  updated_date: string;
   plugins: CollectionPlugin[];
-  visibility?: 'public' | 'hidden' | 'disabled';
+  visibility?: CollectionVisibility;
 }

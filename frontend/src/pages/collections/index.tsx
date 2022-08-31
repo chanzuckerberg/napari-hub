@@ -1,16 +1,18 @@
-import { AxiosError } from 'axios';
+import axios from 'axios';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import { SSRConfig, useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { z } from 'zod';
 
 import { CollectionsPage } from '@/components/CollectionsPage';
 import { CollectionsContextProvider } from '@/components/CollectionsPage/context';
 import { ErrorMessage } from '@/components/ErrorMessage';
 import { CollectionIndexData } from '@/types/collections';
 import { I18nNamespace } from '@/types/i18n';
-import { hubAPI } from '@/utils/axios';
 import { isFeatureFlagEnabled } from '@/utils/featureFlags';
+import { hubAPI } from '@/utils/HubAPIClient';
+import { getZodErrorMessage } from '@/utils/validate';
 
 interface Props extends Partial<SSRConfig> {
   collections?: CollectionIndexData[];
@@ -45,13 +47,15 @@ export async function getServerSideProps({
   const props: Props = { ...translationProps };
 
   try {
-    const { data: collections } = await hubAPI.get<CollectionIndexData[]>(
-      '/collections',
-    );
-    props.collections = collections;
+    props.collections = await hubAPI.getCollectionsIndex();
   } catch (err) {
-    const error = err as AxiosError;
-    props.error = error.message;
+    if (axios.isAxiosError(err)) {
+      props.error = err.message;
+    }
+
+    if (err instanceof z.ZodError) {
+      props.error = getZodErrorMessage(err);
+    }
   }
 
   return { props };

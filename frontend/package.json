@@ -114,7 +114,8 @@
     "unified": "10.1.2",
     "use-debounce": "8.0.1",
     "utility-types": "3.10.0",
-    "valtio": "1.6.0"
+    "valtio": "1.6.0",
+    "zod": "^3.18.0"
   },
   "devDependencies": {
     "@babel/core": "7.17.10",
