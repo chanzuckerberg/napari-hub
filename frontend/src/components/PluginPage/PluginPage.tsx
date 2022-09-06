@@ -104,7 +104,7 @@ function PluginCenterColumn() {
             <h1
               className={clsx(
                 'font-bold text-4xl',
-                !plugin?.name && 'text-napari-dark-gray',
+                !plugin?.name && 'text-hub-gray-500',
               )}
             >
               {(isNpe2Enabled ? plugin?.display_name : undefined) ||
@@ -143,7 +143,7 @@ function PluginCenterColumn() {
             <h2
               className={clsx(
                 'font-semibold text-lg',
-                !plugin?.summary && 'text-napari-dark-gray',
+                !plugin?.summary && 'text-hub-gray-500',
               )}
             >
               {plugin?.summary || t('pluginData:labels.summary.preview')}
