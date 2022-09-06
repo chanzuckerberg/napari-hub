@@ -10,7 +10,7 @@
 }
 
 $code-theme-palette: (
-  background: #f7f7f7,
+  background: theme('colors.hub-gray.100'),
   plainText: #000,
   comments: #6f6f6f,
   strings: #0074b8,

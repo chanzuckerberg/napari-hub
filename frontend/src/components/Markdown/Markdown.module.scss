@@ -16,7 +16,7 @@
 
   code {
     @apply text-base font-normal p-sds-xxs;
-    background: #f7f7f7;
+    background: theme('colors.hub-gray.100');
 
     &::before,
     &::after {
