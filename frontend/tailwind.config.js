@@ -52,7 +52,6 @@ module.exports = {
         'napari-preview-orange-overlay': colors.previewOrangeOverlay,
         'napari-preview-orange-overlay-active':
           colors.previewOrangeOverlayActive,
-        'napari-category-blue': colors.categoryBlue,
 
         'hub-gray': {
           100: '#f7f7f7',

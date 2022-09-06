@@ -137,7 +137,7 @@ function BaseCategoryChip(
         className,
 
         isActive && [
-          'bg-napari-category-blue',
+          'bg-hub-primary-100',
           'hover:bg-hub-primary-200',
           'focus:bg-hub-primary-200',
         ],

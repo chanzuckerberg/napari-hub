@@ -68,7 +68,7 @@ div.complexFilter {
 
   &.categories :global {
     .MuiChip-root {
-      @apply bg-napari-category-blue hover:bg-napari-hover;
+      @apply bg-hub-primary-100 hover:bg-napari-hover;
     }
   }
 }
