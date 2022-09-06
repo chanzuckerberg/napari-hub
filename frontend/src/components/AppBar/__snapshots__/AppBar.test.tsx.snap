@@ -6,7 +6,7 @@ exports[`<AppBar /> should match snapshot 1`] = `
     class="screen-600:hidden"
   />
   <header
-    class="grid grid-cols-[min-content,1fr] screen-875:grid-cols-napari-3 screen-1150:grid-cols-napari-4 screen-1425:grid-cols-napari-5 gap-sds-xl screen-495:gap-12 bg-napari-primary h-napari-app-bar justify-center items-center px-sds-xl screen-495:px-12 screen-1150:p-0"
+    class="grid grid-cols-[min-content,1fr] screen-875:grid-cols-napari-3 screen-1150:grid-cols-napari-4 screen-1425:grid-cols-napari-5 gap-sds-xl screen-495:gap-12 bg-hub-primary-400 h-napari-app-bar justify-center items-center px-sds-xl screen-495:px-12 screen-1150:p-0"
   >
     <div
       class="hidden screen-600:block"
