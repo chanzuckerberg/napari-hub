@@ -6,7 +6,6 @@ if (process.env.MOCK_SERVER === 'false') {
 }
 
 const cors = require('cors');
-const dayjs = require('dayjs');
 const express = require('express');
 const { set, pick, get } = require('lodash');
 
