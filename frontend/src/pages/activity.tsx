@@ -13,10 +13,10 @@ import { useQuery } from 'react-query';
 import { Props as ActivityDashboardProps } from 'src/components/ActivityDashboard';
 
 import { ChevronDown, ChevronUp } from '@/components/icons';
+import { usePluginActivity, usePluginInstallStats } from '@/hooks';
 import { I18nNamespace } from '@/types/i18n';
-import { DataPoint } from '@/types/stats';
-import { hubAPI } from '@/utils/axios';
 import { isFeatureFlagEnabled } from '@/utils/featureFlags';
+import { hubAPI } from '@/utils/HubAPIClient';
 
 const ActivityDashboard = dynamic<ActivityDashboardProps>(
   () =>
@@ -57,32 +57,14 @@ export default function Activity() {
   const [activePlugin, setActivePlugin] = useState('napari-mrcfile-handler');
   const [showRawData, setShowRawData] = useState(false);
 
-  const { data: pluginList = [] } = useQuery(['plugin-list'], async () => {
-    const { data } = await hubAPI.get<string[]>('/activity/plugins');
-    return data;
-  });
-
-  const { data: dataPoints = [], isLoading: isLoadingData } = useQuery(
-    ['plugin-activity', activePlugin],
-    async () => {
-      const { data } = await hubAPI.get<DataPoint[]>(
-        `/activity/${activePlugin}`,
-      );
-      return data;
-    },
+  const { data: pluginList = [] } = useQuery(['plugin-list'], () =>
+    hubAPI.getPluginsWithActivities(),
   );
 
-  const { data: pluginStats } = useQuery(
-    ['plugin-stats', activePlugin],
-    async () => {
-      const { data } = await hubAPI.get<{
-        totalMonths: number;
-        totalInstalls: number;
-      }>(`/activity/${activePlugin}/stats`);
+  const { dataPoints, isLoading: isLoadingData } =
+    usePluginActivity(activePlugin);
 
-      return data;
-    },
-  );
+  const { pluginStats } = usePluginInstallStats(activePlugin);
 
   function changePlugin(diff: number) {
     const pluginIndex = pluginList.findIndex(

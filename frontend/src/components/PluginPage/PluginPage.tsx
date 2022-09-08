@@ -4,7 +4,6 @@ import { isObject, throttle } from 'lodash';
 import dynamic from 'next/dynamic';
 import { useTranslation } from 'next-i18next';
 import { useEffect, useRef } from 'react';
-import { useQuery } from 'react-query';
 import { Props as ActivityDashboardProps } from 'src/components/ActivityDashboard';
 
 import { AppBarPreview } from '@/components/AppBar';
@@ -18,11 +17,14 @@ import { SkeletonLoader } from '@/components/SkeletonLoader';
 import { TOCHeader } from '@/components/TableOfContents';
 import { useLoadingState } from '@/context/loading';
 import { usePluginState } from '@/context/plugin';
-import { useMediaQuery, usePlausible } from '@/hooks';
+import {
+  useMediaQuery,
+  usePlausible,
+  usePluginActivity,
+  usePluginInstallStats,
+} from '@/hooks';
 import { usePreviewClickAway } from '@/hooks/usePreviewClickAway';
 import { HubDimension } from '@/types';
-import { DataPoint } from '@/types/stats';
-import { hubAPI } from '@/utils/axios';
 import { useIsFeatureFlagEnabled } from '@/utils/featureFlags';
 
 import { CallToActionButton } from './CallToActionButton';
@@ -68,29 +70,8 @@ function PluginCenterColumn() {
     !plugin?.description ||
     plugin.description.includes(t('preview:emptyDescription'));
 
-  const { data: dataPoints = [] } = useQuery(
-    ['plugin-activity', plugin?.name],
-    async () => {
-      const { data } = await hubAPI.get<DataPoint[]>(
-        `/activity/${plugin?.name ?? ''}`,
-      );
-      return data;
-    },
-    { enabled: !!plugin?.name },
-  );
-
-  const { data: pluginStats } = useQuery(
-    ['plugin-stats', plugin?.name],
-    async () => {
-      const { data } = await hubAPI.get<{
-        totalMonths: number;
-        totalInstalls: number;
-      }>(`/activity/${plugin?.name ?? ''}/stats`);
-
-      return data;
-    },
-    { enabled: !!plugin?.name },
-  );
+  const { dataPoints } = usePluginActivity(plugin?.name);
+  const { pluginStats } = usePluginInstallStats(plugin?.name);
 
   return (
     <article

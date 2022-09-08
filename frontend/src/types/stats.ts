@@ -14,3 +14,8 @@ export interface DataPoint {
    */
   y: number | null;
 }
+
+export interface PluginInstallStats {
+  totalMonths: number;
+  totalInstalls: number;
+}
