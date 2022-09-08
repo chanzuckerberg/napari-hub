@@ -30,6 +30,10 @@ export const FEATURE_FLAGS = createFeatureFlags({
   collections: {
     environments: ['dev'],
   },
+
+  activityDashboard: {
+    environments: ['dev'],
+  },
 });
 
 /**

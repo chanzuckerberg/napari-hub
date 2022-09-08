@@ -1,16 +1,22 @@
+/* eslint-disable no-restricted-syntax */
+
 if (process.env.MOCK_SERVER === 'false') {
   console.log('MOCK_SERVER is false, exiting');
   process.exit();
 }
 
+const cors = require('cors');
 const express = require('express');
-const { set, pick } = require('lodash');
+const { set, pick, get } = require('lodash');
 
 const napariPlugin = require('./src/fixtures/plugin.json');
 const pluginIndex = require('./src/fixtures/index.json');
 const collections = require('./src/fixtures/collections.json');
+const activity = require('./src/fixtures/activity.json');
 
 const app = express();
+
+app.use(cors());
 
 app.get('/plugins', async (_, res) => {
   const versions = pluginIndex.reduce(
@@ -61,6 +67,30 @@ app.get('/collections/:symbol', async (req, res) => {
     res.json(collection);
   } else {
     res.status(404).send('not found');
+  }
+});
+
+app.get('/activity/plugins', (_, res) => {
+  res.json(Object.keys(activity));
+});
+
+app.get('/activity/:plugin/stats', (req, res) => {
+  const stats = get(activity, [req.params.plugin, 'stats'], null);
+
+  if (stats) {
+    res.json(stats);
+  } else {
+    res.status(404);
+  }
+});
+
+app.get('/activity/:plugin', async (req, res) => {
+  const stats = get(activity, [req.params.plugin, 'points'], null);
+
+  if (stats) {
+    res.json(stats);
+  } else {
+    res.status(404);
   }
 });
 
