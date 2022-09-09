@@ -67,8 +67,6 @@ module.exports = {
 
     config.plugins.push(
       new EnvironmentPlugin({
-        API_URL: '',
-
         BASE_PATH: '',
 
         // Path to JSON file that has the same structure as the backend's plugin

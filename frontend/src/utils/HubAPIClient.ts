@@ -2,6 +2,7 @@
 
 import axios from 'axios';
 
+import { BROWSER } from '@/constants/env';
 import { PluginData, PluginIndexData } from '@/types';
 import { CollectionData, CollectionIndexData } from '@/types/collections';
 import { DataPoint, PluginInstallStats } from '@/types/stats';
@@ -55,10 +56,12 @@ function isHubAPIErrorResponse(
  */
 class HubAPIClient {
   private api = axios.create({
-    baseURL: API_URL,
-    headers: {
-      Host: API_URL_HOST,
-    },
+    baseURL: BROWSER ? '/api' : API_URL,
+    headers: BROWSER
+      ? undefined
+      : {
+          Host: API_URL_HOST,
+        },
   });
 
   async getPluginIndex(): Promise<PluginIndexData[]> {
