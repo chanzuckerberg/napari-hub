@@ -4,7 +4,7 @@ import snowflake.connector
 import boto3
 
 ctx = snowflake.connector.connect(
-    user="SVC_PYTHON",
+    user="",
     password="",
     account="CZI-IMAGING",
     warehouse="IMAGING",
