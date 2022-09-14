@@ -1,3 +1,9 @@
+/**
+ * The raw format of the data point represented as a tuple. This gets converted
+ * into a normal `DataPoint` type in the object notation below.
+ */
+export type RawDataPoint = [number, number];
+
 export interface DataPoint {
   /**
    * Numerical value for the x-coordinate of a point to render in a chart. The
