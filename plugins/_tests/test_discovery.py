@@ -10,22 +10,6 @@ TEST_VERSION = '0.0.1'
 TEST_BUCKET = 'test-bucket'
 TEST_CACHE_PATH = f'cache/{TEST_PLUGIN}/{TEST_PLUGIN}.{TEST_VERSION}-manifest.json'
 
-
-def _mock_get_object(Bucket, Key):
-    if os.path.exists(Key):
-        with open(Key) as fp:
-            return json.load(fp)
-    else:
-        raise ClientError(
-            error_response={
-                'Error': {
-                    'Code': 'NoSuchKey',
-                    'Message': 'The specified key does not exist.'
-                },
-            },
-            operation_name='Fake'
-        )
-
 def _mock_put_object(Body, Bucket, Key):
     if os.path.exists(Key):
         raise FileExistsError
@@ -42,7 +26,8 @@ def test_discovery_manifest_exists(tmp_path):
     manifest_pth.write_text(json.dumps({'error': 'Could not build manifest.'}))
     with mock.patch('plugins.get_plugin_manifest.bucket_path', tmp_path),\
         mock.patch('plugins.get_plugin_manifest.s3') as mock_s3:
-        mock_s3.get_object = _mock_get_object
+        bucket_instance = mock_s3.Bucket.return_value
+        bucket_instance.objects.filter.return_value = [TEST_PLUGIN]
         generate_manifest({'plugin': TEST_PLUGIN, 'version': TEST_VERSION}, None)
     mock_s3.put_object.assert_not_called()
 
@@ -54,17 +39,17 @@ def test_s3_fetching_error(tmp_path):
     manifest_pth.write_text(json.dumps({'error': 'Could not build manifest.'}))
     with mock.patch('plugins.get_plugin_manifest.bucket_path', tmp_path),\
         mock.patch('plugins.get_plugin_manifest.s3') as mock_s3:
-        def mock_get(Bucket, Key):
+        def mock_make_bucket(bucket_name):
             raise ClientError(
                 error_response={
                     'Error': {
-                        'Code': 'AccessDenied',
-                        'Message': 'Access Denied.'
+                        'Code': 'InvalidBucketName',
+                        'Message': 'The specified bucket is not valid.	.'
                     },
                 },
                 operation_name='Fake'
             )
-        mock_s3.get_object = mock_get
+        mock_s3.Bucket.side_effect = mock_make_bucket
         with pytest.raises(ClientError):
             generate_manifest({'plugin': TEST_PLUGIN, 'version': TEST_VERSION}, None)
 
@@ -75,7 +60,8 @@ def test_discovery_failure(tmp_path):
     manifest_pth.parent.mkdir(parents=True)
     with mock.patch('plugins.get_plugin_manifest.bucket_path', tmp_path),\
         mock.patch('plugins.get_plugin_manifest.s3') as mock_s3:
-        mock_s3.get_object = _mock_get_object
+        bucket_instance = mock_s3.Bucket.return_value
+        bucket_instance.objects.filter.return_value = []
         mock_s3.put_object = _mock_put_object
         generate_manifest({'plugin': TEST_PLUGIN, 'version': TEST_VERSION}, None)
     written = json.loads(manifest_pth.read_text())
@@ -90,7 +76,8 @@ def test_discovery_success(tmp_path):
     manifest_pth.parent.mkdir(parents=True)
     with mock.patch('plugins.get_plugin_manifest.bucket_path', tmp_path),\
         mock.patch('plugins.get_plugin_manifest.s3') as mock_s3:
-        mock_s3.get_object = _mock_get_object
+        bucket_instance = mock_s3.Bucket.return_value
+        bucket_instance.objects.filter.return_value = []
         mock_s3.put_object = _mock_put_object
         generate_manifest({'plugin': plugin_name, 'version': plugin_version}, None)
     written = json.loads(manifest_pth.read_text())

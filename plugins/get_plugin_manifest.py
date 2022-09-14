@@ -4,9 +4,9 @@ import boto3
 from botocore.exceptions import ClientError
 from npe2 import fetch_manifest
 
-s3 = boto3.client('s3')
+s3 = boto3.resource('s3')
 # Environment variable set through ecs stack terraform module
-bucket = os.environ.get('BUCKET')
+bucket_name = os.environ.get('BUCKET')
 bucket_path = os.environ.get('BUCKET_PATH', '')
 
 def generate_manifest(event, context):
@@ -17,17 +17,15 @@ def generate_manifest(event, context):
     plugin = event['plugin']
     version = event['version']
     key = os.path.join(bucket_path, f'cache/{plugin}/{plugin}.{version}-manifest.json')
-    try:
-        existing_manifest = s3.get_object(Bucket=bucket, Key=key)
+    # if the manifest for this plugin already exists there's nothing do to
+    bucket = s3.Bucket(bucket_name)
+    existing_manifest_summary = bucket.objects.filter(Prefix=key)
+    if existing_manifest_summary:
         return
-    except ClientError as e:
-        # we don't want to hide any "real" s3 errors
-        if not e.response['Error']['Code'] == 'NoSuchKey':
-            raise e        
-            
-        try:
-            manifest = fetch_manifest(plugin, version)
-            s3_body = manifest.json()
-        except Exception as e:
-            s3_body =  json.dumps({'error': str(e)})
-        s3.put_object(Body=s3_body, Bucket=bucket, Key=key)
+
+    try:
+        manifest = fetch_manifest(plugin, version)
+        s3_body = manifest.json()
+    except Exception as e:
+        s3_body =  json.dumps({'error': str(e)})
+    s3.put_object(Body=s3_body, Bucket=bucket_name, Key=key)
