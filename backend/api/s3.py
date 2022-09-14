@@ -3,10 +3,12 @@ import json
 import mimetypes
 import os
 import os.path
+import time
 from datetime import datetime
 import pandas
 from io import StringIO
 from typing import Union, IO, List, Dict
+import types
 
 import boto3
 import yaml
@@ -64,11 +66,27 @@ def cache(content: Union[dict, list, IO[bytes]], key: str, mime: str = None):
                                      Key=os.path.join(bucket_path, key), ExtraArgs=extra_args)
 
 
-def get_activity_dashboard_data():
+def get_activity_dashboard_data() -> Dict:
+    """
+    Get the content of activity_dashboard.csv file on s3.
+
+    :return: dictionary that consists of processed data for activity_dashboard backend endpoints
+    """
     # convert into df later
     os.environ['AWS_PROFILE'] = 'sci-imaging'
     session = boto3.session.Session()
     client = session.client('s3')
-    activity_dashboard_data = pandas.read_csv(StringIO(
+    activity_dashboard_dataframe = pandas.read_csv(StringIO(
         client.get_object(Bucket='sci-imaging-data', Key='activity_dashboard.csv')['Body'].read().decode('utf-8')))
-    return activity_dashboard_data
+    activity_dashboard_dict = {}
+    # length of date in format 'YYYY-MM-DD'
+    str_len = 10
+    for index, row in activity_dashboard_dataframe.iterrows():
+        obj = types.SimpleNamespace()
+        setattr(obj, 'x', int(time.mktime(datetime.strptime(row['MONTH'][0:str_len], "%Y-%m-%d").timetuple())))
+        setattr(obj, 'y', row['NUM_DOWNLOADS_BY_MONTH'])
+        if row['PROJECT'] not in activity_dashboard_dict:
+            activity_dashboard_dict[row['PROJECT']] = [obj]
+        else:
+            activity_dashboard_dict[row['PROJECT']].append(obj)
+    return activity_dashboard_dict

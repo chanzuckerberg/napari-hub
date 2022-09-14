@@ -1,9 +1,11 @@
+import types
 from concurrent import futures
 from datetime import datetime
 from typing import Tuple, Dict, List, Callable, Any
 from zipfile import ZipFile
 from io import BytesIO
 from collections import defaultdict
+from dateutil.relativedelta import relativedelta
 from utils.conda import get_conda_forge_package
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
@@ -338,10 +340,9 @@ def get_installs(plugin: str) -> List[Any]:
     :return: list of objects
     """
     # fetch the activity dashboard data in dataframe format
-    activity_dashboard_dataframe = get_activity_dashboard_data()
-    installs = []
-    # TODO: filter down to specific plugin and convert timestamp and convert into list of tuple per pr ticket
-    return installs
+    activity_dashboard_dict = get_activity_dashboard_data()
+    activity_dashboard_dict[plugin].sort(key=lambda obj: obj.x, reverse=True)
+    return activity_dashboard_dict[plugin]
 
 
 def get_installs_stats(plugin: str) -> Any:
@@ -351,7 +352,18 @@ def get_installs_stats(plugin: str) -> Any:
     :param plugin: plugin name
     :return: object
     """
-    installs = get_installs()
-    installs_stats = []
-    # sum up the data that we gather from the output of get_installs
-    return installs_stats
+    activity_dashboard_dict = get_installs(plugin)
+    # length of date in format 'YYYY-MM-DD'
+    str_len = 10
+    total_install_count = 0
+    for obj in activity_dashboard_dict[plugin]:
+        total_install_count += obj.y
+    start_date = datetime.datetime.strptime(datetime.datetime.fromtimestamp(
+        activity_dashboard_dict['natari'][-1].x).isoformat()[0:str_len], '%Y-%m-%d').date()
+    end_date = datetime.datetime.strptime(datetime.datetime.fromtimestamp(
+        activity_dashboard_dict['natari'][0].x).isoformat()[0:str_len], '%Y-%m-%d').date()
+    total_months = relativedelta(end_date, start_date).years * 12 + relativedelta(end_date, start_date).months
+    obj = types.SimpleNamespace()
+    setattr(obj, 'totalInstallCount', total_install_count)
+    setattr(obj, 'totalMonths', total_months)
+    return obj
