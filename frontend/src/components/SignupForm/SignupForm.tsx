@@ -9,7 +9,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { ColumnLayout } from '@/components/ColumnLayout';
 import { usePlausible } from '@/hooks';
 
-const FORM_CONTAINER_ID = 'hubspot-form-container';
+export const FORM_CONTAINER_ID = 'hubspot-form-container';
 const FORM_CONTAINER_ID_QUERY = `#${FORM_CONTAINER_ID}`;
 
 interface Props {
