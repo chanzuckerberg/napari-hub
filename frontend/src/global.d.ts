@@ -12,3 +12,21 @@ declare namespace NodeJS {
     readonly PREVIEW_PULL_REQUEST: string;
   }
 }
+
+namespace HubSpotFormAPI {
+  export interface CreateFormOptions {
+    region: string;
+    portalId: string;
+    formId: string;
+    target?: string;
+  }
+
+  export interface HubSpotForm {
+    create(options: CreateFormOptions): void;
+  }
+  export interface HubSpot {
+    forms: HubSpotForm;
+  }
+}
+
+declare const hbspt: HubSpotFormAPI.HubSpot;

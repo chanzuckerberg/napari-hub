@@ -16,6 +16,7 @@
     "invalidEmail": "Please provide a valid email address",
     "missingEmail": "Please enter an email address",
     "subscribe": "Subscribe",
-    "title": "Sign up to receive updates"
+    "title": "Sign up to receive updates",
+    "success": "Thank you for joining our newsletter."
   }
 }
