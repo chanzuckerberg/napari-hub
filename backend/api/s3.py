@@ -4,12 +4,15 @@ import mimetypes
 import os
 import os.path
 from datetime import datetime
+import pandas
+from io import StringIO
 from typing import Union, IO, List, Dict
 
 import boto3
 import yaml
 from botocore.client import Config
 from botocore.exceptions import ClientError
+
 from utils.utils import send_alert
 
 # Environment variable set through ecs stack terraform module
@@ -60,3 +63,12 @@ def cache(content: Union[dict, list, IO[bytes]], key: str, mime: str = None):
             s3_client.upload_fileobj(Fileobj=stream, Bucket=bucket,
                                      Key=os.path.join(bucket_path, key), ExtraArgs=extra_args)
 
+
+def get_activity_dashboard_data():
+    # convert into df later
+    os.environ['AWS_PROFILE'] = 'sci-imaging'
+    session = boto3.session.Session()
+    client = session.client('s3')
+    activity_dashboard_data = pandas.read_csv(StringIO(
+        client.get_object(Bucket='sci-imaging-data', Key='activity_dashboard.csv')['Body'].read().decode('utf-8')))
+    return activity_dashboard_data

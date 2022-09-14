@@ -1,13 +1,13 @@
 from concurrent import futures
 from datetime import datetime
-from typing import Tuple, Dict, List, Callable
+from typing import Tuple, Dict, List, Callable, Any
 from zipfile import ZipFile
 from io import BytesIO
 from collections import defaultdict
 from utils.conda import get_conda_forge_package
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
-from api.s3 import get_cache, cache
+from api.s3 import get_cache, cache, get_activity_data, get_activity_dashboard_data
 from utils.utils import render_description, send_alert, get_attribute, get_category_mapping, parse_manifest
 from utils.datadog import report_metrics
 from api.zulip import notify_new_packages
@@ -327,3 +327,31 @@ def get_categories_mapping(version: str) -> Dict[str, List]:
     """
     mappings = get_cache(f'category/{version.replace(":", "/")}.json')
     return mappings or {}
+
+
+def get_installs(plugin: str) -> List[Any]:
+    """
+    This should return a list of objects, in which attribute x is the numerical value in milliseconds
+    and attribute y and is the number of installs
+
+    :param plugin: plugin name
+    :return: list of objects
+    """
+    # fetch the activity dashboard data in dataframe format
+    activity_dashboard_dataframe = get_activity_dashboard_data()
+    installs = []
+    # TODO: filter down to specific plugin and convert timestamp and convert into list of tuple per pr ticket
+    return installs
+
+
+def get_installs_stats(plugin: str) -> Any:
+    """
+    This should return an object, with numerical attributes totalInstallCount and totalMonths
+
+    :param plugin: plugin name
+    :return: object
+    """
+    installs = get_installs()
+    installs_stats = []
+    # sum up the data that we gather from the output of get_installs
+    return installs_stats
