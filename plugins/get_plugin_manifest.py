@@ -1,6 +1,7 @@
 import json
 import os
 import boto3
+from botocore.exceptions import ClientError
 from npe2 import fetch_manifest
 
 s3 = boto3.client('s3')
@@ -16,12 +17,14 @@ def generate_manifest(event, context):
     plugin = event['plugin']
     version = event['version']
     key = os.path.join(bucket_path, f'cache/{plugin}/{plugin}.{version}-manifest.json')
-    # print(key)
     try:
         existing_manifest = s3.get_object(Bucket=bucket, Key=key)
         return
-    # will fail on nonexistent, need to find proper exception class
-    except Exception as e:
+    except ClientError as e:
+        # we don't want to hide any "real" s3 errors
+        if not e.response['Error']['Code'] == 'NoSuchKey':
+            raise e        
+            
         try:
             manifest = fetch_manifest(plugin, version)
             s3_body = manifest.json()
