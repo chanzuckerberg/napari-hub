@@ -5,7 +5,7 @@ import axios from 'axios';
 import { BROWSER } from '@/constants/env';
 import { PluginData, PluginIndexData } from '@/types';
 import { CollectionData, CollectionIndexData } from '@/types/collections';
-import { DataPoint, PluginInstallStats } from '@/types/stats';
+import { PluginInstallStats, RawDataPoint } from '@/types/stats';
 
 import {
   validateCollectionData,
@@ -99,8 +99,8 @@ class HubAPIClient {
     return data;
   }
 
-  async getPluginActivity(name: string): Promise<DataPoint[]> {
-    const { data } = await this.api.get<DataPoint[]>(`/activity/${name}`);
+  async getPluginActivity(name: string): Promise<RawDataPoint[]> {
+    const { data } = await this.api.get<RawDataPoint[]>(`/activity/${name}`);
     return data;
   }
 
