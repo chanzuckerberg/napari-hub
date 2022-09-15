@@ -3,9 +3,17 @@ import Chip, { ChipProps } from '@mui/material/Chip';
 import Tooltip from '@mui/material/Tooltip';
 import clsx from 'clsx';
 import { useTranslation } from 'next-i18next';
-import { ForwardedRef, forwardRef, Fragment, useRef, useState } from 'react';
+import {
+  ForwardedRef,
+  forwardRef,
+  Fragment,
+  ReactNode,
+  useRef,
+  useState,
+} from 'react';
 
 import { Link } from '@/components/Link';
+import { useIsTapDevice } from '@/hooks/useIsTapDevice';
 import { useSearchStore } from '@/store/search/context';
 import { HubDimension } from '@/types';
 import { I18nKeys } from '@/types/i18n';
@@ -37,7 +45,7 @@ function BaseCategoryChip(
 ) {
   const [t] = useTranslation(['common', 'pluginData']);
   const { searchStore } = useSearchStore();
-  const iconRef = useRef<HTMLButtonElement>(null);
+  const iconRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
 
   const chipBody = category
@@ -65,12 +73,67 @@ function BaseCategoryChip(
     t(`pluginData:category.tooltips.${categoryType}` as I18nKeys<'common'>);
   const hasTooltip = !!(categoryType && tooltipBody);
 
-  return (
+  const isTapDevice = useIsTapDevice();
+
+  function renderTooltip(node: ReactNode) {
+    return (
+      <Tooltip
+        arrow
+        open={open}
+        onOpen={() => setOpen(true)}
+        onClose={() => setOpen(false)}
+        leaveDelay={0}
+        classes={{
+          arrow: 'before:bg-white before:border before:border-napari-gray',
+          tooltip: 'bg-white text-black border border-napari-gray',
+        }}
+        PopperProps={{
+          anchorEl() {
+            return iconRef.current as HTMLDivElement;
+          },
+        }}
+        title={
+          <div
+            className={clsx(
+              'leading-normal',
+              'flex flex-col',
+              'mx-sds-l my-sds-s space-y-sds-s',
+            )}
+          >
+            <span className="font-semibold text-sm">{categoryType}</span>
+            <span className="text-xs">{tooltipBody}</span>
+            <span className="text-xs italic">
+              {t('pluginData:category.clickToAdd')}
+            </span>
+          </div>
+        }
+      >
+        <div>{node}</div>
+      </Tooltip>
+    );
+  }
+
+  const icon = (
+    <div ref={iconRef}>
+      <button
+        className="pr-[12px] flex items-center justify-center"
+        onClick={(event) => {
+          // Open tooltip when clicking on tooltip info button.
+          event.preventDefault();
+          setOpen(true);
+        }}
+        type="button"
+      >
+        <InfoOutlinedIcon className="w-3 h-3" />
+      </button>
+    </div>
+  );
+
+  const chip = (
     <Chip
       ref={ref}
       className={clsx(
         'text-xs !rounded-full',
-        className,
 
         isActive && [
           'bg-napari-category-blue',
@@ -98,57 +161,17 @@ function BaseCategoryChip(
       label={
         <div className="flex items-center space-x-sds-xxs">
           <span className="font-semibold space-x-sds-xxs">{chipBody}</span>
-          {hasTooltip && (
-            <Tooltip
-              arrow
-              open={open}
-              onOpen={() => setOpen(true)}
-              onClose={() => setOpen(false)}
-              leaveDelay={0}
-              classes={{
-                arrow:
-                  'before:bg-white before:border before:border-napari-gray',
-                tooltip: 'bg-white text-black border border-napari-gray',
-              }}
-              PopperProps={{
-                anchorEl() {
-                  return iconRef.current as HTMLButtonElement;
-                },
-              }}
-              title={
-                <div
-                  className={clsx(
-                    'leading-normal',
-                    'flex flex-col',
-                    'mx-sds-l my-sds-s space-y-sds-s',
-                  )}
-                >
-                  <span className="font-semibold text-sm">{categoryType}</span>
-                  <span className="text-xs">{tooltipBody}</span>
-                  <span className="text-xs italic">
-                    {t('pluginData:category.clickToAdd')}
-                  </span>
-                </div>
-              }
-            >
-              <button
-                className="pr-[12px] flex items-center justify-center"
-                ref={iconRef}
-                onClick={(event) => {
-                  // Open tooltip when clicking on tooltip info button.
-                  event.preventDefault();
-                  setOpen(true);
-                }}
-                type="button"
-              >
-                <InfoOutlinedIcon className="w-3 h-3" />
-              </button>
-            </Tooltip>
-          )}
+          {isTapDevice ? icon : renderTooltip(icon)}
         </div>
       }
       {...props}
     />
+  );
+
+  return (
+    <div className={className}>
+      {!hasTooltip || !isTapDevice ? chip : renderTooltip(chip)}
+    </div>
   );
 }
 
