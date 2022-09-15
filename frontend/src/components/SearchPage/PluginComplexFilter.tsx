@@ -253,6 +253,7 @@ export function PluginComplexFilter({ filterKey }: Props) {
         classes: {
           groupLabel: clsx(
             '!text-sm leading-normal text-black font-semibold top-0 px-2',
+            'tracking-normal normal-case',
 
             !(filterKey === 'workflowStep' || filterKey === 'authors') &&
               'hidden',
@@ -302,7 +303,7 @@ export function PluginComplexFilter({ filterKey }: Props) {
 
               <p
                 className={clsx(
-                  '-mt-sds-xxs text-[0.875rem] break-words leading-normal',
+                  '-mt-sds-xxs text-[0.875rem] break-words leading-normal tracking-normal',
                   selected && 'text-black',
                 )}
               >

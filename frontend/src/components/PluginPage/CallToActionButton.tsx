@@ -36,7 +36,8 @@ export function CallToActionButton({ className }: Props) {
               className,
 
               // Button color
-              'bg-hub-primary-400',
+              'bg-hub-primary-400 hover:bg-hub-primary-500 active:bg-hub-primary-600',
+              'transition-colors',
 
               // Dimensions
               dimensionsClassName,

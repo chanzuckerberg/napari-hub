@@ -12,10 +12,7 @@ interface LineNumbersProps {
 function LineNumbers({ length }: LineNumbersProps) {
   return (
     <div
-      className={clsx(
-        styles.lineNumbers,
-        'p-sds-l pr-sds-s shadow-sds-s z-10 text-right',
-      )}
+      className={clsx(styles.lineNumbers, 'p-sds-l pr-sds-s z-10 text-right')}
     >
       {Array.from({ length }, (_, index) => (
         <div key={`line-${index}`} className="select-none">

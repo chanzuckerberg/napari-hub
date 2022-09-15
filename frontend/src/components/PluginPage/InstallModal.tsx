@@ -37,9 +37,7 @@ function CopyPluginNameButton() {
     <Button
       className={clsx(
         // Button colors
-        clicked
-          ? 'bg-hub-primary-400 hover:bg-hub-primary-400'
-          : 'bg-hub-primary-200 hover:bg-hub-primary-400',
+        'bg-hub-primary-400 hover:bg-hub-primary-500 active:bg-hub-primary-600',
 
         // Dimensions
         'min-h-6',
