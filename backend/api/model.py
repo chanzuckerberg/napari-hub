@@ -5,11 +5,11 @@ from typing import Tuple, Dict, List, Callable, Any
 from zipfile import ZipFile
 from io import BytesIO
 from collections import defaultdict
-from dateutil.relativedelta import relativedelta
+import pandas as pd
 from utils.conda import get_conda_forge_package
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
-from api.s3 import get_cache, cache, get_activity_data, get_activity_dashboard_data
+from api.s3 import get_cache, cache, get_activity_dashboard_data
 from utils.utils import render_description, send_alert, get_attribute, get_category_mapping, parse_manifest
 from utils.datadog import report_metrics
 from api.zulip import notify_new_packages
@@ -339,10 +339,15 @@ def get_installs(plugin: str) -> List[Any]:
     :param plugin: plugin name
     :return: list of objects
     """
-    # fetch the activity dashboard data in dataframe format
-    activity_dashboard_dict = get_activity_dashboard_data()
-    activity_dashboard_dict[plugin].sort(key=lambda obj: obj.x, reverse=True)
-    return activity_dashboard_dict[plugin]
+    plugin_df = get_activity_dashboard_data(plugin)
+    plugin_df['MONTH'] = plugin_df['MONTH'].map(pd.Timestamp.timestamp) * 1000
+    installs_list = []
+    for _, row in plugin_df.iterrows():
+        obj = types.SimpleNamespace()
+        setattr(obj, 'x', int(row.MONTH))
+        setattr(obj, 'y', int(row.NUM_DOWNLOADS_BY_MONTH))
+        installs_list.append(obj)
+    return installs_list
 
 
 def get_installs_stats(plugin: str) -> Any:
@@ -352,18 +357,11 @@ def get_installs_stats(plugin: str) -> Any:
     :param plugin: plugin name
     :return: object
     """
-    activity_dashboard_dict = get_installs(plugin)
-    # length of date in format 'YYYY-MM-DD'
-    str_len = 10
-    total_install_count = 0
-    for obj in activity_dashboard_dict[plugin]:
-        total_install_count += obj.y
-    start_date = datetime.datetime.strptime(datetime.datetime.fromtimestamp(
-        activity_dashboard_dict['natari'][-1].x).isoformat()[0:str_len], '%Y-%m-%d').date()
-    end_date = datetime.datetime.strptime(datetime.datetime.fromtimestamp(
-        activity_dashboard_dict['natari'][0].x).isoformat()[0:str_len], '%Y-%m-%d').date()
-    total_months = relativedelta(end_date, start_date).years * 12 + relativedelta(end_date, start_date).months
+    plugin_df = get_activity_dashboard_data(plugin)
+    if len(plugin_df) == 0:
+        return None
     obj = types.SimpleNamespace()
-    setattr(obj, 'totalInstallCount', total_install_count)
-    setattr(obj, 'totalMonths', total_months)
+    setattr(obj, 'totalInstallCount', plugin_df['NUM_DOWNLOADS_BY_MONTH'].sum())
+    month_offset = plugin_df['MONTH'].max().to_period('M') - plugin_df['MONTH'].min().to_period('M')
+    setattr(obj, 'totalMonths', month_offset.n)
     return obj

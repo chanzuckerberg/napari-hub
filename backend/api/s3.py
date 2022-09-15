@@ -11,6 +11,7 @@ from typing import Union, IO, List, Dict
 import types
 
 import boto3
+import pandas as pd
 import yaml
 from botocore.client import Config
 from botocore.exceptions import ClientError
@@ -66,10 +67,11 @@ def cache(content: Union[dict, list, IO[bytes]], key: str, mime: str = None):
                                      Key=os.path.join(bucket_path, key), ExtraArgs=extra_args)
 
 
-def get_activity_dashboard_data() -> Dict:
+def get_activity_dashboard_data(plugin) -> Dict:
     """
     Get the content of activity_dashboard.csv file on s3.
 
+    :param plugin: plugin name
     :return: dictionary that consists of processed data for activity_dashboard backend endpoints
     """
     # convert into df later
@@ -78,15 +80,7 @@ def get_activity_dashboard_data() -> Dict:
     client = session.client('s3')
     activity_dashboard_dataframe = pandas.read_csv(StringIO(
         client.get_object(Bucket='sci-imaging-data', Key='activity_dashboard.csv')['Body'].read().decode('utf-8')))
-    activity_dashboard_dict = {}
-    # length of date in format 'YYYY-MM-DD'
-    str_len = 10
-    for index, row in activity_dashboard_dataframe.iterrows():
-        obj = types.SimpleNamespace()
-        setattr(obj, 'x', int(time.mktime(datetime.strptime(row['MONTH'][0:str_len], "%Y-%m-%d").timetuple())))
-        setattr(obj, 'y', row['NUM_DOWNLOADS_BY_MONTH'])
-        if row['PROJECT'] not in activity_dashboard_dict:
-            activity_dashboard_dict[row['PROJECT']] = [obj]
-        else:
-            activity_dashboard_dict[row['PROJECT']].append(obj)
-    return activity_dashboard_dict
+    plugin_df = activity_dashboard_dataframe[activity_dashboard_dataframe.PROJECT == plugin]
+    plugin_df = plugin_df[['MONTH', 'NUM_DOWNLOADS_BY_MONTH']]
+    plugin_df['MONTH'] = pd.to_datetime(plugin_df['MONTH'])
+    return plugin_df
