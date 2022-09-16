@@ -1,19 +1,21 @@
 import json
 import os
 import boto3
-from botocore.exceptions import ClientError
 from npe2 import fetch_manifest
 
-s3 = boto3.resource('s3')
 # Environment variable set through ecs stack terraform module
-bucket_name = os.environ.get('BUCKET')
+bucket_name = os.environ.get('BUCKET')    
 bucket_path = os.environ.get('BUCKET_PATH', '')
+s3 = boto3.resource('s3')
 
 def generate_manifest(event, context):
     """
     When manifest does not already exist, discover using `npe2_fetch` and write
     valid manifest or resulting error message back to manifest file.
     """
+    if not bucket_name:
+        raise RuntimeError('Bucket name not specified.')
+
     plugin = event['plugin']
     version = event['version']
     key = os.path.join(bucket_path, f'cache/{plugin}/{plugin}.{version}-manifest.json')
