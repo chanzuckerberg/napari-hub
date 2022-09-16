@@ -334,7 +334,7 @@ def get_categories_mapping(version: str) -> Dict[str, List]:
 def get_installs(plugin: str) -> List[Any]:
     """
     This should return a list of objects, in which attribute x is the numerical value in milliseconds
-    and attribute y and is the number of installs
+    and attribute y is the number of installs
 
     :param plugin: plugin name
     :return: list of objects

@@ -3,11 +3,9 @@ import json
 import mimetypes
 import os
 import os.path
-import time
 from datetime import datetime
 from io import StringIO
 from typing import Union, IO, List, Dict
-import types
 
 import boto3
 import pandas as pd
@@ -70,9 +68,8 @@ def get_activity_dashboard_data(plugin) -> Dict:
     Get the content of activity_dashboard.csv file on s3.
 
     :param plugin: plugin name
-    :return: dictionary that consists of processed data for activity_dashboard backend endpoints
+    :return: dataframe that consists of plugin-specific data for activity_dashboard backend endpoints
     """
-    # convert into df later
     os.environ['AWS_PROFILE'] = 'sci-imaging'
     session = boto3.session.Session()
     client = session.client('s3')

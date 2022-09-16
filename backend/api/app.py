@@ -120,7 +120,7 @@ def get_plugin_installs_stats(plugin: str) -> Response:
     return jsonify(get_installs_stats(plugin))
 
 
-@app.errorhandler(4034)
+@app.errorhandler(404)
 def handle_exception(e) -> Response:
     links = [rule.rule for rule in app.url_map.iter_rules()
              if 'GET' in rule.methods and
