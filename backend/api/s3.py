@@ -5,7 +5,6 @@ import os
 import os.path
 import time
 from datetime import datetime
-import pandas
 from io import StringIO
 from typing import Union, IO, List, Dict
 import types
@@ -15,7 +14,6 @@ import pandas as pd
 import yaml
 from botocore.client import Config
 from botocore.exceptions import ClientError
-
 from utils.utils import send_alert
 
 # Environment variable set through ecs stack terraform module
@@ -78,7 +76,7 @@ def get_activity_dashboard_data(plugin) -> Dict:
     os.environ['AWS_PROFILE'] = 'sci-imaging'
     session = boto3.session.Session()
     client = session.client('s3')
-    activity_dashboard_dataframe = pandas.read_csv(StringIO(
+    activity_dashboard_dataframe = pd.read_csv(StringIO(
         client.get_object(Bucket='sci-imaging-data', Key='activity_dashboard.csv')['Body'].read().decode('utf-8')))
     plugin_df = activity_dashboard_dataframe[activity_dashboard_dataframe.PROJECT == plugin]
     plugin_df = plugin_df[['MONTH', 'NUM_DOWNLOADS_BY_MONTH']]
