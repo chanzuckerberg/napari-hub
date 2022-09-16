@@ -70,7 +70,7 @@ def get_activity_dashboard_data(plugin) -> Dict:
     :param plugin: plugin name
     :return: dataframe that consists of plugin-specific data for activity_dashboard backend endpoints
     """
-    # testing
+    # testing prod env
     os.environ['AWS_PROFILE'] = 'sci-imaging'
     session = boto3.session.Session()
     client = session.client('s3')
