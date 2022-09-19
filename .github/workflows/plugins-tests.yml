@@ -1,0 +1,52 @@
+# Workflow for running plugins lambda tests for PRs and main branch
+
+name: Plugins Tests
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'plugins/**'
+  pull_request:
+    branches:
+      - '**'
+    paths:
+      - 'plugins/**'
+
+defaults:
+  run:
+    working-directory: plugins/
+
+jobs:
+  # Runs pytest for backend code
+  tests:
+    name: pytest
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.9"
+
+      - name: Cache Python environment
+        uses: actions/cache@v3
+        id: pip-cache
+        with:
+          path: ${{ env.pythonLocation }}
+          key: ${{ env.pythonLocation }}-${{ hashFiles('setup.py') }}-${{ hashFiles('dev-requirements.txt') }}
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest
+
+      - name: Run tests
+        working-directory: plugins/
+        run : |
+          python -m pytest .

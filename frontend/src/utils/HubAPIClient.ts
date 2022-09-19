@@ -2,8 +2,10 @@
 
 import axios from 'axios';
 
+import { BROWSER } from '@/constants/env';
 import { PluginData, PluginIndexData } from '@/types';
 import { CollectionData, CollectionIndexData } from '@/types/collections';
+import { DataPoint, PluginInstallStats } from '@/types/stats';
 
 import {
   validateCollectionData,
@@ -54,10 +56,12 @@ function isHubAPIErrorResponse(
  */
 class HubAPIClient {
   private api = axios.create({
-    baseURL: API_URL,
-    headers: {
-      Host: API_URL_HOST,
-    },
+    baseURL: BROWSER ? '/api' : API_URL,
+    headers: BROWSER
+      ? undefined
+      : {
+          Host: API_URL_HOST,
+        },
   });
 
   async getPluginIndex(): Promise<PluginIndexData[]> {
@@ -88,6 +92,24 @@ class HubAPIClient {
   async getCollection(name: string): Promise<CollectionData> {
     const { data } = await this.api.get<CollectionData>(`/collections/${name}`);
     return validateCollectionData(data);
+  }
+
+  async getPluginsWithActivities(): Promise<string[]> {
+    const { data } = await this.api.get<string[]>('/activity/plugins');
+    return data;
+  }
+
+  async getPluginActivity(name: string): Promise<DataPoint[]> {
+    const { data } = await this.api.get<DataPoint[]>(`/activity/${name}`);
+    return data;
+  }
+
+  async getPluginInstallStats(name: string): Promise<PluginInstallStats> {
+    const { data } = await this.api.get<PluginInstallStats>(
+      `/activity/${name}/stats`,
+    );
+
+    return data;
   }
 }
 

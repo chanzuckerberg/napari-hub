@@ -84,7 +84,6 @@
     "glob": "8.0.1",
     "hast-util-sanitize": "4.0.0",
     "lodash": "4.17.21",
-    "lodash-es": "4.17.21",
     "next": "12.1.1",
     "next-dynamic-loading-props": "0.1.1",
     "next-i18next": "11.0.0",
@@ -115,7 +114,8 @@
     "use-debounce": "8.0.1",
     "utility-types": "3.10.0",
     "valtio": "1.6.0",
-    "zod": "^3.18.0"
+    "zod": "^3.18.0",
+    "victory": "^36.5.3"
   },
   "devDependencies": {
     "@babel/core": "7.17.10",
@@ -137,6 +137,7 @@
     "@typescript-eslint/eslint-plugin": "5.22.0",
     "@typescript-eslint/parser": "5.22.0",
     "autoprefixer": "10.4.7",
+    "cors": "^2.8.5",
     "eslint": "8.14.0",
     "eslint-config-airbnb": "19.0.4",
     "eslint-config-airbnb-typescript": "17.0.0",
