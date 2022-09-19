@@ -28,6 +28,8 @@ tags:
       url: https://shields.io/
   - name: manifest
     description: The manifest file corresponding to npe2 for plugin
+  - name: activity
+    description: Information about activity plugin installs and stats
 paths:
   /plugins:
     get:
