@@ -3,6 +3,9 @@ import os
 import snowflake.connector
 import boto3
 
+# TODO (klai): This was run once locally and not connected to any systems yet, but in follow-up work we will
+#              connect this to a production schema, switch over to environment variables, and have this run nightly
+
 ctx = snowflake.connector.connect(
     user="",
     password="",
