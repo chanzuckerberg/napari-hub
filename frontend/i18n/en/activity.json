@@ -1,0 +1,6 @@
+{
+  "installs": {
+    "title": "Installs",
+    "installCount": "<count>{{installs}}</count> total installs in past <count>{{months}}</count> months"
+  }
+}

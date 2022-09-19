@@ -1,3 +1,4 @@
+import activity from '@/i18n/en/activity.json';
 import collections from '@/i18n/en/collections.json';
 import common from '@/i18n/en/common.json';
 import footer from '@/i18n/en/footer.json';
@@ -12,6 +13,7 @@ import preview from '@/i18n/en/preview.json';
  * information and providing mock i18n data for unit testing.
  */
 export const I18nResources = {
+  activity,
   collections,
   common,
   footer,

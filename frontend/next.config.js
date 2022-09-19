@@ -59,15 +59,11 @@ module.exports = {
   // https://github.com/vercel/next.js/issues/36498
   optimizeFonts: false,
 
-  webpack(config, { isServer }) {
+  webpack(config) {
     // Sets BABEL_ENV to `<[server|client]-[dev|prod]>` depending on the Next.js
     // build.  This is required for the Material UI + babel import plugin to work.
     const env = PROD ? 'prod' : 'dev';
     process.env.BABEL_ENV = `${config.name}-${env}`;
-
-    if (!isServer) {
-      config.resolve.alias.lodash = require.resolve('lodash-es');
-    }
 
     config.plugins.push(
       new EnvironmentPlugin({

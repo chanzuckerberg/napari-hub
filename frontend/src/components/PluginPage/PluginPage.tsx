@@ -1,8 +1,10 @@
 import clsx from 'clsx';
 import { Tooltip } from 'czifui';
 import { isObject, throttle } from 'lodash';
+import dynamic from 'next/dynamic';
 import { useTranslation } from 'next-i18next';
 import { useEffect, useRef } from 'react';
+import { Props as ActivityDashboardProps } from 'src/components/ActivityDashboard';
 
 import { AppBarPreview } from '@/components/AppBar';
 import { CategoryChipContainer } from '@/components/CategoryChip';
@@ -15,7 +17,12 @@ import { SkeletonLoader } from '@/components/SkeletonLoader';
 import { TOCHeader } from '@/components/TableOfContents';
 import { useLoadingState } from '@/context/loading';
 import { usePluginState } from '@/context/plugin';
-import { useMediaQuery, usePlausible } from '@/hooks';
+import {
+  useMediaQuery,
+  usePlausible,
+  usePluginActivity,
+  usePluginInstallStats,
+} from '@/hooks';
 import { usePreviewClickAway } from '@/hooks/usePreviewClickAway';
 import { HubDimension } from '@/types';
 import { useIsFeatureFlagEnabled } from '@/utils/featureFlags';
@@ -25,6 +32,14 @@ import { CitationInfo } from './CitationInfo';
 import { ANCHOR } from './CitationInfo.constants';
 import { PluginMetadata } from './PluginMetadata';
 import { SupportInfo } from './SupportInfo';
+
+const ActivityDashboard = dynamic<ActivityDashboardProps>(
+  () =>
+    import('@/components/ActivityDashboard').then(
+      (mod) => mod.ActivityDashboard,
+    ),
+  { ssr: false },
+);
 
 function PluginLeftColumn() {
   const hasPluginMetadataScroll = useMediaQuery({ minWidth: 'screen-1425' });
@@ -42,6 +57,8 @@ function PluginCenterColumn() {
   const { plugin } = usePluginState();
   const [t] = useTranslation(['common', 'pluginPage', 'preview', 'pluginData']);
   const isNpe2Enabled = useIsFeatureFlagEnabled('npe2');
+  const isActivityDashboardEnabled =
+    useIsFeatureFlagEnabled('activityDashboard');
   const hasPluginMetadataScroll = useMediaQuery({ maxWidth: 'screen-1425' });
 
   usePreviewClickAway(isNpe2Enabled ? 'metadata-displayName' : 'metadata-name');
@@ -52,6 +69,9 @@ function PluginCenterColumn() {
   const isEmptyDescription =
     !plugin?.description ||
     plugin.description.includes(t('preview:emptyDescription'));
+
+  const { dataPoints } = usePluginActivity(plugin?.name);
+  const { pluginStats } = usePluginInstallStats(plugin?.name);
 
   return (
     <article
@@ -231,6 +251,14 @@ function PluginCenterColumn() {
         className="screen-1425:hidden"
         inline
       />
+
+      {isActivityDashboardEnabled && plugin?.name && (
+        <ActivityDashboard
+          data={dataPoints}
+          installCount={pluginStats?.totalInstalls ?? 0}
+          installMonthCount={pluginStats?.totalMonths ?? 0}
+        />
+      )}
     </article>
   );
 }
