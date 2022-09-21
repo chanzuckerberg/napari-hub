@@ -11,8 +11,8 @@ import boto3
 import pandas as pd
 import yaml
 from botocore.client import Config
-from botocore.exceptions import ClientError
-from utils.utils import send_alert
+#from botocore.exceptions import ClientError
+#from backend.utils.utils import send_alert
 
 # Environment variable set through ecs stack terraform module
 bucket = os.environ.get('BUCKET')
@@ -71,12 +71,15 @@ def get_activity_dashboard_data(plugin) -> Dict:
     :return: dataframe that consists of plugin-specific data for activity_dashboard backend endpoints
     """
     # testing prod env
-    os.environ['AWS_PROFILE'] = 'sci-imaging'
-    session = boto3.session.Session()
-    client = session.client('s3')
+    #os.environ['AWS_PROFILE'] = 'sci-imaging'
+    #session = boto3.session.Session()
+    #client = session.client('s3')
     activity_dashboard_dataframe = pd.read_csv(StringIO(
-        client.get_object(Bucket='sci-imaging-data', Key='activity_dashboard.csv')['Body'].read().decode('utf-8')))
+        s3_client.get_object(Bucket='napari-hub-dev', Key=os.path.join(
+            bucket_path, "activity_dashboard.csv"))['Body'].read().decode('utf-8')))
     plugin_df = activity_dashboard_dataframe[activity_dashboard_dataframe.PROJECT == plugin]
     plugin_df = plugin_df[['MONTH', 'NUM_DOWNLOADS_BY_MONTH']]
     plugin_df['MONTH'] = pd.to_datetime(plugin_df['MONTH'])
     return plugin_df
+
+get_activity_dashboard_data('natari')

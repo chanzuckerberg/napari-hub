@@ -30,4 +30,4 @@ with open('activity_dashboard_prototype.csv', 'r') as file:
 os.environ['AWS_PROFILE'] = 'sci-imaging'
 client = boto3.client('s3')
 
-client.put_object(Body=s3_body, Bucket='sci-imaging-data', Key='activity_dashboard.csv')
+client.put_object(Body=s3_body, Bucket='napari-hub-dev', Key='dev-activity-dashboard-test/activity_dashboard.csv')
