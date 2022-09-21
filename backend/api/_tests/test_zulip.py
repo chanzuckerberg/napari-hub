@@ -3,7 +3,7 @@ import unittest
 from unittest.mock import patch
 
 from requests import HTTPError
-from backend.api.zulip import create_github_endpoint, get_owner_and_name, get_release_notes, generate_release_notes_and_link_to_release, create_message, send_zulip_message
+from api.zulip import create_github_endpoint, get_owner_and_name, get_release_notes, generate_release_notes_and_link_to_release, create_message, send_zulip_message
 from utils.test_utils import (
     FakeResponse, github_api_response, github_api_response_no_body,
     metadata_if_code_repository_exists, list_of_demo_plugins, response_with_release_notes, response_without_release_notes,
