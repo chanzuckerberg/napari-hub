@@ -18,11 +18,11 @@ class TestActivityDashboard(unittest.TestCase):
         from api.model import get_installs
         result = get_installs('string-1')
         assert len(result) == 3
-        assert hasattr(result[0], 'x')
-        assert hasattr(result[0], 'y')
+        assert 'x' in result[0]
+        assert 'y' in result[0]
         expected_ms = mock_df.iloc[[1]].MONTH.astype(int) / int(1e6)
-        assert result[1].x == expected_ms.item()
-        assert result[1].y == 1
+        assert result[1]['x'] == expected_ms.item()
+        assert result[1]['y'] == 1
 
     @patch.object(
         model, 'get_activity_dashboard_data', return_value=pd.DataFrame(columns=['MONTH', 'NUM_DOWNLOADS_BY_MONTH'])
@@ -38,8 +38,8 @@ class TestActivityDashboard(unittest.TestCase):
     def test_get_installs_stats_nonempty(self, mock_get_activity_dashboard_data):
         from api.model import get_installs_stats
         result = get_installs_stats('string-1')
-        assert result.totalInstallCount == 3
-        assert result.totalMonths == 14
+        assert result['totalInstalls'] == 3
+        assert result['totalMonths'] == 14
 
     @patch.object(
         model, 'get_activity_dashboard_data', return_value=pd.DataFrame(columns=['MONTH', 'NUM_DOWNLOADS_BY_MONTH'])

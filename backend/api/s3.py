@@ -70,12 +70,15 @@ def get_activity_dashboard_data(plugin) -> Dict:
     :param plugin: plugin name
     :return: dataframe that consists of plugin-specific data for activity_dashboard backend endpoints
     """
-    os.environ['AWS_PROFILE'] = 'sci-imaging'
-    session = boto3.session.Session()
-    client = session.client('s3')
+    # testing prod env
+    #os.environ['AWS_PROFILE'] = 'sci-imaging'
+    #session = boto3.session.Session()
+    #client = session.client('s3')
     activity_dashboard_dataframe = pd.read_csv(StringIO(
-        client.get_object(Bucket='sci-imaging-data', Key='activity_dashboard.csv')['Body'].read().decode('utf-8')))
+        s3_client.get_object(Bucket='napari-hub-dev', Key=os.path.join(
+            bucket_path, "activity_dashboard.csv"))['Body'].read().decode('utf-8')))
     plugin_df = activity_dashboard_dataframe[activity_dashboard_dataframe.PROJECT == plugin]
     plugin_df = plugin_df[['MONTH', 'NUM_DOWNLOADS_BY_MONTH']]
     plugin_df['MONTH'] = pd.to_datetime(plugin_df['MONTH'])
     return plugin_df
+

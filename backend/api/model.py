@@ -1,3 +1,4 @@
+import json
 import types
 from concurrent import futures
 from datetime import datetime
@@ -343,9 +344,9 @@ def get_installs(plugin: str) -> List[Any]:
     plugin_df['MONTH'] = plugin_df['MONTH'].map(pd.Timestamp.timestamp) * 1000
     installs_list = []
     for _, row in plugin_df.iterrows():
-        obj = types.SimpleNamespace()
-        setattr(obj, 'x', int(row.MONTH))
-        setattr(obj, 'y', int(row.NUM_DOWNLOADS_BY_MONTH))
+        obj = dict()
+        obj['x'] = int(row.MONTH)
+        obj['y'] = int(row.NUM_DOWNLOADS_BY_MONTH)
         installs_list.append(obj)
     return installs_list
 
@@ -360,8 +361,8 @@ def get_installs_stats(plugin: str) -> Any:
     plugin_df = get_activity_dashboard_data(plugin)
     if len(plugin_df) == 0:
         return None
-    obj = types.SimpleNamespace()
-    setattr(obj, 'totalInstallCount', plugin_df['NUM_DOWNLOADS_BY_MONTH'].sum())
+    obj = dict()
     month_offset = plugin_df['MONTH'].max().to_period('M') - plugin_df['MONTH'].min().to_period('M')
-    setattr(obj, 'totalMonths', month_offset.n)
+    obj['totalInstalls'] = int(plugin_df['NUM_DOWNLOADS_BY_MONTH'].sum())
+    obj['totalMonths'] = month_offset.n
     return obj

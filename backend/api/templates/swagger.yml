@@ -28,6 +28,8 @@ tags:
       url: https://shields.io/
   - name: manifest
     description: The manifest file corresponding to npe2 for plugin
+  - name: activity
+    description: Information about activity plugin installs and stats
 paths:
   /plugins:
     get:
@@ -154,6 +156,47 @@ paths:
           description: Either the plugin name is incorrect or the manifest was not found. The latter could happen if the installation failed or if the plugin does not implement npe2 yet.
         503:
           description: The manifest is temporarily unavailable. Check back in 5 minutes.
+  /activity/installs/{name}:
+    get:
+      summary: Get a list of objects, where attribute x is timestamp and attribute y is number of installs
+      tags:
+        - activity
+      parameters:
+      - name: name
+        in: path
+        description: name of plugin to query
+        required: true
+        schema:
+          type: string
+        example: napari-demo
+      responses:
+        200:
+          description: The return json is the list of objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Activity-Installs'
+  /activity/installs/{name}/stats:
+    get:
+      summary: Get an objects, where it has attribute totalInstallCount and attribute totalMonths
+      tags:
+        - activity
+      parameters:
+        - name: name
+          in: path
+          description: name of plugin to query
+          required: true
+          schema:
+            type: string
+          example: napari-demo
+      responses:
+        200:
+          description: The return json is the list of objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Activity-Stats'
+
 components:
   schemas:
     Categories:
@@ -297,3 +340,13 @@ components:
           type: array
           items:
             type: string
+    Activity-Installs:
+      type: object
+      properties:
+        name:
+          type: string
+    Activity-Stats:
+      type: object
+      properties:
+        name:
+          type: string

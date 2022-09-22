@@ -110,12 +110,12 @@ def get_category(category: str, version: str) -> Response:
     return jsonify(get_category_mapping(category, get_categories_mapping(version)))
 
 
-@app.route('/activity/installs/<plugin>')
+@app.route('/activity/<plugin>')
 def get_plugin_installs(plugin: str) -> Response:
     return jsonify(get_installs(plugin))
 
 
-@app.route('/activity/installs/<plugin>/stats')
+@app.route('/activity/<plugin>/stats')
 def get_plugin_installs_stats(plugin: str) -> Response:
     return jsonify(get_installs_stats(plugin))
 
