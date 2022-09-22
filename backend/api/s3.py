@@ -82,4 +82,3 @@ def get_activity_dashboard_data(plugin) -> Dict:
     plugin_df['MONTH'] = pd.to_datetime(plugin_df['MONTH'])
     return plugin_df
 
-get_activity_dashboard_data('natari')
