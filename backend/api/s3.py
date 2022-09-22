@@ -70,10 +70,6 @@ def get_activity_dashboard_data(plugin) -> Dict:
     :param plugin: plugin name
     :return: dataframe that consists of plugin-specific data for activity_dashboard backend endpoints
     """
-    # testing prod env
-    #os.environ['AWS_PROFILE'] = 'sci-imaging'
-    #session = boto3.session.Session()
-    #client = session.client('s3')
     activity_dashboard_dataframe = pd.read_csv(StringIO(
         s3_client.get_object(Bucket='napari-hub-dev', Key=os.path.join(
             bucket_path, "activity_dashboard.csv"))['Body'].read().decode('utf-8')))
