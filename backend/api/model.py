@@ -363,6 +363,6 @@ def get_installs_stats(plugin: str) -> Any:
         return None
     obj = dict()
     month_offset = plugin_df['MONTH'].max().to_period('M') - plugin_df['MONTH'].min().to_period('M')
-    obj['totalInstallCount'] = int(plugin_df['NUM_DOWNLOADS_BY_MONTH'].sum())
+    obj['totalInstalls'] = int(plugin_df['NUM_DOWNLOADS_BY_MONTH'].sum())
     obj['totalMonths'] = month_offset.n
     return obj
