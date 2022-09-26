@@ -43,7 +43,7 @@ jobs:
           fi
       - name: Create update dev
         if: ${{ github.event_name == 'push' }}
-        uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.4.0
+        uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.7.4
         env:
           ENV: dev
         with:
@@ -52,6 +52,7 @@ jobs:
           tag: ${{ env.STACK_NAME }}
           tfe-token: ${{ secrets.TFE_TOKEN }}
           env: "dev"
+          operation: "create-or-update"
       - name: Delete dev
         if: ${{ github.event_name == 'delete' && startsWith(github.event.ref, 'dev-') }}
         uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.4.0
