@@ -29,7 +29,7 @@ jobs:
         run: | 
           echo DOCKER_TAG=${GITHUB_REF_NAME} >> $GITHUB_ENV
       - name: Deploy Changes to Prod
-        uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.4.0
+        uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.7.4
         env:
           ENV: prod
         with:
@@ -38,6 +38,7 @@ jobs:
           tag: ${{ env.DOCKER_TAG }}
           tfe-token: ${{ secrets.TFE_TOKEN }}
           env: "prod"
+          operation: "create-or-update"
   staging:
     name: deploy to staging
     runs-on: ubuntu-latest
@@ -60,7 +61,7 @@ jobs:
           echo STACK_NAME=${GITHUB_REF_NAME} >> $GITHUB_ENV
           echo DOCKER_TAG=${GITHUB_REF_NAME} >> $GITHUB_ENV
       - name: Deploy Changes to Staging
-        uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.4.0
+        uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.7.4
         env:
           ENV: staging
         with:
@@ -69,3 +70,4 @@ jobs:
           tag: ${{ env.DOCKER_TAG }}
           tfe-token: ${{ secrets.TFE_TOKEN }}
           env: "staging"
+          operation: "create-or-update"
