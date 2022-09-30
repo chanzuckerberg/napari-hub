@@ -117,6 +117,7 @@ module backend_lambda {
     "DD_ENV" = var.env
     "DD_SERVICE" = local.custom_stack_name
     "API_URL" = var.env == "dev" ? module.api_gateway_proxy_stage.invoke_url : ""
+    "PLUGINS_LAMBDA_NAME" = local.plugins_function_name
   }
 
   log_retention_in_days = 14
@@ -139,7 +140,6 @@ module plugins_lambda {
   environment = {
     "BUCKET" = local.data_bucket_name
     "BUCKET_PATH" = var.env == "dev" ? local.custom_stack_name : ""
-    "PLUGINS_LAMBDA_NAME" = local.plugins_function_name
   }
 
   log_retention_in_days = 14

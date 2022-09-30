@@ -1,5 +1,6 @@
 from concurrent import futures
 from datetime import datetime
+import json
 import os
 from typing import Tuple, Dict, List, Callable
 from zipfile import ZipFile
@@ -106,10 +107,9 @@ def get_manifest(plugin: str, version: str = None) -> dict:
             client = boto3.client('lambda')
             lambda_event = {'plugin': plugin, 'version': version}
             response = client.invoke(
-                # how do we make sure we've got the right function name here (because it's prefixed with the branch name...)?
                 FunctionName=os.environ.get('PLUGINS_LAMBDA_NAME'),
                 InvocationType='Event',
-                Payload=lambda_event,
+                Payload=json.dumps(lambda_event),
             )
             # can we know anything from lambda invoke response?
             return {'processed': False}
