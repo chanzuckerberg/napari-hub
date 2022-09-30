@@ -18,7 +18,7 @@ def generate_manifest(event, context):
 
     plugin = event['plugin']
     version = event['version']
-    key = os.path.join(bucket_path, f'cache/{plugin}/{plugin}.{version}-manifest.json')
+    key = os.path.join(bucket_path, f'cache/{plugin}/{version}-manifest.json')
     # if the manifest for this plugin already exists there's nothing do to
     bucket = s3.Bucket(bucket_name)
     existing_manifest_summary = bucket.objects.filter(Prefix=key)
