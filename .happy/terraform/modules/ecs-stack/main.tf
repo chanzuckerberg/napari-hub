@@ -139,6 +139,7 @@ module plugins_lambda {
   environment = {
     "BUCKET" = local.data_bucket_name
     "BUCKET_PATH" = var.env == "dev" ? local.custom_stack_name : ""
+    "PLUGINS_LAMBDA_NAME" = local.plugins_function_name
   }
 
   log_retention_in_days = 14
@@ -211,6 +212,16 @@ data aws_iam_policy_document backend_policy {
     ]
 
     resources = ["${local.data_bucket_arn}/*"]
+  }
+
+  statement {
+    actions = [
+      "lambda:InvokeFunction"
+    ]
+
+    resources = [
+      module.plugins_lambda.function_arn,
+    ]
   }
 }
 
