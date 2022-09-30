@@ -8,7 +8,7 @@ from botocore.exceptions import ClientError
 TEST_PLUGIN = 'test-plugin'
 TEST_VERSION = '0.0.1'
 TEST_BUCKET = 'test-bucket'
-TEST_CACHE_PATH = f'cache/{TEST_PLUGIN}/{TEST_PLUGIN}.{TEST_VERSION}-manifest.json'
+TEST_CACHE_PATH = f'cache/{TEST_PLUGIN}/{TEST_VERSION}-manifest.json'
 
 def _mock_put_object(Body, Bucket, Key):
     if os.path.exists(Key):
@@ -80,7 +80,7 @@ def test_discovery_success(s3, tmp_path):
     plugin_name = 'napari-demo'
     plugin_version = 'v0.1.0'
 
-    manifest_pth = tmp_path / f'cache/{plugin_name}/{plugin_name}.{plugin_version}-manifest.json'
+    manifest_pth = tmp_path / f'cache/{plugin_name}/{plugin_version}-manifest.json'
     manifest_pth.parent.mkdir(parents=True)
     with mock.patch('plugins.get_plugin_manifest.bucket_path', tmp_path):
         bucket_instance = s3.Bucket.return_value
