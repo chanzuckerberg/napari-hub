@@ -1,5 +1,6 @@
 from concurrent import futures
 from datetime import datetime
+import os
 from typing import Tuple, Dict, List, Callable
 from zipfile import ZipFile
 from io import BytesIO
@@ -11,6 +12,7 @@ from api.s3 import get_cache, cache
 from utils.utils import render_description, send_alert, get_attribute, get_category_mapping, parse_manifest
 from utils.datadog import report_metrics
 from api.zulip import notify_new_packages
+import boto3
 
 index_subset = {'name', 'summary', 'description_text', 'description_content_type',
                 'authors', 'license', 'python_version', 'operating_system',
@@ -95,10 +97,22 @@ def get_manifest(plugin: str, version: str = None) -> dict:
         version = plugins[plugin]
     plugin_metadata = get_cache(f'cache/{plugin}/{version}-manifest.json')
     if plugin_metadata:
-        return plugin_metadata
+        if 'error' in plugin_metadata:
+            return {'processed': True, 'error': plugin_metadata['error']}
+        else:
+            return plugin_metadata
     else:
-        cache({"process_count": 0}, f'cache/{plugin}/{version}-manifest.json')
-        return {"process_count": 0}
+        if plugin == 'napari-demo':
+            client = boto3.client('lambda')
+            lambda_event = {'plugin': plugin, 'version': version}
+            response = client.invoke(
+                # how do we make sure we've got the right function name here (because it's prefixed with the branch name...)?
+                FunctionName=os.environ.get('PLUGINS_LAMBDA_NAME'),
+                InvocationType='Event',
+                Payload=lambda_event,
+            )
+            # can we know anything from lambda invoke response?
+            return {'processed': False}
 
 
 def get_index() -> dict:
