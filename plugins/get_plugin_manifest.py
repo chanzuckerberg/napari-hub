@@ -37,4 +37,4 @@ def generate_manifest(event, context):
         print("Failed fetch")
         s3_body =  json.dumps({'error': str(e)})
     print(f'Writing {s3_body} to {key} in {bucket_name}')
-    s3.put_object(Body=s3_body, Bucket=bucket_name, Key=key)
+    bucket.put_object(Body=s3_body, Key=key)
