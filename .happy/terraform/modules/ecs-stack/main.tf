@@ -230,10 +230,17 @@ data aws_iam_policy_document plugins_policy {
     actions = [
       "s3:PutObject",
       "s3:GetObject",
-      "s3:ListObjects",
     ]
 
     resources = ["${local.data_bucket_arn}/*"]
+  }
+
+  statement {
+    actions = [
+      "s3:ListObjects",
+    ]
+
+    resources = ["${local.data_bucket_arn}"]
   }
 
 }
