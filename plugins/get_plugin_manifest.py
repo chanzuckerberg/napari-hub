@@ -15,26 +15,25 @@ def generate_manifest(event, context):
     """
     if not bucket_name:
         raise RuntimeError('Bucket name not specified.')
-    print(event)
 
     plugin = event['plugin']
     version = event['version']
     key = os.path.join(bucket_path, f'cache/{plugin}/{version}-manifest.json')
-    print(key)
+    print(f'Processing {key}')
     # if the manifest for this plugin already exists there's nothing do to
     bucket = s3.Bucket(bucket_name)
     existing_manifest_summary = list(bucket.objects.filter(Prefix=key))
     print(f'Filtered from bucket: {existing_manifest_summary}')
     if existing_manifest_summary:
-        print("Manifest exists... returning")
+        print("Manifest exists... returning.")
         return
 
     try:
-        print('Fetching manifest...')
+        print('Discovering manifest...')
         manifest = fetch_manifest(plugin, version)
         s3_body = manifest.json()
     except Exception as e:
-        print("Failed fetch")
+        print("Failed discovery...")
         s3_body =  json.dumps({'error': str(e)})
     print(f'Writing {s3_body} to {key} in {bucket_name}')
     bucket.put_object(Body=s3_body, Key=key)
