@@ -237,7 +237,7 @@ data aws_iam_policy_document plugins_policy {
 
   statement {
     actions = [
-      "s3:ListObjects",
+      "s3:ListBucket",
     ]
 
     resources = ["${local.data_bucket_arn}"]
