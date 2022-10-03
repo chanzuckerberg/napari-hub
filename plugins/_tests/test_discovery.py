@@ -10,7 +10,7 @@ TEST_VERSION = '0.0.1'
 TEST_BUCKET = 'test-bucket'
 TEST_CACHE_PATH = f'cache/{TEST_PLUGIN}/{TEST_VERSION}-manifest.json'
 
-def _mock_put_object(Body, Bucket, Key):
+def _mock_put_object(Body, Key):
     if os.path.exists(Key):
         raise FileExistsError
     else:
@@ -67,7 +67,7 @@ def test_discovery_failure(s3, tmp_path):
     with mock.patch('plugins.get_plugin_manifest.bucket_path', tmp_path):
         bucket_instance = s3.Bucket.return_value
         bucket_instance.objects.filter.return_value = []
-        s3.put_object = _mock_put_object
+        bucket_instance.put_object = _mock_put_object
         generate_manifest({'plugin': TEST_PLUGIN, 'version': TEST_VERSION}, None)
     written = json.loads(manifest_pth.read_text())
     assert written['error'] == 'HTTP Error 404: Not Found'
@@ -85,7 +85,7 @@ def test_discovery_success(s3, tmp_path):
     with mock.patch('plugins.get_plugin_manifest.bucket_path', tmp_path):
         bucket_instance = s3.Bucket.return_value
         bucket_instance.objects.filter.return_value = []
-        s3.put_object = _mock_put_object
+        bucket_instance.put_object = _mock_put_object
         generate_manifest({'plugin': plugin_name, 'version': plugin_version}, None)
     written = json.loads(manifest_pth.read_text())
     assert written['name'] == 'napari-demo'    
