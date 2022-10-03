@@ -156,7 +156,7 @@ paths:
           description: Either the plugin name is incorrect or the manifest was not found. The latter could happen if the installation failed or if the plugin does not implement npe2 yet.
         503:
           description: The manifest is temporarily unavailable. Check back in 5 minutes.
-  /activity/installs/{name}:
+  /activity/{name}:
     get:
       summary: Get a list of objects, where attribute x is timestamp and attribute y is number of installs
       tags:
@@ -176,7 +176,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Activity-Installs'
-  /activity/installs/{name}/stats:
+  /activity/{name}/stats:
     get:
       summary: Get an objects, where it has attribute totalInstallCount and attribute totalMonths
       tags:
