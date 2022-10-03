@@ -103,7 +103,6 @@ def get_manifest(plugin: str, version: str = None) -> dict:
         else:
             return plugin_metadata
     else:
-        return {'processed': False}
         if plugin == 'napari-demo':
             client = boto3.client('lambda')
             lambda_event = {'plugin': plugin, 'version': version}
@@ -113,6 +112,7 @@ def get_manifest(plugin: str, version: str = None) -> dict:
                 Payload=json.dumps(lambda_event),
             )
             # can we know anything from lambda invoke response?
+        return {'processed': False}
 
 
 def get_index() -> dict:
