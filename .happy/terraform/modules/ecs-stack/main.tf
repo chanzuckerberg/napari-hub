@@ -121,6 +121,7 @@ module backend_lambda {
 
   log_retention_in_days = 14
   timeout               = 300
+  memory_size           = 256
 }
 
 module plugins_lambda {
