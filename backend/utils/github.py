@@ -2,7 +2,6 @@ import json
 import logging
 import os.path
 import re
-import traceback
 from typing import Dict, Union, IO
 
 import requests
