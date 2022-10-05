@@ -1,4 +1,5 @@
 import json
+import logging
 import os.path
 import re
 from typing import Dict, Union, IO
@@ -174,8 +175,9 @@ def get_citations(citation_str: str) -> Union[Dict[str, str], None]:
             'BibTex': citation.as_bibtex(),
             'APA': citation.as_apalike()
         }
-    except ValueError:
-        # invalid CITATION.cff content
+    except Exception as e:
+        # log the invalid CITATION.cff content error
+        logging.error(e)
         return None
 
 
@@ -200,7 +202,11 @@ def get_citation_author(citation_str: str) -> Union[Dict[str, str], None]:
     :param citation_str: citation string to parse
     :return: list of mappings between the string 'name' and the author name
     """
-    citation_yaml = yaml.safe_load(citation_str)
+    try:
+        citation_yaml = yaml.safe_load(citation_str)
+    except yaml.YAMLError as e:
+        logging.error(e)
+        return []
     authors = []
     for author_entry in citation_yaml['authors']:
         if 'given-names' in author_entry and 'family-names' in author_entry and author_entry['given-names'] and author_entry['family-names']:
