@@ -204,6 +204,8 @@ def get_citation_author(citation_str: str) -> Union[Dict[str, str], None]:
     :return: list of mappings between the string 'name' and the author name
     """
     citation_yaml = yaml.safe_load(citation_str)
+    if citation_yaml is None:
+        return {}
     authors = []
     for author_entry in citation_yaml['authors']:
         if 'given-names' in author_entry and 'family-names' in author_entry and author_entry['given-names'] and author_entry['family-names']:
