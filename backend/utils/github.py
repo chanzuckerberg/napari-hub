@@ -207,6 +207,7 @@ def get_citation_author(citation_str: str) -> Union[Dict[str, str], None]:
         citation_yaml = yaml.safe_load(citation_str)
     except yaml.YAMLError as e:
         logging.error(e)
+        return []
     authors = []
     for author_entry in citation_yaml['authors']:
         if 'given-names' in author_entry and 'family-names' in author_entry and author_entry['given-names'] and author_entry['family-names']:
