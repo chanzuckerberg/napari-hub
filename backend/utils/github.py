@@ -1,6 +1,8 @@
 import json
+import logging
 import os.path
 import re
+import traceback
 from typing import Dict, Union, IO
 
 import requests
@@ -174,8 +176,9 @@ def get_citations(citation_str: str) -> Union[Dict[str, str], None]:
             'BibTex': citation.as_bibtex(),
             'APA': citation.as_apalike()
         }
-    except ValueError:
-        # invalid CITATION.cff content
+    except Exception as e:
+        # log the invalid CITATION.cff content error
+        logging.error(traceback.format_exc())
         return None
 
 
