@@ -203,13 +203,14 @@ def get_citation_author(citation_str: str) -> Union[Dict[str, str], None]:
     :param citation_str: citation string to parse
     :return: list of mappings between the string 'name' and the author name
     """
-    citation_yaml = yaml.safe_load(citation_str)
-    if citation_yaml is None:
-        return []
-    authors = []
-    for author_entry in citation_yaml['authors']:
-        if 'given-names' in author_entry and 'family-names' in author_entry and author_entry['given-names'] and author_entry['family-names']:
-            authors.append({'name':author_entry['given-names'] + " " + author_entry['family-names']})
-        elif 'name' in author_entry and author_entry['name']:
-            authors.append({'name':author_entry['name']})
+    try:
+        citation_yaml = yaml.safe_load(citation_str)
+        authors = []
+        for author_entry in citation_yaml['authors']:
+            if 'given-names' in author_entry and 'family-names' in author_entry and author_entry['given-names'] and author_entry['family-names']:
+                authors.append({'name':author_entry['given-names'] + " " + author_entry['family-names']})
+            elif 'name' in author_entry and author_entry['name']:
+                authors.append({'name':author_entry['name']})
+    except yaml.YAMLError as exc:
+        print(exc)
     return authors
