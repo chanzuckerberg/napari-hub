@@ -178,7 +178,7 @@ def get_citations(citation_str: str) -> Union[Dict[str, str], None]:
         }
     except Exception as e:
         # log the invalid CITATION.cff content error
-        logging.error(traceback.format_exc())
+        logging.error(e)
         return None
 
 
@@ -205,12 +205,12 @@ def get_citation_author(citation_str: str) -> Union[Dict[str, str], None]:
     """
     try:
         citation_yaml = yaml.safe_load(citation_str)
-        authors = []
-        for author_entry in citation_yaml['authors']:
-            if 'given-names' in author_entry and 'family-names' in author_entry and author_entry['given-names'] and author_entry['family-names']:
-                authors.append({'name':author_entry['given-names'] + " " + author_entry['family-names']})
-            elif 'name' in author_entry and author_entry['name']:
-                authors.append({'name':author_entry['name']})
-    except yaml.YAMLError as exc:
-        print(exc)
+    except yaml.YAMLError as e:
+        logging.error(e)
+    authors = []
+    for author_entry in citation_yaml['authors']:
+        if 'given-names' in author_entry and 'family-names' in author_entry and author_entry['given-names'] and author_entry['family-names']:
+            authors.append({'name':author_entry['given-names'] + " " + author_entry['family-names']})
+        elif 'name' in author_entry and author_entry['name']:
+            authors.append({'name':author_entry['name']})
     return authors
