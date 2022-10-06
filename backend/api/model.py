@@ -1,13 +1,14 @@
 from concurrent import futures
 from datetime import datetime
-from typing import Tuple, Dict, List, Callable
+from typing import Tuple, Dict, List, Callable, Any
 from zipfile import ZipFile
 from io import BytesIO
 from collections import defaultdict
+import pandas as pd
 from utils.conda import get_conda_forge_package
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
-from api.s3 import get_cache, cache
+from api.s3 import get_cache, cache, get_activity_dashboard_data
 from utils.utils import render_description, send_alert, get_attribute, get_category_mapping, parse_manifest
 from utils.datadog import report_metrics
 from api.zulip import notify_new_packages
@@ -327,3 +328,39 @@ def get_categories_mapping(version: str) -> Dict[str, List]:
     """
     mappings = get_cache(f'category/{version.replace(":", "/")}.json')
     return mappings or {}
+
+
+def get_installs(plugin: str) -> List[Any]:
+    """
+    This should return a list of objects, in which attribute x is the numerical value in milliseconds
+    and attribute y is the number of installs
+
+    :param plugin: plugin name
+    :return: list of objects
+    """
+    plugin_df = get_activity_dashboard_data(plugin)
+    plugin_df['MONTH'] = plugin_df['MONTH'].map(pd.Timestamp.timestamp) * 1000
+    installs_list = []
+    for _, row in plugin_df.iterrows():
+        obj = dict()
+        obj['x'] = int(row.MONTH)
+        obj['y'] = int(row.NUM_DOWNLOADS_BY_MONTH)
+        installs_list.append(obj)
+    return installs_list
+
+
+def get_installs_stats(plugin: str) -> Any:
+    """
+    This should return an object, with numerical attributes totalInstallCount and totalMonths
+
+    :param plugin: plugin name
+    :return: object
+    """
+    plugin_df = get_activity_dashboard_data(plugin)
+    if len(plugin_df) == 0:
+        return None
+    obj = dict()
+    month_offset = plugin_df['MONTH'].max().to_period('M') - plugin_df['MONTH'].min().to_period('M')
+    obj['totalInstalls'] = int(plugin_df['NUM_DOWNLOADS_BY_MONTH'].sum())
+    obj['totalMonths'] = month_offset.n
+    return obj
