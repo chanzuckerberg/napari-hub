@@ -145,7 +145,7 @@ module plugins_lambda {
   log_retention_in_days = 14
   timeout               = 60
   memory_size           = 128
-  ephemeral_storage_size = 128
+  ephemeral_storage_size = 512
 
 }
 
