@@ -32,7 +32,7 @@ export const FEATURE_FLAGS = createFeatureFlags({
   },
 
   activityDashboard: {
-    environments: ['dev'],
+    environments: ['dev', 'staging'],
   },
 });
 

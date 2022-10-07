@@ -4,9 +4,11 @@ import mimetypes
 import os
 import os.path
 from datetime import datetime
+from io import StringIO
 from typing import Union, IO, List, Dict
 
 import boto3
+import pandas as pd
 import yaml
 from botocore.client import Config
 from botocore.exceptions import ClientError
@@ -59,4 +61,20 @@ def cache(content: Union[dict, list, IO[bytes]], key: str, mime: str = None):
         with io.BytesIO(json.dumps(content).encode('utf8')) as stream:
             s3_client.upload_fileobj(Fileobj=stream, Bucket=bucket,
                                      Key=os.path.join(bucket_path, key), ExtraArgs=extra_args)
+
+
+def get_activity_dashboard_data(plugin) -> Dict:
+    """
+    Get the content of activity_dashboard.csv file on s3.
+
+    :param plugin: plugin name
+    :return: dataframe that consists of plugin-specific data for activity_dashboard backend endpoints
+    """
+    activity_dashboard_dataframe = pd.read_csv(StringIO(
+        s3_client.get_object(Bucket=bucket, Key=os.path.join(
+            bucket_path, "activity_dashboard.csv"))['Body'].read().decode('utf-8')))
+    plugin_df = activity_dashboard_dataframe[activity_dashboard_dataframe.PROJECT == plugin]
+    plugin_df = plugin_df[['MONTH', 'NUM_DOWNLOADS_BY_MONTH']]
+    plugin_df['MONTH'] = pd.to_datetime(plugin_df['MONTH'])
+    return plugin_df
 
