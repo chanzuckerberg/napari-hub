@@ -7,7 +7,7 @@ from flask_githubapp.core import GitHubApp
 import yaml
 
 from api.model import get_public_plugins, get_index, get_plugin, get_excluded_plugins, update_cache, \
-    move_artifact_to_s3, get_category_mapping, get_categories_mapping, get_manifest
+    move_artifact_to_s3, get_category_mapping, get_categories_mapping, get_manifest, get_installs, get_installs_stats
 from api.shield import get_shield
 from utils.utils import send_alert, reformat_ssh_key_to_pem_bytes
 
@@ -110,13 +110,24 @@ def get_category(category: str, version: str) -> Response:
     return jsonify(get_category_mapping(category, get_categories_mapping(version)))
 
 
+@app.route('/activity/<plugin>')
+def get_plugin_installs(plugin: str) -> Response:
+    return jsonify(get_installs(plugin))
+
+
+@app.route('/activity/<plugin>/stats')
+def get_plugin_installs_stats(plugin: str) -> Response:
+    return jsonify(get_installs_stats(plugin))
+
+
 @app.errorhandler(404)
 def handle_exception(e) -> Response:
     links = [rule.rule for rule in app.url_map.iter_rules()
              if 'GET' in rule.methods and
              any((rule.rule.startswith("/plugins"),
                   rule.rule.startswith("/shields"),
-                  rule.rule.startswith("/categories")))]
+                  rule.rule.startswith("/categories"),
+                  rule.rule.startswith("/activity")))]
     links.sort()
     links = "\n".join(links)
     return app.make_response((f"Invalid Endpoint, valid endpoints are:\n{links}", 404,
