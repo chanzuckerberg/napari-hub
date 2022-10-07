@@ -23,7 +23,7 @@ def generate_manifest(event, context):
     # if the manifest for this plugin already exists there's nothing do to
     bucket = s3.Bucket(bucket_name)
     existing_manifest_summary = list(bucket.objects.filter(Prefix=key))
-    print(f'Filtered from bucket: {existing_manifest_summary}')
+    print(f'Matching manifests in bucket: {existing_manifest_summary}')
     if existing_manifest_summary:
         print("Manifest exists... returning.")
         return
