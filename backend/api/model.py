@@ -104,15 +104,13 @@ def get_manifest(plugin: str, version: str = None) -> dict:
         else:
             return plugin_metadata
     else:
-        if plugin == 'napari-demo':
-            client = boto3.client('lambda')
-            lambda_event = {'plugin': plugin, 'version': version}
-            response = client.invoke(
-                FunctionName=os.environ.get('PLUGINS_LAMBDA_NAME'),
-                InvocationType='Event',
-                Payload=json.dumps(lambda_event),
-            )
-            # can we know anything from lambda invoke response?
+        client = boto3.client('lambda')
+        lambda_event = {'plugin': plugin, 'version': version}
+        response = client.invoke(
+            FunctionName=os.environ.get('PLUGINS_LAMBDA_NAME'),
+            InvocationType='Event',
+            Payload=json.dumps(lambda_event),
+        )
         return {'processed': False}
 
 
