@@ -1,3 +1,4 @@
 boto3
 npe2
 numpy
+mock
