@@ -28,6 +28,8 @@ def generate_manifest(event, context):
         print("Manifest exists... returning.")
         return
 
+    # write file to s3 to ensure we never retry this plugin version
+    bucket.put_object(Body=json.dumps({}), Key=key)
     try:
         print('Discovering manifest...')
         manifest = fetch_manifest(plugin, version)

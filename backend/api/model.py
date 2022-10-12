@@ -98,12 +98,9 @@ def get_manifest(plugin: str, version: str = None) -> dict:
     elif version is None:
         version = plugins[plugin]
     plugin_metadata = get_cache(f'cache/{plugin}/{version}-manifest.json')
-    if plugin_metadata:
-        if 'error' in plugin_metadata:
-            return {'processed': True, 'error': plugin_metadata['error']}
-        else:
-            return plugin_metadata
-    else:
+    
+    # plugin_metadata being None indicates manifest is not cached and needs processing 
+    if plugin_metadata is None:
         client = boto3.client('lambda')
         lambda_event = {'plugin': plugin, 'version': version}
         response = client.invoke(
@@ -112,6 +109,16 @@ def get_manifest(plugin: str, version: str = None) -> dict:
             Payload=json.dumps(lambda_event),
         )
         return {'processed': False}
+
+    # empty dict indicates some lambda error in processing e.g. timed out
+    if plugin_metadata == {}:
+        return {'processed': True, 'error': 'Processing manifest failed due to external error.'}
+    # error written to file indicates manifest discovery failed
+    if 'error' in plugin_metadata:
+        return {'processed': True, 'error': plugin_metadata['error']}
+
+    # correct plugin manifest
+    return plugin_metadata
 
 
 def get_index() -> dict:

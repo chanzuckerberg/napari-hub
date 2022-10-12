@@ -69,19 +69,17 @@ def versioned_plugin(plugin: str, version: str = None) -> Response:
 @app.route('/manifest/<plugin>', defaults={'version': None})
 @app.route('/manifest/<plugin>/versions/<version>')
 def plugin_manifest(plugin: str, version: str = None) -> Response:
-    max_failure_tries = 2
     manifest = get_manifest(plugin, version)
 
     if not manifest:
         return app.make_response(("Plugin does not exist", 404))
 
-    if 'process_count' not in manifest:
+    if 'processed' not in manifest:
         return jsonify(manifest)
 
-    current_tries = manifest['process_count']
-    if current_tries >= max_failure_tries:
+    if manifest['processed']:
         return app.make_response(
-            ("Plugin Manifest Not Found. Installation failed or plugin does not implement npe2", 404))
+            ("Plugin Manifest Not Found. Manifest discovery failed.", 404))
     else:
         response = app.make_response(("Temporarily Unavailable. Attempting to build manifest. Please check back"
                                       " in 5 minutes.", 503))
