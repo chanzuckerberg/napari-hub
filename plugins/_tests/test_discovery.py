@@ -1,8 +1,8 @@
 import json
 import os
-from mock import call
 import pytest
 from unittest import mock
+from unittest.mock import call
 from plugins.get_plugin_manifest import generate_manifest
 from botocore.exceptions import ClientError
 
