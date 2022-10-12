@@ -1,5 +1,6 @@
 import json
 import os
+from mock import call
 import pytest
 from unittest import mock
 from plugins.get_plugin_manifest import generate_manifest
@@ -11,11 +12,8 @@ TEST_BUCKET = 'test-bucket'
 TEST_CACHE_PATH = f'cache/{TEST_PLUGIN}/{TEST_VERSION}-manifest.json'
 
 def _mock_put_object(Body, Key):
-    if os.path.exists(Key):
-        raise FileExistsError
-    else:
-        with open(Key, 'w') as fp:
-            fp.write(Body)
+    with open(Key, 'w') as fp:
+        fp.write(Body)
 
 
 @mock.patch('plugins.get_plugin_manifest.s3')
@@ -30,7 +28,7 @@ def test_discovery_manifest_exists(s3, tmp_path):
         bucket_instance = s3.Bucket.return_value
         bucket_instance.objects.filter.return_value = [TEST_PLUGIN]
         generate_manifest({'plugin': TEST_PLUGIN, 'version': TEST_VERSION}, None)
-    s3.put_object.assert_not_called()
+    bucket_instance.put_object.assert_not_called()
 
 
 @mock.patch('plugins.get_plugin_manifest.s3')
@@ -91,6 +89,22 @@ def test_discovery_success(s3, tmp_path):
     assert written['name'] == 'napari-demo'    
     assert len(written['contributions']['widgets']) == 1
 
+@mock.patch('plugins.get_plugin_manifest.bucket_name', '')
 def test_bucket_name_not_set():
     with pytest.raises(RuntimeError, match='Bucket name not specified.'):
         generate_manifest({}, None)
+
+@mock.patch('plugins.get_plugin_manifest.s3')
+@mock.patch('plugins.get_plugin_manifest.bucket_name', 'napari-hub')
+def test_file_always_written(s3, tmp_path):
+    plugin_name = 'napari-demo'
+    plugin_version = 'v0.1.0'
+
+    manifest_pth = tmp_path / f'cache/{plugin_name}/{plugin_version}-manifest.json'
+    manifest_pth.parent.mkdir(parents=True)
+    with mock.patch('plugins.get_plugin_manifest.bucket_path', tmp_path):
+        bucket_instance = s3.Bucket.return_value
+        bucket_instance.objects.filter.return_value = []
+        generate_manifest({'plugin': plugin_name, 'version': plugin_version}, None)
+    assert bucket_instance.put_object.call_count == 2
+    bucket_instance.put_object.assert_has_calls([call(Body='{}', Key=str(manifest_pth))])
