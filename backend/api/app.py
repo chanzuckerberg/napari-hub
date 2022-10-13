@@ -74,17 +74,18 @@ def plugin_manifest(plugin: str, version: str = None) -> Response:
     if not manifest:
         return app.make_response(("Plugin does not exist", 404))
 
-    if 'processed' not in manifest:
+    if 'error' not in manifest:
         return jsonify(manifest)
 
-    if manifest['processed']:
-        return app.make_response(
-            ("Plugin Manifest Not Found. Manifest discovery failed.", 404))
-    else:
+    error = manifest['error']
+    if error == 'Manifest not yet processed.':
         response = app.make_response(("Temporarily Unavailable. Attempting to build manifest. Please check back"
                                       " in 5 minutes.", 503))
         response.headers["Retry-After"] = 300
         return response
+    else:
+        return app.make_response(
+            ("Plugin Manifest Not Found. Manifest discovery failed.", 404))
 
 
 @app.route('/shields/<plugin>')
