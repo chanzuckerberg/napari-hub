@@ -175,7 +175,7 @@ def get_excluded_plugins() -> Dict[str, str]:
 def build_manifest_metadata(plugin: str, version: str) -> Tuple[str, dict]:
     manifest = get_manifest(plugin, version)
     if 'error' in manifest:
-        if 'error' == 'Manifest not yet processed':
+        if 'Manifest not yet processed' in manifest['error']:
             # this will invoke the plugins lambda & write manifes to cache
             discover_manifest(plugin, version)
         # return just default values for now
