@@ -18,16 +18,24 @@ def generate_manifest(event, context):
 
     plugin = event['plugin']
     version = event['version']
-    key = os.path.join(bucket_path, f'cache/{plugin}/{plugin}.{version}-manifest.json')
+    key = os.path.join(bucket_path, f'cache/{plugin}/{version}-manifest.json')
+    print(f'Processing {key}')
     # if the manifest for this plugin already exists there's nothing do to
     bucket = s3.Bucket(bucket_name)
-    existing_manifest_summary = bucket.objects.filter(Prefix=key)
+    existing_manifest_summary = list(bucket.objects.filter(Prefix=key))
+    print(f'Matching manifests in bucket: {existing_manifest_summary}')
     if existing_manifest_summary:
+        print("Manifest exists... returning.")
         return
 
+    # write file to s3 to ensure we never retry this plugin version
+    bucket.put_object(Body=json.dumps({}), Key=key)
     try:
+        print('Discovering manifest...')
         manifest = fetch_manifest(plugin, version)
         s3_body = manifest.json()
     except Exception as e:
+        print("Failed discovery...")
         s3_body =  json.dumps({'error': str(e)})
-    s3.put_object(Body=s3_body, Bucket=bucket_name, Key=key)
+    print(f'Writing {s3_body} to {key} in {bucket_name}')
+    bucket.put_object(Body=s3_body, Key=key)

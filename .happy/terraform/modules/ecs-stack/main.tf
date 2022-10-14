@@ -117,6 +117,7 @@ module backend_lambda {
     "DD_ENV" = var.env
     "DD_SERVICE" = local.custom_stack_name
     "API_URL" = var.env == "dev" ? module.api_gateway_proxy_stage.invoke_url : ""
+    "PLUGINS_LAMBDA_NAME" = local.plugins_function_name
   }
 
   log_retention_in_days = 14
@@ -144,8 +145,8 @@ module plugins_lambda {
 
   log_retention_in_days = 14
   timeout               = 150
-  memory_size           = 10240
-  ephemeral_storage_size = 10240
+  memory_size           = 256
+  ephemeral_storage_size = 512
 
 }
 
@@ -213,6 +214,16 @@ data aws_iam_policy_document backend_policy {
 
     resources = ["${local.data_bucket_arn}/*"]
   }
+
+  statement {
+    actions = [
+      "lambda:InvokeFunction"
+    ]
+
+    resources = [
+      module.plugins_lambda.function_arn,
+    ]
+  }
 }
 
 data aws_iam_policy_document plugins_policy {
@@ -220,10 +231,17 @@ data aws_iam_policy_document plugins_policy {
     actions = [
       "s3:PutObject",
       "s3:GetObject",
-      "s3:DeleteObject",
     ]
 
     resources = ["${local.data_bucket_arn}/*"]
+  }
+
+  statement {
+    actions = [
+      "s3:ListBucket",
+    ]
+
+    resources = ["${local.data_bucket_arn}"]
   }
 
 }

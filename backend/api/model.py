@@ -1,5 +1,7 @@
 from concurrent import futures
 from datetime import datetime
+import json
+import os
 from typing import Tuple, Dict, List, Callable, Any
 from zipfile import ZipFile
 from io import BytesIO
@@ -12,6 +14,7 @@ from api.s3 import get_cache, cache, get_activity_dashboard_data
 from utils.utils import render_description, send_alert, get_attribute, get_category_mapping, parse_manifest
 from utils.datadog import report_metrics
 from api.zulip import notify_new_packages
+import boto3
 
 index_subset = {'name', 'summary', 'description_text', 'description_content_type',
                 'authors', 'license', 'python_version', 'operating_system',
@@ -74,13 +77,36 @@ def get_plugin(plugin: str, version: str = None) -> dict:
 
 
 def get_frontend_manifest_metadata(plugin, version):
-    # load manifest from json (triggering build)
+    """Get manifest from cache, if it exists and parse into frontend fields
+
+    When `error` is in the returned metadata, we return
+    default values to the frontend.
+
+    :param plugin: name of the plugin to get
+    :param version: version of the plugin manifest
+    :return: parsed metadata for the frontend
+    """
     raw_metadata = get_manifest(plugin, version)
-    if 'process_count' in raw_metadata:
+    if 'error' in raw_metadata:
         raw_metadata = None
     interpreted_metadata = parse_manifest(raw_metadata)
     return interpreted_metadata
 
+def discover_manifest(plugin: str, version: str = None):
+    """
+    Invoke plugins lambda to generate manifest & write to cache.
+
+    :param plugin: name of the plugin to get
+    :param version: version of the plugin manifest
+    """
+    client = boto3.client('lambda')
+    lambda_event = {'plugin': plugin, 'version': version}
+    # this lambda invocation will call `napari-hub/plugins/get_plugin_manifest/generate_manifest`
+    client.invoke(
+        FunctionName=os.environ.get('PLUGINS_LAMBDA_NAME'),
+        InvocationType='Event',
+        Payload=json.dumps(lambda_event),
+    )
 
 def get_manifest(plugin: str, version: str = None) -> dict:
     """
@@ -95,11 +121,21 @@ def get_manifest(plugin: str, version: str = None) -> dict:
     elif version is None:
         version = plugins[plugin]
     plugin_metadata = get_cache(f'cache/{plugin}/{version}-manifest.json')
-    if plugin_metadata:
-        return plugin_metadata
-    else:
-        cache({"process_count": 0}, f'cache/{plugin}/{version}-manifest.json')
-        return {"process_count": 0}
+    
+    # plugin_metadata being None indicates manifest is not cached and needs processing 
+    if plugin_metadata is None:
+        return {'error': 'Manifest not yet processed.'}
+
+    # empty dict indicates some lambda error in processing e.g. timed out
+    if plugin_metadata == {}:
+        return {'error': 'Processing manifest failed due to external error.'}
+
+    # error written to file indicates manifest discovery failed
+    if 'error' in plugin_metadata:
+        return {'error': plugin_metadata['error']}
+
+    # correct plugin manifest
+    return plugin_metadata
 
 
 def get_index() -> dict:
@@ -137,7 +173,15 @@ def get_excluded_plugins() -> Dict[str, str]:
 
 
 def build_manifest_metadata(plugin: str, version: str) -> Tuple[str, dict]:
-    metadata = get_frontend_manifest_metadata(plugin, version)
+    manifest = get_manifest(plugin, version)
+    if 'error' in manifest:
+        if 'Manifest not yet processed' in manifest['error']:
+            # this will invoke the plugins lambda & write manifes to cache
+            discover_manifest(plugin, version)
+        # return just default values for now
+        metadata = parse_manifest()
+    else:
+        metadata = parse_manifest(manifest)
     return plugin, metadata
 
 
