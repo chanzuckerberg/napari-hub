@@ -40,7 +40,7 @@ function CopyPluginNameButton() {
         'bg-hub-primary-400 hover:bg-hub-primary-500 active:bg-hub-primary-600',
 
         // Dimensions
-        'min-h-6',
+        'min-h-7',
 
         // Show button inline with text.
         'inline-flex items-center',
