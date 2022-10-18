@@ -133,7 +133,10 @@ def collections() -> Response:
 
 @app.route('/collections/<collection>')
 def collection(collection: str) -> Response:
-    return get_collection(collection)
+    data = get_collection(collection)
+    if not data:
+        return app.make_response(("Collection does not exist", 404))
+    return data
 
 
 @app.errorhandler(404)
