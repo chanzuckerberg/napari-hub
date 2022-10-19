@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { FormEvent } from 'react';
 
-import { SignupForm } from './SignupForm';
+import { FORM_CONTAINER_ID, SignupForm } from './SignupForm';
 
 describe('<SignupForm />', () => {
   it('should match snapshot', () => {
@@ -11,7 +11,16 @@ describe('<SignupForm />', () => {
 
   it('should submit the form', () => {
     const onSubmit = jest.fn((event: FormEvent) => event.preventDefault());
-    const { getByTestId } = render(<SignupForm onSubmit={onSubmit} />);
+    const { getByTestId } = render(
+      <>
+        <div id={FORM_CONTAINER_ID}>
+          <form>
+            <input />
+          </form>
+        </div>
+        <SignupForm onSubmit={onSubmit} />
+      </>,
+    );
     const inputValue = 'example@example.com';
 
     fireEvent.change(getByTestId('emailField'), {

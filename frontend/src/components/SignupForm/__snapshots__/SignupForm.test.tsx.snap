@@ -6,6 +6,10 @@ exports[`<SignupForm /> should match snapshot 1`] = `
     class="bg-napari-light p-sds-xl screen-495:p-12 grid justify-center gap-sds-xl  screen-495:gap-12 grid-cols-2 screen-875:grid-cols-napari-3 screen-1150:grid-cols-napari-4 screen-1425:grid-cols-napari-5"
   >
     <div
+      class="hidden"
+      id="hubspot-form-container"
+    />
+    <div
       class="col-span-2 screen-495:col-span-3 screen-1425:col-start-2"
     >
       <h3
@@ -14,11 +18,8 @@ exports[`<SignupForm /> should match snapshot 1`] = `
         Sign up to receive updates
       </h3>
       <form
-        action="https://dev.us5.list-manage.com/subscribe/post?u=79f50c0d0474ff43dffedabda&id=63bf16756e"
         class="grid grid-cols-2 screen-875:grid-cols-napari-3 screen-495:gap-x-12 gap-y-sds-l"
-        method="post"
         novalidate=""
-        target="_blank"
       >
         <div
           aria-label="Email address"
