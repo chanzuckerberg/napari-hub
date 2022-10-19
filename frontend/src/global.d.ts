@@ -14,6 +14,10 @@ declare namespace NodeJS {
 }
 
 namespace HubSpotFormAPI {
+  /**
+   * HubSpot form creation options.
+   * https://legacydocs.hubspot.com/docs/methods/forms/advanced_form_options
+   */
   export interface CreateFormOptions {
     region: string;
     portalId: string;
