@@ -106,7 +106,7 @@ export function SignupForm({ onSubmit, variant = 'default' }: Props) {
 
   return (
     <ColumnLayout
-      className="bg-napari-light p-sds-xl screen-495:p-12"
+      className="bg-hub-primary-200 p-sds-xl screen-495:p-12"
       // Use 3-column layout instead of 4-column layout.
       classes={isHome ? { fourColumn: 'screen-1150:grid-cols-napari-3' } : {}}
     >
@@ -171,7 +171,7 @@ export function SignupForm({ onSubmit, variant = 'default' }: Props) {
               variant="contained"
               disableElevation
               className={clsx(
-                'bg-napari-primary',
+                'bg-hub-primary-400 hover:bg-hub-primary-500 active:bg-hub-primary-600',
                 // font & colors
                 'text-sm font-semibold text-black',
                 // sizing

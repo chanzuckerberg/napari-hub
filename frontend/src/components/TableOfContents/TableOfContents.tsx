@@ -74,7 +74,7 @@ export function TableOfContents({ className, onClick, headers, free }: Props) {
               // Smooth transition for border color
               'transition-colors',
 
-              'hover:border-napari-primary',
+              'hover:border-hub-primary-400',
               !isActive && 'border-transparent',
               isActive && 'border-black',
             )}

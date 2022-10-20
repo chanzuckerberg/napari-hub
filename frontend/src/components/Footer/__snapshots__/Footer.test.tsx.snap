@@ -3,7 +3,7 @@
 exports[`<Footer /> should match snapshot 1`] = `
 <DocumentFragment>
   <div
-    class="grid grid-cols-2 screen-655:grid-cols-[1fr,min-content] screen-1150:grid-cols-[1fr,max-content,min-content] gap-sds-l bg-napari-primary p-sds-xl  screen-495:px-12"
+    class="grid grid-cols-2 screen-655:grid-cols-[1fr,min-content] screen-1150:grid-cols-[1fr,max-content,min-content] gap-sds-l bg-hub-primary-400 p-sds-xl  screen-495:px-12"
   >
     <div
       class="w-full flex-1 flex flex-row items-center justify-start mb-6 screen-655:mb-0 screen-655:mr-12"

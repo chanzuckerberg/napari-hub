@@ -79,7 +79,7 @@ export function Footer() {
         'gap-sds-l',
 
         // color
-        'bg-napari-primary',
+        'bg-hub-primary-400',
 
         // spacing
         'p-sds-xl  screen-495:px-12',

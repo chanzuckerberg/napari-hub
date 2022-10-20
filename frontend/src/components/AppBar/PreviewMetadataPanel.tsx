@@ -147,7 +147,7 @@ export function PreviewMetadataPanel({ missingFieldsOnly }: Props) {
   return (
     <div
       className={clsx(
-        'bg-napari-hover-gray',
+        'bg-hub-gray-100',
 
         // Horizontal padding
         'px-sds-xxl screen-495:px-12',

@@ -38,7 +38,7 @@ export function TextHighlighter({
       ) : (
         <Highlighter
           className={className}
-          highlightClassName="bg-napari-light"
+          highlightClassName="bg-hub-primary-200"
           searchWords={words.filter(Boolean) as string[]}
           textToHighlight={children}
         />

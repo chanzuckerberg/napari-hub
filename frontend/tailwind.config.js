@@ -33,6 +33,7 @@ module.exports = {
 
       fontFamily: {
         barlow: fontFamily,
+        jetbrains: 'JetBrains Mono, monospace',
       },
 
       spacing: {
@@ -43,19 +44,14 @@ module.exports = {
       },
 
       colors: {
-        'napari-primary': colors.primary,
         'napari-hover': colors.hover,
-        'napari-hover-gray': colors.hoverGray,
-        'napari-light': colors.light,
         'napari-error': colors.error,
         'napari-gray': colors.gray,
-        'napari-dark-gray': colors.darkGray,
         'napari-preview-gray': colors.previewGray,
         'napari-preview-orange': colors.previewOrange,
         'napari-preview-orange-overlay': colors.previewOrangeOverlay,
         'napari-preview-orange-overlay-active':
           colors.previewOrangeOverlayActive,
-        'napari-category-blue': colors.categoryBlue,
 
         'hub-gray': {
           100: '#f7f7f7',
@@ -70,7 +66,7 @@ module.exports = {
           200: '#d2efff',
           400: '#80d1ff',
           500: '#68c8ff',
-          600: '#686868',
+          600: '#009BF2',
         },
       },
 

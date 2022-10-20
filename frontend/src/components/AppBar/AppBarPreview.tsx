@@ -83,7 +83,7 @@ function AppBarPreviewCenterColumn() {
       <span
         className={clsx(
           styles.fieldInfo,
-          'font-bold bg-napari-primary whitespace-nowrap',
+          'font-bold bg-hub-primary-400 whitespace-nowrap',
           missingFieldsCount > 0 && 'bg-napari-preview-orange text-white',
         )}
       >
@@ -251,7 +251,7 @@ export function AppBarPreview() {
           'sticky top-0',
 
           // Match the background of metadata panel.
-          'bg-napari-hover-gray',
+          'bg-hub-gray-100',
 
           // Bottom border
           'border-napari-preview-orange border-b-2',

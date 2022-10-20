@@ -43,7 +43,7 @@ export function Pagination({
       <button
         className={clsx(
           styles.pageButton,
-          'focus-visible:bg-napari-hover-gray hover:bg-napari-hover-gray',
+          'focus-visible:bg-hub-gray-100 hover:bg-hub-gray-100',
 
           isDisabled && 'opacity-0 cursor-default',
           type === 'left' ? 'mr-sds-s' : 'ml-sds-xxs',
