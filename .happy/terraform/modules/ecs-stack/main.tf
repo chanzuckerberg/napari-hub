@@ -202,6 +202,10 @@ locals {
     AllowExecutionFromCloudWatch = {
       service    = "events"
       source_arn = aws_cloudwatch_event_rule.update_rule.arn
+    },
+    AllowExecutionFromCloudWatch = {
+      service    = "events"
+      source_arn = aws_cloudwatch_event_rule.activity_rule.arn
     }
   }
 }
