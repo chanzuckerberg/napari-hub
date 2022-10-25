@@ -199,11 +199,11 @@ locals {
       service    = "apigateway"
       source_arn = "${local.execution_arn}*"
     },
-    AllowExecutionFromCloudWatch = {
+    AllowExecutionFromCloudWatchForPlugin = {
       service    = "events"
       source_arn = aws_cloudwatch_event_rule.update_rule.arn
     },
-    AllowExecutionFromCloudWatch = {
+    AllowExecutionFromCloudWatchForActivity = {
       service    = "events"
       source_arn = aws_cloudwatch_event_rule.activity_rule.arn
     }
