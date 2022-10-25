@@ -16,7 +16,7 @@ class TestActivityDashboard(unittest.TestCase):
     )
     def test_get_installs_nonempty(self, mock_get_activity_dashboard_data):
         from api.model import get_installs
-        result = get_installs('string-1')
+        result = get_installs('string-1', '12')
         assert len(result) == 3
         assert 'x' in result[0]
         assert 'y' in result[0]
@@ -29,7 +29,7 @@ class TestActivityDashboard(unittest.TestCase):
     )
     def test_get_installs_empty(self, mock_get_activity_dashboard_data):
         from api.model import get_installs
-        result = get_installs('string-1')
+        result = get_installs('string-1', '12')
         assert result == []
 
     @patch.object(
@@ -37,7 +37,7 @@ class TestActivityDashboard(unittest.TestCase):
     )
     def test_get_installs_stats_nonempty(self, mock_get_activity_dashboard_data):
         from api.model import get_installs_stats
-        result = get_installs_stats('string-1')
+        result = get_installs_stats('string-1', '12')
         assert result['totalInstalls'] == 3
         assert result['totalMonths'] == 14
 
@@ -46,5 +46,5 @@ class TestActivityDashboard(unittest.TestCase):
     )
     def test_get_installs_stats_empty(self, mock_get_activity_dashboard_data):
         from api.model import get_installs_stats
-        result = get_installs_stats('string-1')
+        result = get_installs_stats('string-1', '12')
         assert result is None
