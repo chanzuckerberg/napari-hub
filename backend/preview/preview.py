@@ -73,8 +73,6 @@ def get_plugin_preview(repo_pth: str, dest_dir: str, is_local: bool = False, bra
     meta.update(github_metadata)
     # get release date and first released
     get_pypi_date_meta(meta)
-    manifest_attributes = get_manifest_attributes(meta['name'], repo_pth)
-    meta.update(manifest_attributes)
 
     # write json
     with open(os.path.join(dest_dir, "preview_meta.json"), "w") as f:
@@ -163,9 +161,9 @@ def parse_meta(pkg_pth):
         "authors": "author",
         "license": "license",
         "python_version": "requires_python",
-        "operating_system": "classifiers",
+        "operating_system": "classifier",
         "version": "version",
-        "development_status": "classifiers",
+        "development_status": "classifier",
         "requirements": "requires_dist",
         "project_site": "home_page",
     }
@@ -177,50 +175,32 @@ def parse_meta(pkg_pth):
         "code_repository": "Source Code",
     }
 
-    meta = defaultdict()
-    pkg_info = Wheel(pkg_pth)
-
+    # to avoid depending on npe2 in the backend, we delay this import to runtime
+    # this dependency will be satisfied by the preview action
+    # see https://github.com/chanzuckerberg/napari-hub-preview-action
+    from npe2 import get_manifest_from_wheel
+    manifest = get_manifest_from_wheel(pkg_pth)
+    pkg_meta = manifest.package_metadata
+    all_meta = dict([(key, getattr(pkg_meta, attr_name, None)) for key, attr_name in meta_needed.items()])
+    all_meta.update(parse_manifest(json.loads(manifest.json())))
+    
     # split project URLS into dict
-    proj_urls = pkg_info.project_urls
+    proj_urls = pkg_meta.project_url
     if proj_urls:
-        proj_urls = [
-            [val.strip() for val in url_str.split(",")] for url_str in proj_urls
-        ]
-        proj_urls = dict(
-            zip([url[0] for url in proj_urls], [url[1] for url in proj_urls])
-        )
+        proj_urls = dict([tuple(url_str.split(", ")) for url_str in proj_urls])
+        filtered_urls = dict([(key, proj_urls[url_name]) for key, url_name in project_url_meta.items() if url_name in set(proj_urls) ])
+        all_meta.update(filtered_urls)
+        all_meta["code_repository"] = None
+        if all_meta["code_repository"] is None:
+            all_meta["code_repository"] = get_github_repo_url(proj_urls) or get_source_code_url(all_meta)
 
-        for key, val in project_url_meta.items():
-            if val in proj_urls:
-                meta[key] = proj_urls[val]
-        if meta["code_repository"] is None:
-            meta["code_repository"] = get_github_repo_url(proj_urls)
+    if author := all_meta['authors']:
+        all_meta['authors'] = [{'name': author, 'email': getattr(pkg_meta, 'author_email', None)}]
+    if clsf := all_meta['operating_system']:
+        all_meta['operating_system'] = list(filter(lambda x: x.startswith("Operating System"), clsf))
+        all_meta['development_status'] = list(filter(lambda x: x.startswith("Development Status"), clsf))
 
-    for field, attr in meta_needed.items():
-        val = getattr(pkg_info, attr)
-        # author also needs email
-        if attr == "author":
-            meta[field] = [{"name": val, "email": getattr(pkg_info, "author_email")}]
-        # classifiers is one big list so we need to search through it for relevant ones
-        elif attr == "classifiers":
-            if val:
-                if field == "operating_system":
-                    meta[field] = list(
-                        filter(lambda x: x.startswith("Operating System"), val)
-                    )
-                elif field == "development_status":
-                    meta[field] = list(
-                        filter(lambda x: x.startswith("Development Status"), val)
-                    )
-            else:
-                meta[field] = None
-        else:
-            meta[field] = getattr(pkg_info, attr)
-
-    # try to github pattern match project site for source code URL if needed
-    populate_source_code_url(meta)
-
-    return meta
+    return all_meta
 
 
 def get_pypi_date_meta(meta):
@@ -266,45 +246,10 @@ def get_pypi_date_meta(meta):
     meta["first_released"] = first_released
 
 
-def populate_source_code_url(meta):
+def get_source_code_url(meta):
     """Pattern match project_site as GitHub URL when source code url missing
 
     :param meta: dictionary of plugin metadata
     """
-    if not "code_repository" in meta and "project_site" in meta:
-        match = github_pattern.match(meta["project_site"])
-        if match:
-            meta["code_repository"] = match.group(0)
-
-def discover_manifest(plugin_name):
-    # to avoid depending on npe2 in the backend, we delay this import to runtime
-    # this dependency will be satisfied by the preview action
-    # see https://github.com/chanzuckerberg/napari-hub-preview-action
-    from npe2 import PluginManager
-    pm = PluginManager()
-    pm.discover(include_npe1=False)
-    is_npe2 = True
-    try:
-        manifest_dict = yaml.load(pm.get_manifest(plugin_name).yaml(), Loader=yaml.Loader)
-    except KeyError:
-        pm.discover(include_npe1=True)
-        is_npe2 = False
-        # forcing lazy discovery to run
-        my_widgs = list(pm.iter_widgets())
-        manifest_dict = yaml.load(pm.get_manifest(plugin_name).yaml(), Loader=yaml.Loader)
-    return manifest_dict, is_npe2
-
-
-def get_manifest_attributes(plugin_name, repo_pth):
-    """
-    Try to install plugin and discover manifest values. If install
-    or manifest discovery fails, return default empty values.
-    """
-    try:
-        manifest, is_npe2 = discover_manifest(plugin_name)
-    except Exception as e:
-        manifest = None
-        is_npe2 = False
-    manifest_attributes = parse_manifest(manifest)
-    manifest_attributes['npe2'] = is_npe2
-    return manifest_attributes
+    if match := github_pattern.match(meta.get('project_site', '')):
+        return match.group(0)

@@ -5,7 +5,7 @@ import pkginfo
 import requests
 import dateutil.parser
 from datetime import datetime
-from preview.preview import clone_repo, build_dist, parse_meta, get_plugin_preview, get_pypi_date_meta, populate_source_code_url
+from preview.preview import clone_repo, build_dist, parse_meta, get_plugin_preview, get_pypi_date_meta, get_source_code_url
 
 code_plugin_url = "https://github.com/chanzuckerberg/napari-demo"
 hub_plugin_url = "https://api.napari-hub.org/plugins/napari-demo"
@@ -74,7 +74,14 @@ def test_parse_preview_matches_hub(tmpdir):
     # for each shared field, assert they're the same
     for field in hub_metadata.keys():
         if field in preview_meta and field not in ['first_released', 'release_date', 'version']:
-            assert preview_meta[field] == hub_metadata[field]
+            preview = preview_meta[field]
+            hub = hub_metadata[field]
+            try:
+                preview = sorted(preview)
+                hub = sorted(hub)
+            except Exception:
+                pass
+            assert preview == hub
 
 
 def test_release_date_logic():
@@ -97,17 +104,12 @@ def test_release_date_logic():
 
 
 def test_source_code_match():
-    # providing code_repository doesn't change url
-    meta = {'name': 'example-plugin', 'code_repository': code_plugin_url}
-    populate_source_code_url(meta)
-    assert meta['code_repository'] == code_plugin_url
-
     # providing github project site gives us code_repository
     meta = {'name': 'example-plugin', 'project_site': code_plugin_url}
-    populate_source_code_url(meta)
-    assert meta['code_repository'] == code_plugin_url
+    repo = get_source_code_url(meta)
+    assert repo == code_plugin_url
 
     # non github project site leaves code_repository empty
     meta = {'name': 'example-plugin', 'project_site': 'www.somesite.com'}
-    populate_source_code_url(meta)
-    assert 'code_repository' not in meta
+    repo = get_source_code_url(meta)
+    assert repo is None
