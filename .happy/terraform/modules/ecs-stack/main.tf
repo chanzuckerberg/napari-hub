@@ -181,7 +181,7 @@ resource "aws_cloudwatch_event_target" "update_target" {
 resource "aws_cloudwatch_event_rule" "activity_rule" {
   name                = "${var.env}-${local.custom_stack_name}-activity"
   description         = "Schedule update for activity data"
-  schedule_expression = "rate(5 minutes)"
+  schedule_expression = "cron(0 13 * * ? *)"
   tags                = var.tags
 }
 
