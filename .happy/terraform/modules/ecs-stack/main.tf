@@ -177,6 +177,22 @@ resource "aws_cloudwatch_event_target" "update_target" {
     }
 }
 
+# Cron job updating the activity data
+#resource "aws_cloudwatch_event_rule" "activity_rule" {
+#  name                = "${var.env}-${local.custom_stack_name}-activity"
+#  description         = "Schedule update for activity data"
+#  schedule_expression = "rate(1 day)"
+#  tags                = var.tags
+#}
+
+#resource "aws_cloudwatch_event_target" "activity_target" {
+#    rule = aws_cloudwatch_event_rule.activity_rule.name
+#    arn = module.backend_lambda.function_arn
+#    input_transformer {
+#        input_template = jsonencode({path = "/activity/update", httpMethod = "POST"})
+#    }
+#}
+
 locals {
   allowed_triggers = {
     LambdaPermission = {
