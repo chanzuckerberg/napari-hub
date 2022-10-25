@@ -163,7 +163,7 @@ module api_gateway_proxy_stage {
 
 # Cron job running the update endpoint
 resource "aws_cloudwatch_event_rule" "update_rule" {
-  name                = "${var.env}-${local.custom_stack_name}-update"
+  name                = "${local.custom_stack_name}-update"
   description         = "Schedule update for backend"
   schedule_expression = "rate(5 minutes)"
   tags                = var.tags
@@ -179,7 +179,7 @@ resource "aws_cloudwatch_event_target" "update_target" {
 
 # Cron job updating the activity data
 resource "aws_cloudwatch_event_rule" "activity_rule" {
-  name                = "${var.env}-${local.custom_stack_name}-activity"
+  name                = "${local.custom_stack_name}-activity"
   description         = "Schedule update for activity data"
   schedule_expression = "cron(0 13 * * ? *)"
   tags                = var.tags
@@ -267,13 +267,13 @@ data aws_iam_policy_document plugins_policy {
 }
 
 resource aws_iam_role_policy policy {
-  name     = "${local.custom_stack_name}-${var.env}-policy"
+  name     = "${local.custom_stack_name}-policy"
   role     = module.backend_lambda.role_name
   policy   = data.aws_iam_policy_document.backend_policy.json
 }
 
 resource aws_iam_role_policy plugins_lambda_policy {
-  name     = "${local.custom_stack_name}-${var.env}-plugins-lambda-policy"
+  name     = "${local.custom_stack_name}-plugins-lambda-policy"
   role     = module.plugins_lambda.role_name
   policy   = data.aws_iam_policy_document.plugins_policy.json
 }
