@@ -1,7 +1,6 @@
 import unittest
 from unittest.mock import patch
 import pandas as pd
-import snowflake.connector as sc
 from api import model
 
 mock_dates = ['2022-05-01', '2022-09-01', '2021-07-01']
