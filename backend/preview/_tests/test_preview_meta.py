@@ -72,9 +72,9 @@ def test_parse_preview_matches_hub(tmpdir):
         preview_meta = json.load(f)
 
     # for each shared field, assert they're the same
-    #for field in hub_metadata.keys():
-    #    if field in preview_meta and field not in ['first_released', 'release_date', 'version']:
-    #        assert preview_meta[field] == hub_metadata[field]
+    for field in hub_metadata.keys():
+        if field in preview_meta and field not in ['first_released', 'release_date', 'version']:
+            assert preview_meta[field] == hub_metadata[field]
 
 
 def test_release_date_logic():
