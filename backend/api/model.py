@@ -392,7 +392,6 @@ def update_activity_data():
         database="IMAGING",
         schema="PYPI"
     )
-    # TODO (klai): Use Snowflake stored procedures to encapsulate the SQL code so that it is not publicly exposed
     cursor_list = ctx.execute_string("""select file_project, date_trunc('month', timestamp) as month, count(*) as num_downloads
     from
     (
