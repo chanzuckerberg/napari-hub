@@ -2,7 +2,7 @@ import os
 
 from apig_wsgi import make_lambda_handler
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
-from flask import Flask, Response, jsonify, render_template
+from flask import Flask, Response, jsonify, render_template, request
 from flask_githubapp.core import GitHubApp
 import yaml
 
@@ -118,7 +118,8 @@ def update_activity() -> Response:
 
 @app.route('/activity/<plugin>')
 def get_plugin_installs(plugin: str) -> Response:
-    return jsonify(get_installs(plugin))
+    limit = request.args.get('limit')
+    return jsonify(get_installs(plugin, limit))
 
 
 @app.route('/activity/<plugin>/stats')

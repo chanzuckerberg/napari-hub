@@ -424,12 +424,13 @@ def update_activity_data():
             csv_string += str(row[0]) + ',' + str(row[1]) + ',' + str(row[2]) + '\n'
     write_activity_data(csv_string)
 
-def get_installs(plugin: str) -> List[Any]:
+
+def get_installs(plugin: str, limit: str) -> List[Any]:
     """
     This should return a list of objects, in which attribute x is the numerical value in milliseconds
     and attribute y is the number of installs
-
     :param plugin: plugin name
+    :param limit: number of objects to return
     :return: list of objects
     """
     plugin_df = get_activity_dashboard_data(plugin)
@@ -448,7 +449,7 @@ def get_installs_stats(plugin: str) -> Any:
     This should return an object, with numerical attributes totalInstallCount and totalMonths
 
     :param plugin: plugin name
-    :return: object
+    :return: oÏbject
     """
     plugin_df = get_activity_dashboard_data(plugin)
     if len(plugin_df) == 0:
@@ -458,3 +459,4 @@ def get_installs_stats(plugin: str) -> Any:
     obj['totalInstalls'] = int(plugin_df['NUM_DOWNLOADS_BY_MONTH'].sum())
     obj['totalMonths'] = month_offset.n
     return obj
+
