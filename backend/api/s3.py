@@ -74,10 +74,10 @@ def get_activity_dashboard_data(plugin) -> Dict:
     :param plugin: plugin name
     :return: dataframe that consists of plugin-specific data for activity_dashboard backend endpoints
     """
-    activity_dashboard_dataframe = pd.read_csv(StringIO(
+    plugin_installs_dataframe = pd.read_csv(StringIO(
         s3_client.get_object(Bucket=bucket, Key=os.path.join(
             bucket_path, "activity_dashboard_data/plugin_installs.csv"))['Body'].read().decode('utf-8')))
-    plugin_df = activity_dashboard_dataframe[activity_dashboard_dataframe.PROJECT == plugin]
+    plugin_df = plugin_installs_dataframe[plugin_installs_dataframe.PROJECT == plugin]
     plugin_df = plugin_df[['MONTH', 'NUM_DOWNLOADS_BY_MONTH']]
     plugin_df['MONTH'] = pd.to_datetime(plugin_df['MONTH'])
     return plugin_df
