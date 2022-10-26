@@ -64,7 +64,7 @@ def cache(content: Union[dict, list, IO[bytes]], key: str, mime: str = None):
 
 
 def write_activity_data(csv_string: str):
-    s3_client.put_object(Body=csv_string, Bucket=bucket, Key=os.path.join(bucket_path, "activity_dashboard.csv"))
+    s3_client.put_object(Body=csv_string, Bucket=bucket, Key=os.path.join(bucket_path, "activity_dashboard_data/plugin_installs.csv"))
 
 
 def get_activity_dashboard_data(plugin) -> Dict:
