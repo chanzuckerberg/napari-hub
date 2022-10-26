@@ -81,4 +81,5 @@ def get_activity_dashboard_data(plugin) -> Dict:
     plugin_df = plugin_df[['MONTH', 'NUM_DOWNLOADS_BY_MONTH']]
     plugin_df['MONTH'] = pd.to_datetime(plugin_df['MONTH'])
     return plugin_df
+    return plugin_df
 
