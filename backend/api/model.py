@@ -7,21 +7,16 @@ from zipfile import ZipFile
 from io import BytesIO
 from collections import defaultdict
 import pandas as pd
-<<<<<<< HEAD
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
 from api.s3 import get_cache, cache, get_activity_dashboard_data, write_activity_data
-=======
-from utils.conda import get_conda_forge_package
-from utils.github import get_github_metadata, get_artifact
-from utils.pypi import query_pypi, get_plugin_pypi_metadata
-from api.s3 import get_cache, cache, get_activity_dashboard_data
->>>>>>> 17c9736 (add limit)
 from utils.utils import render_description, send_alert, get_attribute, get_category_mapping, parse_manifest
 from utils.datadog import report_metrics
 from api.zulip import notify_new_packages
 import boto3
 import snowflake.connector as sc
+from datetime import date, timedelta
+from dateutil.relativedelta import relativedelta
 
 index_subset = {'name', 'summary', 'description_text', 'description_content_type',
                 'authors', 'license', 'python_version', 'operating_system',
@@ -441,11 +436,17 @@ def get_installs(plugin: str, limit: str) -> List[Any]:
     :return: list of objects
     """
     plugin_df = get_activity_dashboard_data(plugin)
-    plugin_df['MONTH'] = plugin_df['MONTH'].map(pd.Timestamp.timestamp) * 1000
+    plugin_df['MONTH_UTC'] = plugin_df['MONTH'].map(pd.Timestamp.timestamp) * 1000
+    last_day_of_prev_month = date.today().replace(day=1) - timedelta(days=1)
+    end_date = date.today().replace(day=1) - timedelta(days=last_day_of_prev_month.day)
+    start_date = end_date + relativedelta(months=-int(limit)+1)
+    end_date = end_date.strftime('%Y-%m-%d')
+    start_date = start_date.strftime('%Y-%m-%d')
+    plugin_df = plugin_df[(plugin_df['MONTH'] >= start_date) & (plugin_df['MONTH'] <= end_date)]
     installs_list = []
     for _, row in plugin_df.iterrows():
         obj = dict()
-        obj['x'] = int(row.MONTH)
+        obj['x'] = int(row.MONTH_UTC)
         obj['y'] = int(row.NUM_DOWNLOADS_BY_MONTH)
         installs_list.append(obj)
     return installs_list
@@ -462,11 +463,7 @@ def get_installs_stats(plugin: str) -> Any:
     if len(plugin_df) == 0:
         return None
     obj = dict()
-    month_offset = plugin_df['MONTH'].max().to_period('M') - plugin_df['MONTH'].min().to_period('M')
+    month_offset = plugin_df['MONTH_UTC'].max().to_period('M') - plugin_df['MONTH_UTC'].min().to_period('M')
     obj['totalInstalls'] = int(plugin_df['NUM_DOWNLOADS_BY_MONTH'].sum())
     obj['totalMonths'] = month_offset.n
     return obj
-<<<<<<< HEAD
-
-=======
->>>>>>> 17c9736 (add limit)
