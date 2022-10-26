@@ -435,13 +435,14 @@ def get_installs(plugin: str, limit: str) -> List[Any]:
     :param limit: number of objects to return
     :return: list of objects
     """
+    date_format = '%Y-%m-%d'
     plugin_df = get_activity_dashboard_data(plugin)
     plugin_df['MONTH_UTC'] = plugin_df['MONTH'].map(pd.Timestamp.timestamp) * 1000
     last_day_of_prev_month = date.today().replace(day=1) - timedelta(days=1)
     end_date = date.today().replace(day=1) - timedelta(days=last_day_of_prev_month.day)
     start_date = end_date + relativedelta(months=-int(limit)+1)
-    end_date = end_date.strftime('%Y-%m-%d')
-    start_date = start_date.strftime('%Y-%m-%d')
+    end_date = end_date.strftime(date_format)
+    start_date = start_date.strftime(date_format)
     plugin_df = plugin_df[(plugin_df['MONTH'] >= start_date) & (plugin_df['MONTH'] <= end_date)]
     installs_list = []
     for _, row in plugin_df.iterrows():
