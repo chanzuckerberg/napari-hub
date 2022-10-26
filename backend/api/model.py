@@ -438,8 +438,7 @@ def get_installs(plugin: str, limit: str) -> List[Any]:
     date_format = '%Y-%m-%d'
     plugin_df = get_activity_dashboard_data(plugin)
     plugin_df['MONTH_UTC'] = plugin_df['MONTH'].map(pd.Timestamp.timestamp) * 1000
-    last_day_of_prev_month = date.today().replace(day=1) - timedelta(days=1)
-    end_date = date.today().replace(day=1) - timedelta(days=last_day_of_prev_month.day)
+    end_date = date.today().replace(day=1) + relativedelta(months=-1)
     start_date = end_date + relativedelta(months=-int(limit)+1)
     end_date = end_date.strftime(date_format)
     start_date = start_date.strftime(date_format)
@@ -447,7 +446,7 @@ def get_installs(plugin: str, limit: str) -> List[Any]:
     installs_list = []
     for _, row in plugin_df.iterrows():
         obj = dict()
-        obj['x'] = int(row.MONTH_UTC)
+        obj['x'] = int(row.MONTH_UTC) if row.MONTH_UTC is not None else 0
         obj['y'] = int(row.NUM_DOWNLOADS_BY_MONTH)
         installs_list.append(obj)
     return installs_list
