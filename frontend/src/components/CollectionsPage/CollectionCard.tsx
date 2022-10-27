@@ -21,7 +21,7 @@ const LINE_HEIGHT_CLASS_NAME = 'leading-[150%] screen-495:leading-[125%]';
 export function CollectionCard({ collection }: Props) {
   return (
     <Link
-      className="hover:bg-napari-hover-gray focus:bg-napari-hover-gray"
+      className="hover:bg-hub-gray-100 focus:bg-hub-gray-100"
       href={`/collections/${collection.symbol}`}
     >
       <div className="relative w-full h-[50px] screen-495:h-[100px]">

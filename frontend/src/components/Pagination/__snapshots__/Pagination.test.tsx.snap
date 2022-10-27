@@ -6,7 +6,7 @@ exports[`<Pagination /> should match snapshot 1`] = `
     class="flex items-center justify-center select-none"
   >
     <button
-      class="pageButton focus-visible:bg-napari-hover-gray hover:bg-napari-hover-gray opacity-0 cursor-default mr-sds-s"
+      class="pageButton focus-visible:bg-hub-gray-100 hover:bg-hub-gray-100 opacity-0 cursor-default mr-sds-s"
       data-testid="paginationLeft"
       disabled=""
       type="button"
@@ -46,7 +46,7 @@ exports[`<Pagination /> should match snapshot 1`] = `
       </span>
     </span>
     <button
-      class="pageButton focus-visible:bg-napari-hover-gray hover:bg-napari-hover-gray ml-sds-xxs"
+      class="pageButton focus-visible:bg-hub-gray-100 hover:bg-hub-gray-100 ml-sds-xxs"
       data-testid="paginationRight"
       type="button"
     >

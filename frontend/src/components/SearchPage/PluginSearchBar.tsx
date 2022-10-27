@@ -13,7 +13,7 @@ export function PluginSearchBar() {
   return (
     <ColumnLayout
       id={SEARCH_BAR_ID}
-      className="bg-napari-light h-36 items-center px-sds-xl screen-495:px-12"
+      className="bg-hub-primary-200 h-36 items-center px-sds-xl screen-495:px-12"
       classes={{
         // Use 3-column layout instead of 4-column.
         fourColumn: 'screen-1150:grid-cols-napari-3',

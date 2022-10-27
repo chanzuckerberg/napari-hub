@@ -37,12 +37,10 @@ function CopyPluginNameButton() {
     <Button
       className={clsx(
         // Button colors
-        clicked
-          ? 'bg-napari-primary hover:bg-napari-primary'
-          : 'bg-napari-light hover:bg-napari-primary',
+        'bg-hub-primary-400 hover:bg-hub-primary-500 active:bg-hub-primary-600',
 
         // Dimensions
-        'min-h-6',
+        'min-h-7',
 
         // Show button inline with text.
         'inline-flex items-center',
@@ -173,7 +171,7 @@ function InstallModalFooter({ onClose }: Closeable) {
   return (
     <div className="flex justify-end p-sds-xl  screen-495:p-12 pt-0 screen-495:pt-0">
       <Button
-        className="border-2 border-napari-primary py-sds-l px-sds-xl text-black"
+        className="border-2 border-hub-primary-400 py-sds-l px-sds-xl text-black"
         onClick={onClose}
         variant="outlined"
       >

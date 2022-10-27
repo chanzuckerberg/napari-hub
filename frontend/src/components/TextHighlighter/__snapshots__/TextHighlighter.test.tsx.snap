@@ -9,7 +9,7 @@ exports[`<TextHighlighter /> should match snapshot: with highlighting 1`] = `
       hello 
     </span>
     <mark
-      class="bg-napari-light "
+      class="bg-hub-primary-200 "
     >
       world
     </mark>

@@ -59,7 +59,7 @@ function CreateCollectionButton() {
     <Button
       className={clsx(
         'mt-sds-xl screen-495:mt-sds-xxl',
-        'bg-napari-primary hover:bg-napari-hover',
+        'bg-hub-primary-400 hover:bg-napari-hover',
         'font-semibold text-center',
         'w-full h-[35px] screen-495:h-12',
         'col-span-2 screen-495:col-span-1',

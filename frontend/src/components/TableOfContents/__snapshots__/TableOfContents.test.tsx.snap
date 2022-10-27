@@ -6,7 +6,7 @@ exports[`Table of Contents should match snapshot 1`] = `
     class="flex flex-col border-l border-black sticky top-12"
   >
     <li
-      class="flex pl-sds-xl border-l-4 min-h-6 h-auto my-sds-s first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-black"
+      class="flex pl-sds-xl border-l-4 min-h-6 h-auto my-sds-s first:mt-0 last:mb-0 transition-colors hover:border-hub-primary-400 border-black"
       data-active="true"
       data-testid="tocItem"
     >
@@ -18,7 +18,7 @@ exports[`Table of Contents should match snapshot 1`] = `
       </a>
     </li>
     <li
-      class="flex pl-sds-xl border-l-4 min-h-6 h-auto my-sds-s first:mt-0 last:mb-0 transition-colors hover:border-napari-primary border-transparent"
+      class="flex pl-sds-xl border-l-4 min-h-6 h-auto my-sds-s first:mt-0 last:mb-0 transition-colors hover:border-hub-primary-400 border-transparent"
       data-active="false"
       data-testid="tocItem"
     >
