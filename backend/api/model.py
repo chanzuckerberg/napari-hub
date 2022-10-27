@@ -7,7 +7,7 @@ from zipfile import ZipFile
 from io import BytesIO
 from collections import defaultdict
 import pandas as pd
-from utils.conda import get_conda_forge_package
+
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
 from api.s3 import get_cache, cache, get_activity_dashboard_data
@@ -20,7 +20,7 @@ index_subset = {'name', 'summary', 'description_text', 'description_content_type
                 'authors', 'license', 'python_version', 'operating_system',
                 'release_date', 'version', 'first_released',
                 'development_status', 'category', 'display_name', 'plugin_types', 'reader_file_extensions',
-                'writer_file_extensions', 'writer_save_layers', 'npe2', 'error_message', 'conda'}
+                'writer_file_extensions', 'writer_save_layers', 'npe2', 'error_message'}
 
 
 def get_public_plugins() -> Dict[str, str]:
@@ -215,8 +215,6 @@ def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
         metadata['category'] = categories
         metadata['category_hierarchy'] = category_hierarchy
         del metadata['labels']
-    if 'conda' not in metadata:
-        metadata['conda'] = get_conda_forge_package(plugin)
     cache(metadata, f'cache/{plugin}/{version}.json')
     return plugin, metadata
 
