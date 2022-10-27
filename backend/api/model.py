@@ -7,7 +7,6 @@ from zipfile import ZipFile
 from io import BytesIO
 from collections import defaultdict
 import pandas as pd
-
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
 from api.s3 import get_cache, cache, get_activity_dashboard_data
