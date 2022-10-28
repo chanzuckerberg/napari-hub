@@ -47,6 +47,8 @@ locals {
   github_app_key = try(local.secret["github"]["app_key"], "")
   github_app_secret = try(local.secret["github"]["app_secret"], "")
   datadog_api_key = try(local.secret["datadog"]["api_key"], "")
+  snowflake_user = try(local.secret["snowflake"]["user"], "")
+  snowflake_password = try(local.secret["snowflake"]["password"], "")
 
   frontend_url = var.frontend_url != "" ? var.frontend_url: try(join("", ["https://", module.frontend_dns.dns_prefix, ".", local.external_dns]), var.frontend_url)
   backend_function_name = "${local.custom_stack_name}-backend"
@@ -118,6 +120,8 @@ module backend_lambda {
     "DD_SERVICE" = local.custom_stack_name
     "API_URL" = var.env == "dev" ? module.api_gateway_proxy_stage.invoke_url : ""
     "PLUGINS_LAMBDA_NAME" = local.plugins_function_name
+    "SNOWFLAKE_USER" = local.snowflake_user
+    "SNOWFLAKE_PASSWORD" = local.snowflake_password
   }
 
   log_retention_in_days = 14
