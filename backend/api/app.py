@@ -1,8 +1,9 @@
 import os
 
+from werkzeug import exceptions
 from apig_wsgi import make_lambda_handler
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
-from flask import Flask, Response, jsonify, render_template
+from flask import Flask, Response, jsonify, render_template, request
 from flask_githubapp.core import GitHubApp
 
 from api.collections import get_collections, get_collection
@@ -11,7 +12,6 @@ from api.model import get_public_plugins, get_index, get_plugin, get_excluded_pl
     update_activity_data
 from api.shield import get_shield
 from utils.utils import send_alert, reformat_ssh_key_to_pem_bytes
-from api.exception import UnauthorizedAccessException
 
 GITHUB_APP_ID = os.getenv('GITHUBAPP_ID')
 GITHUB_APP_KEY = os.getenv("GITHUBAPP_KEY")
@@ -153,9 +153,11 @@ def handle_exception(e) -> Response:
     return app.make_response((f"Invalid Endpoint, valid endpoints are:\n{links}", 404,
                               {'Content-Type': 'text/plain; charset=utf-8'}))
 
-@app.errorhandler(UnauthorizedAccessException)
-def handle_exception() -> Response:
+
+@app.errorhandler(exceptions.Unauthorized)
+def handle_permission_exception(e) -> Response:
     return app.make_response(("Unauthorized Access", 401))
+
 
 @app.errorhandler(Exception)
 def handle_exception(e) -> Response:
@@ -167,10 +169,11 @@ def handle_exception(e) -> Response:
 def preview():
     move_artifact_to_s3(github_app.payload, github_app.installation_client)
 
+
 @app.before_request
 def authenticate_request():
-    if request.method == 'POST' and request.headers.get('X-Authentication-Key') != os.getenv('AUTHENTICATION_KEY'):
-        raise UnauthorizedAccessException()
+    if request.method == 'POST' and request.headers.get('X-API-Key') != os.getenv('API_KEY'):
+        raise exceptions.Unauthorized('Invalid API key')
 
 
 @app.after_request
