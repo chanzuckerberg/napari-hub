@@ -178,7 +178,7 @@ resource "aws_cloudwatch_event_target" "update_target" {
     rule = aws_cloudwatch_event_rule.update_rule.name
     arn = module.backend_lambda.function_arn
     input_transformer {
-        input_template = jsonencode({path = "/update", httpMethod = "POST", headers = {'X-Authentication-Key': "12343534546463464"}})
+        input_template = jsonencode({path = "/update", httpMethod = "POST", headers = {AuthenticationKey: "12343534546463464"}})
     }
 }
 
