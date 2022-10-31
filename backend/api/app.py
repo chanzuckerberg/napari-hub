@@ -11,7 +11,7 @@ from api.model import get_public_plugins, get_index, get_plugin, get_excluded_pl
     update_activity_data
 from api.shield import get_shield
 from utils.utils import send_alert, reformat_ssh_key_to_pem_bytes
-from exception import UnauthorizedAccessException
+from api.exception import UnauthorizedAccessException
 
 GITHUB_APP_ID = os.getenv('GITHUBAPP_ID')
 GITHUB_APP_KEY = os.getenv("GITHUBAPP_KEY")
