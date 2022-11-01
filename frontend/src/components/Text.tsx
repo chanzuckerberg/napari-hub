@@ -3,8 +3,9 @@ import { createElement, ReactHTML } from 'react';
 import { ReactNode } from 'react-markdown/lib/ast-to-react';
 
 interface TextProps {
+  children: ReactNode;
   className?: string;
-  children: string;
+  element?: keyof ReactHTML;
   weight?: 'regular' | 'bold';
   variant:
     | 'siteTitle'
@@ -45,14 +46,22 @@ const VARIANT_ELEMENT_MAP: Record<TextProps['variant'], keyof ReactHTML> = {
 function VariantElement({
   children,
   className,
+  element,
   variant,
 }: {
   children: ReactNode;
   className?: string;
+  element?: keyof ReactHTML;
   variant: TextProps['variant'];
 }) {
   let node = (
-    <>{createElement(VARIANT_ELEMENT_MAP[variant], { className }, children)}</>
+    <>
+      {createElement(
+        element ?? VARIANT_ELEMENT_MAP[variant],
+        { className },
+        children,
+      )}
+    </>
   );
 
   if (variant === 'code' || variant === 'sidebarCode') {
@@ -62,7 +71,13 @@ function VariantElement({
   return node;
 }
 
-export function Text({ className, children, variant, weight }: TextProps) {
+export function Text({
+  children,
+  className,
+  element,
+  variant,
+  weight,
+}: TextProps) {
   return (
     <VariantElement
       className={clsx(
@@ -102,12 +117,12 @@ export function Text({ className, children, variant, weight }: TextProps) {
         ],
         variant === 'h5' && [
           'font-semibold',
-          'text-[14px] leading-[21px]',
+          'text-[9px] leading-[12px]',
           'screen-495:text-[14px] screen-495:leading-[21px]',
         ],
         variant === 'h6' && [
           'font-semibold',
-          'text-[11px] leading-[16.5px]',
+          'text-[7px] leading-[10.5px]',
           'screen-495:text-[11px] screen-495:leading-[16.5px]',
         ],
 
@@ -133,6 +148,7 @@ export function Text({ className, children, variant, weight }: TextProps) {
         variant === 'bodyS' && 'text-[14px] leading-[17.5px]',
         variant === 'bodyM' && 'text-[17px] leading-[25.5px]',
       )}
+      element={element}
       variant={variant}
     >
       {children}
