@@ -92,6 +92,7 @@ def get_frontend_manifest_metadata(plugin, version):
     interpreted_metadata = parse_manifest(raw_metadata)
     return interpreted_metadata
 
+
 def discover_manifest(plugin: str, version: str = None):
     """
     Invoke plugins lambda to generate manifest & write to cache.
@@ -108,6 +109,7 @@ def discover_manifest(plugin: str, version: str = None):
         Payload=json.dumps(lambda_event),
     )
 
+
 def get_manifest(plugin: str, version: str = None) -> dict:
     """
     Get plugin manifest file for a particular plugin, get latest if version is None.
@@ -121,7 +123,7 @@ def get_manifest(plugin: str, version: str = None) -> dict:
     elif version is None:
         version = plugins[plugin]
     plugin_metadata = get_cache(f'cache/{plugin}/{version}-manifest.json')
-    
+
     # plugin_metadata being None indicates manifest is not cached and needs processing 
     if plugin_metadata is None:
         return {'error': 'Manifest not yet processed.'}
@@ -377,52 +379,21 @@ def update_activity_data():
     Update existing caches to reflect new activity data. Files updated:
     - activity_dashboard.csv (overwrite)
     """
-    # credentials from Terraform
-    SNOWFLAKE_USER = os.getenv('SNOWFLAKE_USER')
-    SNOWFLAKE_PASSWORD = os.getenv('SNOWFLAKE_PASSWORD')
-    # connect to Snowflake DB
-    ctx = sc.connect(
-        user=SNOWFLAKE_USER,
-        password=SNOWFLAKE_PASSWORD,
-        account="CZI-IMAGING",
-        warehouse="IMAGING",
-        database="IMAGING",
-        schema="PYPI"
-    )
-    cursor_list = ctx.execute_string("""select file_project, date_trunc('month', timestamp) as month, count(*) as num_downloads
-    from
-    (
-      select country_code, project, project_type, file_project, file_version, file_type, details_installer_name, details_installer_version,
-          CONCAT(
-            DETAILS,
-            DETAILS_INSTALLER, DETAILS_INSTALLER_NAME, DETAILS_INSTALLER_VERSION,
-            DETAILS_PYTHON,
-            DETAILS_IMPLEMENTATION_NAME, DETAILS_IMPLEMENTATION_VERSION,
-            DETAILS_DISTRO, DETAILS_DISTRO_NAME, DETAILS_DISTRO_VERSION, DETAILS_DISTRO_ID, DETAILS_DISTRO_LIBC, DETAILS_DISTRO_LIBC_LIB, DETAILS_DISTRO_LIBC_VERSION,
-            DETAILS_SYSTEM, DETAILS_SYSTEM_NAME, DETAILS_SYSTEM_RELEASE,
-            DETAILS_CPU,
-            DETAILS_OPENSSL_VERSION,
-            DETAILS_SETUPTOOLS_VERSION,
-            DETAILS_RUSTC_VERSION
-          ) as details_all,
-          CASE
-              WHEN details_all like '%amzn%' OR details_all like '%aws%' OR details_all like '%-azure%' OR details_all like '%gcp%' THEN 'ci usage'
-              WHEN details_installer_name in ('bandersnatch', 'pip') THEN details_installer_name
-              ELSE 'other'
-          END AS download_type,
-          to_timestamp(timestamp) as timestamp
-      from imaging.pypi.downloads
-      where download_type = 'pip'
-      and project_type = 'plugin'
-      order by timestamp desc
-    )
-    group by 1,2
-    order by NUM_DOWNLOADS desc, MONTH, FILE_PROJECT""")
-    csv_string = "PROJECT,MONTH,NUM_DOWNLOADS_BY_MONTH\n"
-    for cursor in cursor_list:
-        for row in cursor:
-            csv_string += str(row[0]) + ',' + str(row[1]) + ',' + str(row[2]) + '\n'
-    write_activity_data(csv_string)
+    query = """
+        SELECT 
+            file_project, DATE_TRUNC('month', timestamp) as month, count(*) as num_downloads
+        FROM
+            labeled_downloads
+        WHERE 
+            download_type = 'pip'
+            AND project_type = 'plugin'
+        GROUP BY file_project, month
+        ORDER BY file_project, month
+        """
+    header = "PROJECT,MONTH,NUM_DOWNLOADS_BY_MONTH\n"
+    mapper = lambda row: str(row[0]) + "," + str(row[1]) + "," + str(row[2]) + "\n"
+    write_activity_data(header + __get_from_db(query, mapper))
+
 
 def get_installs(plugin: str) -> List[Any]:
     """
@@ -458,3 +429,20 @@ def get_installs_stats(plugin: str) -> Any:
     obj['totalInstalls'] = int(plugin_df['NUM_DOWNLOADS_BY_MONTH'].sum())
     obj['totalMonths'] = month_offset.n
     return obj
+
+
+def __get_from_db(query_str, mapper, schema="PYPI") -> str:
+    ctx = sc.connect(
+        user=os.getenv("SNOWFLAKE_USER"),
+        password=os.getenv("SNOWFLAKE_PASSWORD"),
+        account="CZI-IMAGING",
+        warehouse="IMAGING",
+        database="IMAGING",
+        schema=schema
+    )
+    cursor_list = ctx.execute_string(query_str)
+    csv_string = ""
+    for cursor in cursor_list:
+        csv_string += "".join([mapper(row) for row in cursor])
+
+    return csv_string
