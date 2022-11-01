@@ -2,6 +2,13 @@
   "githubActivity": "GitHub activity",
   "viewProjectData": "View project data",
 
+  "tabs": {
+    "new": " NEW!",
+    "description": "Description",
+    "activity": "Activity",
+    "citation": "Citation Info"
+  },
+
   "alt": {
     "installMenu": "napari plugin install menu",
     "pluginList": "napari plugin list"
