@@ -53,11 +53,6 @@ function PluginCenterColumn() {
   usePreviewClickAway('metadata-summary');
   usePreviewClickAway('metadata-description');
 
-  // Check if body is an empty string or if it's set to the cookiecutter text.
-  const isEmptyDescription =
-    !plugin?.description ||
-    plugin.description.includes(t('preview:emptyDescription'));
-
   return (
     <article
       className={clsx(
@@ -211,14 +206,7 @@ function PluginCenterColumn() {
         render={() => <SupportInfo className="mb-6 screen-495:mb-12" />}
       />
 
-      {isActivityDashboardEnabled ? (
-        <PluginTabs isEmptyDescription={isEmptyDescription} plugin={plugin} />
-      ) : (
-        <PluginPageContent
-          isEmptyDescription={isEmptyDescription}
-          plugin={plugin}
-        />
-      )}
+      {isActivityDashboardEnabled ? <PluginTabs /> : <PluginPageContent />}
     </article>
   );
 }
