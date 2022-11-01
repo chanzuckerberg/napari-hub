@@ -1,21 +1,22 @@
+import { Skeleton } from '@mui/material';
 import { Tab, Tabs } from 'czifui';
 import dynamic from 'next/dynamic';
 import { ReactNode, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { DeepPartial } from 'utility-types';
 import { useSnapshot } from 'valtio';
 
 import { Props as ActivityDashboardProps } from '@/components/ActivityDashboard';
 import { Markdown } from '@/components/Markdown';
 import { MetadataHighlighter } from '@/components/MetadataHighlighter';
 import { SkeletonLoader } from '@/components/SkeletonLoader';
+import { useLoadingState } from '@/context/loading';
+import { usePluginState } from '@/context/plugin';
 import {
   useMediaQuery,
   usePluginActivity,
   usePluginInstallStats,
 } from '@/hooks';
 import { pluginTabsStore, resetPluginTabs } from '@/store/pluginTabs';
-import { PluginData } from '@/types';
 import { PluginTabType } from '@/types/plugin';
 
 import { CallToActionButton } from './CallToActionButton';
@@ -30,44 +31,40 @@ const ActivityDashboard = dynamic<ActivityDashboardProps>(
   { ssr: false },
 );
 
-interface PluginTabProps {
+interface PluginTabData {
   label: string;
   tab: PluginTabType;
 }
 
-function PluginTab({ label, tab }: PluginTabProps) {
+function usePluginTabs() {
+  const { plugin } = usePluginState();
   const [t] = useTranslation(['pluginPage']);
 
-  return (
-    <Tab
-      label={
-        <p className="space-x-sds-m">
-          <span>{label}</span>
+  return [
+    {
+      label: t('pluginPage:tabs.description'),
+      tab: PluginTabType.Description,
+    },
 
-          {tab === PluginTabType.Activity && (
-            <span className="bg-hub-primary-400 p-1 text-sds-body-xxxs">
-              {t('pluginPage:tabs.new')}
-            </span>
-          )}
-        </p>
-      }
-      value={tab}
-      classes={{
-        root: 'text-black font-semibold px-sds-m mx-0 mb-sds-s',
-        selected: 'bg-bold',
-      }}
-    />
-  );
+    {
+      label: t('pluginPage:tabs.activity'),
+      tab: PluginTabType.Activity,
+    },
+
+    plugin?.citations
+      ? {
+          label: t('pluginPage:tabs.citation'),
+          tab: PluginTabType.Citation,
+        }
+      : undefined,
+  ].filter((tab): tab is PluginTabData => !!tab);
 }
 
-interface Props {
-  isEmptyDescription: boolean;
-  plugin?: DeepPartial<PluginData>;
-}
-
-export function PluginTabs({ isEmptyDescription, plugin }: Props) {
+export function PluginTabs() {
+  const { plugin, isEmptyDescription } = usePluginState();
   const [t] = useTranslation(['pluginPage', 'preview']);
   const { activeTab } = useSnapshot(pluginTabsStore);
+  const isLoading = useLoadingState();
   const hasPluginMetadataScroll = useMediaQuery({ maxWidth: 'screen-1425' });
 
   // Only load data activity data when on activity tab
@@ -81,7 +78,18 @@ export function PluginTabs({ isEmptyDescription, plugin }: Props) {
   // Reset plugin tab state when navigating away from page.
   useEffect(resetPluginTabs, []);
 
+  const tabs = usePluginTabs();
   let tabContent: ReactNode = null;
+
+  if (isLoading) {
+    return (
+      <div className="grid grid-cols-[repeat(3,92px)] h-8 space-x-sds-m">
+        <Skeleton variant="rectangular" />
+        <Skeleton variant="rectangular" />
+        <Skeleton variant="rectangular" />
+      </div>
+    );
+  }
 
   if (activeTab === PluginTabType.Description) {
     tabContent = (
@@ -128,33 +136,44 @@ export function PluginTabs({ isEmptyDescription, plugin }: Props) {
 
   return (
     <>
-      <Tabs
-        classes={{
-          indicator: 'bg-black',
-          root: 'mb-sds-xl',
-        }}
-        value={activeTab}
-        onChange={(_, nextTab) => {
-          pluginTabsStore.activeTab = nextTab as PluginTabType;
-        }}
-      >
-        <PluginTab
-          label={t('pluginPage:tabs.description')}
-          tab={PluginTabType.Description}
-        />
+      {/* Scroll container for tabs */}
+      <div className="overflow-x-auto">
+        {/* Bottom border for tabs */}
+        <div className="mb-sds-m border-b border-black pb-px">
+          <Tabs
+            classes={{
+              indicator: 'bg-black',
+              root: 'm-0',
+            }}
+            value={activeTab}
+            onChange={(_, nextTab) => {
+              pluginTabsStore.activeTab = nextTab as PluginTabType;
+            }}
+          >
+            {tabs.map(({ label, tab }) => (
+              <Tab
+                key={tab}
+                label={
+                  <p className="space-x-sds-m">
+                    <span>{label}</span>
 
-        <PluginTab
-          label={t('pluginPage:tabs.activity')}
-          tab={PluginTabType.Activity}
-        />
-
-        {plugin?.citations && (
-          <PluginTab
-            label={t('pluginPage:tabs.citation')}
-            tab={PluginTabType.Citation}
-          />
-        )}
-      </Tabs>
+                    {tab === PluginTabType.Activity && (
+                      <span className="bg-hub-primary-400 p-1 text-sds-body-xxxs">
+                        {t('pluginPage:tabs.new')}
+                      </span>
+                    )}
+                  </p>
+                }
+                value={tab}
+                classes={{
+                  root: 'text-black font-semibold px-sds-m mx-0 mb-sds-s',
+                  selected: 'bg-bold',
+                }}
+              />
+            ))}
+          </Tabs>
+        </div>
+      </div>
 
       {tabContent}
     </>
