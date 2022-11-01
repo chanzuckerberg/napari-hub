@@ -12,7 +12,7 @@ interface Props {
   /**
    * onClick: callback for when headings are clicked.
    */
-  onClick?(heading: string): void;
+  onClick?(heading: string, id: string): void;
 
   /**
    * headers: header ids and titles to link to
@@ -101,7 +101,7 @@ export function TableOfContents({ className, onClick, headers, free }: Props) {
                 // Set the hash to the header ID so that the page scrolls to it.
                 window.location.hash = header.id;
                 setActiveHeader(header.id);
-                onClick?.(header.text);
+                onClick?.(header.text, header.id);
 
                 // Wrap in timeout so that the browser has time to scroll the
                 // header. If we don't wrap it in a timeout, then setting the
