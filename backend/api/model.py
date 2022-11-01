@@ -1,5 +1,5 @@
 from concurrent import futures
-from datetime import datetime
+from datetime import datetime, timezone
 import json
 import os
 from typing import Tuple, Dict, List, Callable, Any
@@ -440,16 +440,23 @@ def get_installs(plugin: str, limit: str) -> List[Any]:
     plugin_df['MONTH_UTC'] = plugin_df['MONTH'].map(pd.Timestamp.timestamp) * 1000
     end_date = date.today().replace(day=1) + relativedelta(months=-1)
     start_date = end_date + relativedelta(months=-int(limit)+1)
+    dates = list((pd.date_range(start_date, end_date + relativedelta(months=+1), freq='1M') - pd.offsets.MonthBegin(1)))
     end_date = end_date.strftime(date_format)
     start_date = start_date.strftime(date_format)
     plugin_df = plugin_df[(plugin_df['MONTH'] >= start_date) & (plugin_df['MONTH'] <= end_date)]
     installs_list = []
     for _, row in plugin_df.iterrows():
         obj = dict()
-        obj['x'] = int(row.MONTH_UTC) if row.MONTH_UTC is not None else 0
+        obj['x'] = int(row.MONTH_UTC)
         obj['y'] = int(row.NUM_DOWNLOADS_BY_MONTH)
         installs_list.append(obj)
-    return installs_list
+        dates.remove(row.MONTH)
+    for date_with_no_installs in dates:
+        obj = dict()
+        obj['x'] = int(date_with_no_installs.replace(tzinfo=timezone.utc).timestamp()) * 1000
+        obj['y'] = 0
+        installs_list.append(obj)
+    return sorted(installs_list, key=lambda d: d['x'])
 
 
 def get_installs_stats(plugin: str) -> Any:
