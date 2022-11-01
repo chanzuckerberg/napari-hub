@@ -9,11 +9,12 @@ from collections import defaultdict
 import pandas as pd
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
-from api.s3 import get_cache, cache, get_activity_dashboard_data
+from api.s3 import get_cache, cache, get_activity_dashboard_data, write_activity_data
 from utils.utils import render_description, send_alert, get_attribute, get_category_mapping, parse_manifest
 from utils.datadog import report_metrics
 from api.zulip import notify_new_packages
 import boto3
+import snowflake.connector as sc
 
 index_subset = {'name', 'summary', 'description_text', 'description_content_type',
                 'authors', 'license', 'python_version', 'operating_system',
@@ -370,6 +371,58 @@ def get_categories_mapping(version: str) -> Dict[str, List]:
     mappings = get_cache(f'category/{version.replace(":", "/")}.json')
     return mappings or {}
 
+
+def update_activity_data():
+    """
+    Update existing caches to reflect new activity data. Files updated:
+    - activity_dashboard.csv (overwrite)
+    """
+    # credentials from Terraform
+    SNOWFLAKE_USER = os.getenv('SNOWFLAKE_USER')
+    SNOWFLAKE_PASSWORD = os.getenv('SNOWFLAKE_PASSWORD')
+    # connect to Snowflake DB
+    ctx = sc.connect(
+        user=SNOWFLAKE_USER,
+        password=SNOWFLAKE_PASSWORD,
+        account="CZI-IMAGING",
+        warehouse="IMAGING",
+        database="IMAGING",
+        schema="PYPI"
+    )
+    cursor_list = ctx.execute_string("""select file_project, date_trunc('month', timestamp) as month, count(*) as num_downloads
+    from
+    (
+      select country_code, project, project_type, file_project, file_version, file_type, details_installer_name, details_installer_version,
+          CONCAT(
+            DETAILS,
+            DETAILS_INSTALLER, DETAILS_INSTALLER_NAME, DETAILS_INSTALLER_VERSION,
+            DETAILS_PYTHON,
+            DETAILS_IMPLEMENTATION_NAME, DETAILS_IMPLEMENTATION_VERSION,
+            DETAILS_DISTRO, DETAILS_DISTRO_NAME, DETAILS_DISTRO_VERSION, DETAILS_DISTRO_ID, DETAILS_DISTRO_LIBC, DETAILS_DISTRO_LIBC_LIB, DETAILS_DISTRO_LIBC_VERSION,
+            DETAILS_SYSTEM, DETAILS_SYSTEM_NAME, DETAILS_SYSTEM_RELEASE,
+            DETAILS_CPU,
+            DETAILS_OPENSSL_VERSION,
+            DETAILS_SETUPTOOLS_VERSION,
+            DETAILS_RUSTC_VERSION
+          ) as details_all,
+          CASE
+              WHEN details_all like '%amzn%' OR details_all like '%aws%' OR details_all like '%-azure%' OR details_all like '%gcp%' THEN 'ci usage'
+              WHEN details_installer_name in ('bandersnatch', 'pip') THEN details_installer_name
+              ELSE 'other'
+          END AS download_type,
+          to_timestamp(timestamp) as timestamp
+      from imaging.pypi.downloads
+      where download_type = 'pip'
+      and project_type = 'plugin'
+      order by timestamp desc
+    )
+    group by 1,2
+    order by NUM_DOWNLOADS desc, MONTH, FILE_PROJECT""")
+    csv_string = "PROJECT,MONTH,NUM_DOWNLOADS_BY_MONTH\n"
+    for cursor in cursor_list:
+        for row in cursor:
+            csv_string += str(row[0]) + ',' + str(row[1]) + ',' + str(row[2]) + '\n'
+    write_activity_data(csv_string)
 
 def get_installs(plugin: str) -> List[Any]:
     """
