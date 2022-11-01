@@ -1,4 +1,4 @@
-import { Skeleton } from '@mui/material';
+import Skeleton from '@mui/material/Skeleton';
 import { Tab, Tabs } from 'czifui';
 import dynamic from 'next/dynamic';
 import { ReactNode, useEffect } from 'react';
