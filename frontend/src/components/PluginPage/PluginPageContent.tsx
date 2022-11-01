@@ -1,17 +1,16 @@
 import dynamic from 'next/dynamic';
 import { useTranslation } from 'react-i18next';
-import { DeepPartial } from 'utility-types';
 
 import { Props as ActivityDashboardProps } from '@/components/ActivityDashboard';
 import { Markdown } from '@/components/Markdown';
 import { MetadataHighlighter } from '@/components/MetadataHighlighter';
 import { SkeletonLoader } from '@/components/SkeletonLoader';
+import { usePluginState } from '@/context/plugin';
 import {
   useMediaQuery,
   usePluginActivity,
   usePluginInstallStats,
 } from '@/hooks';
-import { PluginData } from '@/types';
 import { useIsFeatureFlagEnabled } from '@/utils/featureFlags';
 
 import { CallToActionButton } from './CallToActionButton';
@@ -25,17 +24,14 @@ const ActivityDashboard = dynamic<ActivityDashboardProps>(
     ),
   { ssr: false },
 );
-interface Props {
-  isEmptyDescription: boolean;
-  plugin?: DeepPartial<PluginData>;
-}
 
 /**
  * Current layout of the plugin page that includes the description, citation,
  * and activity dashboard. This component will be deprecated as when the
  * activity dashboard is fully rolled out to production.
  */
-export function PluginPageContent({ isEmptyDescription, plugin }: Props) {
+export function PluginPageContent() {
+  const { plugin, isEmptyDescription } = usePluginState();
   const [t] = useTranslation(['preview']);
   const hasPluginMetadataScroll = useMediaQuery({ maxWidth: 'screen-1425' });
   const isActivityDashboardEnabled =
