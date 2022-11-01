@@ -407,10 +407,11 @@ def update_recent_activity_data():
         WHERE 
             download_type = 'pip'
             AND project_type = 'plugin'
-            AND timestamp > DATEADD(DAY , -30, CURRENT_DATE)     
+            AND timestamp > DATEADD(DAY , -30, CURRENT_DATE)
+        GROUP BY file_project     
         ORDER BY file_project
         """
-    header = "PROJECT,NUM_DOWNLOADS_BY_MONTH\n"
+    header = "PROJECT,NUM_DOWNLOADS\n"
     mapper = lambda row: str(row[0]) + "," + str(row[1]) + "\n"
     write_activity_data(header + __get_from_db(query, mapper), "activity_dashboard_data/plugin_recent_installs.csv")
 
