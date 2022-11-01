@@ -8,7 +8,7 @@ from flask_githubapp.core import GitHubApp
 from api.collections import get_collections, get_collection
 from api.model import get_public_plugins, get_index, get_plugin, get_excluded_plugins, update_cache, \
     move_artifact_to_s3, get_category_mapping, get_categories_mapping, get_manifest, get_installs, get_installs_stats, \
-    update_activity_data
+    update_activity_data, update_recent_activity_data
 from api.shield import get_shield
 from utils.utils import send_alert, reformat_ssh_key_to_pem_bytes
 
@@ -113,6 +113,7 @@ def get_category(category: str, version: str) -> Response:
 @app.route('/activity/update', methods=['POST'])
 def update_activity() -> Response:
     update_activity_data()
+    update_recent_activity_data()
     return app.make_response(("Complete", 204))
 
 

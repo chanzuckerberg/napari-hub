@@ -383,7 +383,7 @@ def update_activity_data():
         SELECT 
             file_project, DATE_TRUNC('month', timestamp) as month, count(*) as num_downloads
         FROM
-            labeled_downloads
+            imaging.pypi.labeled_downloads
         WHERE 
             download_type = 'pip'
             AND project_type = 'plugin'
@@ -392,8 +392,27 @@ def update_activity_data():
         """
     header = "PROJECT,MONTH,NUM_DOWNLOADS_BY_MONTH\n"
     mapper = lambda row: str(row[0]) + "," + str(row[1]) + "," + str(row[2]) + "\n"
-    write_activity_data(header + __get_from_db(query, mapper))
+    write_activity_data(header + __get_from_db(query, mapper), "activity_dashboard_data/plugin_installs.csv")
 
+def update_recent_activity_data():
+    """
+    Update existing caches to reflect recent activity data. Files updated:
+    - recent_activity_dashboard.csv (overwrite)
+    """
+    query = """
+        SELECT 
+            file_project, count(*) as num_downloads
+        FROM
+            imaging.pypi.labeled_downloads
+        WHERE 
+            download_type = 'pip'
+            AND project_type = 'plugin'
+            AND timestamp > DATEADD(DAY , -30, CURRENT_DATE)     
+        ORDER BY file_project
+        """
+    header = "PROJECT,NUM_DOWNLOADS_BY_MONTH\n"
+    mapper = lambda row: str(row[0]) + "," + str(row[1]) + "\n"
+    write_activity_data(header + __get_from_db(query, mapper), "activity_dashboard_data/plugin_recent_installs.csv")
 
 def get_installs(plugin: str) -> List[Any]:
     """
