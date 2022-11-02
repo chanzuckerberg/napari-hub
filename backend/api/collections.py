@@ -1,59 +1,71 @@
-import requests
 import yaml
 
 from api.model import get_plugin
+from utils.github import get_file
 
-COLLECTIONS_URL = "https://api.github.com/repos/chanzuckerberg/napari-hub-collections/contents/collections"
+COLLECTIONS_CONTENTS = "https://api.github.com/repos/chanzuckerberg/napari-hub-collections/contents/collections"
+COLLECTIONS_REPO = "https://github.com/chanzuckerberg/napari-hub-collections"
 IMAGES_BASE_URL = "https://raw.githubusercontent.com/chanzuckerberg/napari-hub-collections/main/images/"
 
 
 def get_collections():
-    resp = requests.get(COLLECTIONS_URL)
+    json_file = get_file(download_url=COLLECTIONS_CONTENTS, file_format="json")
+    if not json_file:
+        return None
     collections = []
-    contents = list(resp.json())
-    for item in contents:
+    for item in json_file:
         slug = item.get("name").replace(".yml", "")
-        data = get_collection(slug, index_page=True)
+        data = get_collection_preview(slug)
         if data:
             collections.append(data)
     return collections
 
 
-def get_collection(slug, index_page=False):
-    collection_url = "https://raw.githubusercontent.com/chanzuckerberg/napari-hub-collections/main/collections/{slug}.yml".format(slug=slug)
-    resp = requests.get(collection_url)
-    if resp.status_code == 404:
+def get_yaml_data(slug, visibility_requirements):
+    """Return collection's yaml data if it meets visibility requirements."""
+    filename = "collections/{slug}.yml".format(slug=slug)
+    yaml_file = get_file(download_url=COLLECTIONS_REPO, file=filename, branch="main")
+    if yaml_file:
+        data = yaml.safe_load(yaml_file)
+        if data and data.get("visibility", "public") in visibility_requirements:
+            data["cover_image"] = IMAGES_BASE_URL + data.get("cover_image")
+            return data
+    return None
+
+
+def get_collection_preview(slug):
+    """Return a subset of collection data for /collections."""
+    data = get_yaml_data(slug=slug, visibility_requirements=["public"])
+    if not data:
         return None
-    data = yaml.safe_load(resp.text)
-    collection_visibility = data.get("visibility", "public")
-    if collection_visibility == "disabled":
+    return {
+        "title": data.get("title"),
+        "summary": data.get("summary"),
+        "cover_image": data.get("cover_image"),
+        "curator": data.get("curator"),
+        "symbol": slug,
+    }
+
+
+def get_collection(slug):
+    """Return full collection data for /collections/{collection}."""
+    data = get_yaml_data(slug=slug, visibility_requirements=["public", "hidden"])
+    if not data:
         return None
-    data["cover_image"] = IMAGES_BASE_URL + data.get("cover_image")
-    if index_page:
-        # Returning a subset of collection data for /collections
-        if collection_visibility == "public":
-            # Only include collections that are set to public
-            return {
-                "title": data.get("title"),
-                "summary": data.get("summary"),
-                "cover_image": data.get("cover_image"),
-                "curator": data.get("curator"),
-                "symbol": slug
-            }
-        return None
-    else:
-        # Returning full collection data for /collections/{collection}
-        plugins = []
-        for collection_plugin in data["plugins"]:
-            plugin_name = collection_plugin["name"]
-            plugin = get_plugin(plugin_name)
-            if plugin:
-                plugin_visibility = plugin.get("visibility")
-                if plugin_visibility == "public":
-                    # Only include plugins that are set to public
-                    collection_plugin["summary"] = plugin.get("summary")
-                    collection_plugin["authors"] = plugin.get("authors")
-                    collection_plugin["display_name"] = plugin.get("display_name")
-                    plugins.append(collection_plugin)
-        data["plugins"] = plugins
-        return data
+    # Get plugin-specific data
+    plugins = get_plugin_data(data["plugins"])
+    data["plugins"] = list(plugins)
+    return data
+
+
+def get_plugin_data(collection_plugins):
+    """Return plugin-specific data for each plugin specified in a collection."""
+    for collection_plugin in collection_plugins:
+        plugin_name = collection_plugin["name"]
+        plugin = get_plugin(plugin_name)
+        # Only include plugins that are set to public
+        if plugin and plugin.get("visibility", "public") == "public":
+            collection_plugin["summary"] = plugin.get("summary", "")
+            collection_plugin["authors"] = plugin.get("authors", [])
+            collection_plugin["display_name"] = plugin.get("display_name", "")
+            yield collection_plugin
