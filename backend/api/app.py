@@ -119,7 +119,7 @@ def update_activity() -> Response:
 @app.route('/activity/<plugin>')
 def get_plugin_installs(plugin: str) -> Response:
     limit = request.args.get('limit') if request.args.get('limit') is not None else '12'
-    return jsonify(get_installs(plugin, limit)
+    return jsonify(get_installs(plugin, limit))
 
 
 @app.route('/activity/<plugin>/stats')
