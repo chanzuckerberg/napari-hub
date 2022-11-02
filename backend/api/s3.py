@@ -1,5 +1,6 @@
 import io
 import json
+import logging
 import mimetypes
 import os
 import os.path
@@ -82,3 +83,12 @@ def get_activity_dashboard_data(plugin) -> Dict:
     plugin_df['MONTH'] = pd.to_datetime(plugin_df['MONTH'])
     return plugin_df
 
+
+def get_recent_activity_dashboard_data():
+    recent_activity_path = os.path.join(bucket_path, "activity_dashboard_data/plugin_recent_installs.json")
+    try:
+        data = StringIO(s3_client.get_object(Bucket=bucket, Key=recent_activity_path)['Body'].read().decode('utf-8'))
+        return json.load(data)
+    except Exception as e:
+        logging.error(e)
+        return {}

@@ -2,6 +2,7 @@ from concurrent import futures
 from datetime import datetime
 import json
 import os
+from functools import reduce
 from typing import Tuple, Dict, List, Callable, Any
 from zipfile import ZipFile
 from io import BytesIO
@@ -9,7 +10,8 @@ from collections import defaultdict
 import pandas as pd
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
-from api.s3 import get_cache, cache, get_activity_dashboard_data, write_activity_data
+from api.s3 import get_cache, cache, get_activity_dashboard_data, write_activity_data, \
+    get_recent_activity_dashboard_data
 from utils.utils import render_description, send_alert, get_attribute, get_category_mapping, parse_manifest
 from utils.datadog import report_metrics
 from api.zulip import notify_new_packages
@@ -390,9 +392,14 @@ def update_activity_data():
         GROUP BY file_project, month
         ORDER BY file_project, month
         """
+    data = __get_from_db(query, __accumulate_activity, {})
+
+    data_csv = []
+    for entry in data.items():
+        plugin = entry[0]
+        data_csv += [map(lambda row: plugin + "," + str(row['month']) + "," + str(row['downloads']), entry[1])]
     header = "PROJECT,MONTH,NUM_DOWNLOADS_BY_MONTH\n"
-    mapper = lambda row: str(row[0]) + "," + str(row[1]) + "," + str(row[2]) + "\n"
-    write_activity_data(header + __get_from_db(query, mapper), "activity_dashboard_data/plugin_installs.csv")
+    write_activity_data(header + "\n".join(data_csv), "activity_dashboard_data/plugin_installs.csv")
 
 def update_recent_activity_data():
     """
@@ -407,13 +414,12 @@ def update_recent_activity_data():
         WHERE 
             download_type = 'pip'
             AND project_type = 'plugin'
-            AND timestamp > DATEADD(DAY , -30, CURRENT_DATE)
+            AND timestamp > DATEADD(DAY, -30, CURRENT_DATE)
         GROUP BY file_project     
         ORDER BY file_project
         """
-    header = "PROJECT,NUM_DOWNLOADS\n"
-    mapper = lambda row: str(row[0]) + "," + str(row[1]) + "\n"
-    write_activity_data(header + __get_from_db(query, mapper), "activity_dashboard_data/plugin_recent_installs.csv")
+    data = __get_from_db(query, __accumulate_recent_activity, {})
+    write_activity_data(json.dumps(data), "activity_dashboard_data/plugin_recent_installs.json")
 
 def get_installs(plugin: str) -> List[Any]:
     """
@@ -450,8 +456,31 @@ def get_installs_stats(plugin: str) -> Any:
     obj['totalMonths'] = month_offset.n
     return obj
 
+def get_recent_installs_stats(plugin: str) -> Dict:
+    """
+    This should return a dict, with number of Installs in the last 30 days
 
-def __get_from_db(query_str, mapper, schema="PYPI") -> str:
+    :param plugin: plugin name
+    :return: dict
+    """
+    response = {'installInLast30Days': get_recent_activity_dashboard_data().get(plugin, 0)}
+    return response
+
+def __accumulate_activity(accumulator, row):
+    plugin = row[0]
+    if plugin not in accumulator:
+        accumulator[plugin] = []
+
+    accumulator[plugin].append({'month': row[1], 'downloads': row[2]})
+    return accumulator
+
+
+def __accumulate_recent_activity(accumulator, entry):
+    accumulator[entry[0]] = entry[1]
+    return accumulator
+
+
+def __get_from_db(query_str, reducer, accumulator, schema="PYPI"):
     ctx = sc.connect(
         user=os.getenv("SNOWFLAKE_USER"),
         password=os.getenv("SNOWFLAKE_PASSWORD"),
@@ -460,9 +489,7 @@ def __get_from_db(query_str, mapper, schema="PYPI") -> str:
         database="IMAGING",
         schema=schema
     )
-    cursor_list = ctx.execute_string(query_str)
-    csv_string = ""
-    for cursor in cursor_list:
-        csv_string += "".join([mapper(row) for row in cursor])
+    for cursor in ctx.execute_string(query_str):
+        reduce(reducer, [row for row in cursor], accumulator)
 
-    return csv_string
+    return accumulator
