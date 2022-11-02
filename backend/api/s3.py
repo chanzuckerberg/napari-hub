@@ -87,8 +87,7 @@ def get_activity_dashboard_data(plugin) -> Dict:
 def get_recent_activity_dashboard_data():
     recent_activity_path = os.path.join(bucket_path, "activity_dashboard_data/plugin_recent_installs.json")
     try:
-        data = StringIO(s3_client.get_object(Bucket=bucket, Key=recent_activity_path)['Body'].read().decode('utf-8'))
-        return json.load(data)
+        return s3_client.get_object(Bucket=bucket, Key=recent_activity_path)['Body'].read().decode('utf-8')
     except Exception as e:
         logging.error(e)
         return {}

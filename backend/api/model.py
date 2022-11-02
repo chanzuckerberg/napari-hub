@@ -394,12 +394,11 @@ def update_activity_data():
         """
     data = __get_from_db(query, __accumulate_activity, {})
 
-    data_csv = []
+    data_csv = ["PROJECT,MONTH,NUM_DOWNLOADS_BY_MONTH"]
     for entry in data.items():
         plugin = entry[0]
-        data_csv += [map(lambda row: plugin + "," + str(row['month']) + "," + str(row['downloads']), entry[1])]
-    header = "PROJECT,MONTH,NUM_DOWNLOADS_BY_MONTH\n"
-    write_activity_data(header + "\n".join(data_csv), "activity_dashboard_data/plugin_installs.csv")
+        data_csv += [plugin + ',' + str(row["month"]) + ',' + str(row['downloads']) for row in entry[1]]
+    write_activity_data("\n".join(data_csv), "activity_dashboard_data/plugin_installs.csv")
 
 def update_recent_activity_data():
     """
@@ -456,7 +455,7 @@ def get_installs_stats(plugin: str) -> Any:
     obj['totalMonths'] = month_offset.n
     return obj
 
-def get_recent_installs_stats(plugin: str) -> Dict:
+def get_recent_installs_stats(plugin: str) -> Any:
     """
     This should return a dict, with number of Installs in the last 30 days
 
