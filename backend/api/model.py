@@ -440,23 +440,17 @@ def get_installs(plugin: str, limit: str) -> List[Any]:
     plugin_df['MONTH_UTC'] = plugin_df['MONTH'].map(pd.Timestamp.timestamp) * 1000
     end_date = date.today().replace(day=1) + relativedelta(months=-1)
     start_date = end_date + relativedelta(months=-int(limit)+1)
-    dates = list((pd.date_range(start_date, end_date + relativedelta(months=+1), freq='1M') - pd.offsets.MonthBegin(1)))
+    dates = pd.date_range(start=start_date, periods=limit, freq='MS')
     end_date = end_date.strftime(date_format)
     start_date = start_date.strftime(date_format)
     plugin_df = plugin_df[(plugin_df['MONTH'] >= start_date) & (plugin_df['MONTH'] <= end_date)]
-    installs_list = []
-    for _, row in plugin_df.iterrows():
-        obj = dict()
-        obj['x'] = int(row.MONTH_UTC)
-        obj['y'] = int(row.NUM_DOWNLOADS_BY_MONTH)
-        installs_list.append(obj)
-        dates.remove(row.MONTH)
-    for date_with_no_installs in dates:
-        obj = dict()
-        obj['x'] = int(date_with_no_installs.replace(tzinfo=timezone.utc).timestamp()) * 1000
-        obj['y'] = 0
-        installs_list.append(obj)
-    return sorted(installs_list, key=lambda d: d['x'])
+    installs_by_month = {}
+    for row in plugin_df.iterrows():
+        installs_by_month[row.MONTH.strftime(date_format)] = row.NUM_DOWNLOADS_BY_MONTH
+    result = []
+    for current_date in pd.date_range(start=start_date, periods=limit, freq='MS'):
+        result.append({'x': int(current_date.timestamp()), 'y': installs_by_month.get(current_date.strftime(date_format), 0)})
+    return result
 
 
 def get_installs_stats(plugin: str) -> Any:
@@ -464,7 +458,7 @@ def get_installs_stats(plugin: str) -> Any:
     This should return an object, with numerical attributes totalInstallCount and totalMonths
 
     :param plugin: plugin name
-    :return: oÏbject
+    :return: object
     """
     plugin_df = get_activity_dashboard_data(plugin)
     if len(plugin_df) == 0:

@@ -12,7 +12,7 @@ import pandas as pd
 import yaml
 from botocore.client import Config
 from botocore.exceptions import ClientError
-from ƒÏutils.utils import send_alert
+from utils.utils import send_alert
 
 # Environment variable set through ecs stack terraform module
 bucket = os.environ.get('BUCKET')
