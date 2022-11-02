@@ -10,7 +10,6 @@ from typing import Union, IO, List, Dict
 
 import boto3
 import pandas as pd
-import yaml
 from botocore.client import Config
 from botocore.exceptions import ClientError
 from utils.utils import send_alert
@@ -87,7 +86,7 @@ def get_activity_dashboard_data(plugin) -> Dict:
 def get_recent_activity_dashboard_data():
     recent_activity_path = os.path.join(bucket_path, "activity_dashboard_data/plugin_recent_installs.json")
     try:
-        return s3_client.get_object(Bucket=bucket, Key=recent_activity_path)['Body'].read().decode('utf-8')
+        return json.loads(s3_client.get_object(Bucket=bucket, Key=recent_activity_path)['Body'].read().decode('utf-8'))
     except Exception as e:
         logging.error(e)
         return {}
