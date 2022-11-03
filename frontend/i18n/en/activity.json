@@ -2,6 +2,7 @@
   "installs": "installs",
   "usage": "Usage",
   "duration": {
+    "30days": "30 days",
     "lessThan": "less than",
     "over": "over",
     "weekAgo": "a week ago",
@@ -11,5 +12,8 @@
   },
   "totalInstalls": {
     "publiclyReleased": "since publicly released"
+  },
+  "recentInstalls": {
+    "inPast": "in past"
   }
 }
