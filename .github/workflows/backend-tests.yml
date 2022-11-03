@@ -41,10 +41,11 @@ jobs:
           key: ${{ env.pythonLocation }}-${{ hashFiles('setup.py') }}-${{ hashFiles('dev-requirements.txt') }}
 
       - name: Install dependencies
+        # need npe2 here to test preview page
         run: |
           pip install --upgrade pip
           pip install -r requirements.txt
-          pip install pytest
+          pip install pytest npe2
 
       - name: Run tests
         working-directory: backend
