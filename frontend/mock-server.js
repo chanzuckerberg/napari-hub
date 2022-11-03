@@ -70,10 +70,6 @@ app.get('/collections/:symbol', async (req, res) => {
   }
 });
 
-app.get('/activity/plugins', (_, res) => {
-  res.json(Object.keys(activity));
-});
-
 app.get('/activity/:plugin/stats', (req, res) => {
   const stats = get(activity, [req.params.plugin, 'stats'], null);
 
