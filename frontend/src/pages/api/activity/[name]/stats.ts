@@ -8,9 +8,7 @@ export default async function getPluginInstallStats(
   res: NextApiResponse,
 ): Promise<void> {
   await apiErrorWrapper(res, async () => {
-    const plugins = await hubAPI.getPluginInstallStats(
-      req.query.name as string,
-    );
-    res.json(plugins);
+    const stats = await hubAPI.getPluginInstallStats(req.query.name as string);
+    res.json(stats);
   });
 }
