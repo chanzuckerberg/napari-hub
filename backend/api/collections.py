@@ -1,5 +1,4 @@
 import yaml
-
 from api.model import get_plugin
 from utils.github import get_file
 
@@ -14,16 +13,16 @@ def get_collections():
         return None
     collections = []
     for item in json_file:
-        slug = item.get("name").replace(".yml", "")
-        data = get_collection_preview(slug)
+        collection_name = item.get("name").replace(".yml", "")
+        data = get_collection_preview(collection_name)
         if data:
             collections.append(data)
     return collections
 
 
-def get_yaml_data(slug, visibility_requirements):
+def get_yaml_data(collection_name, visibility_requirements):
     """Return collection's yaml data if it meets visibility requirements."""
-    filename = "collections/{slug}.yml".format(slug=slug)
+    filename = "collections/{collection_name}.yml".format(collection_name=collection_name)
     yaml_file = get_file(download_url=COLLECTIONS_REPO, file=filename, branch="main")
     if yaml_file:
         data = yaml.safe_load(yaml_file)
@@ -33,9 +32,9 @@ def get_yaml_data(slug, visibility_requirements):
     return None
 
 
-def get_collection_preview(slug):
+def get_collection_preview(collection_name):
     """Return a subset of collection data for /collections."""
-    data = get_yaml_data(slug=slug, visibility_requirements=["public"])
+    data = get_yaml_data(collection_name=collection_name, visibility_requirements=["public"])
     if not data:
         return None
     return {
@@ -43,13 +42,13 @@ def get_collection_preview(slug):
         "summary": data.get("summary"),
         "cover_image": data.get("cover_image"),
         "curator": data.get("curator"),
-        "symbol": slug,
+        "symbol": collection_name,
     }
 
 
-def get_collection(slug):
+def get_collection(collection_name):
     """Return full collection data for /collections/{collection}."""
-    data = get_yaml_data(slug=slug, visibility_requirements=["public", "hidden"])
+    data = get_yaml_data(collection_name=collection_name, visibility_requirements=["public", "hidden"])
     if not data:
         return None
     # Get plugin-specific data
