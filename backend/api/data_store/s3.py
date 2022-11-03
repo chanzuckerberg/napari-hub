@@ -4,6 +4,7 @@ import logging
 import mimetypes
 import os
 import os.path
+import time
 from datetime import datetime
 from io import StringIO
 from typing import Union, IO, List, Dict
@@ -30,7 +31,7 @@ def get_cache(key: str) -> Union[Dict, List, None]:
     :return: file content for the key if exists, None otherwise
     """
     try:
-        return json.loads(s3_client.get_object(Bucket=bucket, Key=os.path.join(bucket_path, key))['Body'].read())
+        return json.loads(__get_object_body_from_s3(key))
     except ClientError:
         print(f"Not cached: {key}")
         return None
@@ -63,30 +64,47 @@ def cache(content: Union[dict, list, IO[bytes]], key: str, mime: str = None):
                                      Key=os.path.join(bucket_path, key), ExtraArgs=extra_args)
 
 
-def write_activity_data(csv_string: str, path: str):
-    s3_client.put_object(Body=csv_string, Bucket=bucket, Key=os.path.join(bucket_path, path))
+def write_activity_data(data: str, path: str):
+    s3_client.put_object(Body=data, Bucket=bucket, Key=os.path.join(bucket_path, path))
 
 
-def get_activity_dashboard_data(plugin) -> Dict:
+def get_activity_dashboard_data(plugin) -> pd.DataFrame:
     """
     Get the content of activity_dashboard.csv file on s3.
 
     :param plugin: plugin name
     :return: dataframe that consists of plugin-specific data for activity_dashboard backend endpoints
     """
-    plugin_installs_dataframe = pd.read_csv(StringIO(
-        s3_client.get_object(Bucket=bucket, Key=os.path.join(
-            bucket_path, "activity_dashboard_data/plugin_installs.csv"))['Body'].read().decode('utf-8')))
-    plugin_df = plugin_installs_dataframe[plugin_installs_dataframe.PROJECT == plugin]
-    plugin_df = plugin_df[['MONTH', 'NUM_DOWNLOADS_BY_MONTH']]
-    plugin_df['MONTH'] = pd.to_datetime(plugin_df['MONTH'])
-    return plugin_df
-
-
-def get_recent_activity_dashboard_data():
-    recent_activity_path = os.path.join(bucket_path, "activity_dashboard_data/plugin_recent_installs.json")
     try:
-        return json.loads(s3_client.get_object(Bucket=bucket, Key=recent_activity_path)['Body'].read().decode('utf-8'))
+        data = __get_object_body_from_s3("activity_dashboard_data/plugin_installs.csv").decode('utf-8')
+        plugin_installs_dataframe = pd.read_csv(StringIO(data))
+        plugin_df = plugin_installs_dataframe[plugin_installs_dataframe.PROJECT == plugin]
+        plugin_df = plugin_df[['MONTH', 'NUM_DOWNLOADS_BY_MONTH']]
+        plugin_df['MONTH'] = pd.to_datetime(plugin_df['MONTH'])
+        return plugin_df
+    except Exception as e:
+        logging.error(e)
+        return pd.DataFrame(columns=['MONTH', 'NUM_DOWNLOADS_BY_MONTH'])
+
+
+def get_recent_activity_dashboard_data() -> Dict:
+    path = "activity_dashboard_data/plugin_recent_installs.json"
+    try:
+        return json.loads(__get_object_body_from_s3(path).decode('utf-8'))
     except Exception as e:
         logging.error(e)
         return {}
+
+
+def __get_object_body_from_s3(path: str):
+    complete_path = os.path.join(bucket_path, path)
+    logging.info(f"s3 getObject bucket={bucket} path={complete_path}")
+    start_time = time.perf_counter()
+    try:
+        return s3_client.get_object(Bucket=bucket, Key=complete_path)['Body'].read()
+    except Exception as e:
+        logging.error(f"Exception on fetching bucket={bucket} path={complete_path}", e)
+        return None
+    finally:
+        elapsed_time = time.perf_counter() - start_time
+        logging.info(f"Time-taken for s3 getObject {complete_path} {elapsed_time:0.4f} s")

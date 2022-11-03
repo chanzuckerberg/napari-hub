@@ -2,27 +2,29 @@ from concurrent import futures
 from datetime import datetime
 import json
 import os
-from functools import reduce
 from typing import Tuple, Dict, List, Callable, Any
 from zipfile import ZipFile
 from io import BytesIO
 from collections import defaultdict
 import pandas as pd
+
+from api.data_store.snowflake import SnowflakeDAO
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
-from api.s3 import get_cache, cache, get_activity_dashboard_data, write_activity_data, \
+from api.data_store.s3 import get_cache, cache, get_activity_dashboard_data, write_activity_data, \
     get_recent_activity_dashboard_data
 from utils.utils import render_description, send_alert, get_attribute, get_category_mapping, parse_manifest
 from utils.datadog import report_metrics
 from api.zulip import notify_new_packages
 import boto3
-import snowflake.connector as sc
 
 index_subset = {'name', 'summary', 'description_text', 'description_content_type',
                 'authors', 'license', 'python_version', 'operating_system',
                 'release_date', 'version', 'first_released',
                 'development_status', 'category', 'display_name', 'plugin_types', 'reader_file_extensions',
                 'writer_file_extensions', 'writer_save_layers', 'npe2', 'error_message'}
+
+snowflake = SnowflakeDAO()
 
 
 def get_public_plugins() -> Dict[str, str]:
@@ -59,7 +61,7 @@ def get_valid_plugins() -> Dict[str, str]:
 
 def get_plugin(plugin: str, version: str = None) -> dict:
     """
-    Get plugin and manifest metadata for a particular plugin, get latest if version is None.
+    Get plugin and manifest metadata for a particular plugin, get the latest if version is None.
     :param plugin: name of the plugin to get
     :param version: version of the plugin
     :return: plugin metadata dictionary
@@ -114,7 +116,7 @@ def discover_manifest(plugin: str, version: str = None):
 
 def get_manifest(plugin: str, version: str = None) -> dict:
     """
-    Get plugin manifest file for a particular plugin, get latest if version is None.
+    Get plugin manifest file for a particular plugin, get the latest if version is None.
     :param plugin: name of the plugin to get
     :param version: version of the plugin manifest
     :return: plugin manifest dictionary.
@@ -180,7 +182,7 @@ def build_manifest_metadata(plugin: str, version: str) -> Tuple[str, dict]:
     manifest = get_manifest(plugin, version)
     if 'error' in manifest:
         if 'Manifest not yet processed' in manifest['error']:
-            # this will invoke the plugins lambda & write manifes to cache
+            # this will invoke the plugins lambda & write manifest to cache
             discover_manifest(plugin, version)
         # return just default values for now
         metadata = parse_manifest()
@@ -265,7 +267,7 @@ def update_cache():
 
 def get_updated_plugin_exclusion(plugins_metadata):
     """
-    Update plugin visibility information with latest metadata.
+    Update plugin visibility information with the latest metadata.
     Override existing visibility information if existing entry is not 'blocked' (disabled by hub admin)
 
     public: fully visible (default)
@@ -381,44 +383,22 @@ def update_activity_data():
     Update existing caches to reflect new activity data. Files updated:
     - activity_dashboard.csv (overwrite)
     """
-    query = """
-        SELECT 
-            file_project, DATE_TRUNC('month', timestamp) as month, count(*) as num_downloads
-        FROM
-            imaging.pypi.labeled_downloads
-        WHERE 
-            download_type = 'pip'
-            AND project_type = 'plugin'
-        GROUP BY file_project, month
-        ORDER BY file_project, month
-        """
-    data = __get_from_db(query, __accumulate_activity, {})
-
+    data = snowflake.get_activity_data()
     data_csv = ["PROJECT,MONTH,NUM_DOWNLOADS_BY_MONTH"]
     for entry in data.items():
         plugin = entry[0]
         data_csv += [plugin + ',' + str(row["month"]) + ',' + str(row['downloads']) for row in entry[1]]
     write_activity_data("\n".join(data_csv), "activity_dashboard_data/plugin_installs.csv")
 
+
 def update_recent_activity_data():
     """
     Update existing caches to reflect recent activity data. Files updated:
     - recent_activity_dashboard.csv (overwrite)
     """
-    query = """
-        SELECT 
-            file_project, count(*) as num_downloads
-        FROM
-            imaging.pypi.labeled_downloads
-        WHERE 
-            download_type = 'pip'
-            AND project_type = 'plugin'
-            AND timestamp > DATEADD(DAY, -30, CURRENT_DATE)
-        GROUP BY file_project     
-        ORDER BY file_project
-        """
-    data = __get_from_db(query, __accumulate_recent_activity, {})
+    data = snowflake.get_recent_activity_data()
     write_activity_data(json.dumps(data), "activity_dashboard_data/plugin_recent_installs.json")
+
 
 def get_installs(plugin: str) -> List[Any]:
     """
@@ -455,40 +435,12 @@ def get_installs_stats(plugin: str) -> Any:
     obj['totalMonths'] = month_offset.n
     return obj
 
-def get_recent_installs_stats(plugin: str) -> Any:
+
+def get_recent_installs_stats(plugin: str) -> Dict:
     """
     This should return a dict, with number of Installs in the last 30 days
 
     :param plugin: plugin name
     :return: dict
     """
-    response = {'installInLast30Days': get_recent_activity_dashboard_data().get(plugin, 0)}
-    return response
-
-def __accumulate_activity(accumulator, row):
-    plugin = row[0]
-    if plugin not in accumulator:
-        accumulator[plugin] = []
-
-    accumulator[plugin].append({'month': row[1], 'downloads': row[2]})
-    return accumulator
-
-
-def __accumulate_recent_activity(accumulator, entry):
-    accumulator[entry[0]] = entry[1]
-    return accumulator
-
-
-def __get_from_db(query_str, reducer, accumulator, schema="PYPI"):
-    ctx = sc.connect(
-        user=os.getenv("SNOWFLAKE_USER"),
-        password=os.getenv("SNOWFLAKE_PASSWORD"),
-        account="CZI-IMAGING",
-        warehouse="IMAGING",
-        database="IMAGING",
-        schema=schema
-    )
-    for cursor in ctx.execute_string(query_str):
-        reduce(reducer, [row for row in cursor], accumulator)
-
-    return accumulator
+    return {'installInLast30Days': get_recent_activity_dashboard_data().get(plugin, 0)}
