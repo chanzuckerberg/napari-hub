@@ -435,21 +435,24 @@ def get_installs(plugin: str, limit: str) -> List[Any]:
     :param limit: number of objects to return
     :return: list of objects
     """
+    if not limit.isdigit():
+        return []
     date_format = '%Y-%m-%d'
     plugin_df = get_activity_dashboard_data(plugin)
     plugin_df['MONTH_UTC'] = plugin_df['MONTH'].map(pd.Timestamp.timestamp) * 1000
     end_date = date.today().replace(day=1) + relativedelta(months=-1)
-    start_date = end_date + relativedelta(months=-int(limit)+1)
-    dates = pd.date_range(start=start_date, periods=limit, freq='MS')
+    start_date = end_date + relativedelta(months=-int(limit) + 1)
+    dates = pd.date_range(start=start_date, periods=int(limit), freq='MS')
     end_date = end_date.strftime(date_format)
     start_date = start_date.strftime(date_format)
     plugin_df = plugin_df[(plugin_df['MONTH'] >= start_date) & (plugin_df['MONTH'] <= end_date)]
     installs_by_month = {}
-    for row in plugin_df.iterrows():
+    for _, row in plugin_df.iterrows():
         installs_by_month[row.MONTH.strftime(date_format)] = row.NUM_DOWNLOADS_BY_MONTH
     result = []
-    for current_date in pd.date_range(start=start_date, periods=limit, freq='MS'):
-        result.append({'x': int(current_date.timestamp()), 'y': installs_by_month.get(current_date.strftime(date_format), 0)})
+    for cur_date in dates:
+        result.append(
+            {'x': int(cur_date.timestamp()) * 1000, 'y': installs_by_month.get(cur_date.strftime(date_format), 0)})
     return result
 
 

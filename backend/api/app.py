@@ -118,7 +118,7 @@ def update_activity() -> Response:
 
 @app.route('/activity/<plugin>')
 def get_plugin_installs(plugin: str) -> Response:
-    return jsonify(get_installs(plugin, request.args.get('limit', 12)))
+    return jsonify(get_installs(plugin, request.args.get('limit', '12')))
 
 
 @app.route('/activity/<plugin>/stats')
