@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { ReactNode } from 'react';
 
 import { Text } from '@/components/Text';
@@ -14,7 +15,16 @@ export function ActivitySection({ children, title }: Props) {
         {title}
       </Text>
 
-      {children}
+      <div
+        className={clsx(
+          'grid grid-cols-1',
+          'gap-x-12 gap-y-sds-xl',
+          'screen-600:grid-cols-napari-2',
+          'screen-875:grid-cols-napari-3',
+        )}
+      >
+        {children}
+      </div>
     </section>
   );
 }
