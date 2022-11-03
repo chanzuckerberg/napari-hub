@@ -1,8 +1,13 @@
 import { get } from 'lodash';
+import { AnchorHTMLAttributes } from 'react';
 
-import { Link, Props as LinkProps } from '@/components/Link';
+import { Link } from '@/components/Link';
 import { useLinks } from '@/hooks/useLinks';
 import { LinkInfo } from '@/types';
+
+interface MDXLinkNodeProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
+  newTab?: boolean;
+}
 
 /**
  * Helper component that renders link nodes for the MDX renderer. If the
@@ -16,7 +21,7 @@ import { LinkInfo } from '@/types';
  * [link to the faq]({FAQ})
  * ```
  */
-export function MDXLinkNode({ href, ...props }: LinkProps) {
+export function MDXLinkNode({ href, ...props }: MDXLinkNodeProps) {
   const links = useLinks();
 
   let newHref = decodeURI(href ?? '');
