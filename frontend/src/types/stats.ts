@@ -19,3 +19,7 @@ export interface PluginInstallStats {
   totalMonths: number;
   totalInstalls: number;
 }
+
+export interface PluginRecentInstallStats {
+  installInLast30Days: number;
+}
