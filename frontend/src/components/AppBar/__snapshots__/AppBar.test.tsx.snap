@@ -15,9 +15,6 @@ exports[`<AppBar /> should match snapshot 1`] = `
         class="flex"
       >
         <a
-          href="/"
-        />
-        <a
           class="whitespace-nowrap"
           data-testid="appBarHome"
           href="/"
@@ -28,17 +25,11 @@ exports[`<AppBar /> should match snapshot 1`] = `
           class="flex"
         >
           <a
-            href="/"
-          />
-          <a
             class="ml-sds-xl"
             href="/"
           >
             Plugins
           </a>
-          <a
-            href="/collections"
-          />
           <a
             class="ml-sds-xl"
             href="/collections"
@@ -54,9 +45,6 @@ exports[`<AppBar /> should match snapshot 1`] = `
       <nav
         class="flex"
       >
-        <a
-          href="/"
-        />
         <a
           class="whitespace-nowrap"
           data-testid="appBarHome"

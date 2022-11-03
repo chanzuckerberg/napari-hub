@@ -4,9 +4,6 @@ exports[`<Link /> should match snapshot 1`] = `
 <DocumentFragment>
   <a
     href="https://example.com"
-  />
-  <a
-    href="https://example.com"
     rel="noreferrer"
     target="_blank"
   >
