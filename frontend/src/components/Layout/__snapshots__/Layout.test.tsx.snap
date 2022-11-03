@@ -18,6 +18,9 @@ exports[`<Layout /> should match snapshot 1`] = `
           class="flex"
         >
           <a
+            href="/"
+          />
+          <a
             class="whitespace-nowrap"
             data-testid="appBarHome"
             href="/"
@@ -28,11 +31,17 @@ exports[`<Layout /> should match snapshot 1`] = `
             class="flex"
           >
             <a
+              href="/"
+            />
+            <a
               class="ml-sds-xl"
               href="/"
             >
               Plugins
             </a>
+            <a
+              href="/collections"
+            />
             <a
               class="ml-sds-xl"
               href="/collections"
@@ -48,6 +57,9 @@ exports[`<Layout /> should match snapshot 1`] = `
         <nav
           class="flex"
         >
+          <a
+            href="/"
+          />
           <a
             class="whitespace-nowrap"
             data-testid="appBarHome"
@@ -204,11 +216,17 @@ exports[`<Layout /> should match snapshot 1`] = `
         class="w-full flex-1 flex flex-row items-center justify-start mb-6 screen-655:mb-0 screen-655:mr-12 flex-wrap col-span-2 gap-y-2"
       >
         <a
+          href="/about"
+        />
+        <a
           class="whitespace-nowrap font-semibold text-sds-body-s mr-sds-xl last:mr-0"
           href="/about"
         >
           About
         </a>
+        <a
+          href="/faq"
+        />
         <a
           class="whitespace-nowrap font-semibold text-sds-body-s mr-sds-xl last:mr-0"
           href="/faq"
@@ -216,11 +234,17 @@ exports[`<Layout /> should match snapshot 1`] = `
           FAQ
         </a>
         <a
+          href="/privacy"
+        />
+        <a
           class="whitespace-nowrap font-semibold text-sds-body-s mr-sds-xl last:mr-0"
           href="/privacy"
         >
           Privacy
         </a>
+        <a
+          href="/sitemap"
+        />
         <a
           class="whitespace-nowrap font-semibold text-sds-body-s mr-sds-xl last:mr-0"
           href="/sitemap"
@@ -228,11 +252,17 @@ exports[`<Layout /> should match snapshot 1`] = `
           Sitemap
         </a>
         <a
+          href="/contact"
+        />
+        <a
           class="whitespace-nowrap font-semibold text-sds-body-s mr-sds-xl last:mr-0"
           href="/contact"
         >
           Contact
         </a>
+        <a
+          href="https://github.com/chanzuckerberg/napari-hub"
+        />
         <a
           class="whitespace-nowrap font-semibold text-sds-body-s flex flex-row items-center mr-sds-xl last:mr-0"
           href="https://github.com/chanzuckerberg/napari-hub"
@@ -263,6 +293,9 @@ exports[`<Layout /> should match snapshot 1`] = `
       <div
         class="flex flex-row justify-end row-start-3 col-start-2 screen-655:row-start-2 screen-655:col-start-2 screen-1150:row-start-1 screen-1150:col-start-3"
       >
+        <a
+          href="https://napari.org"
+        />
         <a
           class="mr-sds-s"
           href="https://napari.org"
@@ -399,6 +432,9 @@ exports[`<Layout /> should match snapshot 1`] = `
         </a>
         <div
           class="border-r-[1px] border-black"
+        />
+        <a
+          href="https://chanzuckerberg.com"
         />
         <a
           aria-label="czi-link"
