@@ -117,6 +117,10 @@ export enum PluginType {
 
 export enum PluginWriterSaveLayer {
   Image = 'image',
+  Labels = 'labels',
   Points = 'points',
   Shapes = 'shapes',
+  Surface = 'surface',
+  Tracks = 'tracks',
+  Vectors = 'vectors',
 }
