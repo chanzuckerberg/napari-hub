@@ -37,13 +37,16 @@ project_url_names = {
 }
 
 
-def get_file(download_url: str, file: str, branch: str = 'HEAD') -> [dict, None]:
+def get_file(
+    download_url: str, file: str = "", branch: str = "HEAD", file_format: str = ""
+) -> [dict, None]:
     """
     Get file from github.
 
     :param download_url: github url to download from
-    :param file: filename to get
+    :param file: filename to get if specified
     :param branch: branch name to use if specified
+    :param file_format: format to return if specified
     :return: file context for the file to download
     """
     local_workspace = os.getenv("GITHUB_WORKSPACE")
@@ -55,13 +58,17 @@ def get_file(download_url: str, file: str, branch: str = 'HEAD') -> [dict, None]
         else:
             return None
 
-    api_url = download_url.replace("https://github.com/",
-                                   "https://raw.githubusercontent.com/")
+    api_url = download_url.replace(
+        "https://github.com/", "https://raw.githubusercontent.com/"
+    )
+    if branch and file:
+        api_url = f"{api_url}/{branch}/{file}"
     try:
-        url = f'{api_url}/{branch}/{file}'
-        response = requests.get(url, auth=auth)
+        response = requests.get(api_url, auth=auth)
         if response.status_code != requests.codes.ok:
             response.raise_for_status()
+        if file_format == "json":
+            return response.json()
         return response.text
     except HTTPError:
         pass

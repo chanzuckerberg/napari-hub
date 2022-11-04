@@ -28,7 +28,7 @@ export const FEATURE_FLAGS = createFeatureFlags({
   },
 
   collections: {
-    environments: ['dev'],
+    environments: ['dev', 'staging', 'prod'],
   },
 
   activityDashboard: {
