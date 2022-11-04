@@ -24,8 +24,6 @@ index_subset = {'name', 'summary', 'description_text', 'description_content_type
                 'development_status', 'category', 'display_name', 'plugin_types', 'reader_file_extensions',
                 'writer_file_extensions', 'writer_save_layers', 'npe2', 'error_message'}
 
-snowflake = SnowflakeDAO()
-
 
 def get_public_plugins() -> Dict[str, str]:
     """
@@ -383,6 +381,7 @@ def update_activity_data():
     Update existing caches to reflect new activity data. Files updated:
     - activity_dashboard.csv (overwrite)
     """
+    snowflake = SnowflakeDAO()
     data = snowflake.get_activity_data()
     data_csv = ["PROJECT,MONTH,NUM_DOWNLOADS_BY_MONTH"]
     for entry in data.items():
@@ -396,6 +395,7 @@ def update_recent_activity_data():
     Update existing caches to reflect recent activity data. Files updated:
     - recent_activity_dashboard.csv (overwrite)
     """
+    snowflake = SnowflakeDAO()
     data = snowflake.get_recent_activity_data()
     write_activity_data(json.dumps(data), "activity_dashboard_data/plugin_recent_installs.json")
 
@@ -443,4 +443,4 @@ def get_recent_installs_stats(plugin: str) -> Dict:
     :param plugin: plugin name
     :return: dict
     """
-    return {'installInLast30Days': get_recent_activity_dashboard_data().get(plugin, 0)}
+    return {'installsInLast30Days': get_recent_activity_dashboard_data().get(plugin, 0)}

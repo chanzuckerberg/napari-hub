@@ -4,7 +4,6 @@ import logging
 import mimetypes
 import os
 import os.path
-import time
 from datetime import datetime
 from io import StringIO
 from typing import Union, IO, List, Dict
@@ -13,6 +12,8 @@ import boto3
 import pandas as pd
 from botocore.client import Config
 from botocore.exceptions import ClientError
+
+from api.util.timer import Timer
 from utils.utils import send_alert
 
 # Environment variable set through ecs stack terraform module
@@ -97,14 +98,14 @@ def get_recent_activity_dashboard_data() -> Dict:
 
 
 def __get_object_body_from_s3(path: str):
+    timer = Timer()
     complete_path = os.path.join(bucket_path, path)
     logging.info(f"s3 getObject bucket={bucket} path={complete_path}")
-    start_time = time.perf_counter()
+    timer.start()
     try:
         return s3_client.get_object(Bucket=bucket, Key=complete_path)['Body'].read()
     except Exception as e:
         logging.error(f"Exception on fetching bucket={bucket} path={complete_path}", e)
         return None
     finally:
-        elapsed_time = time.perf_counter() - start_time
-        logging.info(f"Time-taken for s3 getObject {complete_path} {elapsed_time:0.4f} s")
+        logging.info(f"S3 getObject bucket={bucket} path={complete_path} elapsed_time={timer.get_elapsed_time()}")

@@ -1,22 +1,28 @@
-import snowflake.connector as sc
+import snowflake.connector as snowflake_connector
 import os
 from functools import reduce
 from typing import Dict
+import logging
+
+from api.util.timer import Timer
 
 
 class SnowflakeDAO:
 
-    def __init(self):
+    def __init__(self, account="CZI-IMAGING", warehouse="IMAGING", database="IMAGING", schema="PYPI"):
         self.__user = os.getenv("SNOWFLAKE_USER")
         self.__password = os.getenv("SNOWFLAKE_PASSWORD")
-        self.__account = "CZI-IMAGING"
-        self.__warehouse = "IMAGING"
-        self.__database = "IMAGING"
+
+        self.__connection = snowflake_connector.connect(
+            user=self.__user,
+            password=self.__password,
+            account=account,
+            warehouse=warehouse,
+            database=database,
+            schema=schema
+        )
 
     def get_activity_data(self) -> Dict:
-        """
-        Query snowflake to fetch activity data.
-        """
         query = """
             SELECT 
                 file_project, DATE_TRUNC('month', timestamp) as month, count(*) as num_downloads
@@ -27,13 +33,10 @@ class SnowflakeDAO:
                 AND project_type = 'plugin'
             GROUP BY file_project, month
             ORDER BY file_project, month
-            """
-        return self.__get_from_db(query, self.__accumulate_activity, {})
+        """
+        return self.__get_from_db(query, self.__accumulate_activity, {}, "get_activity_data")
 
     def get_recent_activity_data(self) -> Dict:
-        """
-            Query snowflake to fetch recent activity data.
-        """
         query = """
             SELECT 
                 file_project, count(*) as num_downloads
@@ -45,22 +48,22 @@ class SnowflakeDAO:
                 AND timestamp > DATEADD(DAY, -30, CURRENT_DATE)
             GROUP BY file_project     
             ORDER BY file_project
-            """
-        return self.__get_from_db(query, self.__accumulate_recent_activity, {})
+        """
 
-    def __get_from_db(self, query_str, reducer, accumulator, schema="PYPI"):
-        ctx = sc.connect(
-            user=self.__user,
-            password=self.__password,
-            account=self.__account,
-            warehouse=self.__warehouse,
-            database=self.__database,
-            schema=schema
-        )
-        for cursor in ctx.execute_string(query_str):
-            reduce(reducer, [row for row in cursor], accumulator)
+        return self.__get_from_db(query, self.__accumulate_recent_activity, {}, "get_recent_activity_data")
 
-        return accumulator
+    def __get_from_db(self, query_str, reducer, accumulator, query_name):
+        timer = Timer()
+        timer.start()
+        try:
+            for cursor in self.__connection.execute_string(query_str):
+                reduce(reducer, [row for row in cursor], accumulator)
+
+            return accumulator
+        except Exception as e:
+            logging.error(f"Exception on fetching from snowflake", e)
+        finally:
+            logging.info(f"snowflake query={query_name} elapsed_time={timer.get_elapsed_time()}")
 
     @staticmethod
     def __accumulate_activity(accumulator, row) -> Dict:
