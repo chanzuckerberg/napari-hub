@@ -55,7 +55,7 @@
       "totalInstalls": 67
     },
     "recentStats": {
-      "installInLast30Days": 298
+      "installsInLast30Days": 298
     }
   },
   "beetlesafari": {
@@ -114,7 +114,7 @@
       "totalInstalls": 98
     },
     "recentStats": {
-      "installInLast30Days": 156
+      "installsInLast30Days": 156
     }
   },
   "affinder": {
@@ -173,7 +173,7 @@
       "totalInstalls": 377
     },
     "recentStats": {
-      "installInLast30Days": 1886
+      "installsInLast30Days": 1886
     }
   },
   "blik": {
@@ -232,7 +232,7 @@
       "totalInstalls": 86
     },
     "recentStats": {
-      "installInLast30Days": 653
+      "installsInLast30Days": 653
     }
   },
   "bbii-decon": {
@@ -291,7 +291,7 @@
       "totalInstalls": 143
     },
     "recentStats": {
-      "installInLast30Days": 414
+      "installsInLast30Days": 414
     }
   },
   "bfio": {
@@ -350,7 +350,7 @@
       "totalInstalls": 6493
     },
     "recentStats": {
-      "installInLast30Days": 1931
+      "installsInLast30Days": 1931
     }
   },
   "brainreg-napari": {
@@ -409,7 +409,7 @@
       "totalInstalls": 382
     },
     "recentStats": {
-      "installInLast30Days": 1827
+      "installsInLast30Days": 1827
     }
   },
   "brainglobe-napari-io": {
@@ -468,7 +468,7 @@
       "totalInstalls": 3693
     },
     "recentStats": {
-      "installInLast30Days": 1157
+      "installsInLast30Days": 1157
     }
   },
   "btrack": {
@@ -527,7 +527,7 @@
       "totalInstalls": 1872
     },
     "recentStats": {
-      "installInLast30Days": 362
+      "installsInLast30Days": 362
     }
   },
   "brainreg-segment": {
@@ -586,7 +586,7 @@
       "totalInstalls": 4155
     },
     "recentStats": {
-      "installInLast30Days": 1080
+      "installsInLast30Days": 1080
     }
   },
   "cellpose-napari": {
@@ -645,7 +645,7 @@
       "totalInstalls": 1936
     },
     "recentStats": {
-      "installInLast30Days": 171
+      "installsInLast30Days": 171
     }
   },
   "cellfinder-napari": {
@@ -704,7 +704,7 @@
       "totalInstalls": 1926
     },
     "recentStats": {
-      "installInLast30Days": 259
+      "installsInLast30Days": 259
     }
   },
   "disease-classifier": {
@@ -763,7 +763,7 @@
       "totalInstalls": 9
     },
     "recentStats": {
-      "installInLast30Days": 1768
+      "installsInLast30Days": 1768
     }
   },
   "devbio-napari": {
@@ -822,7 +822,7 @@
       "totalInstalls": 559
     },
     "recentStats": {
-      "installInLast30Days": 313
+      "installsInLast30Days": 313
     }
   },
   "empanada-napari": {
@@ -881,7 +881,7 @@
       "totalInstalls": 209
     },
     "recentStats": {
-      "installInLast30Days": 1116
+      "installsInLast30Days": 1116
     }
   },
   "elastix-napari": {
@@ -940,7 +940,7 @@
       "totalInstalls": 656
     },
     "recentStats": {
-      "installInLast30Days": 613
+      "installsInLast30Days": 613
     }
   },
   "faser": {
@@ -999,7 +999,7 @@
       "totalInstalls": 29
     },
     "recentStats": {
-      "installInLast30Days": 410
+      "installsInLast30Days": 410
     }
   },
   "example-plugin": {
@@ -1058,7 +1058,7 @@
       "totalInstalls": 82
     },
     "recentStats": {
-      "installInLast30Days": 1617
+      "installsInLast30Days": 1617
     }
   },
   "hesperos": {
@@ -1117,7 +1117,7 @@
       "totalInstalls": 102
     },
     "recentStats": {
-      "installInLast30Days": 1375
+      "installsInLast30Days": 1375
     }
   },
   "grabber-ift": {
@@ -1176,7 +1176,7 @@
       "totalInstalls": 100
     },
     "recentStats": {
-      "installInLast30Days": 1788
+      "installsInLast30Days": 1788
     }
   },
   "image-composer": {
@@ -1235,7 +1235,7 @@
       "totalInstalls": 72
     },
     "recentStats": {
-      "installInLast30Days": 1784
+      "installsInLast30Days": 1784
     }
   },
   "iacs-ipac-reader": {
@@ -1294,7 +1294,7 @@
       "totalInstalls": 76
     },
     "recentStats": {
-      "installInLast30Days": 1141
+      "installsInLast30Days": 1141
     }
   },
   "label-creator": {
@@ -1353,7 +1353,7 @@
       "totalInstalls": 104
     },
     "recentStats": {
-      "installInLast30Days": 785
+      "installsInLast30Days": 785
     }
   },
   "image-part-selecter": {
@@ -1412,7 +1412,7 @@
       "totalInstalls": 84
     },
     "recentStats": {
-      "installInLast30Days": 1625
+      "installsInLast30Days": 1625
     }
   },
   "layer-data-replace": {
@@ -1471,7 +1471,7 @@
       "totalInstalls": 43
     },
     "recentStats": {
-      "installInLast30Days": 603
+      "installsInLast30Days": 603
     }
   },
   "misic-napari": {
@@ -1530,7 +1530,7 @@
       "totalInstalls": 194
     },
     "recentStats": {
-      "installInLast30Days": 1267
+      "installsInLast30Days": 1267
     }
   },
   "napari-3d-ortho-viewer": {
@@ -1589,7 +1589,7 @@
       "totalInstalls": 657
     },
     "recentStats": {
-      "installInLast30Days": 836
+      "installsInLast30Days": 836
     }
   },
   "morphometrics": {
@@ -1648,7 +1648,7 @@
       "totalInstalls": 125
     },
     "recentStats": {
-      "installInLast30Days": 347
+      "installsInLast30Days": 347
     }
   },
   "napari-affinities": {
@@ -1707,7 +1707,7 @@
       "totalInstalls": 20
     },
     "recentStats": {
-      "installInLast30Days": 1248
+      "installsInLast30Days": 1248
     }
   },
   "napari-accelerated-pixel-and-object-classification": {
@@ -1766,7 +1766,7 @@
       "totalInstalls": 1043
     },
     "recentStats": {
-      "installInLast30Days": 1842
+      "installsInLast30Days": 1842
     }
   },
   "napari-aideveloper": {
@@ -1825,7 +1825,7 @@
       "totalInstalls": 45
     },
     "recentStats": {
-      "installInLast30Days": 1765
+      "installsInLast30Days": 1765
     }
   },
   "napari-aicsimageio": {
@@ -1884,7 +1884,7 @@
       "totalInstalls": 1729
     },
     "recentStats": {
-      "installInLast30Days": 579
+      "installsInLast30Days": 579
     }
   },
   "napari-allencell-segmenter": {
@@ -1943,7 +1943,7 @@
       "totalInstalls": 969
     },
     "recentStats": {
-      "installInLast30Days": 1976
+      "installsInLast30Days": 1976
     }
   },
   "napari-animated-gif-io": {
@@ -2002,7 +2002,7 @@
       "totalInstalls": 193
     },
     "recentStats": {
-      "installInLast30Days": 1421
+      "installsInLast30Days": 1421
     }
   },
   "napari-annotator": {
@@ -2061,7 +2061,7 @@
       "totalInstalls": 75
     },
     "recentStats": {
-      "installInLast30Days": 1653
+      "installsInLast30Days": 1653
     }
   },
   "napari-animation": {
@@ -2120,7 +2120,7 @@
       "totalInstalls": 1344
     },
     "recentStats": {
-      "installInLast30Days": 1786
+      "installsInLast30Days": 1786
     }
   },
   "napari-apple": {
@@ -2179,7 +2179,7 @@
       "totalInstalls": 3
     },
     "recentStats": {
-      "installInLast30Days": 1834
+      "installsInLast30Days": 1834
     }
   },
   "napari-annotatorj": {
@@ -2238,7 +2238,7 @@
       "totalInstalls": 73
     },
     "recentStats": {
-      "installInLast30Days": 1476
+      "installsInLast30Days": 1476
     }
   },
   "napari-arboretum": {
@@ -2297,7 +2297,7 @@
       "totalInstalls": 177
     },
     "recentStats": {
-      "installInLast30Days": 1640
+      "installsInLast30Days": 1640
     }
   },
   "napari-apr-viewer": {
@@ -2356,7 +2356,7 @@
       "totalInstalls": 82
     },
     "recentStats": {
-      "installInLast30Days": 1084
+      "installsInLast30Days": 1084
     }
   },
   "napari-bigwarp": {
@@ -2415,7 +2415,7 @@
       "totalInstalls": 36
     },
     "recentStats": {
-      "installInLast30Days": 1591
+      "installsInLast30Days": 1591
     }
   },
   "napari-assistant": {
@@ -2474,7 +2474,7 @@
       "totalInstalls": 2038
     },
     "recentStats": {
-      "installInLast30Days": 1463
+      "installsInLast30Days": 1463
     }
   },
   "napari-bio-sample-data": {
@@ -2533,7 +2533,7 @@
       "totalInstalls": 16
     },
     "recentStats": {
-      "installInLast30Days": 1297
+      "installsInLast30Days": 1297
     }
   },
   "napari-bil-data-viewer": {
@@ -2592,7 +2592,7 @@
       "totalInstalls": 40
     },
     "recentStats": {
-      "installInLast30Days": 1741
+      "installsInLast30Days": 1741
     }
   },
   "napari-bioimageio": {
@@ -2651,7 +2651,7 @@
       "totalInstalls": 16
     },
     "recentStats": {
-      "installInLast30Days": 1118
+      "installsInLast30Days": 1118
     }
   },
   "napari-bioformats": {
@@ -2710,7 +2710,7 @@
       "totalInstalls": 504
     },
     "recentStats": {
-      "installInLast30Days": 1368
+      "installsInLast30Days": 1368
     }
   },
   "napari-live-recording": {
@@ -2769,7 +2769,7 @@
       "totalInstalls": 125
     },
     "recentStats": {
-      "installInLast30Days": 1000
+      "installsInLast30Days": 1000
     }
   },
   "napari-lf": {
@@ -2828,7 +2828,7 @@
       "totalInstalls": 4
     },
     "recentStats": {
-      "installInLast30Days": 687
+      "installsInLast30Days": 687
     }
   },
   "napari-mat-images": {
@@ -2887,7 +2887,7 @@
       "totalInstalls": 136
     },
     "recentStats": {
-      "installInLast30Days": 1057
+      "installsInLast30Days": 1057
     }
   },
   "napari-manual-transforms": {
@@ -2946,7 +2946,7 @@
       "totalInstalls": 33
     },
     "recentStats": {
-      "installInLast30Days": 812
+      "installsInLast30Days": 812
     }
   },
   "napari-math": {
@@ -3005,7 +3005,7 @@
       "totalInstalls": 75
     },
     "recentStats": {
-      "installInLast30Days": 1323
+      "installsInLast30Days": 1323
     }
   },
   "napari-medical-image-formats": {
@@ -3064,7 +3064,7 @@
       "totalInstalls": 271
     },
     "recentStats": {
-      "installInLast30Days": 1997
+      "installsInLast30Days": 1997
     }
   },
   "napari-metroid": {
@@ -3123,7 +3123,7 @@
       "totalInstalls": 45
     },
     "recentStats": {
-      "installInLast30Days": 1882
+      "installsInLast30Days": 1882
     }
   },
   "napari-matplotlib": {
@@ -3182,7 +3182,7 @@
       "totalInstalls": 191
     },
     "recentStats": {
-      "installInLast30Days": 620
+      "installsInLast30Days": 620
     }
   },
   "napari-micromanager": {
@@ -3241,7 +3241,7 @@
       "totalInstalls": 95
     },
     "recentStats": {
-      "installInLast30Days": 750
+      "installsInLast30Days": 750
     }
   },
   "napari-microscope": {
@@ -3300,7 +3300,7 @@
       "totalInstalls": 44
     },
     "recentStats": {
-      "installInLast30Days": 1732
+      "installsInLast30Days": 1732
     }
   },
   "napari-mm3": {
@@ -3359,7 +3359,7 @@
       "totalInstalls": 26
     },
     "recentStats": {
-      "installInLast30Days": 750
+      "installsInLast30Days": 750
     }
   },
   "napari-molecule-reader": {
@@ -3418,7 +3418,7 @@
       "totalInstalls": 36
     },
     "recentStats": {
-      "installInLast30Days": 1465
+      "installsInLast30Days": 1465
     }
   },
   "napari-mouse-controls": {
@@ -3477,7 +3477,7 @@
       "totalInstalls": 213
     },
     "recentStats": {
-      "installInLast30Days": 1599
+      "installsInLast30Days": 1599
     }
   },
   "napari-mrcfile-handler": {
@@ -3536,7 +3536,7 @@
       "totalInstalls": 100
     },
     "recentStats": {
-      "installInLast30Days": 477
+      "installsInLast30Days": 477
     }
   },
   "napari-mrcfile-reader": {
@@ -3595,7 +3595,7 @@
       "totalInstalls": 195
     },
     "recentStats": {
-      "installInLast30Days": 1529
+      "installsInLast30Days": 1529
     }
   },
   "napari-mri": {
@@ -3654,7 +3654,7 @@
       "totalInstalls": 65
     },
     "recentStats": {
-      "installInLast30Days": 507
+      "installsInLast30Days": 507
     }
   },
   "napari-multitask": {
@@ -3713,7 +3713,7 @@
       "totalInstalls": 36
     },
     "recentStats": {
-      "installInLast30Days": 1747
+      "installsInLast30Days": 1747
     }
   },
   "napari-nd-annotator": {
@@ -3772,7 +3772,7 @@
       "totalInstalls": 64
     },
     "recentStats": {
-      "installInLast30Days": 166
+      "installsInLast30Days": 166
     }
   },
   "napari-nasa-samples": {
@@ -3831,7 +3831,7 @@
       "totalInstalls": 37
     },
     "recentStats": {
-      "installInLast30Days": 457
+      "installsInLast30Days": 457
     }
   },
   "napari-ndtiffs": {
@@ -3890,7 +3890,7 @@
       "totalInstalls": 5154
     },
     "recentStats": {
-      "installInLast30Days": 1988
+      "installsInLast30Days": 1988
     }
   },
   "napari-nikon-nd2": {
@@ -3949,7 +3949,7 @@
       "totalInstalls": 313
     },
     "recentStats": {
-      "installInLast30Days": 1758
+      "installsInLast30Days": 1758
     }
   },
   "napari-nlm": {
@@ -4008,7 +4008,7 @@
       "totalInstalls": 8
     },
     "recentStats": {
-      "installInLast30Days": 1474
+      "installsInLast30Days": 1474
     }
   },
   "napari-nd-cropper": {
@@ -4067,7 +4067,7 @@
       "totalInstalls": 42
     },
     "recentStats": {
-      "installInLast30Days": 1354
+      "installsInLast30Days": 1354
     }
   },
   "napari-ome-zarr": {
@@ -4126,7 +4126,7 @@
       "totalInstalls": 1617
     },
     "recentStats": {
-      "installInLast30Days": 712
+      "installsInLast30Days": 712
     }
   },
   "napari-omero": {
@@ -4185,7 +4185,7 @@
       "totalInstalls": 268
     },
     "recentStats": {
-      "installInLast30Days": 1830
+      "installsInLast30Days": 1830
     }
   },
   "napari-organoid-counter": {
@@ -4244,7 +4244,7 @@
       "totalInstalls": 12
     },
     "recentStats": {
-      "installInLast30Days": 269
+      "installsInLast30Days": 269
     }
   },
   "napari-pdf-reader": {
@@ -4303,7 +4303,7 @@
       "totalInstalls": 44
     },
     "recentStats": {
-      "installInLast30Days": 1006
+      "installsInLast30Days": 1006
     }
   },
   "napari-nucleaizer": {
@@ -4362,7 +4362,7 @@
       "totalInstalls": 134
     },
     "recentStats": {
-      "installInLast30Days": 197
+      "installsInLast30Days": 197
     }
   },
   "napari-philow": {
@@ -4421,7 +4421,7 @@
       "totalInstalls": 28
     },
     "recentStats": {
-      "installInLast30Days": 642
+      "installsInLast30Days": 642
     }
   },
   "napari-pdr-reader": {
@@ -4480,7 +4480,7 @@
       "totalInstalls": 3
     },
     "recentStats": {
-      "installInLast30Days": 1694
+      "installsInLast30Days": 1694
     }
   },
   "napari-plot": {
@@ -4539,7 +4539,7 @@
       "totalInstalls": 116
     },
     "recentStats": {
-      "installInLast30Days": 538
+      "installsInLast30Days": 538
     }
   },
   "napari-picasso": {
@@ -4598,7 +4598,7 @@
       "totalInstalls": 16
     },
     "recentStats": {
-      "installInLast30Days": 660
+      "installsInLast30Days": 660
     }
   },
   "napari-plugin-search": {
@@ -4657,7 +4657,7 @@
       "totalInstalls": 679
     },
     "recentStats": {
-      "installInLast30Days": 1338
+      "installsInLast30Days": 1338
     }
   },
   "napari-plot-profile": {
@@ -4716,7 +4716,7 @@
       "totalInstalls": 842
     },
     "recentStats": {
-      "installInLast30Days": 1107
+      "installsInLast30Days": 1107
     }
   },
   "napari-pram": {
@@ -4775,7 +4775,7 @@
       "totalInstalls": 16
     },
     "recentStats": {
-      "installInLast30Days": 212
+      "installsInLast30Days": 212
     }
   },
   "napari-power-spectrum": {
@@ -4834,7 +4834,7 @@
       "totalInstalls": 23
     },
     "recentStats": {
-      "installInLast30Days": 1718
+      "installsInLast30Days": 1718
     }
   },
   "napari-properties-plotter": {
@@ -4893,7 +4893,7 @@
       "totalInstalls": 126
     },
     "recentStats": {
-      "installInLast30Days": 220
+      "installsInLast30Days": 220
     }
   },
   "napari-psf-analysis": {
@@ -4952,7 +4952,7 @@
       "totalInstalls": 46
     },
     "recentStats": {
-      "installInLast30Days": 934
+      "installsInLast30Days": 934
     }
   },
   "napari-process-points-and-surfaces": {
@@ -5011,7 +5011,7 @@
       "totalInstalls": 1161
     },
     "recentStats": {
-      "installInLast30Days": 132
+      "installsInLast30Days": 132
     }
   },
   "napari-properties-viewer": {
@@ -5070,7 +5070,7 @@
       "totalInstalls": 193
     },
     "recentStats": {
-      "installInLast30Days": 1552
+      "installsInLast30Days": 1552
     }
   },
   "napari-psf-simulator": {
@@ -5129,7 +5129,7 @@
       "totalInstalls": 54
     },
     "recentStats": {
-      "installInLast30Days": 651
+      "installsInLast30Days": 651
     }
   },
   "napari-pyclesperanto-assistant": {
@@ -5188,7 +5188,7 @@
       "totalInstalls": 2294
     },
     "recentStats": {
-      "installInLast30Days": 1747
+      "installsInLast30Days": 1747
     }
   },
   "napari-pystackreg": {
@@ -5247,7 +5247,7 @@
       "totalInstalls": 10
     },
     "recentStats": {
-      "installInLast30Days": 408
+      "installsInLast30Days": 408
     }
   },
   "napari-pymeshlab": {
@@ -5306,7 +5306,7 @@
       "totalInstalls": 103
     },
     "recentStats": {
-      "installInLast30Days": 638
+      "installsInLast30Days": 638
     }
   },
   "napari-roi-registration": {
@@ -5365,7 +5365,7 @@
       "totalInstalls": 62
     },
     "recentStats": {
-      "installInLast30Days": 524
+      "installsInLast30Days": 524
     }
   },
   "napari-roi": {
@@ -5424,7 +5424,7 @@
       "totalInstalls": 208
     },
     "recentStats": {
-      "installInLast30Days": 1295
+      "installsInLast30Days": 1295
     }
   },
   "napari-sc3d-viewer": {
@@ -5483,7 +5483,7 @@
       "totalInstalls": 15
     },
     "recentStats": {
-      "installInLast30Days": 420
+      "installsInLast30Days": 420
     }
   },
   "napari-sairyscan": {
@@ -5542,7 +5542,7 @@
       "totalInstalls": 20
     },
     "recentStats": {
-      "installInLast30Days": 932
+      "installsInLast30Days": 932
     }
   },
   "napari-sdeconv": {
@@ -5601,7 +5601,7 @@
       "totalInstalls": 98
     },
     "recentStats": {
-      "installInLast30Days": 465
+      "installsInLast30Days": 465
     }
   },
   "napari-script-editor": {
@@ -5660,7 +5660,7 @@
       "totalInstalls": 220
     },
     "recentStats": {
-      "installInLast30Days": 1549
+      "installsInLast30Days": 1549
     }
   },
   "napari-sim-processor": {
@@ -5719,7 +5719,7 @@
       "totalInstalls": 71
     },
     "recentStats": {
-      "installInLast30Days": 1983
+      "installsInLast30Days": 1983
     }
   },
   "napari-segment-blobs-and-things-with-membranes": {
@@ -5778,7 +5778,7 @@
       "totalInstalls": 1882
     },
     "recentStats": {
-      "installInLast30Days": 799
+      "installsInLast30Days": 799
     }
   },
   "napari-skimage-regionprops": {
@@ -5837,7 +5837,7 @@
       "totalInstalls": 5577
     },
     "recentStats": {
-      "installInLast30Days": 475
+      "installsInLast30Days": 475
     }
   },
   "napari-simpleitk-image-processing": {
@@ -5896,7 +5896,7 @@
       "totalInstalls": 857
     },
     "recentStats": {
-      "installInLast30Days": 1870
+      "installsInLast30Days": 1870
     }
   },
   "napari-spacetx-explorer": {
@@ -5955,7 +5955,7 @@
       "totalInstalls": 60
     },
     "recentStats": {
-      "installInLast30Days": 176
+      "installsInLast30Days": 176
     }
   },
   "napari-spatial-omics": {
@@ -6014,7 +6014,7 @@
       "totalInstalls": 58
     },
     "recentStats": {
-      "installInLast30Days": 1987
+      "installsInLast30Days": 1987
     }
   },
   "napari-splineit": {
@@ -6073,7 +6073,7 @@
       "totalInstalls": 13
     },
     "recentStats": {
-      "installInLast30Days": 338
+      "installsInLast30Days": 338
     }
   },
   "napari-spatialdata": {
@@ -6132,7 +6132,7 @@
       "totalInstalls": 14
     },
     "recentStats": {
-      "installInLast30Days": 1817
+      "installsInLast30Days": 1817
     }
   },
   "napari-stracking": {
@@ -6191,7 +6191,7 @@
       "totalInstalls": 122
     },
     "recentStats": {
-      "installInLast30Days": 1356
+      "installsInLast30Days": 1356
     }
   },
   "napari-subboxer": {
@@ -6250,7 +6250,7 @@
       "totalInstalls": 40
     },
     "recentStats": {
-      "installInLast30Days": 618
+      "installsInLast30Days": 618
     }
   },
   "napari-stl-exporter": {
@@ -6309,7 +6309,7 @@
       "totalInstalls": 104
     },
     "recentStats": {
-      "installInLast30Days": 1526
+      "installsInLast30Days": 1526
     }
   },
   "napari-stress": {
@@ -6368,7 +6368,7 @@
       "totalInstalls": 78
     },
     "recentStats": {
-      "installInLast30Days": 319
+      "installsInLast30Days": 319
     }
   },
   "napari-tabu": {
@@ -6427,7 +6427,7 @@
       "totalInstalls": 535
     },
     "recentStats": {
-      "installInLast30Days": 1416
+      "installsInLast30Days": 1416
     }
   },
   "napari-svg": {
@@ -6486,7 +6486,7 @@
       "totalInstalls": 192485
     },
     "recentStats": {
-      "installInLast30Days": 936
+      "installsInLast30Days": 936
     }
   },
   "napari-threedee": {
@@ -6545,7 +6545,7 @@
       "totalInstalls": 5
     },
     "recentStats": {
-      "installInLast30Days": 1310
+      "installsInLast30Days": 1310
     }
   },
   "napari-text-layer": {
@@ -6604,7 +6604,7 @@
       "totalInstalls": 47
     },
     "recentStats": {
-      "installInLast30Days": 1858
+      "installsInLast30Days": 1858
     }
   },
   "napari-time-series-plotter": {
@@ -6663,7 +6663,7 @@
       "totalInstalls": 86
     },
     "recentStats": {
-      "installInLast30Days": 1169
+      "installsInLast30Days": 1169
     }
   },
   "napari-tiler": {
@@ -6722,7 +6722,7 @@
       "totalInstalls": 86
     },
     "recentStats": {
-      "installInLast30Days": 983
+      "installsInLast30Days": 983
     }
   },
   "napari-timeseries-opener-plugin": {
@@ -6781,7 +6781,7 @@
       "totalInstalls": 56
     },
     "recentStats": {
-      "installInLast30Days": 1186
+      "installsInLast30Days": 1186
     }
   },
   "napari-time-slicer": {
@@ -6840,7 +6840,7 @@
       "totalInstalls": 3948
     },
     "recentStats": {
-      "installInLast30Days": 1707
+      "installsInLast30Days": 1707
     }
   },
   "napari-tomoslice": {
@@ -6899,7 +6899,7 @@
       "totalInstalls": 110
     },
     "recentStats": {
-      "installInLast30Days": 1027
+      "installsInLast30Days": 1027
     }
   },
   "napari-tissuumaps": {
@@ -6958,7 +6958,7 @@
       "totalInstalls": 72
     },
     "recentStats": {
-      "installInLast30Days": 1950
+      "installsInLast30Days": 1950
     }
   },
   "napari-trait2d": {
@@ -7017,7 +7017,7 @@
       "totalInstalls": 13
     },
     "recentStats": {
-      "installInLast30Days": 1654
+      "installsInLast30Days": 1654
     }
   },
   "napari-tracks-reader": {
@@ -7076,7 +7076,7 @@
       "totalInstalls": 114
     },
     "recentStats": {
-      "installInLast30Days": 1349
+      "installsInLast30Days": 1349
     }
   },
   "napari-video-cvdask": {
@@ -7135,7 +7135,7 @@
       "totalInstalls": 55
     },
     "recentStats": {
-      "installInLast30Days": 360
+      "installsInLast30Days": 360
     }
   },
   "napari-vesicles-segmentation": {
@@ -7194,7 +7194,7 @@
       "totalInstalls": 6
     },
     "recentStats": {
-      "installInLast30Days": 1652
+      "installsInLast30Days": 1652
     }
   },
   "napari-workflow-optimizer": {
@@ -7253,7 +7253,7 @@
       "totalInstalls": 553
     },
     "recentStats": {
-      "installInLast30Days": 334
+      "installsInLast30Days": 334
     }
   },
   "napari-workflow-inspector": {
@@ -7312,7 +7312,7 @@
       "totalInstalls": 296
     },
     "recentStats": {
-      "installInLast30Days": 1031
+      "installsInLast30Days": 1031
     }
   },
   "napari-yapic-prediction": {
@@ -7371,7 +7371,7 @@
       "totalInstalls": 224
     },
     "recentStats": {
-      "installInLast30Days": 274
+      "installsInLast30Days": 274
     }
   },
   "napari-wsireg": {
@@ -7430,7 +7430,7 @@
       "totalInstalls": 40
     },
     "recentStats": {
-      "installInLast30Days": 798
+      "installsInLast30Days": 798
     }
   },
   "napari-zelda": {
@@ -7489,7 +7489,7 @@
       "totalInstalls": 345
     },
     "recentStats": {
-      "installInLast30Days": 1883
+      "installsInLast30Days": 1883
     }
   },
   "napari-yolov5": {
@@ -7548,7 +7548,7 @@
       "totalInstalls": 78
     },
     "recentStats": {
-      "installInLast30Days": 781
+      "installsInLast30Days": 781
     }
   },
   "nd2-dask": {
@@ -7607,7 +7607,7 @@
       "totalInstalls": 280
     },
     "recentStats": {
-      "installInLast30Days": 1872
+      "installsInLast30Days": 1872
     }
   },
   "natari": {
@@ -7666,7 +7666,7 @@
       "totalInstalls": 96
     },
     "recentStats": {
-      "installInLast30Days": 387
+      "installsInLast30Days": 387
     }
   },
   "offset-subtraction": {
@@ -7725,7 +7725,7 @@
       "totalInstalls": 45
     },
     "recentStats": {
-      "installInLast30Days": 1925
+      "installsInLast30Days": 1925
     }
   },
   "nfinder": {
@@ -7784,7 +7784,7 @@
       "totalInstalls": 47
     },
     "recentStats": {
-      "installInLast30Days": 870
+      "installsInLast30Days": 870
     }
   },
   "palmari": {
@@ -7843,7 +7843,7 @@
       "totalInstalls": 21
     },
     "recentStats": {
-      "installInLast30Days": 1264
+      "installsInLast30Days": 1264
     }
   },
   "ortho-view-napari": {
@@ -7902,7 +7902,7 @@
       "totalInstalls": 145
     },
     "recentStats": {
-      "installInLast30Days": 148
+      "installsInLast30Days": 148
     }
   },
   "partseg": {
@@ -7961,7 +7961,7 @@
       "totalInstalls": 1449
     },
     "recentStats": {
-      "installInLast30Days": 640
+      "installsInLast30Days": 640
     }
   },
   "partial-aligner": {
@@ -8020,7 +8020,7 @@
       "totalInstalls": 35
     },
     "recentStats": {
-      "installInLast30Days": 1385
+      "installsInLast30Days": 1385
     }
   },
   "platelet-unet-watershed": {
@@ -8079,7 +8079,7 @@
       "totalInstalls": 82
     },
     "recentStats": {
-      "installInLast30Days": 1769
+      "installsInLast30Days": 1769
     }
   },
   "platymatch": {
@@ -8138,7 +8138,7 @@
       "totalInstalls": 570
     },
     "recentStats": {
-      "installInLast30Days": 1369
+      "installsInLast30Days": 1369
     }
   },
   "psfmodels": {
@@ -8197,7 +8197,7 @@
       "totalInstalls": 259
     },
     "recentStats": {
-      "installInLast30Days": 253
+      "installsInLast30Days": 253
     }
   },
   "recorder-napari": {
@@ -8256,7 +8256,7 @@
       "totalInstalls": 59
     },
     "recentStats": {
-      "installInLast30Days": 1623
+      "installsInLast30Days": 1623
     }
   },
   "redlionfish": {
@@ -8315,7 +8315,7 @@
       "totalInstalls": 595
     },
     "recentStats": {
-      "installInLast30Days": 439
+      "installsInLast30Days": 439
     }
   },
   "skeleton-finder": {
@@ -8374,7 +8374,7 @@
       "totalInstalls": 26
     },
     "recentStats": {
-      "installInLast30Days": 1142
+      "installsInLast30Days": 1142
     }
   },
   "stardist-napari": {
@@ -8433,7 +8433,7 @@
       "totalInstalls": 1940
     },
     "recentStats": {
-      "installInLast30Days": 616
+      "installsInLast30Days": 616
     }
   },
   "smo": {
@@ -8492,7 +8492,7 @@
       "totalInstalls": 129
     },
     "recentStats": {
-      "installInLast30Days": 352
+      "installsInLast30Days": 352
     }
   },
   "the-segmentation-game": {
@@ -8551,7 +8551,7 @@
       "totalInstalls": 123
     },
     "recentStats": {
-      "installInLast30Days": 1451
+      "installsInLast30Days": 1451
     }
   },
   "vessel-express-napari": {
@@ -8610,7 +8610,7 @@
       "totalInstalls": 31
     },
     "recentStats": {
-      "installInLast30Days": 375
+      "installsInLast30Days": 375
     }
   },
   "tracking-challenge-demo": {
@@ -8669,7 +8669,7 @@
       "totalInstalls": 5
     },
     "recentStats": {
-      "installInLast30Days": 623
+      "installsInLast30Days": 623
     }
   },
   "waver": {
@@ -8728,7 +8728,7 @@
       "totalInstalls": 73
     },
     "recentStats": {
-      "installInLast30Days": 1980
+      "installsInLast30Days": 1980
     }
   },
   "workshop-demo": {
@@ -8787,7 +8787,7 @@
       "totalInstalls": 48
     },
     "recentStats": {
-      "installInLast30Days": 1460
+      "installsInLast30Days": 1460
     }
   },
   "vollseg-napari": {
@@ -8846,7 +8846,7 @@
       "totalInstalls": 1667
     },
     "recentStats": {
-      "installInLast30Days": 904
+      "installsInLast30Days": 904
     }
   },
   "yt-napari": {
@@ -8905,7 +8905,7 @@
       "totalInstalls": 19
     },
     "recentStats": {
-      "installInLast30Days": 1333
+      "installsInLast30Days": 1333
     }
   },
   "zarpaint": {
@@ -8964,7 +8964,7 @@
       "totalInstalls": 175
     },
     "recentStats": {
-      "installInLast30Days": 1473
+      "installsInLast30Days": 1473
     }
   },
   "world2data": {
@@ -9023,7 +9023,7 @@
       "totalInstalls": 53
     },
     "recentStats": {
-      "installInLast30Days": 1448
+      "installsInLast30Days": 1448
     }
   },
   "napari-brushsettings": {
@@ -9082,7 +9082,7 @@
       "totalInstalls": 83
     },
     "recentStats": {
-      "installInLast30Days": 1318
+      "installsInLast30Days": 1318
     }
   },
   "napari-brightness-contrast": {
@@ -9141,7 +9141,7 @@
       "totalInstalls": 959
     },
     "recentStats": {
-      "installInLast30Days": 660
+      "installsInLast30Days": 660
     }
   },
   "napari-blob-detection": {
@@ -9200,7 +9200,7 @@
       "totalInstalls": 140
     },
     "recentStats": {
-      "installInLast30Days": 790
+      "installsInLast30Days": 790
     }
   },
   "napari-blossom": {
@@ -9259,7 +9259,7 @@
       "totalInstalls": 9
     },
     "recentStats": {
-      "installInLast30Days": 276
+      "installsInLast30Days": 276
     }
   },
   "napari-ccp4map": {
@@ -9318,7 +9318,7 @@
       "totalInstalls": 48
     },
     "recentStats": {
-      "installInLast30Days": 1279
+      "installsInLast30Days": 1279
     }
   },
   "napari-btrack-reader": {
@@ -9377,7 +9377,7 @@
       "totalInstalls": 115
     },
     "recentStats": {
-      "installInLast30Days": 936
+      "installsInLast30Days": 936
     }
   },
   "napari-cilia-beating-frequency": {
@@ -9436,7 +9436,7 @@
       "totalInstalls": 2
     },
     "recentStats": {
-      "installInLast30Days": 604
+      "installsInLast30Days": 604
     }
   },
   "napari-checkerboard": {
@@ -9495,7 +9495,7 @@
       "totalInstalls": 151
     },
     "recentStats": {
-      "installInLast30Days": 136
+      "installsInLast30Days": 136
     }
   },
   "napari-cellseg3d": {
@@ -9554,7 +9554,7 @@
       "totalInstalls": 42
     },
     "recentStats": {
-      "installInLast30Days": 1620
+      "installsInLast30Days": 1620
     }
   },
   "napari-clemreg": {
@@ -9613,7 +9613,7 @@
       "totalInstalls": 136
     },
     "recentStats": {
-      "installInLast30Days": 172
+      "installsInLast30Days": 172
     }
   },
   "napari-compressed-labels-io": {
@@ -9672,7 +9672,7 @@
       "totalInstalls": 64
     },
     "recentStats": {
-      "installInLast30Days": 1919
+      "installsInLast30Days": 1919
     }
   },
   "napari-clusters-plotter": {
@@ -9731,7 +9731,7 @@
       "totalInstalls": 1136
     },
     "recentStats": {
-      "installInLast30Days": 1028
+      "installsInLast30Days": 1028
     }
   },
   "napari-console": {
@@ -9790,7 +9790,7 @@
       "totalInstalls": 156676
     },
     "recentStats": {
-      "installInLast30Days": 897
+      "installsInLast30Days": 897
     }
   },
   "napari-deeplabcut": {
@@ -9849,7 +9849,7 @@
       "totalInstalls": 76
     },
     "recentStats": {
-      "installInLast30Days": 1246
+      "installsInLast30Days": 1246
     }
   },
   "napari-czifile2": {
@@ -9908,7 +9908,7 @@
       "totalInstalls": 554
     },
     "recentStats": {
-      "installInLast30Days": 1785
+      "installsInLast30Days": 1785
     }
   },
   "napari-czann-segment": {
@@ -9967,7 +9967,7 @@
       "totalInstalls": 25
     },
     "recentStats": {
-      "installInLast30Days": 389
+      "installsInLast30Days": 389
     }
   },
   "napari-curtain": {
@@ -10026,7 +10026,7 @@
       "totalInstalls": 508
     },
     "recentStats": {
-      "installInLast30Days": 136
+      "installsInLast30Days": 136
     }
   },
   "napari-cryofibsem-monitor": {
@@ -10085,7 +10085,7 @@
       "totalInstalls": 26
     },
     "recentStats": {
-      "installInLast30Days": 133
+      "installsInLast30Days": 133
     }
   },
   "napari-cupy-image-processing": {
@@ -10144,7 +10144,7 @@
       "totalInstalls": 623
     },
     "recentStats": {
-      "installInLast30Days": 1112
+      "installsInLast30Days": 1112
     }
   },
   "napari-crop": {
@@ -10203,7 +10203,7 @@
       "totalInstalls": 775
     },
     "recentStats": {
-      "installInLast30Days": 1960
+      "installsInLast30Days": 1960
     }
   },
   "napari-dexp": {
@@ -10262,7 +10262,7 @@
       "totalInstalls": 98
     },
     "recentStats": {
-      "installInLast30Days": 778
+      "installsInLast30Days": 778
     }
   },
   "napari-deepmeta": {
@@ -10321,7 +10321,7 @@
       "totalInstalls": 107
     },
     "recentStats": {
-      "installInLast30Days": 418
+      "installsInLast30Days": 418
     }
   },
   "napari-deepspot": {
@@ -10380,7 +10380,7 @@
       "totalInstalls": 86
     },
     "recentStats": {
-      "installInLast30Days": 1219
+      "installsInLast30Days": 1219
     }
   },
   "napari-dvid": {
@@ -10439,7 +10439,7 @@
       "totalInstalls": 32
     },
     "recentStats": {
-      "installInLast30Days": 1857
+      "installsInLast30Days": 1857
     }
   },
   "napari-demo": {
@@ -10498,7 +10498,7 @@
       "totalInstalls": 102
     },
     "recentStats": {
-      "installInLast30Days": 133
+      "installsInLast30Days": 133
     }
   },
   "napari-dv": {
@@ -10557,7 +10557,7 @@
       "totalInstalls": 270
     },
     "recentStats": {
-      "installInLast30Days": 459
+      "installsInLast30Days": 459
     }
   },
   "napari-filaments": {
@@ -10616,7 +10616,7 @@
       "totalInstalls": 11
     },
     "recentStats": {
-      "installInLast30Days": 364
+      "installsInLast30Days": 364
     }
   },
   "napari-features": {
@@ -10675,7 +10675,7 @@
       "totalInstalls": 159
     },
     "recentStats": {
-      "installInLast30Days": 348
+      "installsInLast30Days": 348
     }
   },
   "napari-em-reader": {
@@ -10734,7 +10734,7 @@
       "totalInstalls": 49
     },
     "recentStats": {
-      "installInLast30Days": 1382
+      "installsInLast30Days": 1382
     }
   },
   "napari-feature-classifier": {
@@ -10793,7 +10793,7 @@
       "totalInstalls": 90
     },
     "recentStats": {
-      "installInLast30Days": 301
+      "installsInLast30Days": 301
     }
   },
   "napari-error-reporter": {
@@ -10852,7 +10852,7 @@
       "totalInstalls": 40
     },
     "recentStats": {
-      "installInLast30Days": 1393
+      "installsInLast30Days": 1393
     }
   },
   "napari-dzi-zarr": {
@@ -10911,7 +10911,7 @@
       "totalInstalls": 155
     },
     "recentStats": {
-      "installInLast30Days": 260
+      "installsInLast30Days": 260
     }
   },
   "napari-elementary-numpy-operations": {
@@ -10970,7 +10970,7 @@
       "totalInstalls": 76
     },
     "recentStats": {
-      "installInLast30Days": 1847
+      "installsInLast30Days": 1847
     }
   },
   "napari-geojson": {
@@ -11029,7 +11029,7 @@
       "totalInstalls": 177
     },
     "recentStats": {
-      "installInLast30Days": 1053
+      "installsInLast30Days": 1053
     }
   },
   "napari-generic-simulator": {
@@ -11088,7 +11088,7 @@
       "totalInstalls": 26
     },
     "recentStats": {
-      "installInLast30Days": 1561
+      "installsInLast30Days": 1561
     }
   },
   "napari-folder-browser": {
@@ -11147,7 +11147,7 @@
       "totalInstalls": 670
     },
     "recentStats": {
-      "installInLast30Days": 1052
+      "installsInLast30Days": 1052
     }
   },
   "napari-ids": {
@@ -11206,7 +11206,7 @@
       "totalInstalls": 34
     },
     "recentStats": {
-      "installInLast30Days": 1423
+      "installsInLast30Days": 1423
     }
   },
   "napari-hdf5-labels-io": {
@@ -11265,7 +11265,7 @@
       "totalInstalls": 225
     },
     "recentStats": {
-      "installInLast30Days": 1363
+      "installsInLast30Days": 1363
     }
   },
   "napari-image-stacker": {
@@ -11324,7 +11324,7 @@
       "totalInstalls": 112
     },
     "recentStats": {
-      "installInLast30Days": 753
+      "installsInLast30Days": 753
     }
   },
   "napari-imaris-loader": {
@@ -11383,7 +11383,7 @@
       "totalInstalls": 215
     },
     "recentStats": {
-      "installInLast30Days": 879
+      "installsInLast30Days": 879
     }
   },
   "napari-ip-workflow": {
@@ -11442,7 +11442,7 @@
       "totalInstalls": 53
     },
     "recentStats": {
-      "installInLast30Days": 912
+      "installsInLast30Days": 912
     }
   },
   "napari-ism": {
@@ -11501,7 +11501,7 @@
       "totalInstalls": 9
     },
     "recentStats": {
-      "installInLast30Days": 981
+      "installsInLast30Days": 981
     }
   },
   "napari-imsmicrolink": {
@@ -11560,7 +11560,7 @@
       "totalInstalls": 114
     },
     "recentStats": {
-      "installInLast30Days": 1045
+      "installsInLast30Days": 1045
     }
   },
   "napari-imc": {
@@ -11619,7 +11619,7 @@
       "totalInstalls": 318
     },
     "recentStats": {
-      "installInLast30Days": 282
+      "installsInLast30Days": 282
     }
   },
   "napari-itk-io": {
@@ -11678,7 +11678,7 @@
       "totalInstalls": 955
     },
     "recentStats": {
-      "installInLast30Days": 209
+      "installsInLast30Days": 209
     }
   },
   "napari-j": {
@@ -11737,7 +11737,7 @@
       "totalInstalls": 126
     },
     "recentStats": {
-      "installInLast30Days": 189
+      "installsInLast30Days": 189
     }
   },
   "napari-labels-overlap": {
@@ -11796,7 +11796,7 @@
       "totalInstalls": 77
     },
     "recentStats": {
-      "installInLast30Days": 1844
+      "installsInLast30Days": 1844
     }
   },
   "napari-labelling-assistant": {
@@ -11855,7 +11855,7 @@
       "totalInstalls": 64
     },
     "recentStats": {
-      "installInLast30Days": 1497
+      "installsInLast30Days": 1497
     }
   },
   "napari-kics": {
@@ -11914,7 +11914,7 @@
       "totalInstalls": 36
     },
     "recentStats": {
-      "installInLast30Days": 524
+      "installsInLast30Days": 524
     }
   },
   "napari-labelimg4classification": {
@@ -11973,7 +11973,7 @@
       "totalInstalls": 69
     },
     "recentStats": {
-      "installInLast30Days": 1283
+      "installsInLast30Days": 1283
     }
   },
   "napari-layer-details-display": {
@@ -12032,7 +12032,7 @@
       "totalInstalls": 368
     },
     "recentStats": {
-      "installInLast30Days": 632
+      "installsInLast30Days": 632
     }
   },
   "napari-layer-table": {
@@ -12091,7 +12091,7 @@
       "totalInstalls": 26
     },
     "recentStats": {
-      "installInLast30Days": 378
+      "installsInLast30Days": 378
     }
   },
   "napari-labeling": {
@@ -12150,7 +12150,7 @@
       "totalInstalls": 21
     },
     "recentStats": {
-      "installInLast30Days": 617
+      "installsInLast30Days": 617
     }
   },
   "napari-lattice": {
@@ -12209,7 +12209,7 @@
       "totalInstalls": 13
     },
     "recentStats": {
-      "installInLast30Days": 1091
+      "installsInLast30Days": 1091
     }
   },
   "napari-lazy-openslide": {
@@ -12268,7 +12268,7 @@
       "totalInstalls": 788
     },
     "recentStats": {
-      "installInLast30Days": 1628
+      "installsInLast30Days": 1628
     }
   }
 }
