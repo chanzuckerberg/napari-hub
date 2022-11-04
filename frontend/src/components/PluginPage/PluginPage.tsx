@@ -1,10 +1,9 @@
 import clsx from 'clsx';
 import { Tooltip } from 'czifui';
 import { isObject, throttle } from 'lodash';
-import dynamic from 'next/dynamic';
 import { useTranslation } from 'next-i18next';
 import { useEffect, useRef } from 'react';
-import { Props as ActivityDashboardProps } from 'src/components/ActivityDashboard';
+import { snapshot } from 'valtio';
 
 import { AppBarPreview } from '@/components/AppBar';
 import { CategoryChipContainer } from '@/components/CategoryChip';
@@ -17,29 +16,19 @@ import { SkeletonLoader } from '@/components/SkeletonLoader';
 import { TOCHeader } from '@/components/TableOfContents';
 import { useLoadingState } from '@/context/loading';
 import { usePluginState } from '@/context/plugin';
-import {
-  useMediaQuery,
-  usePlausible,
-  usePluginActivity,
-  usePluginInstallStats,
-} from '@/hooks';
+import { useMediaQuery, usePlausible } from '@/hooks';
 import { usePreviewClickAway } from '@/hooks/usePreviewClickAway';
+import { pluginTabsStore } from '@/store/pluginTabs';
 import { HubDimension } from '@/types';
+import { PluginTabType } from '@/types/plugin';
 import { useIsFeatureFlagEnabled } from '@/utils/featureFlags';
 
 import { CallToActionButton } from './CallToActionButton';
-import { CitationInfo } from './CitationInfo';
 import { ANCHOR } from './CitationInfo.constants';
 import { PluginMetadata } from './PluginMetadata';
+import { PluginPageContent } from './PluginPageContent';
+import { PluginTabs } from './PluginTabs';
 import { SupportInfo } from './SupportInfo';
-
-const ActivityDashboard = dynamic<ActivityDashboardProps>(
-  () =>
-    import('@/components/ActivityDashboard').then(
-      (mod) => mod.ActivityDashboard,
-    ),
-  { ssr: false },
-);
 
 function PluginLeftColumn() {
   const hasPluginMetadataScroll = useMediaQuery({ minWidth: 'screen-1425' });
@@ -59,19 +48,10 @@ function PluginCenterColumn() {
   const isNpe2Enabled = useIsFeatureFlagEnabled('npe2');
   const isActivityDashboardEnabled =
     useIsFeatureFlagEnabled('activityDashboard');
-  const hasPluginMetadataScroll = useMediaQuery({ maxWidth: 'screen-1425' });
 
   usePreviewClickAway(isNpe2Enabled ? 'metadata-displayName' : 'metadata-name');
   usePreviewClickAway('metadata-summary');
   usePreviewClickAway('metadata-description');
-
-  // Check if body is an empty string or if it's set to the cookiecutter text.
-  const isEmptyDescription =
-    !plugin?.description ||
-    plugin.description.includes(t('preview:emptyDescription'));
-
-  const { dataPoints } = usePluginActivity(plugin?.name);
-  const { pluginStats } = usePluginInstallStats(plugin?.name);
 
   return (
     <article
@@ -226,39 +206,7 @@ function PluginCenterColumn() {
         render={() => <SupportInfo className="mb-6 screen-495:mb-12" />}
       />
 
-      <SkeletonLoader
-        className="h-[600px] mb-sds-xxl"
-        render={() => (
-          <MetadataHighlighter
-            metadataId="metadata-description"
-            className="flex items-center justify-between mb-sds-xxl"
-            highlight={isEmptyDescription}
-          >
-            <Markdown disableHeader placeholder={isEmptyDescription}>
-              {plugin?.description || t('preview:emptyDescription')}
-            </Markdown>
-          </MetadataHighlighter>
-        )}
-      />
-
-      <div className="mb-6 screen-495:mb-12 screen-1150:mb-20">
-        <CallToActionButton />
-        {plugin?.citations && <CitationInfo className="mt-sds-xxl" />}
-      </div>
-
-      <PluginMetadata
-        enableScrollID={hasPluginMetadataScroll}
-        className="screen-1425:hidden"
-        inline
-      />
-
-      {isActivityDashboardEnabled && plugin?.name && (
-        <ActivityDashboard
-          data={dataPoints}
-          installCount={pluginStats?.totalInstalls ?? 0}
-          installMonthCount={pluginStats?.totalMonths ?? 0}
-        />
-      )}
+      {isActivityDashboardEnabled ? <PluginTabs /> : <PluginPageContent />}
     </article>
   );
 }
@@ -267,6 +215,8 @@ function PluginRightColumn() {
   const [t] = useTranslation(['pluginPage']);
   const { plugin } = usePluginState();
   const plausible = usePlausible();
+  const isActivityDashboardEnabled =
+    useIsFeatureFlagEnabled('activityDashboard');
 
   const citationHeader: TOCHeader = {
     id: ANCHOR,
@@ -285,16 +235,37 @@ function PluginRightColumn() {
             <Markdown.TOC
               className="mt-sds-xxl"
               markdown={plugin?.description ?? ''}
-              onClick={(section) => {
+              onClick={(section, id) => {
                 if (plugin?.name) {
                   plausible('Description Nav', {
                     section,
                     plugin: plugin.name,
                   });
+
+                  // Open description tab and scroll to heading if user clicked
+                  // on TOC while in another tab.
+                  const { activeTab } = snapshot(pluginTabsStore);
+                  if (activeTab !== PluginTabType.Description) {
+                    pluginTabsStore.activeTab = PluginTabType.Description;
+
+                    // Use `setTimeout` so that we execute scroll in next tick.
+                    // This is required so that we give the frontend enough time
+                    // to re-render based on changing the `activeTab` state.
+                    setTimeout(() => {
+                      const heading = document.getElementById(id);
+                      if (heading) {
+                        window.scroll(0, heading?.offsetTop);
+                      }
+                    });
+                  }
                 }
               }}
               free
-              extraHeaders={plugin?.citations ? [citationHeader] : undefined}
+              extraHeaders={
+                plugin?.citations && !isActivityDashboardEnabled
+                  ? [citationHeader]
+                  : undefined
+              }
             />
           )}
         />

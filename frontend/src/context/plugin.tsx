@@ -1,7 +1,7 @@
 import { satisfies } from '@renovate/pep440';
 import { isArray, isString } from 'lodash';
 import { useTranslation } from 'next-i18next';
-import { createContext, ReactNode, useContext } from 'react';
+import { createContext, ReactNode, useContext, useMemo } from 'react';
 import { DeepPartial } from 'utility-types';
 
 import { SUPPORTED_PYTHON_VERSIONS } from '@/store/search/filter.store';
@@ -23,11 +23,12 @@ interface PluginState {
   plugin?: DeepPartial<PluginData>;
   repo: PluginRepoData;
   repoFetchError?: PluginRepoFetchError;
+  isEmptyDescription: boolean;
 }
 
 const PluginStateContext = createContext<PluginState | null>(null);
 
-interface Props extends PluginState {
+interface Props extends Omit<PluginState, 'isEmptyDescription'> {
   children: ReactNode;
 }
 
@@ -37,8 +38,27 @@ interface Props extends PluginState {
  * `plugin` prop around everywhere.
  */
 export function PluginStateProvider({ children, ...props }: Props) {
+  // Check if body is an empty string or if it's set to the cookiecutter text.
+  const { plugin } = props;
+  const [t] = useTranslation(['preview']);
+
+  const isEmptyDescription = useMemo(
+    () =>
+      !plugin?.description ||
+      plugin.description.includes(t('preview:emptyDescription')),
+    [plugin?.description, t],
+  );
+
+  const pluginState = useMemo(
+    () => ({
+      ...props,
+      isEmptyDescription,
+    }),
+    [isEmptyDescription, props],
+  );
+
   return (
-    <PluginStateContext.Provider value={props}>
+    <PluginStateContext.Provider value={pluginState}>
       {children}
     </PluginStateContext.Provider>
   );

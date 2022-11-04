@@ -4,7 +4,7 @@ import { getHeadersFromMarkdown } from './Markdown.utils';
 
 interface Props {
   className?: string;
-  onClick?(heading: string): void;
+  onClick?(heading: string, id: string): void;
   markdown: string;
   extraHeaders?: TOCHeader[];
   free?: boolean;
