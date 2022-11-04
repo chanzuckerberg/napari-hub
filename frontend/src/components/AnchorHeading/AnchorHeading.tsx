@@ -20,7 +20,7 @@ export function AnchorHeading({
     element,
     {
       id,
-      className: clsx(className, styles.heading, 'flex space-x-sds-s'),
+      className: clsx(className, styles.heading, 'flex space-x-sds-s group'),
       ...props,
     },
     <>
@@ -30,8 +30,9 @@ export function AnchorHeading({
         <a
           className={clsx(
             styles.anchor,
-            'opacity-0 !text-hub-gray-500 !no-underline',
-            'hover:!text-hub-primary-400',
+            '!no-underline transition',
+            'opacity-0 !text-hub-gray-500',
+            'group-hover:!opacity-100 hover:!text-hub-primary-400',
           )}
           href={`#${id}`}
         >
