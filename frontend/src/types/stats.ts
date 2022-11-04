@@ -21,5 +21,5 @@ export interface PluginInstallStats {
 }
 
 export interface PluginRecentInstallStats {
-  installInLast30Days: number;
+  installsInLast30Days: number;
 }

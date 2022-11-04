@@ -22,8 +22,9 @@ export function RecentInstalls() {
     [i18n.language],
   );
   const formattedInstalls = useMemo(
-    () => installsFormatter.format(pluginRecentStats?.installInLast30Days ?? 0),
-    [installsFormatter, pluginRecentStats?.installInLast30Days],
+    () =>
+      installsFormatter.format(pluginRecentStats?.installsInLast30Days ?? 0),
+    [installsFormatter, pluginRecentStats?.installsInLast30Days],
   );
 
   return (
