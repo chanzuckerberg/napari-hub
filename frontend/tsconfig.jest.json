@@ -17,9 +17,7 @@
       "@/*": ["./src/*"],
       "@/i18n/*": ["./i18n/*"],
       "@/tests/*": ["./tests/*"]
-    },
-
-    "types": ["jest-playwright-preset", "expect-playwright", "jest"]
+    }
   },
   "include": ["*.d.ts", "**/*.ts", "**/*.tsx", "i18n/**/*"]
 }
