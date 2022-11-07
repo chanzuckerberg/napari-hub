@@ -2,9 +2,7 @@ import clsx from 'clsx';
 import { Button } from 'czifui';
 import { useTranslation } from 'react-i18next';
 
-import { I18n } from '@/components/I18n';
 import { usePlausible } from '@/hooks';
-import { I18nKeys } from '@/types/i18n';
 
 import { CollectionCard } from './CollectionCard';
 import { useCollections } from './context';
@@ -14,12 +12,6 @@ import { useCollections } from './context';
  */
 function Intro() {
   const { t } = useTranslation(['collections']);
-
-  const items: I18nKeys<'collections'>[] = [
-    'collections:collectionsPage.protocols',
-    'collections:collectionsPage.toolkits',
-    'collections:collectionsPage.assortments',
-  ];
 
   return (
     <div
@@ -31,17 +23,6 @@ function Intro() {
       )}
     >
       <p>{t('collections:collectionsPage.intro')}</p>
-
-      <ul className="list-disc ml-sds-l mt-sds-xl leading-[175%]">
-        {items.map((item) => (
-          <li key={item}>
-            <I18n
-              i18nKey={item}
-              components={{ bold: <strong className="font-semibold" /> }}
-            />
-          </li>
-        ))}
-      </ul>
     </div>
   );
 }
