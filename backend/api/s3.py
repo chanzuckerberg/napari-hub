@@ -90,8 +90,5 @@ def __get_object_body_from_s3(path: str):
     timer.start()
     try:
         return s3_client.get_object(Bucket=bucket, Key=complete_path)['Body'].read()
-    except Exception as e:
-        logging.error(f"Exception on fetching bucket={bucket} path={complete_path}", e)
-        return None
     finally:
         logging.info(f"S3 getObject bucket={bucket} path={complete_path} elapsed_time={timer.get_elapsed_time()}")
