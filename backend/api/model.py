@@ -26,7 +26,6 @@ index_subset = {'name', 'summary', 'description_text', 'description_content_type
 s3_dao = S3DAO()
 
 
-
 def get_public_plugins() -> Dict[str, str]:
     """
     Get the dictionary of public plugins and versions.

@@ -126,6 +126,7 @@ def get_plugin_installs(plugin: str) -> Response:
 def get_plugin_installs_stats(plugin: str) -> Response:
     return jsonify(get_installs_stats(plugin))
 
+
 @app.route('/activity/<plugin>/recent_stats')
 def get_recent_plugin_installs_stats(plugin: str) -> Response:
     return jsonify(get_recent_installs_stats(plugin))
