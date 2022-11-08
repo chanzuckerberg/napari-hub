@@ -1,4 +1,4 @@
 pytest
 npe2
 moto [s3]==4.0.*
-flask-cors==1.10.3
+flask-cors==3.0.10

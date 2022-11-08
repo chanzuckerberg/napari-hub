@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import patch, Mock
-from api.data_store.snowflake_db import SnowflakeDAO
+from api.dao.snowflake_db import SnowflakeDAO
 import snowflake
 
 MOCK_SNOWFLAKE_USER = 'appa'

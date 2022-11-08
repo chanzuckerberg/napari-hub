@@ -8,11 +8,11 @@ from io import BytesIO
 from collections import defaultdict
 import pandas as pd
 
-from api.data_store.snowflake_db import SnowflakeDAO
+from api.dao.snowflake_db import SnowflakeDAO
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
-from api.data_store.s3 import get_cache, cache, get_activity_dashboard_data, write_activity_data, \
-    get_recent_activity_dashboard_data
+from api.s3 import get_cache, cache, get_activity_dashboard_data
+from api.dao.s3 import S3DAO
 from utils.utils import render_description, send_alert, get_attribute, get_category_mapping, parse_manifest
 from utils.datadog import report_metrics
 from api.zulip import notify_new_packages
@@ -23,6 +23,8 @@ index_subset = {'name', 'summary', 'description_text', 'description_content_type
                 'release_date', 'version', 'first_released',
                 'development_status', 'category', 'display_name', 'plugin_types', 'reader_file_extensions',
                 'writer_file_extensions', 'writer_save_layers', 'npe2', 'error_message'}
+s3_dao = S3DAO()
+
 
 
 def get_public_plugins() -> Dict[str, str]:
@@ -381,13 +383,12 @@ def update_activity_data():
     Update existing caches to reflect new activity data. Files updated:
     - activity_dashboard.csv (overwrite)
     """
-    snowflake = SnowflakeDAO()
-    data = snowflake.get_activity_data()
+    data = SnowflakeDAO().get_activity_data()
     data_csv = ["PROJECT,MONTH,NUM_DOWNLOADS_BY_MONTH"]
     for entry in data.items():
         plugin = entry[0]
         data_csv += [plugin + ',' + str(row["month"]) + ',' + str(row['downloads']) for row in entry[1]]
-    write_activity_data("\n".join(data_csv), "activity_dashboard_data/plugin_installs.csv")
+    s3_dao.write_data("\n".join(data_csv), "activity_dashboard_data/plugin_installs.csv")
 
 
 def update_recent_activity_data():
@@ -395,9 +396,8 @@ def update_recent_activity_data():
     Update existing caches to reflect recent activity data. Files updated:
     - recent_activity_dashboard.csv (overwrite)
     """
-    snowflake = SnowflakeDAO()
-    data = snowflake.get_recent_activity_data()
-    write_activity_data(json.dumps(data), "activity_dashboard_data/plugin_recent_installs.json")
+    data = SnowflakeDAO().get_recent_activity_data()
+    s3_dao.write_data(json.dumps(data), "activity_dashboard_data/plugin_recent_installs.json")
 
 
 def get_installs(plugin: str) -> List[Any]:
@@ -408,7 +408,8 @@ def get_installs(plugin: str) -> List[Any]:
     :param plugin: plugin name
     :return: list of objects
     """
-    plugin_df = get_activity_dashboard_data(plugin)
+    data = s3_dao.get_activity_timeline_data()
+    plugin_df = get_activity_dashboard_data(data, plugin)
     plugin_df['MONTH'] = plugin_df['MONTH'].map(pd.Timestamp.timestamp) * 1000
     installs_list = []
     for _, row in plugin_df.iterrows():
@@ -426,7 +427,8 @@ def get_installs_stats(plugin: str) -> Any:
     :param plugin: plugin name
     :return: object
     """
-    plugin_df = get_activity_dashboard_data(plugin)
+    data = s3_dao.get_activity_timeline_data()
+    plugin_df = get_activity_dashboard_data(data, plugin)
     if len(plugin_df) == 0:
         return None
     obj = dict()
@@ -443,4 +445,4 @@ def get_recent_installs_stats(plugin: str) -> Dict:
     :param plugin: plugin name
     :return: dict
     """
-    return {'installsInLast30Days': get_recent_activity_dashboard_data().get(plugin, 0)}
+    return {'installsInLast30Days': s3_dao.get_recent_activity_dashboard_data().get(plugin, 0)}

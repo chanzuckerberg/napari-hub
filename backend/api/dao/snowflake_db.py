@@ -4,7 +4,7 @@ from functools import reduce
 from typing import Dict
 import logging
 
-from api.util.timer import Timer
+from utils.timer import Timer
 
 
 ACTIVITY_DATA_QUERY = """

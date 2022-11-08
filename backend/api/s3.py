@@ -13,7 +13,7 @@ import pandas as pd
 from botocore.client import Config
 from botocore.exceptions import ClientError
 
-from api.util.timer import Timer
+from utils.timer import Timer
 from utils.utils import send_alert
 
 # Environment variable set through ecs stack terraform module
@@ -65,11 +65,7 @@ def cache(content: Union[dict, list, IO[bytes]], key: str, mime: str = None):
                                      Key=os.path.join(bucket_path, key), ExtraArgs=extra_args)
 
 
-def write_activity_data(data: str, path: str):
-    s3_client.put_object(Body=data, Bucket=bucket, Key=os.path.join(bucket_path, path))
-
-
-def get_activity_dashboard_data(plugin) -> pd.DataFrame:
+def get_activity_dashboard_data(data, plugin) -> pd.DataFrame:
     """
     Get the content of activity_dashboard.csv file on s3.
 
@@ -77,7 +73,6 @@ def get_activity_dashboard_data(plugin) -> pd.DataFrame:
     :return: dataframe that consists of plugin-specific data for activity_dashboard backend endpoints
     """
     try:
-        data = __get_object_body_from_s3("activity_dashboard_data/plugin_installs.csv").decode('utf-8')
         plugin_installs_dataframe = pd.read_csv(StringIO(data))
         plugin_df = plugin_installs_dataframe[plugin_installs_dataframe.PROJECT == plugin]
         plugin_df = plugin_df[['MONTH', 'NUM_DOWNLOADS_BY_MONTH']]
@@ -86,15 +81,6 @@ def get_activity_dashboard_data(plugin) -> pd.DataFrame:
     except Exception as e:
         logging.error(e)
         return pd.DataFrame(columns=['MONTH', 'NUM_DOWNLOADS_BY_MONTH'])
-
-
-def get_recent_activity_dashboard_data() -> Dict:
-    path = "activity_dashboard_data/plugin_recent_installs.json"
-    try:
-        return json.loads(__get_object_body_from_s3(path).decode('utf-8'))
-    except Exception as e:
-        logging.error(e)
-        return {}
 
 
 def __get_object_body_from_s3(path: str):
