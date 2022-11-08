@@ -399,15 +399,7 @@ def update_recent_activity_data():
     s3_dao.write_data(json.dumps(data), "activity_dashboard_data/plugin_recent_installs.json")
 
 
-def get_installs(plugin: str) -> List[Any]:
-    """
-    This should return a list of objects, in which attribute x is the numerical value in milliseconds
-    and attribute y is the number of installs
-
-    :param plugin: plugin name
-    :return: list of objects
-    """
-    data = s3_dao.get_activity_timeline_data()
+def __get_installs_timeline(data, plugin):
     plugin_df = get_activity_dashboard_data(data, plugin)
     plugin_df['MONTH'] = plugin_df['MONTH'].map(pd.Timestamp.timestamp) * 1000
     installs_list = []
@@ -419,6 +411,26 @@ def get_installs(plugin: str) -> List[Any]:
     return installs_list
 
 
+def get_installs(plugin: str) -> List[Any]:
+    """
+    This should return a list of objects, in which attribute x is the numerical value in milliseconds
+    and attribute y is the number of installs
+
+    :param plugin: plugin name
+    :return: list of objects
+    """
+    data = s3_dao.get_activity_timeline_data()
+    return __get_installs_timeline(data, plugin)
+
+
+def __get_installs_stats(data, plugin):
+    plugin_df = get_activity_dashboard_data(data, plugin)
+    if len(plugin_df) == 0:
+        return {}
+    month_offset = plugin_df['MONTH'].max().to_period('M') - plugin_df['MONTH'].min().to_period('M')
+    return {'totalInstalls': int(plugin_df['NUM_DOWNLOADS_BY_MONTH'].sum()), 'totalMonths': month_offset.n}
+
+
 def get_installs_stats(plugin: str) -> Any:
     """
     This should return an object, with numerical attributes totalInstallCount and totalMonths
@@ -427,14 +439,11 @@ def get_installs_stats(plugin: str) -> Any:
     :return: object
     """
     data = s3_dao.get_activity_timeline_data()
-    plugin_df = get_activity_dashboard_data(data, plugin)
-    if len(plugin_df) == 0:
-        return None
-    obj = dict()
-    month_offset = plugin_df['MONTH'].max().to_period('M') - plugin_df['MONTH'].min().to_period('M')
-    obj['totalInstalls'] = int(plugin_df['NUM_DOWNLOADS_BY_MONTH'].sum())
-    obj['totalMonths'] = month_offset.n
-    return obj
+    return __get_installs_stats(data, plugin)
+
+
+def __get_recent_installs_count(plugin):
+    return s3_dao.get_recent_activity_dashboard_data().get(plugin, 0)
 
 
 def get_recent_installs_stats(plugin: str) -> Dict:
@@ -444,4 +453,20 @@ def get_recent_installs_stats(plugin: str) -> Dict:
     :param plugin: plugin name
     :return: dict
     """
-    return {'installsInLast30Days': s3_dao.get_recent_activity_dashboard_data().get(plugin, 0)}
+    return {'installsInLast30Days': __get_recent_installs_count(plugin)}
+
+
+def get_plugin_metrics(plugin: str) -> Dict:
+    data = s3_dao.get_activity_timeline_data()
+    install_stats = __get_installs_stats(data, plugin)
+    timeline = __get_installs_timeline(data, plugin)
+    complete_stats = {
+        'totalInstalls': install_stats.get('totalInstalls'),
+        'totalMonths': install_stats.get('totalMonths'),
+        'installInLast30Days': __get_recent_installs_count(plugin)
+    }
+    activity_data = {
+        'timeline': [{'timestamp': period.get('x', 0), 'installs': period.get('y', 0)} for period in timeline],
+        'stats': complete_stats
+    }
+    return {'activity': activity_data}

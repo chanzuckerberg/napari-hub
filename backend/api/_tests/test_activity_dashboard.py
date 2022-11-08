@@ -47,4 +47,4 @@ class TestActivityDashboard(unittest.TestCase):
     def test_get_installs_stats_empty(self, mock_get_activity_dashboard_data):
         from api.model import get_installs_stats
         result = get_installs_stats('string-1')
-        assert result is None
+        assert result == {}
