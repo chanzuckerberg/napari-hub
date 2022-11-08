@@ -1,5 +1,6 @@
 import io
 import json
+import logging
 import mimetypes
 import os
 import os.path
@@ -9,7 +10,6 @@ from typing import Union, IO, List, Dict
 
 import boto3
 import pandas as pd
-import yaml
 from botocore.client import Config
 from botocore.exceptions import ClientError
 from utils.utils import send_alert
@@ -63,22 +63,36 @@ def cache(content: Union[dict, list, IO[bytes]], key: str, mime: str = None):
                                      Key=os.path.join(bucket_path, key), ExtraArgs=extra_args)
 
 
-def write_activity_data(csv_string: str):
-    s3_client.put_object(Body=csv_string, Bucket=bucket, Key=os.path.join(bucket_path, "activity_dashboard_data/plugin_installs.csv"))
+def _get_complete_path(path):
+    return os.path.join(bucket_path, path)
 
 
-def get_activity_dashboard_data(plugin) -> Dict:
+def write_activity_data(data: str, path: str):
+    s3_client.put_object(Body=data, Bucket=bucket, Key=_get_complete_path(path))
+
+
+def _get_from_s3(path):
+    return s3_client.get_object(Bucket=bucket, Key=_get_complete_path(path))['Body'].read().decode('utf-8')
+
+
+def get_activity_dashboard_data(plugin):
     """
     Get the content of activity_dashboard.csv file on s3.
 
     :param plugin: plugin name
     :return: dataframe that consists of plugin-specific data for activity_dashboard backend endpoints
     """
-    plugin_installs_dataframe = pd.read_csv(StringIO(
-        s3_client.get_object(Bucket=bucket, Key=os.path.join(
-            bucket_path, "activity_dashboard_data/plugin_installs.csv"))['Body'].read().decode('utf-8')))
+    plugin_installs_dataframe = pd.read_csv(StringIO(_get_from_s3("activity_dashboard_data/plugin_installs.csv")))
     plugin_df = plugin_installs_dataframe[plugin_installs_dataframe.PROJECT == plugin]
     plugin_df = plugin_df[['MONTH', 'NUM_DOWNLOADS_BY_MONTH']]
     plugin_df['MONTH'] = pd.to_datetime(plugin_df['MONTH'])
     return plugin_df
+
+
+def get_recent_activity_data_from_s3() -> Dict:
+    try:
+        return json.loads(_get_from_s3("activity_dashboard_data/recent_installs.json"))
+    except Exception as e:
+        logging.error(e)
+        return {}
 

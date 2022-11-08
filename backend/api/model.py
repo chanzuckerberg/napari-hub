@@ -9,7 +9,7 @@ from collections import defaultdict
 import pandas as pd
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
-from api.s3 import get_cache, cache, get_activity_dashboard_data, write_activity_data
+from api.s3 import get_cache, cache, get_activity_dashboard_data, write_activity_data, get_recent_activity_data_from_s3
 from utils.utils import render_description, send_alert, get_attribute, get_category_mapping, parse_manifest
 from utils.datadog import report_metrics
 from api.zulip import notify_new_packages
@@ -374,15 +374,9 @@ def get_categories_mapping(version: str) -> Dict[str, List]:
     return mappings or {}
 
 
-def update_activity_data():
-    """
-    Update existing caches to reflect new activity data. Files updated:
-    - activity_dashboard.csv (overwrite)
-    """
-    # credentials from Terraform
+def _execute_query(query):
     SNOWFLAKE_USER = os.getenv('SNOWFLAKE_USER')
     SNOWFLAKE_PASSWORD = os.getenv('SNOWFLAKE_PASSWORD')
-    # connect to Snowflake DB
     ctx = sc.connect(
         user=SNOWFLAKE_USER,
         password=SNOWFLAKE_PASSWORD,
@@ -391,40 +385,36 @@ def update_activity_data():
         database="IMAGING",
         schema="PYPI"
     )
-    cursor_list = ctx.execute_string("""select file_project, date_trunc('month', timestamp) as month, count(*) as num_downloads
-    from
-    (
-      select country_code, project, project_type, file_project, file_version, file_type, details_installer_name, details_installer_version,
-          CONCAT(
-            DETAILS,
-            DETAILS_INSTALLER, DETAILS_INSTALLER_NAME, DETAILS_INSTALLER_VERSION,
-            DETAILS_PYTHON,
-            DETAILS_IMPLEMENTATION_NAME, DETAILS_IMPLEMENTATION_VERSION,
-            DETAILS_DISTRO, DETAILS_DISTRO_NAME, DETAILS_DISTRO_VERSION, DETAILS_DISTRO_ID, DETAILS_DISTRO_LIBC, DETAILS_DISTRO_LIBC_LIB, DETAILS_DISTRO_LIBC_VERSION,
-            DETAILS_SYSTEM, DETAILS_SYSTEM_NAME, DETAILS_SYSTEM_RELEASE,
-            DETAILS_CPU,
-            DETAILS_OPENSSL_VERSION,
-            DETAILS_SETUPTOOLS_VERSION,
-            DETAILS_RUSTC_VERSION
-          ) as details_all,
-          CASE
-              WHEN details_all like '%amzn%' OR details_all like '%aws%' OR details_all like '%-azure%' OR details_all like '%gcp%' THEN 'ci usage'
-              WHEN details_installer_name in ('bandersnatch', 'pip') THEN details_installer_name
-              ELSE 'other'
-          END AS download_type,
-          to_timestamp(timestamp) as timestamp
-      from imaging.pypi.downloads
-      where download_type = 'pip'
-      and project_type = 'plugin'
-      order by timestamp desc
-    )
-    group by 1,2
-    order by NUM_DOWNLOADS desc, MONTH, FILE_PROJECT""")
+    return ctx.execute_string(query)
+
+
+def update_activity_data():
+    _update_activity_timeline_data()
+    _update_recent_activity_data()
+
+
+def _update_activity_timeline_data():
+    """
+    Update existing caches to reflect new activity data. Files updated:
+    - activity_dashboard.csv (overwrite)
+    """
+    query = """
+        SELECT 
+            file_project, DATE_TRUNC('month', timestamp) as month, count(*) as num_downloads
+        FROM
+            imaging.pypi.labeled_downloads
+        WHERE 
+            download_type = 'pip'
+            AND project_type = 'plugin'
+        GROUP BY file_project, month
+        ORDER BY file_project, month
+        """
+    cursor_list = _execute_query(query)
     csv_string = "PROJECT,MONTH,NUM_DOWNLOADS_BY_MONTH\n"
     for cursor in cursor_list:
         for row in cursor:
             csv_string += str(row[0]) + ',' + str(row[1]) + ',' + str(row[2]) + '\n'
-    write_activity_data(csv_string)
+    write_activity_data(csv_string, "activity_dashboard_data/plugin_installs.csv")
 
 
 def get_installs(plugin: str, limit: str) -> List[Any]:
@@ -437,12 +427,17 @@ def get_installs(plugin: str, limit: str) -> List[Any]:
     """
     if not limit.isdigit() or limit == '0':
         return []
-    date_format = '%Y-%m-%d'
     plugin_df = get_activity_dashboard_data(plugin)
+    return _process_for_timeline(plugin_df, int(limit))
+
+
+def _process_for_timeline(plugin_df, limit=12):
+    date_format = '%Y-%m-%d'
     end_date = date.today().replace(day=1) + relativedelta(months=-1)
-    start_date = end_date + relativedelta(months=-int(limit) + 1)
-    dates = pd.date_range(start=start_date, periods=int(limit), freq='MS')
-    plugin_df = plugin_df[(plugin_df['MONTH'] >= start_date.strftime(date_format)) & (plugin_df['MONTH'] <= end_date.strftime(date_format))]
+    start_date = end_date + relativedelta(months=-limit + 1)
+    dates = pd.date_range(start=start_date, periods=limit, freq='MS')
+    plugin_df = plugin_df[(plugin_df['MONTH'] >= start_date.strftime(date_format)) & (
+                plugin_df['MONTH'] <= end_date.strftime(date_format))]
     result = []
     for cur_date in dates:
         if cur_date in plugin_df['MONTH'].values:
@@ -453,6 +448,20 @@ def get_installs(plugin: str, limit: str) -> List[Any]:
     return result
 
 
+def _get_activity_dashboard_data(plugin):
+    return get_activity_dashboard_data(plugin)
+
+
+def _process_for_stats(plugin_df):
+    if len(plugin_df) == 0:
+        return {}
+    obj = dict()
+    month_offset = plugin_df['MONTH'].max().to_period('M') - plugin_df['MONTH'].min().to_period('M')
+    obj['totalInstalls'] = int(plugin_df['NUM_DOWNLOADS_BY_MONTH'].sum())
+    obj['totalMonths'] = month_offset.n
+    return obj
+
+
 def get_installs_stats(plugin: str) -> Any:
     """
     This should return an object, with numerical attributes totalInstallCount and totalMonths
@@ -460,11 +469,55 @@ def get_installs_stats(plugin: str) -> Any:
     :param plugin: plugin name
     :return: object
     """
-    plugin_df = get_activity_dashboard_data(plugin)
-    if len(plugin_df) == 0:
-        return None
-    obj = dict()
-    month_offset = plugin_df['MONTH'].max().to_period('M') - plugin_df['MONTH'].min().to_period('M')
-    obj['totalInstalls'] = int(plugin_df['NUM_DOWNLOADS_BY_MONTH'].sum())
-    obj['totalMonths'] = month_offset.n
-    return obj
+    plugin_df = _get_activity_dashboard_data(plugin)
+    return _process_for_stats(plugin_df)
+
+
+def _update_recent_activity_data(number_of_time_periods=30, time_granularity='DAY'):
+    """
+    Update existing caches to reflect recent activity data. Files updated:
+    - activity_dashboard_data/recent_installs.json (overwrite)
+    """
+    query = f"""
+        SELECT 
+            file_project, count(*) as num_downloads
+        FROM
+            imaging.pypi.labeled_downloads
+        WHERE 
+            download_type = 'pip'
+            AND project_type = 'plugin'
+            AND timestamp > DATEADD({time_granularity}, {number_of_time_periods * -1}, CURRENT_DATE)
+        GROUP BY file_project     
+        ORDER BY file_project
+    """
+    cursor_list = _execute_query(query)
+    data = {}
+    for cursor in cursor_list:
+        for row in cursor:
+            data[row[0]] = row[1]
+
+    write_activity_data(json.dumps(data), "activity_dashboard_data/recent_installs.json")
+
+
+def _get_recent_activity_data(plugin) -> int:
+    return get_recent_activity_data_from_s3().get(plugin, 0)
+
+
+def get_recent_installs_stats(plugin: str) -> Dict:
+    return {'installsInLast30days':  _get_recent_activity_data(plugin)}
+
+
+def get_metrics_for_plugin(plugin: str) -> Dict:
+    data = _get_activity_dashboard_data(plugin)
+    install_stats = _process_for_stats(data)
+    timeline = _process_for_timeline(data)
+    complete_stats = {
+        'totalInstalls': install_stats.get('totalInstalls'),
+        'totalMonths': install_stats.get('totalMonths'),
+        'installInLast30Days': _get_recent_activity_data(plugin)
+    }
+    activity_data = {
+        'timeline': [{'timestamp': period.get('x', 0), 'installs': period.get('y', 0)} for period in timeline],
+        'stats': complete_stats
+    }
+    return {'activity': activity_data}
