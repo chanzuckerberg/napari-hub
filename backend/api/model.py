@@ -1,5 +1,5 @@
 from concurrent import futures
-from datetime import datetime, timezone
+from datetime import datetime
 import json
 import os
 from typing import Tuple, Dict, List, Callable, Any
@@ -15,7 +15,7 @@ from utils.datadog import report_metrics
 from api.zulip import notify_new_packages
 import boto3
 import snowflake.connector as sc
-from datetime import date, timedelta
+from datetime import date
 from dateutil.relativedelta import relativedelta
 
 index_subset = {'name', 'summary', 'description_text', 'description_content_type',
