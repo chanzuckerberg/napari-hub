@@ -20,7 +20,7 @@ function useLinkData(key: LinkKey) {
       return [t('collections:collectionPage.tooltips.visitGithub'), GitHub];
 
     case 'twitter':
-      return [t('collections:collectionPage.tooltips.visitWebsite'), Twitter];
+      return [t('collections:collectionPage.tooltips.visitTwitter'), Twitter];
 
     case 'website':
       return [t('collections:collectionPage.tooltips.visitWebsite'), Website];
