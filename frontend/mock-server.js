@@ -80,6 +80,16 @@ app.get('/activity/:plugin/stats', (req, res) => {
   }
 });
 
+app.get('/activity/:plugin/recent_stats', (req, res) => {
+  const stats = get(activity, [req.params.plugin, 'recentStats'], null);
+
+  if (stats) {
+    res.json(stats);
+  } else {
+    res.status(404).send('not found');
+  }
+});
+
 app.get('/activity/:plugin', async (req, res) => {
   const points = get(activity, [req.params.plugin, 'points'], null);
 

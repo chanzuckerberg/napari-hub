@@ -1,6 +1,7 @@
 import { useTranslation } from 'next-i18next';
 
 import { ActivitySection } from './ActivitySection';
+import { RecentInstalls } from './RecentInstalls';
 import { TotalInstalls } from './TotalInstalls';
 
 export function ActivityUsageSection() {
@@ -9,6 +10,7 @@ export function ActivityUsageSection() {
   return (
     <ActivitySection title={t('activity:usage')}>
       <TotalInstalls />
+      <RecentInstalls />
     </ActivitySection>
   );
 }
