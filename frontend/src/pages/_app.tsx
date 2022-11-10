@@ -6,6 +6,7 @@
 
 import '@/scss/global.scss';
 import '@/scss/tailwind.scss';
+import '@/utils/setupDayjsPlugins';
 
 import { AppProps } from 'next/app';
 import Head from 'next/head';

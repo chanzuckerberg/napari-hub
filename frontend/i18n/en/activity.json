@@ -1,6 +1,15 @@
 {
-  "installs": {
-    "title": "Installs",
-    "installCount": "<count>{{installs}}</count> total installs in past <count>{{months}}</count> months"
+  "installs": "installs",
+  "usage": "Usage",
+  "duration": {
+    "lessThan": "less than",
+    "over": "over",
+    "weekAgo": "a week ago",
+    "nWeeksAgo": "{{weeks}} weeks ago",
+    "nMonthsAgo": "{{months}} months ago",
+    "nYearsAgo": "{{years}} years ago"
+  },
+  "totalInstalls": {
+    "publiclyReleased": "since publicly released"
   }
 }

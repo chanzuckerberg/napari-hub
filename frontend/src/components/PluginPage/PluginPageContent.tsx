@@ -1,29 +1,14 @@
-import dynamic from 'next/dynamic';
 import { useTranslation } from 'react-i18next';
 
-import { Props as ActivityDashboardProps } from '@/components/ActivityDashboard';
 import { Markdown } from '@/components/Markdown';
 import { MetadataHighlighter } from '@/components/MetadataHighlighter';
 import { SkeletonLoader } from '@/components/SkeletonLoader';
 import { usePluginState } from '@/context/plugin';
-import {
-  useMediaQuery,
-  usePluginActivity,
-  usePluginInstallStats,
-} from '@/hooks';
-import { useIsFeatureFlagEnabled } from '@/utils/featureFlags';
+import { useMediaQuery } from '@/hooks';
 
 import { CallToActionButton } from './CallToActionButton';
 import { CitationInfo } from './CitationInfo';
 import { PluginMetadata } from './PluginMetadata';
-
-const ActivityDashboard = dynamic<ActivityDashboardProps>(
-  () =>
-    import('@/components/ActivityDashboard').then(
-      (mod) => mod.ActivityDashboard,
-    ),
-  { ssr: false },
-);
 
 /**
  * Current layout of the plugin page that includes the description, citation,
@@ -34,11 +19,6 @@ export function PluginPageContent() {
   const { plugin, isEmptyDescription } = usePluginState();
   const [t] = useTranslation(['preview']);
   const hasPluginMetadataScroll = useMediaQuery({ maxWidth: 'screen-1425' });
-  const isActivityDashboardEnabled =
-    useIsFeatureFlagEnabled('activityDashboard');
-
-  const { dataPoints } = usePluginActivity(plugin?.name);
-  const { pluginStats } = usePluginInstallStats(plugin?.name);
 
   return (
     <>
@@ -67,14 +47,6 @@ export function PluginPageContent() {
         className="screen-1425:hidden"
         inline
       />
-
-      {isActivityDashboardEnabled && plugin?.name && (
-        <ActivityDashboard
-          data={dataPoints}
-          installCount={pluginStats?.totalInstalls ?? 0}
-          installMonthCount={pluginStats?.totalMonths ?? 0}
-        />
-      )}
     </>
   );
 }

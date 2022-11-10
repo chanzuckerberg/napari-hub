@@ -6,17 +6,12 @@ import { ReactNode, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSnapshot } from 'valtio';
 
-import { Props as ActivityDashboardProps } from '@/components/ActivityDashboard';
 import { Markdown } from '@/components/Markdown';
 import { MetadataHighlighter } from '@/components/MetadataHighlighter';
 import { SkeletonLoader } from '@/components/SkeletonLoader';
 import { useLoadingState } from '@/context/loading';
 import { usePluginState } from '@/context/plugin';
-import {
-  useMediaQuery,
-  usePluginActivity,
-  usePluginInstallStats,
-} from '@/hooks';
+import { useMediaQuery } from '@/hooks';
 import { pluginTabsStore, resetPluginTabs } from '@/store/pluginTabs';
 import { PluginTabType } from '@/types/plugin';
 
@@ -25,7 +20,7 @@ import { CallToActionButton } from './CallToActionButton';
 import { CitationInfo } from './CitationInfo';
 import { PluginMetadata } from './PluginMetadata';
 
-const ActivityDashboard = dynamic<ActivityDashboardProps>(
+const ActivityDashboard = dynamic<Record<string, unknown>>(
   () =>
     import('@/components/ActivityDashboard').then(
       (mod) => mod.ActivityDashboard,
@@ -68,14 +63,6 @@ export function PluginTabs() {
   const { activeTab } = useSnapshot(pluginTabsStore);
   const isLoading = useLoadingState();
   const hasPluginMetadataScroll = useMediaQuery({ maxWidth: 'screen-1425' });
-
-  // Only load data activity data when on activity tab
-  const { dataPoints } = usePluginActivity(plugin?.name, {
-    enabled: activeTab === PluginTabType.Activity,
-  });
-  const { pluginStats } = usePluginInstallStats(plugin?.name, {
-    enabled: activeTab === PluginTabType.Activity,
-  });
 
   // Reset plugin tab state when navigating away from page.
   useEffect(resetPluginTabs, []);
@@ -123,13 +110,7 @@ export function PluginTabs() {
   }
 
   if (activeTab === PluginTabType.Activity && plugin?.name) {
-    tabContent = (
-      <ActivityDashboard
-        data={dataPoints}
-        installCount={pluginStats?.totalInstalls ?? 0}
-        installMonthCount={pluginStats?.totalMonths ?? 0}
-      />
-    );
+    tabContent = <ActivityDashboard />;
   }
 
   if (activeTab === PluginTabType.Citation && plugin?.citations) {

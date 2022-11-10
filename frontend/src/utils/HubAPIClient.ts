@@ -94,11 +94,6 @@ class HubAPIClient {
     return validateCollectionData(data);
   }
 
-  async getPluginsWithActivities(): Promise<string[]> {
-    const { data } = await this.api.get<string[]>('/activity/plugins');
-    return data;
-  }
-
   async getPluginActivity(name: string): Promise<DataPoint[]> {
     const { data } = await this.api.get<DataPoint[]>(`/activity/${name}`);
     return data;
