@@ -2,6 +2,11 @@
   "installs": "installs",
   "installsTitle": "Installs",
   "usage": "Usage",
+  "noData": {
+    "learnMoreLink": "https://github.com/chanzuckerberg/napari-hub",
+    "allData": "No data could be fetched for this plugin. <externalLink href='$t(noData.learnMoreLink)'>Learn more.</externalLink>",
+    "monthlyInstalls": "There is not yet enough data to display for this plugin"
+  },
   "monthlyInstalls": {
     "title": "Monthly installs in past year",
     "publicRelease": "Public release"
