@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
-enum DateBucketType {
+export enum DateBucketType {
   LessThanAWeek,
   OverAWeek,
   OverNWeeks,
@@ -10,8 +10,10 @@ enum DateBucketType {
   OverNYears,
 }
 
-export function useDateBucketType(date: dayjs.Dayjs): DateBucketType {
-  const now = dayjs();
+export function useDateBucketType(
+  date: dayjs.Dayjs,
+  now = dayjs(),
+): DateBucketType {
   const days = now.diff(date, 'day');
 
   if (days < 7) {
@@ -22,11 +24,11 @@ export function useDateBucketType(date: dayjs.Dayjs): DateBucketType {
     return DateBucketType.OverAWeek;
   }
 
-  if (days < 30) {
+  const months = now.diff(date, 'month');
+
+  if (months < 1) {
     return DateBucketType.OverNWeeks;
   }
-
-  const months = now.diff(date, 'month');
 
   if (months < 24) {
     return DateBucketType.OverNMonths;
