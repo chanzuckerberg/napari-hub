@@ -115,7 +115,7 @@ class HubAPIClient {
     name: string,
   ): Promise<PluginRecentInstallStats> {
     const { data } = await this.api.get<PluginRecentInstallStats>(
-      `/activity/${name}/recentStats`,
+      `/activity/${name}/recent_stats`,
     );
 
     return data;

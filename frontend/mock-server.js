@@ -80,7 +80,7 @@ app.get('/activity/:plugin/stats', (req, res) => {
   }
 });
 
-app.get('/activity/:plugin/recentStats', (req, res) => {
+app.get('/activity/:plugin/recent_stats', (req, res) => {
   const stats = get(activity, [req.params.plugin, 'recentStats'], null);
 
   if (stats) {
