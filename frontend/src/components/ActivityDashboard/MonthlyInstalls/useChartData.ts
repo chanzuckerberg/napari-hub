@@ -10,7 +10,7 @@ import { DataPoint } from '@/types/stats';
  */
 export function useChartData(
   data: DataPoint[],
-  publicRelease: dayjs.Dayjs,
+  release: dayjs.Dayjs,
   visibleMonths: number[],
 ) {
   return useMemo(() => {
@@ -28,13 +28,13 @@ export function useChartData(
       }
     }
 
-    // Only show data points after the public release date
+    // Only show data points after the start date
     for (const [x, y] of pointMap.entries()) {
-      pointMap.set(x, dayjs(x).isBefore(publicRelease, 'month') ? null : y);
+      pointMap.set(x, dayjs(x).isBefore(release, 'month') ? null : y);
     }
 
     return Array.from(pointMap.entries())
       .map(([x, y]) => ({ x, y }))
       .sort((point1, point2) => point1.x - point2.x);
-  }, [data, publicRelease, visibleMonths]);
+  }, [data, release, visibleMonths]);
 }

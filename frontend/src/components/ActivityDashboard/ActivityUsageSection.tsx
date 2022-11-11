@@ -1,7 +1,7 @@
 import { useTranslation } from 'next-i18next';
 
 import { ActivitySection } from './ActivitySection';
-import { MonthlyInstalls } from './MonthlyInstalls';
+import { MonthlyInstalls } from './MonthlyInstalls/MonthlyInstalls';
 import { RecentInstalls } from './RecentInstalls';
 import { TotalInstalls } from './TotalInstalls';
 
