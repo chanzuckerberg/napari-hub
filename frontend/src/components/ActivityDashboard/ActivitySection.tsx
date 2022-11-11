@@ -17,9 +17,10 @@ export function ActivitySection({ children, title }: Props) {
 
       <div
         className={clsx(
-          'grid grid-cols-1',
+          'grid justify-center',
           'gap-x-12 gap-y-sds-xl',
-          'screen-600:grid-cols-napari-2',
+          'grid-cols-1',
+          'screen-600:grid-cols-2',
           'screen-875:grid-cols-napari-3',
         )}
       >
