@@ -15,6 +15,8 @@ from utils.datadog import report_metrics
 from api.zulip import notify_new_packages
 import boto3
 import snowflake.connector as sc
+from datetime import date
+from dateutil.relativedelta import relativedelta
 
 index_subset = {'name', 'summary', 'description_text', 'description_content_type',
                 'authors', 'license', 'python_version', 'operating_system',
@@ -424,23 +426,31 @@ def update_activity_data():
             csv_string += str(row[0]) + ',' + str(row[1]) + ',' + str(row[2]) + '\n'
     write_activity_data(csv_string)
 
-def get_installs(plugin: str) -> List[Any]:
+
+def get_installs(plugin: str, limit: str) -> List[Any]:
     """
     This should return a list of objects, in which attribute x is the numerical value in milliseconds
     and attribute y is the number of installs
-
     :param plugin: plugin name
+    :param limit: number of objects to return
     :return: list of objects
     """
+    if not limit.isdigit() or limit == '0':
+        return []
+    date_format = '%Y-%m-%d'
     plugin_df = get_activity_dashboard_data(plugin)
-    plugin_df['MONTH'] = plugin_df['MONTH'].map(pd.Timestamp.timestamp) * 1000
-    installs_list = []
-    for _, row in plugin_df.iterrows():
-        obj = dict()
-        obj['x'] = int(row.MONTH)
-        obj['y'] = int(row.NUM_DOWNLOADS_BY_MONTH)
-        installs_list.append(obj)
-    return installs_list
+    end_date = date.today().replace(day=1) + relativedelta(months=-1)
+    start_date = end_date + relativedelta(months=-int(limit) + 1)
+    dates = pd.date_range(start=start_date, periods=int(limit), freq='MS')
+    plugin_df = plugin_df[(plugin_df['MONTH'] >= start_date.strftime(date_format)) & (plugin_df['MONTH'] <= end_date.strftime(date_format))]
+    result = []
+    for cur_date in dates:
+        if cur_date in plugin_df['MONTH'].values:
+            row = plugin_df[plugin_df['MONTH'] == cur_date]
+            result.append({'x': int(cur_date.timestamp()) * 1000, 'y': int(str(row.NUM_DOWNLOADS_BY_MONTH).split()[1])})
+        else:
+            result.append({'x': int(cur_date.timestamp()) * 1000, 'y': 0})
+    return result
 
 
 def get_installs_stats(plugin: str) -> Any:
