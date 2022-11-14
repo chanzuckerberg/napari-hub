@@ -453,10 +453,6 @@ def _process_for_timeline(plugin_df, limit, timestamp_key, installs_key):
     return result
 
 
-def _get_activity_dashboard_data(plugin):
-    return get_activity_dashboard_data(plugin)
-
-
 def _process_for_stats(plugin_df):
     if len(plugin_df) == 0:
         return {}
@@ -475,7 +471,7 @@ def get_installs_stats(plugin: str) -> Any:
     :param plugin: plugin name
     :return: object
     """
-    plugin_df = _get_activity_dashboard_data(plugin)
+    plugin_df = get_activity_dashboard_data(plugin)
     return _process_for_stats(plugin_df)
 
 
@@ -514,12 +510,12 @@ def get_recent_installs_stats(plugin: str) -> Dict:
 
 
 def get_metrics_for_plugin(plugin: str, limit: str) -> Dict:
-    data = _get_activity_dashboard_data(plugin)
+    data = get_activity_dashboard_data(plugin)
     install_stats = _process_for_stats(data)
     timeline = [] if _is_not_valid_limit(limit) else _process_for_timeline(data, int(limit), 'timestamp', 'installs')
     complete_stats = {
         'totalInstalls': install_stats.get('totalInstalls', 0),
-        'totalMonths': install_stats.get('totalMonths'),
+        'totalMonths': install_stats.get('totalMonths', 0),
         'installsInLast30Days': _get_recent_activity_data(plugin)
     }
     activity_data = {

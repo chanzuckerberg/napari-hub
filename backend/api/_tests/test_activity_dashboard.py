@@ -118,7 +118,7 @@ class TestActivityDashboard(unittest.TestCase):
         return [{timestamp_key: to_timestamp(i), installs_key: to_installs(i)} for i in range(start_range, 0)]
 
     @staticmethod
-    def _generate_expected_metrics(timeline=[], total_installs=0, total_months=None, installs_in_last_30_days=0):
+    def _generate_expected_metrics(timeline=[], total_installs=0, total_months=0, installs_in_last_30_days=0):
         return {
             'activity': {
                 'timeline': timeline,
