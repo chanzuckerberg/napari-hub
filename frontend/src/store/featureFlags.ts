@@ -1,4 +1,5 @@
 import { SplitFactory } from '@splitsoftware/splitio';
+import { set } from 'lodash';
 import { useRef } from 'react';
 import { v4 as uuid } from 'uuid';
 import { proxy, useSnapshot } from 'valtio';
@@ -16,14 +17,24 @@ export interface FeatureFlag<
   config?: C | null;
 }
 
-export const FEATURE_FLAGS = {
-  collections: { value: 'off' } as FeatureFlag,
-  npe2: { value: 'off' } as FeatureFlag,
-};
+const FEATURE_FLAG_LIST = [
+  'activityDashboard',
+  'categoryFilters',
+  'collections',
+  'npe2',
+] as const;
 
-export type FeatureFlagMap = typeof FEATURE_FLAGS;
+export type FeatureFlagKey = typeof FEATURE_FLAG_LIST[number];
+export type FeatureFlagMap = Record<FeatureFlagKey, FeatureFlag>;
 
-export type FeatureFlagKey = keyof FeatureFlagMap;
+const FEATURE_FLAGS = FEATURE_FLAG_LIST.reduce(
+  (result, key) =>
+    set(result, key, {
+      key,
+      value: 'off',
+    }),
+  {} as FeatureFlagMap,
+);
 
 /**
  * Store used for holding feature flag data.
