@@ -3,11 +3,11 @@
  * reproducible way.
  */
 
-import { random, sample } from 'lodash-es';
-import fs from 'fs';
-import path from 'path';
+const { random, sample } = require('lodash');
+const fs = require('fs');
+const path = require('path');
 
-const rootDir = path.resolve(new URL(import.meta.url).pathname, '../..');
+const rootDir = path.resolve(__dirname, '..');
 const pluginIndex = JSON.parse(
   fs.readFileSync(path.resolve(rootDir, 'src/fixtures/index.json'), 'utf-8'),
 );
