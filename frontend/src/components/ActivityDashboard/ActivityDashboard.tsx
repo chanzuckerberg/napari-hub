@@ -2,43 +2,31 @@ import { useMemo } from 'react';
 
 import { I18n } from '@/components/I18n';
 import { usePluginState } from '@/context/plugin';
-import { usePluginActivity, usePluginInstallStats } from '@/hooks';
-import { usePluginRecentInstallStats } from '@/hooks/usePluginRecentInstallStats';
+import { usePluginMetrics } from '@/hooks';
 
 import { ActivityUsageSection } from './ActivityUsageSection';
 import { EmptyState } from './EmptyState';
 
 export function ActivityDashboard() {
   const { plugin } = usePluginState();
-  const { pluginStats, isLoading: isPluginStatsLoading } =
-    usePluginInstallStats(plugin?.name);
-  const { pluginRecentStats, isLoading: isPluginRecentStatsLoading } =
-    usePluginRecentInstallStats(plugin?.name);
-  const { dataPoints, isLoading: isPluginActivityLoading } = usePluginActivity(
-    plugin?.name,
-    {
-      enabled: !!plugin?.name,
-    },
-  );
+  const { data: metrics, isLoading } = usePluginMetrics(plugin?.name);
 
   const isEmpty = useMemo(() => {
-    if (
-      isPluginStatsLoading ||
-      isPluginRecentStatsLoading ||
-      isPluginActivityLoading
-    ) {
+    if (isLoading) {
       return false;
     }
 
-    return !pluginStats && !pluginRecentStats && dataPoints.length === 0;
-  }, [
-    dataPoints.length,
-    isPluginActivityLoading,
-    isPluginRecentStatsLoading,
-    isPluginStatsLoading,
-    pluginRecentStats,
-    pluginStats,
-  ]);
+    if (!metrics) {
+      return true;
+    }
+
+    const { timeline, stats } = metrics.activity;
+
+    // Check if timeline is empty and all stats values are 0
+    return [timeline.length, Object.values(stats)].every(
+      (value) => value === 0,
+    );
+  }, [isLoading, metrics]);
 
   return (
     <div>
