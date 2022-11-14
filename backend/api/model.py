@@ -432,10 +432,10 @@ def get_installs(plugin: str, limit: str) -> List[Any]:
     if _is_not_valid_limit(limit):
         return []
     plugin_df = get_activity_dashboard_data(plugin)
-    return _process_for_timeline(plugin_df, int(limit))
+    return _process_for_timeline(plugin_df, int(limit), 'x', 'y')
 
 
-def _process_for_timeline(plugin_df, limit=12):
+def _process_for_timeline(plugin_df, limit, timestamp_key, installs_key):
     date_format = '%Y-%m-%d'
     end_date = date.today().replace(day=1) + relativedelta(months=-1)
     start_date = end_date + relativedelta(months=-limit + 1)
@@ -446,9 +446,10 @@ def _process_for_timeline(plugin_df, limit=12):
     for cur_date in dates:
         if cur_date in plugin_df['MONTH'].values:
             row = plugin_df[plugin_df['MONTH'] == cur_date]
-            result.append({'x': int(cur_date.timestamp()) * 1000, 'y': int(str(row.NUM_DOWNLOADS_BY_MONTH).split()[1])})
+            installs = int(str(row.NUM_DOWNLOADS_BY_MONTH).split()[1])
         else:
-            result.append({'x': int(cur_date.timestamp()) * 1000, 'y': 0})
+            installs = 0
+        result.append({timestamp_key: int(cur_date.timestamp()) * 1000, installs_key: installs})
     return result
 
 
@@ -459,11 +460,12 @@ def _get_activity_dashboard_data(plugin):
 def _process_for_stats(plugin_df):
     if len(plugin_df) == 0:
         return {}
-    obj = dict()
+
     month_offset = plugin_df['MONTH'].max().to_period('M') - plugin_df['MONTH'].min().to_period('M')
-    obj['totalInstalls'] = int(plugin_df['NUM_DOWNLOADS_BY_MONTH'].sum())
-    obj['totalMonths'] = month_offset.n
-    return obj
+    return {
+        'totalInstalls': int(plugin_df['NUM_DOWNLOADS_BY_MONTH'].sum()),
+        'totalMonths': month_offset.n
+    }
 
 
 def get_installs_stats(plugin: str) -> Any:
@@ -514,14 +516,14 @@ def get_recent_installs_stats(plugin: str) -> Dict:
 def get_metrics_for_plugin(plugin: str, limit: str) -> Dict:
     data = _get_activity_dashboard_data(plugin)
     install_stats = _process_for_stats(data)
-    timeline = [] if _is_not_valid_limit(limit) else _process_for_timeline(data)
+    timeline = [] if _is_not_valid_limit(limit) else _process_for_timeline(data, int(limit), 'timestamp', 'installs')
     complete_stats = {
-        'totalInstalls': install_stats.get('totalInstalls'),
+        'totalInstalls': install_stats.get('totalInstalls', 0),
         'totalMonths': install_stats.get('totalMonths'),
-        'installInLast30Days': _get_recent_activity_data(plugin)
+        'installsInLast30Days': _get_recent_activity_data(plugin)
     }
     activity_data = {
-        'timeline': [{'timestamp': period.get('x', 0), 'installs': period.get('y', 0)} for period in timeline],
+        'timeline': timeline,
         'stats': complete_stats
     }
     return {'activity': activity_data}
