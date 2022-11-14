@@ -26,4 +26,5 @@ module stack {
   stack_prefix          = "/${var.stack_name}"
   tags                  = local.tags
   wait_for_steady_state = var.wait_for_steady_state
+  frontend_instance_count = 1
 }
