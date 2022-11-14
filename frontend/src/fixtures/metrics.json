@@ -1,0 +1,1793 @@
+{
+  "napari-test-plugin": {
+    "activity": {
+      "timeline": [
+        {
+          "timestamp": "Sun, 14 Nov 2021 23:24:34 GMT",
+          "installs": 2
+        },
+        {
+          "timestamp": "Tue, 14 Dec 2021 23:24:34 GMT",
+          "installs": 547
+        },
+        {
+          "timestamp": "Fri, 14 Jan 2022 23:24:34 GMT",
+          "installs": 593
+        },
+        {
+          "timestamp": "Mon, 14 Feb 2022 23:24:34 GMT",
+          "installs": 385
+        },
+        {
+          "timestamp": "Mon, 14 Mar 2022 22:24:34 GMT",
+          "installs": 259
+        },
+        {
+          "timestamp": "Thu, 14 Apr 2022 22:24:34 GMT",
+          "installs": 377
+        },
+        {
+          "timestamp": "Sat, 14 May 2022 22:24:34 GMT",
+          "installs": 557
+        },
+        {
+          "timestamp": "Tue, 14 Jun 2022 22:24:34 GMT",
+          "installs": 580
+        },
+        {
+          "timestamp": "Thu, 14 Jul 2022 22:24:34 GMT",
+          "installs": 162
+        },
+        {
+          "timestamp": "Sun, 14 Aug 2022 22:24:34 GMT",
+          "installs": 582
+        },
+        {
+          "timestamp": "Wed, 14 Sep 2022 22:24:34 GMT",
+          "installs": 552
+        },
+        {
+          "timestamp": "Fri, 14 Oct 2022 22:24:34 GMT",
+          "installs": 302
+        }
+      ],
+      "stats": {
+        "totalMonths": 14,
+        "totalInstalls": 8400,
+        "installsInLast30Days": 600
+      }
+    }
+  },
+  "napari-compressed-labels-io": {
+    "activity": {
+      "timeline": [
+        {
+          "timestamp": "Thu, 14 Apr 2022 22:24:34 GMT",
+          "installs": 281
+        },
+        {
+          "timestamp": "Sat, 14 May 2022 22:24:34 GMT",
+          "installs": 369
+        },
+        {
+          "timestamp": "Tue, 14 Jun 2022 22:24:34 GMT",
+          "installs": 909
+        },
+        {
+          "timestamp": "Thu, 14 Jul 2022 22:24:34 GMT",
+          "installs": 327
+        },
+        {
+          "timestamp": "Sun, 14 Aug 2022 22:24:34 GMT",
+          "installs": 1081
+        },
+        {
+          "timestamp": "Wed, 14 Sep 2022 22:24:34 GMT",
+          "installs": 1170
+        },
+        {
+          "timestamp": "Fri, 14 Oct 2022 22:24:34 GMT",
+          "installs": 104
+        }
+      ],
+      "stats": {
+        "totalMonths": 7,
+        "totalInstalls": 8610,
+        "installsInLast30Days": 1230
+      }
+    }
+  },
+  "affinder": {
+    "activity": {
+      "timeline": [
+        {
+          "timestamp": "Mon, 14 Mar 2022 22:24:34 GMT",
+          "installs": 396
+        },
+        {
+          "timestamp": "Thu, 14 Apr 2022 22:24:34 GMT",
+          "installs": 236
+        },
+        {
+          "timestamp": "Sat, 14 May 2022 22:24:34 GMT",
+          "installs": 310
+        },
+        {
+          "timestamp": "Tue, 14 Jun 2022 22:24:34 GMT",
+          "installs": 167
+        },
+        {
+          "timestamp": "Thu, 14 Jul 2022 22:24:34 GMT",
+          "installs": 392
+        },
+        {
+          "timestamp": "Sun, 14 Aug 2022 22:24:34 GMT",
+          "installs": 213
+        },
+        {
+          "timestamp": "Wed, 14 Sep 2022 22:24:34 GMT",
+          "installs": 321
+        },
+        {
+          "timestamp": "Fri, 14 Oct 2022 22:24:34 GMT",
+          "installs": 336
+        }
+      ],
+      "stats": {
+        "totalMonths": 8,
+        "totalInstalls": 3360,
+        "installsInLast30Days": 420
+      }
+    }
+  },
+  "napping": {
+    "activity": {
+      "timeline": [
+        {
+          "timestamp": "Thu, 14 Apr 2022 22:24:34 GMT",
+          "installs": 38
+        },
+        {
+          "timestamp": "Sat, 14 May 2022 22:24:34 GMT",
+          "installs": 1166
+        },
+        {
+          "timestamp": "Tue, 14 Jun 2022 22:24:34 GMT",
+          "installs": 1484
+        },
+        {
+          "timestamp": "Thu, 14 Jul 2022 22:24:34 GMT",
+          "installs": 1082
+        },
+        {
+          "timestamp": "Sun, 14 Aug 2022 22:24:34 GMT",
+          "installs": 526
+        },
+        {
+          "timestamp": "Wed, 14 Sep 2022 22:24:34 GMT",
+          "installs": 885
+        },
+        {
+          "timestamp": "Fri, 14 Oct 2022 22:24:34 GMT",
+          "installs": 795
+        }
+      ],
+      "stats": {
+        "totalMonths": 7,
+        "totalInstalls": 10500,
+        "installsInLast30Days": 1500
+      }
+    }
+  },
+  "napari-console": {
+    "activity": {
+      "timeline": [
+        {
+          "timestamp": "Sat, 14 May 2022 22:24:34 GMT",
+          "installs": 1100
+        },
+        {
+          "timestamp": "Tue, 14 Jun 2022 22:24:34 GMT",
+          "installs": 1002
+        },
+        {
+          "timestamp": "Thu, 14 Jul 2022 22:24:34 GMT",
+          "installs": 71
+        },
+        {
+          "timestamp": "Sun, 14 Aug 2022 22:24:34 GMT",
+          "installs": 105
+        },
+        {
+          "timestamp": "Wed, 14 Sep 2022 22:24:34 GMT",
+          "installs": 740
+        },
+        {
+          "timestamp": "Fri, 14 Oct 2022 22:24:34 GMT",
+          "installs": 968
+        }
+      ],
+      "stats": {
+        "totalMonths": 6,
+        "totalInstalls": 6840,
+        "installsInLast30Days": 1140
+      }
+    }
+  },
+  "napari-hdf5-labels-io": {
+    "activity": {
+      "timeline": [
+        {
+          "timestamp": "Mon, 14 Feb 2022 23:24:34 GMT",
+          "installs": 80
+        },
+        {
+          "timestamp": "Mon, 14 Mar 2022 22:24:34 GMT",
+          "installs": 446
+        },
+        {
+          "timestamp": "Thu, 14 Apr 2022 22:24:34 GMT",
+          "installs": 479
+        },
+        {
+          "timestamp": "Sat, 14 May 2022 22:24:34 GMT",
+          "installs": 296
+        },
+        {
+          "timestamp": "Tue, 14 Jun 2022 22:24:34 GMT",
+          "installs": 684
+        },
+        {
+          "timestamp": "Thu, 14 Jul 2022 22:24:34 GMT",
+          "installs": 654
+        },
+        {
+          "timestamp": "Sun, 14 Aug 2022 22:24:34 GMT",
+          "installs": 672
+        },
+        {
+          "timestamp": "Wed, 14 Sep 2022 22:24:34 GMT",
+          "installs": 592
+        },
+        {
+          "timestamp": "Fri, 14 Oct 2022 22:24:34 GMT",
+          "installs": 25
+        }
+      ],
+      "stats": {
+        "totalMonths": 9,
+        "totalInstalls": 8640,
+        "installsInLast30Days": 960
+      }
+    }
+  },
+  "PlatyMatch": {
+    "activity": {
+      "timeline": [
+        {
+          "timestamp": "Thu, 14 Jul 2022 22:24:34 GMT",
+          "installs": 207
+        },
+        {
+          "timestamp": "Sun, 14 Aug 2022 22:24:34 GMT",
+          "installs": 219
+        },
+        {
+          "timestamp": "Wed, 14 Sep 2022 22:24:34 GMT",
+          "installs": 559
+        },
+        {
+          "timestamp": "Fri, 14 Oct 2022 22:24:34 GMT",
+          "installs": 440
+        }
+      ],
+      "stats": {
+        "totalMonths": 4,
+        "totalInstalls": 2280,
+        "installsInLast30Days": 570
+      }
+    }
+  },
+  "napari_video": {
+    "activity": {
+      "timeline": [
+        {
+          "timestamp": "Mon, 14 Feb 2022 23:24:34 GMT",
+          "installs": 317
+        },
+        {
+          "timestamp": "Mon, 14 Mar 2022 22:24:34 GMT",
+          "installs": 212
+        },
+        {
+          "timestamp": "Thu, 14 Apr 2022 22:24:34 GMT",
+          "installs": 102
+        },
+        {
+          "timestamp": "Sat, 14 May 2022 22:24:34 GMT",
+          "installs": 57
+        },
+        {
+          "timestamp": "Tue, 14 Jun 2022 22:24:34 GMT",
+          "installs": 3
+        },
+        {
+          "timestamp": "Thu, 14 Jul 2022 22:24:34 GMT",
+          "installs": 282
+        },
+        {
+          "timestamp": "Sun, 14 Aug 2022 22:24:34 GMT",
+          "installs": 293
+        },
+        {
+          "timestamp": "Wed, 14 Sep 2022 22:24:34 GMT",
+          "installs": 32
+        },
+        {
+          "timestamp": "Fri, 14 Oct 2022 22:24:34 GMT",
+          "installs": 7
+        }
+      ],
+      "stats": {
+        "totalMonths": 9,
+        "totalInstalls": 2970,
+        "installsInLast30Days": 330
+      }
+    }
+  },
+  "cellfinder-napari": {
+    "activity": {
+      "timeline": [
+        {
+          "timestamp": "Fri, 14 Jan 2022 23:24:34 GMT",
+          "installs": 717
+        },
+        {
+          "timestamp": "Mon, 14 Feb 2022 23:24:34 GMT",
+          "installs": 190
+        },
+        {
+          "timestamp": "Mon, 14 Mar 2022 22:24:34 GMT",
+          "installs": 381
+        },
+        {
+          "timestamp": "Thu, 14 Apr 2022 22:24:34 GMT",
+          "installs": 360
+        },
+        {
+          "timestamp": "Sat, 14 May 2022 22:24:34 GMT",
+          "installs": 144
+        },
+        {
+          "timestamp": "Tue, 14 Jun 2022 22:24:34 GMT",
+          "installs": 581
+        },
+        {
+          "timestamp": "Thu, 14 Jul 2022 22:24:34 GMT",
+          "installs": 641
+        },
+        {
+          "timestamp": "Sun, 14 Aug 2022 22:24:34 GMT",
+          "installs": 650
+        },
+        {
+          "timestamp": "Wed, 14 Sep 2022 22:24:34 GMT",
+          "installs": 123
+        },
+        {
+          "timestamp": "Fri, 14 Oct 2022 22:24:34 GMT",
+          "installs": 5
+        }
+      ],
+      "stats": {
+        "totalMonths": 10,
+        "totalInstalls": 7200,
+        "installsInLast30Days": 720
+      }
+    }
+  },
+  "napari-svg": {
+    "activity": {
+      "timeline": [
+        {
+          "timestamp": "Sun, 14 Nov 2021 23:24:34 GMT",
+          "installs": 371
+        },
+        {
+          "timestamp": "Tue, 14 Dec 2021 23:24:34 GMT",
+          "installs": 161
+        },
+        {
+          "timestamp": "Fri, 14 Jan 2022 23:24:34 GMT",
+          "installs": 726
+        },
+        {
+          "timestamp": "Mon, 14 Feb 2022 23:24:34 GMT",
+          "installs": 460
+        },
+        {
+          "timestamp": "Mon, 14 Mar 2022 22:24:34 GMT",
+          "installs": 178
+        },
+        {
+          "timestamp": "Thu, 14 Apr 2022 22:24:34 GMT",
+          "installs": 487
+        },
+        {
+          "timestamp": "Sat, 14 May 2022 22:24:34 GMT",
+          "installs": 152
+        },
+        {
+          "timestamp": "Tue, 14 Jun 2022 22:24:34 GMT",
+          "installs": 1034
+        },
+        {
+          "timestamp": "Thu, 14 Jul 2022 22:24:34 GMT",
+          "installs": 383
+        },
+        {
+          "timestamp": "Sun, 14 Aug 2022 22:24:34 GMT",
+          "installs": 58
+        },
+        {
+          "timestamp": "Wed, 14 Sep 2022 22:24:34 GMT",
+          "installs": 926
+        },
+        {
+          "timestamp": "Fri, 14 Oct 2022 22:24:34 GMT",
+          "installs": 1054
+        }
+      ],
+      "stats": {
+        "totalMonths": 13,
+        "totalInstalls": 14040,
+        "installsInLast30Days": 1080
+      }
+    }
+  },
+  "napari-yapic-prediction": {
+    "activity": {
+      "timeline": [
+        {
+          "timestamp": "Sun, 14 Nov 2021 23:24:34 GMT",
+          "installs": 100
+        },
+        {
+          "timestamp": "Tue, 14 Dec 2021 23:24:34 GMT",
+          "installs": 427
+        },
+        {
+          "timestamp": "Fri, 14 Jan 2022 23:24:34 GMT",
+          "installs": 961
+        },
+        {
+          "timestamp": "Mon, 14 Feb 2022 23:24:34 GMT",
+          "installs": 855
+        },
+        {
+          "timestamp": "Mon, 14 Mar 2022 22:24:34 GMT",
+          "installs": 542
+        },
+        {
+          "timestamp": "Thu, 14 Apr 2022 22:24:34 GMT",
+          "installs": 540
+        },
+        {
+          "timestamp": "Sat, 14 May 2022 22:24:34 GMT",
+          "installs": 528
+        },
+        {
+          "timestamp": "Tue, 14 Jun 2022 22:24:34 GMT",
+          "installs": 902
+        },
+        {
+          "timestamp": "Thu, 14 Jul 2022 22:24:34 GMT",
+          "installs": 140
+        },
+        {
+          "timestamp": "Sun, 14 Aug 2022 22:24:34 GMT",
+          "installs": 1005
+        },
+        {
+          "timestamp": "Wed, 14 Sep 2022 22:24:34 GMT",
+          "installs": 830
+        },
+        {
+          "timestamp": "Fri, 14 Oct 2022 22:24:34 GMT",
+          "installs": 299
+        }
+      ],
+      "stats": {
+        "totalMonths": 16,
+        "totalInstalls": 19200,
+        "installsInLast30Days": 1200
+      }
+    }
+  },
+  "napari-demo": {
+    "activity": {
+      "timeline": [
+        {
+          "timestamp": "Thu, 14 Apr 2022 22:24:34 GMT",
+          "installs": 298
+        },
+        {
+          "timestamp": "Sat, 14 May 2022 22:24:34 GMT",
+          "installs": 756
+        },
+        {
+          "timestamp": "Tue, 14 Jun 2022 22:24:34 GMT",
+          "installs": 966
+        },
+        {
+          "timestamp": "Thu, 14 Jul 2022 22:24:34 GMT",
+          "installs": 343
+        },
+        {
+          "timestamp": "Sun, 14 Aug 2022 22:24:34 GMT",
+          "installs": 727
+        },
+        {
+          "timestamp": "Wed, 14 Sep 2022 22:24:34 GMT",
+          "installs": 938
+        },
+        {
+          "timestamp": "Fri, 14 Oct 2022 22:24:34 GMT",
+          "installs": 971
+        }
+      ],
+      "stats": {
+        "totalMonths": 7,
+        "totalInstalls": 7350,
+        "installsInLast30Days": 1050
+      }
+    }
+  },
+  "ome-zarr": {
+    "activity": {
+      "timeline": [
+        {
+          "timestamp": "Tue, 14 Jun 2022 22:24:34 GMT",
+          "installs": 281
+        },
+        {
+          "timestamp": "Thu, 14 Jul 2022 22:24:34 GMT",
+          "installs": 423
+        },
+        {
+          "timestamp": "Sun, 14 Aug 2022 22:24:34 GMT",
+          "installs": 365
+        },
+        {
+          "timestamp": "Wed, 14 Sep 2022 22:24:34 GMT",
+          "installs": 50
+        },
+        {
+          "timestamp": "Fri, 14 Oct 2022 22:24:34 GMT",
+          "installs": 248
+        }
+      ],
+      "stats": {
+        "totalMonths": 5,
+        "totalInstalls": 2850,
+        "installsInLast30Days": 570
+      }
+    }
+  },
+  "napari-brainreg": {
+    "activity": {
+      "timeline": [
+        {
+          "timestamp": "Sun, 14 Nov 2021 23:24:34 GMT",
+          "installs": 753
+        },
+        {
+          "timestamp": "Tue, 14 Dec 2021 23:24:34 GMT",
+          "installs": 96
+        },
+        {
+          "timestamp": "Fri, 14 Jan 2022 23:24:34 GMT",
+          "installs": 934
+        },
+        {
+          "timestamp": "Mon, 14 Feb 2022 23:24:34 GMT",
+          "installs": 266
+        },
+        {
+          "timestamp": "Mon, 14 Mar 2022 22:24:34 GMT",
+          "installs": 540
+        },
+        {
+          "timestamp": "Thu, 14 Apr 2022 22:24:34 GMT",
+          "installs": 975
+        },
+        {
+          "timestamp": "Sat, 14 May 2022 22:24:34 GMT",
+          "installs": 90
+        },
+        {
+          "timestamp": "Tue, 14 Jun 2022 22:24:34 GMT",
+          "installs": 82
+        },
+        {
+          "timestamp": "Thu, 14 Jul 2022 22:24:34 GMT",
+          "installs": 959
+        },
+        {
+          "timestamp": "Sun, 14 Aug 2022 22:24:34 GMT",
+          "installs": 1091
+        },
+        {
+          "timestamp": "Wed, 14 Sep 2022 22:24:34 GMT",
+          "installs": 993
+        },
+        {
+          "timestamp": "Fri, 14 Oct 2022 22:24:34 GMT",
+          "installs": 622
+        }
+      ],
+      "stats": {
+        "totalMonths": 20,
+        "totalInstalls": 24600,
+        "installsInLast30Days": 1230
+      }
+    }
+  },
+  "napari-itk-io": {
+    "activity": {
+      "timeline": [
+        {
+          "timestamp": "Sun, 14 Nov 2021 23:24:34 GMT",
+          "installs": 367
+        },
+        {
+          "timestamp": "Tue, 14 Dec 2021 23:24:34 GMT",
+          "installs": 120
+        },
+        {
+          "timestamp": "Fri, 14 Jan 2022 23:24:34 GMT",
+          "installs": 350
+        },
+        {
+          "timestamp": "Mon, 14 Feb 2022 23:24:34 GMT",
+          "installs": 620
+        },
+        {
+          "timestamp": "Mon, 14 Mar 2022 22:24:34 GMT",
+          "installs": 1131
+        },
+        {
+          "timestamp": "Thu, 14 Apr 2022 22:24:34 GMT",
+          "installs": 1056
+        },
+        {
+          "timestamp": "Sat, 14 May 2022 22:24:34 GMT",
+          "installs": 1108
+        },
+        {
+          "timestamp": "Tue, 14 Jun 2022 22:24:34 GMT",
+          "installs": 506
+        },
+        {
+          "timestamp": "Thu, 14 Jul 2022 22:24:34 GMT",
+          "installs": 257
+        },
+        {
+          "timestamp": "Sun, 14 Aug 2022 22:24:34 GMT",
+          "installs": 984
+        },
+        {
+          "timestamp": "Wed, 14 Sep 2022 22:24:34 GMT",
+          "installs": 1011
+        },
+        {
+          "timestamp": "Fri, 14 Oct 2022 22:24:34 GMT",
+          "installs": 409
+        }
+      ],
+      "stats": {
+        "totalMonths": 18,
+        "totalInstalls": 22680,
+        "installsInLast30Days": 1260
+      }
+    }
+  },
+  "napari-imc": {
+    "activity": {
+      "timeline": [
+        {
+          "timestamp": "Sat, 14 May 2022 22:24:34 GMT",
+          "installs": 530
+        },
+        {
+          "timestamp": "Tue, 14 Jun 2022 22:24:34 GMT",
+          "installs": 407
+        },
+        {
+          "timestamp": "Thu, 14 Jul 2022 22:24:34 GMT",
+          "installs": 822
+        },
+        {
+          "timestamp": "Sun, 14 Aug 2022 22:24:34 GMT",
+          "installs": 807
+        },
+        {
+          "timestamp": "Wed, 14 Sep 2022 22:24:34 GMT",
+          "installs": 530
+        },
+        {
+          "timestamp": "Fri, 14 Oct 2022 22:24:34 GMT",
+          "installs": 634
+        }
+      ],
+      "stats": {
+        "totalMonths": 6,
+        "totalInstalls": 8280,
+        "installsInLast30Days": 1380
+      }
+    }
+  },
+  "napari-mri": {
+    "activity": {
+      "timeline": [
+        {
+          "timestamp": "Sun, 14 Nov 2021 23:24:34 GMT",
+          "installs": 514
+        },
+        {
+          "timestamp": "Tue, 14 Dec 2021 23:24:34 GMT",
+          "installs": 346
+        },
+        {
+          "timestamp": "Fri, 14 Jan 2022 23:24:34 GMT",
+          "installs": 471
+        },
+        {
+          "timestamp": "Mon, 14 Feb 2022 23:24:34 GMT",
+          "installs": 551
+        },
+        {
+          "timestamp": "Mon, 14 Mar 2022 22:24:34 GMT",
+          "installs": 222
+        },
+        {
+          "timestamp": "Thu, 14 Apr 2022 22:24:34 GMT",
+          "installs": 278
+        },
+        {
+          "timestamp": "Sat, 14 May 2022 22:24:34 GMT",
+          "installs": 288
+        },
+        {
+          "timestamp": "Tue, 14 Jun 2022 22:24:34 GMT",
+          "installs": 543
+        },
+        {
+          "timestamp": "Thu, 14 Jul 2022 22:24:34 GMT",
+          "installs": 349
+        },
+        {
+          "timestamp": "Sun, 14 Aug 2022 22:24:34 GMT",
+          "installs": 136
+        },
+        {
+          "timestamp": "Wed, 14 Sep 2022 22:24:34 GMT",
+          "installs": 236
+        },
+        {
+          "timestamp": "Fri, 14 Oct 2022 22:24:34 GMT",
+          "installs": 251
+        }
+      ],
+      "stats": {
+        "totalMonths": 14,
+        "totalInstalls": 8400,
+        "installsInLast30Days": 600
+      }
+    }
+  },
+  "napari-properties-viewer": {
+    "activity": {
+      "timeline": [
+        {
+          "timestamp": "Tue, 14 Dec 2021 23:24:34 GMT",
+          "installs": 211
+        },
+        {
+          "timestamp": "Fri, 14 Jan 2022 23:24:34 GMT",
+          "installs": 536
+        },
+        {
+          "timestamp": "Mon, 14 Feb 2022 23:24:34 GMT",
+          "installs": 988
+        },
+        {
+          "timestamp": "Mon, 14 Mar 2022 22:24:34 GMT",
+          "installs": 833
+        },
+        {
+          "timestamp": "Thu, 14 Apr 2022 22:24:34 GMT",
+          "installs": 347
+        },
+        {
+          "timestamp": "Sat, 14 May 2022 22:24:34 GMT",
+          "installs": 670
+        },
+        {
+          "timestamp": "Tue, 14 Jun 2022 22:24:34 GMT",
+          "installs": 658
+        },
+        {
+          "timestamp": "Thu, 14 Jul 2022 22:24:34 GMT",
+          "installs": 424
+        },
+        {
+          "timestamp": "Sun, 14 Aug 2022 22:24:34 GMT",
+          "installs": 572
+        },
+        {
+          "timestamp": "Wed, 14 Sep 2022 22:24:34 GMT",
+          "installs": 906
+        },
+        {
+          "timestamp": "Fri, 14 Oct 2022 22:24:34 GMT",
+          "installs": 161
+        }
+      ],
+      "stats": {
+        "totalMonths": 11,
+        "totalInstalls": 13860,
+        "installsInLast30Days": 1260
+      }
+    }
+  },
+  "napari-medical-image-formats": {
+    "activity": {
+      "timeline": [
+        {
+          "timestamp": "Sun, 14 Nov 2021 23:24:34 GMT",
+          "installs": 594
+        },
+        {
+          "timestamp": "Tue, 14 Dec 2021 23:24:34 GMT",
+          "installs": 902
+        },
+        {
+          "timestamp": "Fri, 14 Jan 2022 23:24:34 GMT",
+          "installs": 1054
+        },
+        {
+          "timestamp": "Mon, 14 Feb 2022 23:24:34 GMT",
+          "installs": 427
+        },
+        {
+          "timestamp": "Mon, 14 Mar 2022 22:24:34 GMT",
+          "installs": 942
+        },
+        {
+          "timestamp": "Thu, 14 Apr 2022 22:24:34 GMT",
+          "installs": 885
+        },
+        {
+          "timestamp": "Sat, 14 May 2022 22:24:34 GMT",
+          "installs": 404
+        },
+        {
+          "timestamp": "Tue, 14 Jun 2022 22:24:34 GMT",
+          "installs": 143
+        },
+        {
+          "timestamp": "Thu, 14 Jul 2022 22:24:34 GMT",
+          "installs": 1052
+        },
+        {
+          "timestamp": "Sun, 14 Aug 2022 22:24:34 GMT",
+          "installs": 325
+        },
+        {
+          "timestamp": "Wed, 14 Sep 2022 22:24:34 GMT",
+          "installs": 336
+        },
+        {
+          "timestamp": "Fri, 14 Oct 2022 22:24:34 GMT",
+          "installs": 801
+        }
+      ],
+      "stats": {
+        "totalMonths": 20,
+        "totalInstalls": 22800,
+        "installsInLast30Days": 1140
+      }
+    }
+  },
+  "misic-napari-plugin": {
+    "activity": {
+      "timeline": [
+        {
+          "timestamp": "Thu, 14 Apr 2022 22:24:34 GMT",
+          "installs": 419
+        },
+        {
+          "timestamp": "Sat, 14 May 2022 22:24:34 GMT",
+          "installs": 291
+        },
+        {
+          "timestamp": "Tue, 14 Jun 2022 22:24:34 GMT",
+          "installs": 198
+        },
+        {
+          "timestamp": "Thu, 14 Jul 2022 22:24:34 GMT",
+          "installs": 330
+        },
+        {
+          "timestamp": "Sun, 14 Aug 2022 22:24:34 GMT",
+          "installs": 109
+        },
+        {
+          "timestamp": "Wed, 14 Sep 2022 22:24:34 GMT",
+          "installs": 22
+        },
+        {
+          "timestamp": "Fri, 14 Oct 2022 22:24:34 GMT",
+          "installs": 442
+        }
+      ],
+      "stats": {
+        "totalMonths": 7,
+        "totalInstalls": 3570,
+        "installsInLast30Days": 510
+      }
+    }
+  },
+  "napari-dv": {
+    "activity": {
+      "timeline": [
+        {
+          "timestamp": "Sun, 14 Nov 2021 23:24:34 GMT",
+          "installs": 1400
+        },
+        {
+          "timestamp": "Tue, 14 Dec 2021 23:24:34 GMT",
+          "installs": 959
+        },
+        {
+          "timestamp": "Fri, 14 Jan 2022 23:24:34 GMT",
+          "installs": 535
+        },
+        {
+          "timestamp": "Mon, 14 Feb 2022 23:24:34 GMT",
+          "installs": 439
+        },
+        {
+          "timestamp": "Mon, 14 Mar 2022 22:24:34 GMT",
+          "installs": 319
+        },
+        {
+          "timestamp": "Thu, 14 Apr 2022 22:24:34 GMT",
+          "installs": 392
+        },
+        {
+          "timestamp": "Sat, 14 May 2022 22:24:34 GMT",
+          "installs": 192
+        },
+        {
+          "timestamp": "Tue, 14 Jun 2022 22:24:34 GMT",
+          "installs": 43
+        },
+        {
+          "timestamp": "Thu, 14 Jul 2022 22:24:34 GMT",
+          "installs": 201
+        },
+        {
+          "timestamp": "Sun, 14 Aug 2022 22:24:34 GMT",
+          "installs": 288
+        },
+        {
+          "timestamp": "Wed, 14 Sep 2022 22:24:34 GMT",
+          "installs": 1164
+        },
+        {
+          "timestamp": "Fri, 14 Oct 2022 22:24:34 GMT",
+          "installs": 178
+        }
+      ],
+      "stats": {
+        "totalMonths": 15,
+        "totalInstalls": 21600,
+        "installsInLast30Days": 1440
+      }
+    }
+  },
+  "nd2-dask": {
+    "activity": {
+      "timeline": [
+        {
+          "timestamp": "Mon, 14 Mar 2022 22:24:34 GMT",
+          "installs": 158
+        },
+        {
+          "timestamp": "Thu, 14 Apr 2022 22:24:34 GMT",
+          "installs": 485
+        },
+        {
+          "timestamp": "Sat, 14 May 2022 22:24:34 GMT",
+          "installs": 323
+        },
+        {
+          "timestamp": "Tue, 14 Jun 2022 22:24:34 GMT",
+          "installs": 490
+        },
+        {
+          "timestamp": "Thu, 14 Jul 2022 22:24:34 GMT",
+          "installs": 665
+        },
+        {
+          "timestamp": "Sun, 14 Aug 2022 22:24:34 GMT",
+          "installs": 204
+        },
+        {
+          "timestamp": "Wed, 14 Sep 2022 22:24:34 GMT",
+          "installs": 522
+        },
+        {
+          "timestamp": "Fri, 14 Oct 2022 22:24:34 GMT",
+          "installs": 682
+        }
+      ],
+      "stats": {
+        "totalMonths": 8,
+        "totalInstalls": 6000,
+        "installsInLast30Days": 750
+      }
+    }
+  },
+  "napari-czifile2": {
+    "activity": {
+      "timeline": [
+        {
+          "timestamp": "Sun, 14 Nov 2021 23:24:34 GMT",
+          "installs": 10
+        },
+        {
+          "timestamp": "Tue, 14 Dec 2021 23:24:34 GMT",
+          "installs": 216
+        },
+        {
+          "timestamp": "Fri, 14 Jan 2022 23:24:34 GMT",
+          "installs": 13
+        },
+        {
+          "timestamp": "Mon, 14 Feb 2022 23:24:34 GMT",
+          "installs": 45
+        },
+        {
+          "timestamp": "Mon, 14 Mar 2022 22:24:34 GMT",
+          "installs": 436
+        },
+        {
+          "timestamp": "Thu, 14 Apr 2022 22:24:34 GMT",
+          "installs": 383
+        },
+        {
+          "timestamp": "Sat, 14 May 2022 22:24:34 GMT",
+          "installs": 472
+        },
+        {
+          "timestamp": "Tue, 14 Jun 2022 22:24:34 GMT",
+          "installs": 359
+        },
+        {
+          "timestamp": "Thu, 14 Jul 2022 22:24:34 GMT",
+          "installs": 357
+        },
+        {
+          "timestamp": "Sun, 14 Aug 2022 22:24:34 GMT",
+          "installs": 225
+        },
+        {
+          "timestamp": "Wed, 14 Sep 2022 22:24:34 GMT",
+          "installs": 163
+        },
+        {
+          "timestamp": "Fri, 14 Oct 2022 22:24:34 GMT",
+          "installs": 182
+        }
+      ],
+      "stats": {
+        "totalMonths": 19,
+        "totalInstalls": 9120,
+        "installsInLast30Days": 480
+      }
+    }
+  },
+  "napari-dzi-zarr": {
+    "activity": {
+      "timeline": [
+        {
+          "timestamp": "Tue, 14 Dec 2021 23:24:34 GMT",
+          "installs": 406
+        },
+        {
+          "timestamp": "Fri, 14 Jan 2022 23:24:34 GMT",
+          "installs": 356
+        },
+        {
+          "timestamp": "Mon, 14 Feb 2022 23:24:34 GMT",
+          "installs": 963
+        },
+        {
+          "timestamp": "Mon, 14 Mar 2022 22:24:34 GMT",
+          "installs": 802
+        },
+        {
+          "timestamp": "Thu, 14 Apr 2022 22:24:34 GMT",
+          "installs": 989
+        },
+        {
+          "timestamp": "Sat, 14 May 2022 22:24:34 GMT",
+          "installs": 1072
+        },
+        {
+          "timestamp": "Tue, 14 Jun 2022 22:24:34 GMT",
+          "installs": 334
+        },
+        {
+          "timestamp": "Thu, 14 Jul 2022 22:24:34 GMT",
+          "installs": 1234
+        },
+        {
+          "timestamp": "Sun, 14 Aug 2022 22:24:34 GMT",
+          "installs": 1224
+        },
+        {
+          "timestamp": "Wed, 14 Sep 2022 22:24:34 GMT",
+          "installs": 174
+        },
+        {
+          "timestamp": "Fri, 14 Oct 2022 22:24:34 GMT",
+          "installs": 601
+        }
+      ],
+      "stats": {
+        "totalMonths": 11,
+        "totalInstalls": 15840,
+        "installsInLast30Days": 1440
+      }
+    }
+  },
+  "napari-animation": {
+    "activity": {
+      "timeline": [
+        {
+          "timestamp": "Sun, 14 Nov 2021 23:24:34 GMT",
+          "installs": 1214
+        },
+        {
+          "timestamp": "Tue, 14 Dec 2021 23:24:34 GMT",
+          "installs": 589
+        },
+        {
+          "timestamp": "Fri, 14 Jan 2022 23:24:34 GMT",
+          "installs": 1331
+        },
+        {
+          "timestamp": "Mon, 14 Feb 2022 23:24:34 GMT",
+          "installs": 1208
+        },
+        {
+          "timestamp": "Mon, 14 Mar 2022 22:24:34 GMT",
+          "installs": 703
+        },
+        {
+          "timestamp": "Thu, 14 Apr 2022 22:24:34 GMT",
+          "installs": 939
+        },
+        {
+          "timestamp": "Sat, 14 May 2022 22:24:34 GMT",
+          "installs": 588
+        },
+        {
+          "timestamp": "Tue, 14 Jun 2022 22:24:34 GMT",
+          "installs": 1124
+        },
+        {
+          "timestamp": "Thu, 14 Jul 2022 22:24:34 GMT",
+          "installs": 912
+        },
+        {
+          "timestamp": "Sun, 14 Aug 2022 22:24:34 GMT",
+          "installs": 633
+        },
+        {
+          "timestamp": "Wed, 14 Sep 2022 22:24:34 GMT",
+          "installs": 376
+        },
+        {
+          "timestamp": "Fri, 14 Oct 2022 22:24:34 GMT",
+          "installs": 398
+        }
+      ],
+      "stats": {
+        "totalMonths": 12,
+        "totalInstalls": 16560,
+        "installsInLast30Days": 1380
+      }
+    }
+  },
+  "napari-minimal-plugin": {
+    "activity": {
+      "timeline": [
+        {
+          "timestamp": "Sun, 14 Nov 2021 23:24:34 GMT",
+          "installs": 328
+        },
+        {
+          "timestamp": "Tue, 14 Dec 2021 23:24:34 GMT",
+          "installs": 646
+        },
+        {
+          "timestamp": "Fri, 14 Jan 2022 23:24:34 GMT",
+          "installs": 545
+        },
+        {
+          "timestamp": "Mon, 14 Feb 2022 23:24:34 GMT",
+          "installs": 42
+        },
+        {
+          "timestamp": "Mon, 14 Mar 2022 22:24:34 GMT",
+          "installs": 49
+        },
+        {
+          "timestamp": "Thu, 14 Apr 2022 22:24:34 GMT",
+          "installs": 251
+        },
+        {
+          "timestamp": "Sat, 14 May 2022 22:24:34 GMT",
+          "installs": 358
+        },
+        {
+          "timestamp": "Tue, 14 Jun 2022 22:24:34 GMT",
+          "installs": 153
+        },
+        {
+          "timestamp": "Thu, 14 Jul 2022 22:24:34 GMT",
+          "installs": 1090
+        },
+        {
+          "timestamp": "Sun, 14 Aug 2022 22:24:34 GMT",
+          "installs": 459
+        },
+        {
+          "timestamp": "Wed, 14 Sep 2022 22:24:34 GMT",
+          "installs": 396
+        },
+        {
+          "timestamp": "Fri, 14 Oct 2022 22:24:34 GMT",
+          "installs": 33
+        }
+      ],
+      "stats": {
+        "totalMonths": 16,
+        "totalInstalls": 18720,
+        "installsInLast30Days": 1170
+      }
+    }
+  },
+  "napari-cellfinder": {
+    "activity": {
+      "timeline": [
+        {
+          "timestamp": "Sun, 14 Nov 2021 23:24:34 GMT",
+          "installs": 80
+        },
+        {
+          "timestamp": "Tue, 14 Dec 2021 23:24:34 GMT",
+          "installs": 381
+        },
+        {
+          "timestamp": "Fri, 14 Jan 2022 23:24:34 GMT",
+          "installs": 280
+        },
+        {
+          "timestamp": "Mon, 14 Feb 2022 23:24:34 GMT",
+          "installs": 571
+        },
+        {
+          "timestamp": "Mon, 14 Mar 2022 22:24:34 GMT",
+          "installs": 266
+        },
+        {
+          "timestamp": "Thu, 14 Apr 2022 22:24:34 GMT",
+          "installs": 323
+        },
+        {
+          "timestamp": "Sat, 14 May 2022 22:24:34 GMT",
+          "installs": 8
+        },
+        {
+          "timestamp": "Tue, 14 Jun 2022 22:24:34 GMT",
+          "installs": 145
+        },
+        {
+          "timestamp": "Thu, 14 Jul 2022 22:24:34 GMT",
+          "installs": 92
+        },
+        {
+          "timestamp": "Sun, 14 Aug 2022 22:24:34 GMT",
+          "installs": 136
+        },
+        {
+          "timestamp": "Wed, 14 Sep 2022 22:24:34 GMT",
+          "installs": 574
+        },
+        {
+          "timestamp": "Fri, 14 Oct 2022 22:24:34 GMT",
+          "installs": 419
+        }
+      ],
+      "stats": {
+        "totalMonths": 20,
+        "totalInstalls": 12000,
+        "installsInLast30Days": 600
+      }
+    }
+  },
+  "napari-nikon-nd2": {
+    "activity": {
+      "timeline": [
+        {
+          "timestamp": "Thu, 14 Jul 2022 22:24:34 GMT",
+          "installs": 144
+        },
+        {
+          "timestamp": "Sun, 14 Aug 2022 22:24:34 GMT",
+          "installs": 785
+        },
+        {
+          "timestamp": "Wed, 14 Sep 2022 22:24:34 GMT",
+          "installs": 329
+        },
+        {
+          "timestamp": "Fri, 14 Oct 2022 22:24:34 GMT",
+          "installs": 633
+        }
+      ],
+      "stats": {
+        "totalMonths": 4,
+        "totalInstalls": 3600,
+        "installsInLast30Days": 900
+      }
+    }
+  },
+  "napari-em-reader": {
+    "activity": {
+      "timeline": [
+        {
+          "timestamp": "Sun, 14 Nov 2021 23:24:34 GMT",
+          "installs": 837
+        },
+        {
+          "timestamp": "Tue, 14 Dec 2021 23:24:34 GMT",
+          "installs": 825
+        },
+        {
+          "timestamp": "Fri, 14 Jan 2022 23:24:34 GMT",
+          "installs": 626
+        },
+        {
+          "timestamp": "Mon, 14 Feb 2022 23:24:34 GMT",
+          "installs": 214
+        },
+        {
+          "timestamp": "Mon, 14 Mar 2022 22:24:34 GMT",
+          "installs": 1060
+        },
+        {
+          "timestamp": "Thu, 14 Apr 2022 22:24:34 GMT",
+          "installs": 547
+        },
+        {
+          "timestamp": "Sat, 14 May 2022 22:24:34 GMT",
+          "installs": 540
+        },
+        {
+          "timestamp": "Tue, 14 Jun 2022 22:24:34 GMT",
+          "installs": 1085
+        },
+        {
+          "timestamp": "Thu, 14 Jul 2022 22:24:34 GMT",
+          "installs": 1116
+        },
+        {
+          "timestamp": "Sun, 14 Aug 2022 22:24:34 GMT",
+          "installs": 332
+        },
+        {
+          "timestamp": "Wed, 14 Sep 2022 22:24:34 GMT",
+          "installs": 1139
+        },
+        {
+          "timestamp": "Fri, 14 Oct 2022 22:24:34 GMT",
+          "installs": 719
+        }
+      ],
+      "stats": {
+        "totalMonths": 20,
+        "totalInstalls": 22800,
+        "installsInLast30Days": 1140
+      }
+    }
+  },
+  "elastix-napari": {
+    "activity": {
+      "timeline": [
+        {
+          "timestamp": "Sat, 14 May 2022 22:24:34 GMT",
+          "installs": 62
+        },
+        {
+          "timestamp": "Tue, 14 Jun 2022 22:24:34 GMT",
+          "installs": 675
+        },
+        {
+          "timestamp": "Thu, 14 Jul 2022 22:24:34 GMT",
+          "installs": 574
+        },
+        {
+          "timestamp": "Sun, 14 Aug 2022 22:24:34 GMT",
+          "installs": 114
+        },
+        {
+          "timestamp": "Wed, 14 Sep 2022 22:24:34 GMT",
+          "installs": 693
+        },
+        {
+          "timestamp": "Fri, 14 Oct 2022 22:24:34 GMT",
+          "installs": 809
+        }
+      ],
+      "stats": {
+        "totalMonths": 6,
+        "totalInstalls": 4860,
+        "installsInLast30Days": 810
+      }
+    }
+  },
+  "PartSeg": {
+    "activity": {
+      "timeline": [
+        {
+          "timestamp": "Sun, 14 Nov 2021 23:24:34 GMT",
+          "installs": 622
+        },
+        {
+          "timestamp": "Tue, 14 Dec 2021 23:24:34 GMT",
+          "installs": 694
+        },
+        {
+          "timestamp": "Fri, 14 Jan 2022 23:24:34 GMT",
+          "installs": 431
+        },
+        {
+          "timestamp": "Mon, 14 Feb 2022 23:24:34 GMT",
+          "installs": 106
+        },
+        {
+          "timestamp": "Mon, 14 Mar 2022 22:24:34 GMT",
+          "installs": 244
+        },
+        {
+          "timestamp": "Thu, 14 Apr 2022 22:24:34 GMT",
+          "installs": 79
+        },
+        {
+          "timestamp": "Sat, 14 May 2022 22:24:34 GMT",
+          "installs": 685
+        },
+        {
+          "timestamp": "Tue, 14 Jun 2022 22:24:34 GMT",
+          "installs": 609
+        },
+        {
+          "timestamp": "Thu, 14 Jul 2022 22:24:34 GMT",
+          "installs": 89
+        },
+        {
+          "timestamp": "Sun, 14 Aug 2022 22:24:34 GMT",
+          "installs": 512
+        },
+        {
+          "timestamp": "Wed, 14 Sep 2022 22:24:34 GMT",
+          "installs": 201
+        },
+        {
+          "timestamp": "Fri, 14 Oct 2022 22:24:34 GMT",
+          "installs": 362
+        }
+      ],
+      "stats": {
+        "totalMonths": 14,
+        "totalInstalls": 11340,
+        "installsInLast30Days": 810
+      }
+    }
+  },
+  "brainglobe-napari-io": {
+    "activity": {
+      "timeline": [
+        {
+          "timestamp": "Thu, 14 Jul 2022 22:24:34 GMT",
+          "installs": 146
+        },
+        {
+          "timestamp": "Sun, 14 Aug 2022 22:24:34 GMT",
+          "installs": 110
+        },
+        {
+          "timestamp": "Wed, 14 Sep 2022 22:24:34 GMT",
+          "installs": 699
+        },
+        {
+          "timestamp": "Fri, 14 Oct 2022 22:24:34 GMT",
+          "installs": 565
+        }
+      ],
+      "stats": {
+        "totalMonths": 4,
+        "totalInstalls": 2880,
+        "installsInLast30Days": 720
+      }
+    }
+  },
+  "napari-aicsimageio": {
+    "activity": {
+      "timeline": [
+        {
+          "timestamp": "Tue, 14 Dec 2021 23:24:34 GMT",
+          "installs": 951
+        },
+        {
+          "timestamp": "Fri, 14 Jan 2022 23:24:34 GMT",
+          "installs": 1037
+        },
+        {
+          "timestamp": "Mon, 14 Feb 2022 23:24:34 GMT",
+          "installs": 848
+        },
+        {
+          "timestamp": "Mon, 14 Mar 2022 22:24:34 GMT",
+          "installs": 786
+        },
+        {
+          "timestamp": "Thu, 14 Apr 2022 22:24:34 GMT",
+          "installs": 1
+        },
+        {
+          "timestamp": "Sat, 14 May 2022 22:24:34 GMT",
+          "installs": 407
+        },
+        {
+          "timestamp": "Tue, 14 Jun 2022 22:24:34 GMT",
+          "installs": 288
+        },
+        {
+          "timestamp": "Thu, 14 Jul 2022 22:24:34 GMT",
+          "installs": 238
+        },
+        {
+          "timestamp": "Sun, 14 Aug 2022 22:24:34 GMT",
+          "installs": 275
+        },
+        {
+          "timestamp": "Wed, 14 Sep 2022 22:24:34 GMT",
+          "installs": 1171
+        },
+        {
+          "timestamp": "Fri, 14 Oct 2022 22:24:34 GMT",
+          "installs": 1317
+        }
+      ],
+      "stats": {
+        "totalMonths": 11,
+        "totalInstalls": 14850,
+        "installsInLast30Days": 1350
+      }
+    }
+  },
+  "napari-lazy-openslide": {
+    "activity": {
+      "timeline": [
+        {
+          "timestamp": "Thu, 14 Apr 2022 22:24:34 GMT",
+          "installs": 285
+        },
+        {
+          "timestamp": "Sat, 14 May 2022 22:24:34 GMT",
+          "installs": 125
+        },
+        {
+          "timestamp": "Tue, 14 Jun 2022 22:24:34 GMT",
+          "installs": 123
+        },
+        {
+          "timestamp": "Thu, 14 Jul 2022 22:24:34 GMT",
+          "installs": 47
+        },
+        {
+          "timestamp": "Sun, 14 Aug 2022 22:24:34 GMT",
+          "installs": 324
+        },
+        {
+          "timestamp": "Wed, 14 Sep 2022 22:24:34 GMT",
+          "installs": 223
+        },
+        {
+          "timestamp": "Fri, 14 Oct 2022 22:24:34 GMT",
+          "installs": 357
+        }
+      ],
+      "stats": {
+        "totalMonths": 7,
+        "totalInstalls": 2730,
+        "installsInLast30Days": 390
+      }
+    }
+  },
+  "napari-btrack-reader": {
+    "activity": {
+      "timeline": [
+        {
+          "timestamp": "Tue, 14 Dec 2021 23:24:34 GMT",
+          "installs": 74
+        },
+        {
+          "timestamp": "Fri, 14 Jan 2022 23:24:34 GMT",
+          "installs": 1064
+        },
+        {
+          "timestamp": "Mon, 14 Feb 2022 23:24:34 GMT",
+          "installs": 449
+        },
+        {
+          "timestamp": "Mon, 14 Mar 2022 22:24:34 GMT",
+          "installs": 197
+        },
+        {
+          "timestamp": "Thu, 14 Apr 2022 22:24:34 GMT",
+          "installs": 1020
+        },
+        {
+          "timestamp": "Sat, 14 May 2022 22:24:34 GMT",
+          "installs": 591
+        },
+        {
+          "timestamp": "Tue, 14 Jun 2022 22:24:34 GMT",
+          "installs": 646
+        },
+        {
+          "timestamp": "Thu, 14 Jul 2022 22:24:34 GMT",
+          "installs": 13
+        },
+        {
+          "timestamp": "Sun, 14 Aug 2022 22:24:34 GMT",
+          "installs": 296
+        },
+        {
+          "timestamp": "Wed, 14 Sep 2022 22:24:34 GMT",
+          "installs": 402
+        },
+        {
+          "timestamp": "Fri, 14 Oct 2022 22:24:34 GMT",
+          "installs": 1128
+        }
+      ],
+      "stats": {
+        "totalMonths": 11,
+        "totalInstalls": 12540,
+        "installsInLast30Days": 1140
+      }
+    }
+  },
+  "cellpose-napari": {
+    "activity": {
+      "timeline": [
+        {
+          "timestamp": "Sun, 14 Nov 2021 23:24:34 GMT",
+          "installs": 490
+        },
+        {
+          "timestamp": "Tue, 14 Dec 2021 23:24:34 GMT",
+          "installs": 653
+        },
+        {
+          "timestamp": "Fri, 14 Jan 2022 23:24:34 GMT",
+          "installs": 327
+        },
+        {
+          "timestamp": "Mon, 14 Feb 2022 23:24:34 GMT",
+          "installs": 244
+        },
+        {
+          "timestamp": "Mon, 14 Mar 2022 22:24:34 GMT",
+          "installs": 58
+        },
+        {
+          "timestamp": "Thu, 14 Apr 2022 22:24:34 GMT",
+          "installs": 919
+        },
+        {
+          "timestamp": "Sat, 14 May 2022 22:24:34 GMT",
+          "installs": 274
+        },
+        {
+          "timestamp": "Tue, 14 Jun 2022 22:24:34 GMT",
+          "installs": 594
+        },
+        {
+          "timestamp": "Thu, 14 Jul 2022 22:24:34 GMT",
+          "installs": 235
+        },
+        {
+          "timestamp": "Sun, 14 Aug 2022 22:24:34 GMT",
+          "installs": 208
+        },
+        {
+          "timestamp": "Wed, 14 Sep 2022 22:24:34 GMT",
+          "installs": 117
+        },
+        {
+          "timestamp": "Fri, 14 Oct 2022 22:24:34 GMT",
+          "installs": 355
+        }
+      ],
+      "stats": {
+        "totalMonths": 15,
+        "totalInstalls": 13950,
+        "installsInLast30Days": 930
+      }
+    }
+  },
+  "brainreg-segment": {
+    "activity": {
+      "timeline": [
+        {
+          "timestamp": "Mon, 14 Mar 2022 22:24:34 GMT",
+          "installs": 475
+        },
+        {
+          "timestamp": "Thu, 14 Apr 2022 22:24:34 GMT",
+          "installs": 339
+        },
+        {
+          "timestamp": "Sat, 14 May 2022 22:24:34 GMT",
+          "installs": 129
+        },
+        {
+          "timestamp": "Tue, 14 Jun 2022 22:24:34 GMT",
+          "installs": 776
+        },
+        {
+          "timestamp": "Thu, 14 Jul 2022 22:24:34 GMT",
+          "installs": 626
+        },
+        {
+          "timestamp": "Sun, 14 Aug 2022 22:24:34 GMT",
+          "installs": 149
+        },
+        {
+          "timestamp": "Wed, 14 Sep 2022 22:24:34 GMT",
+          "installs": 780
+        },
+        {
+          "timestamp": "Fri, 14 Oct 2022 22:24:34 GMT",
+          "installs": 190
+        }
+      ],
+      "stats": {
+        "totalMonths": 8,
+        "totalInstalls": 7200,
+        "installsInLast30Days": 900
+      }
+    }
+  }
+}
