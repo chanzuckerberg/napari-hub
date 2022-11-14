@@ -15,11 +15,22 @@ export interface DataPoint {
   y: number | null;
 }
 
-export interface PluginInstallStats {
-  totalMonths: number;
-  totalInstalls: number;
+interface TimelineDataPoint {
+  timestamp: string;
+  installs: number;
 }
 
-export interface PluginRecentInstallStats {
+interface PluginActivityStats {
+  totalMonths: number;
+  totalInstalls: number;
   installsInLast30Days: number;
+}
+
+interface PluginActivity {
+  timeline: TimelineDataPoint[];
+  stats: PluginActivityStats;
+}
+
+export interface PluginMetrics {
+  activity: PluginActivity;
 }
