@@ -9,7 +9,7 @@ from collections import defaultdict
 import pandas as pd
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
-from api.s3 import get_cache, cache, get_activity_dashboard_data, write_activity_data, get_recent_activity_data_from_s3
+from api.s3 import get_cache, cache, get_activity_dashboard_data, write_data, get_recent_activity_data_from_s3
 from utils.utils import render_description, send_alert, get_attribute, get_category_mapping, parse_manifest
 from utils.datadog import report_metrics
 from api.zulip import notify_new_packages
@@ -414,7 +414,11 @@ def _update_activity_timeline_data():
     for cursor in cursor_list:
         for row in cursor:
             csv_string += str(row[0]) + ',' + str(row[1]) + ',' + str(row[2]) + '\n'
-    write_activity_data(csv_string, "activity_dashboard_data/plugin_installs.csv")
+    write_data(csv_string, "activity_dashboard_data/plugin_installs.csv")
+
+
+def _is_not_valid_limit(limit):
+    return not limit.isdigit() or limit == '0'
 
 
 def get_installs(plugin: str, limit: str) -> List[Any]:
@@ -425,7 +429,7 @@ def get_installs(plugin: str, limit: str) -> List[Any]:
     :param limit: number of objects to return
     :return: list of objects
     """
-    if not limit.isdigit() or limit == '0':
+    if _is_not_valid_limit(limit):
         return []
     plugin_df = get_activity_dashboard_data(plugin)
     return _process_for_timeline(plugin_df, int(limit))
@@ -496,7 +500,7 @@ def _update_recent_activity_data(number_of_time_periods=30, time_granularity='DA
         for row in cursor:
             data[row[0]] = row[1]
 
-    write_activity_data(json.dumps(data), "activity_dashboard_data/recent_installs.json")
+    write_data(json.dumps(data), "activity_dashboard_data/recent_installs.json")
 
 
 def _get_recent_activity_data(plugin) -> int:
@@ -507,10 +511,10 @@ def get_recent_installs_stats(plugin: str) -> Dict:
     return {'installsInLast30days':  _get_recent_activity_data(plugin)}
 
 
-def get_metrics_for_plugin(plugin: str) -> Dict:
+def get_metrics_for_plugin(plugin: str, limit: str) -> Dict:
     data = _get_activity_dashboard_data(plugin)
     install_stats = _process_for_stats(data)
-    timeline = _process_for_timeline(data)
+    timeline = [] if _is_not_valid_limit(limit) else _process_for_timeline(data)
     complete_stats = {
         'totalInstalls': install_stats.get('totalInstalls'),
         'totalMonths': install_stats.get('totalMonths'),
