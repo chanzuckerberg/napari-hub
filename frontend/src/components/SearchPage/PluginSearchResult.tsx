@@ -131,8 +131,8 @@ export function PluginSearchResult({
     return url.pathname + url.search;
   }, [plugin.name, snap]);
 
-  const getLower = (label: I18nPluginDataLabel) =>
-    isString(label) ? label : label.lower ?? label.label;
+  const getLabel = (label: I18nPluginDataLabel) =>
+    isString(label) ? label : label.label;
 
   function getItems(
     ...items: Array<{
@@ -141,7 +141,7 @@ export function PluginSearchResult({
     }>
   ): SearchResultItem[] {
     return items.map((item) => ({
-      label: getLower(item.label),
+      label: getLabel(item.label),
       value: item.value,
     }));
   }
@@ -313,9 +313,7 @@ export function PluginSearchResult({
                   key={`${item.label}-${item.value}`}
                   className="grid grid-cols-[auto,1fr]"
                 >
-                  <h5 className="inline whitespace-nowrap lowercase">
-                    {item.label}
-                  </h5>
+                  <h5 className="inline whitespace-nowrap">{item.label}</h5>
                   <span
                     className={clsx(
                       'ml-sds-xxs',
