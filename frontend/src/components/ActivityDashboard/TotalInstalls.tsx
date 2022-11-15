@@ -38,8 +38,8 @@ export function TotalInstalls() {
   );
 
   const date = useMemo(
-    () => dayjs(plugin?.release_date),
-    [plugin?.release_date],
+    () => dayjs(plugin?.first_released),
+    [plugin?.first_released],
   );
 
   const dateBucketType = useDateBucketType(date);
