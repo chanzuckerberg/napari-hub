@@ -1,9 +1,9 @@
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
-import Button from '@mui/material/Button';
 import Tab from '@mui/material/Tab';
 import clsx from 'clsx';
+import { Button } from 'czifui';
 import { useTranslation } from 'next-i18next';
 import { useEffect, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';

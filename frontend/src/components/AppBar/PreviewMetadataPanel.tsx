@@ -1,5 +1,5 @@
-import Button from '@mui/material/Button';
 import clsx from 'clsx';
+import { Button } from 'czifui';
 import { createElement } from 'react';
 
 import { MetadataStatus } from '@/components/MetadataStatus';

@@ -1,8 +1,8 @@
 import CheckCircle from '@mui/icons-material/CheckCircle';
-import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import IconButton from '@mui/material/IconButton';
 import clsx from 'clsx';
+import { Button } from 'czifui';
 import Image from 'next/image';
 import { useTranslation } from 'next-i18next';
 import { useState } from 'react';

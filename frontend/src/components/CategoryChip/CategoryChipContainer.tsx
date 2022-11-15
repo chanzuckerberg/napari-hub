@@ -1,8 +1,16 @@
 import clsx from 'clsx';
+import { Button } from 'czifui';
 import { isString, set } from 'lodash';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
-import { RefObject, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  MouseEvent,
+  RefObject,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { useSnapshot } from 'valtio';
 
 import { PlausibleEventKey, usePlausible } from '@/hooks';
@@ -132,9 +140,9 @@ export function CategoryChipContainer({
       </div>
 
       {overflowIndex !== Infinity && (
-        <button
-          className="underline hover:bg-hub-gray-100 p-sds-xxs"
-          onClick={(event) => {
+        <Button
+          className="underline hover:bg-hub-gray-100 p-sds-xxs text-black !text-xs font-normal"
+          onClick={(event: MouseEvent<HTMLButtonElement>) => {
             event.preventDefault();
             setOverrideOverflow((state) => {
               const plausibleEvent: PlausibleEventKey = state
@@ -152,14 +160,13 @@ export function CategoryChipContainer({
           }}
           onMouseEnter={() => setIsHovering?.(true)}
           onMouseLeave={() => setIsHovering?.(false)}
-          type="button"
         >
           {overrideOverflow
             ? t('common:collapse')
             : t('common:showMore', {
                 count: (categories || hierarchies).length - overflowIndex,
               })}
-        </button>
+        </Button>
       )}
     </div>
   );
