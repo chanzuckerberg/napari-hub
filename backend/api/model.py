@@ -9,7 +9,7 @@ from collections import defaultdict
 import pandas as pd
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
-from api.s3 import get_cache, cache, get_activity_dashboard_data, write_data, get_recent_activity_data_from_s3
+from api.s3 import get_cache, cache, write_data, get_install_timeline_data, get_recent_activity_data
 from utils.utils import render_description, send_alert, get_attribute, get_category_mapping, parse_manifest
 from utils.datadog import report_metrics
 from api.zulip import notify_new_packages
@@ -178,7 +178,7 @@ def build_manifest_metadata(plugin: str, version: str) -> Tuple[str, dict]:
     manifest = get_manifest(plugin, version)
     if 'error' in manifest:
         if 'Manifest not yet processed' in manifest['error']:
-            # this will invoke the plugins lambda & write manifes to cache
+            # this will invoke the plugins lambda & write manifest to cache
             discover_manifest(plugin, version)
         # return just default values for now
         metadata = parse_manifest()
@@ -395,8 +395,7 @@ def update_activity_data():
 
 def _update_activity_timeline_data():
     """
-    Update existing caches to reflect new activity data. Files updated:
-    - activity_dashboard.csv (overwrite)
+    Update existing caches to reflect new activity data.
     """
     query = """
         SELECT 
@@ -431,7 +430,7 @@ def get_installs(plugin: str, limit: str) -> List[Any]:
     """
     if _is_not_valid_limit(limit):
         return []
-    plugin_df = get_activity_dashboard_data(plugin)
+    plugin_df = get_install_timeline_data(plugin)
     return _process_for_timeline(plugin_df, int(limit), 'x', 'y')
 
 
@@ -471,14 +470,13 @@ def get_installs_stats(plugin: str) -> Any:
     :param plugin: plugin name
     :return: object
     """
-    plugin_df = get_activity_dashboard_data(plugin)
+    plugin_df = get_install_timeline_data(plugin)
     return _process_for_stats(plugin_df)
 
 
 def _update_recent_activity_data(number_of_time_periods=30, time_granularity='DAY'):
     """
-    Update existing caches to reflect recent activity data. Files updated:
-    - activity_dashboard_data/recent_installs.json (overwrite)
+    Update existing caches to reflect recent activity data.
     """
     query = f"""
         SELECT 
@@ -502,15 +500,15 @@ def _update_recent_activity_data(number_of_time_periods=30, time_granularity='DA
 
 
 def _get_recent_activity_data(plugin) -> int:
-    return get_recent_activity_data_from_s3().get(plugin, 0)
+    return get_recent_activity_data().get(plugin, 0)
 
 
 def get_recent_installs_stats(plugin: str) -> Dict:
-    return {'installsInLast30days':  _get_recent_activity_data(plugin)}
+    return {'installsInLast30days': _get_recent_activity_data(plugin)}
 
 
 def get_metrics_for_plugin(plugin: str, limit: str) -> Dict:
-    data = get_activity_dashboard_data(plugin)
+    data = get_install_timeline_data(plugin)
     install_stats = _process_for_stats(data)
     timeline = [] if _is_not_valid_limit(limit) else _process_for_timeline(data, int(limit), 'timestamp', 'installs')
     complete_stats = {

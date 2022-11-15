@@ -75,9 +75,9 @@ def _get_from_s3(path):
     return s3_client.get_object(Bucket=bucket, Key=_get_complete_path(path))['Body'].read().decode('utf-8')
 
 
-def get_activity_dashboard_data(plugin):
+def get_install_timeline_data(plugin):
     """
-    Get the content of activity_dashboard.csv file on s3.
+    Read activity dashboard install data from s3
 
     :param plugin: plugin name
     :return: dataframe that consists of plugin-specific data for activity_dashboard backend endpoints
@@ -89,7 +89,7 @@ def get_activity_dashboard_data(plugin):
     return plugin_df
 
 
-def get_recent_activity_data_from_s3() -> Dict:
+def get_recent_activity_data() -> Dict:
     try:
         return json.loads(_get_from_s3("activity_dashboard_data/recent_installs.json"))
     except Exception as e:

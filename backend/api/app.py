@@ -133,7 +133,7 @@ def get_plugin_recent_installs_stats(plugin: str) -> Response:
 
 @app.route('/metrics/<plugin>')
 def get_plugin_metrics(plugin: str) -> Response:
-    return jsonify(get_metrics_for_plugin(plugin), request.args.get('limit', '12'))
+    return jsonify(get_metrics_for_plugin(plugin, request.args.get('limit', '12')))
 
 
 @app.route('/collections')
