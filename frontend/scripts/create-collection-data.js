@@ -142,7 +142,7 @@ for (let i = 0; i < titles.length; i += 1) {
     if (!pluginSet.has(plugin.name)) {
       pluginSet.add(plugin.name);
       plugins.push(sample(allPlugins));
-      pluginCount--;
+      pluginCount -= 1;
     }
   }
 
