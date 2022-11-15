@@ -11,7 +11,7 @@ import { MetadataHighlighter } from '@/components/MetadataHighlighter';
 import { SkeletonLoader } from '@/components/SkeletonLoader';
 import { useLoadingState } from '@/context/loading';
 import { usePluginState } from '@/context/plugin';
-import { useMediaQuery } from '@/hooks';
+import { useMediaQuery, usePlausible } from '@/hooks';
 import { pluginTabsStore, resetPluginTabs } from '@/store/pluginTabs';
 import { PluginTabType } from '@/types/plugin';
 
@@ -63,6 +63,7 @@ export function PluginTabs() {
   const { activeTab } = useSnapshot(pluginTabsStore);
   const isLoading = useLoadingState();
   const hasPluginMetadataScroll = useMediaQuery({ maxWidth: 'screen-1425' });
+  const plausible = usePlausible();
 
   // Reset plugin tab state when navigating away from page.
   useEffect(resetPluginTabs, []);
@@ -128,7 +129,13 @@ export function PluginTabs() {
           }}
           value={activeTab}
           onChange={(_, nextTab) => {
-            pluginTabsStore.activeTab = nextTab as PluginTabType;
+            const tab = nextTab as PluginTabType;
+            pluginTabsStore.activeTab = tab;
+
+            plausible('Plugin Tab Nav', {
+              tab,
+              plugin: plugin?.name ?? '',
+            });
           }}
         >
           {tabs.map(({ label, tab }) => (
