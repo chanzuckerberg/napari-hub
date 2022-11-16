@@ -1,9 +1,9 @@
 import styled from '@emotion/styled';
 import { AutocompleteRenderOptionState } from '@mui/material/Autocomplete';
-import IconButton from '@mui/material/IconButton';
 import clsx from 'clsx';
 import {
   Button,
+  ButtonIcon,
   ComplexFilter,
   DefaultMenuSelectOption,
   DropdownPopper,
@@ -327,9 +327,9 @@ export function PluginComplexFilter({ filterKey }: Props) {
                   </div>
                 }
               >
-                <IconButton>
+                <ButtonIcon className="p-1">
                   <Info />
-                </IconButton>
+                </ButtonIcon>
               </Tooltip>
             )}
           </div>

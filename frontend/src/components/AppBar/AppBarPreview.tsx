@@ -1,6 +1,6 @@
 import Collapse from '@mui/material/Collapse';
-import IconButton from '@mui/material/IconButton';
 import clsx from 'clsx';
+import { ButtonIcon } from 'czifui';
 import { useTranslation } from 'next-i18next';
 import { ReactNode, useState } from 'react';
 
@@ -117,8 +117,8 @@ function AppBarPreviewRightColumn({
   const sections = useMetadataSections();
 
   const renderExpandButton = () => (
-    <IconButton
-      className="rounded-none"
+    <ButtonIcon
+      className="rounded-none p-2"
       onClick={() => setExpanded((prevExpanded) => !prevExpanded)}
       size="large"
     >
@@ -127,7 +127,7 @@ function AppBarPreviewRightColumn({
       ) : (
         <ChevronDown className="h-6 w-6" />
       )}
-    </IconButton>
+    </ButtonIcon>
   );
 
   return (

@@ -1,6 +1,6 @@
-import IconButton from '@mui/material/IconButton';
 import Popover from '@mui/material/Popover';
 import clsx from 'clsx';
+import { ButtonIcon } from 'czifui';
 
 import { Close } from '@/components/icons';
 import { Link } from '@/components/Link';
@@ -54,14 +54,14 @@ export function MenuPopover({ anchorEl, items, onClose, visible }: Props) {
         ))}
       </ul>
 
-      <IconButton
+      <ButtonIcon
         className="self-start p-0"
         data-testid="menuClose"
         onClick={onClose}
         size="large"
       >
         <Close />
-      </IconButton>
+      </ButtonIcon>
     </Popover>
   );
 }
