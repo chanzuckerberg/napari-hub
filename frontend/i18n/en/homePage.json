@@ -2,8 +2,6 @@
   "browsePlugins": "Browse plugins: <count />",
   "fetchError": "Unable to fetch plugin index",
   "searchBar": "Search for a plugin by keyword or author",
-  "showMore": "Show {{count}} more",
-  "collapse": "Collapse",
 
   "ariaLabels": {
     "sortPlugins": "Sort plugins by"
