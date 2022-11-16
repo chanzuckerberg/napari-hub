@@ -1,17 +1,14 @@
-import TabContext from '@mui/lab/TabContext';
-import TabList from '@mui/lab/TabList';
-import TabPanel from '@mui/lab/TabPanel';
-import Tab from '@mui/material/Tab';
 import clsx from 'clsx';
 import { Button } from 'czifui';
 import { useTranslation } from 'next-i18next';
-import { useEffect, useState } from 'react';
+import { ComponentProps, useEffect, useMemo, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 
 import { AnchorHeading } from '@/components/AnchorHeading';
 import { I18n } from '@/components/I18n';
+import { TabData, Tabs } from '@/components/Tabs';
 import { usePluginState } from '@/context/plugin';
-import { CitationData } from '@/types';
+import { CitationType } from '@/types';
 
 import { ANCHOR } from './CitationInfo.constants';
 
@@ -19,10 +16,9 @@ interface Props {
   className?: string;
 }
 
-type CitationKeys = keyof CitationData;
-const CITATION_TYPES: CitationKeys[] = ['APA', 'BibTex', 'RIS'];
+const CITATION_TYPES: CitationType[] = ['APA', 'BibTex', 'RIS'];
 
-const CITATION_EXTS: Record<CitationKeys, string> = {
+const CITATION_EXTS: Record<CitationType, string> = {
   citation: 'cff',
   APA: 'txt',
   BibTex: 'bib',
@@ -31,28 +27,42 @@ const CITATION_EXTS: Record<CitationKeys, string> = {
 
 const COPY_FEEDBACK_DEBOUNCE_DURATION_MS = 2_000;
 
-const BUTTON_STYLES =
-  'border-2 border-hub-primary-400 py-sds-l px-sds-xl font-semibold h-12 col-span-1 text-black';
+function CitationButton(props: ComponentProps<typeof Button>) {
+  return (
+    <Button
+      className={clsx(
+        'border-2 border-hub-primary-400 py-sds-l px-sds-xl font-semibold h-12 col-span-1 text-black',
+      )}
+      variant="outlined"
+      {...props}
+    />
+  );
+}
 
 export function CitationInfo({ className }: Props) {
   const [t] = useTranslation(['common', 'pluginPage']);
   const { plugin } = usePluginState();
   const [copied, setCopied] = useState(false);
-  const [tab, setTab] = useState(CITATION_TYPES[0]);
+  const [activeTab, setActiveTab] = useState(CITATION_TYPES[0]);
   useEffect(() => {
     setCopied(false); // set copy to false when tab changed
-  }, [tab]);
+  }, [activeTab]);
 
   const setCopiedDebounced = useDebouncedCallback(
     (value: boolean) => setCopied(value),
     COPY_FEEDBACK_DEBOUNCE_DURATION_MS,
   );
 
-  const citation = plugin?.citations ? plugin.citations[tab] : '';
+  const citation = plugin?.citations ? plugin.citations[activeTab] : '';
 
-  const handleChange = (_: unknown, changedTab: CitationKeys) => {
-    setTab(changedTab);
-  };
+  const tabs = useMemo(
+    () =>
+      CITATION_TYPES.map((type) => ({
+        label: type,
+        value: type,
+      })) as TabData<CitationType>[],
+    [],
+  );
 
   return (
     <div className={className}>
@@ -65,45 +75,20 @@ export function CitationInfo({ className }: Props) {
         </p>
       </div>
       <div>
-        <TabContext value={tab}>
-          <TabList
-            onChange={handleChange}
-            className="min-h-0"
-            indicatorColor="primary"
-            classes={{
-              indicator: 'bg-hub-primary-400',
-            }}
-          >
-            {CITATION_TYPES.map((item) => {
-              return (
-                <Tab
-                  label={item}
-                  value={item}
-                  key={item}
-                  className="min-w-0 min-h-0 p-0 pb-1 mr-sds-xl text-black font-semibold opacity-100"
-                />
-              );
-            })}
-          </TabList>
-          {CITATION_TYPES.map((item) => {
-            return (
-              <TabPanel
-                value={item}
-                key={item}
-                className="px-sds-l mt-sds-xl bg-hub-gray-100"
-              >
-                <div className="whitespace-pre-wrap overflow-y-auto max-h-32">
-                  {plugin?.citations?.[item]}
-                </div>
-              </TabPanel>
-            );
-          })}
-        </TabContext>
+        <Tabs
+          activeTab={activeTab}
+          tabs={tabs}
+          onChange={(tab) => setActiveTab(tab.value)}
+        />
+
+        <div className="px-sds-l mt-sds-xl bg-hub-gray-100">
+          <div className="whitespace-pre-wrap overflow-y-auto max-h-32">
+            {plugin?.citations?.[activeTab]}
+          </div>
+        </div>
 
         <div className="grid screen-600:grid-cols-napari-3 gap-sds-xl  screen-600:gap-12 mt-sds-xl">
-          <Button
-            className={BUTTON_STYLES}
-            variant="outlined"
+          <CitationButton
             onClick={async () => {
               if (citation) {
                 await navigator.clipboard?.writeText?.(citation);
@@ -124,19 +109,17 @@ export function CitationInfo({ className }: Props) {
             ) : (
               <>{t('pluginPage:citations.copy')}</>
             )}
-          </Button>
+          </CitationButton>
 
           {plugin?.name && citation && (
-            <Button
-              className={clsx(BUTTON_STYLES)}
-              variant="outlined"
-              download={`${plugin.name}.${CITATION_EXTS[tab]}`}
+            <CitationButton
+              download={`${plugin.name}.${CITATION_EXTS[activeTab]}`}
               href={`data:text/plain;charset=utf-8,${encodeURIComponent(
                 citation,
               )}`}
             >
               {t('common:download')}
-            </Button>
+            </CitationButton>
           )}
         </div>
       </div>
