@@ -15,7 +15,8 @@ describe('<SignupForm />', () => {
       <>
         <div id={FORM_CONTAINER_ID}>
           <form>
-            <input />
+            <input type="email" />
+            <input type="submit" />
           </form>
         </div>
         <SignupForm onSubmit={onSubmit} />
