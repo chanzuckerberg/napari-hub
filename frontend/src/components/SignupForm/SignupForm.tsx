@@ -51,7 +51,8 @@ export function SignupForm({ onSubmit, variant = 'default' }: Props) {
       ? document.querySelector(`${FORM_CONTAINER_ID_QUERY} form`)
       : null;
 
-    const emailInput = form?.querySelector('input');
+    const emailInput =
+      form?.querySelector<HTMLInputElement>('input[type=email]');
 
     const submitButton =
       form?.querySelector<HTMLInputElement>('input[type=submit]');
