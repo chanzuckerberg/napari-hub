@@ -40,7 +40,7 @@ export function CategoryChipContainer({
   const categoryChipsRef = useRef<HTMLDivElement[]>([]);
   const [overflowIndex, setOverflowIndex] = useState(Infinity);
   const [overrideOverflow, setOverrideOverflow] = useState(false);
-  const { t } = useTranslation(['homePage']);
+  const { t } = useTranslation(['common']);
   const plausible = usePlausible();
 
   useEffect(() => {
@@ -155,8 +155,8 @@ export function CategoryChipContainer({
           type="button"
         >
           {overrideOverflow
-            ? t('homePage:collapse')
-            : t('homePage:showMore', {
+            ? t('common:collapse')
+            : t('common:showMore', {
                 count: (categories || hierarchies).length - overflowIndex,
               })}
         </button>

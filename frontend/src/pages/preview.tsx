@@ -33,7 +33,6 @@ export async function getStaticProps({
     'pageTitles',
     'pluginPage',
     'pluginData',
-    'preview',
   ] as I18nNamespace[]);
 
   // Return default data to prevent Next.js error if the plugin path is not defined.

@@ -1,6 +1,7 @@
 {
   "about": "About",
   "close": "Close",
+  "collapse": "Collapse",
   "collections": "Collections",
   "contact": "Contact",
   "cziOss": "Chan Zuckerberg Initiative EOSS Program",
@@ -20,6 +21,7 @@
   "plausiblePrivacy": "Plausible.io Privacy Policy",
   "plugins": "Plugins",
   "privacy": "Privacy",
+  "showMore": "Show {{count}} more",
 
   "ariaLabels": {
     "clearSearchBar": "Clear search bar text",
