@@ -196,7 +196,47 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Activity-Stats'
+  /activity/{name}/recent_stats:
+    get:
+      summary: Get an objects, where it has attribute installsInLast30days
+      tags:
+        - activity
+      parameters:
+        - name: name
+          in: path
+          description: name of plugin to query
+          required: true
+          schema:
+            type: string
+          example: napari-demo
+      responses:
+        200:
+          description: The return json is a map.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Activity-Stats'
 
+  /metrics/{name}:
+    get:
+      summary: Get an objects, where it has attribute of statistics and timeline
+      tags:
+        - activity
+      parameters:
+        - name: name
+          in: path
+          description: name of plugin to query
+          required: true
+          schema:
+            type: string
+          example: napari-demo
+      responses:
+        200:
+          description: The return json is the list of objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Activity-Stats'
 components:
   schemas:
     Categories:
