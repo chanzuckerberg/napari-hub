@@ -51,19 +51,19 @@ export function SignupForm({ onSubmit, variant = 'default' }: Props) {
       ? document.querySelector(`${FORM_CONTAINER_ID_QUERY} form`)
       : null;
 
-    if (!isValid || !form) {
+    const emailInput = form?.querySelector('input');
+
+    const submitButton =
+      form?.querySelector<HTMLInputElement>('input[type=submit]');
+
+    if (!isValid || !form || !emailInput || !submitButton) {
       return;
     }
 
-    const input = form.querySelector('input');
-    if (!input) {
-      return;
-    }
+    emailInput.value = email;
+    emailInput.dispatchEvent(new Event('input', { bubbles: true }));
+    submitButton.click();
 
-    input.value = email;
-    input.dispatchEvent(new Event('input', { bubbles: true }));
-
-    form.submit();
     onSubmit?.(event);
     plausible('Signup');
   };
