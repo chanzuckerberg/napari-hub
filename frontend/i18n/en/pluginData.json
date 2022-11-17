@@ -3,29 +3,28 @@
     "authors": "Authors",
     "citations": "Citation information",
     "description": "Description",
+    "displayName": "Display name",
     "documentation": "Documentation",
     "firstReleased": "First released",
+    "Image modality": "Image modality",
+    "license": "License",
+    "operatingSystem": "Operating system",
     "projectSite": "Project site",
+    "readerFileExtensions": "Open extension",
+    "releaseDate": "Release date",
     "reportIssues": "Report issues",
     "requirements": "Requirements",
     "sourceCode": "Source code",
-
-    "Image modality": "Image modality",
     "Supported data": "Supported data",
+    "twitter": "Twitter",
+    "version": "Version",
     "Workflow step": "Workflow step",
+    "writerFileExtensions": "Save extension",
 
     "pluginType": {
       "label": "Plugin type",
       "reader": "File reader",
       "writer": "File writer"
-    },
-
-    "readerFileExtensions": {
-      "label": "Open extension"
-    },
-
-    "writerFileExtensions": {
-      "label": "Save extension"
     },
 
     "writerSaveLayers": {
@@ -35,34 +34,14 @@
       "shapes": "Shapes"
     },
 
-    "license": {
-      "label": "License",
-      "lower": "license"
-    },
-
-    "operatingSystem": {
-      "label": "Operating system",
-      "lower": "operating system"
-    },
-
     "pluginName": {
       "label": "Plugin name",
       "preview": "Name"
     },
 
-    "displayName": {
-      "label": "Display name"
-    },
-
     "pythonVersion": {
       "label": "Python versions supported",
-      "short": "Python versions",
-      "lower": "Python version"
-    },
-
-    "releaseDate": {
-      "label": "Release date",
-      "lower": "release date"
+      "short": "Python versions"
     },
 
     "summary": {
@@ -73,15 +52,6 @@
     "supportSite": {
       "label": "Support site",
       "preview": "Support"
-    },
-
-    "twitter": {
-      "label": "Twitter"
-    },
-
-    "version": {
-      "label": "Version",
-      "lower": "version"
     }
   },
 
