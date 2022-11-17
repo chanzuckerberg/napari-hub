@@ -1,5 +1,6 @@
 import { usePlausible as usePlausibleNext } from 'next-plausible';
 
+import { PluginTabType } from '@/types/plugin';
 import { Logger } from '@/utils';
 
 const logger = new Logger('usePlausible.ts');
@@ -56,6 +57,11 @@ export type Events = {
   };
 
   'CTA: New Collection': unknown;
+
+  'Plugin Tab Nav': {
+    plugin: string;
+    tab: PluginTabType;
+  };
 };
 
 export type PlausibleEventKey = keyof Events;
