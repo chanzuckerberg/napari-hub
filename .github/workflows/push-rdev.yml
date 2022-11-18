@@ -39,7 +39,7 @@ jobs:
             echo "branch name: ${GITHUB_REF_NAME}, length ${#GITHUB_REF_NAME}, is $((${#GITHUB_REF_NAME} - 32)) characters too long, please use a branch name that's 32 characters or shorter"
             exit 1
           else 
-            echo STACK_NAME=${GITHUB_REF_NAME} >> $GITHUB_ENV
+            echo $GITHUB_REF_NAME | tr '[:upper:]' '[:lower:]' | xargs -I {} -n 1 echo STACK_NAME={} >> $GITHUB_ENV
           fi
       - name: Create update dev
         if: ${{ github.event_name == 'push' }}
