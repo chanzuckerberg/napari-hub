@@ -3,8 +3,8 @@ import { ComponentType, useMemo } from 'react';
 import {
   VictoryArea,
   VictoryAxis,
+  VictoryAxisCommonProps,
   VictoryGroup,
-  VictoryLabel,
   VictoryLabelProps,
   VictoryPortal,
   VictoryScatter,
@@ -15,6 +15,7 @@ import { DataPoint } from '@/types/stats';
 
 import { AreaChartLayout } from './AreaChartLayout';
 import { AreaChartLine } from './AreaChartLine';
+import { AxisLabel } from './AxisLabel';
 import { LineTooltip } from './LineTooltip';
 import { ScatterPoint } from './ScatterPoint';
 
@@ -26,6 +27,9 @@ interface Props {
   lineComponents?: ComponentType<VictoryLabelProps>[];
   xTicks: number[];
 }
+
+// Only show January, April, July, and October on x-axis
+const X_TICK_ALLOWED_MONTHS = new Set([0, 3, 6, 9]);
 
 export function AreaChart({
   data,
@@ -47,9 +51,14 @@ export function AreaChart({
     return undefined;
   }, [data]);
 
-  const allowedXTickValues = useMemo(
-    () => new Set(xTicks.filter((_, idx) => idx % 3 === 0)),
-    [xTicks],
+  const axisStyle = useMemo<VictoryAxisCommonProps['style']>(
+    () => ({
+      ticks: {
+        stroke: '#000',
+        size: 3,
+      },
+    }),
+    [],
   );
 
   return (
@@ -84,28 +93,16 @@ export function AreaChart({
           x: dayjs().subtract(2, 'month').endOf('month').toDate().getTime(),
         }}
         tickFormat={(value: number) => {
-          return allowedXTickValues.has(value)
-            ? dayjs(value).format('MMM')
+          const date = dayjs(value);
+
+          return X_TICK_ALLOWED_MONTHS.has(date.get('month'))
+            ? date.format('MMM')
             : '';
         }}
         scale="time"
-        tickLabelComponent={
-          <VictoryLabel
-            dy={-4}
-            style={{
-              fontFamily: 'Barlow',
-              fontSize: isScreen600 ? 24 : 11,
-              fontWeight: 400,
-            }}
-          />
-        }
+        tickLabelComponent={<AxisLabel dy={-4} />}
         tickValues={xTicks}
-        style={{
-          ticks: {
-            stroke: '#000',
-            size: isScreen600 ? 5 : 3,
-          },
-        }}
+        style={axisStyle}
       />
 
       {/* Y-Axis */}
@@ -113,32 +110,10 @@ export function AreaChart({
         dependentAxis
         crossAxis
         standalone={false}
-        tickLabelComponent={
-          <VictoryLabel
-            style={{
-              fontFamily: 'Barlow',
-              fontSize: isScreen600 ? 24 : 11,
-              fontWeight: 400,
-            }}
-          />
-        }
+        tickLabelComponent={<AxisLabel />}
         label={yLabel}
-        axisLabelComponent={
-          <VictoryLabel
-            dy={isScreen600 ? -40 : -20}
-            style={{
-              fontFamily: 'Barlow',
-              fontSize: isScreen600 ? 24 : 11,
-              fontWeight: 400,
-            }}
-          />
-        }
-        style={{
-          ticks: {
-            stroke: '#000',
-            size: isScreen600 ? 5 : 3,
-          },
-        }}
+        axisLabelComponent={<AxisLabel dy={isScreen600 ? -40 : -20} />}
+        style={axisStyle}
         tickValues={tickValues}
       />
     </AreaChartLayout>
