@@ -1,25 +1,44 @@
 import { useTranslation } from 'next-i18next';
 import { useMemo } from 'react';
 
-const DEFAULT_OPTIONS: Intl.NumberFormatOptions = {
-  notation: 'compact',
-  maximumFractionDigits: 1,
+export enum FormatType {
+  Short,
+  Standard,
+}
+
+const FORMAT_OPTIONS: Record<FormatType, Intl.NumberFormatOptions> = {
+  [FormatType.Short]: {
+    notation: 'compact',
+    maximumFractionDigits: 1,
+  },
+
+  [FormatType.Standard]: {
+    notation: 'standard',
+  },
 };
 
-export function useNumberFormatter(options = DEFAULT_OPTIONS) {
+/**
+ * Gets a number formatter instance that formats the number based on the
+ * selected format type.
+ */
+export function useNumberFormatter(type = FormatType.Standard) {
   const { i18n } = useTranslation();
 
   return useMemo(
-    () => new Intl.NumberFormat(i18n.language, options),
-    [i18n.language, options],
+    () => new Intl.NumberFormat(i18n.language, FORMAT_OPTIONS[type]),
+    [i18n.language, type],
   );
 }
 
+/**
+ * Convenience hook for formatting and memoizing a number directly using the
+ * above number formatter hook.
+ */
 export function useFormattedNumber(
   value: number | null | undefined,
-  options = DEFAULT_OPTIONS,
+  type = FormatType.Standard,
 ): string {
-  const formatter = useNumberFormatter(options);
+  const formatter = useNumberFormatter(type);
 
   return useMemo(
     () => (typeof value === 'number' ? formatter.format(value) : String(value)),
