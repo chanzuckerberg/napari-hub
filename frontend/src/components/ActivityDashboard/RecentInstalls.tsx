@@ -40,7 +40,7 @@ export function RecentInstalls() {
 
       <span className="mr-2">{t('activity:recentInstalls.inPast')}</span>
 
-      <div className="!font-medium">{t('activity:duration.30days')}</div>
+      <span className="!font-medium">{t('activity:duration.30days')}</span>
     </Text>
   );
 }
