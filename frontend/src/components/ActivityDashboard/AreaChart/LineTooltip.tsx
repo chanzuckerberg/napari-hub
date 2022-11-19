@@ -4,16 +4,12 @@ import { VictoryLabel, VictoryLabelProps, VictoryTooltipProps } from 'victory';
 import { useFormattedNumber, useMediaQuery } from '@/hooks';
 import { DataPoint } from '@/types/stats';
 
-const FORMAT_OPTIONS: Intl.NumberFormatOptions = {
-  notation: 'standard',
-};
-
 export function LineTooltip(props: VictoryLabelProps) {
   const isScreen600 = useMediaQuery({ minWidth: 'screen-600' });
   const { x = 0, datum, active } = props as VictoryTooltipProps;
   const point = datum as DataPoint;
 
-  const formattedY = useFormattedNumber(point.y, FORMAT_OPTIONS);
+  const formattedY = useFormattedNumber(point.y);
   const formattedDataPoint = useMemo(
     () => ({
       ...datum,

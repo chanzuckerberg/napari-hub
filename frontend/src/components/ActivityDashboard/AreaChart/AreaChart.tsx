@@ -10,7 +10,7 @@ import {
   VictoryScatter,
 } from 'victory';
 
-import { useMediaQuery, useNumberFormatter } from '@/hooks';
+import { FormatType, useMediaQuery, useNumberFormatter } from '@/hooks';
 import { DataPoint } from '@/types/stats';
 
 import { AreaChartLayout } from './AreaChartLayout';
@@ -61,7 +61,7 @@ export function AreaChart({
     [],
   );
 
-  const yAxisTickFormatter = useNumberFormatter();
+  const yAxisTickFormatter = useNumberFormatter(FormatType.Short);
 
   return (
     <AreaChartLayout height={height}>

@@ -8,6 +8,7 @@ import { usePluginState } from '@/context/plugin';
 import {
   useDateBucketType,
   useFormattedDuration,
+  useFormattedNumber,
   usePluginMetrics,
 } from '@/hooks';
 
@@ -24,19 +25,8 @@ export function TotalInstalls() {
   const { data: metrics, isLoading } = usePluginMetrics(plugin?.name);
   const stats = metrics?.activity.stats;
 
-  const { t, i18n } = useTranslation(['activity']);
-  const installsFormatter = useMemo(
-    () =>
-      new Intl.NumberFormat(i18n.language, {
-        notation: 'compact',
-        maximumFractionDigits: 1,
-      }),
-    [i18n.language],
-  );
-  const formattedInstalls = useMemo(
-    () => installsFormatter.format(stats?.totalInstalls ?? 0),
-    [installsFormatter, stats?.totalInstalls],
-  );
+  const { t } = useTranslation(['activity']);
+  const formattedInstalls = useFormattedNumber(stats?.totalInstalls);
 
   const date = useMemo(
     () => dayjs(plugin?.first_released),
