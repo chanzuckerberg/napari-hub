@@ -28,7 +28,7 @@ export function RecentInstalls() {
   );
 
   return (
-    <Text className="font-light max-w-napari-col" element="p" variant="h2">
+    <Text className="font-light" element="p" variant="h2">
       <span className="!font-medium inline-flex items-center mr-2">
         {isLoading ? (
           <Skeleton className="mr-2" width={32} />
