@@ -1,6 +1,11 @@
 {
   "installs": "installs",
+  "installsTitle": "Installs",
   "usage": "Usage",
+  "monthlyInstalls": {
+    "title": "Monthly installs in past year",
+    "publicRelease": "Public release"
+  },
   "duration": {
     "30days": "30 days",
     "lessThan": "less than",

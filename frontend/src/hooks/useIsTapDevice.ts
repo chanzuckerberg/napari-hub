@@ -8,7 +8,7 @@ import { useMedia } from 'react-use';
  * browser.
  */
 export function useIsTapDevice() {
-  const isTap = useMedia('(any-hover: none)');
+  const isTap = useMedia('(any-hover: none)', false);
   const [isTapDevice, setIsTapDevice] = useState(false);
 
   useEffect(() => setIsTapDevice(isTap), [isTap]);
