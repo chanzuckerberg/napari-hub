@@ -1,6 +1,7 @@
 import Skeleton from '@mui/material/Skeleton';
 import dayjs from 'dayjs';
 import { useTranslation } from 'next-i18next';
+import { useMemo } from 'react';
 
 import { AreaChart } from '@/components/ActivityDashboard/AreaChart';
 import { LineTooltip } from '@/components/ActivityDashboard/AreaChart/LineTooltip';
@@ -8,7 +9,8 @@ import { EmptyState } from '@/components/ActivityDashboard/EmptyState';
 import { I18n } from '@/components/I18n';
 import { Text } from '@/components/Text';
 import { usePluginState } from '@/context/plugin';
-import { useMediaQuery, usePluginActivity } from '@/hooks';
+import { useMediaQuery, usePluginMetrics } from '@/hooks';
+import { DataPoint } from '@/types/stats';
 
 import { PublishedLine } from './PublishedLine';
 import { useChartData } from './useChartData';
@@ -18,12 +20,18 @@ export function MonthlyInstalls() {
   const isScreen600 = useMediaQuery({ minWidth: 'screen-600' });
   const [t] = useTranslation(['activity']);
   const { plugin } = usePluginState();
-  const { dataPoints, isLoading } = usePluginActivity(plugin?.name, {
-    enabled: !!plugin?.name,
-  });
+  const { data: metrics, isLoading } = usePluginMetrics(plugin?.name);
 
   const visibleMonths = useVisibleMonthsTicks();
-  const data = useChartData(
+  const dataPoints = useMemo<DataPoint[]>(
+    () =>
+      metrics?.activity.timeline.map((point) => ({
+        x: new Date(point.timestamp).getTime(),
+        y: point.installs,
+      })) ?? [],
+    [metrics?.activity.timeline],
+  );
+  const chartData = useChartData(
     dataPoints,
     dayjs(plugin?.release_date),
     visibleMonths,
@@ -33,7 +41,7 @@ export function MonthlyInstalls() {
     return <Skeleton height="100%" variant="rectangular" />;
   }
 
-  const isEmpty = data.length === 0;
+  const isEmpty = chartData.length === 0;
 
   return (
     <section>
@@ -46,7 +54,7 @@ export function MonthlyInstalls() {
           </EmptyState>
         ) : (
           <AreaChart
-            data={data}
+            data={chartData}
             yLabel={t('activity:installsTitle')}
             // height defines aspect ratio of the chart:
             // https://formidable.com/open-source/victory/guides/layout/#default-layout

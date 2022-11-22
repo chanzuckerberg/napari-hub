@@ -4,13 +4,12 @@ import { useMemo } from 'react';
 
 import { Text } from '@/components/Text';
 import { usePluginState } from '@/context/plugin';
-import { usePluginRecentInstallStats } from '@/hooks/usePluginRecentInstallStats';
+import { usePluginMetrics } from '@/hooks';
 
 export function RecentInstalls() {
   const { plugin } = usePluginState();
-  const { pluginRecentStats, isLoading } = usePluginRecentInstallStats(
-    plugin?.name,
-  );
+  const { data: metrics, isLoading } = usePluginMetrics(plugin?.name);
+  const stats = metrics?.activity.stats;
 
   const { t, i18n } = useTranslation(['activity']);
   const installsFormatter = useMemo(
@@ -22,9 +21,8 @@ export function RecentInstalls() {
     [i18n.language],
   );
   const formattedInstalls = useMemo(
-    () =>
-      installsFormatter.format(pluginRecentStats?.installsInLast30Days ?? 0),
-    [installsFormatter, pluginRecentStats?.installsInLast30Days],
+    () => installsFormatter.format(stats?.installsInLast30Days ?? 0),
+    [installsFormatter, stats?.installsInLast30Days],
   );
 
   return (

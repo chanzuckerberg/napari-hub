@@ -12,7 +12,7 @@ const { set, pick, get } = require('lodash');
 const napariPlugin = require('./src/fixtures/plugin.json');
 const pluginIndex = require('./src/fixtures/index.json');
 const collections = require('./src/fixtures/collections.json');
-const activity = require('./src/fixtures/activity.json');
+const metrics = require('./src/fixtures/metrics.json');
 
 const app = express();
 
@@ -70,31 +70,11 @@ app.get('/collections/:symbol', async (req, res) => {
   }
 });
 
-app.get('/activity/:plugin/stats', (req, res) => {
-  const stats = get(activity, [req.params.plugin, 'stats'], null);
+app.get('/metrics/:plugin', (req, res) => {
+  const result = get(metrics, [req.params.plugin], null);
 
-  if (stats) {
-    res.json(stats);
-  } else {
-    res.status(404).send('not found');
-  }
-});
-
-app.get('/activity/:plugin/recent_stats', (req, res) => {
-  const stats = get(activity, [req.params.plugin, 'recentStats'], null);
-
-  if (stats) {
-    res.json(stats);
-  } else {
-    res.status(404).send('not found');
-  }
-});
-
-app.get('/activity/:plugin', async (req, res) => {
-  const points = get(activity, [req.params.plugin, 'points'], null);
-
-  if (points) {
-    res.json(points);
+  if (result) {
+    res.json(result);
   } else {
     res.status(404).send('not found');
   }

@@ -8,7 +8,7 @@ import { usePluginState } from '@/context/plugin';
 import {
   useDateBucketType,
   useFormattedDuration,
-  usePluginInstallStats,
+  usePluginMetrics,
 } from '@/hooks';
 
 enum DateBucketType {
@@ -21,7 +21,8 @@ enum DateBucketType {
 
 export function TotalInstalls() {
   const { plugin } = usePluginState();
-  const { pluginStats, isLoading } = usePluginInstallStats(plugin?.name);
+  const { data: metrics, isLoading } = usePluginMetrics(plugin?.name);
+  const stats = metrics?.activity.stats;
 
   const { t, i18n } = useTranslation(['activity']);
   const installsFormatter = useMemo(
@@ -33,8 +34,8 @@ export function TotalInstalls() {
     [i18n.language],
   );
   const formattedInstalls = useMemo(
-    () => installsFormatter.format(pluginStats?.totalInstalls ?? 0),
-    [installsFormatter, pluginStats?.totalInstalls],
+    () => installsFormatter.format(stats?.totalInstalls ?? 0),
+    [installsFormatter, stats?.totalInstalls],
   );
 
   const date = useMemo(
