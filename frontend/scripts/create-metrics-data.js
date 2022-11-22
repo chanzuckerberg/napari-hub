@@ -24,14 +24,12 @@ for (const plugin of plugins) {
 
   const timeline = [];
   const now = dayjs();
-  for (let i = 1; i <= Math.min(totalMonths, 12); i += 1) {
+  for (let i = Math.min(totalMonths, 12); i >= 1; i -= 1) {
     timeline.push({
       timestamp: now.subtract(i, 'month').toString(),
       installs: Math.floor(installsInLast30Days * random(true)),
     });
   }
-
-  timeline.reverse();
 
   metrics[plugin] = {
     activity: {
