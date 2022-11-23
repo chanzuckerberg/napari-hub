@@ -1,29 +1,17 @@
 import Skeleton from '@mui/material/Skeleton';
 import { useTranslation } from 'next-i18next';
-import { useMemo } from 'react';
 
 import { Text } from '@/components/Text';
 import { usePluginState } from '@/context/plugin';
-import { usePluginMetrics } from '@/hooks';
+import { useFormattedNumber, usePluginMetrics } from '@/hooks';
 
 export function RecentInstalls() {
   const { plugin } = usePluginState();
   const { data: metrics, isLoading } = usePluginMetrics(plugin?.name);
   const stats = metrics?.activity.stats;
 
-  const { t, i18n } = useTranslation(['activity']);
-  const installsFormatter = useMemo(
-    () =>
-      new Intl.NumberFormat(i18n.language, {
-        notation: 'compact',
-        maximumFractionDigits: 1,
-      }),
-    [i18n.language],
-  );
-  const formattedInstalls = useMemo(
-    () => installsFormatter.format(stats?.installsInLast30Days ?? 0),
-    [installsFormatter, stats?.installsInLast30Days],
-  );
+  const { t } = useTranslation(['activity']);
+  const formattedInstalls = useFormattedNumber(stats?.installsInLast30Days);
 
   return (
     <Text className="font-light" element="p" variant="h2">

@@ -10,7 +10,7 @@ import {
   VictoryScatter,
 } from 'victory';
 
-import { useMediaQuery } from '@/hooks';
+import { FormatType, useMediaQuery, useNumberFormatter } from '@/hooks';
 import { DataPoint } from '@/types/stats';
 
 import { AreaChartLayout } from './AreaChartLayout';
@@ -60,6 +60,8 @@ export function AreaChart({
     }),
     [],
   );
+
+  const yAxisTickFormatter = useNumberFormatter(FormatType.Short);
 
   return (
     <AreaChartLayout height={height}>
@@ -112,6 +114,7 @@ export function AreaChart({
         standalone={false}
         tickLabelComponent={<AxisLabel />}
         label={yLabel}
+        tickFormat={yAxisTickFormatter.format}
         axisLabelComponent={<AxisLabel dy={isScreen600 ? -40 : -20} />}
         style={axisStyle}
         tickValues={tickValues}

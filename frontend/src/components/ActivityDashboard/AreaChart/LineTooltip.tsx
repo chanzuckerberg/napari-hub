@@ -1,12 +1,22 @@
+import { useMemo } from 'react';
 import { VictoryLabel, VictoryLabelProps, VictoryTooltipProps } from 'victory';
 
-import { useMediaQuery } from '@/hooks';
+import { useFormattedNumber, useMediaQuery } from '@/hooks';
 import { DataPoint } from '@/types/stats';
 
 export function LineTooltip(props: VictoryLabelProps) {
   const isScreen600 = useMediaQuery({ minWidth: 'screen-600' });
   const { x = 0, datum, active } = props as VictoryTooltipProps;
   const point = datum as DataPoint;
+
+  const formattedY = useFormattedNumber(point.y);
+  const formattedDataPoint = useMemo(
+    () => ({
+      ...datum,
+      y: formattedY,
+    }),
+    [datum, formattedY],
+  );
 
   if (!active || point.y === null) {
     return null;
@@ -25,6 +35,7 @@ export function LineTooltip(props: VictoryLabelProps) {
 
       <VictoryLabel
         {...props}
+        datum={formattedDataPoint}
         y={10}
         style={{
           fontFamily: 'Barlow',
