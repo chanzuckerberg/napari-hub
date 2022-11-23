@@ -59,7 +59,7 @@ jobs:
         env:
           ENV: dev
         with:
-          stack-name: ${{ github.event.ref }}
+          stack-name: ${{ env.STACK_NAME }}
           operation: "delete"
           tfe-token: ${{ secrets.TFE_TOKEN }}
           env: "dev"
