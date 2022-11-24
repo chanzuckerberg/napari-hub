@@ -12,7 +12,7 @@ export function PublishedLine(props: VictoryLabelProps) {
   const { plugin } = usePluginState();
   const { x = 0, datum } = props;
   const point = datum as DataPoint;
-  const release = dayjs(plugin?.release_date);
+  const release = dayjs(plugin?.first_released);
 
   if (
     point.y === null ||

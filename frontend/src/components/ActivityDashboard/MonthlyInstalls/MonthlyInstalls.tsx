@@ -33,7 +33,7 @@ export function MonthlyInstalls() {
   );
   const chartData = useChartData(
     dataPoints,
-    dayjs(plugin?.release_date),
+    dayjs(plugin?.first_released),
     visibleMonths,
   );
 
