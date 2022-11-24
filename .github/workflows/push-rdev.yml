@@ -41,9 +41,6 @@ jobs:
           else             
             echo $GITHUB_REF_NAME | tr '[:upper:]' '[:lower:]' | xargs -I {} -n 1 echo STACK_NAME={} >> $GITHUB_ENV
           fi
-      - name: Set deleted branch name
-        if: ${{ github.event.name == 'delete' && startsWith(github.event.ref, 'dev-') }}
-        run: echo ${{ github.event.ref }} | tr '[:upper:]' '[:lower:]' | xargs -I {} -n 1 echo DELETE_STACK_NAME={} >> $GITHUB_ENV
       - name: Create update dev
         if: ${{ github.event_name == 'push' }}
         uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.7.4
@@ -56,6 +53,9 @@ jobs:
           tfe-token: ${{ secrets.TFE_TOKEN }}
           env: "dev"
           operation: "create-or-update"
+      - name: Delete dev set up stack name
+        if: ${{ github.event_name == 'delete' && startsWith(github.event.ref, 'dev-') }}
+        run: echo ${{ github.event.ref }} | tr '[:upper:]' '[:lower:]' | xargs -I {} -n 1 echo DELETE_STACK_NAME={} >> $GITHUB_ENV
       - name: Delete dev
         if: ${{ github.event_name == 'delete' && startsWith(github.event.ref, 'dev-') }}
         uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.4.0
