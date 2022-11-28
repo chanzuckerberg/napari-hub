@@ -1,7 +1,6 @@
 import CheckCircle from '@mui/icons-material/CheckCircle';
-import Dialog from '@mui/material/Dialog';
 import clsx from 'clsx';
-import { Button, ButtonIcon } from 'czifui';
+import { Button, ButtonIcon, Dialog } from 'czifui';
 import Image from 'next/image';
 import { useTranslation } from 'next-i18next';
 import { useState } from 'react';
@@ -203,7 +202,7 @@ export function InstallModal({ onClose, visible }: InstallModalProps) {
           styles.modal,
 
           // Override MUI margins
-          'mx-6',
+          'mx-6 p-0 !rounded-none',
         ),
       }}
       open={visible}
