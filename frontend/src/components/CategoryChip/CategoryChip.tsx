@@ -1,6 +1,5 @@
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import Chip, { ChipProps } from '@mui/material/Chip';
-import Tooltip from '@mui/material/Tooltip';
 import clsx from 'clsx';
 import { useTranslation } from 'next-i18next';
 import {
@@ -13,6 +12,7 @@ import {
 } from 'react';
 
 import { Link } from '@/components/Link';
+import { Tooltip } from '@/components/Tooltip';
 import { useIsTapDevice } from '@/hooks/useIsTapDevice';
 import { useSearchStore } from '@/store/search/context';
 import { HubDimension } from '@/types';
@@ -78,15 +78,10 @@ function BaseCategoryChip(
   function renderTooltip(node: ReactNode) {
     return (
       <Tooltip
-        arrow
+        disableInteractive={false}
         open={open}
         onOpen={() => setOpen(true)}
         onClose={() => setOpen(false)}
-        leaveDelay={0}
-        classes={{
-          arrow: 'before:bg-white before:border before:border-napari-gray',
-          tooltip: 'bg-white text-black border border-napari-gray',
-        }}
         PopperProps={{
           anchorEl() {
             return iconRef.current as HTMLDivElement;

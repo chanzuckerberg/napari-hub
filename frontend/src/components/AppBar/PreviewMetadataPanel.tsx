@@ -62,7 +62,7 @@ function MetadataField({ field }: MetadataFieldProps) {
 
           className: clsx(
             PREVIEW_METADATA_FIELD_CLASS_NAME,
-            'flex items-start justify-start text-left m-0 p-sds-xxs flex-grow',
+            'flex items-start justify-start text-left m-0 p-sds-xxs flex-grow text-black',
           ),
 
           // Attach click listener if field is a button.

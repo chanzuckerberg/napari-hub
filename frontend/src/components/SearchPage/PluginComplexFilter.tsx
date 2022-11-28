@@ -8,7 +8,6 @@ import {
   DefaultMenuSelectOption,
   DropdownPopper,
   InputDropdownProps,
-  Tooltip,
 } from 'czifui';
 import { get, isEqual } from 'lodash';
 import { useTranslation } from 'next-i18next';
@@ -22,6 +21,7 @@ import {
 import { subscribe, useSnapshot } from 'valtio';
 
 import { CheckboxIcon, ChevronDown, ChevronUp, Info } from '@/components/icons';
+import { Tooltip } from '@/components/Tooltip';
 import { useSearchStore } from '@/store/search/context';
 import { FilterKey } from '@/store/search/search.store';
 import { theme } from '@/theme';
@@ -314,7 +314,6 @@ export function PluginComplexFilter({ filterKey }: Props) {
             {option.tooltip && (
               <Tooltip
                 disableInteractive
-                leaveDelay={0}
                 title={
                   <div>
                     <p className="font-semibold text-[0.6875rem] screen-495:text-xs">

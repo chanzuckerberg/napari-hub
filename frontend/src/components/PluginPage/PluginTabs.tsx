@@ -31,7 +31,7 @@ function usePluginTabs() {
   const [t] = useTranslation(['pluginPage']);
 
   return useMemo(() => {
-    const tabs: TabData[] = [
+    const tabs: TabData<PluginTabType>[] = [
       {
         label: t('pluginPage:tabs.description'),
         value: PluginTabType.Description,
