@@ -64,7 +64,6 @@
     "@emotion/react": "11.10.5",
     "@emotion/styled": "11.10.5",
     "@mui/icons-material": "5.10.9",
-    "@mui/lab": "5.0.0-alpha.107",
     "@mui/material": "5.10.13",
     "@mui/styles": "5.10.10",
     "@octokit/auth-oauth-app": "4.3.1",
