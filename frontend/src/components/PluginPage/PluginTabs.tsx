@@ -123,6 +123,11 @@ export function PluginTabs() {
         activeTab={activeTab}
         onChange={(tab) => {
           pluginTabsStore.activeTab = tab.value;
+
+          plausible('Plugin Tab Nav', {
+            tab: tab.value,
+            plugin: plugin?.name ?? '',
+          });
         }}
         underline
       />
