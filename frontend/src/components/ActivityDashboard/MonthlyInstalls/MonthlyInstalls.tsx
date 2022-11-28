@@ -41,7 +41,7 @@ export function MonthlyInstalls() {
     return <Skeleton height="100%" variant="rectangular" />;
   }
 
-  const isEmpty = chartData.length === 0;
+  const isEmpty = chartData.every((point) => point.y === null);
 
   return (
     <section>
