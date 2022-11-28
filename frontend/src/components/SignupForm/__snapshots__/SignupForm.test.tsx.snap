@@ -42,7 +42,7 @@ exports[`<SignupForm /> should match snapshot 1`] = `
           </div>
         </div>
         <button
-          class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-disableElevation bg-hub-primary-400 hover:bg-hub-primary-500 active:bg-hub-primary-600 text-sm font-semibold text-black h-[35px] col-span-2 screen-495:col-span-1 css-zddlty-MuiButtonBase-root-MuiButton-root"
+          class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-disableElevation MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-disableElevation bg-hub-primary-400 hover:bg-hub-primary-500 active:bg-hub-primary-600 text-sm font-semibold text-black h-[35px] col-span-2 screen-495:col-span-1 css-1k16prx-MuiButtonBase-root-MuiButton-root"
           data-testid="submitButton"
           name="subscribe"
           tabindex="0"

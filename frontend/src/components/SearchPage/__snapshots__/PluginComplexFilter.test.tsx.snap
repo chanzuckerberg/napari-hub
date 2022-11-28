@@ -4,7 +4,7 @@ exports[`<PluginComplexFilter /> should match snapshot 1`] = `
 <DocumentFragment>
   <div>
     <div
-      class="py-2 hover:bg-hub-gray-100 complexFilter css-end8kr"
+      class="py-2 hover:bg-hub-gray-100 complexFilter css-1x0reya"
       data-complex-filter="true"
       data-filter="operatingSystems"
       data-testid="pluginFilter"
@@ -13,7 +13,7 @@ exports[`<PluginComplexFilter /> should match snapshot 1`] = `
         class="border-b border-black"
       >
         <button
-          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium text-black w-full flex justify-between p-0 pb-2 css-1kjmhix-MuiButtonBase-root-MuiButton-root"
+          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium text-black w-full flex justify-between p-0 pb-2 css-1kjmhix-MuiButtonBase-root-MuiButton-root"
           data-testid="button"
           label="pluginData:labels.operatingSystem"
           sdsstage="default"
@@ -48,7 +48,7 @@ exports[`<PluginComplexFilter /> should match snapshot 1`] = `
         class="css-1flrym7"
       >
         <div
-          class="MuiButtonBase-root MuiChip-root MuiChip-filled MuiChip-sizeMedium MuiChip-colorPrimary MuiChip-deletable MuiChip-deletableColorPrimary MuiChip-filledPrimary css-1r16p8w-MuiButtonBase-root-MuiChip-root"
+          class="MuiButtonBase-root MuiChip-root MuiChip-filled MuiChip-sizeMedium MuiChip-colorPrimary MuiChip-deletable MuiChip-deletableColorPrimary MuiChip-filledPrimary css-1n27a9b-MuiButtonBase-root-MuiChip-root"
           role="button"
           tabindex="0"
         >
@@ -70,7 +70,7 @@ exports[`<PluginComplexFilter /> should match snapshot 1`] = `
           </svg>
         </div>
         <div
-          class="MuiButtonBase-root MuiChip-root MuiChip-filled MuiChip-sizeMedium MuiChip-colorPrimary MuiChip-deletable MuiChip-deletableColorPrimary MuiChip-filledPrimary css-1r16p8w-MuiButtonBase-root-MuiChip-root"
+          class="MuiButtonBase-root MuiChip-root MuiChip-filled MuiChip-sizeMedium MuiChip-colorPrimary MuiChip-deletable MuiChip-deletableColorPrimary MuiChip-filledPrimary css-1n27a9b-MuiButtonBase-root-MuiChip-root"
           role="button"
           tabindex="0"
         >
@@ -92,7 +92,7 @@ exports[`<PluginComplexFilter /> should match snapshot 1`] = `
           </svg>
         </div>
         <div
-          class="MuiButtonBase-root MuiChip-root MuiChip-filled MuiChip-sizeMedium MuiChip-colorPrimary MuiChip-deletable MuiChip-deletableColorPrimary MuiChip-filledPrimary css-1r16p8w-MuiButtonBase-root-MuiChip-root"
+          class="MuiButtonBase-root MuiChip-root MuiChip-filled MuiChip-sizeMedium MuiChip-colorPrimary MuiChip-deletable MuiChip-deletableColorPrimary MuiChip-filledPrimary css-1n27a9b-MuiButtonBase-root-MuiChip-root"
           role="button"
           tabindex="0"
         >
