@@ -116,21 +116,6 @@ def update_activity() -> Response:
     return app.make_response(("Complete", 204))
 
 
-@app.route('/activity/<plugin>')
-def get_plugin_installs(plugin: str) -> Response:
-    return jsonify(get_installs(plugin, request.args.get('limit', '12')))
-
-
-@app.route('/activity/<plugin>/stats')
-def get_plugin_installs_stats(plugin: str) -> Response:
-    return jsonify(get_installs_stats(plugin))
-
-
-@app.route('/activity/<plugin>/recent_stats')
-def get_plugin_recent_installs_stats(plugin: str) -> Response:
-    return jsonify(get_recent_installs_stats(plugin))
-
-
 @app.route('/metrics/<plugin>')
 def get_plugin_metrics(plugin: str) -> Response:
     return jsonify(get_metrics_for_plugin(plugin, request.args.get('limit', '12')))
