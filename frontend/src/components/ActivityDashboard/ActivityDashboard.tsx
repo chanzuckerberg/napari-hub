@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 
 import { I18n } from '@/components/I18n';
+import { Text } from '@/components/Text';
 import { usePluginState } from '@/context/plugin';
 import { usePluginMetrics } from '@/hooks';
 
@@ -35,7 +36,13 @@ export function ActivityDashboard() {
           <I18n i18nKey="activity:noData.allData" />
         </EmptyState>
       ) : (
-        <ActivityUsageSection />
+        <>
+          <ActivityUsageSection />
+
+          <Text variant="bodyS">
+            <I18n i18nKey="activity:learnMore" />
+          </Text>
+        </>
       )}
     </div>
   );
