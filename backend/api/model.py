@@ -2,7 +2,7 @@ from concurrent import futures
 from datetime import datetime
 import json
 import os
-from typing import Tuple, Dict, List, Callable, Any
+from typing import Tuple, Dict, List, Callable
 from zipfile import ZipFile
 from io import BytesIO
 from collections import defaultdict
@@ -442,11 +442,7 @@ def _process_for_stats(plugin_df):
     if len(plugin_df) == 0:
         return {}
 
-    month_offset = plugin_df['MONTH'].max().to_period('M') - plugin_df['MONTH'].min().to_period('M')
-    return {
-        'totalInstalls': int(plugin_df['NUM_DOWNLOADS_BY_MONTH'].sum()),
-        'totalMonths': month_offset.n
-    }
+    return {'totalInstalls': int(plugin_df['NUM_DOWNLOADS_BY_MONTH'].sum())}
 
 
 def _update_recent_activity_data(number_of_time_periods=30, time_granularity='DAY'):
@@ -480,7 +476,6 @@ def get_metrics_for_plugin(plugin: str, limit: str) -> Dict:
     timeline = [] if _is_not_valid_limit(limit) else _process_for_timeline(data, int(limit))
     complete_stats = {
         'totalInstalls': install_stats.get('totalInstalls', 0),
-        'totalMonths': install_stats.get('totalMonths', 0),
         'installsInLast30Days': get_recent_activity_data().get(plugin, 0)
     }
     activity_data = {
