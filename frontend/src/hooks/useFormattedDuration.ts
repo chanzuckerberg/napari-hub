@@ -53,17 +53,26 @@ export function useFormattedDuration(
 
       case DateBucketType.OverNWeeks: {
         const weeks = now.diff(date, 'weeks');
-        return t('activity:duration.nWeeksAgo', { replace: { weeks } });
+        return t('activity:duration.nWeeksAgo', {
+          count: weeks,
+          replace: { weeks },
+        });
       }
 
       case DateBucketType.OverNMonths: {
         const months = now.diff(date, 'month');
-        return t('activity:duration.nMonthsAgo', { replace: { months } });
+        return t('activity:duration.nMonthsAgo', {
+          count: months,
+          replace: { months },
+        });
       }
 
       case DateBucketType.OverNYears: {
         const years = now.diff(date, 'years');
-        return t('activity:duration.nYearsAgo', { replace: { years } });
+        return t('activity:duration.nYearsAgo', {
+          count: years,
+          replace: { years },
+        });
       }
 
       default:

@@ -1,5 +1,6 @@
 {
-  "installs": "installs",
+  "installs_one": "install",
+  "installs_other": "installs",
   "installsTitle": "Installs",
   "usage": "Usage",
   "learnMoreLink": "https://github.com/chanzuckerberg/napari-hub/wiki/Guide-to-Activity-Tab",
@@ -17,9 +18,12 @@
     "lessThan": "less than",
     "over": "over",
     "weekAgo": "a week ago",
-    "nWeeksAgo": "{{weeks}} weeks ago",
-    "nMonthsAgo": "{{months}} months ago",
-    "nYearsAgo": "{{years}} years ago"
+    "nWeeksAgo_one": "{{weeks}} week ago",
+    "nWeeksAgo_other": "{{weeks}} weeks ago",
+    "nMonthsAgo_one": "{{months}} month ago",
+    "nMonthsAgo_other": "{{months}} months ago",
+    "nYearsAgo_one": "{{years}} year ago",
+    "nYearsAgo_other": "{{years}} years ago"
   },
   "totalInstalls": {
     "publiclyReleased": "since publicly released"

@@ -8,9 +8,10 @@ import { usePluginState } from '@/context/plugin';
 import {
   useDateBucketType,
   useFormattedDuration,
-  useFormattedNumber,
   usePluginMetrics,
 } from '@/hooks';
+
+import { InstallsText } from './InstallsText';
 
 enum DateBucketType {
   LessThanAWeek,
@@ -26,7 +27,6 @@ export function TotalInstalls() {
   const stats = metrics?.activity.stats;
 
   const { t } = useTranslation(['activity']);
-  const formattedInstalls = useFormattedNumber(stats?.totalInstalls);
 
   const date = useMemo(
     () => dayjs(plugin?.first_released),
@@ -34,18 +34,11 @@ export function TotalInstalls() {
   );
 
   const dateBucketType = useDateBucketType(date);
-  const formattedDate = useFormattedDuration(date, dateBucketType);
+  const formattedDuration = useFormattedDuration(date, dateBucketType);
 
   return (
     <Text className="font-light" element="p" variant="h2">
-      <span className="!font-medium inline-flex items-center mr-2">
-        {isLoading ? (
-          <Skeleton className="mr-2" width={32} />
-        ) : (
-          formattedInstalls
-        )}{' '}
-        {t('activity:installs')}
-      </span>
+      <InstallsText installs={stats?.totalInstalls} isLoading={isLoading} />
 
       <span className="mr-2">
         {t('activity:totalInstalls.publiclyReleased')}{' '}
@@ -57,7 +50,11 @@ export function TotalInstalls() {
       </span>
 
       <div className="!font-medium inline-flex items-center">
-        {isLoading ? <Skeleton className="mr-2" width={32} /> : formattedDate}
+        {isLoading ? (
+          <Skeleton className="mr-2" width={32} />
+        ) : (
+          formattedDuration
+        )}
         {isLoading && ' ago'}
       </div>
     </Text>
