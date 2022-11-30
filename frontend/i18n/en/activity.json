@@ -7,7 +7,8 @@
   "learnMore": "<externalLink href='$t(learnMoreLink)'>Learn more about where we get this data.</externalLink>",
   "noData": {
     "allData": "No data could be fetched for this plugin. <externalLink href='$t(learnMoreLink)'>Learn more.</externalLink>",
-    "monthlyInstalls": "There is not yet enough data to display for this plugin"
+    "monthlyInstalls": "There is not yet enough data to display for this plugin",
+    "preview": "Activity not available for previews"
   },
   "monthlyInstalls": {
     "title": "Monthly installs in past year",

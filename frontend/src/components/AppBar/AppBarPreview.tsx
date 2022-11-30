@@ -224,7 +224,7 @@ export function AppBarPreview() {
           <div className="screen-1150:hidden">{renderRightColumn()}</div>
         </div>
 
-        <div className="hidden: screen-1425:flex items-center space-x-sds-xl col-span-3">
+        <div className="hidden screen-1425:flex items-center space-x-sds-xl col-span-3">
           <AppBarPreviewCenterColumn />
         </div>
 
