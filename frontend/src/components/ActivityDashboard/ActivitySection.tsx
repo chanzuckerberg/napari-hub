@@ -4,13 +4,14 @@ import { ReactNode } from 'react';
 import { Text } from '@/components/Text';
 
 interface Props {
+  className?: string;
   children: ReactNode;
   title: string;
 }
 
-export function ActivitySection({ children, title }: Props) {
+export function ActivitySection({ className, children, title }: Props) {
   return (
-    <section>
+    <section className={className}>
       <Text className="mb-sds-xl screen-495:mb-sds-l" variant="h2">
         {title}
       </Text>

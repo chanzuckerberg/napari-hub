@@ -9,7 +9,7 @@ export function ActivityUsageSection() {
   const [t] = useTranslation(['activity']);
 
   return (
-    <ActivitySection title={t('activity:usage')}>
+    <ActivitySection className="min-h-[200px]" title={t('activity:usage')}>
       <TotalInstalls />
       <RecentInstalls />
       <MonthlyInstalls />
