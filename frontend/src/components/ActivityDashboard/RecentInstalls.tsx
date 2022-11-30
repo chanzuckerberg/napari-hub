@@ -1,9 +1,10 @@
-import Skeleton from '@mui/material/Skeleton';
 import { useTranslation } from 'next-i18next';
 
 import { Text } from '@/components/Text';
 import { usePluginState } from '@/context/plugin';
-import { useFormattedNumber, usePluginMetrics } from '@/hooks';
+import { usePluginMetrics } from '@/hooks';
+
+import { InstallsText } from './InstallsText';
 
 export function RecentInstalls() {
   const { plugin } = usePluginState();
@@ -11,18 +12,13 @@ export function RecentInstalls() {
   const stats = metrics?.activity.stats;
 
   const { t } = useTranslation(['activity']);
-  const formattedInstalls = useFormattedNumber(stats?.installsInLast30Days);
 
   return (
     <Text className="font-light" element="p" variant="h2">
-      <span className="!font-medium inline-flex items-center mr-2">
-        {isLoading ? (
-          <Skeleton className="mr-2" width={32} />
-        ) : (
-          formattedInstalls
-        )}{' '}
-        {t('activity:installs')}
-      </span>
+      <InstallsText
+        installs={stats?.installsInLast30Days}
+        isLoading={isLoading}
+      />
 
       <span className="mr-2">{t('activity:recentInstalls.inPast')}</span>
 
