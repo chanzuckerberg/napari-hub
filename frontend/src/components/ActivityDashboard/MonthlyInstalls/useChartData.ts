@@ -25,11 +25,11 @@ export function useChartData(
       // Timestamp for raw data point is in UTC, so we need to convert to UTC
       // before getting the map key
       const key = getKey(dayjs(point.x).utc());
-      const nextPoint = pointMap.get(key);
+      const mappedPoint = pointMap.get(key);
 
-      if (nextPoint) {
+      if (mappedPoint) {
         pointMap.set(key, {
-          x: nextPoint.x,
+          x: mappedPoint.x,
           y: point.y,
         });
       }
