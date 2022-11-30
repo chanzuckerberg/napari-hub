@@ -8,7 +8,7 @@
   "noData": {
     "allData": "No data could be fetched for this plugin. <externalLink href='$t(learnMoreLink)'>Learn more.</externalLink>",
     "monthlyInstalls": "There is not yet enough data to display for this plugin",
-    "preview": "Activity data not available in preview"
+    "preview": "Activity not available for previews"
   },
   "monthlyInstalls": {
     "title": "Monthly installs in past year",
