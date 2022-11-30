@@ -42,9 +42,11 @@ export function AreaChart({
   const isScreen600 = useMediaQuery({ minWidth: 'screen-600' });
 
   const tickValues = useMemo(() => {
-    const allZeros = data.every((point) => point.y === 0);
+    const isAllZerosOrNulls = data.every(
+      (point) => point.y === 0 || point.y === null,
+    );
 
-    if (allZeros) {
+    if (isAllZerosOrNulls) {
       return [0.2, 0.4, 0.6, 0.8, 1];
     }
 
