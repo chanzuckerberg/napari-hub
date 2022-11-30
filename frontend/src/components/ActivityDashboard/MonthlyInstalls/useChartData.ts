@@ -3,6 +3,8 @@ import { useMemo } from 'react';
 
 import { DataPoint } from '@/types/stats';
 
+const getKey = (date: dayjs.ConfigType) => dayjs(date).format('MM/YYYY');
+
 /**
  * Creates a new instance of the chart data that is normalized to only include
  * data for the last 12 months. Any data points that are found before the
@@ -14,27 +16,35 @@ export function useChartData(
   visibleMonths: number[],
 ) {
   return useMemo(() => {
-    const pointMap = new Map<number, number | null>(
-      visibleMonths.map((date) => [date, 0]),
+    const pointMap = new Map<string, DataPoint>(
+      visibleMonths.map((date) => [getKey(date), { x: date, y: 0 }]),
     );
 
     // Only show data that is within range of visible months.
     for (const point of data) {
-      const date = dayjs(point.x).endOf('month');
-      const x = date.toDate().getTime();
+      // Timestamp for raw data point is in UTC, so we need to convert to UTC
+      // before getting the map key
+      const key = getKey(dayjs(point.x).utc());
+      const nextPoint = pointMap.get(key);
 
-      if (pointMap.has(x)) {
-        pointMap.set(x, point.y);
+      if (nextPoint) {
+        pointMap.set(key, {
+          x: nextPoint.x,
+          y: point.y,
+        });
       }
     }
 
     // Only show data points after the start date
-    for (const [x, y] of pointMap.entries()) {
-      pointMap.set(x, dayjs(x).isBefore(release, 'month') ? null : y);
+    for (const [key, point] of pointMap.entries()) {
+      pointMap.set(key, {
+        x: point.x,
+        y: dayjs(point.x).isBefore(release, 'month') ? null : point.y,
+      });
     }
 
-    return Array.from(pointMap.entries())
-      .map(([x, y]) => ({ x, y }))
-      .sort((point1, point2) => point1.x - point2.x);
+    return Array.from(pointMap.values()).sort(
+      (point1, point2) => point1.x - point2.x,
+    );
   }, [data, release, visibleMonths]);
 }
