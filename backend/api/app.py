@@ -7,8 +7,8 @@ from flask_githubapp.core import GitHubApp
 
 from api.collections import get_collections, get_collection
 from api.model import get_public_plugins, get_index, get_plugin, get_excluded_plugins, update_cache, \
-    move_artifact_to_s3, get_category_mapping, get_categories_mapping, get_manifest, get_installs, get_installs_stats, \
-    update_activity_data, get_recent_installs_stats, get_metrics_for_plugin
+    move_artifact_to_s3, get_category_mapping, get_categories_mapping, get_manifest, update_activity_data, \
+    get_metrics_for_plugin
 from api.shield import get_shield
 from utils.utils import send_alert, reformat_ssh_key_to_pem_bytes
 
