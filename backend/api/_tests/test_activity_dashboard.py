@@ -11,7 +11,7 @@ mock_installs = list(range(1, len(date_list) + 1))
 mock_df = pd.DataFrame({'MONTH': pd.to_datetime(date_list), 'NUM_DOWNLOADS_BY_MONTH': mock_installs})
 empty_df = pd.DataFrame(columns=['MONTH', 'NUM_DOWNLOADS_BY_MONTH'])
 mock_plugin_recent_installs = {'string-1': 25, 'foo': 10, 'bar': 30}
-
+PLUGIN_NAME = 'String-1'
 
 class TestActivityDashboard(unittest.TestCase):
 
@@ -20,7 +20,7 @@ class TestActivityDashboard(unittest.TestCase):
     @patch.object(model, 'get_install_timeline_data', return_value=empty_df.copy())
     def test_get_metrics_empty(self, _, __):
         from api.model import get_metrics_for_plugin
-        result = get_metrics_for_plugin('string-1', '3')
+        result = get_metrics_for_plugin(PLUGIN_NAME, '3')
         expected = self._generate_expected_metrics(
             timeline=self._generate_expected_timeline(-3, to_installs=lambda i: 0)
         )
@@ -30,7 +30,7 @@ class TestActivityDashboard(unittest.TestCase):
     @patch.object(model, 'get_install_timeline_data', return_value=mock_df.copy())
     def test_get_metrics_nonempty(self, _, __):
         from api.model import get_metrics_for_plugin
-        result = get_metrics_for_plugin('string-1', '3')
+        result = get_metrics_for_plugin(PLUGIN_NAME, '3')
         expected = self._generate_expected_metrics(
             timeline=self._generate_expected_timeline(-3),
             total_installs=sum(mock_installs),
@@ -42,7 +42,7 @@ class TestActivityDashboard(unittest.TestCase):
     @patch.object(model, 'get_install_timeline_data', return_value=mock_df.copy())
     def test_get_metrics_nonempty_zero_limit(self, _, __):
         from api.model import get_metrics_for_plugin
-        result = get_metrics_for_plugin('string-1', '0')
+        result = get_metrics_for_plugin(PLUGIN_NAME, '0')
         expected = self._generate_expected_metrics(
             total_installs=sum(mock_installs), installs_in_last_30_days=25
         )
@@ -52,7 +52,7 @@ class TestActivityDashboard(unittest.TestCase):
     @patch.object(model, 'get_install_timeline_data', return_value=mock_df.copy())
     def test_get_metrics_nonempty_invalid_limit(self, _, __):
         from api.model import get_metrics_for_plugin
-        result = get_metrics_for_plugin('string-1', 'foo')
+        result = get_metrics_for_plugin(PLUGIN_NAME, 'foo')
         expected = self._generate_expected_metrics(
             total_installs=sum(mock_installs), installs_in_last_30_days=25
         )
