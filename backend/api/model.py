@@ -399,7 +399,7 @@ def _update_activity_timeline_data():
     """
     query = """
         SELECT 
-            file_project, DATE_TRUNC('month', timestamp) as month, count(*) as num_downloads
+            LOWER(file_project), DATE_TRUNC('month', timestamp) as month, count(*) as num_downloads
         FROM
             imaging.pypi.labeled_downloads
         WHERE 
@@ -451,7 +451,7 @@ def _update_recent_activity_data(number_of_time_periods=30, time_granularity='DA
     """
     query = f"""
         SELECT 
-            file_project, count(*) as num_downloads
+            LOWER(file_project), count(*) as num_downloads
         FROM
             imaging.pypi.labeled_downloads
         WHERE 
