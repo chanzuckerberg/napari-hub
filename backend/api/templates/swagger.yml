@@ -156,70 +156,9 @@ paths:
           description: Either the plugin name is incorrect or the manifest was not found. The latter could happen if the installation failed or if the plugin does not implement npe2 yet.
         503:
           description: The manifest is temporarily unavailable. Check back in 5 minutes.
-  /activity/{name}:
-    get:
-      summary: Get a list of objects, where attribute x is timestamp and attribute y is number of installs
-      tags:
-        - activity
-      parameters:
-      - name: name
-        in: path
-        description: name of plugin to query
-        required: true
-        schema:
-          type: string
-        example: napari-demo
-      responses:
-        200:
-          description: The return json is the list of objects.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Activity-Installs'
-  /activity/{name}/stats:
-    get:
-      summary: Get an objects, where it has attribute totalInstallCount and attribute totalMonths
-      tags:
-        - activity
-      parameters:
-        - name: name
-          in: path
-          description: name of plugin to query
-          required: true
-          schema:
-            type: string
-          example: napari-demo
-      responses:
-        200:
-          description: The return json is the list of objects.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Activity-Stats'
-  /activity/{name}/recent_stats:
-    get:
-      summary: Get an objects, where it has attribute installsInLast30days
-      tags:
-        - activity
-      parameters:
-        - name: name
-          in: path
-          description: name of plugin to query
-          required: true
-          schema:
-            type: string
-          example: napari-demo
-      responses:
-        200:
-          description: The return json is a map.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Activity-Stats'
-
   /metrics/{name}:
     get:
-      summary: Get an objects, where it has attribute of statistics and timeline
+      summary: Get an object that contains various metrics related to a plugin
       tags:
         - activity
       parameters:
@@ -232,11 +171,11 @@ paths:
           example: napari-demo
       responses:
         200:
-          description: The return json is the list of objects.
+          description: The return json is a map containing various metrics of a plugin.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Activity-Stats'
+                $ref: '#/components/schemas/Metrics'
 components:
   schemas:
     Categories:
@@ -257,6 +196,52 @@ components:
               type: string
           label:
             type: string
+    ExcludedPlugin:
+      type: object
+      properties:
+        <name>:
+          type: string
+    Manifest:
+      type: object
+      properties:
+        name:
+          type: string
+        display_name:
+          type: string
+        process_count:
+          type: integer
+        schema_version:
+          type: integer
+        on_activate:
+          type: string
+        on_deactivate:
+          type: string
+        contributions:
+          type: array
+          items:
+            type: string
+    Metrics:
+      type: object
+      properties:
+        activity:
+          type: object
+          properties:
+            stats:
+              type: object
+              properties:
+                installsInLast30Days:
+                  type: integer
+                totalInstalls:
+                  type: integer
+            timeline:
+              type: array
+              items:
+                type: object
+                properties:
+                  installs:
+                    type: integer
+                  timestamp:
+                    type: integer
     Plugins:
       type: object
       properties:
@@ -338,11 +323,6 @@ components:
           type: string
         visibility:
           type: string
-    ExcludedPlugin:
-      type: object
-      properties:
-        <name>:
-          type: string
     Shield:
       type: object
       required:
@@ -360,33 +340,4 @@ components:
         schemaVersion:
           type: integer
         style:
-          type: string
-    Manifest:
-      type: object
-      properties:
-        name:
-          type: string
-        display_name:
-          type: string
-        process_count:
-          type: integer
-        schema_version:
-          type: integer
-        on_activate:
-          type: string
-        on_deactivate:
-          type: string
-        contributions:
-          type: array
-          items:
-            type: string
-    Activity-Installs:
-      type: object
-      properties:
-        name:
-          type: string
-    Activity-Stats:
-      type: object
-      properties:
-        name:
           type: string
