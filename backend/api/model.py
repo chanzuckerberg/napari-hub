@@ -2,7 +2,7 @@ from concurrent import futures
 from datetime import datetime
 import json
 import os
-from typing import Tuple, Dict, List, Callable, Any
+from typing import Tuple, Dict, List, Callable
 from zipfile import ZipFile
 from io import BytesIO
 from collections import defaultdict
@@ -420,21 +420,7 @@ def _is_not_valid_limit(limit):
     return not limit.isdigit() or limit == '0'
 
 
-def get_installs(plugin: str, limit: str) -> List[Any]:
-    """
-    This should return a list of objects, in which attribute x is the numerical value in milliseconds
-    and attribute y is the number of installs
-    :param plugin: plugin name
-    :param limit: number of objects to return
-    :return: list of objects
-    """
-    if _is_not_valid_limit(limit):
-        return []
-    plugin_df = get_install_timeline_data(plugin)
-    return _process_for_timeline(plugin_df, int(limit), 'x', 'y')
-
-
-def _process_for_timeline(plugin_df, limit, timestamp_key, installs_key):
+def _process_for_timeline(plugin_df, limit):
     date_format = '%Y-%m-%d'
     end_date = date.today().replace(day=1) + relativedelta(months=-1)
     start_date = end_date + relativedelta(months=-limit + 1)
@@ -448,7 +434,7 @@ def _process_for_timeline(plugin_df, limit, timestamp_key, installs_key):
             installs = int(str(row.NUM_DOWNLOADS_BY_MONTH).split()[1])
         else:
             installs = 0
-        result.append({timestamp_key: int(cur_date.timestamp()) * 1000, installs_key: installs})
+        result.append({'timestamp': int(cur_date.timestamp()) * 1000, 'installs': installs})
     return result
 
 
@@ -456,22 +442,7 @@ def _process_for_stats(plugin_df):
     if len(plugin_df) == 0:
         return {}
 
-    month_offset = plugin_df['MONTH'].max().to_period('M') - plugin_df['MONTH'].min().to_period('M')
-    return {
-        'totalInstalls': int(plugin_df['NUM_DOWNLOADS_BY_MONTH'].sum()),
-        'totalMonths': month_offset.n
-    }
-
-
-def get_installs_stats(plugin: str) -> Any:
-    """
-    This should return an object, with numerical attributes totalInstallCount and totalMonths
-
-    :param plugin: plugin name
-    :return: object
-    """
-    plugin_df = get_install_timeline_data(plugin)
-    return _process_for_stats(plugin_df)
+    return {'totalInstalls': int(plugin_df['NUM_DOWNLOADS_BY_MONTH'].sum())}
 
 
 def _update_recent_activity_data(number_of_time_periods=30, time_granularity='DAY'):
@@ -499,22 +470,13 @@ def _update_recent_activity_data(number_of_time_periods=30, time_granularity='DA
     write_data(json.dumps(data), "activity_dashboard_data/recent_installs.json")
 
 
-def _get_recent_activity_data(plugin) -> int:
-    return get_recent_activity_data().get(plugin, 0)
-
-
-def get_recent_installs_stats(plugin: str) -> Dict:
-    return {'installsInLast30days': _get_recent_activity_data(plugin)}
-
-
 def get_metrics_for_plugin(plugin: str, limit: str) -> Dict:
     data = get_install_timeline_data(plugin)
     install_stats = _process_for_stats(data)
-    timeline = [] if _is_not_valid_limit(limit) else _process_for_timeline(data, int(limit), 'timestamp', 'installs')
+    timeline = [] if _is_not_valid_limit(limit) else _process_for_timeline(data, int(limit))
     complete_stats = {
         'totalInstalls': install_stats.get('totalInstalls', 0),
-        'totalMonths': install_stats.get('totalMonths', 0),
-        'installsInLast30Days': _get_recent_activity_data(plugin)
+        'installsInLast30Days': get_recent_activity_data().get(plugin, 0)
     }
     activity_data = {
         'timeline': timeline,
