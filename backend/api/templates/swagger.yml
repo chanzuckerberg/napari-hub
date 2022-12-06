@@ -158,7 +158,7 @@ paths:
           description: The manifest is temporarily unavailable. Check back in 5 minutes.
   /metrics/{name}:
     get:
-      summary: Get an objects, where it has attribute activity which has statistics and timeline
+      summary: Get an object that contains various metrics related to a plugin
       tags:
         - activity
       parameters:
@@ -171,7 +171,7 @@ paths:
           example: napari-demo
       responses:
         200:
-          description: The return json is a map containing various activities and their components.
+          description: The return json is a map containing various metrics of a plugin.
           content:
             application/json:
               schema:
