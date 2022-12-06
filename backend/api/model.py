@@ -399,7 +399,7 @@ def _update_activity_timeline_data():
     """
     query = """
         SELECT 
-            file_project, DATE_TRUNC('month', timestamp) as month, count(*) as num_downloads
+            LOWER(file_project), DATE_TRUNC('month', timestamp) as month, count(*) as num_downloads
         FROM
             imaging.pypi.labeled_downloads
         WHERE 
@@ -451,7 +451,7 @@ def _update_recent_activity_data(number_of_time_periods=30, time_granularity='DA
     """
     query = f"""
         SELECT 
-            file_project, count(*) as num_downloads
+            LOWER(file_project), count(*) as num_downloads
         FROM
             imaging.pypi.labeled_downloads
         WHERE 
@@ -471,6 +471,7 @@ def _update_recent_activity_data(number_of_time_periods=30, time_granularity='DA
 
 
 def get_metrics_for_plugin(plugin: str, limit: str) -> Dict:
+    plugin = plugin.lower()
     data = get_install_timeline_data(plugin)
     install_stats = _process_for_stats(data)
     timeline = [] if _is_not_valid_limit(limit) else _process_for_timeline(data, int(limit))

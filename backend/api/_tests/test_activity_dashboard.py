@@ -5,65 +5,65 @@ from api import model
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
-base = datetime.today().date().replace(day=1)
-date_list = [base - relativedelta(months=x) for x in range(12) if x % 2 == 0]
-mock_installs = list(range(1, len(date_list) + 1))
-mock_df = pd.DataFrame({'MONTH': pd.to_datetime(date_list), 'NUM_DOWNLOADS_BY_MONTH': mock_installs})
-empty_df = pd.DataFrame(columns=['MONTH', 'NUM_DOWNLOADS_BY_MONTH'])
-mock_plugin_recent_installs = {'string-1': 25, 'foo': 10, 'bar': 30}
+BASE = datetime.today().date().replace(day=1)
+DATE_LIST = [BASE - relativedelta(months=x) for x in range(12) if x % 2 == 0]
+MOCK_INSTALLS = list(range(1, len(DATE_LIST) + 1))
+MOCK_DF = pd.DataFrame({'MONTH': pd.to_datetime(DATE_LIST), 'NUM_DOWNLOADS_BY_MONTH': MOCK_INSTALLS})
+EMPTY_DF = pd.DataFrame(columns=['MONTH', 'NUM_DOWNLOADS_BY_MONTH'])
+PLUGIN_NAME = 'StrIng-1'
+PLUGIN_NAME_CLEAN = 'string-1'
+MOCK_PLUGIN_RECENT_INSTALLS = {PLUGIN_NAME_CLEAN: 25, 'foo': 10, 'bar': 30}
 
 
 class TestActivityDashboard(unittest.TestCase):
 
-
     @patch.object(model, 'get_recent_activity_data', return_value={})
-    @patch.object(model, 'get_install_timeline_data', return_value=empty_df.copy())
-    def test_get_metrics_empty(self, _, __):
-        from api.model import get_metrics_for_plugin
-        result = get_metrics_for_plugin('string-1', '3')
+    @patch.object(model, 'get_install_timeline_data', return_value=EMPTY_DF.copy())
+    def test_get_metrics_empty(self, mock_get_install_timeline_data, mock_get_recent_activity_data):
         expected = self._generate_expected_metrics(
             timeline=self._generate_expected_timeline(-3, to_installs=lambda i: 0)
         )
-        self.assertEqual(expected, result)
+        self._verify_results('3', expected, mock_get_install_timeline_data, mock_get_recent_activity_data)
 
-    @patch.object(model, 'get_recent_activity_data', return_value=mock_plugin_recent_installs)
-    @patch.object(model, 'get_install_timeline_data', return_value=mock_df.copy())
-    def test_get_metrics_nonempty(self, _, __):
-        from api.model import get_metrics_for_plugin
-        result = get_metrics_for_plugin('string-1', '3')
+    @patch.object(model, 'get_recent_activity_data', return_value=MOCK_PLUGIN_RECENT_INSTALLS)
+    @patch.object(model, 'get_install_timeline_data', return_value=MOCK_DF.copy())
+    def test_get_metrics_nonempty(self, mock_get_install_timeline_data, mock_get_recent_activity_data):
         expected = self._generate_expected_metrics(
             timeline=self._generate_expected_timeline(-3),
-            total_installs=sum(mock_installs),
+            total_installs=sum(MOCK_INSTALLS),
             installs_in_last_30_days=25
         )
-        self.assertEqual(expected, result)
+        self._verify_results('3', expected, mock_get_install_timeline_data, mock_get_recent_activity_data)
 
-    @patch.object(model, 'get_recent_activity_data', return_value=mock_plugin_recent_installs)
-    @patch.object(model, 'get_install_timeline_data', return_value=mock_df.copy())
-    def test_get_metrics_nonempty_zero_limit(self, _, __):
-        from api.model import get_metrics_for_plugin
-        result = get_metrics_for_plugin('string-1', '0')
+    @patch.object(model, 'get_recent_activity_data', return_value=MOCK_PLUGIN_RECENT_INSTALLS)
+    @patch.object(model, 'get_install_timeline_data', return_value=MOCK_DF.copy())
+    def test_get_metrics_nonempty_zero_limit(self, mock_get_install_timeline_data, mock_get_recent_activity_data):
         expected = self._generate_expected_metrics(
-            total_installs=sum(mock_installs), installs_in_last_30_days=25
+            total_installs=sum(MOCK_INSTALLS), installs_in_last_30_days=25
         )
-        self.assertEqual(expected, result)
+        self._verify_results('0', expected, mock_get_install_timeline_data, mock_get_recent_activity_data)
 
-    @patch.object(model, 'get_recent_activity_data', return_value=mock_plugin_recent_installs)
-    @patch.object(model, 'get_install_timeline_data', return_value=mock_df.copy())
-    def test_get_metrics_nonempty_invalid_limit(self, _, __):
-        from api.model import get_metrics_for_plugin
-        result = get_metrics_for_plugin('string-1', 'foo')
+    @patch.object(model, 'get_recent_activity_data', return_value=MOCK_PLUGIN_RECENT_INSTALLS)
+    @patch.object(model, 'get_install_timeline_data', return_value=MOCK_DF.copy())
+    def test_get_metrics_nonempty_invalid_limit(self, mock_get_install_timeline_data, mock_get_recent_activity_data):
         expected = self._generate_expected_metrics(
-            total_installs=sum(mock_installs), installs_in_last_30_days=25
+            total_installs=sum(MOCK_INSTALLS), installs_in_last_30_days=25
         )
+        self._verify_results('foo', expected, mock_get_install_timeline_data, mock_get_recent_activity_data)
+
+    def _verify_results(self, limit, expected, mock_get_install_timeline_data, mock_get_recent_activity_data):
+        from api.model import get_metrics_for_plugin
+        result = get_metrics_for_plugin(PLUGIN_NAME, limit)
         self.assertEqual(expected, result)
+        mock_get_install_timeline_data.assert_called_with(PLUGIN_NAME_CLEAN)
+        mock_get_recent_activity_data.assert_called_with()
 
     @staticmethod
     def _generate_expected_timeline(start_range,
                                     timestamp_key='timestamp',
                                     installs_key='installs',
                                     to_installs=lambda i: 2 if i % 2 == 0 else 0):
-        to_timestamp = lambda i: int(pd.Timestamp(base + relativedelta(months=i)).timestamp()) * 1000
+        to_timestamp = lambda i: int(pd.Timestamp(BASE + relativedelta(months=i)).timestamp()) * 1000
         return [{timestamp_key: to_timestamp(i), installs_key: to_installs(i)} for i in range(start_range, 0)]
 
     @staticmethod
