@@ -141,14 +141,15 @@ def collection(collection: str) -> Response:
 
 
 @app.errorhandler(404)
-def handle_exception(e) -> Response:
+def handle_404(e) -> Response:
     links = [rule.rule for rule in app.url_map.iter_rules()
              if 'GET' in rule.methods and
              any((rule.rule.startswith("/plugins"),
                   rule.rule.startswith("/shields"),
                   rule.rule.startswith("/categories"),
                   rule.rule.startswith("/collections"),
-                  rule.rule.startswith("/metrics")))]
+                  rule.rule.startswith("/metrics")))
+             ]
     links.sort()
     links = "\n".join(links)
     return app.make_response((f"Invalid Endpoint, valid endpoints are:\n{links}", 404,

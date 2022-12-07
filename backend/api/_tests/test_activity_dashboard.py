@@ -87,6 +87,10 @@ class TestActivityDashboard(unittest.TestCase):
 
 
     @staticmethod
+    def to_timestamp(i):
+        return int(pd.Timestamp(base + relativedelta(months=i)).timestamp()) * 1000
+
+    @staticmethod
     def _generate_expected_timeline(start_range,
                                     timestamp_key='timestamp',
                                     installs_key='installs',
