@@ -4,9 +4,10 @@ import boto3
 from npe2 import fetch_manifest
 
 # Environment variable set through ecs stack terraform module
-bucket_name = os.environ.get('BUCKET')    
+bucket_name = os.environ.get('BUCKET')
 bucket_path = os.environ.get('BUCKET_PATH', '')
 s3 = boto3.resource('s3')
+
 
 def generate_manifest(event, context):
     """
@@ -36,6 +37,6 @@ def generate_manifest(event, context):
         s3_body = manifest.json()
     except Exception as e:
         print("Failed discovery...")
-        s3_body =  json.dumps({'error': str(e)})
+        s3_body = json.dumps({'error': str(e)})
     print(f'Writing {s3_body} to {key} in {bucket_name}')
     bucket.put_object(Body=s3_body, Key=key)

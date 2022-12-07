@@ -1,5 +1,4 @@
 import json
-import os
 import pytest
 from unittest import mock
 from unittest.mock import call
@@ -10,6 +9,7 @@ TEST_PLUGIN = 'test-plugin'
 TEST_VERSION = '0.0.1'
 TEST_BUCKET = 'test-bucket'
 TEST_CACHE_PATH = f'cache/{TEST_PLUGIN}/{TEST_VERSION}-manifest.json'
+
 
 def _mock_put_object(Body, Key):
     with open(Key, 'w') as fp:
@@ -50,6 +50,7 @@ def test_s3_fetching_error(s3, tmp_path):
                 },
                 operation_name='Fake'
             )
+
         s3.Bucket.side_effect = mock_make_bucket
         with pytest.raises(ClientError):
             generate_manifest({'plugin': TEST_PLUGIN, 'version': TEST_VERSION}, None)
@@ -86,13 +87,15 @@ def test_discovery_success(s3, tmp_path):
         bucket_instance.put_object = _mock_put_object
         generate_manifest({'plugin': plugin_name, 'version': plugin_version}, None)
     written = json.loads(manifest_pth.read_text())
-    assert written['name'] == 'napari-demo'    
+    assert written['name'] == 'napari-demo'
     assert len(written['contributions']['widgets']) == 1
+
 
 @mock.patch('plugins.get_plugin_manifest.bucket_name', '')
 def test_bucket_name_not_set():
     with pytest.raises(RuntimeError, match='Bucket name not specified.'):
         generate_manifest({}, None)
+
 
 @mock.patch('plugins.get_plugin_manifest.s3')
 @mock.patch('plugins.get_plugin_manifest.bucket_name', 'napari-hub')

@@ -51,7 +51,9 @@ jobs:
       - name: flake8 Lint
         uses: py-actions/flake8@v2
         with:
-          max-line-length: "120"
+          flake8-version: "6.0.0"
+          max-line-length: "150"
+          plugins: "flake8-black"
 
       - name: Run tests
         working-directory: backend

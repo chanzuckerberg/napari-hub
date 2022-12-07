@@ -38,7 +38,7 @@ project_url_names = {
 
 
 def get_file(
-    download_url: str, file: str = "", branch: str = "HEAD", file_format: str = ""
+        download_url: str, file: str = "", branch: str = "HEAD", file_format: str = ""
 ) -> [dict, None]:
     """
     Get file from github.
@@ -126,7 +126,7 @@ def get_github_metadata(repo_url: str, branch: str = 'HEAD') -> dict:
     if github_license is not None:
         github_metadata['license'] = github_license
 
-    description = get_file(repo_url,".napari-hub/DESCRIPTION.md", branch=branch)
+    description = get_file(repo_url, ".napari-hub/DESCRIPTION.md", branch=branch)
     if description is None:
         description = get_file(repo_url, ".napari/DESCRIPTION.md", branch=branch)
 
@@ -161,8 +161,8 @@ def get_github_metadata(repo_url: str, branch: str = 'HEAD') -> dict:
 
         project_urls = config.get('project_urls', {})
         github_metadata.update({
-           hub_name: project_urls[yaml_name]
-           for yaml_name, hub_name in project_url_names.items() if yaml_name in project_urls
+            hub_name: project_urls[yaml_name]
+            for yaml_name, hub_name in project_url_names.items() if yaml_name in project_urls
         })
 
     return github_metadata
@@ -203,6 +203,7 @@ def get_artifact(url: str, token: str) -> Union[IO[bytes], None]:
             return response.raw
     return None
 
+
 def get_citation_author(citation_str: str) -> Union[Dict[str, str], None]:
     """
     Parse author information from citation.
@@ -216,8 +217,9 @@ def get_citation_author(citation_str: str) -> Union[Dict[str, str], None]:
         return []
     authors = []
     for author_entry in citation_yaml['authors']:
-        if 'given-names' in author_entry and 'family-names' in author_entry and author_entry['given-names'] and author_entry['family-names']:
-            authors.append({'name':author_entry['given-names'] + " " + author_entry['family-names']})
+        if 'given-names' in author_entry and 'family-names' in author_entry and author_entry['given-names'] and \
+                author_entry['family-names']:
+            authors.append({'name': author_entry['given-names'] + " " + author_entry['family-names']})
         elif 'name' in author_entry and author_entry['name']:
-            authors.append({'name':author_entry['name']})
+            authors.append({'name': author_entry['name']})
     return authors

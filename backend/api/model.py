@@ -427,7 +427,7 @@ def _process_for_timeline(plugin_df, limit):
     start_date = end_date + relativedelta(months=-limit + 1)
     dates = pd.date_range(start=start_date, periods=limit, freq='MS')
     plugin_df = plugin_df[(plugin_df['MONTH'] >= start_date.strftime(date_format)) & (
-                plugin_df['MONTH'] <= end_date.strftime(date_format))]
+            plugin_df['MONTH'] <= end_date.strftime(date_format))]
     result = []
     for cur_date in dates:
         if cur_date in plugin_df['MONTH'].values:

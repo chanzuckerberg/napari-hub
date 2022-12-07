@@ -40,6 +40,7 @@ def notify_new_packages(existing_packages: Dict[str, str], new_packages: Dict[st
             else:
                 print(message)
 
+
 def create_message(package: str, version: str, existing_packages: Dict[str, str], packages_metadata: dict):
     """
     Generates the message for the zulip bot to send. 
@@ -64,7 +65,7 @@ def create_message(package: str, version: str, existing_packages: Dict[str, str]
             # if release notes exist, we'll link to the github release notes and past the release notes in the message
             message_add_on = f'!\nAlso check out its release notes for version {link_to_release}:{message_separator}{release_notes}'
         message = f'A new plugin has been published on the napari hub! ' \
-                    f'Check out [{package}](https://napari-hub.org/plugins/{package}){message_add_on}'
+                  f'Check out [{package}](https://napari-hub.org/plugins/{package}){message_add_on}'
     # handles case with updating plugins
     elif existing_packages[package] != version:
         release_notes, link_to_release = generate_release_notes_and_link_to_release(package, version, packages_metadata)
@@ -76,11 +77,12 @@ def create_message(package: str, version: str, existing_packages: Dict[str, str]
             # if release notes exist, we'll link to the github release notes and past the release notes in the message
             message_add_on = f'Check out the release notes for {link_to_release}:{message_separator}{release_notes}'
         message = f'A new version of [{package}](https://napari-hub.org/plugins/{package}) is available on the ' \
-                    f'napari hub! {message_add_on}'
+                  f'napari hub! {message_add_on}'
     else:
         # when the version has not changed, we don't send a message
         message = ''
     return message
+
 
 def generate_release_notes_and_link_to_release(package: str, version: str, packages_metadata: dict):
     """
@@ -97,13 +99,13 @@ def generate_release_notes_and_link_to_release(package: str, version: str, packa
     if packages_metadata[package].get("code_repository"):
         github_link = packages_metadata[package]["code_repository"]
         owner_and_name = get_owner_and_name(github_link)
-        github_api_endpoint = create_github_endpoint(owner_and_name, version, with_v = False)
+        github_api_endpoint = create_github_endpoint(owner_and_name, version, with_v=False)
         release_notes = get_release_notes(github_api_endpoint)
         # there is a slight mismatch between pypi package version and github tag version
         # sometimes the github tag version version has a v in the front, but versions from pypi metadata never have a v in the front
         # can't tell if release notes exist without trying both possibilities due to format of github api responses, hence the need to call the github api twice 
         if not release_notes:
-            github_api_endpoint_with_v = create_github_endpoint(owner_and_name, version, with_v = True)
+            github_api_endpoint_with_v = create_github_endpoint(owner_and_name, version, with_v=True)
             release_notes = get_release_notes(github_api_endpoint_with_v)
             # if the 2nd attempt gets release notes, we make a link with v in the version
             if release_notes:
@@ -120,6 +122,7 @@ def generate_release_notes_and_link_to_release(package: str, version: str, packa
         link_to_release = f'[{version}](https://napari-hub.org/plugins/{package})'
     return release_notes, link_to_release
 
+
 def get_owner_and_name(github_link):
     """
     Creates a string containing the owner of the repo and the name of the plugin in the form '{owner name}/{plugin name}' from a link to the github page
@@ -129,7 +132,8 @@ def get_owner_and_name(github_link):
     """
     return github_link.replace('https://github.com/', '')
 
-def create_github_endpoint(owner_and_name, version, with_v = False):
+
+def create_github_endpoint(owner_and_name, version, with_v=False):
     """
     Creates a link to a github api endpoint that could be used to get release notes
     There are two versions of the link, with and without v, because some github tag versions have a v in their version, 
@@ -143,6 +147,7 @@ def create_github_endpoint(owner_and_name, version, with_v = False):
         return f'https://api.github.com/repos/{owner_and_name}/releases/tags/v{version}'
     else:
         return f'https://api.github.com/repos/{owner_and_name}/releases/tags/{version}'
+
 
 def get_release_notes(endpoint: str):
     """
@@ -161,6 +166,7 @@ def get_release_notes(endpoint: str):
         return ''
     except HTTPError:
         return ''
+
 
 def send_zulip_message(username: str, key: str, topic: str, message: str):
     """

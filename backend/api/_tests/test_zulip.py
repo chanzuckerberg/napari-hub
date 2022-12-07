@@ -3,18 +3,24 @@ import unittest
 from unittest.mock import patch
 
 from requests import HTTPError
-from backend.api.zulip import create_github_endpoint, get_owner_and_name, get_release_notes, generate_release_notes_and_link_to_release, create_message, send_zulip_message
+from backend.api.zulip import create_github_endpoint, get_owner_and_name, get_release_notes, \
+    generate_release_notes_and_link_to_release, create_message, send_zulip_message
 from utils.test_utils import (
     FakeResponse, github_api_response, github_api_response_no_body,
-    metadata_if_code_repository_exists, list_of_demo_plugins, response_with_release_notes, response_without_release_notes,
-    existing_release_notes_with_no_v, existing_link_to_release_no_v, existing_message_with_release_no_v, existing_demo_plugins,
-    response_with_release_notes_with_v, existing_release_notes_with_v, existing_link_to_release_with_v, existing_message_with_release_with_v,
+    metadata_if_code_repository_exists, list_of_demo_plugins, response_with_release_notes,
+    response_without_release_notes,
+    existing_release_notes_with_no_v, existing_link_to_release_no_v, existing_message_with_release_no_v,
+    existing_demo_plugins,
+    response_with_release_notes_with_v, existing_release_notes_with_v, existing_link_to_release_with_v,
+    existing_message_with_release_with_v,
     empty_release_notes, test_link_to_napari, message_no_release_notes,
     metadata_if_code_repository_is_null,
     metadata_if_code_repository_does_not_exist,
     currently_used_plugins,
-    list_of_demo_plugins_no_version_change, existing_demo_plugins_version_unchanged, currently_used_plugins_no_version_change
-    )
+    list_of_demo_plugins_no_version_change, existing_demo_plugins_version_unchanged,
+    currently_used_plugins_no_version_change
+)
+
 
 def mocked_requests_get_release_notes_with_release_no_v_update(*args, **kwargs):
     """
@@ -27,6 +33,7 @@ def mocked_requests_get_release_notes_with_release_no_v_update(*args, **kwargs):
         return FakeResponse(data=response_with_release_notes)
     return FakeResponse(data=response_without_release_notes)
 
+
 def mocked_requests_get_release_notes_with_release_v_update(*args, **kwargs):
     """
     Helps create mock responses getting release notes
@@ -38,6 +45,7 @@ def mocked_requests_get_release_notes_with_release_v_update(*args, **kwargs):
         return FakeResponse(data=response_with_release_notes_with_v)
     return FakeResponse(data=response_without_release_notes)
 
+
 class TestZulip(unittest.TestCase):
 
     def test_get_owner_and_name_works(self):
@@ -45,9 +53,9 @@ class TestZulip(unittest.TestCase):
         assert owner_and_name == 'author/plugin'
 
     def test_create_github_endpoint(self):
-        endpoint = create_github_endpoint('author/plugin', '0.0.1', with_v = False)
+        endpoint = create_github_endpoint('author/plugin', '0.0.1', with_v=False)
         assert endpoint == 'https://api.github.com/repos/author/plugin/releases/tags/0.0.1'
-        endpoint = create_github_endpoint('author/plugin', '0.0.1', with_v = True)
+        endpoint = create_github_endpoint('author/plugin', '0.0.1', with_v=True)
         assert endpoint == 'https://api.github.com/repos/author/plugin/releases/tags/v0.0.1'
 
     # these tests test the get_release_notes(endpoint) method
@@ -95,7 +103,8 @@ class TestZulip(unittest.TestCase):
         plugins_used_in_test = set()
         for package, version in new_packages.items():
             # first tests release notes generation works as expected separately from message generation
-            release_notes, link_to_release = generate_release_notes_and_link_to_release(package, version, packages_metadata)
+            release_notes, link_to_release = generate_release_notes_and_link_to_release(package, version,
+                                                                                        packages_metadata)
             assert existing_release_notes_with_no_v == release_notes
             assert existing_link_to_release_no_v[package] == link_to_release
             # then tests that message generation works as expected 
@@ -118,7 +127,8 @@ class TestZulip(unittest.TestCase):
         plugins_used_in_test = set()
         for package, version in new_packages.items():
             # first tests release notes generation works as expected separately from message generation
-            release_notes, link_to_release = generate_release_notes_and_link_to_release(package, version, packages_metadata)
+            release_notes, link_to_release = generate_release_notes_and_link_to_release(package, version,
+                                                                                        packages_metadata)
             assert existing_release_notes_with_v == release_notes
             assert existing_link_to_release_with_v[package] == link_to_release
             # then tests that message generation works as expected 
@@ -128,7 +138,7 @@ class TestZulip(unittest.TestCase):
         # check that we used all the plugins we wanted to 
         assert plugins_used_in_test == currently_used_plugins
 
-    @patch('requests.get', return_value = FakeResponse(data=response_without_release_notes))
+    @patch('requests.get', return_value=FakeResponse(data=response_without_release_notes))
     def test_create_correct_message_with_no_release_update(self, mock_get):
         """
         Test situation where package doesn't have release notes for both new and existing packages
@@ -141,7 +151,8 @@ class TestZulip(unittest.TestCase):
         plugins_used_in_test = set()
         for package, version in new_packages.items():
             # first tests release notes generation works as expected separately from message generation
-            release_notes, link_to_release = generate_release_notes_and_link_to_release(package, version, packages_metadata)
+            release_notes, link_to_release = generate_release_notes_and_link_to_release(package, version,
+                                                                                        packages_metadata)
             assert empty_release_notes == release_notes
             assert test_link_to_napari[package] == link_to_release
             # then tests that message generation works as expected 
@@ -151,7 +162,7 @@ class TestZulip(unittest.TestCase):
         # check that we used all the plugins we wanted to 
         assert plugins_used_in_test == currently_used_plugins
 
-    @patch('requests.get', return_value = FakeResponse(data=response_with_release_notes))
+    @patch('requests.get', return_value=FakeResponse(data=response_with_release_notes))
     def test_create_correct_message_with_null_code_repo(self, mock_get):
         """
         Test situation where package has a null "code_repository" field for both new and existing packages
@@ -164,7 +175,8 @@ class TestZulip(unittest.TestCase):
         plugins_used_in_test = set()
         for package, version in new_packages.items():
             # first tests release notes generation works as expected separately from message generation
-            release_notes, link_to_release = generate_release_notes_and_link_to_release(package, version, packages_metadata)
+            release_notes, link_to_release = generate_release_notes_and_link_to_release(package, version,
+                                                                                        packages_metadata)
             assert empty_release_notes == release_notes
             assert test_link_to_napari[package] == link_to_release
             # then tests that message generation works as expected 
@@ -174,7 +186,7 @@ class TestZulip(unittest.TestCase):
         # check that we used all the plugins we wanted to 
         assert plugins_used_in_test == currently_used_plugins
 
-    @patch('requests.get', return_value = FakeResponse(data=response_with_release_notes))
+    @patch('requests.get', return_value=FakeResponse(data=response_with_release_notes))
     def test_create_correct_message_with_no_code_repo(self, mock_get):
         """
         Test situation where package doesn't contain a "code_repository" field for both new and existing packages
@@ -187,7 +199,8 @@ class TestZulip(unittest.TestCase):
         plugins_used_in_test = set()
         for package, version in new_packages.items():
             # first tests release notes generation works as expected separately from message generation
-            release_notes, link_to_release = generate_release_notes_and_link_to_release(package, version, packages_metadata)
+            release_notes, link_to_release = generate_release_notes_and_link_to_release(package, version,
+                                                                                        packages_metadata)
             assert empty_release_notes == release_notes
             assert test_link_to_napari[package] == link_to_release
             # then tests that message generation works as expected 

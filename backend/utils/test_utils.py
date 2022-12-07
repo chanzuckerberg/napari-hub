@@ -1,6 +1,5 @@
 import requests
 from requests.exceptions import HTTPError
-import json
 
 
 class FakeResponse:
@@ -204,20 +203,20 @@ labels:
 """
 
 citations_authors_result = [
-  {'name':"Gi N. Fa"},
-  {'name':"Given Family"}
+    {'name': "Gi N. Fa"},
+    {'name': "Given Family"}
 ]
 
 citations_authors_auth_names_and_name_result = [
-  {'name':"Gi N. Fa"}, {'name':"The Research Software project"}
+    {'name': "Gi N. Fa"}, {'name': "The Research Software project"}
 ]
 
 citations_no_authors_result = [
-  {'name':"The Research Software project"}
+    {'name': "The Research Software project"}
 ]
 
 config_yaml_authors_result = [
-  {'name': 'Test Author', 'orcid': '0000-0000-0000-0000'}
+    {'name': 'Test Author', 'orcid': '0000-0000-0000-0000'}
 ]
 
 # constants for testing author splitting
@@ -264,11 +263,11 @@ split_comma_plugin = """
   "url":"","yanked":false,"yanked_reason":null}]}}"""
 
 split_comma_correct_result = [
-  {'name': 'Test Author 1'},
-  {'name': 'Test Author 2'},
-  {'name': 'Test Author 3'},
-  {'name': 'Test Author 4'},
-  {'name': 'Test Author 5'}
+    {'name': 'Test Author 1'},
+    {'name': 'Test Author 2'},
+    {'name': 'Test Author 3'},
+    {'name': 'Test Author 4'},
+    {'name': 'Test Author 5'}
 ]
 
 # test splitting with ampersand
@@ -314,11 +313,11 @@ split_ampersand_plugin = """
   "url":"","yanked":false,"yanked_reason":null}]}}"""
 
 split_ampersand_correct_result = [
-  {'name': 'Test Author 1'},
-  {'name': 'Test Author 2'},
-  {'name': 'Test Author 3'},
-  {'name': 'Test Author 4'},
-  {'name': 'Test Author 5'}
+    {'name': 'Test Author 1'},
+    {'name': 'Test Author 2'},
+    {'name': 'Test Author 3'},
+    {'name': 'Test Author 4'},
+    {'name': 'Test Author 5'}
 ]
 
 # test splitting with and
@@ -364,11 +363,11 @@ split_and_plugin = """
   "url":"","yanked":false,"yanked_reason":null}]}}"""
 
 split_and_correct_result = [
-  {'name': 'Test Author 1'},
-  {'name': 'Test Author 2'},
-  {'name': 'andy'},
-  {'name': 'yand'},
-  {'name': 'sandra'}
+    {'name': 'Test Author 1'},
+    {'name': 'Test Author 2'},
+    {'name': 'andy'},
+    {'name': 'yand'},
+    {'name': 'sandra'}
 ]
 
 # test empyy splitting
@@ -414,9 +413,9 @@ empty_split_plugin = """
   "url":"","yanked":false,"yanked_reason":null}]}}"""
 
 empty_split_correct_result = [
-  {'name': 'and'},
-  {'name': 'and'},
-  {'name': 'and'}
+    {'name': 'and'},
+    {'name': 'and'},
+    {'name': 'and'}
 ]
 
 # constants for testing zulip bot message generation
@@ -601,46 +600,46 @@ message_separator = '\n-------------------------------\n'
 existing_release_notes_with_no_v = "release_notes"
 
 existing_link_to_release_no_v = {
-  "napari-demo": f"[{test_version_existing}]({test_github_link_existing}/releases/tag/{test_version_existing})",
-  "new-napari-plugin": f"[{test_version_new}]({test_github_link_new}/releases/tag/{test_version_new})"
-  }
+    "napari-demo": f"[{test_version_existing}]({test_github_link_existing}/releases/tag/{test_version_existing})",
+    "new-napari-plugin": f"[{test_version_new}]({test_github_link_new}/releases/tag/{test_version_new})"
+}
 
 existing_message_with_release_no_v = {
-  "napari-demo": f'A new version of [{test_package_existing}](https://napari-hub.org/plugins/{test_package_existing}) is available on the ' \
-                 f'napari hub! Check out the release notes for {existing_link_to_release_no_v["napari-demo"]}:{message_separator}' \
-                 + existing_release_notes_with_no_v,
-  "new-napari-plugin": f'A new plugin has been published on the napari hub! ' \
-                    f'Check out [{test_package_new}](https://napari-hub.org/plugins/{test_package_new})!' \
-                    f'\nAlso check out its release notes for version {existing_link_to_release_no_v["new-napari-plugin"]}:{message_separator}' + existing_release_notes_with_no_v
+    "napari-demo": f'A new version of [{test_package_existing}](https://napari-hub.org/plugins/{test_package_existing}) is available on the ' \
+                   f'napari hub! Check out the release notes for {existing_link_to_release_no_v["napari-demo"]}:{message_separator}' \
+                   + existing_release_notes_with_no_v,
+    "new-napari-plugin": f'A new plugin has been published on the napari hub! ' \
+                         f'Check out [{test_package_new}](https://napari-hub.org/plugins/{test_package_new})!' \
+                         f'\nAlso check out its release notes for version {existing_link_to_release_no_v["new-napari-plugin"]}:{message_separator}' + existing_release_notes_with_no_v
 
-  }
+}
 
 existing_release_notes_with_v = "release_notes_with_v"
 
 existing_link_to_release_with_v = {
-  "napari-demo": f"[v{test_version_existing}]({test_github_link_existing}/releases/tag/v{test_version_existing})",
-  "new-napari-plugin": f"[v{test_version_new}]({test_github_link_new}/releases/tag/v{test_version_new})"
+    "napari-demo": f"[v{test_version_existing}]({test_github_link_existing}/releases/tag/v{test_version_existing})",
+    "new-napari-plugin": f"[v{test_version_new}]({test_github_link_new}/releases/tag/v{test_version_new})"
 }
 
 existing_message_with_release_with_v = {
-  "napari-demo": f'A new version of [{test_package_existing}](https://napari-hub.org/plugins/{test_package_existing}) is available on the ' \
-                 f'napari hub! Check out the release notes for {existing_link_to_release_with_v["napari-demo"]}:{message_separator}' \
-                 + existing_release_notes_with_v,
-  "new-napari-plugin": f'A new plugin has been published on the napari hub! ' \
-                    f'Check out [{test_package_new}](https://napari-hub.org/plugins/{test_package_new})!' \
-                    f'\nAlso check out its release notes for version {existing_link_to_release_with_v["new-napari-plugin"]}:{message_separator}' + existing_release_notes_with_v
-  }
+    "napari-demo": f'A new version of [{test_package_existing}](https://napari-hub.org/plugins/{test_package_existing}) is available on the ' \
+                   f'napari hub! Check out the release notes for {existing_link_to_release_with_v["napari-demo"]}:{message_separator}' \
+                   + existing_release_notes_with_v,
+    "new-napari-plugin": f'A new plugin has been published on the napari hub! ' \
+                         f'Check out [{test_package_new}](https://napari-hub.org/plugins/{test_package_new})!' \
+                         f'\nAlso check out its release notes for version {existing_link_to_release_with_v["new-napari-plugin"]}:{message_separator}' + existing_release_notes_with_v
+}
 
 empty_release_notes = ''
 
 test_link_to_napari = {
-  "napari-demo": f'[{test_version_existing}](https://napari-hub.org/plugins/{test_package_existing})',
-  "new-napari-plugin": f'[{test_version_new}](https://napari-hub.org/plugins/{test_package_new})'
-  }
+    "napari-demo": f'[{test_version_existing}](https://napari-hub.org/plugins/{test_package_existing})',
+    "new-napari-plugin": f'[{test_version_new}](https://napari-hub.org/plugins/{test_package_new})'
+}
 
 message_no_release_notes = {
-  "napari-demo": f'A new version of [{test_package_existing}](https://napari-hub.org/plugins/{test_package_existing}) is available on the ' \
-                 f'napari hub! Check out [0.0.1](https://napari-hub.org/plugins/{test_package_existing})!', 
-  "new-napari-plugin": f'A new plugin has been published on the napari hub! ' \
-                    f'Check out [{test_package_new}](https://napari-hub.org/plugins/{test_package_new}) with version [{test_version_new}](https://napari-hub.org/plugins/{test_package_new})!' 
-  }
+    "napari-demo": f'A new version of [{test_package_existing}](https://napari-hub.org/plugins/{test_package_existing}) is available on the ' \
+                   f'napari hub! Check out [0.0.1](https://napari-hub.org/plugins/{test_package_existing})!',
+    "new-napari-plugin": f'A new plugin has been published on the napari hub! ' \
+                         f'Check out [{test_package_new}](https://napari-hub.org/plugins/{test_package_new}) with version [{test_version_new}](https://napari-hub.org/plugins/{test_package_new})!'
+}

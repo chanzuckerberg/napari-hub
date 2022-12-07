@@ -1,15 +1,15 @@
 import unittest
 from unittest.mock import patch
-import requests
 from backend.utils.github import get_citation_author, get_github_metadata
 
 from utils.github import get_github_repo_url, get_license, get_citations
 from utils.test_utils import (
-    FakeResponse, license_response, no_license_response, citation_string, 
+    FakeResponse, license_response, no_license_response, citation_string,
     config_yaml, config_yaml_authors_result, citations_authors_result,
     citation_string_no_auth_name, citations_no_authors_result,
     citation_string_auth_names_and_name, citations_authors_auth_names_and_name_result
-    )
+)
+
 
 def mocked_requests_get_citation(*args, **kwargs):
     """
@@ -23,6 +23,7 @@ def mocked_requests_get_citation(*args, **kwargs):
 
     return FakeResponse(data=None)
 
+
 def mocked_requests_no_citation_no_config(*args, **kwargs):
     """
     Helps create mock responses to only requests for license
@@ -32,6 +33,7 @@ def mocked_requests_no_citation_no_config(*args, **kwargs):
         return FakeResponse(data=license_response)
 
     return FakeResponse(data=None)
+
 
 def mocked_requests_get_citation_and_config(*args, **kwargs):
     """
@@ -47,6 +49,7 @@ def mocked_requests_get_citation_and_config(*args, **kwargs):
 
     return FakeResponse(data=None)
 
+
 def mocked_requests_get_config(*args, **kwargs):
     """
     Helps create mock responses to only requests for config.yml and license
@@ -58,6 +61,7 @@ def mocked_requests_get_config(*args, **kwargs):
         return FakeResponse(data=config_yaml)
 
     return FakeResponse(data=None)
+
 
 def mocked_requests_get_citation_no_auth_name(*args, **kwargs):
     """
@@ -71,6 +75,7 @@ def mocked_requests_get_citation_no_auth_name(*args, **kwargs):
 
     return FakeResponse(data=None)
 
+
 def mocked_requests_get_citation_auth_names_and_name(*args, **kwargs):
     """
     Helps create mock responses to only requests for license and a citation with given and family names, and the name field
@@ -82,6 +87,7 @@ def mocked_requests_get_citation_auth_names_and_name(*args, **kwargs):
         return FakeResponse(data=citation_string_auth_names_and_name)
 
     return FakeResponse(data=None)
+
 
 class TestGithub(unittest.TestCase):
 
