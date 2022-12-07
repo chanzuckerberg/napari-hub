@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import { Button } from 'czifui';
 import { useTranslation } from 'next-i18next';
 import { useState } from 'react';
 
@@ -31,11 +32,12 @@ export function CallToActionButton({ className }: Props) {
         <>
           <InstallModal onClose={() => setVisible(false)} visible={visible} />
 
-          <button
+          <Button
             className={clsx(
               className,
 
               // Button color
+              'text-base text-black font-normal',
               'bg-hub-primary-400 hover:bg-hub-primary-500 active:bg-hub-primary-600',
               'transition-colors',
 
@@ -51,10 +53,9 @@ export function CallToActionButton({ className }: Props) {
                 });
               }
             }}
-            type="button"
           >
             {t('common:install')}
-          </button>
+          </Button>
         </>
       )}
     />

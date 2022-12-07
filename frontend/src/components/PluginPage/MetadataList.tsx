@@ -1,6 +1,6 @@
-import Tooltip from '@mui/material/Tooltip';
 import clsx from 'clsx';
 import { ReactNode } from 'react';
+import { Tooltip } from 'src/components/Tooltip';
 
 import { Link } from '@/components/Link';
 import { MetadataStatus } from '@/components/MetadataStatus';

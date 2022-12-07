@@ -1,8 +1,8 @@
 import clsx from 'clsx';
-import { Tooltip } from 'czifui';
 import { isObject, throttle } from 'lodash';
 import { useTranslation } from 'next-i18next';
 import { useEffect, useRef } from 'react';
+import { Tooltip } from 'src/components/Tooltip';
 import { snapshot } from 'valtio';
 
 import { AppBarPreview } from '@/components/AppBar';

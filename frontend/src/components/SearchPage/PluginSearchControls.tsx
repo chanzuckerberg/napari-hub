@@ -1,4 +1,3 @@
-import Divider from '@mui/material/Divider';
 import clsx from 'clsx';
 import { AnimateSharedLayout, motion } from 'framer-motion';
 
@@ -13,11 +12,7 @@ import { PluginSortByForm } from './PluginSortByForm';
  */
 export function PluginSearchControls() {
   const divider = (
-    <Divider
-      layout
-      component={motion.div}
-      className="bg-black h-1 my-6 hidden screen-875:block"
-    />
+    <motion.hr layout className="bg-black h-1 my-6 hidden screen-875:block" />
   );
 
   const isCategoryFiltersEnabled = useIsFeatureFlagEnabled('categoryFilters');

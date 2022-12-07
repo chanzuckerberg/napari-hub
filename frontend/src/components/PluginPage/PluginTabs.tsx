@@ -1,21 +1,19 @@
 import Skeleton from '@mui/material/Skeleton';
-import clsx from 'clsx';
-import { Tab, Tabs } from 'czifui';
 import dynamic from 'next/dynamic';
-import { ReactNode, useEffect } from 'react';
+import { ReactNode, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSnapshot } from 'valtio';
 
 import { Markdown } from '@/components/Markdown';
 import { MetadataHighlighter } from '@/components/MetadataHighlighter';
 import { SkeletonLoader } from '@/components/SkeletonLoader';
+import { TabData, Tabs } from '@/components/Tabs';
 import { useLoadingState } from '@/context/loading';
 import { usePluginState } from '@/context/plugin';
 import { useMediaQuery, usePlausible } from '@/hooks';
 import { pluginTabsStore, resetPluginTabs } from '@/store/pluginTabs';
 import { PluginTabType } from '@/types/plugin';
 
-import { Text } from '../Text';
 import { CallToActionButton } from './CallToActionButton';
 import { CitationInfo } from './CitationInfo';
 import { PluginMetadata } from './PluginMetadata';
@@ -28,33 +26,33 @@ const ActivityDashboard = dynamic<Record<string, unknown>>(
   { ssr: false },
 );
 
-interface PluginTabData {
-  label: string;
-  tab: PluginTabType;
-}
-
 function usePluginTabs() {
   const { plugin } = usePluginState();
   const [t] = useTranslation(['pluginPage']);
 
-  return [
-    {
-      label: t('pluginPage:tabs.description'),
-      tab: PluginTabType.Description,
-    },
+  return useMemo(() => {
+    const tabs: TabData<PluginTabType>[] = [
+      {
+        label: t('pluginPage:tabs.description'),
+        value: PluginTabType.Description,
+      },
 
-    {
-      label: t('pluginPage:tabs.activity'),
-      tab: PluginTabType.Activity,
-    },
+      {
+        label: t('pluginPage:tabs.activity'),
+        new: true,
+        value: PluginTabType.Activity,
+      },
+    ];
 
-    plugin?.citations
-      ? {
-          label: t('pluginPage:tabs.citation'),
-          tab: PluginTabType.Citation,
-        }
-      : undefined,
-  ].filter((tab): tab is PluginTabData => !!tab);
+    if (plugin?.citations) {
+      tabs.push({
+        label: t('pluginPage:tabs.citation'),
+        value: PluginTabType.Citation,
+      });
+    }
+
+    return tabs;
+  }, [plugin?.citations, t]);
 }
 
 export function PluginTabs() {
@@ -120,66 +118,19 @@ export function PluginTabs() {
 
   return (
     <>
-      {/* Scroll container for tabs */}
-      <div className="overflow-x-auto mb-sds-xl border-b border-black">
-        <Tabs
-          classes={{
-            indicator: 'hidden',
-            root: 'm-0 p-0',
-          }}
-          value={activeTab}
-          onChange={(_, nextTab) => {
-            const tab = nextTab as PluginTabType;
-            pluginTabsStore.activeTab = tab;
+      <Tabs
+        tabs={tabs}
+        activeTab={activeTab}
+        onChange={(tab) => {
+          pluginTabsStore.activeTab = tab.value;
 
-            plausible('Plugin Tab Nav', {
-              tab,
-              plugin: plugin?.name ?? '',
-            });
-          }}
-        >
-          {tabs.map(({ label, tab }) => (
-            <Tab
-              label={
-                <>
-                  <div className="px-sds-xs screen-495:px-sds-m">
-                    <Text
-                      className="space-x-sds-xs screen-495:space-x-sds-m"
-                      element="p"
-                      variant="h4"
-                    >
-                      <span>{label}</span>
-
-                      {tab === PluginTabType.Activity && (
-                        <Text
-                          className="bg-hub-primary-400 p-1"
-                          element="span"
-                          variant="h6"
-                        >
-                          {t('pluginPage:tabs.new')}
-                        </Text>
-                      )}
-                    </Text>
-                  </div>
-
-                  <div
-                    className={clsx(
-                      'w-full h-[3px] group-hover:bg-hub-primary-500',
-                      'mt-sds-xs',
-                      tab === activeTab ? 'bg-black' : 'bg-transparent',
-                    )}
-                  />
-                </>
-              }
-              value={tab}
-              classes={{
-                root: 'text-black font-semibold m-0 group h-[28px] screen-495:h-[33px]',
-                selected: 'bg-bold',
-              }}
-            />
-          ))}
-        </Tabs>
-      </div>
+          plausible('Plugin Tab Nav', {
+            tab: tab.value,
+            plugin: plugin?.name ?? '',
+          });
+        }}
+        underline
+      />
 
       {tabContent}
     </>

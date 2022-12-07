@@ -1,8 +1,8 @@
 import clsx from 'clsx';
-import { Tooltip } from 'czifui';
 import { useTranslation } from 'next-i18next';
 import { GitHub, OrcID, Twitter, Website } from 'src/components/icons';
 import { Link } from 'src/components/Link';
+import { Tooltip } from 'src/components/Tooltip';
 import { CollectionLinks as CollectionLinksType } from 'src/types/collections';
 
 import { useCollection } from './context';
@@ -53,6 +53,7 @@ function CollectionLink({ linkKey }: CollectionLinkProps) {
 
   return (
     <Tooltip
+      arrow={false}
       classes={{
         tooltip: clsx(
           '!bg-[#f1f1ec] !border !border-[#dcdcdc]',

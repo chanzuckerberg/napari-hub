@@ -1,10 +1,10 @@
 import { useTheme } from '@mui/material/styles';
-import Tooltip from '@mui/material/Tooltip';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import clsx from 'clsx';
 import { useTranslation } from 'next-i18next';
 import { useEffect, useMemo } from 'react';
 import { usePrevious } from 'react-use';
+import { Tooltip } from 'src/components/Tooltip';
 import {
   parse as parseTransformStr,
   stringify as stringifyTransformStr,

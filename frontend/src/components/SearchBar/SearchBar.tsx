@@ -1,5 +1,5 @@
-import IconButton from '@mui/material/IconButton';
 import clsx from 'clsx';
+import { ButtonIcon } from 'czifui';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { HTMLProps, useEffect, useState } from 'react';
@@ -147,7 +147,8 @@ export function SearchBar({ large, ...props }: Props) {
         value={localQuery}
       />
 
-      <IconButton
+      <ButtonIcon
+        className="p-3"
         aria-label={t(
           query
             ? 'common:ariaLabels.clearSearchBar'
@@ -174,7 +175,7 @@ export function SearchBar({ large, ...props }: Props) {
         ) : (
           <Search className={iconClassName} />
         )}
-      </IconButton>
+      </ButtonIcon>
     </form>
   );
 }

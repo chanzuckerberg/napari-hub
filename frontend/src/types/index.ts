@@ -7,15 +7,12 @@ export interface PluginAuthor {
   orcid?: string;
 }
 
+export type CitationType = 'citation' | 'RIS' | 'BibTex' | 'APA';
+
 /**
  * Citation formats.
  * */
-export interface CitationData {
-  citation: string;
-  RIS: string;
-  BibTex: string;
-  APA: string;
-}
+export type CitationData = Record<CitationType, string>;
 
 export type HubDimension =
   | 'Workflow step'
