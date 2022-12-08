@@ -4,6 +4,7 @@ declare namespace NodeJS {
     readonly API_URL: string;
     readonly BASE_PATH: string;
     readonly ENV: 'local' | 'dev' | 'staging' | 'prod';
+    readonly E2E: 'true' | 'false';
     readonly FRONTEND_URL: string;
     readonly GITHUB_CLIENT_ID: string;
     readonly GITHUB_CLIENT_SECRET: string;

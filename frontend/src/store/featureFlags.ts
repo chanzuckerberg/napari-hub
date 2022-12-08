@@ -1,5 +1,5 @@
 import { SplitFactory } from '@splitsoftware/splitio';
-import { set } from 'lodash';
+import { cloneDeep, set } from 'lodash';
 import { useRef } from 'react';
 import { v4 as uuid } from 'uuid';
 import { proxy, useSnapshot } from 'valtio';
@@ -17,7 +17,7 @@ export interface FeatureFlag<
   config?: C | null;
 }
 
-const FEATURE_FLAG_LIST = [
+export const FEATURE_FLAG_LIST = [
   'activityDashboard',
   'categoryFilters',
   'collections',
@@ -27,7 +27,7 @@ const FEATURE_FLAG_LIST = [
 export type FeatureFlagKey = typeof FEATURE_FLAG_LIST[number];
 export type FeatureFlagMap = Record<FeatureFlagKey, FeatureFlag>;
 
-const FEATURE_FLAGS = FEATURE_FLAG_LIST.reduce(
+export const FEATURE_FLAGS = FEATURE_FLAG_LIST.reduce(
   (result, key) =>
     set(result, key, {
       key,
@@ -35,6 +35,19 @@ const FEATURE_FLAGS = FEATURE_FLAG_LIST.reduce(
     }),
   {} as FeatureFlagMap,
 );
+
+/**
+ * Get feature flag map with specified flag keys enabled
+ */
+export function getEnabledFeatureFlags(...enabledList: FeatureFlagKey[]) {
+  const flags = cloneDeep(FEATURE_FLAGS);
+
+  for (const flag of enabledList) {
+    flags[flag].value = 'on';
+  }
+
+  return flags;
+}
 
 /**
  * Store used for holding feature flag data.

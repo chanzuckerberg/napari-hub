@@ -123,6 +123,8 @@ jobs:
 
       - name: Build for production
         run: yarn build
+        env:
+          E2E: true
 
       - name: Start mock server on port 8081
         run: yarn dev:api &
@@ -130,7 +132,7 @@ jobs:
       - name: Start server on port 8080
         run: yarn start &
         env:
-          NODE_ENV: production
+          E2E: true
 
       - name: Install playwright
         run: npx playwright install --with-deps

@@ -7,7 +7,13 @@ import { SSRConfig } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { ParsedUrlQuery } from 'querystring';
 
-import { FeatureFlagMap, getFeatureFlags } from '@/store/featureFlags';
+import { E2E } from '@/constants/env';
+import {
+  FEATURE_FLAG_LIST,
+  FeatureFlagMap,
+  getEnabledFeatureFlags,
+  getFeatureFlags,
+} from '@/store/featureFlags';
 import { I18nNamespace } from '@/types/i18n';
 
 /**
@@ -67,7 +73,11 @@ export function getServerSidePropsHandler<
       'pageTitles',
       ...locales,
     ] as I18nNamespace[]);
-    const featureFlags = await getFeatureFlags(req.url ?? '/');
+
+    const featureFlags = E2E
+      ? getEnabledFeatureFlags(...FEATURE_FLAG_LIST)
+      : await getFeatureFlags(req.url ?? '/');
+
     const extraProps = await getProps?.(context, featureFlags);
 
     return {
