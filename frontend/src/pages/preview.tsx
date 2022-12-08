@@ -11,6 +11,11 @@ import { PluginPage } from '@/components/PluginPage';
 import { PROD } from '@/constants/env';
 import { DEFAULT_PLUGIN_DATA, DEFAULT_REPO_DATA } from '@/constants/plugin';
 import { MetadataId, PluginStateProvider } from '@/context/plugin';
+import {
+  FeatureFlagMap,
+  getEnabledFeatureFlags,
+  PREVIEW_ENABLED_FEATURES,
+} from '@/store/featureFlags';
 import { previewStore } from '@/store/preview';
 import { PluginData } from '@/types';
 import { I18nNamespace } from '@/types/i18n';
@@ -20,7 +25,12 @@ interface BaseProps {
   plugin: DeepPartial<PluginData>;
 }
 
-type Props = BaseProps & FetchRepoDataResult & SSRConfig;
+type Props = BaseProps &
+  FetchRepoDataResult &
+  SSRConfig & {
+    // eslint-disable-next-line react/no-unused-prop-types
+    featureFlags?: FeatureFlagMap;
+  };
 
 const PLUGIN_PATH = process.env.PREVIEW;
 
@@ -53,10 +63,13 @@ export async function getStaticProps({
   const repoFetchResult =
     plugin.code_repository && (await fetchRepoData(plugin.code_repository));
 
+  const featureFlags = getEnabledFeatureFlags(...PREVIEW_ENABLED_FEATURES);
+
   return {
     props: {
       ...translationProps,
       plugin,
+      featureFlags,
       ...(repoFetchResult || { repo: DEFAULT_REPO_DATA }),
     },
   };

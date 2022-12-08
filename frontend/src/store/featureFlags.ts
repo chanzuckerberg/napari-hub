@@ -37,6 +37,21 @@ export const FEATURE_FLAGS = FEATURE_FLAG_LIST.reduce(
 );
 
 /**
+ * Feature flags to enable in preview environment.
+ *
+ * TODO Move this to split.io. The issue is since preview pages are built on the
+ * user's GitHub workflow, they won't have access to the split.io API keys when
+ * building the preview page. This will be possible once we move preview pages
+ * server side.
+ */
+export const PREVIEW_ENABLED_FEATURES: FeatureFlagKey[] = [
+  'activityDashboard',
+  'categoryFilters',
+  'collections',
+  'npe2',
+];
+
+/**
  * Get feature flag map with specified flag keys enabled
  */
 export function getEnabledFeatureFlags(...enabledList: FeatureFlagKey[]) {
