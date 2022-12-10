@@ -90,6 +90,9 @@ module frontend_service {
   wait_for_steady_state = local.wait_for_steady_state
 }
 
+resource "random_uuid" "api_key" {
+}
+
 module backend_lambda {
   source             = "../lambda-container"
   function_name      = local.backend_function_name
@@ -122,6 +125,7 @@ module backend_lambda {
     "PLUGINS_LAMBDA_NAME" = local.plugins_function_name
     "SNOWFLAKE_USER" = local.snowflake_user
     "SNOWFLAKE_PASSWORD" = local.snowflake_password
+    "API_KEY" = random_uuid.api_key.result
   }
 
   log_retention_in_days = 14
@@ -177,7 +181,11 @@ resource "aws_cloudwatch_event_target" "update_target" {
     rule = aws_cloudwatch_event_rule.update_rule.name
     arn = module.backend_lambda.function_arn
     input_transformer {
-        input_template = jsonencode({path = "/update", httpMethod = "POST"})
+        input_template = jsonencode({
+          path = "/update",
+          httpMethod = "POST",
+          headers = {"X-API-Key": random_uuid.api_key.result}
+        })
     }
 }
 
@@ -193,7 +201,11 @@ resource "aws_cloudwatch_event_target" "activity_target" {
     rule = aws_cloudwatch_event_rule.activity_rule.name
     arn = module.backend_lambda.function_arn
     input_transformer {
-        input_template = jsonencode({path = "/activity/update", httpMethod = "POST"})
+        input_template = jsonencode({
+          path = "/activity/update",
+          httpMethod = "POST",
+          headers = {"X-API-Key": random_uuid.api_key.result}
+        })
     }
 }
 

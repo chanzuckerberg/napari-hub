@@ -1,5 +1,6 @@
 import os
 
+from werkzeug import exceptions
 from apig_wsgi import make_lambda_handler
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
 from flask import Flask, Response, jsonify, render_template, request
@@ -149,6 +150,11 @@ def handle_exception(e) -> Response:
                               {'Content-Type': 'text/plain; charset=utf-8'}))
 
 
+@app.errorhandler(exceptions.Unauthorized)
+def handle_permission_exception(e) -> Response:
+    return app.make_response(("Unauthorized Access", 401))
+
+
 @app.errorhandler(Exception)
 def handle_exception(e) -> Response:
     send_alert(f"An unexpected error has occurred in napari hub: {e}")
@@ -158,6 +164,12 @@ def handle_exception(e) -> Response:
 @github_app.on("workflow_run.completed")
 def preview():
     move_artifact_to_s3(github_app.payload, github_app.installation_client)
+
+
+@app.before_request
+def authenticate_request():
+    if request.method == 'POST' and request.headers.get('X-API-Key') != os.getenv('API_KEY'):
+        raise exceptions.Unauthorized('Invalid API key')
 
 
 @app.after_request
