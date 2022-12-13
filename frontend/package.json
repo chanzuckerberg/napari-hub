@@ -70,9 +70,6 @@
     "// Type checks codebase with TypeScript": "",
     "type-check": "tsc -p tsconfig.json --noEmit"
   },
-  "resolutions": {
-    "@types/react": "18.0.26"
-  },
   "dependencies": {
     "@emotion/css": "11.10.5",
     "@emotion/react": "11.10.5",

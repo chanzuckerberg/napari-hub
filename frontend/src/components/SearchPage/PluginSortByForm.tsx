@@ -5,6 +5,7 @@ import RadioGroup from '@mui/material/RadioGroup';
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'next-i18next';
+import { ReactNode } from 'react';
 import type { TFuncKey } from 'react-i18next';
 import { useSnapshot } from 'valtio';
 
@@ -87,7 +88,7 @@ function SortForm() {
                   color="default"
                 />
               }
-              label={t(`homePage:${SORT_BY_LABELS[sortType]}`)}
+              label={t(`homePage:${SORT_BY_LABELS[sortType]}`) as ReactNode}
             />
           </motion.div>
         ))}
