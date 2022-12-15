@@ -47,6 +47,8 @@
     "preview:dev:build": "PREVIEW=src/fixtures/plugin.json PREVIEW_PULL_REQUEST=https://github.com/chanzuckerberg/napari-demo/pull/5 yarn preview:build",
     "// Runs frontend in production. Requires running `yarn build` first.": "",
     "start": "next start -p 8080",
+    "start:prod": "API_URL='https://api.napari-hub.org' yarn dev",
+    "start:staging": "API_URL='https://api.staging.napari-hub.org' yarn dev",
     "// Runs unit / integration tests": "",
     "test": "jest -c jest/test.config.js",
     "// Runs unit / integration tests in watch mode": "",
