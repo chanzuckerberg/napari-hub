@@ -108,6 +108,7 @@
     "remark-rehype": "10.1.0",
     "remark-remove-comments": "0.2.0",
     "remark-slug": "7.0.1",
+    "sharp": "^0.31.2",
     "sitemap": "7.1.1",
     "string-similarity": "4.0.4",
     "transform-parser": "1.0.1",
