@@ -27,7 +27,12 @@ def get_yaml_data(collection_name, visibility_requirements):
     if yaml_file:
         data = yaml.safe_load(yaml_file)
         if data and data.get("visibility", "public") in visibility_requirements:
-            data["cover_image"] = IMAGES_BASE_URL + data.get("cover_image")
+            cover_image = data.get("cover_image")
+            ext = cover_image.split('.')[-1]
+            thumb_image = cover_image.replace(f'.{ext}', f'-thumb.{ext}')
+
+            data["cover_image"] = IMAGES_BASE_URL + cover_image
+            data["thumb_image"] = IMAGES_BASE_URL + thumb_image
             return data
     return None
 
@@ -41,6 +46,7 @@ def get_collection_preview(collection_name):
         "title": data.get("title"),
         "summary": data.get("summary"),
         "cover_image": data.get("cover_image"),
+        "thumb_image": data.get("thumb_image"),
         "curator": data.get("curator"),
         "symbol": collection_name,
     }
