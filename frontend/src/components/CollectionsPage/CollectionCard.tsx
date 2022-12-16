@@ -28,7 +28,7 @@ export function CollectionCard({ collection }: Props) {
         <Image
           className="object-cover"
           src={collection.thumb_image}
-          alt={`${collection.title} cover image`}
+          alt={`${collection.title} thumbnail image`}
           layout="fill"
         />
       </div>
