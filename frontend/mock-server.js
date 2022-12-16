@@ -50,6 +50,7 @@ app.get('/collections', async (_, res) => {
       pick(collection, [
         'title',
         'cover_image',
+        'thumb_image',
         'summary',
         'curator',
         'symbol',
