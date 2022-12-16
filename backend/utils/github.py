@@ -25,7 +25,7 @@ elif github_client_id and github_client_secret:
     auth = HTTPBasicAuth(github_client_id, github_client_secret)
 
 visibility_set = {'public', 'disabled', 'hidden'}
-github_pattern = re.compile("https://github\\.com/([^/]+)/([^/]+)")
+github_pattern = re.compile("^https://github\\.com/([^/]+)/([^/]+)")
 hub_config_keys = {'summary', 'authors', 'labels', 'visibility'}
 default_description = 'The developer has not yet provided a napari-hub specific description.'
 project_url_names = {
