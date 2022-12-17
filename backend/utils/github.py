@@ -10,7 +10,7 @@ from cffconvert.citation import Citation
 from requests.auth import HTTPBasicAuth
 from requests.exceptions import HTTPError
 
-from utils.utils import get_attribute, render_description
+from utils.utils import get_attribute
 from utils.auth import HTTPBearerAuth
 
 # Environment variable set through ecs stack terraform module
@@ -39,7 +39,7 @@ project_url_names = {
 
 def get_file(
     download_url: str, file: str = "", branch: str = "HEAD", file_format: str = ""
-) -> [dict, None]:
+) -> Union[dict, None]:
     """
     Get file from github.
 
@@ -76,7 +76,7 @@ def get_file(
     return None
 
 
-def get_license(url: str, branch: str = 'HEAD') -> [str, None]:
+def get_license(url: str, branch: str = 'HEAD') -> Union[str, None]:
     try:
         api_url = url.replace("https://github.com/",
                               "https://api.github.com/repos/")
@@ -92,7 +92,7 @@ def get_license(url: str, branch: str = 'HEAD') -> [str, None]:
         return None
 
 
-def get_github_repo_url(project_urls: Dict[str, str]) -> [str, None]:
+def get_github_repo_url(project_urls: Dict[str, str]) -> Union[str, None]:
     """
     Get repo url for github.
 
@@ -221,3 +221,34 @@ def get_citation_author(citation_str: str) -> Union[Dict[str, str], None]:
         elif 'name' in author_entry and author_entry['name']:
             authors.append({'name':author_entry['name']})
     return authors
+
+def get_github_repo(repo_url: str) -> Union[str, None]:
+    '''
+    Gets GitHub repo <org>/<name> from repo URL.
+    :param repo_url: The repo URL
+    :return: The repo
+    '''
+
+    pattern = 'https://github.com/'
+
+    if pattern not in repo_url:
+        return None
+
+    return repo_url.replace(pattern, '')
+
+def get_github_default_branch(repo: str) -> Union[str, None]:
+    '''
+    Uses the GitHub API to get the repo's default branch.
+    :param repo_url: The repo URL
+    :return: The repo's default branch
+    '''
+
+    try:
+        api_url = f'https://api.github.com/repos/{repo}'
+        response = requests.get(api_url, auth=auth)
+        if response.status_code != requests.codes.ok:
+            response.raise_for_status()
+
+        return get_attribute(json.loads(response.text.strip()), ['default_branch'])
+    except HTTPError:
+        return None

@@ -7,9 +7,10 @@ from zipfile import ZipFile
 from io import BytesIO
 from collections import defaultdict
 import pandas as pd
-from utils.github import get_github_metadata, get_artifact
+from utils.github import get_github_metadata, get_artifact, get_github_repo, get_github_default_branch
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
 from api.s3 import get_cache, cache, write_data, get_install_timeline_data, get_latest_commit, get_commit_activity, get_recent_activity_data
+from utils.markdown import resolve_images_for_markdown
 from utils.utils import render_description, send_alert, get_attribute, get_category_mapping, parse_manifest
 from utils.datadog import report_metrics
 from api.zulip import notify_new_packages
@@ -126,7 +127,7 @@ def get_manifest(plugin: str, version: str = None) -> dict:
         version = plugins[plugin]
     plugin_metadata = get_cache(f'cache/{plugin}/{version}-manifest.json')
 
-    # plugin_metadata being None indicates manifest is not cached and needs processing 
+    # plugin_metadata being None indicates manifest is not cached and needs processing
     if plugin_metadata is None:
         return {'error': 'Manifest not yet processed.'}
 
@@ -204,6 +205,15 @@ def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
     if github_repo_url:
         metadata = {**metadata, **get_github_metadata(github_repo_url)}
     if 'description' in metadata:
+        if github_repo_url:
+            repo = get_github_repo(github_repo_url)
+            branch = get_github_default_branch(repo)
+            metadata['description'] = resolve_images_for_markdown(
+                metadata['description'],
+                repo,
+                branch,
+            )
+
         metadata['description_text'] = render_description(metadata.get('description'))
     if 'labels' in metadata:
         category_mappings = get_categories_mapping(metadata['labels']['ontology'])
@@ -403,11 +413,11 @@ def _update_activity_timeline_data():
     Update existing caches to reflect new activity data.
     """
     query = """
-        SELECT 
+        SELECT
             LOWER(file_project), DATE_TRUNC('month', timestamp) as month, count(*) as num_downloads
         FROM
             imaging.pypi.labeled_downloads
-        WHERE 
+        WHERE
             download_type = 'pip'
             AND project_type = 'plugin'
         GROUP BY file_project, month
@@ -451,15 +461,15 @@ def _update_recent_activity_data(number_of_time_periods=30, time_granularity='DA
     Update existing caches to reflect recent activity data.
     """
     query = f"""
-        SELECT 
+        SELECT
             LOWER(file_project), count(*) as num_downloads
         FROM
             imaging.pypi.labeled_downloads
-        WHERE 
+        WHERE
             download_type = 'pip'
             AND project_type = 'plugin'
             AND timestamp > DATEADD({time_granularity}, {number_of_time_periods * -1}, CURRENT_DATE)
-        GROUP BY file_project     
+        GROUP BY file_project
         ORDER BY file_project
     """
     cursor_list = _execute_query(query, "PYPI")
@@ -485,11 +495,11 @@ def _update_latest_commits(repo_to_plugin_dict):
     Get the latest commit occurred for the plugin
     """
     query = f"""
-        SELECT 
+        SELECT
             repo, max(commit_author_date) as latest_commit
-        FROM 
+        FROM
             imaging.github.commits
-        WHERE 
+        WHERE
             repo_type = 'plugin'
         GROUP BY 1
     """
@@ -510,11 +520,11 @@ def _update_commit_activity(repo_to_plugin_dict):
     Get the commit activity occurred for the plugin in the past year
     """
     query = f"""
-        SELECT 
+        SELECT
             repo, date_trunc('month', to_date(commit_author_date)) as month, count(*) as num_commits
-        FROM 
+        FROM
             imaging.github.commits
-        WHERE 
+        WHERE
             repo_type = 'plugin'
         GROUP BY 1,2
     """
