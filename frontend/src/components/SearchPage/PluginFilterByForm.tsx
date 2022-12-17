@@ -6,12 +6,10 @@ import type { TFuncKey } from 'react-i18next';
 
 import { Accordion } from '@/components/Accordion';
 import { useSearchStore } from '@/store/search/context';
-import { FilterKey } from '@/store/search/search.store';
+import { FilterKey, FilterType } from '@/store/search/search.store';
 import { useIsFeatureFlagEnabled } from '@/utils/featureFlags';
 
 import { PluginComplexFilter } from './PluginComplexFilter';
-
-export type FilterType = 'category' | 'requirement';
 
 interface Props {
   filters: FilterKey[];

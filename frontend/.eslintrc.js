@@ -37,7 +37,7 @@ module.exports = {
 
     // E2E tests
     {
-      files: ['./tests/**/*.ts'],
+      files: ['./tests/**/*.ts', 'playwright.config.ts'],
       extends: [configs.typescript, configs.dev, configs.e2e],
     },
 

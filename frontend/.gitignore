@@ -133,3 +133,7 @@ temp/
 # Preview page build
 preview/
 .vercel
+
+test-results/
+e2e/report/
+playwright-report/
