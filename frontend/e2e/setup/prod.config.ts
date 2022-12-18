@@ -13,7 +13,6 @@ const config: PlaywrightTestConfig = {
   },
   globalSetup: './globalSetup',
   outputDir: '../report',
-  /* Run tests in files in parallel */
   fullyParallel: true,
   reporter: [
     ['list'],
