@@ -53,6 +53,8 @@ locals {
   frontend_url = var.frontend_url != "" ? var.frontend_url: try(join("", ["https://", module.frontend_dns.dns_prefix, ".", local.external_dns]), var.frontend_url)
   backend_function_name = "${local.custom_stack_name}-backend"
   plugins_function_name = "${local.custom_stack_name}-plugins"
+
+  plugin_update_schedule = var.env == "dev" ? "at(${formatdate("yyyy-mm-ddThh:mm:ss", timeadd(timestamp(), "15m"))})" : var.env == "staging" ? "rate(1 hours)" : "rate(5 minutes)"
 }
 
 module frontend_dns {
@@ -173,7 +175,7 @@ module api_gateway_proxy_stage {
 resource "aws_cloudwatch_event_rule" "update_rule" {
   name                = "${local.custom_stack_name}-update"
   description         = "Schedule update for backend"
-  schedule_expression = "rate(5 minutes)"
+  schedule_expression = local.plugin_update_schedule
   tags                = var.tags
 }
 
