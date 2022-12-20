@@ -13,6 +13,24 @@ const config: PlaywrightTestConfig = {
   },
   fullyParallel: true,
   outputDir: '../report',
+  reporter: [
+    ['list'],
+    [
+      'json',
+      {
+        outputFile: '../report/test-results.json',
+      },
+    ],
+    [
+      'html',
+      {
+        open: 'on-failure',
+        host: 'localhost',
+        port: 9223,
+      },
+    ],
+  ],
+
   projects: [
     {
       name: 'chromium',
@@ -22,12 +40,11 @@ const config: PlaywrightTestConfig = {
       },
     },
   ],
-  reporter: 'list',
   testDir: '../tests',
   timeout: 30 * 1000,
   use: {
     actionTimeout: 0,
-    baseURL: 'http://localhost:3000',
+    baseURL: 'http://localhost:8080',
     screenshot: 'only-on-failure',
     trace: 'on-first-retry',
     video: 'on',

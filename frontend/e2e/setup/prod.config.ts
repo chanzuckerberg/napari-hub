@@ -25,7 +25,7 @@ const config: PlaywrightTestConfig = {
     [
       'html',
       {
-        open: 'always',
+        open: 'on-failure',
         host: 'localhost',
         port: 9223,
       },
