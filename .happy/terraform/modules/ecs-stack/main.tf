@@ -54,7 +54,7 @@ locals {
   backend_function_name = "${local.custom_stack_name}-backend"
   plugins_function_name = "${local.custom_stack_name}-plugins"
 
-  plugin_update_schedule = var.env == "dev" ? "at(${formatdate("yyyy-mm-ddThh:mm:ss", timeadd(timestamp(), "15m"))})" : var.env == "staging" ? "rate(1 hours)" : "rate(5 minutes)"
+  plugin_update_schedule = var.env == "dev" ? "at(${formatdate("YYYY-MM-DDThh:mm:ss", timeadd(timestamp(), "15m"))})" : var.env == "staging" ? "rate(1 hours)" : "rate(5 minutes)"
 }
 
 module frontend_dns {
