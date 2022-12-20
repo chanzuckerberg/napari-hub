@@ -17,8 +17,8 @@ import {
   usePluginMetadata,
   usePluginState,
 } from '@/context/plugin';
+import { useIsFeatureFlagEnabled } from '@/store/featureFlags';
 import { PluginType } from '@/types';
-import { useIsFeatureFlagEnabled } from '@/utils/featureFlags';
 
 import { MetadataListMetadataItem } from '../MetadataList/MetadataListMetadataItem';
 

@@ -18,10 +18,10 @@ import { useLoadingState } from '@/context/loading';
 import { usePluginState } from '@/context/plugin';
 import { useMediaQuery, usePlausible } from '@/hooks';
 import { usePreviewClickAway } from '@/hooks/usePreviewClickAway';
+import { useIsFeatureFlagEnabled } from '@/store/featureFlags';
 import { pluginTabsStore } from '@/store/pluginTabs';
 import { HubDimension } from '@/types';
 import { PluginTabType } from '@/types/plugin';
-import { useIsFeatureFlagEnabled } from '@/utils/featureFlags';
 
 import { CallToActionButton } from './CallToActionButton';
 import { ANCHOR } from './CitationInfo.constants';

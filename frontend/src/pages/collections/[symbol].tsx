@@ -1,8 +1,6 @@
 import axios from 'axios';
-import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
-import { SSRConfig, useTranslation } from 'next-i18next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useTranslation } from 'next-i18next';
 import { ParsedUrlQuery } from 'querystring';
 import { z } from 'zod';
 
@@ -12,12 +10,11 @@ import { ErrorMessage } from '@/components/ErrorMessage';
 import { PageMetadata } from '@/components/PageMetadata';
 import { useLoadingState } from '@/context/loading';
 import { CollectionData } from '@/types/collections';
-import { I18nNamespace } from '@/types/i18n';
-import { isFeatureFlagEnabled } from '@/utils/featureFlags';
 import { hubAPI } from '@/utils/HubAPIClient';
+import { getServerSidePropsHandler } from '@/utils/ssr';
 import { getZodErrorMessage } from '@/utils/validate';
 
-interface Props extends Partial<SSRConfig> {
+interface Props {
   collection?: CollectionData;
   error?: string;
 }
@@ -26,49 +23,40 @@ interface Params extends ParsedUrlQuery {
   symbol: string;
 }
 
-/**
- * Fetches i18n and collections API data from the backend for SSR.
- */
-export async function getServerSideProps({
-  req,
-  params,
-  locale,
-}: GetServerSidePropsContext<Params>) {
-  if (!req.url || !isFeatureFlagEnabled('collections', req.url)) {
-    return {
-      redirect: {
-        permanent: false,
-        source: req.url,
-        destination: '/',
-      },
-    };
-  }
-
-  const translationProps = await serverSideTranslations(locale ?? 'en', [
-    'common',
-    'footer',
-    'homePage',
-    'pageTitles',
-    'pluginData',
-    'collections',
-  ] as I18nNamespace[]);
-  const props: Props = { ...translationProps };
-
-  try {
-    const symbol = String(params?.symbol);
-    props.collection = await hubAPI.getCollection(symbol);
-  } catch (err) {
-    if (axios.isAxiosError(err)) {
-      props.error = err.message;
+export const getServerSideProps = getServerSidePropsHandler<Props, Params>({
+  locales: ['homePage', 'pluginData', 'collections'],
+  /**
+   * Fetches i18n and collections API data from the backend for SSR.
+   */
+  async getProps({ req, params }, featureFlags) {
+    if (!req.url || featureFlags.collections.value !== 'on') {
+      return {
+        redirect: {
+          permanent: false,
+          source: req.url,
+          destination: '/',
+        },
+      };
     }
 
-    if (err instanceof z.ZodError) {
-      props.error = getZodErrorMessage(err);
-    }
-  }
+    const props: Props = {};
 
-  return { props };
-}
+    try {
+      const symbol = String(params?.symbol);
+      props.collection = await hubAPI.getCollection(symbol);
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        props.error = err.message;
+      }
+
+      if (err instanceof z.ZodError) {
+        props.error = getZodErrorMessage(err);
+      }
+    }
+
+    return { props };
+  },
+});
 
 export default function Collections({ collection, error }: Props) {
   const isLoading = useLoadingState();

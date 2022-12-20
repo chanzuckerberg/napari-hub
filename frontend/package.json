@@ -72,6 +72,7 @@
     "@octokit/rest": "18.12.0",
     "@octokit/types": "6.34.0",
     "@renovate/pep440": "1.0.0",
+    "@splitsoftware/splitio": "^10.21.1",
     "@types/unist": "2.0.6",
     "axios": "0.27.2",
     "cheerio": "1.0.0-rc.10",
@@ -115,9 +116,10 @@
     "unified": "10.1.2",
     "use-debounce": "8.0.1",
     "utility-types": "3.10.0",
+    "uuid": "^8.3.2",
     "valtio": "1.6.0",
-    "zod": "^3.18.0",
-    "victory": "^36.5.3"
+    "victory": "^36.5.3",
+    "zod": "^3.18.0"
   },
   "devDependencies": {
     "@babel/core": "7.17.10",
@@ -136,6 +138,7 @@
     "@types/react-highlight-words": "0.16.4",
     "@types/react-i18next": "8.1.0",
     "@types/string-similarity": "4.0.0",
+    "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "5.22.0",
     "@typescript-eslint/parser": "5.22.0",
     "autoprefixer": "10.4.7",

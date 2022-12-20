@@ -1,5 +1,5 @@
 import { useLinks } from '@/hooks/useLinks';
-import { useIsFeatureFlagEnabled } from '@/utils/featureFlags';
+import { useIsFeatureFlagEnabled } from '@/store/featureFlags';
 
 export function useAppBarLinks() {
   const links = useLinks();

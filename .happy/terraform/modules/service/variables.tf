@@ -122,3 +122,8 @@ variable env {
   type        = string
   description = "Name of environment"
 }
+
+variable split_io_server_key {
+  type        = string
+  description = "Split.io server key"
+}

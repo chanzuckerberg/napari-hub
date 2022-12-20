@@ -49,6 +49,7 @@ locals {
   datadog_api_key = try(local.secret["datadog"]["api_key"], "")
   snowflake_user = try(local.secret["snowflake"]["user"], "")
   snowflake_password = try(local.secret["snowflake"]["password"], "")
+  split_io_server_key = try(local.secret["split.io"]["server_key"], "")
 
   frontend_url = var.frontend_url != "" ? var.frontend_url: try(join("", ["https://", module.frontend_dns.dns_prefix, ".", local.external_dns]), var.frontend_url)
   backend_function_name = "${local.custom_stack_name}-backend"
@@ -84,6 +85,7 @@ module frontend_service {
   api_url           = module.api_gateway_proxy_stage.invoke_url
   github_client_id  = local.github_client_id
   github_client_secret = local.github_client_secret
+  split_io_server_key = local.split_io_server_key
   frontend_url      = local.frontend_url
   tags              = var.tags
 
