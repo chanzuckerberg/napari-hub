@@ -4,12 +4,14 @@ declare namespace NodeJS {
     readonly API_URL: string;
     readonly BASE_PATH: string;
     readonly ENV: 'local' | 'dev' | 'staging' | 'prod';
+    readonly E2E: 'true' | 'false';
     readonly FRONTEND_URL: string;
     readonly GITHUB_CLIENT_ID: string;
     readonly GITHUB_CLIENT_SECRET: string;
     readonly PLAUSIBLE: 'true' | 'false';
-    readonly PREVIEW: string;
     readonly PREVIEW_PULL_REQUEST: string;
+    readonly PREVIEW: string;
+    readonly SPLIT_IO_SERVER_KEY: string;
   }
 }
 

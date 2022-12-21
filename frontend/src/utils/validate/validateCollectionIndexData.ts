@@ -28,6 +28,7 @@ const collectionCuratorSchema = z.object({
 export const collectionIndexDataSchema = z.object({
   title: stringSchema,
   cover_image: z.string().url(),
+  thumb_image: z.string().url(),
   summary: stringSchema,
   curator: collectionCuratorSchema,
   symbol: stringSchema,

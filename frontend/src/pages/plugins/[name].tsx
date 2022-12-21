@@ -1,20 +1,19 @@
 import { AxiosError } from 'axios';
-import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
-import { SSRConfig, useTranslation } from 'next-i18next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useTranslation } from 'next-i18next';
 import { ParsedUrlQuery } from 'node:querystring';
 import { z } from 'zod';
 
 import { ErrorMessage } from '@/components/ErrorMessage';
 import { PageMetadata } from '@/components/PageMetadata';
 import { PluginPage } from '@/components/PluginPage';
+import { DEFAULT_REPO_DATA } from '@/constants/plugin';
 import { useLoadingState } from '@/context/loading';
 import { PluginStateProvider } from '@/context/plugin';
 import { PluginData } from '@/types';
-import { I18nNamespace } from '@/types/i18n';
 import { fetchRepoData, FetchRepoDataResult } from '@/utils';
 import { hubAPI } from '@/utils/HubAPIClient';
+import { getServerSidePropsHandler } from '@/utils/ssr';
 import { getZodErrorMessage } from '@/utils/validate';
 
 /**
@@ -29,25 +28,14 @@ interface BaseProps {
   plugin?: PluginData;
 }
 
-type Props = FetchRepoDataResult & Partial<SSRConfig> & BaseProps;
+type Props = FetchRepoDataResult & BaseProps;
 
 function isAxiosError(error: unknown): error is AxiosError {
   return !!(error as AxiosError).isAxiosError;
 }
 
-/**
- * Fetches plugin data from the hub API. The name of the plugin is extracted
- * from the URL `/plugins/:name` and used for fetching the plugin data.
- */
-export async function getServerSideProps({
-  params,
-  locale,
-}: GetServerSidePropsContext<Params>) {
-  const name = String(params?.name);
-  const translationProps = await serverSideTranslations(locale ?? 'en', [
-    'common',
-    'footer',
-    'pageTitles',
+export const getServerSideProps = getServerSidePropsHandler<Props, Params>({
+  locales: [
     'pluginData',
     'pluginPage',
     'activity',
@@ -55,27 +43,36 @@ export async function getServerSideProps({
     // Home page namespace required for page transitions to search page from the
     // plugin page.
     'homePage',
-  ] as I18nNamespace[]);
-  const props: Partial<Props> = { ...translationProps };
+  ],
+  /**
+   * Fetches plugin data from the hub API. The name of the plugin is extracted
+   * from the URL `/plugins/:name` and used for fetching the plugin data.
+   */
+  async getProps({ params }) {
+    const name = String(params?.name);
+    const props: Props = {
+      repo: DEFAULT_REPO_DATA,
+    };
 
-  try {
-    const data = await hubAPI.getPlugin(name);
-    props.plugin = data;
+    try {
+      const data = await hubAPI.getPlugin(name);
+      props.plugin = data;
 
-    const result = await fetchRepoData(data.code_repository);
-    Object.assign(props, result);
-  } catch (err) {
-    if (isAxiosError(err) || err instanceof Error) {
-      props.error = err.message;
+      const result = await fetchRepoData(data.code_repository);
+      Object.assign(props, result);
+    } catch (err) {
+      if (isAxiosError(err) || err instanceof Error) {
+        props.error = err.message;
+      }
+
+      if (err instanceof z.ZodError) {
+        props.error = getZodErrorMessage(err);
+      }
     }
 
-    if (err instanceof z.ZodError) {
-      props.error = getZodErrorMessage(err);
-    }
-  }
-
-  return { props };
-}
+    return { props };
+  },
+});
 
 /**
  * This page fetches plugin data from the hub API and renders it in the

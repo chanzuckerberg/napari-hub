@@ -1,65 +1,54 @@
 import axios from 'axios';
-import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
-import { SSRConfig, useTranslation } from 'next-i18next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useTranslation } from 'next-i18next';
 import { z } from 'zod';
 
 import { CollectionsPage } from '@/components/CollectionsPage';
 import { CollectionsContextProvider } from '@/components/CollectionsPage/context';
 import { ErrorMessage } from '@/components/ErrorMessage';
 import { CollectionIndexData } from '@/types/collections';
-import { I18nNamespace } from '@/types/i18n';
-import { isFeatureFlagEnabled } from '@/utils/featureFlags';
 import { hubAPI } from '@/utils/HubAPIClient';
+import { getServerSidePropsHandler } from '@/utils/ssr';
 import { getZodErrorMessage } from '@/utils/validate';
 
-interface Props extends Partial<SSRConfig> {
+interface Props {
   collections?: CollectionIndexData[];
   error?: string;
 }
 
-/**
- * Fetches i18n and collections API data from the backend for SSR.
- */
-export async function getServerSideProps({
-  req,
-  locale,
-}: GetServerSidePropsContext) {
-  if (!req.url || !isFeatureFlagEnabled('collections', req.url)) {
-    return {
-      redirect: {
-        permanent: false,
-        source: req.url,
-        destination: '/',
-      },
-    };
-  }
-
-  const translationProps = await serverSideTranslations(locale ?? 'en', [
-    'common',
-    'footer',
-    'homePage',
-    'pageTitles',
-    'pluginData',
-    'collections',
-  ] as I18nNamespace[]);
-  const props: Props = { ...translationProps };
-
-  try {
-    props.collections = await hubAPI.getCollectionsIndex();
-  } catch (err) {
-    if (axios.isAxiosError(err)) {
-      props.error = err.message;
+export const getServerSideProps = getServerSidePropsHandler<Props>({
+  locales: ['homePage', 'pluginData', 'collections'],
+  /**
+   * Fetches i18n and collections API data from the backend for SSR.
+   */
+  async getProps({ req }, featureFlags) {
+    if (!req.url || featureFlags.collections.value !== 'on') {
+      return {
+        redirect: {
+          permanent: false,
+          source: req.url,
+          destination: '/',
+        },
+      };
     }
 
-    if (err instanceof z.ZodError) {
-      props.error = getZodErrorMessage(err);
-    }
-  }
+    const props: Props = {};
 
-  return { props };
-}
+    try {
+      props.collections = await hubAPI.getCollectionsIndex();
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        props.error = err.message;
+      }
+
+      if (err instanceof z.ZodError) {
+        props.error = getZodErrorMessage(err);
+      }
+    }
+
+    return { props };
+  },
+});
 
 export default function Collections({ collections, error }: Props) {
   const [t] = useTranslation(['pageTitles', 'collections']);

@@ -10,13 +10,13 @@ import { Link } from '@/components/Link';
 import { SkeletonLoader } from '@/components/SkeletonLoader';
 import { TextHighlighter } from '@/components/TextHighlighter';
 import { useLoadingState } from '@/context/loading';
+import { useIsFeatureFlagEnabled } from '@/store/featureFlags';
 import { useSearchStore } from '@/store/search/context';
 import { FilterCategoryKeys } from '@/store/search/search.store';
 import { SearchResultMatch } from '@/store/search/search.types';
 import { HubDimension, PluginIndexData } from '@/types';
 import { I18nKeys, I18nPluginDataLabel } from '@/types/i18n';
 import { createUrl, formatDate, formatOperatingSystem } from '@/utils';
-import { useIsFeatureFlagEnabled } from '@/utils/featureFlags';
 
 import styles from './PluginSearchResult.module.scss';
 

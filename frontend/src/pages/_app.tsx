@@ -23,6 +23,7 @@ import { LoadingStateProvider } from '@/context/loading';
 import { usePageTransitions } from '@/hooks';
 import SearchPage from '@/pages/index';
 import PluginPage from '@/pages/plugins/[name]';
+import { FeatureFlagMap, useInitFeatureFlags } from '@/store/featureFlags';
 import { isPluginPage, isSearchPage } from '@/utils';
 
 type GetLayoutComponent = ComponentType & {
@@ -32,6 +33,9 @@ type GetLayoutComponent = ComponentType & {
 function App({ Component, pageProps }: AppProps) {
   const { loading, nextUrl } = usePageTransitions();
   const router = useRouter();
+
+  const featureFlags = pageProps.featureFlags as FeatureFlagMap | undefined;
+  useInitFeatureFlags(featureFlags);
 
   /**
    * Render using custom layout if component exports one:

@@ -28,6 +28,7 @@ export interface CollectionPlugin
 export interface CollectionIndexData {
   title: string;
   cover_image: string;
+  thumb_image: string;
   summary: string;
   curator: CollectionCurator;
   symbol: string;

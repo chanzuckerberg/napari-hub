@@ -64,6 +64,10 @@ resource aws_ecs_task_definition task_definition {
       {
         "name": "GITHUB_CLIENT_SECRET",
         "value": "${var.github_client_secret}"
+      },
+      {
+        "name": "SPLIT_IO_SERVER_KEY",
+        "value": "${var.split_io_server_key}"
       }
     ],
     "portMappings": [

@@ -6,8 +6,7 @@ import type { TFuncKey } from 'react-i18next';
 
 import { Accordion } from '@/components/Accordion';
 import { useSearchStore } from '@/store/search/context';
-import { FilterKey, FilterType } from '@/store/search/search.store';
-import { useIsFeatureFlagEnabled } from '@/utils/featureFlags';
+import { FilterKey } from '@/store/search/search.store';
 
 import { PluginComplexFilter } from './PluginComplexFilter';
 
@@ -50,13 +49,8 @@ const FILTER_LABEL_MAP: Record<FilterType, TFuncKey<'homePage'>> = {
 
 function useFilterLabel(filterType: FilterType) {
   const [t] = useTranslation(['homePage']);
-  const isEnabled = useIsFeatureFlagEnabled('categoryFilters');
 
-  if (isEnabled) {
-    return t(`homePage:${FILTER_LABEL_MAP[filterType]}`) as string;
-  }
-
-  return t('homePage:filter.title.base');
+  return t(`homePage:${FILTER_LABEL_MAP[filterType]}`) as string;
 }
 
 /**
