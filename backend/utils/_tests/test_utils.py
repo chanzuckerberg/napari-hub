@@ -19,4 +19,4 @@ def test_save_layers_valid():
             ]
     }}
     parsed_attributes = parse_manifest(manifest)
-    assert sorted(parsed_attributes['writer_save_layers']) == sorted(['image', 'labels', 'points', 'tracks'])
+    assert sorted(parsed_attributes['writer_save_layers']) == ['image', 'labels', 'points', 'tracks']
