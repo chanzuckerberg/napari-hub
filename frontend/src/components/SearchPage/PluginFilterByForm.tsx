@@ -10,6 +10,8 @@ import { FilterKey } from '@/store/search/search.store';
 
 import { PluginComplexFilter } from './PluginComplexFilter';
 
+export type FilterType = 'category' | 'requirement';
+
 interface Props {
   filters: FilterKey[];
   filterType: FilterType;
