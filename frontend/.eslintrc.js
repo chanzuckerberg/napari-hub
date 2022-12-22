@@ -38,7 +38,7 @@ module.exports = {
     // E2E tests
     {
       files: ['./e2e/**/*.ts'],
-      extends: [configs.typescript, configs.dev, configs.e2e],
+      extends: [configs.typescript, configs.e2e],
     },
 
     // TypeScript and React source code.
