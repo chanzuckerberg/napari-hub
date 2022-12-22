@@ -130,6 +130,7 @@ export function PluginComplexFilter({ filterKey }: Props) {
 
   // Get dictionary that maps category keys to category names in the user's
   // language.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
   const categoryNamesMap = t('pluginData:category.labels') as Record<
     string,
     string | undefined
