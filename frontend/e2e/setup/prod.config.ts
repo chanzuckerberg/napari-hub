@@ -1,5 +1,4 @@
-import { PlaywrightTestConfig } from '@playwright/test';
-import { devices } from '@playwright/test';
+import { devices, PlaywrightTestConfig } from '@playwright/test';
 import dotenv from 'dotenv';
 import path from 'path';
 
@@ -51,4 +50,5 @@ const config: PlaywrightTestConfig = {
     video: 'on',
   },
 };
+// eslint-disable-next-line import/no-default-export
 export default config;

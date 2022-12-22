@@ -1,5 +1,7 @@
 import { expect, Page } from '@playwright/test';
+
 import { SearchQueryParams, SearchSortType } from '@/store/search/constants';
+
 import { selectors } from './_selectors';
 import {
   AccordionTitle,

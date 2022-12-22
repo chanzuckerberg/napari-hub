@@ -1,6 +1,9 @@
 import { expect, test } from '@playwright/test';
+
 import { SearchQueryParams, SearchSortType } from '@/store/search/constants';
+
 import { selectors } from '../../utils/_selectors';
+import { submitQuery } from '../../utils/search';
 import {
   AccordionTitle,
   getQueryParameterValues,
@@ -8,8 +11,6 @@ import {
   getTestURL,
   maybeOpenAccordion,
 } from '../../utils/utils';
-
-import { submitQuery } from '../../utils/search';
 
 test.describe('Plugin search', () => {
   test('should update URL parameter when entering query', async ({ page }) => {

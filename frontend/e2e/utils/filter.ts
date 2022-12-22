@@ -1,6 +1,9 @@
 import { expect, Page } from '@playwright/test';
+
 import { FilterKey, FilterType } from '@/store/search/search.store';
+
 import { selectors } from './_selectors';
+import { getSearchResultMetadata } from './sort';
 import {
   AccordionTitle,
   getQueryParameterValues,
@@ -8,8 +11,6 @@ import {
   maybeOpenAccordion,
   MetadataLabel,
 } from './utils';
-
-import { getSearchResultMetadata } from './sort';
 
 const FILTER_KEY_METADATA_LABEL_MAP: Partial<Record<FilterKey, MetadataLabel>> =
   {

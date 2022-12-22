@@ -1,8 +1,9 @@
 import { expect, test } from '@playwright/test';
 import dayjs from 'dayjs';
-import { SearchSortType } from '@/store/search/constants';
-import { selectors } from '../../utils/_selectors';
 
+import { SearchSortType } from '@/store/search/constants';
+
+import { selectors } from '../../utils/_selectors';
 import {
   clickOnRadio,
   getSearchResultMetadata,

@@ -23,6 +23,13 @@
     "target": "esnext",
     "incremental": true
   },
-  "include": ["*.d.ts", "src/**/*.ts", "src/**/*.tsx", "i18n/**/*"],
+  "include": [
+    "*.d.ts",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "i18n/**/*",
+    "e2e/**/*.ts",
+    "e2e/**/*.json"
+  ],
   "exclude": ["node_modules"]
 }

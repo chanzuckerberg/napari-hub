@@ -1,7 +1,9 @@
 import { expect, test } from '@playwright/test';
+
 import { SearchQueryParams, SearchSortType } from '@/store/search/constants';
-import { getSearchUrl, hasPageQueryParameter } from '../../utils/utils';
+
 import { testResults } from '../../utils/pagination';
+import { getSearchUrl, hasPageQueryParameter } from '../../utils/utils';
 
 const RESULTS = {
   PAGE_1_DEFAULT: [

@@ -38,13 +38,13 @@ module.exports = {
     // E2E tests
     {
       files: ['./e2e/**/*.ts'],
-      extends: [configs.typescript, , configs.dev, configs.e2e],
+      extends: [configs.typescript, configs.e2e],
     },
 
     // TypeScript and React source code.
     {
       files: ['./src/**/*.ts{,x}'],
-      extends: [configs.typescript, configs.react],
+      extends: [configs.typescript, configs.dev, configs.react],
     },
 
     /*
@@ -60,6 +60,7 @@ module.exports = {
         './src/**/hooks.ts',
         './src/**/*.test.ts{,x}',
         './tests/**/*.ts',
+        './e2e/**/*.ts',
       ],
       rules: {
         '@typescript-eslint/explicit-module-boundary-types': 'off',

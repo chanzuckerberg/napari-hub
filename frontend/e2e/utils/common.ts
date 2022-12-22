@@ -121,7 +121,7 @@ export function getAFullDateInThePast(
  */
 export function getYearMonthInThePast(minYear = 5): string {
   const today = new Date();
-  let d = today;
+  const d = today;
   const randomNumber = Math.floor(Math.random() * minYear);
   d.setFullYear(d.getFullYear() - randomNumber);
   return d.toISOString().substring(0, 7);

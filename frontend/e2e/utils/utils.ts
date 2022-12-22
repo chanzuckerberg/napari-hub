@@ -1,4 +1,5 @@
 import { Page } from '@playwright/test';
+
 import { SEARCH_PAGE, SearchQueryParams } from '@/store/search/constants';
 import { breakpoints } from '@/theme/breakpoints';
 

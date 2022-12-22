@@ -1,4 +1,5 @@
 import { expect, Page } from '@playwright/test';
+
 import { selectors } from './_selectors';
 
 export async function getResultNames(page: Page) {
