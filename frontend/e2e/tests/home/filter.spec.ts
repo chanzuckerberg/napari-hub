@@ -4,7 +4,7 @@ import { satisfies } from '@renovate/pep440';
 import { testPluginFilter } from '../../utils/filter';
 
 test.describe('Plugin Filters', () => {
-  test('should filter by python version', async ({ page, viewport }) => {
+  test.only('should filter by python version', async ({ page, viewport }) => {
     await testPluginFilter({
       page,
       width: viewport?.width,

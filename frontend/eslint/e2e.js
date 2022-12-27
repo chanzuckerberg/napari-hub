@@ -21,5 +21,9 @@ module.exports = {
     'no-plusplus': 'off',
     'no-else-return': 'off',
     '@typescript-eslint/no-non-null-assertion': 'off',
+    '@typescript-eslint/no-unsafe-call': 'off',
+    '@typescript-eslint/no-unsafe-assignment': 'off',
+    'playwright/no-focused-test': 'off',
+    '@typescript-eslint/no-use-before-define': 'off',
   },
 };

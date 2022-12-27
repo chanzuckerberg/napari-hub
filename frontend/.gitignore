@@ -136,4 +136,5 @@ preview/
 
 test-results/
 e2e/report/
+e2e/fixtures/plugins/
 playwright-report/

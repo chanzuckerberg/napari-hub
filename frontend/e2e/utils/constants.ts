@@ -12,3 +12,7 @@ export const HREF = {
   PUBLIC: '/public',
   UPLOAD: '/samples/upload',
 };
+export const API: Record<string, string> = {
+  STAGING: 'https://api.staging.napari-hub.org/',
+  PROD: 'https://api.napari-hub.org',
+};
