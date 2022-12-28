@@ -21,16 +21,19 @@ async function globalSetup(config: FullConfig): Promise<void> {
   if (ENV === 'test') {
     process.env.CI = 'true';
   }
+
+  // for staging & prd we need to create test data
   if (ENV === 'staging' || ENV === 'prod') {
-    const pluginListFile = 'e2e/fixtures/pluginList.json';
-    const pluginDataFile = 'e2e/fixtures/pluginData.json';
+    const pluginDataFile = `e2e/fixtures/${ENV}.json`;
     const api = API[ENV.toUpperCase()];
+
+    // get list of plugins
     const plugins = await ApiGetRequest(api, '/plugins');
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    const pluginListJson = JSON.stringify(plugins);
-    fs.writeFileSync(pluginListFile, pluginListJson);
-
+    // 1. for each plugin received, call api to get the data
+    // 2. save plugin JSON to files
+    // 3. merge all JSON files into one
+    // 4. save to a fixture
     const dataArray: string[] = [];
     let counter = 1;
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/await-thenable
@@ -38,7 +41,6 @@ async function globalSetup(config: FullConfig): Promise<void> {
       const pluginJson = JSON.stringify(
         await ApiGetRequest(api, `/plugins/${pluginName}`),
       );
-      // await writeJsonToArray(dataArray, pluginJson);
       dataArray.push(pluginJson);
       counter++;
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
