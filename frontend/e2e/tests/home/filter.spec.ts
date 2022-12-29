@@ -3,8 +3,8 @@ import { satisfies } from '@renovate/pep440';
 
 import { testPluginFilter } from '../../utils/filter';
 
-test.describe('Plugin Filters', () => {
-  test.only('should filter by python version', async ({ page, viewport }) => {
+test.describe('Plugin filter tests', () => {
+  test('should filter by python version', async ({ page, viewport }) => {
     await testPluginFilter({
       page,
       width: viewport?.width,
@@ -25,31 +25,25 @@ test.describe('Plugin Filters', () => {
     });
   });
 
-  test('should filter by operating system', async ({ page, viewport }) => {
-    function hasLinux(operatingSystems: string[]) {
-      return !!operatingSystems.find((os) => os.includes('Linux'));
-    }
-
-    await testPluginFilter({
+  ['Linux', 'macOS'].forEach(async (os) => {
+    test(`should filter by ${os} operating system`, async ({
       page,
-      width: viewport?.width,
-      options: ['Linux'],
-      filterKey: 'operatingSystems',
-      params: [['operatingSystem', 'linux']],
-      testMetadata(operatingSystems) {
-        expect(hasLinux(operatingSystems)).toBe(true);
-      },
-    });
+      viewport,
+    }) => {
+      function hasLinux(operatingSystems: string[]) {
+        return !!operatingSystems.find((_os) => _os.includes('Linux'));
+      }
 
-    await testPluginFilter({
-      page,
-      width: viewport?.width,
-      options: ['macOS'],
-      filterKey: 'operatingSystems',
-      params: [['operatingSystem', 'mac']],
-      testMetadata(operatingSystems) {
-        expect(hasLinux(operatingSystems)).not.toBe(true);
-      },
+      await testPluginFilter({
+        page,
+        width: viewport?.width,
+        options: [os],
+        filterKey: 'operatingSystems',
+        params: [['operatingSystem', os]],
+        testMetadata(operatingSystems) {
+          expect(hasLinux(operatingSystems)).toBe(true);
+        },
+      });
     });
   });
 

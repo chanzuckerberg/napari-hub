@@ -16,3 +16,7 @@ export const API: Record<string, string> = {
   STAGING: 'https://api.staging.napari-hub.org/',
   PROD: 'https://api.napari-hub.org',
 };
+
+export const PLUGIN_SEARCH_RESULT = 'pluginSearchResult';
+export const PLUGIN_RESULT_NAME = 'searchResultName';
+export const PLUGIN_RESULT_SUMMARY = 'searchResultSummary';
