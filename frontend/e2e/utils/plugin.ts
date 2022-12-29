@@ -2,11 +2,16 @@ import { Page } from '@playwright/test';
 import { PluginData } from 'e2e/types/plugin';
 
 import {
+  PLUGIN_RESULT_AUTHORS,
   PLUGIN_RESULT_NAME,
+  PLUGIN_RESULT_RELEASE_DATE,
   PLUGIN_RESULT_SUMMARY,
+  PLUGIN_RESULT_TYPE,
+  PLUGIN_RESULT_VERSION,
+  PLUGIN_RESULT_WORKFLOW_STEPS,
   PLUGIN_SEARCH_RESULT,
 } from './constants';
-import { getByTestID } from './selectors';
+import { getByDataLabel, getByTestID } from './selectors';
 
 export async function verifyPlugin(
   page: Page,
@@ -31,6 +36,40 @@ export async function verifyPlugin(
 
   // verify result summary
   expect(plugin.locator(getByTestID(PLUGIN_RESULT_SUMMARY))).toBe(
-    expectedData.name,
+    expectedData.summary,
   );
+
+  // verify authors
+  expect(plugin.locator(getByTestID(PLUGIN_RESULT_AUTHORS))).toBe(
+    expectedData.authors,
+  );
+
+  // verify version
+  expect(plugin.locator(getByDataLabel(PLUGIN_RESULT_VERSION))).toBe(
+    expectedData.version,
+  );
+
+  // verify release date
+  expect(plugin.locator(getByDataLabel(PLUGIN_RESULT_RELEASE_DATE))).toBe(
+    expectedData.release_date,
+  );
+  // verify plugin type
+  if (expectedData.type !== undefined) {
+    expect(plugin.locator(getByDataLabel(PLUGIN_RESULT_TYPE))).toBe(
+      expectedData.type,
+    );
+  } else {
+    expect(plugin.locator(getByDataLabel(PLUGIN_RESULT_TYPE))).toBeUndefined();
+  }
+
+  // verify plugin type
+  if (expectedData.workflow_steps !== undefined) {
+    // get all workflow steps in an array
+    const pluginWorkflowSteps: any[] = [];
+    expect(pluginWorkflowSteps).toBe(expectedData.type);
+  } else {
+    expect(
+      plugin.locator(getByDataLabel(PLUGIN_RESULT_WORKFLOW_STEPS)),
+    ).toBeUndefined();
+  }
 }

@@ -17,3 +17,5 @@ export const getByRole = (role: string): string => `[role="${role}"]`;
 export const getMetadataField = (name: string): string =>
   `[class="data-table__data column-${name}"]`;
 export const getByLabel = (label: string): string => `[label="${label}"]`;
+export const getByDataLabel = (label: string): string =>
+  `[data-label="${label}"]`;
