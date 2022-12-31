@@ -50,12 +50,11 @@ function searchSinglePlugin(
   filterKey: string,
   searchFor: string,
 ) {
-  if (
-    // todo: handle supported_data
-    plugin &&
-    plugin[filterKey] &&
-    plugin[filterKey].indexOf(searchFor) !== -1
-  ) {
+  let fixtureValue = plugin[filterKey];
+  if (filterKey === 'supported_data') {
+    fixtureValue = plugin.category['Supported data'];
+  }
+  if (fixtureValue.includes(searchFor)) {
     results.push(plugin);
   }
   return results;
