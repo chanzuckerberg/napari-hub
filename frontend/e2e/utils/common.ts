@@ -41,7 +41,23 @@ export function searchPluginFixture(pluginFilter: PluginFilter) {
         jsonValue = authorNames;
       }
       if (filterKey === 'supported_data') {
-        jsonValue = jsonValue.category['Supported data'];
+        jsonValue = plugin.category['Supported data'];
+      }
+      if (filterKey === 'python_version') {
+        const versionArray: string[] = [];
+        // if filter criteria is 3.6, then we want to find 3.6, 3.7, 3.8 and inclusive 3.9
+        const maxVersion = 3.9;
+        for (let i = 0; i < jsonValue.length; ++i) {
+          let filterPythonVersion = Number(jsonValue[i]);
+          while (filterPythonVersion <= maxVersion) {
+            // add version to list if not already exists
+            if (!versionArray.includes(jsonValue[i] as string)) {
+              versionArray.push(`>=${jsonValue[i] as string}`);
+            }
+            filterPythonVersion += 0.1;
+          }
+        }
+        jsonValue = versionArray;
       }
       // console.log(jsonValue);
       // most filter values are arrays except license and python version

@@ -6,5 +6,5 @@ export type PluginFilter = {
   writer_file_extensions?: Array<string>;
   license?: string;
   plugin_types?: Array<string>;
-  python_version?: string;
+  python_version?: Array<string>;
 };
