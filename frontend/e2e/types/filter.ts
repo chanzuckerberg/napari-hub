@@ -4,7 +4,8 @@ export type PluginFilter = {
   operating_system?: Array<string>;
   reader_file_extensions?: Array<string>;
   writer_file_extensions?: Array<string>;
-  license?: string;
+  license?: Array<string>;
   plugin_types?: Array<string>;
   python_version?: Array<string>;
+  image_modality?: Array<string>;
 };

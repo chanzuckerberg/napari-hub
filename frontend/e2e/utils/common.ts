@@ -23,7 +23,7 @@ export function searchPluginFixture(pluginFilter: PluginFilter) {
   );
   Object.keys(pluginFilter).forEach((filterKey: string) => {
     // console.log(filterKey);
-    const filterValue = pluginFilter[filterKey as keyof PluginFilter];
+    const filterValue = pluginFilter[filterKey as keyof PluginFilter] || '';
     for (let index = 0; index < fixtures.length; ++index) {
       // plugin entry identified by the index
       const plugin = fixtures[index];
@@ -43,6 +43,10 @@ export function searchPluginFixture(pluginFilter: PluginFilter) {
       if (filterKey === 'supported_data') {
         jsonValue = plugin.category['Supported data'];
       }
+      if (filterKey === 'image_modality') {
+        // flatten array of arrays of image modality
+        jsonValue = plugin.category_hierarchy['Image modality'].flat(1);
+      }
       if (filterKey === 'python_version') {
         const versionArray: string[] = [];
         // if filter criteria is 3.6, then we want to find 3.6, 3.7, 3.8 and inclusive 3.9
@@ -60,19 +64,10 @@ export function searchPluginFixture(pluginFilter: PluginFilter) {
         jsonValue = versionArray;
       }
       // console.log(jsonValue);
-      // most filter values are arrays except license and python version
-      if (!Array.isArray(filterValue)) {
-        if (jsonValue === filterValue) {
-          results.push(fixtures[index]);
-        }
-      } else {
-        // if the two arrays intersect, search criteria are met
-        const found = jsonValue.some(
-          (r: string) => filterValue.indexOf(r) >= 0,
-        );
-        if (found) {
-          results.push(fixtures[index]);
-        }
+      // if the two arrays intersect, search criteria are met
+      const found = jsonValue.some((r: string) => filterValue.indexOf(r) >= 0);
+      if (found) {
+        results.push(fixtures[index]);
       }
     }
   });
