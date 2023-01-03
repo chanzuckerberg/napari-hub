@@ -1,4 +1,4 @@
-import { Filter } from 'e2e/types/filter';
+import { PluginFilter } from 'e2e/types/filter';
 import fs from 'fs';
 
 let pluginFixtureFile = `e2e/fixtures/local.json`;
@@ -13,49 +13,52 @@ if (ENV === 'staging' || ENV === 'prod') {
  * @returns JSON object
  */
 export function getFixture(fileName: string) {
-  const fixture = fs.readFileSync(`fixtures/${fileName}.json`);
-  return JSON.parse(fixture.toString());
+  return fs.readFileSync(fileName);
 }
 
-export function searchPluginFixture(pluginFilter: Filter) {
+export function searchPluginFixture(pluginFilter: PluginFilter) {
   const results: any[] = [];
-  const fixtures = getFixture(pluginFixtureFile);
-  Object.keys(pluginFilter).forEach((filterKey) => {
-    const filterValue = fixtures[filterKey];
+  const fixtures = JSON.parse(
+    getFixture(pluginFixtureFile) as unknown as string,
+  );
+  Object.keys(pluginFilter).forEach((filterKey: string) => {
+    // console.log(filterKey);
+    const filterValue = pluginFilter[filterKey as keyof PluginFilter];
     for (let index = 0; index < fixtures.length; ++index) {
+      // plugin entry identified by the index
       const plugin = fixtures[index];
+
+      // value of plugin data identified by filter key, e.g. "authors"
+      let jsonValue = JSON.parse(plugin as string)[filterKey];
+      // console.log(filterValue);
+
+      // authors element is a array of JSON so we need to extract name attribute
+      if (filterKey === 'authors') {
+        const authorNames = [];
+        for (let i = 0; i < jsonValue.length; ++i) {
+          authorNames.push(jsonValue[i].name);
+        }
+        jsonValue = authorNames;
+      }
+      if (filterKey === 'supported_data') {
+        jsonValue = jsonValue.category['Supported data'];
+      }
+      // console.log(jsonValue);
       // most filter values are arrays except license and python version
       if (!Array.isArray(filterValue)) {
-        if (
-          plugin &&
-          plugin[filterKey] &&
-          plugin[filterKey].indexOf(filterValue) !== -1
-        ) {
-          results.push(plugin);
+        if (jsonValue === filterValue) {
+          results.push(fixtures[index]);
         }
       } else {
-        filterValue.forEach((item) => {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-          searchSinglePlugin(results, plugin, filterKey, item);
-        });
+        // if the two arrays intersect, search criteria are met
+        const found = jsonValue.some(
+          (r: string) => filterValue.indexOf(r) >= 0,
+        );
+        if (found) {
+          results.push(fixtures[index]);
+        }
       }
     }
   });
-  return results;
-}
-
-function searchSinglePlugin(
-  results: Array<any>,
-  plugin: { [x: string]: string | string[] },
-  filterKey: string,
-  searchFor: string,
-) {
-  let fixtureValue = plugin[filterKey];
-  if (filterKey === 'supported_data') {
-    fixtureValue = plugin.category['Supported data'];
-  }
-  if (fixtureValue.includes(searchFor)) {
-    results.push(plugin);
-  }
   return results;
 }
