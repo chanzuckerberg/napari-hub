@@ -40,7 +40,10 @@ jobs:
             exit 1
           else 
             echo $GITHUB_REF_NAME | tr '[:upper:]' '[:lower:]' | xargs -I {} -n 1 echo STACK_NAME={} >> $GITHUB_ENV
+            mkdir -p ./workflow_artifact
+            echo STACK_NAME > ./workflow_artifact/stack_name
           fi
+
       - name: Create update dev
         if: ${{ github.event_name == 'push' }}
         uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.7.4
@@ -53,9 +56,13 @@ jobs:
           tfe-token: ${{ secrets.TFE_TOKEN }}
           env: "dev"
           operation: "create-or-update"
+
       - name: Delete dev set up stack name
         if: ${{ github.event_name == 'delete' && startsWith(github.event.ref, 'dev-') }}
-        run: echo ${{ github.event.ref }} | tr '[:upper:]' '[:lower:]' | xargs -I {} -n 1 echo DELETE_STACK_NAME={} >> $GITHUB_ENV
+        run: |
+          echo ${{ github.event.ref }} | tr '[:upper:]' '[:lower:]' | xargs -I {} -n 1 echo DELETE_STACK_NAME={} >> $GITHUB_ENV
+          echo 'workflow triggered by delete' > ./workflow_artifact/stack_name
+
       - name: Delete dev
         if: ${{ github.event_name == 'delete' && startsWith(github.event.ref, 'dev-') }}
         uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.4.0
@@ -66,3 +73,9 @@ jobs:
           operation: "delete"
           tfe-token: ${{ secrets.TFE_TOKEN }}
           env: "dev"
+
+      - name: Upload stack name artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: napari_hub_dev_deployment
+          path: workflow_artifact/
