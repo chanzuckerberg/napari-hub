@@ -9,7 +9,7 @@ export const getCheckBox = (): string => `'input[type="checkbox"]'`;
 export const getByPlaceholder = (placeholder: string): string =>
   `[placeholder="${placeholder}"]`;
 export const getByDataName = (name: string): string => `[data-name="${name}"]`;
-export const getHasText = (type: string, text: string): string =>
+export const getByHasText = (type: string, text: string): string =>
   `${type}has-text("${text}")`;
 export const getByTypeAndName = (type: string, name: string): string =>
   `${type}[name="${name}"])`;

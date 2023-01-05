@@ -17,11 +17,12 @@ export const API: Record<string, string> = {
   PROD: 'https://api.napari-hub.org',
 };
 
-export const PLUGIN_SEARCH_RESULT = 'pluginSearchResult';
-export const PLUGIN_RESULT_NAME = 'searchResultName';
-export const PLUGIN_RESULT_SUMMARY = 'searchResultSummary';
-export const PLUGIN_RESULT_WORKFLOW_STEPS = '.css-9iedg7';
-export const PLUGIN_RESULT_TYPE = 'Plugin type';
-export const PLUGIN_RESULT_RELEASE_DATE = 'Release date';
-export const PLUGIN_RESULT_VERSION = 'Version';
-export const PLUGIN_RESULT_AUTHORS = 'searchResultAuthor';
+export const SEARCH_RESULT = 'pluginSearchResult';
+export const RESULT_NAME = 'searchResultName';
+export const DISPLAY_NAME = 'searchResultDisplayName';
+export const RESULT_SUMMARY = 'searchResultSummary';
+export const RESULT_WORKFLOW_STEPS = '.css-9iedg7';
+export const RESULT_TYPE = 'Plugin type';
+export const RESULT_RELEASE_DATE = 'Release date';
+export const RESULT_VERSION = 'Version';
+export const RESULT_AUTHORS = 'searchResultAuthor';
