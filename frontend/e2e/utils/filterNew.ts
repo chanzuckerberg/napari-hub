@@ -4,7 +4,14 @@ import { PluginFilter } from 'e2e/types/filter';
 import { FilterKey, FilterType } from '@/store/search/search.store';
 
 import { selectors } from './_selectors';
-import { getByHasText, getByTestID, getByText, getHasText } from './selectors';
+import {
+  getByClassName,
+  getByHasText,
+  getByTestID,
+  getByText,
+  getHasText,
+  getMetadata,
+} from './selectors';
 import { getSearchResultMetadata } from './sort';
 import {
   AccordionTitle,
@@ -14,15 +21,20 @@ import {
 } from './utils';
 import {
   DISPLAY_NAME,
-  PLUGIN_SEARCH_RESULT,
   RESULT_AUTHORS,
   RESULT_NAME,
   RESULT_SUMMARY,
+  RESULT_WORKFLOW_STEPS,
   SEARCH_RESULT,
 } from './constants';
 
 const CATEGORY_FILTERS = new Set<FilterKey>(['imageModality', 'workflowStep']);
 const totalPerPage = 15;
+const dateOptions: Intl.DateTimeFormatOptions = {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+};
 export async function filterPlugins(
   page: Page,
   pluginFilter: PluginFilter,
@@ -147,7 +159,6 @@ export async function verifyFilterResults(
   // validate each plugin details
   let i = 0;
   for (const plugin of await page.locator(getByTestID(SEARCH_RESULT)).all()) {
-    // for (let i = 0; i < actualTotalPages; i++) {
     // plugin display name
     expect(await plugin.locator(getByTestID(DISPLAY_NAME)).textContent()).toBe(
       fixture[i].display_name,
@@ -176,7 +187,63 @@ export async function verifyFilterResults(
       ).toBe(author);
     }
 
+    // plugin version
+    expect(await plugin.locator(getMetadata('h5')).nth(0).textContent()).toBe(
+      'Version',
+    );
+    expect(await plugin.locator(getMetadata('span')).nth(0).textContent()).toBe(
+      fixture[i].version,
+    );
+
+    // plugin release date
+    const dateString: string = fixture[i].release_date.substring(0, 10);
+    const releaseDate = new Date(dateString).toLocaleDateString(
+      'en-US',
+      dateOptions,
+    );
+    expect(await plugin.locator(getMetadata('h5')).nth(i).textContent()).toBe(
+      'Release date',
+    );
+    expect(await plugin.locator(getMetadata('span')).nth(0).textContent()).toBe(
+      releaseDate,
+    );
+
+    // plugin types
+    const pluginTypeText: string =
+      (await plugin.locator(getMetadata('span')).nth(2).textContent()) || '';
+    const pluginTypes = pluginTypeText.split(',');
+    const fixturePluginTypes = fixture[i].plugin_types;
+    expect(await plugin.locator(getMetadata('h5')).nth(2).textContent()).toBe(
+      'Plugin type',
+    );
+    pluginTypes.forEach((pluginType) => {
+      expect(fixturePluginTypes).toContain(
+        pluginType.trim().toLocaleLowerCase().replace('_', ' '),
+      );
+    });
+
+    // plugin workflow steps
+    const fixtureWorkflowSteps = fixture[i].category['Workflow step'];
+    if (fixtureWorkflowSteps !== undefined) {
+      expect(await plugin.locator(getMetadata('h5')).nth(2).textContent()).toBe(
+        'Plugin type',
+      );
+      for (const [
+        index,
+        fixtureWorkflowStep,
+      ] of fixtureWorkflowSteps.entries()) {
+        const workflowStep = page
+          .locator(getByClassName(RESULT_WORKFLOW_STEPS))
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+          .nth(index)
+          .textContent();
+        expect(workflowStep).toBe(fixtureWorkflowStep);
+      }
+    }
+    // increment counter
     i++;
+
+    // paginate
   }
 
   const label = FILTER_KEY_METADATA_LABEL_MAP[filterKey];

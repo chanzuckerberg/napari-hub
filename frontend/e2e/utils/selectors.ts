@@ -19,3 +19,5 @@ export const getMetadataField = (name: string): string =>
 export const getByLabel = (label: string): string => `[label="${label}"]`;
 export const getByDataLabel = (label: string): string =>
   `[data-label="${label}"]`;
+export const getMetadata = (attribute: string): string =>
+  `[data-testid="searchResultMetadata"] >> ${attribute}`;
