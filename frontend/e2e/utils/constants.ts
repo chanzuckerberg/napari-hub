@@ -26,3 +26,6 @@ export const RESULT_TYPE = 'Plugin type';
 export const RESULT_RELEASE_DATE = 'Release date';
 export const RESULT_VERSION = 'Version';
 export const RESULT_AUTHORS = 'searchResultAuthor';
+export const PAGINATION_VALUE = 'paginationValue';
+export const PAGINATION_LEFT = 'paginationLeft';
+export const PAGINATION_RIGHT = 'paginationRight';

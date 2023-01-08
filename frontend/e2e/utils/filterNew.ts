@@ -1,46 +1,51 @@
 import { expect, Page } from '@playwright/test';
 import { PluginFilter } from 'e2e/types/filter';
 
-import { FilterKey, FilterType } from '@/store/search/search.store';
+import { FilterKey } from '@/store/search/search.store';
 
 import { selectors } from './_selectors';
 import {
-  getByClassName,
-  getByHasText,
-  getByTestID,
-  getByText,
-  getHasText,
-  getMetadata,
-} from './selectors';
-import { getSearchResultMetadata } from './sort';
-import {
-  AccordionTitle,
-  getQueryParameterValues,
-  getSearchUrl,
-  maybeOpenAccordion,
-} from './utils';
-import {
   DISPLAY_NAME,
+  PAGINATION_LEFT,
+  PAGINATION_RIGHT,
+  PAGINATION_VALUE,
   RESULT_AUTHORS,
   RESULT_NAME,
   RESULT_SUMMARY,
   RESULT_WORKFLOW_STEPS,
   SEARCH_RESULT,
 } from './constants';
+import {
+  getByClassName,
+  getByHasText,
+  getByTestID,
+  getByText,
+  getMetadata,
+} from './selectors';
+import { AccordionTitle, maybeOpenAccordion } from './utils';
 
-const CATEGORY_FILTERS = new Set<FilterKey>(['imageModality', 'workflowStep']);
 const totalPerPage = 15;
 const dateOptions: Intl.DateTimeFormatOptions = {
   day: 'numeric',
   month: 'long',
   year: 'numeric',
 };
+const sortOrders: Record<string, string> = {
+  recentlyUpdated: 'Recently updated',
+  pluginName: 'Plugin name',
+  newest: 'Newest',
+};
+
 export async function filterPlugins(
   page: Page,
   pluginFilter: PluginFilter,
   filterTypes: Array<string>,
+  sortBy = 'recentlyUpdated',
   width?: number,
 ) {
+  // sorting order
+  await page.locator(getByText(sortOrders[sortBy])).click();
+
   // on smaller screens the filter types are collapsed, so first click the accordion
   await openAccordion(page, filterTypes, width);
 
@@ -87,26 +92,6 @@ export async function getOptions(page: Page, labels: string[]) {
   return optionResults;
 }
 
-export async function getChips(
-  page: Page,
-  filterKey: FilterKey,
-  labels: string[],
-) {
-  const labelSet = new Set(labels);
-  const chipNodes = await page.$$(selectors.filters.getChips(filterKey));
-  const result: string[] = [];
-
-  for (const node of chipNodes) {
-    const labelNode = await node.$(selectors.filters.chipLabel);
-    const label = await labelNode?.textContent();
-    if (label && labelSet.has(label)) {
-      result.push(label);
-    }
-  }
-
-  return result;
-}
-
 /**
  * Opens the accordion for the chosen filter type on smaller screens
  * @param page
@@ -132,7 +117,9 @@ export async function verifyFilterResults(
   page: Page,
   pluginFilter: PluginFilter,
   fixture: any,
+  sortBy = 'recentlyUpdated',
 ) {
+  let currentPageCounter = 1;
   const expectedTotalPages = fixture.length / totalPerPage + 1;
 
   // Check that filters are enabled
@@ -145,207 +132,131 @@ export async function verifyFilterResults(
     });
   });
 
-  // verify results counts
-  const resultCountText =
-    (await page.locator(getByHasText('h3', 'Browse plugins:')).textContent()) ||
-    '';
-  const resultCountValue = Number(resultCountText.trim().replace(/\D/g, ''));
-  expect(resultCountValue).toBe(fixture.length);
-
-  // total pages
-  const actualTotalPages = resultCountValue / totalPerPage + 1;
-  expect(actualTotalPages).toBe(expectedTotalPages);
-
-  // validate each plugin details
-  let i = 0;
-  for (const plugin of await page.locator(getByTestID(SEARCH_RESULT)).all()) {
-    // plugin display name
-    expect(await plugin.locator(getByTestID(DISPLAY_NAME)).textContent()).toBe(
-      fixture[i].display_name,
+  for (let l = 1; l <= expectedTotalPages; l++) {
+    // current page
+    const currentPageValue = Number(
+      page.locator(getByTestID(PAGINATION_VALUE)).locator('span').nth(0),
     );
+    expect(currentPageValue).toBe(currentPageCounter);
 
-    // plugin name
-    // todo: uncomment after new test id gets deployed to the environment
-    expect(await plugin.locator(getByTestID(RESULT_NAME)).textContent()).toBe(
-      fixture[i].name,
-    );
+    // verify url
+    expect(page.url()).toContain(`sort=${sortBy}&page=${currentPageValue}`);
 
-    // plugin summary
-    expect(
-      await plugin.locator(getByTestID(RESULT_SUMMARY)).textContent(),
-    ).toBe(fixture[i].summary);
+    // verify results counts
+    const resultCountText =
+      (await page
+        .locator(getByHasText('h3', 'Browse plugins:'))
+        .textContent()) || '';
+    const resultCountValue = Number(resultCountText.trim().replace(/\D/g, ''));
+    expect(resultCountValue).toBe(fixture.length);
 
-    // plugin authors
-    for (
-      let j = 0;
-      j < (await plugin.locator(getByTestID(RESULT_AUTHORS)).count());
-      j++
-    ) {
-      const author = fixture[i].authors[j].name;
+    // total pages
+    const actualTotalPages = resultCountValue / totalPerPage + 1;
+    expect(actualTotalPages).toBe(expectedTotalPages);
+
+    // validate each plugin details on current page
+    let i = 0;
+    for (const plugin of await page.locator(getByTestID(SEARCH_RESULT)).all()) {
+      // plugin display name
       expect(
-        await plugin.locator(getByTestID(RESULT_AUTHORS)).nth(j).textContent(),
-      ).toBe(author);
-    }
+        await plugin.locator(getByTestID(DISPLAY_NAME)).textContent(),
+      ).toBe(fixture[i].display_name);
 
-    // plugin version
-    expect(await plugin.locator(getMetadata('h5')).nth(0).textContent()).toBe(
-      'Version',
-    );
-    expect(await plugin.locator(getMetadata('span')).nth(0).textContent()).toBe(
-      fixture[i].version,
-    );
-
-    // plugin release date
-    const dateString: string = fixture[i].release_date.substring(0, 10);
-    const releaseDate = new Date(dateString).toLocaleDateString(
-      'en-US',
-      dateOptions,
-    );
-    expect(await plugin.locator(getMetadata('h5')).nth(i).textContent()).toBe(
-      'Release date',
-    );
-    expect(await plugin.locator(getMetadata('span')).nth(0).textContent()).toBe(
-      releaseDate,
-    );
-
-    // plugin types
-    const pluginTypeText: string =
-      (await plugin.locator(getMetadata('span')).nth(2).textContent()) || '';
-    const pluginTypes = pluginTypeText.split(',');
-    const fixturePluginTypes = fixture[i].plugin_types;
-    expect(await plugin.locator(getMetadata('h5')).nth(2).textContent()).toBe(
-      'Plugin type',
-    );
-    pluginTypes.forEach((pluginType) => {
-      expect(fixturePluginTypes).toContain(
-        pluginType.trim().toLocaleLowerCase().replace('_', ' '),
+      // plugin name
+      // todo: uncomment after new test id gets deployed to the environment
+      expect(await plugin.locator(getByTestID(RESULT_NAME)).textContent()).toBe(
+        fixture[i].name,
       );
-    });
 
-    // plugin workflow steps
-    const fixtureWorkflowSteps = fixture[i].category['Workflow step'];
-    if (fixtureWorkflowSteps !== undefined) {
+      // plugin summary
+      expect(
+        await plugin.locator(getByTestID(RESULT_SUMMARY)).textContent(),
+      ).toBe(fixture[i].summary);
+
+      // plugin authors
+      for (
+        let j = 0;
+        j < (await plugin.locator(getByTestID(RESULT_AUTHORS)).count());
+        j++
+      ) {
+        const author = fixture[i].authors[j].name;
+        expect(
+          await plugin
+            .locator(getByTestID(RESULT_AUTHORS))
+            .nth(j)
+            .textContent(),
+        ).toBe(author);
+      }
+
+      // plugin version
+      expect(await plugin.locator(getMetadata('h5')).nth(0).textContent()).toBe(
+        'Version',
+      );
+      expect(
+        await plugin.locator(getMetadata('span')).nth(0).textContent(),
+      ).toBe(fixture[i].version);
+
+      // plugin release date
+      const dateString: string = fixture[i].release_date.substring(0, 10);
+      const releaseDate = new Date(dateString).toLocaleDateString(
+        'en-US',
+        dateOptions,
+      );
+      expect(await plugin.locator(getMetadata('h5')).nth(i).textContent()).toBe(
+        'Release date',
+      );
+      expect(
+        await plugin.locator(getMetadata('span')).nth(0).textContent(),
+      ).toBe(releaseDate);
+
+      // plugin types
+      const pluginTypeText: string =
+        (await plugin.locator(getMetadata('span')).nth(2).textContent()) || '';
+      const pluginTypes = pluginTypeText.split(',');
+      const fixturePluginTypes = fixture[i].plugin_types;
       expect(await plugin.locator(getMetadata('h5')).nth(2).textContent()).toBe(
         'Plugin type',
       );
-      for (const [
-        index,
-        fixtureWorkflowStep,
-      ] of fixtureWorkflowSteps.entries()) {
-        const workflowStep = page
-          .locator(getByClassName(RESULT_WORKFLOW_STEPS))
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-          .nth(index)
-          .textContent();
-        expect(workflowStep).toBe(fixtureWorkflowStep);
+      pluginTypes.forEach((pluginType) => {
+        expect(fixturePluginTypes).toContain(
+          pluginType.trim().toLocaleLowerCase().replace('_', ' '),
+        );
+      });
+
+      // plugin workflow steps
+      const fixtureWorkflowSteps = fixture[i].category['Workflow step'];
+      if (fixtureWorkflowSteps !== undefined) {
+        expect(
+          await plugin.locator(getMetadata('h5')).nth(2).textContent(),
+        ).toBe('Plugin type');
+        for (const [
+          index,
+          fixtureWorkflowStep,
+        ] of fixtureWorkflowSteps.entries()) {
+          const workflowStep = page
+            .locator(getByClassName(RESULT_WORKFLOW_STEPS))
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+            .nth(index)
+            .textContent();
+          expect(workflowStep).toBe(fixtureWorkflowStep);
+        }
       }
-    }
-    // increment counter
-    i++;
+      // increment counter
+      i++;
 
-    // paginate
-  }
-
-  const label = FILTER_KEY_METADATA_LABEL_MAP[filterKey];
-  if (label) {
-    const values = await getSearchResultMetadata(page, label);
-
-    // Check that every plugin version passes the metadata test function.
-    testMetadata?.(values);
-  }
-
-  // Check query parameters
-  for (const [key, value] of params) {
-    expect(getQueryParameterValues(page, key)).toContain(value);
-  }
-}
-export async function testPluginFilter({
-  page,
-  width,
-  options,
-  filterKey,
-  params,
-  testMetadata,
-}: {
-  page: Page;
-  width?: number;
-  options: string[];
-  filterKey: FilterKey;
-  params: string[][];
-  testMetadata?(values: string[]): void;
-}) {
-  const isCategoryFilter = CATEGORY_FILTERS.has(filterKey);
-
-  async function openAccordion() {
-    const title = isCategoryFilter
-      ? AccordionTitle.FilterByCategory
-      : AccordionTitle.FilterByRequirement;
-
-    await maybeOpenAccordion(page, title, width);
-  }
-
-  async function testResults() {
-    const optionResults = await getOptions(page, options);
-
-    // Check that filters are enabled.
-    for (const { enabled } of optionResults) {
-      expect(enabled).toBe(true);
-    }
-
-    const label = FILTER_KEY_METADATA_LABEL_MAP[filterKey];
-    if (label) {
-      const values = await getSearchResultMetadata(page, label);
-
-      // Check that every plugin version passes the metadata test function.
-      testMetadata?.(values);
-    }
-
-    // Check query parameters
-    for (const [key, value] of params) {
-      expect(getQueryParameterValues(page, key)).toContain(value);
+      // paginate
+      if (currentPageCounter === 1) {
+        await expect(page.locator(getByTestID(PAGINATION_LEFT))).toBeHidden();
+        await expect(page.locator(getByTestID(PAGINATION_RIGHT))).toBeVisible();
+      }
+      if (currentPageCounter === expectedTotalPages) {
+        await expect(page.locator(getByTestID(PAGINATION_LEFT))).toBeVisible();
+        await expect(page.locator(getByTestID(PAGINATION_RIGHT))).toBeHidden();
+      }
+      if (currentPageCounter < expectedTotalPages) {
+        await page.locator(getByTestID(PAGINATION_RIGHT)).click();
+      }
+      currentPageCounter++;
     }
   }
-
-  async function testInitialLoad() {
-    // Test filtering for initial load load
-    await page.goto(getSearchUrl(...params));
-    await openAccordion();
-    await testResults();
-  }
-
-  async function testClickingOnOptions() {
-    await page.goto(getSearchUrl());
-    await openAccordion();
-    await clickOnFilterButton(page, filterKey);
-
-    for (let i = 0; i < options.length; i += 1) {
-      const optionResults = await getOptions(page, options);
-      const { node } =
-        optionResults.find((result) => result.label === options[i]) ?? {};
-      await node?.click();
-    }
-
-    await clickOnFilterButton(page, filterKey);
-    await testResults();
-  }
-
-  async function testClearAll() {
-    await page.goto(getSearchUrl(...params));
-    await openAccordion();
-    await page.waitForTimeout(500);
-    let chipLabels = await getChips(page, filterKey, options);
-    expect(chipLabels).toEqual(options);
-
-    const filterType: FilterType = isCategoryFilter
-      ? 'category'
-      : 'requirement';
-    await page.click(selectors.filters.getClearAllButton(filterType));
-
-    chipLabels = await getChips(page, filterKey, options);
-    expect(chipLabels).toEqual([]);
-  }
-
-  await testInitialLoad();
-  await testClickingOnOptions();
-  await testClearAll();
 }
