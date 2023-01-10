@@ -74,11 +74,15 @@ function CollectionLink({ linkKey }: CollectionLinkProps) {
 }
 
 export function CollectionLinks() {
+  const collection = useCollection();
   const orderedLinks: LinkKey[] = ['orcid', 'twitter', 'github', 'website'];
+  const filteredLinks = orderedLinks.filter(
+    (link) => collection.curator.links?.[link],
+  );
 
   return (
     <div className="flex space-x-sds-xl mt-sds-xl">
-      {orderedLinks.map((key) => (
+      {filteredLinks.map((key) => (
         <CollectionLink linkKey={key} />
       ))}
     </div>
