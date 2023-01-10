@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { snapshot, useSnapshot } from 'valtio';
 
 import { AppBarLanding } from '@/components/AppBar';
+import { Banner } from '@/components/Banner';
 import { ColumnLayout } from '@/components/ColumnLayout';
 import { Footer } from '@/components/Footer';
 import { Pagination } from '@/components/Pagination';
@@ -81,6 +82,7 @@ export function SearchPage() {
     <div className="flex flex-col">
       <AppBarLanding />
       <PluginSearchBar />
+      <Banner />
 
       <div className="flex-grow min-h-screen">
         <ColumnLayout
