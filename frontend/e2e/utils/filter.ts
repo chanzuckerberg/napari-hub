@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 import { expect, Page } from '@playwright/test';
 
 import { FilterKey, FilterType } from '@/store/search/search.store';

@@ -44,7 +44,7 @@ module.exports = {
     // TypeScript and React source code.
     {
       files: ['./src/**/*.ts{,x}'],
-      extends: [configs.typescript, configs.dev, configs.react],
+      extends: [configs.typescript, configs.react],
     },
 
     /*

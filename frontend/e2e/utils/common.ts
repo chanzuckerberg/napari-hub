@@ -26,6 +26,7 @@ export function getValueOrDefault<T>(value: T, defaultValue: T): T {
  * @returns object attribute value or supplied value
  */
 export function getAttributeOrDefault<T>(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   obj: any,
   attribute: string,
   defaultValue: T,
@@ -33,6 +34,7 @@ export function getAttributeOrDefault<T>(
   if (obj === undefined) {
     return defaultValue;
   }
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access
   return obj[attribute] !== undefined ? obj[attribute] : defaultValue;
 }
 
@@ -56,7 +58,7 @@ export function getRandomNumber(min?: number, max?: number): number {
  */
 export function getFixture(fileName: string) {
   const locations = fs.readFileSync(`fixtures/${fileName}.json`);
-  return JSON.parse(locations.toString());
+  return JSON.parse(locations.toString()) as JSON;
 }
 
 /**
@@ -80,6 +82,7 @@ export function getAlphaNumericString(
     charSet += '0123456789';
   }
   let randomString = '';
+  // eslint-disable-next-line no-plusplus
   for (let i = 0; i < stringLength; i++) {
     const randomPos = Math.floor(Math.random() * charSet.length);
     randomString += charSet.substring(randomPos, randomPos + 1);
@@ -97,7 +100,7 @@ export function getAFullDateInThePast(
   isoString = false,
   refDate?: string,
 ): string {
-  // default to current date as a refence date
+  // default to current date as a reference date
   const fromDate = refDate !== undefined ? new Date(refDate) : new Date();
   let d = fromDate;
   const delta = max - min;
@@ -108,9 +111,8 @@ export function getAFullDateInThePast(
   } while (d.getTime() < fromDate.getTime());
   if (isoString) {
     return d.toISOString();
-  } else {
-    return d.toISOString().substring(0, 10);
   }
+  return d.toISOString().substring(0, 10);
 }
 
 /**
