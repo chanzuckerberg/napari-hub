@@ -22,6 +22,7 @@ export const FEATURE_FLAG_LIST = [
   'categoryFilters',
   'collections',
   'npe2',
+  'banner',
 ] as const;
 
 export type FeatureFlagKey = typeof FEATURE_FLAG_LIST[number];
