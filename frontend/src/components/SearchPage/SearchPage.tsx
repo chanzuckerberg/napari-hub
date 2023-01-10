@@ -80,9 +80,9 @@ export function SearchPage() {
 
   return (
     <div className="flex flex-col">
+      <Banner />
       <AppBarLanding />
       <PluginSearchBar />
-      <Banner />
 
       <div className="flex-grow min-h-screen">
         <ColumnLayout
