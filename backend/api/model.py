@@ -374,7 +374,7 @@ def get_categories_mapping(version: str) -> Dict[str, List]:
     return mappings or {}
 
 
-def _execute_query(query):
+def _execute_query(query, schema):
     SNOWFLAKE_USER = os.getenv('SNOWFLAKE_USER')
     SNOWFLAKE_PASSWORD = os.getenv('SNOWFLAKE_PASSWORD')
     ctx = sc.connect(
@@ -383,7 +383,7 @@ def _execute_query(query):
         account="CZI-IMAGING",
         warehouse="IMAGING",
         database="IMAGING",
-        schema="PYPI"
+        schema=schema
     )
     return ctx.execute_string(query)
 
@@ -408,7 +408,7 @@ def _update_activity_timeline_data():
         GROUP BY file_project, month
         ORDER BY file_project, month
         """
-    cursor_list = _execute_query(query)
+    cursor_list = _execute_query(query, "PYPI")
     csv_string = "PROJECT,MONTH,NUM_DOWNLOADS_BY_MONTH\n"
     for cursor in cursor_list:
         for row in cursor:
@@ -461,7 +461,7 @@ def _update_recent_activity_data(number_of_time_periods=30, time_granularity='DA
         GROUP BY file_project     
         ORDER BY file_project
     """
-    cursor_list = _execute_query(query)
+    cursor_list = _execute_query(query, "PYPI")
     data = {}
     for cursor in cursor_list:
         for row in cursor:
@@ -484,3 +484,22 @@ def get_metrics_for_plugin(plugin: str, limit: str) -> Dict:
         'stats': complete_stats
     }
     return {'activity': activity_data}
+
+
+def get_latest_commits():
+    """
+    Get the latest commit occurred for the plugin (or its core package)
+    """
+    query = f"""
+        SELECT 
+            repo, max(commit_author_date) as latest_commit
+        FROM 
+            imaging.github.commits
+        WHERE 
+            repo_type = 'plugin'
+        GROUP BY 1
+    """
+    cursor_list = _execute_query(query, "GITHUB")
+    for cursor in cursor_list:
+        for row in cursor:
+            print(row)
