@@ -67,6 +67,8 @@
   }
 
   a {
-    @apply text-black font-normal;
+    @apply text-black;
+
+    font-weight: unset;
   }
 }

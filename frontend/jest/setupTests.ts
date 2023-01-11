@@ -52,4 +52,5 @@ jest.mock('next-i18next', () => ({
 jest.mock('@/store/featureFlags', () => ({
   useInitFeatureFlags: () => {},
   useIsFeatureFlagEnabled: () => true,
+  useFeatureFlagConfig: () => ({}),
 }));
