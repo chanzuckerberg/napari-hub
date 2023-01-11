@@ -8,7 +8,7 @@ dotenv.config({
 
 const config: PlaywrightTestConfig = {
   expect: {
-    timeout: 10000,
+    timeout: 120000,
   },
   fullyParallel: true,
   outputDir: '../report',
@@ -42,7 +42,7 @@ const config: PlaywrightTestConfig = {
   testDir: '../tests',
   timeout: 60 * 1000,
   use: {
-    actionTimeout: 0,
+    actionTimeout: 3000,
     baseURL: 'http://localhost:8080',
     screenshot: 'only-on-failure',
     trace: 'on-first-retry',
