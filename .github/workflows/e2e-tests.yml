@@ -134,7 +134,10 @@ jobs:
           NODE_ENV: development
 
       - name: Show list of files for debugging
-        run: pwd
+        run: |
+          pwd
+          ls -l
+          ls -la e2e
         shell: bash
 
       - name: Run E2E Tests
