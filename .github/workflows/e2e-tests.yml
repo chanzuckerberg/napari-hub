@@ -140,7 +140,11 @@ jobs:
         #run: yarn e2e:ci --shard ${{ matrix.shardCurrent }}/${{ matrix.shardTotal }}
         run: yarn e2e:ci
 
-      - uses: actions/upload-artifact@v3
+      - name: Show list of files for debugging
+        run: echo "ls -la"
+
+      - name: Upload test artifacts  
+        uses: actions/upload-artifact@v3
         if: ${{ failure() }}
         with:
           name: e2e-results
