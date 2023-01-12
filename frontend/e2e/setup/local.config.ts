@@ -20,14 +20,14 @@ const config: PlaywrightTestConfig = {
         outputFile: '../report/test-results.json',
       },
     ],
-    [
-      'html',
-      {
-        open: 'on-failure',
-        host: 'localhost',
-        port: 9223,
-      },
-    ],
+    // [
+    //   'html',
+    //   {
+    //     open: 'on-failure',
+    //     host: 'localhost',
+    //     port: 9223,
+    //   },
+    // ],
   ],
 
   projects: [
