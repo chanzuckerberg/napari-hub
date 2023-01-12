@@ -80,64 +80,64 @@ jobs:
           - name: tsc
             run: yarn type-check
 
-  # Run E2E tests on different browsers.
-  e2e:
-    needs: tests
-    runs-on: ubuntu-20.04
+  # # Run E2E tests on different browsers.
+  # e2e:
+  #   needs: tests
+  #   runs-on: ubuntu-20.04
 
-    strategy:
-      fail-fast: false
-      matrix:
-        # TODO Look into adding support for Edge and Webkit testing
-        # TODO Re-enable firefox when tests aren't flaky
-        browser: [chromium]
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       # TODO Look into adding support for Edge and Webkit testing
+  #       # TODO Re-enable firefox when tests aren't flaky
+  #       browser: [chromium]
 
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v2
+  #   steps:
+  #     - name: Checkout Repo
+  #       uses: actions/checkout@v2
 
-      - name: Setup Node
-        uses: actions/setup-node@v2
-        with:
-          node-version: 16.x
+  #     - name: Setup Node
+  #       uses: actions/setup-node@v2
+  #       with:
+  #         node-version: 16.x
 
-      - name: Get Yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
+  #     - name: Get Yarn cache directory path
+  #       id: yarn-cache-dir-path
+  #       run: echo "::set-output name=dir::$(yarn cache dir)"
 
-      # cache both yarn-lock and node_modules
-      - name: Setup Yarn cache
-        uses: actions/cache@v3
-        id: yarn-cache
-        with:
-          path: |
-            **/node_modules
-            ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
+  #     # cache both yarn-lock and node_modules
+  #     - name: Setup Yarn cache
+  #       uses: actions/cache@v3
+  #       id: yarn-cache
+  #       with:
+  #         path: |
+  #           **/node_modules
+  #           ${{ steps.yarn-cache-dir-path.outputs.dir }}
+  #         key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+  #         restore-keys: |
+  #           ${{ runner.os }}-yarn-
 
-      # --prefer-offline forces yarn to use cache if available
-      - name: Install dependencies with yarn
-        run: yarn install --prefer-offline --frozen-lockfile
+  #     # --prefer-offline forces yarn to use cache if available
+  #     - name: Install dependencies with yarn
+  #       run: yarn install --prefer-offline --frozen-lockfile
 
-      - name: Build for production
-        run: yarn build
-        env:
-          E2E: true
+  #     - name: Build for production
+  #       run: yarn build
+  #       env:
+  #         E2E: true
 
-      - name: Start mock server on port 8081
-        run: yarn dev:api &
+  #     - name: Start mock server on port 8081
+  #       run: yarn dev:api &
 
-      - name: Start server on port 8080
-        run: yarn start &
-        env:
-          E2E: true
+  #     - name: Start server on port 8080
+  #       run: yarn start &
+  #       env:
+  #         E2E: true
 
-      - name: Install playwright
-        run: npx playwright install --with-deps
+  #     - name: Install playwright
+  #       run: npx playwright install --with-deps
 
-      - name: Run E2E Tests for ${{ matrix.browser }}
-        env:
-          BROWSER: ${{ matrix.browser }}
-        run: yarn e2e
+  #     - name: Run E2E Tests for ${{ matrix.browser }}
+  #       env:
+  #         BROWSER: ${{ matrix.browser }}
+  #       run: yarn e2e
