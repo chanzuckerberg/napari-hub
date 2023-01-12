@@ -133,7 +133,8 @@ jobs:
         env:
           CI: true
           BROWSER: ${{ matrix.browser }}
-        run: yarn e2e:ci --shard ${{ matrix.shardCurrent }}/${{ matrix.shardTotal }}
+        #run: yarn e2e:ci --shard ${{ matrix.shardCurrent }}/${{ matrix.shardTotal }}
+        run: yarn e2e:ci
 
       - uses: actions/upload-artifact@v3
         if: ${{ failure() }}
