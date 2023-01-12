@@ -2,7 +2,8 @@ import clsx from 'clsx';
 import { ButtonIcon } from 'czifui';
 import { isEmpty } from 'lodash';
 import { useTranslation } from 'next-i18next';
-import { ReactNode, useCallback, useState } from 'react';
+import { cloneElement, ReactNode, useCallback, useState } from 'react';
+import { ReactElement } from 'react-markdown/lib/react-markdown';
 
 import {
   Code,
@@ -21,6 +22,7 @@ import { MetadataListMetadataItem } from '@/components/MetadataList/MetadataList
 import { Tooltip } from '@/components/Tooltip';
 import { MetadataId, MetadataKeys, usePluginMetadata } from '@/context/plugin';
 
+import { IconColorProps } from '../icons/icons.type';
 import { ANCHOR } from './CitationInfo.constants';
 import styles from './SupportInfo.module.scss';
 
@@ -208,19 +210,28 @@ interface LinkData {
 
 interface LinksProps {
   links: LinkData[];
-  children: ReactNode;
+  children: ReactElement;
 }
 
 function Links({ children, links }: LinksProps) {
   const [open, setOpen] = useState(false);
+  const hasEmptyLinks = links.every((link) => !link.value);
 
   const openTooltip = useCallback(() => {
+    if (hasEmptyLinks) {
+      return;
+    }
+
     setOpen(true);
-  }, []);
+  }, [hasEmptyLinks]);
 
   const closeTooltip = useCallback(() => {
+    if (hasEmptyLinks) {
+      return;
+    }
+
     setOpen(false);
-  }, []);
+  }, [hasEmptyLinks]);
 
   return (
     <Tooltip
@@ -241,7 +252,13 @@ function Links({ children, links }: LinksProps) {
         </ul>
       }
     >
-      <ButtonIcon onClick={openTooltip}>{children}</ButtonIcon>
+      <ButtonIcon onClick={openTooltip} disabled={hasEmptyLinks}>
+        {hasEmptyLinks
+          ? cloneElement<IconColorProps>(children, {
+              color: '#999999',
+            })
+          : children}
+      </ButtonIcon>
     </Tooltip>
   );
 }
