@@ -155,7 +155,7 @@ export function PluginTabs({ containerRef }: Props) {
   }
 
   return (
-    <>
+    <div className="mt-sds-xl screen-495:mt-sds-xxl">
       <Tabs
         tabs={tabs}
         activeTab={activeTab}
@@ -171,6 +171,6 @@ export function PluginTabs({ containerRef }: Props) {
       />
 
       {tabContent}
-    </>
+    </div>
   );
 }

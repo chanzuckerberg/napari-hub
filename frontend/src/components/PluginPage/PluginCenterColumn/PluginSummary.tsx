@@ -11,7 +11,7 @@ export function PluginSummary() {
 
   return (
     <SkeletonLoader
-      className="h-6 my-6"
+      className="h-6 mt-sds-l screen-495:mt-sds-xl mb-sds-m screen-495:mb-sds-l"
       render={() => (
         <MetadataHighlighter
           metadataId="metadata-summary"
@@ -19,10 +19,7 @@ export function PluginSummary() {
           highlight={!plugin?.summary}
         >
           <h2
-            className={clsx(
-              'font-semibold text-lg',
-              !plugin?.summary && 'text-hub-gray-500',
-            )}
+            className={clsx('text-lg', !plugin?.summary && 'text-hub-gray-500')}
           >
             {plugin?.summary || t('pluginData:labels.summary.preview')}
           </h2>

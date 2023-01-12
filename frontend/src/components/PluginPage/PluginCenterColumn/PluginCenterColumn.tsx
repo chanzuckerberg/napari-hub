@@ -7,9 +7,11 @@ import { usePreviewClickAway } from '@/hooks/usePreviewClickAway';
 import { useIsFeatureFlagEnabled } from '@/store/featureFlags';
 
 import { PluginActions } from './PluginActions';
+import { PluginAuthors } from './PluginAuthors';
 import { PluginPyPiLink } from './PluginPyPiLink';
 import { PluginSummary } from './PluginSummary';
 import { PluginTitle } from './PluginTitle';
+import { PluginViewProjectDataLink } from './PluginViewProjectDataLink';
 
 export function PluginCenterColumn() {
   const containerRef = useRef<HTMLElement>(null);
@@ -34,7 +36,9 @@ export function PluginCenterColumn() {
       <PluginTitle />
       <PluginPyPiLink />
       <PluginSummary />
+      <PluginAuthors />
       <PluginActions />
+      <PluginViewProjectDataLink />
 
       {isActivityDashboardEnabled ? (
         <PluginTabs containerRef={containerRef} />
