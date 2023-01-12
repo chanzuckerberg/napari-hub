@@ -1,7 +1,8 @@
 import clsx from 'clsx';
+import { ButtonIcon } from 'czifui';
 import { isEmpty } from 'lodash';
 import { useTranslation } from 'next-i18next';
-import { ReactNode } from 'react';
+import { ReactNode, useCallback, useState } from 'react';
 
 import {
   Code,
@@ -14,10 +15,12 @@ import {
   Twitter,
   Website,
 } from '@/components/icons';
+import { Link } from '@/components/Link';
 import { MetadataList, MetadataListLinkItem } from '@/components/MetadataList';
+import { MetadataListMetadataItem } from '@/components/MetadataList/MetadataListMetadataItem';
+import { Tooltip } from '@/components/Tooltip';
 import { MetadataId, MetadataKeys, usePluginMetadata } from '@/context/plugin';
 
-import { MetadataListMetadataItem } from '../MetadataList/MetadataListMetadataItem';
 import { ANCHOR } from './CitationInfo.constants';
 import styles from './SupportInfo.module.scss';
 
@@ -198,6 +201,81 @@ export function SupportInfoBase({ className, inline }: SupportInfoBaseProps) {
   );
 }
 
+interface LinkData {
+  label: string;
+  value: string;
+}
+
+interface LinksProps {
+  links: LinkData[];
+  children: ReactNode;
+}
+
+function Links({ children, links }: LinksProps) {
+  const [open, setOpen] = useState(false);
+
+  const openTooltip = useCallback(() => {
+    setOpen(true);
+  }, []);
+
+  const closeTooltip = useCallback(() => {
+    setOpen(false);
+  }, []);
+
+  return (
+    <Tooltip
+      border={false}
+      classes={{
+        tooltip: 'p-0',
+      }}
+      open={open}
+      onOpen={openTooltip}
+      onClose={closeTooltip}
+      title={
+        <ul>
+          {links.map((link) => (
+            <li className="hover:bg-hub-gray-100 py-sds-s px-sds-l">
+              <Link href={link.value}>{link.label}</Link>
+            </li>
+          ))}
+        </ul>
+      }
+    >
+      <ButtonIcon onClick={openTooltip}>{children}</ButtonIcon>
+    </Tooltip>
+  );
+}
+
+function CodeLinks() {
+  const metadata = usePluginMetadata();
+
+  return (
+    <Links links={[metadata.sourceCode]}>
+      <Code />
+    </Links>
+  );
+}
+
+function WebsiteLinks() {
+  const metadata = usePluginMetadata();
+
+  return (
+    <Links links={[metadata.projectSite, metadata.documentationSite]}>
+      <Website />
+    </Links>
+  );
+}
+
+function SupportLinks() {
+  const metadata = usePluginMetadata();
+
+  return (
+    <Links links={[metadata.supportSite, metadata.reportIssues]}>
+      <ProjectSupport className="ml-2" />
+    </Links>
+  );
+}
+
 interface Props {
   className?: string;
 }
@@ -208,9 +286,9 @@ interface Props {
 export function SupportInfo({ className }: Props) {
   return (
     <div className={clsx('flex items-center gap-x-sds-l', className)}>
-      <Code />
-      <Website />
-      <ProjectSupport className="ml-2" />
+      <CodeLinks />
+      <WebsiteLinks />
+      <SupportLinks />
     </div>
   );
 }
