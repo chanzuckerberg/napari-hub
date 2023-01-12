@@ -132,9 +132,11 @@ jobs:
         run: yarn start &
         env:
           NODE_ENV: development
-          
+
       - name: Show list of files for debugging
-        run: echo "ls -la"
+        run: pwd
+        shell: bash
+
       - name: Run E2E Tests
         env:
           CI: true
