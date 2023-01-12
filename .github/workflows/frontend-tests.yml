@@ -37,7 +37,6 @@ jobs:
 
       - name: Get Yarn cache directory path
         id: yarn-cache-dir-path
-        # run: echo "::set-output name=dir::$(yarn cache dir)"
         run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
 
       # cache both yarn-lock and node_modules
@@ -80,6 +79,3 @@ jobs:
 
           - name: tsc
             run: yarn type-check
-
-  # Run E2E tests on different browsers.
-  # this job has been moved to a separate e2e-tests.yml
