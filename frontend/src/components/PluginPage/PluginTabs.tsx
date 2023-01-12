@@ -1,4 +1,5 @@
 import Skeleton from '@mui/material/Skeleton';
+import clsx from 'clsx';
 import { isObject } from 'lodash';
 import dynamic from 'next/dynamic';
 import { ReactNode, RefObject, useEffect, useMemo } from 'react';
@@ -90,7 +91,13 @@ export function PluginTabs({ containerRef }: Props) {
     tabContent = (
       <>
         {/* Plugin categories */}
-        <ul className="mt-sds-xl text-xs flex flex-wrap gap-sds-s mb-sds-l">
+        <ul
+          className={clsx(
+            'flex flex-col text-xs mt-sds-xl',
+            'mb-sds-l screen-495:mb-sds-xl',
+            'gap-sds-m screen-495:gap-sds-l',
+          )}
+        >
           <SkeletonLoader
             render={() =>
               plugin?.category_hierarchy &&

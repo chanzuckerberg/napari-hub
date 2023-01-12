@@ -34,9 +34,6 @@ export function PluginCenterColumn() {
       <PluginTitle />
       <PluginPyPiLink />
       <PluginSummary />
-
-      <br />
-
       <PluginActions />
 
       {isActivityDashboardEnabled ? (
