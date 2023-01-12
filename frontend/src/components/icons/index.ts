@@ -5,6 +5,7 @@ export * from './ChevronLeft';
 export * from './ChevronRight';
 export * from './ChevronUp';
 export * from './Close';
+export * from './Code';
 export * from './Copy';
 export * from './CZI';
 export * from './Expand';

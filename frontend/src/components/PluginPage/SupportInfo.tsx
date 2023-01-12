@@ -4,6 +4,7 @@ import { useTranslation } from 'next-i18next';
 import { ReactNode } from 'react';
 
 import {
+  Code,
   GitHub,
   ProjectDocumentation,
   ProjectIssues,
@@ -11,6 +12,7 @@ import {
   ProjectSupport,
   Quotes,
   Twitter,
+  Website,
 } from '@/components/icons';
 import { MetadataList, MetadataListLinkItem } from '@/components/MetadataList';
 import { MetadataId, MetadataKeys, usePluginMetadata } from '@/context/plugin';
@@ -196,21 +198,19 @@ export function SupportInfoBase({ className, inline }: SupportInfoBaseProps) {
   );
 }
 
-/**
- * Component for rendering SupportInfoBase responsively.  This includes
- * rendering the metadata list horizontally for xl+ layouts and inline for
- * smaller layouts.
- */
-export function SupportInfo(props: CommonProps) {
-  return (
-    <>
-      <div className="screen-875:hidden">
-        <SupportInfoBase {...props} inline />
-      </div>
+interface Props {
+  className?: string;
+}
 
-      <div className="hidden screen-875:block">
-        <SupportInfoBase {...props} />
-      </div>
-    </>
+/**
+ * Component for rendering support info links as icon dropdowns.
+ */
+export function SupportInfo({ className }: Props) {
+  return (
+    <div className={clsx('flex items-center gap-x-sds-l', className)}>
+      <Code />
+      <Website />
+      <ProjectSupport className="ml-2" />
+    </div>
   );
 }
