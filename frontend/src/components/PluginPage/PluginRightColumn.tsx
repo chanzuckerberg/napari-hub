@@ -74,7 +74,7 @@ export function PluginRightColumn() {
   return (
     <div className="col-start-4 screen-1425:col-start-5 hidden screen-1150:block">
       {/*  Keep CTA button and TOC on screen when scrolling on 2xl. */}
-      <div className="sticky top-12">
+      <div className="sticky top-[50px]">
         <CallToActionButton />
 
         <SkeletonLoader
@@ -83,7 +83,9 @@ export function PluginRightColumn() {
             <SupportInfo className="mt-sds-xl screen-495:mt-sds-xxl" />
           )}
         />
+      </div>
 
+      <div className="sticky top-[200px] mt-[170px] screen-1425:mt-[130px]">
         <PluginTOC />
       </div>
     </div>
