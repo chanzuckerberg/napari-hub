@@ -1,12 +1,11 @@
 import clsx from 'clsx';
-import { isObject, throttle } from 'lodash';
+import { throttle } from 'lodash';
 import { useTranslation } from 'next-i18next';
 import { useEffect, useRef } from 'react';
 import { Tooltip } from 'src/components/Tooltip';
 import { snapshot } from 'valtio';
 
 import { AppBarPreview } from '@/components/AppBar';
-import { CategoryChipContainer } from '@/components/CategoryChip';
 import { ColumnLayout } from '@/components/ColumnLayout';
 import { Link } from '@/components/Link';
 import { Markdown } from '@/components/Markdown';
@@ -20,7 +19,6 @@ import { useMediaQuery, usePlausible } from '@/hooks';
 import { usePreviewClickAway } from '@/hooks/usePreviewClickAway';
 import { useIsFeatureFlagEnabled } from '@/store/featureFlags';
 import { pluginTabsStore } from '@/store/pluginTabs';
-import { HubDimension } from '@/types';
 import { PluginTabType } from '@/types/plugin';
 
 import { CallToActionButton } from './CallToActionButton';
@@ -132,48 +130,33 @@ function PluginCenterColumn() {
         )}
       />
 
-      {/* Plugin categories */}
-      <ul className="mt-sds-xl text-xs flex flex-wrap gap-sds-s">
-        <SkeletonLoader
-          render={() =>
-            plugin?.category_hierarchy &&
-            isObject(plugin.category_hierarchy) &&
-            Object.entries(plugin.category_hierarchy)
-              .filter(
-                ([pluginDimension]) =>
-                  !pluginDimension.includes('Supported data'),
-              )
-              .map(([pluginDimension, pluginHierarchies]) => (
-                <CategoryChipContainer
-                  key={pluginDimension}
-                  dimension={pluginDimension as HubDimension}
-                  hierarchies={pluginHierarchies as string[][]}
-                  containerRef={containerRef}
-                  pluginName={plugin.name ?? ''}
-                />
-              ))
-          }
-        />
-      </ul>
-
       <br />
 
       <div
         className={clsx(
           // Layout
-          'flex screen-875:hidden flex-col',
-
-          // Align CTA and metadata link horizontally for lg layouts
-          'screen-600:flex-row screen-600:items-center',
+          'flex screen-1150:hidden flex-col max-w-[401px]',
 
           // Margins
-          'my-6 screen-495:mt-30 screen-600:mb-12',
+          'my-sds-xl',
         )}
       >
-        <CallToActionButton className="screen-875:hidden" />
+        <div
+          className={clsx(
+            'flex gap-x-sds-xxxl gap-y-sds-xl',
+            'flex-col screen-495:flex-row screen-495:items-center',
+          )}
+        >
+          <CallToActionButton />
+
+          <SkeletonLoader
+            className="h-[228px]"
+            render={() => <SupportInfo />}
+          />
+        </div>
 
         <SkeletonLoader
-          className="screen-600:ml-12 screen-1150:ml-0 mt-sds-xl screen-600:mt-0 h-8 w-24"
+          className="mt-sds-xl screen-600:mt-0 h-8 w-24"
           render={() => (
             <a
               className={clsx(
@@ -184,14 +167,14 @@ function PluginCenterColumn() {
                   Top margins: This is used for smaller layouts because the CTA
                   button is above the metadata link.
                 */
-                'mt-sds-xl screen-600:mt-0',
+                'mt-sds-xl',
 
                 /*
                   Left margins: This is used when the CTA and metadata link are
                   inline.  The margin is removed when the CTA moves to the right
                   column on 1150px layouts.
                 */
-                'screen-600:ml-12 screen-1150:ml-0',
+                // 'screen-600:ml-12 screen-1150:ml-0',
               )}
               href="#pluginMetadata"
             >
@@ -201,12 +184,11 @@ function PluginCenterColumn() {
         />
       </div>
 
-      <SkeletonLoader
-        className="h-[228px] my-6"
-        render={() => <SupportInfo className="mb-6 screen-495:mb-12" />}
-      />
-
-      {isActivityDashboardEnabled ? <PluginTabs /> : <PluginPageContent />}
+      {isActivityDashboardEnabled ? (
+        <PluginTabs containerRef={containerRef} />
+      ) : (
+        <PluginPageContent />
+      )}
     </article>
   );
 }
@@ -228,6 +210,13 @@ function PluginRightColumn() {
       {/*  Keep CTA button and TOC on screen when scrolling on 2xl. */}
       <div className="sticky top-12">
         <CallToActionButton />
+
+        <SkeletonLoader
+          className="h-[228px] my-6"
+          render={() => (
+            <SupportInfo className="mt-sds-xl screen-495:mt-sds-xxl" />
+          )}
+        />
 
         <SkeletonLoader
           className="h-56 mt-sds-xxl"
