@@ -38,6 +38,7 @@ module.exports = {
 
       spacing: {
         ...sds.spacing,
+        'sds-xxxl': '50px',
         // Use 25px and 50px for margins, paddings, gaps, etc.
         6: pixelsToRem(25),
         12: pixelsToRem(50),
@@ -74,11 +75,13 @@ module.exports = {
         ...sds.height,
         'napari-xs': theme('screens.xs'),
         'napari-col': pixelsToRem(225),
+        'sds-xxxl': '50px',
       }),
 
       height: {
         ...sds.width,
         'napari-app-bar': '75px',
+        'sds-xxxl': '50px',
       },
 
       gridTemplateColumns: (theme) => {
