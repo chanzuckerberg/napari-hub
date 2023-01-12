@@ -486,7 +486,7 @@ def get_metrics_for_plugin(plugin: str, limit: str) -> Dict:
     return {'activity': activity_data}
 
 
-def get_latest_commits():
+def get_latest_commits(plugin: str, limit: str):
     """
     Get the latest commit occurred for the plugin (or its core package)
     """
