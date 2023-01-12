@@ -4,6 +4,7 @@ import { satisfies } from '@renovate/pep440';
 import { testPluginFilter } from '../../utils/filter';
 
 test.describe('Plugin Filters', () => {
+  // eslint-disable-next-line playwright/no-focused-test
   test.only('should filter by python version', async ({ page, viewport }) => {
     await testPluginFilter({
       page,
