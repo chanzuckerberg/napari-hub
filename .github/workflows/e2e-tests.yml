@@ -133,13 +133,6 @@ jobs:
         env:
           NODE_ENV: development
 
-      - name: Show list of files for debugging
-        run: |
-          pwd
-          ls -l
-          ls -la e2e
-        shell: bash
-
       - name: Run E2E Tests
         env:
           CI: true
@@ -152,5 +145,5 @@ jobs:
         uses: actions/upload-artifact@v3.1.1
         with: 
           name: e2e-artifacts
-          path: report
+          path: frontend/e2e/report
           retention-days: 1
