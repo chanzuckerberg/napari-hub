@@ -152,5 +152,5 @@ jobs:
         if: ${{ failure() }}
         with:
           name: e2e-results
-          path: ./e2e/report
+          path: e2e/report
           retention-days: 1
