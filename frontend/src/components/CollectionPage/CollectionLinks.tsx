@@ -66,7 +66,7 @@ function CollectionLink({ linkKey }: CollectionLinkProps) {
       disableInteractive
       leaveDelay={0}
     >
-      <Link newTab href={link}>
+      <Link href={link}>
         <Icon className="w-5 h-5" />
       </Link>
     </Tooltip>
