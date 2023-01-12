@@ -131,7 +131,7 @@ jobs:
       - name: Start server on port 8080
         run: yarn start &
         env:
-          NODE_ENV: development
+          NODE_ENV: production
 
       - name: Run E2E Tests
         env:
