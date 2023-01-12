@@ -11,7 +11,7 @@ const config: PlaywrightTestConfig = {
     timeout: 3000,
   },
   fullyParallel: true,
-  outputDir: '../report',
+  outputDir: '../../report',
   reporter: [
     ['list'],
     [

@@ -152,5 +152,5 @@ jobs:
         uses: actions/upload-artifact@v3.1.1
         with: 
           name: e2e-artifacts
-          path: ./e2e/report
+          path: report
           retention-days: 1
