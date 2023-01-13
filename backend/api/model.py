@@ -378,8 +378,8 @@ def _execute_query(query, schema):
     SNOWFLAKE_USER = os.getenv('SNOWFLAKE_USER')
     SNOWFLAKE_PASSWORD = os.getenv('SNOWFLAKE_PASSWORD')
     ctx = sc.connect(
-        user="SVC_PYTHON",
-        password="nCbyMX-pfL*E7dNBij_@.bJC",
+        user="",
+        password="",
         account="CZI-IMAGING",
         warehouse="IMAGING",
         database="IMAGING",
