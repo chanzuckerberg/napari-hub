@@ -483,7 +483,7 @@ def get_metrics_for_plugin(plugin: str, limit: str) -> Dict:
     activity_data = {
         'timeline': timeline,
         'stats': complete_stats,
-        'latest commit': latest_commit
+        'latest commit': latest_commit,
     }
     return {'activity': activity_data}
 
