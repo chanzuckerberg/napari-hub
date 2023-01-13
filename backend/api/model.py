@@ -2,7 +2,7 @@ from concurrent import futures
 from datetime import datetime
 import json
 import os
-from typing import Tuple, Dict, List, Callable
+from typing import Tuple, Dict, List, Callable, Any
 from zipfile import ZipFile
 from io import BytesIO
 from collections import defaultdict
@@ -484,3 +484,26 @@ def get_metrics_for_plugin(plugin: str, limit: str) -> Dict:
         'stats': complete_stats
     }
     return {'activity': activity_data}
+
+
+def get_latest_commit(repo: str) -> Any:
+    """
+    Get the latest commit occurred for the plugin (or its core package)
+    """
+    query = f"""
+        SELECT 
+            repo, max(commit_author_date) as latest_commit
+        FROM 
+            imaging.github.commits
+        WHERE 
+            repo_type = 'plugin'
+            AND repo = '{repo}'
+        GROUP BY 1
+    """
+    # the latest commit is fetched as a tuple of the format (repo, timestamp)
+    cursor_list = _execute_query(query, "GITHUB")
+    for cursor in cursor_list:
+        for row in cursor:
+            result = row
+    # output of this method serves as one of the metrics in get_metrics_for_plugin
+    return result
