@@ -479,14 +479,16 @@ def get_metrics_for_plugin(plugin: str, limit: str) -> Dict:
         'totalInstalls': install_stats.get('totalInstalls', 0),
         'installsInLast30Days': get_recent_activity_data().get(plugin, 0)
     }
+    latest_commit = get_latest_commit(plugin)
     activity_data = {
         'timeline': timeline,
-        'stats': complete_stats
+        'stats': complete_stats,
+        'latest commit': latest_commit
     }
     return {'activity': activity_data}
 
 
-def get_latest_commit(repo: str) -> Any:
+def get_latest_commit(plugin: str) -> Any:
     """
     Get the latest commit occurred for the plugin (or its core package)
     """
@@ -497,7 +499,7 @@ def get_latest_commit(repo: str) -> Any:
             imaging.github.commits
         WHERE 
             repo_type = 'plugin'
-            AND repo = '{repo}'
+            AND repo = '{plugin}'
         GROUP BY 1
     """
     # the latest commit is fetched as a tuple of the format (repo, timestamp)
