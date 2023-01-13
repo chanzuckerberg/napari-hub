@@ -68,8 +68,7 @@ jobs:
 
   e2e:
     # name: E2E tests ${{ matrix.browser }}
-    # name: E2E tests ${{ matrix.browser }} ${{ matrix.shardCurrent }} / ${{ matrix.shardTotal }}
-    name: E2E tests
+    name: E2E tests ${{ matrix.browser }} ${{ matrix.shardCurrent }} / ${{ matrix.shardTotal }}
     runs-on: ubuntu-latest
     needs: e2e-setup
 
@@ -77,13 +76,13 @@ jobs:
       group: ${{ github.ref }}-${{ matrix.browser }}-${{ matrix.shardCurrent }}-${{ matrix.shardTotal }}
       cancel-in-progress: true
 
-    # strategy:
-    #   fail-fast: false
-    #   matrix:
-    #     # browser: [chrome, firefox, safari]
-    #     browser: [chrome]
-    #     shardCurrent: [1, 2, 3, 4, 5]
-    #     shardTotal: [5]
+    strategy:
+      fail-fast: false
+      matrix:
+        # browser: [chrome, firefox, safari]
+        browser: [chrome]
+        shardCurrent: [1, 2, 3, 4, 5]
+        shardTotal: [5]
 
     steps:
       - name: Checkout Repo
@@ -136,9 +135,9 @@ jobs:
       - name: Run E2E Tests
         env:
           CI: true
-          #BROWSER: ${{ matrix.browser }}
-        #run: yarn e2e:ci --shard ${{ matrix.shardCurrent }}/${{ matrix.shardTotal }}
-        run: yarn e2e:ci
+          BROWSER: ${{ matrix.browser }}
+        run: yarn e2e:ci --shard ${{ matrix.shardCurrent }}/${{ matrix.shardTotal }}
+        # run: yarn e2e:ci
 
       - name: Upload artifacts
         if: ${{ failure() }}
