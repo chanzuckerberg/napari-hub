@@ -2,7 +2,7 @@ from concurrent import futures
 from datetime import datetime
 import json
 import os
-from typing import Tuple, Dict, List, Callable
+from typing import Tuple, Dict, List, Callable, Any
 from zipfile import ZipFile
 from io import BytesIO
 from collections import defaultdict
@@ -378,8 +378,8 @@ def _execute_query(query, schema):
     SNOWFLAKE_USER = os.getenv('SNOWFLAKE_USER')
     SNOWFLAKE_PASSWORD = os.getenv('SNOWFLAKE_PASSWORD')
     ctx = sc.connect(
-        user=SNOWFLAKE_USER,
-        password=SNOWFLAKE_PASSWORD,
+        user="SVC_PYTHON",
+        password="nCbyMX-pfL*E7dNBij_@.bJC",
         account="CZI-IMAGING",
         warehouse="IMAGING",
         database="IMAGING",
@@ -486,7 +486,7 @@ def get_metrics_for_plugin(plugin: str, limit: str) -> Dict:
     return {'activity': activity_data}
 
 
-def get_latest_commit(plugin: str):
+def get_latest_commit(repo: str) -> Any:
     """
     Get the latest commit occurred for the plugin (or its core package)
     """
@@ -497,11 +497,13 @@ def get_latest_commit(plugin: str):
             imaging.github.commits
         WHERE 
             repo_type = 'plugin'
+            AND repo = '{repo}'
         GROUP BY 1
     """
+    # the latest commit is fetched as a tuple of the format (repo, timestamp)
     cursor_list = _execute_query(query, "GITHUB")
     for cursor in cursor_list:
         for row in cursor:
-            print(row)
-    # process logic to get latest commit for the plugin
+            result = row
     # output of this method serves as one of the metrics in get_metrics_for_plugin
+    return result
