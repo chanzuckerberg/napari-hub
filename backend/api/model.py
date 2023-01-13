@@ -479,7 +479,7 @@ def get_metrics_for_plugin(plugin: str, limit: str) -> Dict:
         'totalInstalls': install_stats.get('totalInstalls', 0),
         'installsInLast30Days': get_recent_activity_data().get(plugin, 0)
     }
-    latest_commit = get_latest_commit(plugin)
+    latest_commit = _get_latest_commit(plugin)
     activity_data = {
         'timeline': timeline,
         'stats': complete_stats,
@@ -488,7 +488,7 @@ def get_metrics_for_plugin(plugin: str, limit: str) -> Dict:
     return {'activity': activity_data}
 
 
-def get_latest_commit(plugin: str) -> Any:
+def _get_latest_commit(plugin: str) -> Any:
     """
     Get the latest commit occurred for the plugin (or its core package)
     """
@@ -506,6 +506,6 @@ def get_latest_commit(plugin: str) -> Any:
     cursor_list = _execute_query(query, "GITHUB")
     for cursor in cursor_list:
         for row in cursor:
-            result = row
-    # output of this method serves as one of the metrics in get_metrics_for_plugin
+            result = row[1]
+    # output of this method is the latest commit in timestamp format for the plugin
     return result
