@@ -492,7 +492,7 @@ def get_metrics_for_plugin(plugin: str, limit: str) -> Dict:
 
 def _get_latest_commit(plugin: str) -> Any:
     """
-    Get the latest commit occurred for the plugin (or its core package)
+    Get the latest commit occurred for the plugin
     """
     query = f"""
         SELECT 
