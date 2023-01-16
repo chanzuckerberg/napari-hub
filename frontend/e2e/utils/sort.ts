@@ -64,7 +64,6 @@ export async function testPluginSort({
   await testInitialLoad();
   await testRadios();
 }
-
 /**
  * Returns a list of search result metadata values given the name of the value.
  *
