@@ -470,27 +470,7 @@ def _update_recent_activity_data(number_of_time_periods=30, time_granularity='DA
     write_data(json.dumps(data), "activity_dashboard_data/recent_installs.json")
 
 
-def get_metrics_for_plugin(plugin: str, limit: str) -> Dict:
-    plugin = plugin.lower()
-    data = get_install_timeline_data(plugin)
-    install_stats = _process_for_stats(data)
-    timeline = [] if _is_not_valid_limit(limit) else _process_for_timeline(data, int(limit))
-    complete_stats = {
-        'totalInstalls': install_stats.get('totalInstalls', 0),
-        'installsInLast30Days': get_recent_activity_data().get(plugin, 0)
-    }
-    latest_commit = _get_latest_commit(plugin)
-    usage_data = {
-        'timeline': timeline,
-        'stats': complete_stats,
-    }
-    maintenance_data = {
-        'latest commit': latest_commit,
-    }
-    return {'usage': usage_data, 'maintenance': maintenance_data}
-
-
-def _get_latest_commit(plugin: str) -> Any:
+def _update_latest_commit() -> Any:
     """
     Get the latest commit occurred for the plugin
     """
@@ -501,13 +481,35 @@ def _get_latest_commit(plugin: str) -> Any:
             imaging.github.commits
         WHERE 
             repo_type = 'plugin'
-            AND repo = '{plugin}'
         GROUP BY 1
     """
     # the latest commit is fetched as a tuple of the format (repo, timestamp)
     cursor_list = _execute_query(query, "GITHUB")
+    data = {}
     for cursor in cursor_list:
         for row in cursor:
-            result = row[1]
+            data[row[0]] = row[1]
+
+    write_data(json.dumps(data), "activity_dashboard_data/latest_commits.json")
     # output of this method is the latest commit in timestamp format for the plugin
-    return result
+    return data
+
+
+def get_metrics_for_plugin(plugin: str, limit: str) -> Dict:
+    plugin = plugin.lower()
+    data = get_install_timeline_data(plugin)
+    install_stats = _process_for_stats(data)
+    timeline = [] if _is_not_valid_limit(limit) else _process_for_timeline(data, int(limit))
+    complete_stats = {
+        'totalInstalls': install_stats.get('totalInstalls', 0),
+        'installsInLast30Days': get_recent_activity_data().get(plugin, 0)
+    }
+    latest_commit = _update_latest_commit()[plugin]
+    usage_data = {
+        'timeline': timeline,
+        'stats': complete_stats,
+    }
+    maintenance_data = {
+        'latest commit': latest_commit,
+    }
+    return {'usage': usage_data, 'maintenance': maintenance_data}
