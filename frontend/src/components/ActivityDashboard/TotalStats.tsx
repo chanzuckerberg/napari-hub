@@ -4,14 +4,10 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Text } from '@/components/Text';
-import { usePluginState } from '@/context/plugin';
-import {
-  useDateBucketType,
-  useFormattedDuration,
-  usePluginMetrics,
-} from '@/hooks';
+import { useDateBucketType, useFormattedDuration } from '@/hooks';
+import { I18nKeys } from '@/types/i18n';
 
-import { InstallsText } from './InstallsText';
+import { HighlightedCountText } from './HighlightedCountText';
 
 enum DateBucketType {
   LessThanAWeek,
@@ -21,27 +17,38 @@ enum DateBucketType {
   OverNYears,
 }
 
-export function TotalInstalls() {
-  const { plugin } = usePluginState();
-  const { data: metrics, isLoading } = usePluginMetrics(plugin?.name);
-  const stats = metrics?.activity.stats;
+interface Props {
+  count?: number;
+  date?: dayjs.ConfigType;
+  countI18nKey: I18nKeys<'activity'>;
+  infoI18nKey: I18nKeys<'activity'>;
+  isLoading?: boolean;
+}
 
+export function TotalStats({
+  count,
+  countI18nKey,
+  date: dateStr,
+  infoI18nKey,
+  isLoading,
+}: Props) {
   const { t } = useTranslation(['activity']);
 
-  const date = useMemo(
-    () => dayjs(plugin?.first_released),
-    [plugin?.first_released],
-  );
+  const date = useMemo(() => dayjs(dateStr), [dateStr]);
 
   const dateBucketType = useDateBucketType(date);
   const formattedDuration = useFormattedDuration(date, dateBucketType);
 
   return (
     <Text className="font-light" element="p" variant="h2">
-      <InstallsText installs={stats?.totalInstalls} isLoading={isLoading} />
+      <HighlightedCountText
+        count={count}
+        isLoading={isLoading}
+        i18nKey={countI18nKey}
+      />
 
       <span className="mr-2">
-        {t('activity:totalInstalls.publiclyReleased')}{' '}
+        {t(infoI18nKey)}{' '}
         {t(
           dateBucketType === DateBucketType.LessThanAWeek
             ? 'activity:duration.lessThan'
