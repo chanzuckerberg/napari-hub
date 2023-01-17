@@ -1,8 +1,11 @@
 {
   "installs_one": "install",
   "installs_other": "installs",
+  "commits_one": "commit",
+  "commits_other": "commits",
   "installsTitle": "Installs",
   "usage": "Usage",
+  "maintenance": "Maintenance",
   "learnMoreLink": "https://github.com/chanzuckerberg/napari-hub/wiki/Guide-to-Activity-Tab",
   "learnMore": "<externalLink href='$t(learnMoreLink)'>Learn more about where we get this data.</externalLink>",
   "noData": {
@@ -13,6 +16,15 @@
   "monthlyInstalls": {
     "title": "Monthly installs in past year",
     "publicRelease": "Public release"
+  },
+  "totalInstalls": {
+    "publiclyReleased": "since publicly released"
+  },
+  "recentInstalls": {
+    "inPast": "in past"
+  },
+  "totalCommits": {
+    "repoCreated": "since plugin repo created"
   },
   "duration": {
     "30days": "30 days",
@@ -25,11 +37,5 @@
     "nMonthsAgo_other": "{{months}} months ago",
     "nYearsAgo_one": "{{years}} year ago",
     "nYearsAgo_other": "{{years}} years ago"
-  },
-  "totalInstalls": {
-    "publiclyReleased": "since publicly released"
-  },
-  "recentInstalls": {
-    "inPast": "in past"
   }
 }
