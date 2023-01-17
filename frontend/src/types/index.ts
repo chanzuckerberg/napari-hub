@@ -92,10 +92,6 @@ export interface LinkInfo {
    * Title of the link to use.
    */
   title: string;
-  /**
-   * If the link should open in a new tab.
-   */
-  newTab?: boolean;
 }
 
 export type ClassState<T extends object> = {

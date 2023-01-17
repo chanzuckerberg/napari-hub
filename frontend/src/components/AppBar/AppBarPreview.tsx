@@ -52,7 +52,6 @@ function AppBarPreviewLeftColumn() {
     <Link
       className="flex items-center whitespace-nowrap underline space-x-[0.625rem]"
       href={prLink}
-      newTab
     >
       <ViewPullRequest />
       <span className="hidden screen-495:block">

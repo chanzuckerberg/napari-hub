@@ -96,6 +96,7 @@
     "react-dom": "18.1.0",
     "react-highlight-words": "0.18.0",
     "react-i18next": "11.16.7",
+    "react-icons": "^4.7.1",
     "react-markdown": "8.0.3",
     "react-query": "3.38.1",
     "react-use": "17.3.2",

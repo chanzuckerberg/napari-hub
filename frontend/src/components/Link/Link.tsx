@@ -2,7 +2,6 @@ import NextLink, { LinkProps } from 'next/link';
 import { AnchorHTMLAttributes, forwardRef } from 'react';
 
 export interface Props extends AnchorHTMLAttributes<HTMLElement> {
-  newTab?: boolean;
   linkProps?: LinkProps;
 }
 
@@ -11,10 +10,10 @@ export interface Props extends AnchorHTMLAttributes<HTMLElement> {
  * to allow Next.js to preload routes and for the anchor tag to pass a11y.
  */
 export const Link = forwardRef<HTMLAnchorElement, Props>(
-  ({ children, href = '', linkProps = { href }, newTab, ...props }, ref) => {
+  ({ children, href = '', linkProps = { href }, ...props }, ref) => {
     let newTabProps: AnchorHTMLAttributes<HTMLElement> | undefined;
 
-    if (newTab) {
+    if (href.startsWith('http://') || href.startsWith('https://')) {
       // For new tabs, add rel=noreferrer for security:
       // https://web.dev/external-anchors-use-rel-noopener/#how-to-improve-your-site's-performance-and-prevent-security-vulnerabilities
       newTabProps = {

@@ -44,7 +44,7 @@ export function useMetadataSections(): MetadataSection[] {
       return {
         hasValue,
         id: `metadata-${key}`,
-        name: data.previewLabel,
+        name: data.label,
       } as MetadataSectionField;
     });
   }
