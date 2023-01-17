@@ -1,7 +1,7 @@
 name: Backend BDD Tests
 on:
   workflow_run:
-    workflows: [ 'Push Remote Dev' ]
+    workflows: [ 'Push Remote Dev', 'Deploy Changes to Cluster' ]
     types:
       - completed
 jobs:
@@ -21,7 +21,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install --upgrade pip
-          pip install requests python-dateutil behave
+          pip install -r test-requirements.txt
 
       - name: Download artifact
         uses: actions/download-artifact@v3

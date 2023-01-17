@@ -3,8 +3,13 @@ import requests
 import json
 import os
 
+BASE_URL_BY_ENV = {
+    'staging': 'https://api.staging.napari-hub.org',
+    'prod': 'https://api.napari-hub.org'
+}
+
 prefix = os.getenv('PREFIX')
-base_url = f'https://api.dev.napari-hub.org/{prefix}' if prefix else 'https://api.staging.napari-hub.org'
+base_url = BASE_URL_BY_ENV.get(prefix, f'https://api.dev.napari-hub.org/{prefix}')
 headers = {'User-Agent': 'behave-test'}
 
 
