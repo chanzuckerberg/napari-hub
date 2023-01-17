@@ -1,3 +1,4 @@
+from fnmatch import fnmatch
 import os
 import re
 import requests
@@ -25,6 +26,8 @@ VALID_LAYERS = [
     'vectors',
 ]
 VALID_LAYER_REGEX = rf"({'|'.join([layer_type for layer_type in VALID_LAYERS])}).*"
+# dict of supported file extensions
+SUPPORTED_FILE_EXTENSIONS = ['.sld', '.tif', '.am', '.amiramesh', '.grey', '.hx', '.labels', '.xml']
 
 
 def get_attribute(obj: dict, path: list):
@@ -171,7 +174,8 @@ def parse_manifest(manifest: Optional[dict] = None):
                     filename_patterns = reader.get('filename_patterns', [])
                     for ext in filename_patterns:
                         reader_file_extensions.add(ext)
-                manifest_attributes['reader_file_extensions'] = list(reader_file_extensions)
+                supported_formats = get_supported_extensions_from_patterns(reader_file_extensions)
+                manifest_attributes['reader_file_extensions'] = supported_formats
         if 'writers' in manifest_contributions:
             writers = manifest_contributions['writers']
             if writers:
@@ -195,3 +199,19 @@ def parse_manifest(manifest: Optional[dict] = None):
         if 'sample_data' in manifest_contributions and manifest_contributions['sample_data']:
             manifest_attributes['plugin_types'].append('sample_data')
     return manifest_attributes
+
+def get_supported_extensions_from_patterns(patterns):
+    """Match patterns against known file extensions and return
+    supported extensions.
+
+    Args:
+        patterns: set of extension filename patterns (in fnmatch
+                    format)
+    """
+    supported_extensions = []
+    for supported_extension in SUPPORTED_FILE_EXTENSIONS:
+        for declared_extension in patterns:
+            if fnmatch(supported_extension, declared_extension):
+                supported_extensions.append(supported_extension)
+
+    return supported_extensions
