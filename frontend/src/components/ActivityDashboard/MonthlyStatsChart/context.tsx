@@ -5,27 +5,29 @@ import { I18nKeys } from '@/types/i18n';
 
 interface MonthlyStatsValue {
   dateLineI18nKey: I18nKeys<'activity'>;
+  dateLineLabelYOffset: number;
   startDate: dayjs.ConfigType;
 }
 
 const MonthlyStatsContext = createContext<MonthlyStatsValue | null>(null);
 
-interface Props
-  extends Pick<MonthlyStatsValue, 'startDate' | 'dateLineI18nKey'> {
+interface Props extends MonthlyStatsValue {
   children: ReactNode;
 }
 
 export function MonthlyStatsProvider({
   children,
   dateLineI18nKey,
+  dateLineLabelYOffset,
   startDate,
 }: Props) {
   const value = useMemo(
     () => ({
       dateLineI18nKey,
+      dateLineLabelYOffset,
       startDate,
     }),
-    [dateLineI18nKey, startDate],
+    [dateLineI18nKey, dateLineLabelYOffset, startDate],
   );
 
   return (

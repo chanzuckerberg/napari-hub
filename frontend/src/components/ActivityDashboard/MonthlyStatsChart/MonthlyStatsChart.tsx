@@ -19,6 +19,7 @@ import { useVisibleMonthsTicks } from './useVisibleMonthsTicks';
 interface Props {
   dataPoints: DataPoint[];
   dateLineI18nKey: I18nKeys<'activity'>;
+  dateLineLabelYOffset?: number;
   emptyI18nKey: I18nKeys<'activity'>;
   fill?: string;
   isLoading?: boolean;
@@ -30,12 +31,13 @@ interface Props {
 export function MonthlyStatsChart({
   dataPoints,
   dateLineI18nKey,
+  dateLineLabelYOffset = 0,
   emptyI18nKey,
+  fill,
   isLoading,
   startDate,
   titleI18nKey,
   yLabelI18nKey,
-  fill,
 }: Props) {
   const isScreen600 = useMediaQuery({ minWidth: 'screen-600' });
   const [t] = useTranslation(['activity']);
@@ -52,6 +54,7 @@ export function MonthlyStatsChart({
   return (
     <MonthlyStatsProvider
       dateLineI18nKey={dateLineI18nKey}
+      dateLineLabelYOffset={dateLineLabelYOffset}
       startDate={startDate}
     >
       <section>

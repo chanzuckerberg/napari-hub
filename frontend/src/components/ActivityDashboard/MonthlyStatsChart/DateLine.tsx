@@ -12,7 +12,11 @@ export function DateLine(props: VictoryLabelProps) {
   const isScreen600 = useMediaQuery({ minWidth: 'screen-600' });
   const { x = 0, datum } = props;
   const point = datum as DataPoint;
-  const { dateLineI18nKey, startDate } = useMonthlyStats();
+  const {
+    dateLineI18nKey,
+    startDate,
+    dateLineLabelYOffset: dateLineYOffset,
+  } = useMonthlyStats();
   const release = dayjs(startDate);
 
   if (
@@ -40,7 +44,7 @@ export function DateLine(props: VictoryLabelProps) {
       <VictoryLabel
         {...props}
         x={x}
-        y={isScreen600 ? 110 : 80}
+        y={(isScreen600 ? 110 : 80) + dateLineYOffset}
         angle={-90}
         text={t(dateLineI18nKey) as string}
         style={{
