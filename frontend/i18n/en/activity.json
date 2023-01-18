@@ -3,18 +3,18 @@
   "installs_other": "installs",
   "commits_one": "commit",
   "commits_other": "commits",
-  "installsTitle": "Installs",
   "usage": "Usage",
   "maintenance": "Maintenance",
   "learnMoreLink": "https://github.com/chanzuckerberg/napari-hub/wiki/Guide-to-Activity-Tab",
   "learnMore": "<hubLink href='$t(learnMoreLink)'>Learn more about where we get this data.</hubLink>",
   "noData": {
     "allData": "No data could be fetched for this plugin. <hubLink href='$t(learnMoreLink)'>Learn more.</hubLink>",
-    "monthlyInstalls": "There is not yet enough data to display for this plugin",
+    "monthly": "There is not yet enough data to display for this plugin",
     "preview": "Activity not available for previews"
   },
   "monthlyInstalls": {
     "title": "Monthly installs in past year",
+    "yLabel": "Installs",
     "publicRelease": "Public release"
   },
   "totalInstalls": {
@@ -22,6 +22,11 @@
   },
   "recentInstalls": {
     "inPast": "in past"
+  },
+  "monthlyCommits": {
+    "title": "Monthly installs in past year",
+    "yLabel": "Commits",
+    "created": "Plugin repo created"
   },
   "totalCommits": {
     "repoCreated": "since plugin repo created"
