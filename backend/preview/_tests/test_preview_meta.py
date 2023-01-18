@@ -16,17 +16,17 @@ example_plugin_release_date = "2021-10-08T00:49:53.706510Z"
 def test_clone_existing_plugin(tmpdir):
     dest_dir = tmpdir.mkdir("repo")
     repo_pth = clone_repo(code_plugin_url, dest_dir).working_tree_dir
-    
+
     # a git repository
     assert os.path.exists(os.path.join(dest_dir, 'napari-demo', '.git/'))
-    # correct repo name 
+    # correct repo name
     assert os.path.basename(repo_pth) == 'napari-demo'
 
 
 def test_clone_invalid_plugin(tmpdir):
     plugin_url = "https://github.com/chanzuckerberg/fake-repo"
     dest_dir = tmpdir.mkdir("repo")
-    
+
     with pytest.raises(RuntimeError):
         clone_repo(plugin_url, dest_dir)
 
@@ -62,7 +62,7 @@ def test_parse_meta(tmpdir):
 def test_parse_preview_matches_hub(tmpdir):
     dest_dir = tmpdir.mkdir('preview')
     # get hub metadata for example-plugin
-    hub_metadata = json.loads(requests.get(hub_plugin_url).text)
+    hub_metadata = requests.get(hub_plugin_url).json()
 
     # get preview metadata for example-plugin
     os.environ["GITHUB_REPOSITORY"] = "chanzuckerberg/napari-demo"
@@ -81,7 +81,7 @@ def test_parse_preview_matches_hub(tmpdir):
                 hub = sorted(hub)
             except Exception:
                 pass
-            assert preview == hub
+            assert preview == hub, f'{field} not as expected hub={hub} preview={preview}'
 
 
 def test_release_date_logic():
