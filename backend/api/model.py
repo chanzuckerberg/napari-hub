@@ -391,6 +391,7 @@ def _execute_query(query, schema):
 def update_activity_data():
     _update_activity_timeline_data()
     _update_recent_activity_data()
+    _update_latest_commit()
 
 
 def _update_activity_timeline_data():
