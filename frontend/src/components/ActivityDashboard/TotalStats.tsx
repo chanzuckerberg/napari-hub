@@ -1,12 +1,12 @@
-import Skeleton from '@mui/material/Skeleton';
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Text } from '@/components/Text';
-import { useDateBucketType, useFormattedDuration } from '@/hooks';
+import { useDateBucketType } from '@/hooks';
 import { I18nKeys } from '@/types/i18n';
 
+import { FormattedDuration } from './FormattedDuration';
 import { HighlightedCountText } from './HighlightedCountText';
 
 enum DateBucketType {
@@ -33,11 +33,8 @@ export function TotalStats({
   isLoading,
 }: Props) {
   const { t } = useTranslation(['activity']);
-
   const date = useMemo(() => dayjs(dateStr), [dateStr]);
-
   const dateBucketType = useDateBucketType(date);
-  const formattedDuration = useFormattedDuration(date, dateBucketType);
 
   return (
     <Text className="font-light" element="p" variant="h2">
@@ -56,14 +53,7 @@ export function TotalStats({
         )}
       </span>
 
-      <div className="!font-medium inline-flex items-center">
-        {isLoading ? (
-          <Skeleton className="mr-2" width={32} />
-        ) : (
-          formattedDuration
-        )}
-        {isLoading && ' ago'}
-      </div>
+      <FormattedDuration date={date} isLoading={isLoading} />
     </Text>
   );
 }
