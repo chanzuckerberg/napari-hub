@@ -503,12 +503,12 @@ def get_metrics_for_plugin(plugin: str, limit: str) -> Dict:
         'totalInstalls': install_stats.get('totalInstalls', 0),
         'installsInLast30Days': get_recent_activity_data().get(plugin, 0)
     }
-    latest_commit = get_latest_commits.get(plugin, 0)
+    latest_commits = get_latest_commits()
     usage_data = {
         'timeline': timeline,
         'stats': complete_stats,
     }
     maintenance_data = {
-        'latest commit': latest_commit,
+        'latest commit': latest_commits[plugin],
     }
     return {'usage': usage_data, 'maintenance': maintenance_data}
