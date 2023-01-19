@@ -6,6 +6,7 @@ import { PREVIEW } from '@/constants/env';
 import { usePluginState } from '@/context/plugin';
 import { usePluginMetrics } from '@/hooks';
 
+import { ActivityMaintenanceSection } from './ActivityMaintenanceSection';
 import { ActivityUsageSection } from './ActivityUsageSection';
 import { EmptyState } from './EmptyState';
 
@@ -45,6 +46,7 @@ export function ActivityDashboard() {
       ) : (
         <>
           <ActivityUsageSection />
+          <ActivityMaintenanceSection />
 
           <Text variant="bodyS">
             <I18n i18nKey="activity:learnMore" />
