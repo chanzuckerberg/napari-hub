@@ -9,7 +9,7 @@ from collections import defaultdict
 import pandas as pd
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
-from api.s3 import get_cache, cache, write_data, get_install_timeline_data, get_recent_activity_data
+from api.s3 import get_cache, cache, write_data, get_install_timeline_data, get_latest_commits, get_recent_activity_data
 from utils.utils import render_description, send_alert, get_attribute, get_category_mapping, parse_manifest
 from utils.datadog import report_metrics
 from api.zulip import notify_new_packages
@@ -391,7 +391,7 @@ def _execute_query(query, schema):
 def update_activity_data():
     _update_activity_timeline_data()
     _update_recent_activity_data()
-    _update_latest_commit()
+    _update_latest_commits()
 
 
 def _update_activity_timeline_data():
@@ -471,7 +471,7 @@ def _update_recent_activity_data(number_of_time_periods=30, time_granularity='DA
     write_data(json.dumps(data), "activity_dashboard_data/recent_installs.json")
 
 
-def _update_latest_commit() -> Any:
+def _update_latest_commits():
     """
     Get the latest commit occurred for the plugin
     """
@@ -489,11 +489,9 @@ def _update_latest_commit() -> Any:
     data = {}
     for cursor in cursor_list:
         for row in cursor:
-            data[row[0]] = row[1]
+            data[row[0]] = pd.to_datetime(row[1]).strftime(format="%Y-%m-%d %H:%M:%S")
 
     write_data(json.dumps(data), "activity_dashboard_data/latest_commits.json")
-    # output of this method is the latest commit in timestamp format for the plugin
-    return data
 
 
 def get_metrics_for_plugin(plugin: str, limit: str) -> Dict:
@@ -505,7 +503,7 @@ def get_metrics_for_plugin(plugin: str, limit: str) -> Dict:
         'totalInstalls': install_stats.get('totalInstalls', 0),
         'installsInLast30Days': get_recent_activity_data().get(plugin, 0)
     }
-    latest_commit = _update_latest_commit()[plugin]
+    latest_commit = get_latest_commits(plugin, 0)
     usage_data = {
         'timeline': timeline,
         'stats': complete_stats,

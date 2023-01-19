@@ -89,6 +89,14 @@ def get_install_timeline_data(plugin):
     return plugin_df
 
 
+def get_latest_commits() -> Dict:
+    try:
+        return json.loads(_get_from_s3("activity_dashboard_data/latest_commits.json"))
+    except Exception as e:
+        logging.error(e)
+        return {}
+
+
 def get_recent_activity_data() -> Dict:
     try:
         return json.loads(_get_from_s3("activity_dashboard_data/recent_installs.json"))
