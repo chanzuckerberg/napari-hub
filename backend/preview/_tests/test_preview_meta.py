@@ -8,7 +8,7 @@ from datetime import datetime
 from preview.preview import clone_repo, build_dist, parse_meta, get_plugin_preview, get_pypi_date_meta, get_source_code_url
 
 code_plugin_url = "https://github.com/chanzuckerberg/napari-demo"
-hub_plugin_url = "https://api.napari-hub.org/plugins/napari-demo"
+hub_plugin_url = "https://api.staging.napari-hub.org/plugins/napari-demo"
 example_plugin_first_released = "2021-07-12T21:30:25.936203Z"
 example_plugin_release_date = "2021-10-08T00:49:53.706510Z"
 
