@@ -2,7 +2,7 @@ from concurrent import futures
 from datetime import datetime
 import json
 import os
-from typing import Tuple, Dict, List, Callable, Any
+from typing import Tuple, Dict, List, Callable
 from zipfile import ZipFile
 from io import BytesIO
 from collections import defaultdict
@@ -489,7 +489,7 @@ def _update_latest_commits():
     data = {}
     for cursor in cursor_list:
         for row in cursor:
-            data[row[0]] = pd.to_datetime(row[1]).strftime(format="%Y-%m-%d %H:%M:%S")
+            data[print(row[0].split('/')[1])] = pd.to_datetime(row[1]).strftime(format="%Y-%m-%d %H:%M:%S")
 
     write_data(json.dumps(data), "activity_dashboard_data/latest_commits.json")
 
