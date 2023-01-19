@@ -24,7 +24,7 @@
     "inPast": "in past"
   },
   "monthlyCommits": {
-    "title": "Monthly installs in past year",
+    "title": "Monthly commits in past year",
     "yLabel": "Commits",
     "created": "Plugin repo created"
   },
