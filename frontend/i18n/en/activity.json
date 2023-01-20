@@ -26,6 +26,9 @@
   "totalCommits": {
     "repoCreated": "since plugin repo created"
   },
+  "recentCommit": {
+    "latest": "Latest commit made"
+  },
   "duration": {
     "30days": "30 days",
     "lessThan": "less than",
