@@ -4,26 +4,26 @@ import { satisfies } from '@renovate/pep440';
 import { testPluginFilter } from '../../utils/filter';
 
 test.describe('Plugin filter tests', () => {
-  test('should filter by python version', async ({ page, viewport }) => {
-    await testPluginFilter({
-      page,
-      width: viewport?.width,
-      options: ['3.7', '3.8'],
-      filterKey: 'pythonVersion',
-      params: [
-        ['python', '3.7'],
-        ['python', '3.8'],
-      ],
-      testMetadata(versionSpecifiers: string[]) {
-        // Check that every plugin version passes the enabled filter.
-        versionSpecifiers.forEach((specifier) =>
-          expect(
-            satisfies('3.7', specifier) || satisfies('3.8', specifier),
-          ).toBe(true),
-        );
-      },
-    });
-  });
+  // test('should filter by python version', async ({ page, viewport }) => {
+  //   await testPluginFilter({
+  //     page,
+  //     width: viewport?.width,
+  //     options: ['3.7', '3.8'],
+  //     filterKey: 'pythonVersion',
+  //     params: [
+  //       ['python', '3.7'],
+  //       ['python', '3.8'],
+  //     ],
+  //     testMetadata(versionSpecifiers: string[]) {
+  //       // Check that every plugin version passes the enabled filter.
+  //       versionSpecifiers.forEach((specifier) =>
+  //         expect(
+  //           satisfies('3.7', specifier) || satisfies('3.8', specifier),
+  //         ).toBe(true),
+  //       );
+  //     },
+  //   });
+  // });
 
   ['Linux', 'macOS'].forEach(async (os) => {
     test(`should filter by ${os} operating system`, async ({

@@ -1,8 +1,6 @@
 import { expect, Page } from '@playwright/test';
-import { PluginFilter } from 'e2e/types/filter';
 
-import { FilterKey } from '@/store/search/search.store';
-
+import { PluginFilter } from '../types/filter';
 import { selectors } from './_selectors';
 import {
   DISPLAY_NAME,
@@ -36,6 +34,18 @@ const sortOrders: Record<string, string> = {
   newest: 'Newest',
 };
 
+const filterNames: Record<string, string> = {
+  authors: 'Authors',
+  supported_data: 'Supported data',
+  operating_system: 'Operating system',
+  reader_file_extensions: 'Open extension',
+  writer_file_extensions: 'Save extension',
+  license: 'License',
+  plugin_types: 'Plugin type',
+  python_version: 'Python versions',
+  image_modality: 'Image modality',
+  workflow_step: 'Workflow step',
+};
 export async function filterPlugins(
   page: Page,
   pluginFilter: PluginFilter,
@@ -44,24 +54,36 @@ export async function filterPlugins(
   width?: number,
 ) {
   // sorting order
-  await page.locator(getByText(sortOrders[sortBy])).click();
+  if (sortBy !== 'recentlyUpdated') {
+    await page.locator(getByText(sortOrders[sortBy])).nth(1).click();
+  }
 
   // on smaller screens the filter types are collapsed, so first click the accordion
   await openAccordion(page, filterTypes, width);
 
   Object.keys(pluginFilter).forEach(async (filterKey) => {
-    // select filter
-    await clickOnFilterButton(page, filterKey as FilterKey);
-    // select filter options
-    const filterOptions = pluginFilter[filterKey as keyof PluginFilter];
-    filterOptions?.forEach(async (option) => {
-      await page.locator(getByText(option)).click();
-    });
-  });
-}
+    // get option values
+    const filterOptions: string[] =
+      pluginFilter[filterKey as keyof PluginFilter] || [];
 
-export async function clickOnFilterButton(page: Page, filterKey: FilterKey) {
-  await page.click(selectors.filters.getFilterButton(filterKey));
+    // click the filter dropdown
+    // await page.locator(getByText(filterNames[filterKey])).nth(1).click();
+
+    await page.screenshot({ path: 'test1.png' });
+
+    console.log(filterOptions);
+    for (const option of filterOptions) {
+      await page.screenshot({ path: 'test2.png' });
+      await page
+        .getByRole('option', { name: `unchecked checkbox ${option}` })
+        .locator('svg')
+        .click();
+      console.log(option);
+    }
+    await page.screenshot({ path: 'test3.png' });
+    // close the filter dropdown
+    //await page.getByRole('button', { name: filterNames[filterKey] }).click();
+  });
 }
 
 export async function getOptions(page: Page, labels: string[]) {
@@ -134,12 +156,15 @@ export async function verifyFilterResults(
 
   for (let l = 1; l <= expectedTotalPages; l++) {
     // current page
-    const currentPageValue = Number(
-      page.locator(getByTestID(PAGINATION_VALUE)).locator('span').nth(0),
-    );
-    expect(currentPageValue).toBe(currentPageCounter);
+    const pagination = page.locator(getByTestID(PAGINATION_VALUE));
+    const currentPageValue = await pagination
+      .locator('span')
+      .nth(0)
+      .textContent();
+    expect(Number(currentPageValue)).toBe(currentPageCounter);
 
     // verify url
+    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
     expect(page.url()).toContain(`sort=${sortBy}&page=${currentPageValue}`);
 
     // verify results counts

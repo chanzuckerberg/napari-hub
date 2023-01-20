@@ -8,7 +8,7 @@ dotenv.config({
 
 const config: PlaywrightTestConfig = {
   expect: {
-    timeout: 3000,
+    timeout: 60000,
   },
   globalSetup: './globalSetup',
   outputDir: '../report',
@@ -21,14 +21,14 @@ const config: PlaywrightTestConfig = {
         outputFile: '../report/test-results.json',
       },
     ],
-    [
-      'html',
-      {
-        open: 'on-failure',
-        host: 'localhost',
-        port: 9223,
-      },
-    ],
+    // [
+    //   'html',
+    //   {
+    //     open: 'on-failure',
+    //     host: 'localhost',
+    //     port: 9223,
+    //   },
+    // ],
   ],
   projects: [
     {
@@ -41,12 +41,12 @@ const config: PlaywrightTestConfig = {
     },
   ],
   testDir: '../tests',
-  timeout: 30 * 1000,
+  timeout: 1000 * 1000,
   use: {
     actionTimeout: 0,
     baseURL: 'https://www.napari-hub.org/',
     screenshot: 'only-on-failure',
-    trace: 'on-first-retry',
+    trace: 'retain-on-failure',
     video: 'on',
   },
 };

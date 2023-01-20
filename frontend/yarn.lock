@@ -1323,13 +1323,13 @@
   dependencies:
     "@octokit/openapi-types" "^14.0.0"
 
-"@playwright/test@^1.27.1":
-  version "1.29.0"
-  resolved "https://registry.npmjs.org/@playwright/test/-/test-1.29.0.tgz"
-  integrity sha512-gp5PVBenxTJsm2bATWDNc2CCnrL5OaA/MXQdJwwkGQtqTjmY+ZOqAdLqo49O9MLTDh2vYh+tHWDnmFsILnWaeA==
+"@playwright/test@^1.29.2":
+  version "1.29.2"
+  resolved "https://registry.yarnpkg.com/@playwright/test/-/test-1.29.2.tgz#c48184721d0f0b7627a886e2ec42f1efb2be339d"
+  integrity sha512-+3/GPwOgcoF0xLz/opTnahel1/y42PdcgZ4hs+BZGIUjtmEFSXGg+nFoaH3NSmuc7a6GSFwXDJ5L7VXpqzigNg==
   dependencies:
     "@types/node" "*"
-    playwright-core "1.29.0"
+    playwright-core "1.29.2"
 
 "@popperjs/core@^2.11.6":
   version "2.11.6"
@@ -2858,11 +2858,6 @@ char-regex@^1.0.2:
   resolved "https://registry.npmjs.org/char-regex/-/char-regex-1.0.2.tgz"
   integrity sha512-kWWXztvZ5SBQV+eRgKFeh8q5sLuZY2+8WUIzlxWVTg+oGwY14qylx1KbKzHd8P6ZYkAg0xyIDU9JMHhyJMZ1jw==
 
-char-to-string@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/char-to-string/-/char-to-string-1.0.0.tgz#3e1d11c33a004930e8552966c066741ac67e2f1e"
-  integrity sha512-9WeQ+l5COfnFkuDmTJ5zXzMhb4xpMPDu24pD50cMvWT+Br9Sni1hlpvdPK/YpZl1+QI15f4pMWfyEzyyIHJr2Q==
-
 character-entities-html4@^2.0.0:
   version "2.1.0"
   resolved "https://registry.npmjs.org/character-entities-html4/-/character-entities-html4-2.1.0.tgz"
@@ -3620,7 +3615,7 @@ detect-libc@^2.0.0, detect-libc@^2.0.1:
   resolved "https://registry.npmjs.org/detect-libc/-/detect-libc-2.0.1.tgz"
   integrity sha512-463v3ZeIrcWtdgIg6vI6XUncguvr2TnGl4SzDXinkt9mSLpBJKXT3mW6xT3VQdDN11+WVs29pgvivTc4Lp8v+w==
 
-detect-newline@^3.0.0, detect-newline@^3.1.0:
+detect-newline@^3.0.0:
   version "3.1.0"
   resolved "https://registry.npmjs.org/detect-newline/-/detect-newline-3.1.0.tgz"
   integrity sha512-TLz+x/vEXm/Y7P7wn1EJFNLxYpUD4TgMosxY6fAVJUnJMbupHBOncxyWUG9OpTaH9EBD7uFI5LfEgmMOc54DsA==
@@ -3801,13 +3796,6 @@ end-of-stream@^1.1.0, end-of-stream@^1.4.1:
   integrity sha512-+uw1inIHVPQoaVuHzRyXd21icM+cnt4CzD5rW+NC1wjOUSTOs+Te7FOv7AhN7vS9x/oIyhLP5PR1H+phQAHu5Q==
   dependencies:
     once "^1.4.0"
-
-ends-with-string@^1.0.0:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/ends-with-string/-/ends-with-string-1.0.1.tgz#ce76999307ebef92d039e2cb895c22f0677540ec"
-  integrity sha512-TQg80EKJsnNfH9H/5HpAXKJP7YMYFkoUeS9ayMY60zwNoiNecv8D0+a9cycqdM8rhj/hfBqJb+9uLMsYP8d/Bw==
-  dependencies:
-    char-to-string "^1.0.0"
 
 enhanced-resolve@^5.9.2:
   version "5.12.0"
@@ -4589,11 +4577,6 @@ file-entry-cache@^6.0.1:
   integrity sha512-7Gps/XWymbLk2QLYK4NzpMOrYjMhdIxXuIvy2QBsLE6ljuodKvdkWs/cpyJJ3CVIVpH0Oi1Hvg1ovbMzLdFBBg==
   dependencies:
     flat-cache "^3.0.4"
-
-file-exists-safe@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/file-exists-safe/-/file-exists-safe-1.1.0.tgz#db73e875853d47a371f1f3cbec9e6b321e9096df"
-  integrity sha512-F0gcLPWcrLnYxlU46sf0UdgDsVaYCDyVVVsT1fpfUJ726R+GmS220+6LCPT1xbU8r6lCrwlG1gnKLF7slnObQw==
 
 fill-range@^7.0.1:
   version "7.0.1"
@@ -7067,16 +7050,6 @@ merge-descriptors@1.0.1:
   resolved "https://registry.npmjs.org/merge-descriptors/-/merge-descriptors-1.0.1.tgz"
   integrity sha512-cCi6g3/Zr1iqQi6ySbseM1Xvooa98N0w31jzUYrXPX2xqObmFGHJ0tQ5u74H3mVh7wLouTseZyYIq39g8cNp1w==
 
-merge-json-file@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/merge-json-file/-/merge-json-file-1.0.1.tgz#dfbc216e6b61e73648260efc1926afcd4ffae02b"
-  integrity sha512-n68QJgDHQkydX9gwSJWIkydWr2cgb3NfUGrzsylSq9phIseg3/Zj1Mbf+fgy18OCJ3lkMnOGjVm37P4nvvP++Q==
-  dependencies:
-    deepmerge "^4.2.2"
-    read-json-safe "^2.0.2"
-    types-json "^1.2.2"
-    write-json-safe "^2.0.1"
-
 merge-stream@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npmjs.org/merge-stream/-/merge-stream-2.0.0.tgz"
@@ -8014,13 +7987,6 @@ parse-entities@^4.0.0:
     is-decimal "^2.0.0"
     is-hexadecimal "^2.0.0"
 
-parse-json-object@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/parse-json-object/-/parse-json-object-2.0.1.tgz#a441bd8c36d2c33a69516286e7e4138a23607ee0"
-  integrity sha512-/oF7PUUBjCqHmMEE6xIQeX5ZokQ9+miudACzPt4KBU2qi6CxZYPdisPXx4ad7wpZJYi2ZpcW2PacLTU3De3ebw==
-  dependencies:
-    types-json "^1.2.0"
-
 parse-json@^4.0.0:
   version "4.0.0"
   resolved "https://registry.npmjs.org/parse-json/-/parse-json-4.0.0.tgz"
@@ -8159,17 +8125,17 @@ pkg-dir@^4.2.0:
   dependencies:
     find-up "^4.0.0"
 
-playwright-core@1.29.0:
-  version "1.29.0"
-  resolved "https://registry.npmjs.org/playwright-core/-/playwright-core-1.29.0.tgz"
-  integrity sha512-pboOm1m0RD6z1GtwAbEH60PYRfF87vKdzOSRw2RyO0Y0a7utrMyWN2Au1ojGvQr4umuBMODkKTv607YIRypDSQ==
+playwright-core@1.29.2:
+  version "1.29.2"
+  resolved "https://registry.yarnpkg.com/playwright-core/-/playwright-core-1.29.2.tgz#2e8347e7e8522409f22b244e600e703b64022406"
+  integrity sha512-94QXm4PMgFoHAhlCuoWyaBYKb92yOcGVHdQLoxQ7Wjlc7Flg4aC/jbFW7xMR52OfXMVkWicue4WXE7QEegbIRA==
 
-playwright@^1.27.1:
-  version "1.29.0"
-  resolved "https://registry.npmjs.org/playwright/-/playwright-1.29.0.tgz"
-  integrity sha512-vtXgX3FPNcAJq1QoIVCvmiHHKOLVTZkSYEo60n+EnX5MrNznAJzGquxT8c2sv+BG3CDyLeKm351e491HnF7yjw==
+playwright@^1.29.2:
+  version "1.29.2"
+  resolved "https://registry.yarnpkg.com/playwright/-/playwright-1.29.2.tgz#d6a0a3e8e44f023f7956ed19ffa8af915a042769"
+  integrity sha512-hKBYJUtdmYzcjdhYDkP9WGtORwwZBBKAW8+Lz7sr0ZMxtJr04ASXVzH5eBWtDkdb0c3LLFsehfPBTRfvlfKJOA==
   dependencies:
-    playwright-core "1.29.0"
+    playwright-core "1.29.2"
 
 popmotion@11.0.5:
   version "11.0.5"
@@ -8663,19 +8629,6 @@ react@18.1.0:
   dependencies:
     loose-envify "^1.1.0"
 
-read-file-safe@^1.0.9:
-  version "1.0.10"
-  resolved "https://registry.yarnpkg.com/read-file-safe/-/read-file-safe-1.0.10.tgz#9ac9118f12cb122614612211f90dad9daf732e39"
-  integrity sha512-qW25fd2uMX3dV6Ui/R0jYK1MhTpjx8FO/VHaHTXzwWsGnkNwLRcqYfCXd9qDM+NZ273DPUvP2RaimYuLSu1K/g==
-
-read-json-safe@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/read-json-safe/-/read-json-safe-2.0.2.tgz#747109960bad6de251056530d78b7a7482e70b16"
-  integrity sha512-8YIzUwt++g+w5t495q+AIYSOMHgVs3elDf+WJC0XEBs+Zo/1l8vNn2Ha1evKdYY3J6DhjiOZdVyBqkrFIaD20Q==
-  dependencies:
-    parse-json-object "^2.0.1"
-    read-file-safe "^1.0.9"
-
 read-pkg-up@^7.0.1:
   version "7.0.1"
   resolved "https://registry.npmjs.org/read-pkg-up/-/read-pkg-up-7.0.1.tgz"
@@ -8905,11 +8858,6 @@ remove-accents@0.4.2:
   version "0.4.2"
   resolved "https://registry.npmjs.org/remove-accents/-/remove-accents-0.4.2.tgz"
   integrity sha512-7pXIJqJOq5tFgG1A2Zxti3Ht8jJF337m4sowbuHsW30ZnkQFnDzy9qBNhgzX8ZLW4+UBcXiiR7SwR6pokHsxiA==
-
-remove-file-safe@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/remove-file-safe/-/remove-file-safe-1.0.1.tgz#550c1ec9c59fc115eb51de097a0052ef14b07061"
-  integrity sha512-YzBF0IfrPG9PMGCZsQjMNeIyi9+PPYLDHTcU+bDhgZhfaO6WFpA75+kB5eEkg9C3Puomo6Y50Ll8sCem2TiBdA==
 
 require-directory@^2.1.1:
   version "2.1.1"
@@ -9538,13 +9486,6 @@ stringify-entities@^4.0.0, stringify-entities@^4.0.2:
     character-entities-html4 "^2.0.0"
     character-entities-legacy "^3.0.0"
 
-stringify-json-object@^1.0.7:
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/stringify-json-object/-/stringify-json-object-1.0.7.tgz#7c5592c0c85aa247d104c3a27f5e70c67ce22ca6"
-  integrity sha512-swTYj+6RL1e4a6whybHPSw+/7X54fyEKbK/fK6uL81PMHohHawfpZDwtFU49vw/Mey6j19m9emN1YA2VE4aCog==
-  dependencies:
-    types-json "^1.2.2"
-
 strip-ansi@^3.0.0:
   version "3.0.1"
   resolved "https://registry.npmjs.org/strip-ansi/-/strip-ansi-3.0.1.tgz"
@@ -9860,14 +9801,6 @@ terminal-link@^2.0.0:
     ansi-escapes "^4.2.1"
     supports-hyperlinks "^2.0.0"
 
-terminating-newline@^1.2.4:
-  version "1.2.4"
-  resolved "https://registry.yarnpkg.com/terminating-newline/-/terminating-newline-1.2.4.tgz#9dc00874648ba6c7300b6c50801fb6eca613ead1"
-  integrity sha512-zJ7ECSI+Ackgbck4h0n8tUg5Q/3vRpVV3T7ITb9w1NY6ezrA0oY0LTDEu1m3hstev7Ok4ZssS+UkL/PIXMz9vQ==
-  dependencies:
-    detect-newline "^3.1.0"
-    ends-with-string "^1.0.0"
-
 terser-webpack-plugin@^5.1.3:
   version "5.3.6"
   resolved "https://registry.npmjs.org/terser-webpack-plugin/-/terser-webpack-plugin-5.3.6.tgz"
@@ -10133,11 +10066,6 @@ typedarray-to-buffer@^3.1.5:
   integrity sha512-zdu8XMNEDepKKR+XYOXAVPtWui0ly0NtohUscw+UmaHiAWT8hrV1rr//H6V+0DvJ3OQ19S979M0laLfX8rm82Q==
   dependencies:
     is-typedarray "^1.0.0"
-
-types-json@^1.2.0, types-json@^1.2.2:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/types-json/-/types-json-1.2.2.tgz#91ebe6de59e741ab38a98b071708a29494cedfe6"
-  integrity sha512-VfVLISHypS7ayIHvhacOESOTib4Sm4mAhnsgR8fzQdGp89YoBwMqvGmqENjtYehUQzgclT+7NafpEXkK/MHKwA==
 
 typescript@4.6.4:
   version "4.6.4"
@@ -11004,11 +10932,6 @@ wrappy@1:
   resolved "https://registry.npmjs.org/wrappy/-/wrappy-1.0.2.tgz"
   integrity sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==
 
-write-dir-safe@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/write-dir-safe/-/write-dir-safe-1.0.1.tgz#db5695a76f33f7a1b28ed48d370bab099d34980a"
-  integrity sha512-wnY2yzWbfawmHs6sbAOsqLf+yEPS3I+9/kRrL9zAESb56KQa7gVG8ofxtZcdIAqsb47lHPXqEMOhzXoFJkE9Pw==
-
 write-file-atomic@^3.0.0:
   version "3.0.3"
   resolved "https://registry.npmjs.org/write-file-atomic/-/write-file-atomic-3.0.3.tgz"
@@ -11026,24 +10949,6 @@ write-file-atomic@^4.0.1:
   dependencies:
     imurmurhash "^0.1.4"
     signal-exit "^3.0.7"
-
-write-file-safe@^1.3.1:
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/write-file-safe/-/write-file-safe-1.3.1.tgz#5a1c641ea7a4dfa3f604671beae8829521015eeb"
-  integrity sha512-9WC/i6b/WDNEtFFftvcnOwBD9QHmofAcURq1KsSxGsAHHTrQNbuwXApE11UcLuX0d49SU7W6CaV9Nqgaive8tw==
-  dependencies:
-    file-exists-safe "^1.1.0"
-    remove-file-safe "^1.0.1"
-    terminating-newline "^1.2.4"
-    write-dir-safe "^1.0.1"
-
-write-json-safe@^2.0.1:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/write-json-safe/-/write-json-safe-2.1.0.tgz#b79f27f30e3c408a5d7d1b09c3237d6b4a0607d0"
-  integrity sha512-YORxvFx9nGlVcyhIHhUoApjeaf3Dom5KmnfQVOvDclfiS6yYhXhFXEmycksyhDlzzjKaLIwRUZDYyTg0jYlaRQ==
-  dependencies:
-    stringify-json-object "^1.0.7"
-    write-file-safe "^1.3.1"
 
 ws@^7.4.6:
   version "7.5.9"

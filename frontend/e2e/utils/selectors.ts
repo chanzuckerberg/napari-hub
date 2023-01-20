@@ -21,3 +21,8 @@ export const getByDataLabel = (label: string): string =>
   `[data-label="${label}"]`;
 export const getMetadata = (attribute: string): string =>
   `[data-testid="searchResultMetadata"] >> ${attribute}`;
+
+export const getBySortType = (sortBy: string): string =>
+  `[data-sort-type="${sortBy}"]`;
+export const getFilterButton = (filterKey: string): string =>
+  `[data-testid=pluginFilter][data-filter=${filterKey}]:visible`;

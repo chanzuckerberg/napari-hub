@@ -24,6 +24,7 @@ module.exports = {
     '@typescript-eslint/no-unsafe-call': 'off',
     '@typescript-eslint/no-unsafe-assignment': 'off',
     'playwright/no-focused-test': 'off',
+    'playwright/no-skipped-test': 'off',
     '@typescript-eslint/no-use-before-define': 'off',
   },
 };

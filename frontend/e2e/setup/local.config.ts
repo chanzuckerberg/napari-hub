@@ -20,14 +20,6 @@ const config: PlaywrightTestConfig = {
         outputFile: '../report/test-results.json',
       },
     ],
-    [
-      'html',
-      {
-        open: 'on-failure',
-        host: 'localhost',
-        port: 9223,
-      },
-    ],
   ],
 
   projects: [
@@ -45,7 +37,7 @@ const config: PlaywrightTestConfig = {
     actionTimeout: 0,
     baseURL: 'http://localhost:8080',
     screenshot: 'only-on-failure',
-    trace: 'on-first-retry',
+    trace: 'retain-on-failure',
     video: 'on',
   },
 };
