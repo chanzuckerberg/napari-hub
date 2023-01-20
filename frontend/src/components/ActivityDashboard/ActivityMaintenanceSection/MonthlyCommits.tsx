@@ -5,7 +5,8 @@ import { usePluginState } from '@/context/plugin';
 import { usePluginMetrics } from '@/hooks';
 import { DataPoint } from '@/types/stats';
 
-export function MonthlyInstalls() {
+// TODO Replace with actual requests to the backend
+export function MonthlyCommits() {
   const { plugin } = usePluginState();
   const { data: metrics, isLoading } = usePluginMetrics(plugin?.name);
 
@@ -21,12 +22,14 @@ export function MonthlyInstalls() {
   return (
     <MonthlyStatsChart
       dataPoints={dataPoints}
-      dateLineI18nKey="activity:monthlyInstalls.publicRelease"
+      dateLineI18nKey="activity:monthlyCommits.created"
+      dateLineLabelYOffset={-10}
       emptyI18nKey="activity:noData.monthly"
+      fill="#80d1ff"
       isLoading={isLoading}
       startDate={plugin?.first_released}
-      titleI18nKey="activity:monthlyInstalls.title"
-      yLabelI18nKey="activity:monthlyInstalls.yLabel"
+      titleI18nKey="activity:monthlyCommits.title"
+      yLabelI18nKey="activity:monthlyCommits.yLabel"
     />
   );
 }

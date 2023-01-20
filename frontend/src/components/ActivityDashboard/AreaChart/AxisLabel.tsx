@@ -25,11 +25,10 @@ export function AxisLabel(props: VictoryLabelProps) {
     <VictoryLabel
       {...props}
       style={{
+        fontWeight: 400,
         ...style,
-
         fontSize,
         fontFamily: 'Barlow',
-        fontWeight: 400,
       }}
     />
   );
