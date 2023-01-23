@@ -69,32 +69,25 @@ export async function filterPlugins(
 
     // select filter dropdown options
     await page.click(selectors.filters.getFilterButton(filterNames[filterKey]));
-    // await page.waitForSelector(
-    //   `[data-testid="pluginFilter"][data-filter="${filterNames[filterKey]}"]:visible`,
-    // );
-    // await page
-    //   .locator(
-    //     `[data-testid="pluginFilter"][data-filter="${filterNames[filterKey]}"]:visible`,
-    //   )
-    //   .click();
     await page.screenshot({ path: 'test1.png' });
 
-    // console.log(filterOptions);
-    // await page
-    //   .locator('[role="option"]')
-    //   .locator(getByText(filterOptions[0]))
-    //   .click();
-    // for (const option of filterOptions) {
-    //   await page.screenshot({ path: 'test2.png' });
-    //   await page
-    //     .getByRole('option', { name: `unchecked checkbox ${option}` })
-    //     .locator('svg')
-    //     .click();
-    //   console.log(option);
-    // }
-    // await page.screenshot({ path: 'test3.png' });
+    await page
+      .getByRole('option', { name: `unchecked checkbox 2D` })
+      .locator('svg')
+      .click();
+
+    await page.screenshot({ path: 'test2.png' });
+    for (let i = 0; i < filterOptions.length; i += 1) {
+      const option = filterOptions[i];
+      await page
+        .getByRole('option', { name: `unchecked checkbox ${option}` })
+        .locator('svg')
+        .click();
+      console.log(option);
+    }
+    await page.screenshot({ path: 'test3.png' });
     // close the filter dropdown
-    //await page.getByRole('button', { name: filterNames[filterKey] }).click();
+    await page.click(selectors.filters.getFilterButton(filterNames[filterKey]));
   });
 }
 

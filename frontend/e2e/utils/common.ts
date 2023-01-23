@@ -13,8 +13,9 @@ if (ENV === 'staging' || ENV === 'prod') {
  * @param fileName
  * @returns JSON object
  */
-export function getFixture(fileName: string) {
-  return fs.readFileSync(fileName);
+export function getFixture(fileName?: string) {
+  const file = fileName !== undefined ? fileName : pluginFixtureFile;
+  return fs.readFileSync(file);
 }
 
 export function searchPluginFixture(pluginFilter: PluginFilter) {
