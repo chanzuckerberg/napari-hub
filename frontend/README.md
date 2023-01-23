@@ -105,3 +105,5 @@ yarn plop component
 - [Project Structure](./docs/project-structure.md)
 - [Testing](./docs/testing.md)
 - [Tooling](./docs/tooling.md)
+
+# force build
