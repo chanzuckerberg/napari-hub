@@ -16,6 +16,7 @@ import {
 import {
   getByClassName,
   getByHasText,
+  getByLabel,
   getByTestID,
   getByText,
   getMetadata,
@@ -36,7 +37,7 @@ const sortOrders: Record<string, string> = {
 
 const filterNames: Record<string, string> = {
   authors: 'Authors',
-  supported_data: 'Supported data',
+  supported_data: 'supportedData',
   operating_system: 'Operating system',
   reader_file_extensions: 'Open extension',
   writer_file_extensions: 'Save extension',
@@ -66,21 +67,32 @@ export async function filterPlugins(
     const filterOptions: string[] =
       pluginFilter[filterKey as keyof PluginFilter] || [];
 
-    // click the filter dropdown
-    // await page.locator(getByText(filterNames[filterKey])).nth(1).click();
-
+    // select filter dropdown options
+    await page.click(selectors.filters.getFilterButton(filterNames[filterKey]));
+    // await page.waitForSelector(
+    //   `[data-testid="pluginFilter"][data-filter="${filterNames[filterKey]}"]:visible`,
+    // );
+    // await page
+    //   .locator(
+    //     `[data-testid="pluginFilter"][data-filter="${filterNames[filterKey]}"]:visible`,
+    //   )
+    //   .click();
     await page.screenshot({ path: 'test1.png' });
 
-    console.log(filterOptions);
-    for (const option of filterOptions) {
-      await page.screenshot({ path: 'test2.png' });
-      await page
-        .getByRole('option', { name: `unchecked checkbox ${option}` })
-        .locator('svg')
-        .click();
-      console.log(option);
-    }
-    await page.screenshot({ path: 'test3.png' });
+    // console.log(filterOptions);
+    // await page
+    //   .locator('[role="option"]')
+    //   .locator(getByText(filterOptions[0]))
+    //   .click();
+    // for (const option of filterOptions) {
+    //   await page.screenshot({ path: 'test2.png' });
+    //   await page
+    //     .getByRole('option', { name: `unchecked checkbox ${option}` })
+    //     .locator('svg')
+    //     .click();
+    //   console.log(option);
+    // }
+    // await page.screenshot({ path: 'test3.png' });
     // close the filter dropdown
     //await page.getByRole('button', { name: filterNames[filterKey] }).click();
   });

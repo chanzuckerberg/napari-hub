@@ -41,7 +41,7 @@ const config: PlaywrightTestConfig = {
     },
   ],
   testDir: '../tests',
-  timeout: 1000 * 1000,
+  timeout: 30 * 1000,
   use: {
     actionTimeout: 0,
     baseURL: 'https://www.napari-hub.org/',
