@@ -10,7 +10,7 @@ export const getByPlaceholder = (placeholder: string): string =>
   `[placeholder="${placeholder}"]`;
 export const getByDataName = (name: string): string => `[data-name="${name}"]`;
 export const getByHasText = (type: string, text: string): string =>
-  `${type}has-text("${text}")`;
+  `${type}:has-text("${text}")`;
 export const getByTypeAndName = (type: string, name: string): string =>
   `${type}[name="${name}"])`;
 export const getByRole = (role: string): string => `[role="${role}"]`;
@@ -25,4 +25,4 @@ export const getMetadata = (attribute: string): string =>
 export const getBySortType = (sortBy: string): string =>
   `[data-sort-type="${sortBy}"]`;
 export const getFilterButton = (filterKey: string): string =>
-  `[data-testid=pluginFilter][data-filter=${filterKey}]:visible`;
+  `[data-filter="${filterKey}"]`;

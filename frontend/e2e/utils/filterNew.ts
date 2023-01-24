@@ -16,7 +16,6 @@ import {
 import {
   getByClassName,
   getByHasText,
-  getByLabel,
   getByTestID,
   getByText,
   getMetadata,
@@ -35,22 +34,9 @@ const sortOrders: Record<string, string> = {
   newest: 'Newest',
 };
 
-const filterNames: Record<string, string> = {
-  authors: 'Authors',
-  supported_data: 'supportedData',
-  operating_system: 'Operating system',
-  reader_file_extensions: 'Open extension',
-  writer_file_extensions: 'Save extension',
-  license: 'License',
-  plugin_types: 'Plugin type',
-  python_version: 'Python versions',
-  image_modality: 'Image modality',
-  workflow_step: 'Workflow step',
-};
 export async function filterPlugins(
   page: Page,
   pluginFilter: PluginFilter,
-  filterTypes: Array<string>,
   sortBy = 'recentlyUpdated',
   width?: number,
 ) {
@@ -60,35 +46,25 @@ export async function filterPlugins(
   }
 
   // on smaller screens the filter types are collapsed, so first click the accordion
-  await openAccordion(page, filterTypes, width);
+  await openAccordion(page, pluginFilter.category, width);
 
-  Object.keys(pluginFilter).forEach(async (filterKey) => {
-    // get option values
-    const filterOptions: string[] =
-      pluginFilter[filterKey as keyof PluginFilter] || [];
+  // select filter dropdown options
+  await page.getByRole('button', { name: pluginFilter.label }).click();
 
-    // select filter dropdown options
-    await page.click(selectors.filters.getFilterButton(filterNames[filterKey]));
-    await page.screenshot({ path: 'test1.png' });
+  await page.screenshot({ path: 'test1.png' });
 
+  // get option values
+  const filterOptions: string[] = pluginFilter.values || [];
+  for (let i = 0; i < filterOptions.length; i += 1) {
+    const option = filterOptions[i];
     await page
-      .getByRole('option', { name: `unchecked checkbox 2D` })
+      .getByRole('option', { name: `unchecked checkbox ${option}` })
       .locator('svg')
       .click();
-
-    await page.screenshot({ path: 'test2.png' });
-    for (let i = 0; i < filterOptions.length; i += 1) {
-      const option = filterOptions[i];
-      await page
-        .getByRole('option', { name: `unchecked checkbox ${option}` })
-        .locator('svg')
-        .click();
-      console.log(option);
-    }
-    await page.screenshot({ path: 'test3.png' });
-    // close the filter dropdown
-    await page.click(selectors.filters.getFilterButton(filterNames[filterKey]));
-  });
+  }
+  await page.screenshot({ path: 'test2.png' });
+  // close the filter dropdown
+  await page.getByRole('button', { name: pluginFilter.label }).click();
 }
 
 export async function getOptions(page: Page, labels: string[]) {
@@ -150,13 +126,13 @@ export async function verifyFilterResults(
   const expectedTotalPages = fixture.length / totalPerPage + 1;
 
   // Check that filters are enabled
-  Object.keys(pluginFilter).forEach(async (filterKey) => {
-    const filterOptions = pluginFilter[filterKey as keyof PluginFilter];
-    filterOptions?.forEach(async (option) => {
-      expect(
-        await page.locator(getByText(option)).getAttribute('aria-selected'),
-      ).toBe(true);
-    });
+  const filterOptions = pluginFilter.values;
+  filterOptions?.forEach(async (option) => {
+    expect(
+      await page
+        .getByRole('option', { name: option })
+        .getAttribute('aria-selected'),
+    ).toBe(true);
   });
 
   for (let l = 1; l <= expectedTotalPages; l++) {
@@ -170,7 +146,11 @@ export async function verifyFilterResults(
 
     // verify url
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-    expect(page.url()).toContain(`sort=${sortBy}&page=${currentPageValue}`);
+    expect(page.url()).toContain(`page=${currentPageValue}`);
+    expect(page.url()).toContain(`sort=${sortBy}`);
+    filterOptions?.forEach(async (option) => {
+      expect(page.url()).toContain(`${pluginFilter.name}=${option}`);
+    });
 
     // verify results counts
     const resultCountText =

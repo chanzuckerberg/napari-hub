@@ -8,20 +8,22 @@ test.describe('Plugin filter tests', () => {
     await page.goto(`${process.env.BASEURL as string}`);
   });
   test.only('should filter by supported data', async ({ page, viewport }) => {
+    // sort by
     const sortBy = 'recentlyUpdated';
-    const filterBy = {
-      supported_data: ['2D', '3D'],
-    };
-    const filterCategory = ['Filter by category'];
-    const fixtureData = searchPluginFixture(filterBy);
-    await filterPlugins(
-      page,
-      filterBy,
-      filterCategory,
-      sortBy,
-      viewport?.width,
-    );
 
-    //await verifyFilterResults(page, filterBy, fixtureData, sortBy);
+    // filter by
+    const filterBy = {
+      label: 'Supported data',
+      name: 'supportedData',
+      values: ['2D', '3D'],
+      category: ['Filter by category'],
+      key: 'supported_data',
+    };
+
+    // prepare fixture data to compare against
+    const fixtureData = searchPluginFixture(filterBy);
+    await filterPlugins(page, filterBy, sortBy, viewport?.width);
+    console.log(fixtureData);
+    await verifyFilterResults(page, filterBy, fixtureData, sortBy);
   });
 });
