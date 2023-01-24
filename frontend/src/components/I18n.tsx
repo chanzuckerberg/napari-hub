@@ -50,7 +50,7 @@ export function I18n<N extends I18nNamespace>({
         ),
 
         externalLink: (
-          <Link className="underline" newTab {...externalLinkProps}>
+          <Link className="underline" {...externalLinkProps}>
             tmp
           </Link>
         ),

@@ -48,7 +48,6 @@ function FooterLinks() {
           )}
           key={item.link}
           href={item.link}
-          newTab={item.newTab}
         >
           {item.icon && <item.icon className="inline-block mr-0.5 h-3 w-3" />}
           {item.title}
@@ -117,7 +116,7 @@ export function Footer() {
           'screen-1150:row-start-1 screen-1150:col-start-3',
         )}
       >
-        <Link href="https://napari.org" className="mr-sds-s" newTab>
+        <Link href="https://napari.org" className="mr-sds-s">
           <NapariLogo
             className="w-[1.625rem] h-[1.625rem] screen-495:w-[2.375rem] screen-495:h-[2.375rem]"
             alt={t('footer:alt.goToNapari')}
@@ -126,7 +125,7 @@ export function Footer() {
 
         <div className="border-r-[1px] border-black" />
 
-        <Link href="https://chanzuckerberg.com" className="ml-sds-xxs" newTab>
+        <Link href="https://chanzuckerberg.com" className="ml-sds-xxs">
           <CZI
             className="w-[3.3125rem] h-[1.625rem] screen-495:w-[4.625rem] screen-495:h-[2.375rem]"
             variant="large"

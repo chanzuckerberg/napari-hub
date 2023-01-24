@@ -1,4 +1,5 @@
 import os
+import re
 import requests
 from typing import List, Dict, Optional
 from bs4 import BeautifulSoup
@@ -13,6 +14,17 @@ pypi_field_default_values = {
     "classifiers": [],
     "requires_dist": []
 }
+# list of valid layers
+VALID_LAYERS = [
+    'image',
+    'labels',
+    'points',
+    'shapes',
+    'surface',
+    'tracks',
+    'vectors',
+]
+VALID_LAYER_REGEX = rf"({'|'.join([layer_type for layer_type in VALID_LAYERS])}).*"
 
 
 def get_attribute(obj: dict, path: list):
@@ -171,8 +183,9 @@ def parse_manifest(manifest: Optional[dict] = None):
                     layer_types = writer.get('layer_types', [])
                     for ext in filename_extensions:
                         writer_file_extensions.add(ext)
-                    for ext in layer_types:
-                        writer_save_layers.add(ext)
+                    for layer_type in layer_types:
+                        if match := re.match(VALID_LAYER_REGEX, layer_type):
+                            writer_save_layers.add(match.groups()[0])
                 manifest_attributes['writer_file_extensions'] = list(writer_file_extensions)
                 manifest_attributes['writer_save_layers'] = list(writer_save_layers)
         if 'themes' in manifest_contributions and manifest_contributions['themes']:
