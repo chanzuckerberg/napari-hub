@@ -88,7 +88,7 @@ class TestActivityDashboard(unittest.TestCase):
             },
             'maintenance': {
                 'stats': {
-                    'latest_commit': datetime.strptime(latest_commit, "%Y-%m-%d %H:%M:%S").strftime("%s")
+                    'latest_commit': int(datetime.strptime(latest_commit, "%Y-%m-%d %H:%M:%S").strftime("%s")) * 1000
                 }
             }
         }
