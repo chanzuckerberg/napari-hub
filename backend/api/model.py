@@ -16,6 +16,7 @@ from api.zulip import notify_new_packages
 import boto3
 import snowflake.connector as sc
 from datetime import date
+from dateutil import parser
 from dateutil.relativedelta import relativedelta
 
 index_subset = {'name', 'summary', 'description_text', 'description_content_type',
@@ -508,11 +509,11 @@ def get_metrics_for_plugin(plugin: str, limit: str) -> Dict:
     timeline = [] if _is_not_valid_limit(limit) else _process_for_timeline(data, int(limit))
 
     usage_stats = {
-        'totalInstalls': install_stats.get('totalInstalls', 0),
-        'installsInLast30Days': get_recent_activity_data().get(plugin, 0)
+        'total_installs': install_stats.get('totalInstalls', 0),
+        'installs_in_last_30_days': get_recent_activity_data().get(plugin, 0)
     }
     maintenance_stats = {
-        'latest_commit': get_latest_commit(plugin)
+        'latest_commit': parser.parse(get_latest_commit(plugin)).timestamp()
     }
     usage_data = {
         'timeline': timeline,

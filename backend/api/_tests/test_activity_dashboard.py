@@ -82,8 +82,8 @@ class TestActivityDashboard(unittest.TestCase):
             'usage': {
                 'timeline': timeline if timeline else [],
                 'stats': {
-                    'totalInstalls': total_installs,
-                    'installsInLast30Days': installs_in_last_30_days
+                    'total_installs': total_installs,
+                    'installs_in_last_30_days': installs_in_last_30_days
                 }
             },
             'maintenance': {
