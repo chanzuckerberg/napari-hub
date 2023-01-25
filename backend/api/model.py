@@ -9,7 +9,7 @@ from collections import defaultdict
 import pandas as pd
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
-from api.s3 import get_cache, cache, write_data, get_install_timeline_data, get_latest_commits, get_recent_activity_data
+from api.s3 import get_cache, cache, write_data, get_install_timeline_data, get_latest_commit, get_recent_activity_data
 from utils.utils import render_description, send_alert, get_attribute, get_category_mapping, parse_manifest
 from utils.datadog import report_metrics
 from api.zulip import notify_new_packages
@@ -484,13 +484,20 @@ def _update_latest_commits():
             repo_type = 'plugin'
         GROUP BY 1
     """
+    index_json = get_index()
+    repo_to_plugin_dict = {}
+    for plugin_obj in index_json:
+        if plugin_obj['code_repository'] is not None:
+            repo_to_plugin_dict[plugin_obj['code_repository'].replace('https://github.com/', '')] = plugin_obj['name']
     # the latest commit is fetched as a tuple of the format (repo, timestamp)
     cursor_list = _execute_query(query, "GITHUB")
     data = {}
     for cursor in cursor_list:
         for row in cursor:
-            data[print(row[0].split('/')[1])] = pd.to_datetime(row[1]).strftime(format="%Y-%m-%d %H:%M:%S")
-
+            repo = row[0]
+            if repo in repo_to_plugin_dict:
+                plugin = repo_to_plugin_dict[repo]
+                data[plugin] = pd.to_datetime(row[1]).strftime(format="%Y-%m-%d %H:%M:%S")
     write_data(json.dumps(data), "activity_dashboard_data/latest_commits.json")
 
 
@@ -499,16 +506,19 @@ def get_metrics_for_plugin(plugin: str, limit: str) -> Dict:
     data = get_install_timeline_data(plugin)
     install_stats = _process_for_stats(data)
     timeline = [] if _is_not_valid_limit(limit) else _process_for_timeline(data, int(limit))
-    complete_stats = {
+
+    usage_stats = {
         'totalInstalls': install_stats.get('totalInstalls', 0),
         'installsInLast30Days': get_recent_activity_data().get(plugin, 0)
     }
-    latest_commits = get_latest_commits()
+    maintenance_stats = {
+        'latest_commit': get_latest_commit(plugin)
+    }
     usage_data = {
         'timeline': timeline,
-        'stats': complete_stats,
+        'stats': usage_stats,
     }
     maintenance_data = {
-        'latest commit': latest_commits[plugin],
+        'stats': maintenance_stats,
     }
     return {'usage': usage_data, 'maintenance': maintenance_data}
