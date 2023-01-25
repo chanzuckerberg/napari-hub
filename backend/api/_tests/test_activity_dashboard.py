@@ -13,7 +13,7 @@ EMPTY_DF = pd.DataFrame(columns=['MONTH', 'NUM_DOWNLOADS_BY_MONTH'])
 PLUGIN_NAME = 'StrIng-1'
 PLUGIN_NAME_CLEAN = 'string-1'
 MOCK_PLUGIN_RECENT_INSTALLS = {PLUGIN_NAME_CLEAN: 25, 'foo': 10, 'bar': 30}
-MOCK_PLUGIN_LATEST_COMMIT = "2023-01-01 00:00:00"
+MOCK_PLUGIN_LATEST_COMMIT = 1672531200
 
 
 class TestActivityDashboard(unittest.TestCase):
@@ -46,7 +46,7 @@ class TestActivityDashboard(unittest.TestCase):
         expected = self._generate_expected_metrics(
             total_installs=sum(MOCK_INSTALLS),
             installs_in_last_30_days=25,
-            latest_commit="2023-01-01 00:00:00",
+            latest_commit=MOCK_PLUGIN_LATEST_COMMIT,
         )
         self._verify_results('0', expected, mock_get_install_timeline_data, mock_get_recent_activity_data, mock_get_latest_commit)
 
@@ -55,7 +55,7 @@ class TestActivityDashboard(unittest.TestCase):
     @patch.object(model, 'get_install_timeline_data', return_value=MOCK_DF.copy())
     def test_get_metrics_nonempty_invalid_limit(self, mock_get_install_timeline_data, mock_get_recent_activity_data, mock_get_latest_commit):
         expected = self._generate_expected_metrics(
-            total_installs=sum(MOCK_INSTALLS), installs_in_last_30_days=25, latest_commit="2023-01-01 00:00:00",
+            total_installs=sum(MOCK_INSTALLS), installs_in_last_30_days=25, latest_commit=MOCK_PLUGIN_LATEST_COMMIT,
         )
         self._verify_results('foo', expected, mock_get_install_timeline_data, mock_get_recent_activity_data, mock_get_latest_commit)
 

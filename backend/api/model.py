@@ -513,7 +513,7 @@ def get_metrics_for_plugin(plugin: str, limit: str) -> Dict:
         'installs_in_last_30_days': get_recent_activity_data().get(plugin, 0)
     }
     maintenance_stats = {
-        'latest_commit': parser.parse(get_latest_commit(plugin)).timestamp()
+        'latest_commit': int(parser.parse(get_latest_commit(plugin)).timestamp())
     }
     usage_data = {
         'timeline': timeline,
