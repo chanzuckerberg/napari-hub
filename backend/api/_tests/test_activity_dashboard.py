@@ -13,12 +13,12 @@ EMPTY_DF = pd.DataFrame(columns=['MONTH', 'NUM_DOWNLOADS_BY_MONTH'])
 PLUGIN_NAME = 'StrIng-1'
 PLUGIN_NAME_CLEAN = 'string-1'
 MOCK_PLUGIN_RECENT_INSTALLS = {PLUGIN_NAME_CLEAN: 25, 'foo': 10, 'bar': 30}
-MOCK_PLUGIN_LATEST_COMMIT = 1672531200
+MOCK_PLUGIN_LATEST_COMMIT = '2023-01-01 00:00:00'
 
 
 class TestActivityDashboard(unittest.TestCase):
 
-    @patch.object(model, 'get_latest_commit', return_value=None)
+    @patch.object(model, 'get_latest_commit', return_value=MOCK_PLUGIN_LATEST_COMMIT)
     @patch.object(model, 'get_recent_activity_data', return_value={})
     @patch.object(model, 'get_install_timeline_data', return_value=EMPTY_DF.copy())
     def test_get_metrics_empty(self, mock_get_install_timeline_data, mock_get_recent_activity_data, mock_get_latest_commit):
@@ -77,7 +77,7 @@ class TestActivityDashboard(unittest.TestCase):
         return [{timestamp_key: to_timestamp(i), installs_key: to_installs(i)} for i in range(start_range, 0)]
 
     @staticmethod
-    def _generate_expected_metrics(timeline=None, total_installs=0, installs_in_last_30_days=0, latest_commit=None):
+    def _generate_expected_metrics(timeline=None, total_installs=0, installs_in_last_30_days=0, latest_commit=MOCK_PLUGIN_LATEST_COMMIT):
         return {
             'usage': {
                 'timeline': timeline if timeline else [],
@@ -88,7 +88,7 @@ class TestActivityDashboard(unittest.TestCase):
             },
             'maintenance': {
                 'stats': {
-                    'latest_commit': latest_commit
+                    'latest_commit': datetime.strptime(latest_commit, "%Y-%m-%d %H:%M:%S").strftime("%s")
                 }
             }
         }
