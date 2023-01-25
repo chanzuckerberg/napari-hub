@@ -35,7 +35,7 @@ class TestActivityDashboard(unittest.TestCase):
             timeline=self._generate_expected_timeline(-3),
             total_installs=sum(MOCK_INSTALLS),
             installs_in_last_30_days=25,
-            latest_commit="2023-01-01 00:00:00",
+            latest_commit=MOCK_PLUGIN_LATEST_COMMIT,
         )
         self._verify_results('3', expected, mock_get_install_timeline_data, mock_get_recent_activity_data, mock_get_latest_commit)
 
