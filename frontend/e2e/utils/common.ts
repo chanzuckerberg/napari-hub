@@ -1,4 +1,5 @@
 import fs from 'fs';
+import _ from 'lodash';
 
 import { PluginFilter } from '../types/filter';
 
@@ -15,67 +16,72 @@ if (ENV === 'staging' || ENV === 'prod') {
  */
 export function getFixture(fileName?: string) {
   const file = fileName !== undefined ? fileName : pluginFixtureFile;
-  return fs.readFileSync(file);
+  const rawData = fs.readFileSync(file);
+  return JSON.parse(rawData as unknown as string);
 }
 
 export function searchPluginFixture(pluginFilter: PluginFilter) {
-  const results: any[] = [];
-  const fixtures = JSON.parse(
-    getFixture(pluginFixtureFile) as unknown as string,
-  );
-  //console.log(fixtures);
-  const filterValue = pluginFilter.values || '';
-  for (const plugin in fixtures) {
-    // plugin entry identified by the index
-    // const plugin = fixtures[index];
-    //console.log(plugin);
-    // value of plugin data identified by filter key, e.g. "authors"
-    let jsonValue = JSON.parse(plugin as string)[pluginFilter.key];
-    //console.log(pluginFilter.key);
+  const fixtures = getFixture('e2e/fixtures/staging.json');
 
-    if (pluginFilter.key === 'authors') {
-      // authors element is a array of JSON so we need to extract name attribute
-      const authorNames: string[] = [];
-      for (let i = 0; i < jsonValue.length; ++i) {
-        const author = JSON.parse(jsonValue[i] as string);
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-        authorNames.push(author.name);
-      }
-      jsonValue = authorNames;
-    }
-    if (pluginFilter.key === 'supported_data') {
-      jsonValue = plugin.category;
-      console.log(jsonValue);
-    }
-    if (pluginFilter.key === 'image_modality') {
-      // flatten array of arrays of image modality
-      jsonValue = plugin.category_hierarchy['Image modality'].flat(1);
-    }
-    if (pluginFilter.key === 'python_version') {
-      const versionArray: string[] = [];
-      // if filter criteria is 3.6, then we want to find 3.6, 3.7, 3.8 and inclusive 3.9
-      const maxVersion = 3.9;
-      for (let i = 0; i < jsonValue.length; ++i) {
-        let filterPythonVersion = Number(jsonValue[i]);
-        while (filterPythonVersion <= maxVersion) {
-          // add version to list if not already exists
-          if (!versionArray.includes(jsonValue[i] as string)) {
-            versionArray.push(`>=${jsonValue[i] as string}`);
-          }
-          filterPythonVersion += 0.1;
-        }
-      }
-      jsonValue = versionArray;
-    }
-    // console.log(jsonValue);
-    // if the two arrays intersect, search criteria are met
-    const found = jsonValue.some((r: string) => filterValue.indexOf(r) >= 0);
-    if (found) {
-      results.push(fixtures[index]);
-    }
+  if (pluginFilter.key === 'authors') {
+    const { values } = pluginFilter;
+    const filtered = _.filter(fixtures, (item) => {
+      const result = _.intersectionBy(
+        _.map(JSON.parse(item as string).authors, (author) => author.name),
+        values,
+      );
+      return result.length !== 0;
+    });
+    return filtered;
   }
+  if (pluginFilter.key === 'supported_data') {
+    //const { values } = pluginFilter;
+    // searchResults.push(
+    //   // eslint-disable-next-line func-names
+    //   _.filter(fixtures, function (item) {
+    //     return _.includes(values, item.category['Supported data']);
+    //   }),
+    // );
+    // searchResults.push(
+    //   fixtures.filter((plugin: { category: { [x: string]: any[] } }) =>
+    //     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    //     plugin.category['Supported data'].filter((x) => values.includes(x)),
+    //   ),
+    // );
+  }
+  // if (pluginFilter.key === 'image_modality') {
+  //   // flatten array of arrays of image modality
+  //   fixtureValues = plugin.category_hierarchy['Image modality'].flat(1);
+  // }
+  // if (pluginFilter.key === 'python_version') {
+  //   const versionArray: string[] = [];
+  //   // if filter criteria is 3.6, then we want to find 3.6, 3.7, 3.8 and inclusive 3.9
+  //   const maxVersion = 3.9;
+  //   for (let i = 0; i < jsonValue.length; ++i) {
+  //     let filterPythonVersion = Number(jsonValue[i]);
+  //     while (filterPythonVersion <= maxVersion) {
+  //       // add version to list if not already exists
+  //       if (!versionArray.includes(jsonValue[i] as string)) {
+  //         versionArray.push(`>=${jsonValue[i] as string}`);
+  //       }
+  //       filterPythonVersion += 0.1;
+  //     }
+  //   }
+  //   fixtureValues = versionArray;
+  // }
+  // console.log(jsonValue);
+  // if the two arrays intersect, search criteria are met
+  // if (fixtureValues !== undefined) {
+  //   const found = fixtureValues.some(
+  //     (r: string) => filterValue.indexOf(r) >= 0,
+  //   );
+  //   if (found) {
+  //     results.push(plugin);
+  //   }
+  // }
+  //}
   // });
-  return results;
+  return null;
 }
 
 export async function sortFixture(data: any, sortBy: string) {

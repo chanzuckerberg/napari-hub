@@ -13,13 +13,12 @@ test.describe('Plugin filter tests', () => {
 
     // filter by
     const filterBy = {
-      label: 'Supported data',
-      name: 'supportedData',
-      values: ['2D', '3D'],
+      label: 'Authors',
+      name: 'authors',
+      values: ['Allen Institute for Cell Science'],
       category: ['Filter by category'],
-      key: 'supported_data',
+      key: 'authors',
     };
-
     // prepare fixture data to compare against
     const fixtureData = searchPluginFixture(filterBy);
     await filterPlugins(page, filterBy, sortBy, viewport?.width);
