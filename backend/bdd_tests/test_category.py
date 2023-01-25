@@ -1,22 +1,24 @@
-from behave import given, then
-from util_steps import valid_str
+from pytest_bdd import given, scenarios, then, parsers
+from test_utils import call_api, valid_str
+
+scenarios('category.feature')
 
 
 @given('we call categories api')
 def call_category_without_version(context):
-    context.execute_steps(f'given we call api /categories')
+    call_api(context, '/categories')
 
 
-@given('we call categories api for {category} with version {version}')
-def call_category_with_version(context, category, version):
-    context.category_name = category
-    context.execute_steps(f'given we call api /categories/{category}/versions/{version}')
+@given(parsers.parse('we call categories api for {category} with version {version}'))
+def call_category_with_version(category, version, context):
+    context['category_name'] = category
+    call_api(context, f'/categories/{category}/versions/{version}')
 
 
-@given('we call categories api for {category}')
+@given(parsers.parse('we call categories api for {category}'))
 def call_category_without_version(context, category):
-    context.category_name = category
-    context.execute_steps(f'given we call api /categories/{category}')
+    context['category_name'] = category
+    call_api(context, f'/categories/{category}')
 
 
 def _validate_category(category, name):
@@ -29,15 +31,13 @@ def _validate_category(category, name):
 
 @then('it will have valid category response')
 def verify_plugin_response_valid(context):
-    context.execute_steps('then response status is 200')
-    response = context.response.json()
-    _validate_category(response, context.category_name)
+    response = context['response'].json()
+    _validate_category(response, context['category_name'])
 
 
 @then('it will have valid all categories response')
 def verify_plugin_response_valid(context):
-    context.execute_steps('then response status is 200')
-    response = context.response.json()
+    response = context['response'].json()
     assert len(response) > 125, f'count of categories is lesser than expected {len(response)}'
     for name, category in response.items():
         _validate_category(category, name)

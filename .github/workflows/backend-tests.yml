@@ -22,7 +22,7 @@ jobs:
   # Runs pytest for backend code
   tests:
     name: pytest
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     steps:
       - name: Checkout Repo

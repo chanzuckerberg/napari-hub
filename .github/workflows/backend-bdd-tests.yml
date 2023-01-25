@@ -35,4 +35,4 @@ jobs:
       - name: Run tests
         if: ${{ env.PREFIX != 'workflow triggered by delete' }}
         working-directory: backend
-        run: behave
+        run: cd bdd_test && python -m pytest
