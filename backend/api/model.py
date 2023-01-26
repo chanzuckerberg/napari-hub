@@ -9,7 +9,7 @@ from collections import defaultdict
 import pandas as pd
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
-from api.s3 import get_cache, cache, write_data, get_install_timeline_data, get_recent_activity_data
+from api.s3 import get_cache, cache, write_data, get_install_timeline_data, get_latest_commit, get_recent_activity_data
 from utils.utils import render_description, send_alert, get_attribute, get_category_mapping, parse_manifest
 from utils.datadog import report_metrics
 from api.zulip import notify_new_packages
@@ -374,7 +374,7 @@ def get_categories_mapping(version: str) -> Dict[str, List]:
     return mappings or {}
 
 
-def _execute_query(query):
+def _execute_query(query, schema):
     SNOWFLAKE_USER = os.getenv('SNOWFLAKE_USER')
     SNOWFLAKE_PASSWORD = os.getenv('SNOWFLAKE_PASSWORD')
     ctx = sc.connect(
@@ -383,7 +383,7 @@ def _execute_query(query):
         account="CZI-IMAGING",
         warehouse="IMAGING",
         database="IMAGING",
-        schema="PYPI"
+        schema=schema
     )
     return ctx.execute_string(query)
 
@@ -391,6 +391,7 @@ def _execute_query(query):
 def update_activity_data():
     _update_activity_timeline_data()
     _update_recent_activity_data()
+    _update_latest_commits()
 
 
 def _update_activity_timeline_data():
@@ -408,7 +409,7 @@ def _update_activity_timeline_data():
         GROUP BY file_project, month
         ORDER BY file_project, month
         """
-    cursor_list = _execute_query(query)
+    cursor_list = _execute_query(query, "PYPI")
     csv_string = "PROJECT,MONTH,NUM_DOWNLOADS_BY_MONTH\n"
     for cursor in cursor_list:
         for row in cursor:
@@ -461,7 +462,7 @@ def _update_recent_activity_data(number_of_time_periods=30, time_granularity='DA
         GROUP BY file_project     
         ORDER BY file_project
     """
-    cursor_list = _execute_query(query)
+    cursor_list = _execute_query(query, "PYPI")
     data = {}
     for cursor in cursor_list:
         for row in cursor:
@@ -470,17 +471,54 @@ def _update_recent_activity_data(number_of_time_periods=30, time_granularity='DA
     write_data(json.dumps(data), "activity_dashboard_data/recent_installs.json")
 
 
+def _update_latest_commits():
+    """
+    Get the latest commit occurred for the plugin
+    """
+    query = f"""
+        SELECT 
+            repo, max(commit_author_date) as latest_commit
+        FROM 
+            imaging.github.commits
+        WHERE 
+            repo_type = 'plugin'
+        GROUP BY 1
+    """
+    index_json = get_index()
+    repo_to_plugin_dict = {}
+    for plugin_obj in index_json:
+        if plugin_obj['code_repository'] is not None:
+            repo_to_plugin_dict[plugin_obj['code_repository'].replace('https://github.com/', '')] = plugin_obj['name']
+    # the latest commit is fetched as a tuple of the format (repo, timestamp)
+    cursor_list = _execute_query(query, "GITHUB")
+    data = {}
+    for cursor in cursor_list:
+        for row in cursor:
+            repo = row[0]
+            if repo in repo_to_plugin_dict:
+                plugin = repo_to_plugin_dict[repo]
+                data[plugin] = int(pd.to_datetime(row[1]).strftime("%s")) * 1000
+    write_data(json.dumps(data), "activity_dashboard_data/latest_commits.json")
+
+
 def get_metrics_for_plugin(plugin: str, limit: str) -> Dict:
     plugin = plugin.lower()
     data = get_install_timeline_data(plugin)
     install_stats = _process_for_stats(data)
     timeline = [] if _is_not_valid_limit(limit) else _process_for_timeline(data, int(limit))
-    complete_stats = {
-        'totalInstalls': install_stats.get('totalInstalls', 0),
-        'installsInLast30Days': get_recent_activity_data().get(plugin, 0)
+
+    usage_stats = {
+        'total_installs': install_stats.get('totalInstalls', 0),
+        'installs_in_last_30_days': get_recent_activity_data().get(plugin, 0)
     }
-    activity_data = {
+    maintenance_stats = {
+        'latest_commit_timestamp': get_latest_commit(plugin)
+    }
+    usage_data = {
         'timeline': timeline,
-        'stats': complete_stats
+        'stats': usage_stats,
     }
-    return {'activity': activity_data}
+    maintenance_data = {
+        'stats': maintenance_stats,
+    }
+    return {'usage': usage_data, 'maintenance': maintenance_data}
