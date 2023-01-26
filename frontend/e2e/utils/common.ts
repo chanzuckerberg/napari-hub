@@ -20,8 +20,11 @@ export function getFixture(fileName?: string) {
   return JSON.parse(rawData as unknown as string);
 }
 
-export function searchPluginFixture(pluginFilter: PluginFilter) {
-  const fixtures = getFixture('e2e/fixtures/staging.json');
+export function searchPluginFixture(
+  pluginFilter: PluginFilter,
+  sortBy: string,
+) {
+  const fixtures = getFixture();
 
   if (pluginFilter.key === 'authors') {
     const { values } = pluginFilter;
@@ -32,7 +35,26 @@ export function searchPluginFixture(pluginFilter: PluginFilter) {
       );
       return result.length !== 0;
     });
-    return filtered;
+
+    if (sortBy === 'recentlyUpdated') {
+      return _.orderBy(
+        filtered,
+        (plugin) =>
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+          [plugin.release_date],
+        ['asc'],
+      );
+    } else if (sortBy === 'newest') {
+      return _.orderBy(
+        filtered,
+        (plugin) =>
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+          [new Date(plugin.first_released)],
+        ['asc'],
+      );
+    } else {
+      return _.orderBy(filtered, ['name'], ['asc']);
+    }
   }
   if (pluginFilter.key === 'supported_data') {
     //const { values } = pluginFilter;

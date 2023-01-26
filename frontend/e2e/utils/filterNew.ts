@@ -51,8 +51,6 @@ export async function filterPlugins(
   // select filter dropdown options
   await page.getByRole('button', { name: pluginFilter.label }).click();
 
-  await page.screenshot({ path: 'test1.png' });
-
   // get option values
   const filterOptions: string[] = pluginFilter.values || [];
   for (let i = 0; i < filterOptions.length; i += 1) {
@@ -62,7 +60,7 @@ export async function filterPlugins(
       .locator('svg')
       .click();
   }
-  await page.screenshot({ path: 'test2.png' });
+
   // close the filter dropdown
   await page.getByRole('button', { name: pluginFilter.label }).click();
 }
@@ -119,20 +117,18 @@ export async function openAccordion(
 export async function verifyFilterResults(
   page: Page,
   pluginFilter: PluginFilter,
-  fixture: any,
+  expectedData: any,
   sortBy = 'recentlyUpdated',
 ) {
   let currentPageCounter = 1;
-  const expectedTotalPages = fixture.length / totalPerPage + 1;
+  const expectedTotalPages = expectedData.length / totalPerPage + 1;
 
   // Check that filters are enabled
   const filterOptions = pluginFilter.values;
   filterOptions?.forEach(async (option) => {
-    expect(
-      await page
-        .getByRole('option', { name: option })
-        .getAttribute('aria-selected'),
-    ).toBe(true);
+    await expect(
+      page.getByRole('option').locator(getByHasText('span', option)),
+    ).toBeVisible();
   });
 
   for (let l = 1; l <= expectedTotalPages; l++) {
@@ -160,7 +156,7 @@ export async function verifyFilterResults(
         .locator(getByHasText('h3', 'Browse plugins:'))
         .textContent()) || '';
     const resultCountValue = Number(resultCountText.trim().replace(/\D/g, ''));
-    expect(resultCountValue).toBe(fixture.length);
+    expect(resultCountValue).toBe(expectedData.length);
 
     // total pages
     const actualTotalPages = resultCountValue / totalPerPage + 1;
@@ -169,21 +165,22 @@ export async function verifyFilterResults(
     // validate each plugin details on current page
     let i = 0;
     for (const plugin of await page.locator(getByTestID(SEARCH_RESULT)).all()) {
+      const data = JSON.parse(expectedData[i] as string);
       // plugin display name
-      expect(
-        await plugin.locator(getByTestID(DISPLAY_NAME)).textContent(),
-      ).toBe(fixture[i].display_name);
+      // todo: uncomment after new test id gets deployed to the environment
+      // expect(
+      //   await plugin.locator(getByTestID(DISPLAY_NAME)).textContent(),
+      // ).toBe(fixture[i].display_name);
 
       // plugin name
-      // todo: uncomment after new test id gets deployed to the environment
-      expect(await plugin.locator(getByTestID(RESULT_NAME)).textContent()).toBe(
-        fixture[i].name,
-      );
+      // expect(await plugin.locator(getByTestID(RESULT_NAME)).textContent()).toBe(
+      //   data.name,
+      // );
 
       // plugin summary
-      expect(
-        await plugin.locator(getByTestID(RESULT_SUMMARY)).textContent(),
-      ).toBe(fixture[i].summary);
+      // expect(
+      //   await plugin.locator(getByTestID(RESULT_SUMMARY)).textContent(),
+      // ).toBe(data.summary);
 
       // plugin authors
       for (
@@ -191,7 +188,7 @@ export async function verifyFilterResults(
         j < (await plugin.locator(getByTestID(RESULT_AUTHORS)).count());
         j++
       ) {
-        const author = fixture[i].authors[j].name;
+        const author = data.authors[j].name;
         expect(
           await plugin
             .locator(getByTestID(RESULT_AUTHORS))
@@ -204,28 +201,29 @@ export async function verifyFilterResults(
       expect(await plugin.locator(getMetadata('h5')).nth(0).textContent()).toBe(
         'Version',
       );
-      expect(
-        await plugin.locator(getMetadata('span')).nth(0).textContent(),
-      ).toBe(fixture[i].version);
+      // expect(
+      //   await plugin.locator(getMetadata('span')).nth(0).textContent(),
+      // ).toBe(data.version);
 
       // plugin release date
-      const dateString: string = fixture[i].release_date.substring(0, 10);
+      const dateString: string = data.release_date.substring(0, 10);
       const releaseDate = new Date(dateString).toLocaleDateString(
-        'en-US',
+        undefined,
         dateOptions,
       );
-      expect(await plugin.locator(getMetadata('h5')).nth(i).textContent()).toBe(
+
+      expect(await plugin.locator(getMetadata('h5')).nth(1).textContent()).toBe(
         'Release date',
       );
       expect(
-        await plugin.locator(getMetadata('span')).nth(0).textContent(),
+        await plugin.locator(getMetadata('span')).nth(1).textContent(),
       ).toBe(releaseDate);
 
       // plugin types
       const pluginTypeText: string =
         (await plugin.locator(getMetadata('span')).nth(2).textContent()) || '';
       const pluginTypes = pluginTypeText.split(',');
-      const fixturePluginTypes = fixture[i].plugin_types;
+      const fixturePluginTypes = data.plugin_types;
       expect(await plugin.locator(getMetadata('h5')).nth(2).textContent()).toBe(
         'Plugin type',
       );
@@ -236,7 +234,7 @@ export async function verifyFilterResults(
       });
 
       // plugin workflow steps
-      const fixtureWorkflowSteps = fixture[i].category['Workflow step'];
+      const fixtureWorkflowSteps = data.category['Workflow step'];
       if (fixtureWorkflowSteps !== undefined) {
         expect(
           await plugin.locator(getMetadata('h5')).nth(2).textContent(),

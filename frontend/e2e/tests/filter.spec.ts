@@ -20,7 +20,7 @@ test.describe('Plugin filter tests', () => {
       key: 'authors',
     };
     // prepare fixture data to compare against
-    const fixtureData = searchPluginFixture(filterBy);
+    const fixtureData = searchPluginFixture(filterBy, sortBy);
     await filterPlugins(page, filterBy, sortBy, viewport?.width);
     console.log(fixtureData);
     await verifyFilterResults(page, filterBy, fixtureData, sortBy);
