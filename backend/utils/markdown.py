@@ -4,7 +4,7 @@ from markdown.treeprocessors import Treeprocessor
 from markdownify import markdownify
 
 def get_raw_github_url(repo, branch, file):
-    return f"https://raw.githubusercontent.com/{repo}/{branch}/{file}"
+    return f'https://raw.githubusercontent.com/{repo}/{branch}/{file}'
 
 class ResolveRelativeImageTreeProcesser(Treeprocessor):
     def __init__(self, md, repo: str, branch: str):
