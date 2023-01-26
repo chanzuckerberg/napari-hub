@@ -246,6 +246,6 @@ def get_github_default_branch(repo: str) -> Union[str, None]:
         if response.status_code != requests.codes.ok:
             response.raise_for_status()
 
-        return get_attribute(json.loads(response.text.strip()), ['default_branch'])
+        return get_attribute(response.json(), ['default_branch'])
     except HTTPError:
         return None
