@@ -498,7 +498,7 @@ def _update_latest_commits():
             repo = row[0]
             if repo in repo_to_plugin_dict:
                 plugin = repo_to_plugin_dict[repo]
-                data[plugin] = pd.to_datetime(row[1]).strftime(format="%Y-%m-%d %H:%M:%S")
+                data[plugin] = int(pd.to_datetime(row[1]).strftime("%s")) * 1000
     write_data(json.dumps(data), "activity_dashboard_data/latest_commits.json")
 
 
@@ -513,7 +513,7 @@ def get_metrics_for_plugin(plugin: str, limit: str) -> Dict:
         'installs_in_last_30_days': get_recent_activity_data().get(plugin, 0)
     }
     maintenance_stats = {
-        'latest_commit_timestamp': int(datetime.strptime(get_latest_commit(plugin), "%Y-%m-%d %H:%M:%S").strftime("%s")) * 1000
+        'latest_commit_timestamp': get_latest_commit(plugin)
     }
     usage_data = {
         'timeline': timeline,

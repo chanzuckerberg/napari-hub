@@ -18,7 +18,7 @@ MOCK_PLUGIN_LATEST_COMMIT = '2023-01-01 00:00:00'
 
 class TestActivityDashboard(unittest.TestCase):
 
-    @patch.object(model, 'get_latest_commit', return_value=MOCK_PLUGIN_LATEST_COMMIT)
+    @patch.object(model, 'get_latest_commit', return_value=None)
     @patch.object(model, 'get_recent_activity_data', return_value={})
     @patch.object(model, 'get_install_timeline_data', return_value=EMPTY_DF.copy())
     def test_get_metrics_empty(self, mock_get_install_timeline_data, mock_get_recent_activity_data, mock_get_latest_commit):
