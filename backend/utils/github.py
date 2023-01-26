@@ -231,10 +231,7 @@ def get_github_repo(repo_url: str) -> Union[str, None]:
 
     pattern = 'https://github.com/'
 
-    if pattern not in repo_url:
-        return None
-
-    return repo_url.replace(pattern, '')
+    return repo_url.replace(pattern, '') if pattern in repo_url else None
 
 def get_github_default_branch(repo: str) -> Union[str, None]:
     '''
