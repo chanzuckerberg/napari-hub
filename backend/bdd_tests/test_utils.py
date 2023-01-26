@@ -1,13 +1,22 @@
 import requests
 import os
 
-BASE_URL_BY_ENV = {
-    'staging': 'https://api.staging.napari-hub.org',
-    'prod': 'https://api.napari-hub.org'
-}
 
-prefix = os.getenv('PREFIX')
-base_url = BASE_URL_BY_ENV.get(prefix, f'https://api.dev.napari-hub.org/{prefix}')
+def _get_base_url():
+    base_url_by_env = {
+        'staging': 'https://api.staging.napari-hub.org',
+        'prod': 'https://api.napari-hub.org'
+    }
+    prefix = os.getenv('PREFIX')
+    if prefix in base_url_by_env:
+        return base_url_by_env.get(prefix)
+    elif not prefix:
+        return 'http://localhost:12345'
+
+    return f'https://api.dev.napari-hub.org/{prefix}'
+
+
+base_url = _get_base_url()
 headers = {'User-Agent': 'bdd-test'}
 
 
