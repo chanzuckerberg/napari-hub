@@ -41,7 +41,7 @@ jobs:
           else 
             echo $GITHUB_REF_NAME | tr '[:upper:]' '[:lower:]' | xargs -I {} -n 1 echo STACK_NAME={} >> $GITHUB_ENV
             mkdir -p ./workflow_artifact
-            echo STACK_NAME > ./workflow_artifact/stack_name
+            echo $STACK_NAME > ./workflow_artifact/stack_name
           fi
 
       - name: Create update dev

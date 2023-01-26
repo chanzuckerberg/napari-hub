@@ -78,7 +78,7 @@ jobs:
         - name: Set workflow artifact file
           run: |
             mkdir -p ./workflow_artifact
-            echo STACK_NAME > ./workflow_artifact/stack_name
+            echo $STACK_NAME > ./workflow_artifact/stack_name
         - name: Upload stack name artifact
           uses: actions/upload-artifact@v3
           with:
