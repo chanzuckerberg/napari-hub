@@ -33,12 +33,9 @@ class ResolveRelativeImageExtension(Extension):
 
     def extendMarkdown(self, md: Markdown):
         md.treeprocessors.register(
-            # Extension
-            ResolveRelativeImageTreeProcesser(md, self.repo, self.branch),
-            # Extension name
-            'resolve-image-extension',
-            # Priorty
-            0,
+            item=ResolveRelativeImageTreeProcesser(md, self.repo, self.branch),
+            name='resolve-image-extension',
+            priority=0,
         )
 
 def resolve_images_for_markdown(markdown: str, repo: str, branch: str) -> str:
