@@ -392,7 +392,7 @@ def update_activity_data():
     _update_activity_timeline_data()
     _update_recent_activity_data()
     _update_latest_commits()
-    _update_total_commits()
+    _update_commit_activity()
 
 
 def _update_activity_timeline_data():
@@ -528,14 +528,10 @@ def _update_commit_activity():
             repo = row[0]
             if repo in repo_to_plugin_dict:
                 plugin = repo_to_plugin_dict[repo]
-                #month_timestamp = int(pd.to_datetime(row[1]).strftime("%s")) * 1000
-                month_timestamp = row[1]
-                num_commits = int(row[2])
-                plugin_tuple = (month_timestamp, num_commits)
                 if plugin not in data:
-                    data[plugin] = [plugin_tuple]
+                    data[plugin] = [{'timestamp': int(pd.to_datetime(row[1]).strftime("%s")) * 1000, 'installs': int(row[2])}]
                 else:
-                    data[plugin].append(plugin_tuple)
+                    data[plugin].append({'timestamp': int(pd.to_datetime(row[1]).strftime("%s")) * 1000, 'installs': int(row[2])})
     write_data(json.dumps(data), "activity_dashboard_data/commit_activity.json")
 
 
