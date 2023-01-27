@@ -32,7 +32,7 @@ class TestActivityDashboard(unittest.TestCase):
         self._verify_results('3', expected, mock_get_install_timeline_data, mock_get_recent_activity_data, mock_get_latest_commit, mock_get_commit_activity)
 
     @patch.object(model, 'get_latest_commit', return_value=MOCK_PLUGIN_LATEST_COMMIT)
-    @patch.object(model, 'get_total_commit', return_value=MOCK_PLUGIN_COMMIT_ACTIVITY)
+    @patch.object(model, 'get_commit_activity', return_value=MOCK_PLUGIN_COMMIT_ACTIVITY)
     @patch.object(model, 'get_recent_activity_data', return_value=MOCK_PLUGIN_RECENT_INSTALLS)
     @patch.object(model, 'get_install_timeline_data', return_value=MOCK_DF.copy())
     def test_get_metrics_nonempty(self, mock_get_install_timeline_data, mock_get_recent_activity_data, mock_get_latest_commit, mock_get_commit_activity):
@@ -46,7 +46,7 @@ class TestActivityDashboard(unittest.TestCase):
         self._verify_results('3', expected, mock_get_install_timeline_data, mock_get_recent_activity_data, mock_get_latest_commit, mock_get_commit_activity)
 
     @patch.object(model, 'get_latest_commit', return_value=MOCK_PLUGIN_LATEST_COMMIT)
-    @patch.object(model, 'get_total_commit', return_value=MOCK_PLUGIN_COMMIT_ACTIVITY)
+    @patch.object(model, 'get_commit_activity', return_value=MOCK_PLUGIN_COMMIT_ACTIVITY)
     @patch.object(model, 'get_recent_activity_data', return_value=MOCK_PLUGIN_RECENT_INSTALLS)
     @patch.object(model, 'get_install_timeline_data', return_value=MOCK_DF.copy())
     def test_get_metrics_nonempty_zero_limit(self, mock_get_install_timeline_data, mock_get_recent_activity_data, mock_get_latest_commit, mock_get_commit_activity):
@@ -59,7 +59,7 @@ class TestActivityDashboard(unittest.TestCase):
         self._verify_results('0', expected, mock_get_install_timeline_data, mock_get_recent_activity_data, mock_get_latest_commit, mock_get_commit_activity)
 
     @patch.object(model, 'get_latest_commit', return_value=MOCK_PLUGIN_LATEST_COMMIT)
-    @patch.object(model, 'get_total_commit', return_value=MOCK_PLUGIN_COMMIT_ACTIVITY)
+    @patch.object(model, 'get_commit_activity', return_value=MOCK_PLUGIN_COMMIT_ACTIVITY)
     @patch.object(model, 'get_recent_activity_data', return_value=MOCK_PLUGIN_RECENT_INSTALLS)
     @patch.object(model, 'get_install_timeline_data', return_value=MOCK_DF.copy())
     def test_get_metrics_nonempty_invalid_limit(self, mock_get_install_timeline_data, mock_get_recent_activity_data, mock_get_latest_commit, mock_get_commit_activity):
