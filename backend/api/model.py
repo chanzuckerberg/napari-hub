@@ -9,7 +9,7 @@ from collections import defaultdict
 import pandas as pd
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
-from api.s3 import get_cache, cache, write_data, get_install_timeline_data, get_latest_commit, get_total_commit, get_recent_activity_data
+from api.s3 import get_cache, cache, write_data, get_install_timeline_data, get_latest_commit, get_commit_activity, get_recent_activity_data
 from utils.utils import render_description, send_alert, get_attribute, get_category_mapping, parse_manifest
 from utils.datadog import report_metrics
 from api.zulip import notify_new_packages
@@ -507,20 +507,18 @@ def _update_latest_commits():
     write_data(json.dumps(data), "activity_dashboard_data/latest_commits.json")
 
 
-def _update_total_commits():
+def _update_commit_activity():
     """
-    Get the total commit occurred for the plugin
+    Get the commit activity occurred for the plugin in the past year
     """
     query = f"""
-        SELECT repo, sum(num_commits) as total_commits from
-            (
-                SELECT repo, date_trunc('month', to_date(commit_author_date)) as month, count(*) as num_commits
-                FROM imaging.github.commits
-                WHERE repo_type = 'plugin'
-                GROUP BY 1,2
-            )
-        GROUP BY repo
-        ORDER BY total_commits desc    
+        SELECT repo, date_trunc('month', to_date(commit_author_date)) as month, count(*) as num_commits
+        FROM imaging.github.commits
+        WHERE 
+            repo_type = 'plugin'
+            AND MONTH >= dateadd(month, -12, DATE_TRUNC(month, CURRENT_DATE())) 
+            AND MONTH < DATE_TRUNC(month, CURRENT_DATE())
+        GROUP BY 1,2
     """
     repo_to_plugin_dict = _get_repo_to_plugin_dict()
     cursor_list = _execute_query(query, "GITHUB")
@@ -530,8 +528,14 @@ def _update_total_commits():
             repo = row[0]
             if repo in repo_to_plugin_dict:
                 plugin = repo_to_plugin_dict[repo]
-                data[plugin] = int(row[1])
-    write_data(json.dumps(data), "activity_dashboard_data/total_commits.json")
+                month_timestamp = int(pd.to_datetime(row[1]).strftime("%s")) * 1000
+                num_commits = int(row[2])
+                plugin_tuple = (month_timestamp, num_commits)
+                if plugin not in data:
+                    data[plugin] = [plugin_tuple]
+                else:
+                    data[plugin].append(plugin_tuple)
+    write_data(json.dumps(data), "activity_dashboard_data/commit_activity.json")
 
 
 def get_metrics_for_plugin(plugin: str, limit: str) -> Dict:
@@ -546,7 +550,7 @@ def get_metrics_for_plugin(plugin: str, limit: str) -> Dict:
     }
     maintenance_stats = {
         'latest_commit_timestamp': get_latest_commit(plugin),
-        'total_commits': get_total_commit(plugin)
+        'commit_activity_in_last_12_months': sorted(get_commit_activity(plugin), key=lambda x: x[0])
     }
     usage_data = {
         'timeline': timeline,
