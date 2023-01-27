@@ -15,7 +15,7 @@ test.describe('Plugin filter tests', () => {
     const filterBy = {
       label: 'Authors',
       name: 'authors',
-      values: ['Allen Institute for Cell Science'],
+      values: ['Abigail McGovern'],
       category: ['Filter by category'],
       key: 'authors',
     };

@@ -205,19 +205,15 @@ export async function verifyFilterResults(
       //   await plugin.locator(getMetadata('span')).nth(0).textContent(),
       // ).toBe(data.version);
 
-      // plugin release date
-      const dateString: string = data.release_date.substring(0, 10);
-      const releaseDate = new Date(dateString).toLocaleDateString(
-        undefined,
-        dateOptions,
+      // plugin last update
+      const updateDateStr: string = data.release_date.substring(0, 10);
+      expect(await plugin.locator(getMetadata('h5')).nth(1).textContent()).toBe(
+        'Last updated',
       );
 
-      expect(await plugin.locator(getMetadata('h5')).nth(1).textContent()).toBe(
-        'Release date',
-      );
       expect(
         await plugin.locator(getMetadata('span')).nth(1).textContent(),
-      ).toBe(releaseDate);
+      ).toBe(formateDate(updateDateStr));
 
       // plugin types
       const pluginTypeText: string =
@@ -239,16 +235,19 @@ export async function verifyFilterResults(
         expect(
           await plugin.locator(getMetadata('h5')).nth(2).textContent(),
         ).toBe('Plugin type');
-        for (const [
-          index,
-          fixtureWorkflowStep,
-        ] of fixtureWorkflowSteps.entries()) {
-          const workflowStep = page
-            .locator(getByClassName(RESULT_WORKFLOW_STEPS))
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-            .nth(index)
-            .textContent();
-          expect(workflowStep).toBe(fixtureWorkflowStep);
+        for (const fixtureWorkflowStep of fixtureWorkflowSteps) {
+          // const workflowStep = page
+          //   .locator(getByClassName(RESULT_WORKFLOW_STEPS))
+          //   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+          //   .nth(index)
+          //   .textContent();
+          // expect(workflowStep).toContain(fixtureWorkflowStep);
+          await expect(
+            plugin.getByRole('button', {
+              // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+              name: `${fixtureWorkflowStep}`,
+            }),
+          ).toBeVisible();
         }
       }
       // increment counter
@@ -269,4 +268,24 @@ export async function verifyFilterResults(
       currentPageCounter++;
     }
   }
+}
+
+export function formateDate(dateStr: string) {
+  const monthNames = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+
+  const d = new Date(dateStr);
+  return `${d.getDate()} ${monthNames[d.getMonth()]} ${d.getFullYear()}`;
 }
