@@ -533,7 +533,7 @@ def _update_commit_activity():
                 else:
                     data[plugin].append({'timestamp': int(pd.to_datetime(row[1]).strftime("%s")) * 1000, 'installs': int(row[2])})
     for plugin in data:
-        data[plugin] = sorted(data[plugin], key=lambda x: x[1])
+        data[plugin] = sorted(data[plugin], key=lambda x: (x['timestamp']))
     write_data(json.dumps(data), "activity_dashboard_data/commit_activity.json")
 
 
