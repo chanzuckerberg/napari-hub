@@ -528,7 +528,8 @@ def _update_commit_activity():
             repo = row[0]
             if repo in repo_to_plugin_dict:
                 plugin = repo_to_plugin_dict[repo]
-                month_timestamp = int(pd.to_datetime(row[1]).strftime("%s")) * 1000
+                #month_timestamp = int(pd.to_datetime(row[1]).strftime("%s")) * 1000
+                month_timestamp = row[1]
                 num_commits = int(row[2])
                 plugin_tuple = (month_timestamp, num_commits)
                 if plugin not in data:
