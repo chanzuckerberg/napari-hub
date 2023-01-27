@@ -97,10 +97,17 @@ def get_latest_commit(plugin: str) -> Dict:
         return None
 
 
+def get_total_commit(plugin: str) -> Dict:
+    try:
+        return json.loads(_get_from_s3("activity_dashboard_data/total_commits.json"))[plugin]
+    except Exception as e:
+        logging.error(e)
+        return None
+
+
 def get_recent_activity_data() -> Dict:
     try:
         return json.loads(_get_from_s3("activity_dashboard_data/recent_installs.json"))
     except Exception as e:
         logging.error(e)
         return {}
-
