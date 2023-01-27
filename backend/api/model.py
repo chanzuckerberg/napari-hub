@@ -543,6 +543,9 @@ def get_metrics_for_plugin(plugin: str, limit: str) -> Dict:
     data = get_install_timeline_data(plugin)
     install_stats = _process_for_stats(data)
     timeline = [] if _is_not_valid_limit(limit) else _process_for_timeline(data, int(limit))
+    commit_activity = get_commit_activity(plugin)
+    if commit_activity is not None:
+        commit_activity = sorted(commit_activity, key=lambda x: x[0])
 
     usage_stats = {
         'total_installs': install_stats.get('totalInstalls', 0),
@@ -550,7 +553,7 @@ def get_metrics_for_plugin(plugin: str, limit: str) -> Dict:
     }
     maintenance_stats = {
         'latest_commit_timestamp': get_latest_commit(plugin),
-        'commit_activity_in_last_12_months': sorted(get_commit_activity(plugin), key=lambda x: x[0])
+        'commit_activity_in_last_12_months': commit_activity
     }
     usage_data = {
         'timeline': timeline,
