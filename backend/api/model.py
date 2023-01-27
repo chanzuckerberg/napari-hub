@@ -504,6 +504,8 @@ def _update_latest_commits():
             if repo in repo_to_plugin_dict:
                 plugin = repo_to_plugin_dict[repo]
                 data[plugin] = int(pd.to_datetime(row[1]).strftime("%s")) * 1000
+    for plugin in data:
+        data[plugin] = sorted(data[plugin])
     write_data(json.dumps(data), "activity_dashboard_data/latest_commits.json")
 
 
