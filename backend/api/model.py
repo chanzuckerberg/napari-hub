@@ -9,7 +9,7 @@ from collections import defaultdict
 import pandas as pd
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
-from api.s3 import get_cache, cache, write_data, get_install_timeline_data, get_latest_commit, get_recent_activity_data
+from api.s3 import get_cache, cache, write_data, get_install_timeline_data, get_latest_commit, get_total_commit, get_recent_activity_data
 from utils.utils import render_description, send_alert, get_attribute, get_category_mapping, parse_manifest
 from utils.datadog import report_metrics
 from api.zulip import notify_new_packages
@@ -17,8 +17,6 @@ import boto3
 import snowflake.connector as sc
 from datetime import date
 from dateutil.relativedelta import relativedelta
-
-from backend.api.s3 import get_total_commit
 
 index_subset = {'name', 'summary', 'description_text', 'description_content_type',
                 'authors', 'license', 'python_version', 'operating_system',
