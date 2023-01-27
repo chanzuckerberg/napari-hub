@@ -504,8 +504,6 @@ def _update_latest_commits():
             if repo in repo_to_plugin_dict:
                 plugin = repo_to_plugin_dict[repo]
                 data[plugin] = int(pd.to_datetime(row[1]).strftime("%s")) * 1000
-    for plugin in data:
-        data[plugin] = sorted(data[plugin])
     write_data(json.dumps(data), "activity_dashboard_data/latest_commits.json")
 
 
@@ -534,6 +532,8 @@ def _update_commit_activity():
                     data[plugin] = [{'timestamp': int(pd.to_datetime(row[1]).strftime("%s")) * 1000, 'installs': int(row[2])}]
                 else:
                     data[plugin].append({'timestamp': int(pd.to_datetime(row[1]).strftime("%s")) * 1000, 'installs': int(row[2])})
+    for plugin in data:
+        data[plugin] = sorted(data[plugin], key=lambda x: x[1])
     write_data(json.dumps(data), "activity_dashboard_data/commit_activity.json")
 
 
