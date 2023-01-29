@@ -1,6 +1,6 @@
 import { test } from '@playwright/test';
 
-import { searchPluginFixture } from '../utils/common';
+import { searchPluginFixture } from '../utils/fixture';
 import { filterPlugins, verifyFilterResults } from '../utils/filterNew';
 
 test.describe('Plugin filter tests', () => {
