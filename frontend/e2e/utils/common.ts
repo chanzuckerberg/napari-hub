@@ -25,39 +25,18 @@ export function searchPluginFixture(
   sortBy: string,
 ) {
   const fixtures = getFixture();
-
-  if (pluginFilter.key === 'authors') {
-    const { values } = pluginFilter;
-    const filtered = _.filter(fixtures, (item) => {
+  const { key, values } = pluginFilter;
+  let filtered;
+  if (key === 'authors') {
+    filtered = _.filter(fixtures, (item) => {
       const result = _.intersectionBy(
         _.map(JSON.parse(item as string).authors, (author) => author.name),
         values,
       );
       return result.length !== 0;
     });
-
-    if (sortBy === 'recentlyUpdated') {
-      return _.orderBy(
-        filtered,
-        (plugin) =>
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-          [plugin.release_date],
-        ['asc'],
-      );
-    } else if (sortBy === 'newest') {
-      return _.orderBy(
-        filtered,
-        (plugin) =>
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-          [new Date(plugin.first_released)],
-        ['asc'],
-      );
-    } else {
-      return _.orderBy(filtered, ['name'], ['asc']);
-    }
   }
-  if (pluginFilter.key === 'supported_data') {
-    //const { values } = pluginFilter;
+  if (key === 'supported_data') {
     // searchResults.push(
     //   // eslint-disable-next-line func-names
     //   _.filter(fixtures, function (item) {
@@ -103,21 +82,25 @@ export function searchPluginFixture(
   // }
   //}
   // });
-  return null;
-}
 
-export async function sortFixture(data: any, sortBy: string) {
-  // eslint-disable-next-line array-callback-return, consistent-return
-  const sortedData = data.sort((a, b) => {
-    let leftValue = a.display_name;
-    let rightValue = b.display_name;
-    if (sortBy !== 'display_name') {
-      leftValue = new Date(a[sortBy] as string);
-      rightValue = new Date(b[sortBy] as string);
-    }
-    if (leftValue < rightValue) {
-      return -1;
-    }
-  });
-  return sortedData;
+  // sort results
+  let sortedPlugins;
+  if (sortBy === 'recentlyUpdated') {
+    sortedPlugins = _.orderBy(
+      filtered,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      [(plugin) => new Date(plugin.release_date)],
+      ['desc'],
+    );
+  } else if (sortBy === 'newest') {
+    sortedPlugins = _.orderBy(
+      filtered,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      [(plugin) => new Date(plugin.first_released)],
+      ['desc'],
+    );
+  } else {
+    sortedPlugins = _.orderBy(filtered, [(plugin) => plugin.name], ['asc']);
+  }
+  return sortedPlugins;
 }

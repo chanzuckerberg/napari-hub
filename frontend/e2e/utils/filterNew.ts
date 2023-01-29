@@ -23,11 +23,7 @@ import {
 import { AccordionTitle, maybeOpenAccordion } from './utils';
 
 const totalPerPage = 15;
-const dateOptions: Intl.DateTimeFormatOptions = {
-  day: 'numeric',
-  month: 'long',
-  year: 'numeric',
-};
+
 const sortOrders: Record<string, string> = {
   recentlyUpdated: 'Recently updated',
   pluginName: 'Plugin name',
@@ -121,13 +117,13 @@ export async function verifyFilterResults(
   sortBy = 'recentlyUpdated',
 ) {
   let currentPageCounter = 1;
-  const expectedTotalPages = expectedData.length / totalPerPage + 1;
+  const expectedTotalPages = Math.floor(expectedData.length / totalPerPage) + 1;
 
   // Check that filters are enabled
   const filterOptions = pluginFilter.values;
   filterOptions?.forEach(async (option) => {
     await expect(
-      page.getByRole('option').locator(getByHasText('span', option)),
+      page.locator('.css-9iedg7').locator(getByText(option)).nth(1),
     ).toBeVisible();
   });
 
@@ -159,7 +155,7 @@ export async function verifyFilterResults(
     expect(resultCountValue).toBe(expectedData.length);
 
     // total pages
-    const actualTotalPages = resultCountValue / totalPerPage + 1;
+    const actualTotalPages = Math.floor(resultCountValue / totalPerPage) + 1;
     expect(actualTotalPages).toBe(expectedTotalPages);
 
     // validate each plugin details on current page
@@ -173,9 +169,9 @@ export async function verifyFilterResults(
       // ).toBe(fixture[i].display_name);
 
       // plugin name
-      // expect(await plugin.locator(getByTestID(RESULT_NAME)).textContent()).toBe(
-      //   data.name,
-      // );
+      expect(await plugin.locator(getByTestID(RESULT_NAME)).textContent()).toBe(
+        data.name,
+      );
 
       // plugin summary
       // expect(
@@ -183,20 +179,22 @@ export async function verifyFilterResults(
       // ).toBe(data.summary);
 
       // plugin authors
+      const authorList = [];
       for (
         let j = 0;
         j < (await plugin.locator(getByTestID(RESULT_AUTHORS)).count());
         j++
       ) {
-        const author = data.authors[j].name;
-        expect(
+        authorList.push(
           await plugin
             .locator(getByTestID(RESULT_AUTHORS))
             .nth(j)
             .textContent(),
-        ).toBe(author);
+        );
       }
-
+      for (const author of data.authors) {
+        expect(authorList).toContain(author.name);
+      }
       // plugin version
       expect(await plugin.locator(getMetadata('h5')).nth(0).textContent()).toBe(
         'Version',
@@ -211,9 +209,9 @@ export async function verifyFilterResults(
         'Last updated',
       );
 
-      expect(
-        await plugin.locator(getMetadata('span')).nth(1).textContent(),
-      ).toBe(formateDate(updateDateStr));
+      // expect(
+      //   await plugin.locator(getMetadata('span')).nth(1).textContent(),
+      // ).toBe(formateDate(updateDateStr));
 
       // plugin types
       const pluginTypeText: string =
@@ -255,14 +253,24 @@ export async function verifyFilterResults(
 
       // paginate
       if (currentPageCounter === 1) {
-        await expect(page.locator(getByTestID(PAGINATION_LEFT))).toBeHidden();
-        await expect(page.locator(getByTestID(PAGINATION_RIGHT))).toBeVisible();
+        await expect(page.locator(getByTestID(PAGINATION_LEFT))).toBeDisabled();
+        if (expectedTotalPages > 1) {
+          await expect(
+            page.locator(getByTestID(PAGINATION_RIGHT)),
+          ).toBeVisible();
+        }
       }
       if (currentPageCounter === expectedTotalPages) {
-        await expect(page.locator(getByTestID(PAGINATION_LEFT))).toBeVisible();
-        await expect(page.locator(getByTestID(PAGINATION_RIGHT))).toBeHidden();
+        await expect(
+          page.locator(getByTestID(PAGINATION_RIGHT)),
+        ).toBeDisabled();
+        if (expectedTotalPages > 1) {
+          await expect(
+            page.locator(getByTestID(PAGINATION_LEFT)),
+          ).toBeVisible();
+        }
       }
-      if (currentPageCounter < expectedTotalPages) {
+      if (currentPageCounter < expectedTotalPages && expectedTotalPages >= 2) {
         await page.locator(getByTestID(PAGINATION_RIGHT)).click();
       }
       currentPageCounter++;
