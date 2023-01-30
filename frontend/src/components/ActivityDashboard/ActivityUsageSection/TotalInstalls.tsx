@@ -9,7 +9,7 @@ export function TotalInstalls() {
 
   return (
     <TotalStats
-      count={stats?.installs_in_last_30_days}
+      count={stats?.total_installs}
       countI18nKey="activity:installs"
       date={plugin?.first_released}
       infoI18nKey="activity:totalInstalls.publiclyReleased"

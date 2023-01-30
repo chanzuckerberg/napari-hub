@@ -9,7 +9,7 @@ export function RecentInstalls() {
 
   return (
     <RecentStats
-      count={stats?.total_installs}
+      count={stats?.installs_in_last_30_days}
       countI18nKey="activity:installs"
       durationI18nKey="activity:duration.30days"
       infoI18nKey="activity:recentInstalls.inPast"
