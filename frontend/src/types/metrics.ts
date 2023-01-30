@@ -16,7 +16,7 @@ export interface DataPoint {
 }
 
 interface TimelineDataPoint {
-  timestamp: string;
+  timestamp: number;
   installs: number;
 }
 

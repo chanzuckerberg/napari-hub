@@ -10,6 +10,7 @@ import { PluginMetrics } from '@/types/metrics';
 import {
   validateCollectionData,
   validateCollectionIndexData,
+  validateMetricsData,
   validatePluginData,
   validatePluginIndexData,
 } from './validate';
@@ -96,7 +97,7 @@ class HubAPIClient {
 
   async getPluginMetrics(name: string): Promise<PluginMetrics> {
     const { data } = await this.api.get<PluginMetrics>(`/metrics/${name}`);
-    return data;
+    return validateMetricsData(data);
   }
 }
 
