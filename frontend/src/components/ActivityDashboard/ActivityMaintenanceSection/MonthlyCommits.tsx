@@ -12,11 +12,11 @@ export function MonthlyCommits() {
 
   const dataPoints = useMemo<DataPoint[]>(
     () =>
-      metrics?.activity.timeline.map((point) => ({
+      metrics?.usage.timeline.map((point) => ({
         x: new Date(point.timestamp).getTime(),
         y: point.installs,
       })) ?? [],
-    [metrics?.activity.timeline],
+    [metrics?.usage.timeline],
   );
 
   return (

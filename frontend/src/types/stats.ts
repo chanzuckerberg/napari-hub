@@ -20,17 +20,25 @@ interface TimelineDataPoint {
   installs: number;
 }
 
-interface PluginActivityStats {
-  totalMonths: number;
-  totalInstalls: number;
-  installsInLast30Days: number;
+interface PluginUsageStats {
+  installs_in_last_30_days: number;
+  total_installs: number;
 }
 
-interface PluginActivity {
+interface PluginUsage {
   timeline: TimelineDataPoint[];
-  stats: PluginActivityStats;
+  stats: PluginUsageStats;
+}
+
+interface PluginMaintenanceStats {
+  latest_commit_timestamp: string | null;
+}
+
+interface PluginMaintenance {
+  stats: PluginMaintenanceStats;
 }
 
 export interface PluginMetrics {
-  activity: PluginActivity;
+  maintenance: PluginMaintenance;
+  usage: PluginUsage;
 }
