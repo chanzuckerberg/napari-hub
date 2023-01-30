@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { VictoryLabel, VictoryLabelProps, VictoryTooltipProps } from 'victory';
 
 import { useFormattedNumber, useMediaQuery } from '@/hooks';
-import { DataPoint } from '@/types/stats';
+import { DataPoint } from '@/types/metrics';
 
 export function LineTooltip(props: VictoryLabelProps) {
   const isScreen600 = useMediaQuery({ minWidth: 'screen-600' });

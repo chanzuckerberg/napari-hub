@@ -5,7 +5,7 @@ import axios from 'axios';
 import { BROWSER } from '@/constants/env';
 import { PluginData, PluginIndexData } from '@/types';
 import { CollectionData, CollectionIndexData } from '@/types/collections';
-import { PluginMetrics } from '@/types/stats';
+import { PluginMetrics } from '@/types/metrics';
 
 import {
   validateCollectionData,

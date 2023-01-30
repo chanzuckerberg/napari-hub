@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import { MonthlyStatsChart } from '@/components/ActivityDashboard/MonthlyStatsChart';
 import { usePluginState } from '@/context/plugin';
 import { usePluginMetrics } from '@/hooks';
-import { DataPoint } from '@/types/stats';
+import { DataPoint } from '@/types/metrics';
 
 export function MonthlyInstalls() {
   const { plugin } = usePluginState();

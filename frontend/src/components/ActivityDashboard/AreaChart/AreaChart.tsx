@@ -11,7 +11,7 @@ import {
 } from 'victory';
 
 import { FormatType, useMediaQuery, useNumberFormatter } from '@/hooks';
-import { DataPoint } from '@/types/stats';
+import { DataPoint } from '@/types/metrics';
 
 import { AreaChartLayout } from './AreaChartLayout';
 import { AreaChartLine } from './AreaChartLine';
