@@ -546,7 +546,7 @@ def get_metrics_for_plugin(plugin: str, limit: str) -> Dict:
     }
     maintenance_stats = {
         'latest_commit_timestamp': get_latest_commit(plugin),
-        'total_commits': get_total_commit(plugin)
+        'total_commits': get_total_commit(plugin),
     }
     usage_data = {
         'timeline': timeline,

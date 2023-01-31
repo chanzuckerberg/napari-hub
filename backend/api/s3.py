@@ -6,7 +6,7 @@ import os
 import os.path
 from datetime import datetime
 from io import StringIO
-from typing import Union, IO, List, Dict
+from typing import Union, IO, List, Dict, Any
 
 import boto3
 import pandas as pd
@@ -89,7 +89,7 @@ def get_install_timeline_data(plugin):
     return plugin_df
 
 
-def get_latest_commit(plugin: str) -> Dict:
+def get_latest_commit(plugin: str) -> Any:
     try:
         return json.loads(_get_from_s3("activity_dashboard_data/latest_commits.json"))[plugin]
     except Exception as e:
@@ -97,7 +97,7 @@ def get_latest_commit(plugin: str) -> Dict:
         return None
 
 
-def get_total_commit(plugin: str) -> Dict:
+def get_total_commit(plugin: str) -> Any:
     try:
         return json.loads(_get_from_s3("activity_dashboard_data/total_commits.json"))[plugin]
     except Exception as e:
