@@ -89,25 +89,21 @@ def get_install_timeline_data(plugin):
     return plugin_df
 
 
-def get_latest_commit(plugin: str) -> Any:
+def _load_json_from_s3(path: str) -> Dict:
     try:
-        return json.loads(_get_from_s3("activity_dashboard_data/latest_commits.json"))[plugin]
-    except Exception as e:
-        logging.error(e)
-        return None
-
-
-def get_total_commit(plugin: str) -> Any:
-    try:
-        return json.loads(_get_from_s3("activity_dashboard_data/total_commits.json"))[plugin]
-    except Exception as e:
-        logging.error(e)
-        return None
-
-
-def get_recent_activity_data() -> Dict:
-    try:
-        return json.loads(_get_from_s3("activity_dashboard_data/recent_installs.json"))
+        return json.loads(_get_from_s3(path))
     except Exception as e:
         logging.error(e)
         return {}
+
+
+def get_latest_commit(plugin: str) -> Dict:
+    return _load_json_from_s3("activity_dashboard_data/latest_commits.json").get(plugin)
+
+
+def get_total_commit(plugin: str) -> Any:
+    return _load_json_from_s3("activity_dashboard_data/total_commits.json").get(plugin)
+
+
+def get_recent_activity_data() -> Dict:
+    return _load_json_from_s3("activity_dashboard_data/recent_installs.json")

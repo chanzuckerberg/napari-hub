@@ -391,8 +391,9 @@ def _execute_query(query, schema):
 def update_activity_data():
     _update_activity_timeline_data()
     _update_recent_activity_data()
-    _update_latest_commits()
-    _update_total_commits()
+    repo_to_plugin_dict = _get_repo_to_plugin_dict()
+    _update_latest_commits(repo_to_plugin_dict)
+    _update_total_commits(repo_to_plugin_dict)
 
 
 def _update_activity_timeline_data():
@@ -481,7 +482,7 @@ def _get_repo_to_plugin_dict():
     return repo_to_plugin_dict
 
 
-def _update_latest_commits():
+def _update_latest_commits(repo_to_plugin_dict):
     """
     Get the latest commit occurred for the plugin
     """
@@ -494,7 +495,6 @@ def _update_latest_commits():
             repo_type = 'plugin'
         GROUP BY 1
     """
-    repo_to_plugin_dict = _get_repo_to_plugin_dict()
     # the latest commit is fetched as a tuple of the format (repo, timestamp)
     cursor_list = _execute_query(query, "GITHUB")
     data = {}
@@ -507,22 +507,20 @@ def _update_latest_commits():
     write_data(json.dumps(data), "activity_dashboard_data/latest_commits.json")
 
 
-def _update_total_commits():
+def _update_total_commits(repo_to_plugin_dict):
     """
     Get the total commit occurred for the plugin
     """
     query = f"""
-        SELECT repo, sum(num_commits) as total_commits from
-            (
-                SELECT repo, date_trunc('month', to_date(commit_author_date)) as month, count(*) as num_commits
-                FROM imaging.github.commits
-                WHERE repo_type = 'plugin'
-                GROUP BY 1,2
-            )
-        GROUP BY repo
-        ORDER BY total_commits desc    
+        SELECT 
+            repo, sum(1) as total_commits
+        FROM 
+            imaging.github.commits
+        WHERE 
+            repo_type = 'plugin'
+        GROUP BY 1
+        ORDER BY total_commits desc   
     """
-    repo_to_plugin_dict = _get_repo_to_plugin_dict()
     cursor_list = _execute_query(query, "GITHUB")
     data = {}
     for cursor in cursor_list:
