@@ -477,7 +477,7 @@ def _get_repo_to_plugin_dict():
     index_json = get_index()
     repo_to_plugin_dict = {}
     for plugin_obj in index_json:
-        if plugin_obj['code_repository'] is not None:
+        if 'code_repository' in plugin_obj:
             repo_to_plugin_dict[plugin_obj['code_repository'].replace('https://github.com/', '')] = plugin_obj['name']
     return repo_to_plugin_dict
 
