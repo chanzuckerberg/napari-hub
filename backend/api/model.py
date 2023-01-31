@@ -9,7 +9,7 @@ from collections import defaultdict
 import pandas as pd
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
-from api.s3 import get_cache, cache, write_data, get_install_timeline_data, get_latest_commit, get_recent_activity_data
+from api.s3 import get_cache, cache, write_data, get_install_timeline_data, get_latest_commit, get_total_commit, get_recent_activity_data
 from utils.utils import render_description, send_alert, get_attribute, get_category_mapping, parse_manifest
 from utils.datadog import report_metrics
 from api.zulip import notify_new_packages
@@ -391,7 +391,9 @@ def _execute_query(query, schema):
 def update_activity_data():
     _update_activity_timeline_data()
     _update_recent_activity_data()
-    _update_latest_commits()
+    repo_to_plugin_dict = _get_repo_to_plugin_dict()
+    _update_latest_commits(repo_to_plugin_dict)
+    _update_total_commits(repo_to_plugin_dict)
 
 
 def _update_activity_timeline_data():
@@ -471,7 +473,16 @@ def _update_recent_activity_data(number_of_time_periods=30, time_granularity='DA
     write_data(json.dumps(data), "activity_dashboard_data/recent_installs.json")
 
 
-def _update_latest_commits():
+def _get_repo_to_plugin_dict():
+    index_json = get_index()
+    repo_to_plugin_dict = {}
+    for plugin_obj in index_json:
+        if plugin_obj['code_repository'] is not None:
+            repo_to_plugin_dict[plugin_obj['code_repository'].replace('https://github.com/', '')] = plugin_obj['name']
+    return repo_to_plugin_dict
+
+
+def _update_latest_commits(repo_to_plugin_dict):
     """
     Get the latest commit occurred for the plugin
     """
@@ -484,11 +495,6 @@ def _update_latest_commits():
             repo_type = 'plugin'
         GROUP BY 1
     """
-    index_json = get_index()
-    repo_to_plugin_dict = {}
-    for plugin_obj in index_json:
-        if plugin_obj['code_repository'] is not None:
-            repo_to_plugin_dict[plugin_obj['code_repository'].replace('https://github.com/', '')] = plugin_obj['name']
     # the latest commit is fetched as a tuple of the format (repo, timestamp)
     cursor_list = _execute_query(query, "GITHUB")
     data = {}
@@ -499,6 +505,31 @@ def _update_latest_commits():
                 plugin = repo_to_plugin_dict[repo]
                 data[plugin] = int(pd.to_datetime(row[1]).strftime("%s")) * 1000
     write_data(json.dumps(data), "activity_dashboard_data/latest_commits.json")
+
+
+def _update_total_commits(repo_to_plugin_dict):
+    """
+    Get the total commit occurred for the plugin
+    """
+    query = f"""
+        SELECT 
+            repo, sum(1) as total_commits
+        FROM 
+            imaging.github.commits
+        WHERE 
+            repo_type = 'plugin'
+        GROUP BY 1
+        ORDER BY total_commits desc   
+    """
+    cursor_list = _execute_query(query, "GITHUB")
+    data = {}
+    for cursor in cursor_list:
+        for row in cursor:
+            repo = row[0]
+            if repo in repo_to_plugin_dict:
+                plugin = repo_to_plugin_dict[repo]
+                data[plugin] = int(row[1])
+    write_data(json.dumps(data), "activity_dashboard_data/total_commits.json")
 
 
 def get_metrics_for_plugin(plugin: str, limit: str) -> Dict:
@@ -512,7 +543,8 @@ def get_metrics_for_plugin(plugin: str, limit: str) -> Dict:
         'installs_in_last_30_days': get_recent_activity_data().get(plugin, 0)
     }
     maintenance_stats = {
-        'latest_commit_timestamp': get_latest_commit(plugin)
+        'latest_commit_timestamp': get_latest_commit(plugin),
+        'total_commits': get_total_commit(plugin),
     }
     usage_data = {
         'timeline': timeline,
