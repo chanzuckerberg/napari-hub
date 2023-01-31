@@ -37,7 +37,7 @@ export async function filterPlugins(
   width?: number,
 ) {
   // sorting order
-  if (sortBy !== 'recentlyUpdated') {
+  if (sortBy == 'recentlyUpdated') {
     await page.locator(getByText(sortOrders[sortBy])).nth(1).click();
   }
 
@@ -45,6 +45,7 @@ export async function filterPlugins(
   await openAccordion(page, pluginFilter.category, width);
 
   // select filter dropdown options
+
   await page.getByRole('button', { name: pluginFilter.label }).click();
 
   // get option values
@@ -53,8 +54,9 @@ export async function filterPlugins(
     const option = filterOptions[i];
     await page
       .getByRole('option', { name: `unchecked checkbox ${option}` })
-      .locator('svg')
+      .getByText(`${option}`)
       .click();
+    //   await page.getByRole('option', { name: 'unchecked checkbox Reader' }).getByText('Reader').click();
   }
 
   // close the filter dropdown
