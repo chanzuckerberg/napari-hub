@@ -97,7 +97,7 @@ def _load_json_from_s3(path: str) -> Dict:
         return {}
 
 
-def get_latest_commit(plugin: str) -> Dict:
+def get_latest_commit(plugin: str) -> Any:
     return _load_json_from_s3("activity_dashboard_data/latest_commits.json").get(plugin)
 
 
