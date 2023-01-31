@@ -6,7 +6,8 @@ import { PluginMetrics } from '@/types/metrics';
 
 const maintenanceSchema = z.object({
   stats: z.object({
-    latest_commit_timestamp: z.string().nullable(),
+    latest_commit_timestamp: z.number().nullable(),
+    total_commits: z.number().nullable(),
   }),
 });
 

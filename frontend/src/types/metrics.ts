@@ -31,7 +31,8 @@ interface PluginUsage {
 }
 
 interface PluginMaintenanceStats {
-  latest_commit_timestamp: string | null;
+  latest_commit_timestamp: number | null;
+  total_commits: number | null;
 }
 
 interface PluginMaintenance {
