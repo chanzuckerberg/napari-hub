@@ -544,8 +544,8 @@ def _update_commit_activity(repo_to_plugin_dict):
             imaging.github.commits
         WHERE 
             repo_type = 'plugin'
-            AND MONTH >= dateadd(month, -12, DATE_TRUNC(month, CURRENT_DATE())) 
-            AND MONTH < DATE_TRUNC(month, CURRENT_DATE())
+            AND month >= dateadd(month, -12, DATE_TRUNC(month, CURRENT_DATE())) 
+            AND month < DATE_TRUNC(month, CURRENT_DATE())
         GROUP BY 1,2
     """
     repo_to_plugin_dict = _get_repo_to_plugin_dict()
