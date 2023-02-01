@@ -11,6 +11,7 @@ const config: PlaywrightTestConfig = {
     timeout: 10000,
   },
   fullyParallel: true,
+  globalSetup: './globalSetup',
   outputDir: '../report',
   reporter: [
     ['list'],
@@ -27,6 +28,7 @@ const config: PlaywrightTestConfig = {
       name: 'chromium',
       use: {
         ...devices['Desktop Chrome'],
+        baseURL: 'http://localhost:8080/',
         video: 'on',
       },
     },

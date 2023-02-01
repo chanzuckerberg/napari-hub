@@ -29,3 +29,9 @@ export const RESULT_AUTHORS = 'searchResultAuthor';
 export const PAGINATION_VALUE = 'paginationValue';
 export const PAGINATION_LEFT = 'paginationLeft';
 export const PAGINATION_RIGHT = 'paginationRight';
+
+export const AUTHORS: Record<string, Array<Array<string>>> = {
+  LOCAL: [['Talley Lambert'], ['Carsen Stringer', 'Manan Lalit']],
+  STAGING: [['Abigail McGovern']],
+  PROD: [['Abigail McGovern']],
+};

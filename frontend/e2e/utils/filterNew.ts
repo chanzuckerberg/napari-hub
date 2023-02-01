@@ -21,6 +21,7 @@ import {
   getMetadata,
 } from './selectors';
 import { AccordionTitle, maybeOpenAccordion } from './utils';
+import { parseItem } from './fixture';
 
 const totalPerPage = 15;
 
@@ -161,7 +162,8 @@ export async function verifyFilterResults(
     // validate each plugin details on current page
     let i = 0;
     for (const plugin of await page.locator(getByTestID(SEARCH_RESULT)).all()) {
-      const data = JSON.parse(expectedData[i] as string);
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      const data = parseItem(expectedData[i]);
       // plugin display name
       // todo: uncomment after new test id gets deployed to the environment
       // expect(
@@ -174,9 +176,9 @@ export async function verifyFilterResults(
       );
 
       // plugin summary
-      // expect(
-      //   await plugin.locator(getByTestID(RESULT_SUMMARY)).textContent(),
-      // ).toBe(data.summary);
+      expect(
+        await plugin.locator(getByTestID(RESULT_SUMMARY)).textContent(),
+      ).toBe(data.summary);
 
       // plugin authors
       const authorList = [];
@@ -199,9 +201,9 @@ export async function verifyFilterResults(
       expect(await plugin.locator(getMetadata('h5')).nth(0).textContent()).toBe(
         'Version',
       );
-      // expect(
-      //   await plugin.locator(getMetadata('span')).nth(0).textContent(),
-      // ).toBe(data.version);
+      expect(
+        await plugin.locator(getMetadata('span')).nth(0).textContent(),
+      ).toBe(data.version);
 
       // plugin last update
       const updateDateStr: string = data.release_date.substring(0, 10);
@@ -209,9 +211,9 @@ export async function verifyFilterResults(
         'Last updated',
       );
 
-      // expect(
-      //   await plugin.locator(getMetadata('span')).nth(1).textContent(),
-      // ).toBe(formateDate(updateDateStr));
+      expect(
+        await plugin.locator(getMetadata('span')).nth(1).textContent(),
+      ).toBe(formateDate(updateDateStr));
 
       // plugin types
       const pluginTypeText: string =
