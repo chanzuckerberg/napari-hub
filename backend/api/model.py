@@ -538,8 +538,10 @@ def _update_commit_activity(repo_to_plugin_dict):
     Get the commit activity occurred for the plugin in the past year
     """
     query = f"""
-        SELECT repo, date_trunc('month', to_date(commit_author_date)) as month, count(*) as num_commits
-        FROM imaging.github.commits
+        SELECT 
+            repo, date_trunc('month', to_date(commit_author_date)) as month, count(*) as num_commits
+        FROM 
+            imaging.github.commits
         WHERE 
             repo_type = 'plugin'
             AND MONTH >= dateadd(month, -12, DATE_TRUNC(month, CURRENT_DATE())) 
