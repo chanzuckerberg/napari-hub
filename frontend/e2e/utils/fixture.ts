@@ -27,6 +27,7 @@ export function searchPluginFixture(
   const fixtures = getFixture();
   const { key, values } = pluginFilter;
   let filtered;
+  console.log('Thois is ++++++++' + values);
   if (key === 'authors') {
     filtered = filter(fixtures, (item) => {
       const result = intersectionBy(
