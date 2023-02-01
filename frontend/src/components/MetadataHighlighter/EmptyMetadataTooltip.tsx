@@ -148,11 +148,7 @@ export function EmptyMetadataTooltip({
               i18nKey="preview:appBar.learnHow"
               components={{
                 hubLink: (
-                  <Link
-                    className="underline"
-                    href={t('preview:hubWikiLink')}
-                    newTab
-                  />
+                  <Link className="underline" href={t('preview:hubWikiLink')} />
                 ),
               }}
             />

@@ -1,9 +1,12 @@
 import clsx from 'clsx';
+import { ButtonIcon } from 'czifui';
 import { isEmpty } from 'lodash';
 import { useTranslation } from 'next-i18next';
-import { ReactNode } from 'react';
+import { cloneElement, ReactNode, useCallback, useState } from 'react';
+import { ReactElement } from 'react-markdown/lib/react-markdown';
 
 import {
+  Code,
   GitHub,
   ProjectDocumentation,
   ProjectIssues,
@@ -11,11 +14,15 @@ import {
   ProjectSupport,
   Quotes,
   Twitter,
+  Website,
 } from '@/components/icons';
+import { Link } from '@/components/Link';
 import { MetadataList, MetadataListLinkItem } from '@/components/MetadataList';
+import { MetadataListMetadataItem } from '@/components/MetadataList/MetadataListMetadataItem';
+import { Tooltip } from '@/components/Tooltip';
 import { MetadataId, MetadataKeys, usePluginMetadata } from '@/context/plugin';
 
-import { MetadataListMetadataItem } from '../MetadataList/MetadataListMetadataItem';
+import { IconColorProps } from '../icons/icons.type';
 import { ANCHOR } from './CitationInfo.constants';
 import styles from './SupportInfo.module.scss';
 
@@ -196,21 +203,109 @@ export function SupportInfoBase({ className, inline }: SupportInfoBaseProps) {
   );
 }
 
-/**
- * Component for rendering SupportInfoBase responsively.  This includes
- * rendering the metadata list horizontally for xl+ layouts and inline for
- * smaller layouts.
- */
-export function SupportInfo(props: CommonProps) {
-  return (
-    <>
-      <div className="screen-875:hidden">
-        <SupportInfoBase {...props} inline />
-      </div>
+interface LinkData {
+  label: string;
+  value: string;
+}
 
-      <div className="hidden screen-875:block">
-        <SupportInfoBase {...props} />
-      </div>
-    </>
+interface LinksProps {
+  links: LinkData[];
+  children: ReactElement;
+}
+
+function Links({ children, links }: LinksProps) {
+  const [open, setOpen] = useState(false);
+  const hasEmptyLinks = links.every((link) => !link.value);
+
+  const openTooltip = useCallback(() => {
+    if (hasEmptyLinks) {
+      return;
+    }
+
+    setOpen(true);
+  }, [hasEmptyLinks]);
+
+  const closeTooltip = useCallback(() => {
+    if (hasEmptyLinks) {
+      return;
+    }
+
+    setOpen(false);
+  }, [hasEmptyLinks]);
+
+  return (
+    <Tooltip
+      border={false}
+      classes={{
+        tooltip: 'p-0',
+      }}
+      open={open}
+      onOpen={openTooltip}
+      onClose={closeTooltip}
+      title={
+        <ul>
+          {links.map((link) => (
+            <li className="hover:bg-hub-gray-100 py-sds-s px-sds-l">
+              <Link href={link.value}>{link.label}</Link>
+            </li>
+          ))}
+        </ul>
+      }
+    >
+      <ButtonIcon onClick={openTooltip} disabled={hasEmptyLinks}>
+        {hasEmptyLinks
+          ? cloneElement<IconColorProps>(children, {
+              color: '#999999',
+            })
+          : children}
+      </ButtonIcon>
+    </Tooltip>
+  );
+}
+
+function CodeLinks() {
+  const metadata = usePluginMetadata();
+
+  return (
+    <Links links={[metadata.sourceCode]}>
+      <Code />
+    </Links>
+  );
+}
+
+function WebsiteLinks() {
+  const metadata = usePluginMetadata();
+
+  return (
+    <Links links={[metadata.projectSite, metadata.documentationSite]}>
+      <Website />
+    </Links>
+  );
+}
+
+function SupportLinks() {
+  const metadata = usePluginMetadata();
+
+  return (
+    <Links links={[metadata.supportSite, metadata.reportIssues]}>
+      <ProjectSupport className="ml-2" />
+    </Links>
+  );
+}
+
+interface Props {
+  className?: string;
+}
+
+/**
+ * Component for rendering support info links as icon dropdowns.
+ */
+export function SupportInfo({ className }: Props) {
+  return (
+    <div className={clsx('flex items-center gap-x-sds-l', className)}>
+      <CodeLinks />
+      <WebsiteLinks />
+      <SupportLinks />
+    </div>
   );
 }

@@ -117,7 +117,9 @@ export function AreaChart({
         tickLabelComponent={<AxisLabel />}
         label={yLabel}
         tickFormat={yAxisTickFormatter.format}
-        axisLabelComponent={<AxisLabel dy={isScreen600 ? -40 : -20} />}
+        axisLabelComponent={
+          <AxisLabel dy={isScreen600 ? -40 : -20} style={{ fontWeight: 600 }} />
+        }
         style={axisStyle}
         tickValues={tickValues}
       />

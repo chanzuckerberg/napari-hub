@@ -18,7 +18,7 @@ async function globalSetup(config: FullConfig): Promise<void> {
   process.env.BASEURL = baseURL;
   const ENV = (process.env.NODE_ENV as string) || '';
 
-  if (ENV === 'test') {
+  if (ENV === 'ci') {
     process.env.CI = 'true';
   }
 

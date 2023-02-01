@@ -1,12 +1,17 @@
 import clsx from 'clsx';
 import { Tooltip as SDSTooltip, TooltipProps } from 'czifui';
 
+interface Props extends TooltipProps {
+  border?: boolean;
+}
+
 export function Tooltip({
   leaveDelay = 0,
   arrow = true,
+  border = true,
   classes,
   ...props
-}: TooltipProps) {
+}: Props) {
   return (
     <SDSTooltip
       {...props}
@@ -16,12 +21,14 @@ export function Tooltip({
         ...(arrow
           ? {
               arrow: clsx(
-                'before:bg-white before:border before:border-napari-gray',
+                'before:bg-white',
+                border && ' before:border before:border-napari-gray',
                 classes?.arrow,
               ),
 
               tooltip: clsx(
-                'bg-white text-black border border-napari-gray',
+                'bg-white text-black',
+                border && 'border border-napari-gray',
                 classes?.tooltip,
               ),
             }

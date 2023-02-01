@@ -20,18 +20,27 @@ export function getFixture(fileName?: string) {
   return JSON.parse(rawData as unknown as string);
 }
 
+// fixture for local environment is already parsed; parsing again causes issues
+export function parseItem(text: any) {
+  if (typeof text === 'object') {
+    return text;
+  }
+  return JSON.parse(text as string);
+}
+
 export function searchPluginFixture(
   pluginFilter: PluginFilter,
   sortBy: string,
 ) {
   const fixtures = getFixture();
   const { key, values } = pluginFilter;
+
   let filtered;
   console.log('Thois is ++++++++' + values);
   if (key === 'authors') {
     filtered = filter(fixtures, (item) => {
       const result = intersectionBy(
-        map(JSON.parse(item as string).authors, (author) => author.name),
+        map(parseItem(item as string).authors, (author) => author.name),
         values,
       );
       return result.length !== 0;
@@ -41,7 +50,7 @@ export function searchPluginFixture(
     filtered = filter(fixtures, (item) => {
       const result = intersectionBy(
         map(
-          JSON.parse(item as string).category,
+          parseItem(item as string).category,
           (category) => category['Supported data'],
         ),
         values,
@@ -53,7 +62,7 @@ export function searchPluginFixture(
     filtered = filter(fixtures, (item) => {
       const result = intersectionBy(
         map(
-          JSON.parse(item as string).category_hierarchy,
+          parseItem(item as string).category_hierarchy,
           (category_hierarchy) => category_hierarchy['Image modality'],
         ),
         values,
@@ -65,7 +74,7 @@ export function searchPluginFixture(
     filtered = filter(fixtures, (item) => {
       const result = intersectionBy(
         map(
-          JSON.parse(item as string).python_version,
+          parseItem(item as string).python_version,
           (pythonVersion) => pythonVersion,
         ),
         values,
@@ -78,7 +87,7 @@ export function searchPluginFixture(
     filtered = filter(fixtures, (item) => {
       const result = intersectionBy(
         map(
-          JSON.parse(item as string).plugin_types,
+          parseItem(item as string).plugin_types,
           (pluginTypes) => pluginTypes,
         ),
         values,
@@ -91,7 +100,7 @@ export function searchPluginFixture(
     filtered = filter(fixtures, (item) => {
       const result = intersectionBy(
         map(
-          JSON.parse(item as string).reader_file_extensions,
+          parseItem(item as string).reader_file_extensions,
           (extensions) => extensions,
         ),
         values,
@@ -104,7 +113,7 @@ export function searchPluginFixture(
     filtered = filter(fixtures, (item) => {
       const result = intersectionBy(
         map(
-          JSON.parse(item as string).writer_file_extensions,
+          parseItem(item as string).writer_file_extensions,
           (extensions) => extensions,
         ),
         values,
@@ -115,7 +124,7 @@ export function searchPluginFixture(
   if (key === 'license') {
     filtered = filter(fixtures, (item) => {
       const result = intersectionBy(
-        map(JSON.parse(item as string).license, (license) => license),
+        map(parseItem(item as string).license, (license) => license),
         values,
       );
       return result.length !== 0;
@@ -129,7 +138,7 @@ export function searchPluginFixture(
     filtered = filter(fixtures, (item) => {
       const result = intersectionBy(
         map(
-          JSON.parse(item as string).operating_system,
+          parseItem(item as string).operating_system,
           (operatingSystem) => operatingSystem,
         ),
         values,
@@ -147,7 +156,7 @@ export function searchPluginFixture(
       [
         (plugin) => {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-          return new Date(JSON.parse(plugin).release_date);
+          return new Date(parseItem(plugin).release_date);
         },
       ],
       ['desc'],
@@ -156,7 +165,7 @@ export function searchPluginFixture(
     sortedPlugins = orderBy(
       filtered,
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      [(plugin) => new Date(JSON.parse(plugin).first_released)],
+      [(plugin) => new Date(parseItem(plugin).first_released)],
       ['desc'],
     );
   } else {

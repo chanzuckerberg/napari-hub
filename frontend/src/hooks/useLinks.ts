@@ -59,48 +59,39 @@ export function useLinks() {
     HUB_REPO: {
       title: t('common:githubRepo'),
       link: 'https://github.com/chanzuckerberg/napari-hub',
-      newTab: true,
     },
 
     NAPARI_REPO: {
       title: t('common:githubRepo'),
       link: 'https://github.com/napari/napari',
-      newTab: true,
     },
     NAPARI_WEBSITE: {
       title: t('common:napariMainWebsite'),
       link: 'https://napari.org',
-      newTab: true,
     },
     NAPARI_GOVERNANCE: {
       title: t('common:napariGovernanceModel'),
       link: 'https://napari.org/community/governance.html',
-      newTab: true,
     },
     IMAGESC: {
       title: t('common:napariImageScForum'),
       link: 'https://forum.image.sc/tag/napari',
-      newTab: true,
     },
     PLAUSIBLE: {
       title: t('common:napariPlausible'),
       link: 'https://plausible.io/napari.dev',
-      newTab: true,
     },
     PLAUSIBLE_PRIVACY: {
       title: t('common:plausiblePrivacy'),
       link: 'https://plausible.io/data-policy',
-      newTab: true,
     },
     MAILCHIMP_PRIVACY: {
       title: t('common:mailchimpPrivacy'),
       link: 'https://mailchimp.com/legal/privacy/',
-      newTab: true,
     },
     CZI_EOSS: {
       title: t('common:cziOss'),
       link: 'https://chanzuckerberg.com/eoss/',
-      newTab: true,
     },
     PLUGINS: {
       title: t('common:plugins'),

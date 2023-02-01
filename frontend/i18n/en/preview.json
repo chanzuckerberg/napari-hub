@@ -27,13 +27,13 @@
 
   "appBar": {
     "editInGitHub": "Edit in GitHub",
-    "learnHow": "Learn how to update fields in the <externalLink href='$t(hubWikiLink)'>napari hub GitHub Wiki</externalLink>.",
+    "learnHow": "Learn how to update fields in the <hubLink href='$t(hubWikiLink)'>napari hub GitHub Wiki</externalLink>.",
     "notLive": "It is not live on the napari hub.",
     "viewPR": "View pull request",
 
-    "previewMessageBase": "This preview of <bold>{{pluginName}}</bold> was generated from <externalLink href='{{pullRequestLink}}'>{{previewRepoName}}</externalLink>",
+    "previewMessageBase": "This preview of <bold>{{pluginName}}</bold> was generated from <hubLink href='{{pullRequestLink}}'>{{previewRepoName}}</externalLink>",
     "previewMessage": "$t(appBar.previewMessageBase).",
-    "previewMessage_mismatch": "$t(appBar.previewMessageBase), but your metadata points to <externalLink href='{{codeRepoLink}}'>{{codeRepoName}}</externalLink> as the source code. <externalLink href='$t(mismatchWikiLink)'>Learn More</externalLink>.",
+    "previewMessage_mismatch": "$t(appBar.previewMessageBase), but your metadata points to <hubLink href='{{codeRepoLink}}'>{{codeRepoName}}</externalLink> as the source code. <hubLink href='$t(mismatchWikiLink)'>Learn More</externalLink>.",
 
     "missingFields_zero": "All fields complete!",
     "missingFields_one": "1 field needs attention",
