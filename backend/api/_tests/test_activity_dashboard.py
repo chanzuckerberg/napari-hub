@@ -15,9 +15,7 @@ PLUGIN_NAME_CLEAN = 'string-1'
 MOCK_PLUGIN_RECENT_INSTALLS = {PLUGIN_NAME_CLEAN: 25, 'foo': 10, 'bar': 30}
 MOCK_PLUGIN_LATEST_COMMIT = 1672531200000
 MOCK_PLUGIN_TOTAL_COMMIT = 200
-MOCK_PLUGIN_COMMIT_ACTIVITY = [(1, 1), (2, 2), (3, 3), (4, 4),
-                               (5, 5), (6, 6), (7, 7), (8, 8),
-                               (9, 9), (10, 10), (11, 11), (12, 12)]
+MOCK_PLUGIN_COMMIT_ACTIVITY = [(1, 1), (2, 2), (3, 3), (4, 4), (5, 5), (6, 6), (7, 7), (8, 8), (9, 9), (10, 10), (11, 11), (12, 12)]
 
 
 class TestActivityDashboard(unittest.TestCase):
