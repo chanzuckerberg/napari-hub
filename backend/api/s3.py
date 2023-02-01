@@ -90,6 +90,12 @@ def get_install_timeline_data(plugin):
 
 
 def _load_json_from_s3(path: str) -> Dict:
+    """
+    Load activity dashboard .json file from s3
+
+    :param path: path to file in s3
+    :return: dictionary that consists of path-specific data for activity_dashboard backend endpoints
+    """
     try:
         return json.loads(_get_from_s3(path))
     except Exception as e:
