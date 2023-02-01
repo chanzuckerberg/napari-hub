@@ -30,6 +30,8 @@ const config: PlaywrightTestConfig = {
         ...devices['Desktop Chrome'],
         baseURL: 'http://localhost:8080/',
         video: 'on',
+        locale: 'en-US',
+        timezoneId: 'America/New_York',
       },
     },
   ],

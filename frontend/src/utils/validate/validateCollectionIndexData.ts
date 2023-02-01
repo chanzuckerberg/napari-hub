@@ -11,12 +11,21 @@ const collectionInstitutionSchema = z.object({
   website: z.string(),
 });
 
-const collectionLinkSchema = z.object({
-  orcid: z.string(),
-  twitter: z.string().optional(),
-  github: z.string().optional(),
-  website: z.string().optional(),
-});
+const nullableString = z.string().nullable().optional();
+
+const collectionLinkSchema = z
+  .object({
+    orcid: z.string(),
+    twitter: nullableString,
+    github: nullableString,
+    website: nullableString,
+  })
+  // Remove links with null values
+  .transform((links) =>
+    Object.fromEntries(
+      Object.entries(links).filter(([, link]) => link !== null),
+    ),
+  );
 
 const collectionCuratorSchema = z.object({
   name: z.string(),

@@ -54,7 +54,7 @@ export function CollectionInfo() {
         {affiliation.website ? (
           <span>{affiliation.institution}</span>
         ) : (
-          <Link className="underline" href={affiliation.website} newTab>
+          <Link className="underline" href={affiliation.website}>
             {affiliation.institution}
           </Link>
         )}

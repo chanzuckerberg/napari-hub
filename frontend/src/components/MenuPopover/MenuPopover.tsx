@@ -42,12 +42,7 @@ export function MenuPopover({ anchorEl, items, onClose, visible }: Props) {
             key={item.title}
             data-testid="menuItem"
           >
-            <Link
-              className="mr-sds-xxs"
-              href={item.link}
-              newTab={item.newTab}
-              onClick={onClose}
-            >
+            <Link className="mr-sds-xxs" href={item.link} onClick={onClose}>
               {item.title}
             </Link>
           </li>

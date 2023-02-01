@@ -1,0 +1,7 @@
+.authors {
+  // Add commas for every item except the last.
+  li:not(:last-child)::after {
+    @apply mr-px;
+    content: ', ';
+  }
+}

@@ -19,6 +19,8 @@ export interface FeatureFlag<
 
 export const FEATURE_FLAG_LIST = [
   'activityDashboard',
+  'activityDashboardMaintenance',
+  'banner',
   'categoryFilters',
   'collections',
   'npe2',
@@ -165,4 +167,14 @@ export function useInitFeatureFlags(featureFlags?: FeatureFlagMap) {
 export function useIsFeatureFlagEnabled(key: FeatureFlagKey): boolean {
   const flags = useSnapshot(featureFlagsStore);
   return flags[key].value === 'on';
+}
+
+/**
+ * Hook to check if a feature flag is enabled.
+ */
+export function useFeatureFlagConfig<T = Record<string, unknown>>(
+  key: FeatureFlagKey,
+): T | undefined {
+  const flags = useSnapshot(featureFlagsStore);
+  return flags[key].config as T | undefined;
 }
