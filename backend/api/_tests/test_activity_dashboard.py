@@ -29,7 +29,7 @@ class TestActivityDashboard(unittest.TestCase):
         expected = self._generate_expected_metrics(
             timeline=self._generate_expected_timeline(-3, to_installs=lambda i: 0)
         )
-        self._verify_results('3', expected, mock_get_install_timeline_data, mock_get_recent_activity_data, mock_get_recent_activity_data,  mock_get_commit_activity, mock_get_total_commit, mock_get_latest_commit)
+        self._verify_results('3', expected, mock_get_install_timeline_data, mock_get_recent_activity_data, mock_get_commit_activity, mock_get_total_commit, mock_get_latest_commit)
 
     @patch.object(model, 'get_latest_commit', return_value=MOCK_PLUGIN_LATEST_COMMIT)
     @patch.object(model, 'get_total_commit', return_value=MOCK_PLUGIN_TOTAL_COMMIT)
@@ -45,7 +45,7 @@ class TestActivityDashboard(unittest.TestCase):
             total_commit=MOCK_PLUGIN_TOTAL_COMMIT,
             commit_activity=MOCK_PLUGIN_COMMIT_ACTIVITY
         )
-        self._verify_results('3', expected, mock_get_install_timeline_data, mock_get_recent_activity_data, mock_get_recent_activity_data,  mock_get_commit_activity, mock_get_total_commit, mock_get_latest_commit)
+        self._verify_results('3', expected, mock_get_install_timeline_data, mock_get_recent_activity_data, mock_get_commit_activity, mock_get_total_commit, mock_get_latest_commit)
 
     @patch.object(model, 'get_latest_commit', return_value=MOCK_PLUGIN_LATEST_COMMIT)
     @patch.object(model, 'get_total_commit', return_value=MOCK_PLUGIN_TOTAL_COMMIT)
