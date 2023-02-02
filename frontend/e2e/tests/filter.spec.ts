@@ -8,7 +8,7 @@ test.describe('Plugin filter tests', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto(`${process.env.BASEURL as string}`);
   });
-  test('should filter by supported data', async ({ page, viewport }) => {
+  test.only('should filter by author', async ({ page, viewport }) => {
     // sort by
 
     await page.pause();
@@ -27,10 +27,10 @@ test.describe('Plugin filter tests', () => {
 
     await filterPlugins(page, filterBy, sortBy, viewport?.width);
 
-    // await verifyFilterResults(page, filterBy, fixtureData, sortBy);
+    await verifyFilterResults(page, filterBy, fixtureData, sortBy);
   });
 
-  test.only('should filter by plugin type', async ({ page, viewport }) => {
+  test('should filter by plugin type', async ({ page, viewport }) => {
     // sort by
 
     await page.pause();
@@ -42,12 +42,32 @@ test.describe('Plugin filter tests', () => {
       name: 'pluginType',
       values: ['reader'],
       category: ['Filter by requirement'],
-      key: 'pluginType',
+      key: 'plugin_type',
     };
     // prepare fixture data to compare against
     const fixtureData = searchPluginFixture(filterBy, sortBy);
     await filterPlugins(page, filterBy, sortBy, viewport?.width);
 
     await verifyFilterResults(page, filterBy, fixtureData, sortBy);
+  });
+  test('should filter by supported data', async ({ page, viewport }) => {
+    // sort by
+
+    await page.pause();
+    const sortBy = 'recentlyUpdated';
+
+    // filter by
+    const filterBy = {
+      label: 'Supported data',
+      name: 'supportedData',
+      values: ['3D'],
+      category: ['Filter by requirement'],
+      key: 'supported_data',
+    };
+    // prepare fixture data to compare against
+    const fixtureData = searchPluginFixture(filterBy, sortBy);
+    await filterPlugins(page, filterBy, sortBy, viewport?.width);
+
+    // await verifyFilterResults(page, filterBy, fixtureData, sortBy);
   });
 });

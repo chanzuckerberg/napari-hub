@@ -29,6 +29,29 @@ export function searchPluginFixture(
   let filtered;
   if (key === 'authors') {
     filtered = filter(fixtures, (item) => {
+      fs.writeFile('file4.json', JSON.stringify(item), 'utf8', (err) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+        console.log('The file was saved!');
+      });
+
+      fs.writeFile(
+        'file4.json',
+        JSON.stringify(
+          'Stoppppspspppppppppp---------------------------------p',
+        ),
+        'utf8',
+        (err) => {
+          if (err) {
+            console.error(err);
+            return;
+          }
+          console.log('The file was saved!');
+        },
+      );
+
       const result = intersectionBy(
         map(JSON.parse(item as string).authors, (author) => author.name),
         values,
