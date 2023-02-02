@@ -9,6 +9,12 @@ const maintenanceSchema = z.object({
     latest_commit_timestamp: z.number().nullable(),
     total_commits: z.number().nullable(),
   }),
+  timeline: z.array(
+    z.object({
+      commits: z.number(),
+      timestamp: z.number(),
+    }),
+  ),
 });
 
 const usageSchema = z.object({

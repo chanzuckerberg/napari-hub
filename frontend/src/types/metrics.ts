@@ -17,7 +17,14 @@ export interface DataPoint {
 
 interface TimelineDataPoint {
   timestamp: number;
+}
+
+interface InstallsTimelineDataPoint extends TimelineDataPoint {
   installs: number;
+}
+
+interface CommitsTimelineDataPoint extends TimelineDataPoint {
+  commits: number;
 }
 
 interface PluginUsageStats {
@@ -26,8 +33,8 @@ interface PluginUsageStats {
 }
 
 interface PluginUsage {
-  timeline: TimelineDataPoint[];
   stats: PluginUsageStats;
+  timeline: InstallsTimelineDataPoint[];
 }
 
 interface PluginMaintenanceStats {
@@ -37,6 +44,7 @@ interface PluginMaintenanceStats {
 
 interface PluginMaintenance {
   stats: PluginMaintenanceStats;
+  timeline: CommitsTimelineDataPoint[];
 }
 
 export interface PluginMetrics {
