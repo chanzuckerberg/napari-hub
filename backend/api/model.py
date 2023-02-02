@@ -212,6 +212,7 @@ def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
                 metadata['description'],
                 repo,
                 branch,
+                metadata.get('description_source', ''),
             )
 
         metadata['description_text'] = render_description(metadata.get('description'))

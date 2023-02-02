@@ -127,11 +127,15 @@ def get_github_metadata(repo_url: str, branch: str = 'HEAD') -> dict:
         github_metadata['license'] = github_license
 
     description = get_file(repo_url,".napari-hub/DESCRIPTION.md", branch=branch)
+    description_source = '.napari-hub'
+
     if description is None:
         description = get_file(repo_url, ".napari/DESCRIPTION.md", branch=branch)
+        description_source = '.napari'
 
     if description and default_description not in description:
         github_metadata['description'] = description
+        github_metadata['description_source'] = description_source
 
     citation_file = get_file(repo_url, "CITATION.cff", branch=branch)
     if citation_file is not None:
