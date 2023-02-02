@@ -3,25 +3,19 @@ import { expect, Page } from '@playwright/test';
 import { PluginFilter } from '../types/filter';
 import { selectors } from './_selectors';
 import {
-  DISPLAY_NAME,
   PAGINATION_LEFT,
   PAGINATION_RIGHT,
   PAGINATION_VALUE,
   RESULT_AUTHORS,
   RESULT_NAME,
   RESULT_SUMMARY,
-  RESULT_WORKFLOW_STEPS,
   SEARCH_RESULT,
 } from './constants';
-import {
-  getByClassName,
-  getByHasText,
-  getByTestID,
-  getByText,
-  getMetadata,
-} from './selectors';
-import { AccordionTitle, maybeOpenAccordion } from './utils';
 import { parseItem } from './fixture';
+import { getByHasText, getByTestID, getByText, getMetadata } from './selectors';
+import { AccordionTitle, maybeOpenAccordion } from './utils';
+import { string } from 'zod';
+import { Login } from '@mui/icons-material';
 
 const totalPerPage = 15;
 
@@ -119,7 +113,6 @@ export async function verifyFilterResults(
 ) {
   let currentPageCounter = 1;
   const expectedTotalPages = Math.floor(expectedData.length / totalPerPage) + 1;
-
   // Check that filters are enabled
   const filterOptions = pluginFilter.values;
   filterOptions?.forEach(async (option) => {
@@ -159,6 +152,11 @@ export async function verifyFilterResults(
     const actualTotalPages = Math.floor(resultCountValue / totalPerPage) + 1;
     expect(actualTotalPages).toBe(expectedTotalPages);
 
+    console.log('********************************');
+    console.log(expectedData[0].name);
+    // console.log(expectedData[1].name);
+    // console.log(expectedData[2].name);
+    console.log('********************************');
     // validate each plugin details on current page
     let i = 0;
     for (const plugin of await page.locator(getByTestID(SEARCH_RESULT)).all()) {
@@ -174,7 +172,7 @@ export async function verifyFilterResults(
       expect(await plugin.locator(getByTestID(RESULT_NAME)).textContent()).toBe(
         data.name,
       );
-
+      console.log(data.name);
       // plugin summary
       expect(
         await plugin.locator(getByTestID(RESULT_SUMMARY)).textContent(),
@@ -210,7 +208,6 @@ export async function verifyFilterResults(
       expect(await plugin.locator(getMetadata('h5')).nth(1).textContent()).toBe(
         'Last updated',
       );
-
       expect(
         await plugin.locator(getMetadata('span')).nth(1).textContent(),
       ).toBe(formateDate(updateDateStr));
@@ -220,28 +217,25 @@ export async function verifyFilterResults(
         (await plugin.locator(getMetadata('span')).nth(2).textContent()) || '';
       const pluginTypes = pluginTypeText.split(',');
       const fixturePluginTypes = data.plugin_types;
-      expect(await plugin.locator(getMetadata('h5')).nth(2).textContent()).toBe(
-        'Plugin type',
-      );
-      pluginTypes.forEach((pluginType) => {
-        expect(fixturePluginTypes).toContain(
-          pluginType.trim().toLocaleLowerCase().replace('_', ' '),
-        );
-      });
+      // some local test data do not have plugin types
+      if (fixturePluginTypes !== undefined) {
+        expect(
+          await plugin.locator(getMetadata('h5')).nth(2).textContent(),
+        ).toBe('Plugin type');
+        pluginTypes.forEach((pluginType) => {
+          expect(fixturePluginTypes).toContain(
+            pluginType.trim().toLocaleLowerCase().replace('_', ' '),
+          );
+        });
+      }
 
       // plugin workflow steps
-      const fixtureWorkflowSteps = data.category['Workflow step'];
-      if (fixtureWorkflowSteps !== undefined) {
+      if (data.category !== undefined) {
+        const fixtureWorkflowSteps = data.category['Workflow step'];
         expect(
           await plugin.locator(getMetadata('h5')).nth(2).textContent(),
         ).toBe('Plugin type');
         for (const fixtureWorkflowStep of fixtureWorkflowSteps) {
-          // const workflowStep = page
-          //   .locator(getByClassName(RESULT_WORKFLOW_STEPS))
-          //   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-          //   .nth(index)
-          //   .textContent();
-          // expect(workflowStep).toContain(fixtureWorkflowStep);
           await expect(
             plugin.getByRole('button', {
               // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
@@ -281,21 +275,12 @@ export async function verifyFilterResults(
 }
 
 export function formateDate(dateStr: string) {
-  const monthNames = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-  ];
-
-  const d = new Date(dateStr);
-  return `${d.getDate()} ${monthNames[d.getMonth()]} ${d.getFullYear()}`;
+  const d = new Date(dateStr)
+    .toLocaleString('en-US', {
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric',
+    })
+    .split(' ');
+  return `${d[1].replace(',', '')} ${d[0]} ${d[2]}`;
 }

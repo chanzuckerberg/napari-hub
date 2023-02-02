@@ -37,8 +37,6 @@ const config: PlaywrightTestConfig = {
         ...devices['Desktop Chrome'],
         baseURL: 'https://www.napari-hub.org/',
         video: 'on',
-        locale: 'en-US',
-        timezoneId: 'America/New_York',
       },
     },
   ],
