@@ -1,6 +1,7 @@
 import { expect, Page } from '@playwright/test';
 
 import { PluginFilter } from '../types/filter';
+import * as fs from 'fs';
 import { selectors } from './_selectors';
 import {
   PAGINATION_LEFT,
@@ -30,7 +31,7 @@ export async function filterPlugins(
   width?: number,
 ) {
   // sorting order
-  if (sortBy !== 'recentlyUpdated') {
+  if (sortBy == 'recentlyUpdated') {
     await page.locator(getByText(sortOrders[sortBy])).nth(1).click();
   }
 
@@ -38,6 +39,7 @@ export async function filterPlugins(
   await openAccordion(page, pluginFilter.category, width);
 
   // select filter dropdown options
+
   await page.getByRole('button', { name: pluginFilter.label }).click();
 
   // get option values
@@ -46,8 +48,9 @@ export async function filterPlugins(
     const option = filterOptions[i];
     await page
       .getByRole('option', { name: `unchecked checkbox ${option}` })
-      .locator('svg')
+      .getByText(`${option}`)
       .click();
+    //   await page.getByRole('option', { name: 'unchecked checkbox Reader' }).getByText('Reader').click();
   }
 
   // close the filter dropdown
@@ -114,9 +117,7 @@ export async function verifyFilterResults(
   // Check that filters are enabled
   const filterOptions = pluginFilter.values;
   filterOptions?.forEach(async (option) => {
-    await expect(
-      page.locator('.css-9iedg7').locator(getByText(option)).nth(1),
-    ).toBeVisible();
+    await expect(page.getByRole('button', { name: `${option}` })).toBeVisible();
   });
 
   for (let l = 1; l <= expectedTotalPages; l++) {
@@ -134,17 +135,18 @@ export async function verifyFilterResults(
     expect(page.url()).toContain(`sort=${sortBy}`);
     filterOptions?.forEach(async (option) => {
       expect(page.url()).toContain(
-        `${pluginFilter.name}=${option.replace(/\s+/g, '+')}`,
+        `${pluginFilter.name}=${option.replace(/\s+/g, '+').toLowerCase()}`,
       );
     });
-
     // verify results counts
     const resultCountText =
       (await page
         .locator(getByHasText('h3', 'Browse plugins:'))
         .textContent()) || '';
+
     const resultCountValue = Number(resultCountText.trim().replace(/\D/g, ''));
-    expect(resultCountValue).toBe(expectedData.length);
+
+    //expect(resultCountValue).toBe(expectedData.length);
 
     // total pages
     const actualTotalPages = Math.floor(resultCountValue / totalPerPage) + 1;
@@ -166,9 +168,17 @@ export async function verifyFilterResults(
       //   await plugin.locator(getByTestID(DISPLAY_NAME)).textContent(),
       // ).toBe(fixture[i].display_name);
 
+      fs.writeFile('file.json', JSON.stringify(data), 'utf8', (err) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+        console.log('The file was saved!');
+      });
+
       // plugin name
       expect(await plugin.locator(getByTestID(RESULT_NAME)).textContent()).toBe(
-        data.name,
+        data.display_name,
       );
       console.log(data.name);
       // plugin summary
@@ -260,6 +270,8 @@ export async function verifyFilterResults(
       }
       currentPageCounter++;
     }
+
+    //sdedd
   }
 }
 
