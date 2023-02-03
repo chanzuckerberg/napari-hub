@@ -25,3 +25,8 @@ export const AUTHORS: Record<string, Array<Array<string>>> = {
   STAGING: [['Abigail McGovern']],
   PROD: [['Abigail McGovern']],
 };
+export const PLUGIN_TYPE: Record<string, Array<Array<string>>> = {
+  LOCAL: [['Talley Lambert']],
+  STAGING: [['Widget']],
+  PROD: [['Abigail McGovern']],
+};

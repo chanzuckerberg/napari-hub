@@ -135,7 +135,7 @@ export async function verifyFilterResults(
     expect(page.url()).toContain(`sort=${sortBy}`);
     filterOptions?.forEach(async (option) => {
       expect(page.url()).toContain(
-        `${pluginFilter.name}=${option.replace(/\s+/g, '+').toLowerCase()}`,
+        `${pluginFilter.name}=${option.replace(/\s+/g, '+')}`,
       );
     });
     // verify results counts
