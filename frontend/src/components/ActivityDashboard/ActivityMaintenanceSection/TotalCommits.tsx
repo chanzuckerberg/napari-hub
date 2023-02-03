@@ -1,17 +1,17 @@
-import dayjs from 'dayjs';
-
 import { TotalStats } from '@/components/ActivityDashboard/TotalStats';
+import { usePluginState } from '@/context/plugin';
+import { usePluginMetrics } from '@/hooks';
 
 export function TotalCommits() {
-  const isLoading = false;
-  const commits = 32;
-  const date = dayjs().subtract(11, 'months');
+  const { plugin } = usePluginState();
+  const { data: metrics, isLoading } = usePluginMetrics(plugin?.name);
+  const stats = metrics?.maintenance.stats;
 
   return (
     <TotalStats
-      count={commits}
+      count={stats?.total_commits ?? 0}
       countI18nKey="activity:commits"
-      date={date}
+      date={plugin?.first_released}
       infoI18nKey="activity:totalCommits.repoCreated"
       isLoading={isLoading}
     />
