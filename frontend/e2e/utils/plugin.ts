@@ -1,15 +1,15 @@
-import { Page } from '@playwright/test';
-import { PluginData } from 'e2e/types/plugin';
+import { expect, Page } from '@playwright/test';
 
+import { PluginData } from '../types/plugin';
 import {
-  PLUGIN_RESULT_AUTHORS,
-  PLUGIN_RESULT_NAME,
-  PLUGIN_RESULT_RELEASE_DATE,
-  PLUGIN_RESULT_SUMMARY,
-  PLUGIN_RESULT_TYPE,
-  PLUGIN_RESULT_VERSION,
-  PLUGIN_RESULT_WORKFLOW_STEPS,
-  PLUGIN_SEARCH_RESULT,
+  RESULT_AUTHORS,
+  RESULT_NAME,
+  RESULT_RELEASE_DATE,
+  RESULT_SUMMARY,
+  RESULT_TYPE,
+  RESULT_VERSION,
+  RESULT_WORKFLOW_STEPS,
+  SEARCH_RESULT,
 } from './constants';
 import { getByDataLabel, getByTestID } from './selectors';
 
@@ -18,14 +18,10 @@ export async function verifyPlugin(
   resultIndex: number,
   expectedData: PluginData,
 ): Promise<any> {
-  const plugin = page
-    .locator(getByTestID(PLUGIN_SEARCH_RESULT))
-    .nth(resultIndex);
+  const plugin = page.locator(getByTestID(SEARCH_RESULT)).nth(resultIndex);
 
   // verify H4 plugin name
-  expect(plugin.locator(getByTestID(PLUGIN_RESULT_NAME))).toBe(
-    expectedData.name,
-  );
+  expect(plugin.locator(getByTestID(RESULT_NAME))).toBe(expectedData.name);
   // verify SPAN plugin name
   // todo: add testid to span element
   expect(
@@ -35,31 +31,29 @@ export async function verifyPlugin(
   ).toBe(expectedData.name);
 
   // verify result summary
-  expect(plugin.locator(getByTestID(PLUGIN_RESULT_SUMMARY))).toBe(
+  expect(plugin.locator(getByTestID(RESULT_SUMMARY))).toBe(
     expectedData.summary,
   );
 
   // verify authors
-  expect(plugin.locator(getByTestID(PLUGIN_RESULT_AUTHORS))).toBe(
+  expect(plugin.locator(getByTestID(RESULT_AUTHORS))).toBe(
     expectedData.authors,
   );
 
   // verify version
-  expect(plugin.locator(getByDataLabel(PLUGIN_RESULT_VERSION))).toBe(
+  expect(plugin.locator(getByDataLabel(RESULT_VERSION))).toBe(
     expectedData.version,
   );
 
   // verify release date
-  expect(plugin.locator(getByDataLabel(PLUGIN_RESULT_RELEASE_DATE))).toBe(
+  expect(plugin.locator(getByDataLabel(RESULT_RELEASE_DATE))).toBe(
     expectedData.release_date,
   );
   // verify plugin type
   if (expectedData.type !== undefined) {
-    expect(plugin.locator(getByDataLabel(PLUGIN_RESULT_TYPE))).toBe(
-      expectedData.type,
-    );
+    expect(plugin.locator(getByDataLabel(RESULT_TYPE))).toBe(expectedData.type);
   } else {
-    expect(plugin.locator(getByDataLabel(PLUGIN_RESULT_TYPE))).toBeUndefined();
+    expect(plugin.locator(getByDataLabel(RESULT_TYPE))).toBeUndefined();
   }
 
   // verify plugin type
@@ -69,7 +63,7 @@ export async function verifyPlugin(
     expect(pluginWorkflowSteps).toBe(expectedData.type);
   } else {
     expect(
-      plugin.locator(getByDataLabel(PLUGIN_RESULT_WORKFLOW_STEPS)),
+      plugin.locator(getByDataLabel(RESULT_WORKFLOW_STEPS)),
     ).toBeUndefined();
   }
 }

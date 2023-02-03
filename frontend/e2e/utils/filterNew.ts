@@ -14,8 +14,6 @@ import {
 import { parseItem } from './fixture';
 import { getByHasText, getByTestID, getByText, getMetadata } from './selectors';
 import { AccordionTitle, maybeOpenAccordion } from './utils';
-import { string } from 'zod';
-import { Login } from '@mui/icons-material';
 
 const totalPerPage = 15;
 
@@ -179,22 +177,13 @@ export async function verifyFilterResults(
       ).toBe(data.summary);
 
       // plugin authors
-      const authorList = [];
-      for (
-        let j = 0;
-        j < (await plugin.locator(getByTestID(RESULT_AUTHORS)).count());
-        j++
-      ) {
-        authorList.push(
-          await plugin
-            .locator(getByTestID(RESULT_AUTHORS))
-            .nth(j)
-            .textContent(),
-        );
-      }
-      for (const author of data.authors) {
-        expect(authorList).toContain(author.name);
-      }
+      const pluginAuthors = await plugin
+        .locator(getByTestID(RESULT_AUTHORS))
+        .allTextContents();
+      const fixtureAuthors = getAuthorNames(data.authors);
+      // check all authors displayed
+      expect(containsAllElements(fixtureAuthors, pluginAuthors)).toBeTruthy();
+
       // plugin version
       expect(await plugin.locator(getMetadata('h5')).nth(0).textContent()).toBe(
         'Version',
@@ -283,4 +272,16 @@ export function formateDate(dateStr: string) {
     })
     .split(' ');
   return `${d[1].replace(',', '')} ${d[0]} ${d[2]}`;
+}
+
+export function containsAllElements(sourceArr: any, targetArr: any) {
+  return sourceArr.every((i) => targetArr.includes(i));
+}
+
+export function getAuthorNames(authorsObj) {
+  const result: Array<string> = [];
+  for (const author of authorsObj) {
+    result.push(author.name);
+  }
+  return result;
 }

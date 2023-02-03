@@ -29,7 +29,7 @@ test.describe('Plugin filter tests', () => {
       };
       // prepare fixture data to compare against
       const fixtureData = searchPluginFixture(filterBy, sortBy);
-      console.log(fixtureData);
+      // console.log(fixtureData);
       await filterPlugins(page, filterBy, sortBy, viewport?.width);
       await verifyFilterResults(page, filterBy, fixtureData, sortBy);
     });

@@ -26,7 +26,7 @@
     "lint:client": "eslint --ignore-pattern src .",
     "lint:src": "eslint src",
     "// Runs e2e tests.": "",
-    "e2e:local": "NODE_ENV=local DEBUG=pw:api npx playwright test --headed -c ./e2e/setup/local.config.ts",
+    "e2e:local": "NODE_ENV=local DEBUG=pw:browser npx playwright test --headed -c ./e2e/setup/local.config.ts",
     "e2e:ci": "NODE_ENV=local DEBUG=pw:api npx playwright test -c ./e2e/setup/local.config.ts",
     "e2e:local:debug": "NODE_ENV=local DEBUG=pw:browser*,pw:api npx playwright test --headed -c ./e2e/setup/local.config.ts",
     "e2e:report": "npx playwright show-report",
