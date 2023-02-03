@@ -61,6 +61,7 @@ export async function fetchRepoData(url: string): Promise<FetchRepoDataResult> {
             forks: data.forks_count,
             issuesAndPRs: data.open_issues_count,
             stars: data.stargazers_count,
+            createdAt: data.created_at,
           };
         }
       } else if (type === 'gitlab') {

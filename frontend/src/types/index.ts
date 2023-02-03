@@ -76,6 +76,7 @@ export interface PluginRepoData {
   forks: number;
   issuesAndPRs: number;
   stars: number;
+  createdAt: string;
 }
 
 export type PluginRepoFetchError = Pick<RequestError, 'name' | 'status'>;
