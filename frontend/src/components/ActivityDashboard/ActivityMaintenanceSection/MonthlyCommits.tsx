@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import { MonthlyStatsChart } from '@/components/ActivityDashboard/MonthlyStatsChart';
 import { usePluginState } from '@/context/plugin';
 import { usePluginMetrics } from '@/hooks';
-import { DataPoint } from '@/types/stats';
+import { DataPoint } from '@/types/metrics';
 
 // TODO Replace with actual requests to the backend
 export function MonthlyCommits() {
@@ -12,11 +12,11 @@ export function MonthlyCommits() {
 
   const dataPoints = useMemo<DataPoint[]>(
     () =>
-      metrics?.activity.timeline.map((point) => ({
+      metrics?.usage.timeline.map((point) => ({
         x: new Date(point.timestamp).getTime(),
         y: point.installs,
       })) ?? [],
-    [metrics?.activity.timeline],
+    [metrics?.usage.timeline],
   );
 
   return (
