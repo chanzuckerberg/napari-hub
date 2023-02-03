@@ -204,10 +204,11 @@ def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
     github_repo_url = metadata.get('code_repository')
     if github_repo_url:
         metadata = {**metadata, **get_github_metadata(github_repo_url)}
-    if 'description' in metadata:
-        if github_repo_url:
-            repo = get_github_repo(github_repo_url)
-            branch = get_github_default_branch(repo)
+    if 'description' in metadata and github_repo_url:
+        repo = get_github_repo(github_repo_url)
+        branch = get_github_default_branch(repo)
+
+        if repo and branch:
             metadata['description'] = resolve_images_for_markdown(
                 metadata['description'],
                 repo,
