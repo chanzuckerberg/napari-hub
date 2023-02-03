@@ -11,8 +11,16 @@ A good example is https://github.com/chanzuckerberg/napari-hub/pull/77.
 
 ## Description
 <!--
-If this PR addresses an issue, set the status for the issue to
-"Pending QA & Release" in the "napari hub backlog" board after the PR has been merged.
+Link related GitHub issues
+
+- If this PR addresses an issue:
+	- And changes require a deployment
+		- Add non-closing keywords and link the issues, e.g. "Addresses #issue-number"
+		- Set the status for the issue to “Pending QA & Release” upon merging
+		- Provide a checklist of any relevant pre-deployment notes, e.g. whether a config or database change is needed
+	- If changes do not require a deployment (e.g. documentation, CI changes, unit tests)
+		- Add closing keywords and link the issues so it's automatically closed, e.g. "Closes #issue-number"
+		  https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue
 -->
 
 ## Demos
