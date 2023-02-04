@@ -544,11 +544,8 @@ def _update_commit_activity(repo_to_plugin_dict):
             imaging.github.commits
         WHERE 
             repo_type = 'plugin'
-            AND month >= dateadd(month, -12, DATE_TRUNC(month, CURRENT_DATE())) 
-            AND month < DATE_TRUNC(month, CURRENT_DATE())
         GROUP BY 1,2
     """
-    repo_to_plugin_dict = _get_repo_to_plugin_dict()
     cursor_list = _execute_query(query, "GITHUB")
     data = {}
     for cursor in cursor_list:
@@ -567,8 +564,12 @@ def get_metrics_for_plugin(plugin: str, limit: str) -> Dict:
     data = get_install_timeline_data(plugin)
     install_stats = _process_for_stats(data)
     timeline = [] if _is_not_valid_limit(limit) else _process_for_timeline(data, int(limit))
-    maintenance_timeline = get_commit_activity(plugin)
-
+    if _is_not_valid_limit(limit):
+        maintenance_timeline = []
+    else:
+        maintenance_timeline = get_commit_activity(plugin)
+        if len(maintenance_timeline) > int(limit):
+            maintenance_timeline = maintenance_timeline[len(maintenance_timeline) - int(limit):len(maintenance_timeline)]
     usage_stats = {
         'total_installs': install_stats.get('totalInstalls', 0),
         'installs_in_last_30_days': get_recent_activity_data().get(plugin, 0)
