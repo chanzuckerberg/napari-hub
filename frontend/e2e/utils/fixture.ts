@@ -151,7 +151,7 @@ export function searchPluginFixture(
     return orderBy(
       filtered,
       [(plugin) => new Date(parseItem(plugin).release_date as string)],
-      ['asc'],
+      ['desc'],
     );
   } else if (sortBy === 'newest') {
     return orderBy(

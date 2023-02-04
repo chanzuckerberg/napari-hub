@@ -155,7 +155,6 @@ export async function verifyFilterResults(
     // validate each plugin details on current page
     let i = 0;
     for (const plugin of await page.locator(getByTestID(SEARCH_RESULT)).all()) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       const data = parseItem(expectedData[i]);
       // plugin display name
       // todo: uncomment after new test id gets deployed to the environment
@@ -191,6 +190,8 @@ export async function verifyFilterResults(
 
       // plugin last update
       const updateDateStr: string = data.release_date.substring(0, 10);
+      console.log(updateDateStr);
+      console.log(data.name);
       expect(await plugin.locator(getMetadata('h5')).nth(1).textContent()).toBe(
         'Last updated',
       );
