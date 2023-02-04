@@ -190,8 +190,6 @@ export async function verifyFilterResults(
 
       // plugin last update
       const updateDateStr: string = data.release_date.substring(0, 10);
-      console.log(updateDateStr);
-      console.log(data.name);
       expect(await plugin.locator(getMetadata('h5')).nth(1).textContent()).toBe(
         'Last updated',
       );
