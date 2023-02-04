@@ -148,11 +148,10 @@ export function searchPluginFixture(
 
   // sort results
   if (sortBy === 'recentlyUpdated') {
-    console.log('been here');
     return orderBy(
       filtered,
       [(plugin) => new Date(parseItem(plugin).release_date as string)],
-      ['desc'],
+      ['asc'],
     );
   } else if (sortBy === 'newest') {
     return orderBy(
