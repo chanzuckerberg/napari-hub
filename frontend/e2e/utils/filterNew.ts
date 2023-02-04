@@ -1,7 +1,6 @@
 import { expect, Page } from '@playwright/test';
 
 import { PluginFilter } from '../types/filter';
-import * as fs from 'fs';
 import { selectors } from './_selectors';
 import {
   PAGINATION_LEFT,
@@ -31,7 +30,7 @@ export async function filterPlugins(
   width?: number,
 ) {
   // sorting order
-  if (sortBy == 'recentlyUpdated') {
+  if (sortBy === 'recentlyUpdated') {
     await page.locator(getByText(sortOrders[sortBy])).nth(1).click();
   }
 
@@ -135,7 +134,7 @@ export async function verifyFilterResults(
     expect(page.url()).toContain(`sort=${sortBy}`);
     filterOptions?.forEach(async (option) => {
       expect(page.url()).toContain(
-        `${pluginFilter.name}=${option.replace(/\s+/g, '+').toLowerCase()}`,
+        `${pluginFilter.name}=${option.replace(/\s+/g, '+')}`,
       );
     });
     // verify results counts
@@ -146,17 +145,13 @@ export async function verifyFilterResults(
 
     const resultCountValue = Number(resultCountText.trim().replace(/\D/g, ''));
 
-    //expect(resultCountValue).toBe(expectedData.length);
+    // result count
+    expect(resultCountValue).toBe(expectedData.length);
 
     // total pages
     const actualTotalPages = Math.floor(resultCountValue / totalPerPage) + 1;
     expect(actualTotalPages).toBe(expectedTotalPages);
 
-    console.log('********************************');
-    console.log(expectedData[0].name);
-    // console.log(expectedData[1].name);
-    // console.log(expectedData[2].name);
-    console.log('********************************');
     // validate each plugin details on current page
     let i = 0;
     for (const plugin of await page.locator(getByTestID(SEARCH_RESULT)).all()) {
@@ -168,19 +163,11 @@ export async function verifyFilterResults(
       //   await plugin.locator(getByTestID(DISPLAY_NAME)).textContent(),
       // ).toBe(fixture[i].display_name);
 
-      fs.writeFile('file.json', JSON.stringify(data), 'utf8', (err) => {
-        if (err) {
-          console.error(err);
-          return;
-        }
-        console.log('The file was saved!');
-      });
-
       // plugin name
       expect(await plugin.locator(getByTestID(RESULT_NAME)).textContent()).toBe(
-        data.display_name,
+        data.name,
       );
-      console.log(data.name);
+
       // plugin summary
       expect(
         await plugin.locator(getByTestID(RESULT_SUMMARY)).textContent(),
@@ -270,8 +257,6 @@ export async function verifyFilterResults(
       }
       currentPageCounter++;
     }
-
-    //sdedd
   }
 }
 
@@ -292,8 +277,9 @@ export function containsAllElements(sourceArr: any, targetArr: any) {
 
 export function getAuthorNames(authorsObj) {
   const result: Array<string> = [];
-  for (const author of authorsObj) {
-    result.push(author.name);
+  const data = parseItem(authorsObj);
+  for (const author of data) {
+    result.push(author.name as string);
   }
   return result;
 }

@@ -36,7 +36,6 @@ export function searchPluginFixture(
   const { key, values } = pluginFilter;
 
   let filtered;
-  console.log('Thois is ++++++++' + values);
   if (key === 'authors') {
     filtered = filter(fixtures, (item) => {
       const result = intersectionBy(
@@ -148,28 +147,20 @@ export function searchPluginFixture(
   }
 
   // sort results
-  let sortedPlugins;
   if (sortBy === 'recentlyUpdated') {
-    sortedPlugins = orderBy(
+    console.log('been here');
+    return orderBy(
       filtered,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      [
-        (plugin) => {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-          return new Date(parseItem(plugin).release_date);
-        },
-      ],
+      [(plugin) => new Date(parseItem(plugin).release_date as string)],
       ['desc'],
     );
   } else if (sortBy === 'newest') {
-    sortedPlugins = orderBy(
+    return orderBy(
       filtered,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      [(plugin) => new Date(parseItem(plugin).first_released)],
+      [(plugin) => new Date(parseItem(plugin).first_released as string)],
       ['desc'],
     );
   } else {
-    sortedPlugins = orderBy(filtered, [(plugin) => plugin.name], ['asc']);
+    return orderBy(filtered, [(plugin) => plugin.name], ['asc']);
   }
-  return sortedPlugins;
 }
