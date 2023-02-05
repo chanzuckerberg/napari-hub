@@ -12,7 +12,7 @@ test.describe('Plugin filter tests', () => {
     await page.goto(`${process.env.BASEURL as string}`);
   });
   TEST_AUTHORS.forEach(async (authors) => {
-    test.only(`should filter by authors ${authors.toString()}`, async ({
+    test(`should filter by authors ${authors.toString()}`, async ({
       page,
       viewport,
     }) => {
@@ -29,7 +29,50 @@ test.describe('Plugin filter tests', () => {
       };
       // prepare fixture data to compare against
       const fixtureData = searchPluginFixture(filterBy, sortBy);
-      // console.log(fixtureData);
+      await filterPlugins(page, filterBy, sortBy, viewport?.width);
+      await verifyFilterResults(page, filterBy, fixtureData, sortBy);
+    });
+  });
+  [['reader'], ['widget', 'writer']].forEach(async (pluginTypes) => {
+    test(`should filter by plugin ${pluginTypes.toString()}`, async ({
+      page,
+      viewport,
+    }) => {
+      // sort by
+      const sortBy = 'recentlyUpdated';
+
+      // filter by
+      const filterBy = {
+        label: 'Plugin type',
+        name: 'pluginType',
+        values: pluginTypes,
+        category: ['Filter by requirement'],
+        key: 'plugin_type',
+      };
+      // prepare fixture data to compare against
+      const fixtureData = searchPluginFixture(filterBy, sortBy);
+      await filterPlugins(page, filterBy, sortBy, viewport?.width);
+      await verifyFilterResults(page, filterBy, fixtureData, sortBy);
+    });
+  });
+  [['3D'], ['2D', 'D3']].forEach(async (supportedData) => {
+    test.only(`should filter by ${supportedData.toString()}`, async ({
+      page,
+      viewport,
+    }) => {
+      // sort by
+      const sortBy = 'recentlyUpdated';
+
+      // filter by
+      const filterBy = {
+        label: 'Supported data',
+        name: 'supportedData',
+        values: supportedData,
+        category: ['Filter by requirement'],
+        key: 'supported_data',
+      };
+      // prepare fixture data to compare against
+      const fixtureData = searchPluginFixture(filterBy, sortBy);
       await filterPlugins(page, filterBy, sortBy, viewport?.width);
       await verifyFilterResults(page, filterBy, fixtureData, sortBy);
     });

@@ -12,7 +12,13 @@ import {
   SEARCH_RESULT,
 } from './constants';
 import { parseItem } from './fixture';
-import { getByHasText, getByTestID, getByText, getMetadata } from './selectors';
+import {
+  getByClassName,
+  getByHasText,
+  getByTestID,
+  getByText,
+  getMetadata,
+} from './selectors';
 import { AccordionTitle, maybeOpenAccordion } from './utils';
 
 const totalPerPage = 15;
@@ -215,17 +221,20 @@ export async function verifyFilterResults(
       }
 
       // plugin workflow steps
-      if (data.category !== undefined) {
+      if (
+        data.category !== undefined &&
+        data.category['Workflow step'] !== undefined
+      ) {
         const fixtureWorkflowSteps = data.category['Workflow step'];
-        expect(
-          await plugin.locator(getMetadata('h5')).nth(2).textContent(),
-        ).toBe('Plugin type');
+        await expect(plugin.locator(getByText('Workflow step'))).toBeVisible();
+
+        if ((await plugin.locator('text=/Show \\d more/i').count()) > 0) {
+          await plugin.locator('text=/Show \\d+ more/i').first().click();
+        }
+
         for (const fixtureWorkflowStep of fixtureWorkflowSteps) {
           await expect(
-            plugin.getByRole('button', {
-              // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-              name: `${fixtureWorkflowStep}`,
-            }),
+            plugin.locator(getByText(fixtureWorkflowStep as string)),
           ).toBeVisible();
         }
       }
