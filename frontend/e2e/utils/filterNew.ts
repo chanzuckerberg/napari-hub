@@ -122,7 +122,9 @@ export async function verifyFilterResults(
   // Check that filters are enabled
   const filterOptions = pluginFilter.values;
   filterOptions?.forEach(async (option) => {
-    await expect(page.getByRole('button', { name: `${option}` })).toBeVisible();
+    await expect(
+      page.getByRole('button', { name: `${option}` }).first(),
+    ).toBeVisible();
   });
 
   for (let l = 1; l <= expectedTotalPages; l++) {

@@ -47,10 +47,13 @@ export function searchPluginFixture(
   }
   if (key === 'supported_data') {
     filtered = filter(fixtures, (item) => {
+      if (!parseItem(item).category) {
+        return false;
+      }
       const result = intersectionBy(
         map(
-          parseItem(item as string).category,
-          (category) => category['Supported data'],
+          parseItem(item as string).category['Supported data'],
+          (data) => data,
         ),
         values,
       );
@@ -59,10 +62,28 @@ export function searchPluginFixture(
   }
   if (key === 'image_modality') {
     filtered = filter(fixtures, (item) => {
+      if (!parseItem(item).category) {
+        return false;
+      }
       const result = intersectionBy(
         map(
-          parseItem(item as string).category_hierarchy,
-          (category_hierarchy) => category_hierarchy['Image modality'],
+          parseItem(item as string).category['Image modality'],
+          (data) => data,
+        ),
+        values,
+      );
+      return result.length !== 0;
+    });
+  }
+  if (key === 'workflow_step') {
+    filtered = filter(fixtures, (item) => {
+      if (!parseItem(item).category) {
+        return false;
+      }
+      const result = intersectionBy(
+        map(
+          parseItem(item as string).category['Workflow step'],
+          (data) => data,
         ),
         values,
       );
