@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import { useTranslation } from 'next-i18next';
 
 import { Text } from '@/components/Text';
+import { DateBucketType, useDateBucketType } from '@/hooks';
 import { I18nKeys } from '@/types/i18n';
 
 import { FormattedDuration } from './FormattedDuration';
@@ -25,6 +26,7 @@ export function RecentStats({
   isLoading,
 }: Props) {
   const { t } = useTranslation(['activity']);
+  const dateBucketType = useDateBucketType(date);
 
   return (
     <Text className="font-light" element="p" variant="h2">
@@ -43,7 +45,15 @@ export function RecentStats({
       )}
 
       {date && !durationI18nKey && (
-        <FormattedDuration date={date} isLoading={isLoading} />
+        <>
+          {t(
+            dateBucketType === DateBucketType.LessThanAWeek
+              ? 'activity:duration.lessThan'
+              : 'activity:duration.over',
+          )}
+
+          <FormattedDuration date={date} isLoading={isLoading} />
+        </>
       )}
     </Text>
   );
