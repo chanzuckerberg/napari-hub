@@ -15,18 +15,21 @@ PLUGIN_NAME_CLEAN = 'string-1'
 MOCK_PLUGIN_RECENT_INSTALLS = {PLUGIN_NAME_CLEAN: 25, 'foo': 10, 'bar': 30}
 MOCK_PLUGIN_LATEST_COMMIT = 1672531200000
 MOCK_PLUGIN_TOTAL_COMMIT = 200
-MOCK_PLUGIN_COMMIT_ACTIVITY = [(1, 1), (2, 2), (3, 3), (4, 4), (5, 5), (6, 6), (7, 7), (8, 8), (9, 9), (10, 10), (11, 11), (12, 12)]
+MOCK_PLUGIN_TOTAL_COMMIT_EMPTY = 0
+MOCK_PLUGIN_COMMIT_ACTIVITY = [{'timestamp': 1643673600000, 'commits': 200}]
+MOCK_PLUGIN_COMMIT_ACTIVITY_EMPTY = []
 
 
 class TestActivityDashboard(unittest.TestCase):
 
     @patch.object(model, 'get_latest_commit', return_value=None)
-    @patch.object(model, 'get_commit_activity', return_value=None)
+    @patch.object(model, 'get_commit_activity', return_value=MOCK_PLUGIN_COMMIT_ACTIVITY_EMPTY)
     @patch.object(model, 'get_recent_activity_data', return_value={})
     @patch.object(model, 'get_install_timeline_data', return_value=EMPTY_DF.copy())
     def test_get_metrics_empty(self, mock_get_install_timeline_data, mock_get_recent_activity_data,  mock_get_commit_activity, mock_get_latest_commit):
         expected = self._generate_expected_metrics(
-            timeline=self._generate_expected_timeline(-3, to_installs=lambda i: 0)
+            timeline=self._generate_expected_timeline(-3, to_installs=lambda i: 0),
+            total_commit=MOCK_PLUGIN_TOTAL_COMMIT_EMPTY,
         )
         self._verify_results('3', expected, mock_get_install_timeline_data, mock_get_recent_activity_data, mock_get_commit_activity, mock_get_latest_commit)
 
@@ -55,7 +58,7 @@ class TestActivityDashboard(unittest.TestCase):
             installs_in_last_30_days=25,
             latest_commit=MOCK_PLUGIN_LATEST_COMMIT,
             total_commit=MOCK_PLUGIN_TOTAL_COMMIT,
-            commit_activity=MOCK_PLUGIN_COMMIT_ACTIVITY
+            commit_activity=MOCK_PLUGIN_COMMIT_ACTIVITY_EMPTY
         )
         self._verify_results('0', expected, mock_get_install_timeline_data, mock_get_recent_activity_data,  mock_get_commit_activity, mock_get_latest_commit)
 
@@ -69,7 +72,7 @@ class TestActivityDashboard(unittest.TestCase):
             installs_in_last_30_days=25,
             latest_commit=MOCK_PLUGIN_LATEST_COMMIT,
             total_commit=MOCK_PLUGIN_TOTAL_COMMIT,
-            commit_activity=MOCK_PLUGIN_COMMIT_ACTIVITY
+            commit_activity=MOCK_PLUGIN_COMMIT_ACTIVITY_EMPTY
         )
         self._verify_results('foo', expected, mock_get_install_timeline_data, mock_get_recent_activity_data,  mock_get_commit_activity, mock_get_latest_commit)
 
@@ -92,7 +95,7 @@ class TestActivityDashboard(unittest.TestCase):
         return [{timestamp_key: to_timestamp(i), installs_key: to_installs(i)} for i in range(start_range, 0)]
 
     @staticmethod
-    def _generate_expected_metrics(timeline=None, total_installs=0, installs_in_last_30_days=0, latest_commit=None, total_commit=None, commit_activity=None):
+    def _generate_expected_metrics(timeline=None, total_installs=0, installs_in_last_30_days=0, latest_commit=None, total_commit=None, commit_activity=[]):
         return {
             'usage': {
                 'timeline': timeline if timeline else [],

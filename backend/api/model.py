@@ -543,7 +543,7 @@ def get_metrics_for_plugin(plugin: str, limit: str) -> Dict:
     install_stats = _process_for_stats(data)
     timeline = [] if _is_not_valid_limit(limit) else _process_for_timeline(data, int(limit))
     commit_activity = get_commit_activity(plugin)
-    if _is_not_valid_limit(limit):
+    if _is_not_valid_limit(limit) or len(commit_activity) == 0:
         maintenance_timeline = []
     else:
         maintenance_timeline = commit_activity.copy()
