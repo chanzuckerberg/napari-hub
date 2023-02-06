@@ -9,7 +9,8 @@ from collections import defaultdict
 import pandas as pd
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
-from api.s3 import get_cache, cache, write_data, get_install_timeline_data, get_latest_commit, get_total_commit, get_commit_activity, get_recent_activity_data
+from api.s3 import get_cache, cache, write_data, get_install_timeline_data, get_latest_commit, get_total_commit, \
+    get_commit_activity, get_recent_activity_data
 from utils.utils import render_description, send_alert, get_attribute, get_category_mapping, parse_manifest
 from utils.datadog import report_metrics
 from api.zulip import notify_new_packages
@@ -94,6 +95,7 @@ def get_frontend_manifest_metadata(plugin, version):
     interpreted_metadata = parse_manifest(raw_metadata)
     return interpreted_metadata
 
+
 def discover_manifest(plugin: str, version: str = None):
     """
     Invoke plugins lambda to generate manifest & write to cache.
@@ -110,6 +112,7 @@ def discover_manifest(plugin: str, version: str = None):
         Payload=json.dumps(lambda_event),
     )
 
+
 def get_manifest(plugin: str, version: str = None) -> dict:
     """
     Get plugin manifest file for a particular plugin, get latest if version is None.
@@ -123,7 +126,7 @@ def get_manifest(plugin: str, version: str = None) -> dict:
     elif version is None:
         version = plugins[plugin]
     plugin_metadata = get_cache(f'cache/{plugin}/{version}-manifest.json')
-    
+
     # plugin_metadata being None indicates manifest is not cached and needs processing 
     if plugin_metadata is None:
         return {'error': 'Manifest not yet processed.'}
@@ -393,7 +396,6 @@ def update_activity_data():
     _update_recent_activity_data()
     repo_to_plugin_dict = _get_repo_to_plugin_dict()
     _update_latest_commits(repo_to_plugin_dict)
-    _update_total_commits(repo_to_plugin_dict)
     _update_commit_activity(repo_to_plugin_dict)
 
 
@@ -430,7 +432,7 @@ def _process_for_timeline(plugin_df, limit):
     start_date = end_date + relativedelta(months=-limit + 1)
     dates = pd.date_range(start=start_date, periods=limit, freq='MS')
     plugin_df = plugin_df[(plugin_df['MONTH'] >= start_date.strftime(date_format)) & (
-                plugin_df['MONTH'] <= end_date.strftime(date_format))]
+            plugin_df['MONTH'] <= end_date.strftime(date_format))]
     result = []
     for cur_date in dates:
         if cur_date in plugin_df['MONTH'].values:
@@ -508,31 +510,6 @@ def _update_latest_commits(repo_to_plugin_dict):
     write_data(json.dumps(data), "activity_dashboard_data/latest_commits.json")
 
 
-def _update_total_commits(repo_to_plugin_dict):
-    """
-    Get the total commit occurred for the plugin
-    """
-    query = f"""
-        SELECT 
-            repo, sum(1) as total_commits
-        FROM 
-            imaging.github.commits
-        WHERE 
-            repo_type = 'plugin'
-        GROUP BY 1
-        ORDER BY total_commits desc   
-    """
-    cursor_list = _execute_query(query, "GITHUB")
-    data = {}
-    for cursor in cursor_list:
-        for row in cursor:
-            repo = row[0]
-            if repo in repo_to_plugin_dict:
-                plugin = repo_to_plugin_dict[repo]
-                data[plugin] = int(row[1])
-    write_data(json.dumps(data), "activity_dashboard_data/total_commits.json")
-
-
 def _update_commit_activity(repo_to_plugin_dict):
     """
     Get the commit activity occurred for the plugin in the past year
@@ -544,11 +521,8 @@ def _update_commit_activity(repo_to_plugin_dict):
             imaging.github.commits
         WHERE 
             repo_type = 'plugin'
-            AND month >= dateadd(month, -12, DATE_TRUNC(month, CURRENT_DATE())) 
-            AND month < DATE_TRUNC(month, CURRENT_DATE())
         GROUP BY 1,2
     """
-    repo_to_plugin_dict = _get_repo_to_plugin_dict()
     cursor_list = _execute_query(query, "GITHUB")
     data = {}
     for cursor in cursor_list:
@@ -556,7 +530,8 @@ def _update_commit_activity(repo_to_plugin_dict):
             repo = row[0]
             if repo in repo_to_plugin_dict:
                 plugin = repo_to_plugin_dict[repo]
-                data.setdefault(plugin, []).append({'timestamp': int(pd.to_datetime(row[1]).strftime("%s")) * 1000, 'commits': int(row[2])})
+                data.setdefault(plugin, []).append(
+                    {'timestamp': int(pd.to_datetime(row[1]).strftime("%s")) * 1000, 'commits': int(row[2])})
     for plugin in data:
         data[plugin] = sorted(data[plugin], key=lambda x: (x['timestamp']))
     write_data(json.dumps(data), "activity_dashboard_data/commit_activity.json")
@@ -567,7 +542,14 @@ def get_metrics_for_plugin(plugin: str, limit: str) -> Dict:
     data = get_install_timeline_data(plugin)
     install_stats = _process_for_stats(data)
     timeline = [] if _is_not_valid_limit(limit) else _process_for_timeline(data, int(limit))
-    maintenance_timeline = get_commit_activity(plugin)
+    commit_activity = get_commit_activity(plugin)
+    if _is_not_valid_limit(limit):
+        maintenance_timeline = []
+    else:
+        maintenance_timeline = commit_activity.copy()
+        if len(maintenance_timeline) > int(limit):
+            maintenance_timeline = maintenance_timeline[
+                                   len(maintenance_timeline) - int(limit):len(maintenance_timeline)]
 
     usage_stats = {
         'total_installs': install_stats.get('totalInstalls', 0),
@@ -575,7 +557,7 @@ def get_metrics_for_plugin(plugin: str, limit: str) -> Dict:
     }
     maintenance_stats = {
         'latest_commit_timestamp': get_latest_commit(plugin),
-        'total_commits': get_total_commit(plugin),
+        'total_commits': sum([item['commits'] for item in commit_activity]),
     }
     usage_data = {
         'timeline': timeline,
