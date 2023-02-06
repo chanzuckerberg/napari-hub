@@ -147,16 +147,10 @@ export function searchPluginFixture(
     });
   }
   if (key === 'license') {
-    filtered = filter(fixtures, (item) => {
-      const result = intersectionBy(
-        map(parseItem(item as string).license, (license) => license),
-        values,
-      );
-      return result.length !== 0;
-    });
     filtered = fixtures.filter(
       (plugin: { license: string }) => plugin.license === values.toString(),
     );
+    return filtered.length !== 0;
   }
 
   if (key === 'operating_system') {

@@ -12,20 +12,9 @@ import {
   SEARCH_RESULT,
 } from './constants';
 import { parseItem } from './fixture';
-import {
-  getByClassName,
-  getByHasText,
-  getByTestID,
-  getByText,
-  getMetadata,
-} from './selectors';
+import { getByHasText, getByTestID, getByText, getMetadata } from './selectors';
 import { AccordionTitle, maybeOpenAccordion } from './utils';
 
-const OPERATING_SYSTEMS = {
-  'Operating System :: macOS': 'macOS',
-  'Operating System :: Windows': 'Windows',
-  'Operating System :: Linux': 'Linux',
-};
 const totalPerPage = 15;
 
 const sortOrders: Record<string, string> = {
@@ -49,7 +38,6 @@ export async function filterPlugins(
   await openAccordion(page, pluginFilter.category, width);
 
   // select filter dropdown options
-
   await page.getByRole('button', { name: pluginFilter.label }).click();
 
   // get option values
@@ -131,8 +119,6 @@ export async function verifyFilterResults(
     ).toBeVisible();
   });
 
-  // console.log(expectedTotalPages);
-  // console.log('****************');
   for (let pageNumber = 1; pageNumber <= expectedTotalPages; pageNumber++) {
     // current page
     const pagination = page.locator(getByTestID(PAGINATION_VALUE));
@@ -143,8 +129,7 @@ export async function verifyFilterResults(
     expect(Number(currentPageValue)).toBe(currentPageCounter);
 
     // verify url
-    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-    expect(page.url()).toContain(`page=${currentPageValue}`);
+    expect(page.url()).toContain(`page=${currentPageValue as string}`);
     expect(page.url()).toContain(`sort=${sortBy}`);
     filterOptions?.forEach(async (option) => {
       const param = pluginFilter.name.replace(
@@ -155,7 +140,8 @@ export async function verifyFilterResults(
         `${param}=${option
           .replace(/\s+/g, '+')
           .replace('macOS', 'mac')
-          .replace('Linux', 'linux')}`,
+          .replace('Linux', 'linux')
+          .replace('Limit+to+plugins+with+open+source+license', 'oss')}`,
       );
     });
     // verify results counts

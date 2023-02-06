@@ -123,7 +123,7 @@ test.describe('Plugin filter tests', () => {
   });
 
   [['macOS'], ['macOS', 'Linux']].forEach(async (operationSystem) => {
-    test.only(`should filter by operating system "${operationSystem.toString()}"`, async ({
+    test(`should filter by operating system "${operationSystem.toString()}"`, async ({
       page,
       viewport,
     }) => {
@@ -137,6 +137,28 @@ test.describe('Plugin filter tests', () => {
         values: operationSystem,
         category: ['Filter by requirement'],
         key: 'operating_system',
+      };
+      // prepare fixture data to compare against
+      const fixtureData = searchPluginFixture(filterBy, sortBy);
+      await filterPlugins(page, filterBy, sortBy, viewport?.width);
+      await verifyFilterResults(page, filterBy, fixtureData, sortBy);
+    });
+  });
+  [['Limit to plugins with open source license']].forEach(async (license) => {
+    test.only(`should filter by license "${license.toString()}"`, async ({
+      page,
+      viewport,
+    }) => {
+      // sort by
+      const sortBy = 'recentlyUpdated';
+
+      // filter by
+      const filterBy = {
+        label: 'License',
+        name: 'license',
+        values: license,
+        category: ['Filter by requirement'],
+        key: 'license',
       };
       // prepare fixture data to compare against
       const fixtureData = searchPluginFixture(filterBy, sortBy);
