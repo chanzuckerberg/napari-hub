@@ -92,7 +92,7 @@ describe('Plugin Search', () => {
   it('should show result with match in name', async () => {
     const query = 'segment';
     await page.goto(getSearchUrl([SearchQueryParams.Search, query]));
-    const name = await page.$('[data-testid=searchResultName]');
+    const name = await page.$('[data-testid=searchResultDisplayName]');
     await expect(name).toHaveText(query);
   });
 
