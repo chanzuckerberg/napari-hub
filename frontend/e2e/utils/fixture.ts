@@ -96,16 +96,15 @@ export function searchPluginFixture(
     });
   }
   if (key === 'python_version') {
-    filtered = filter(fixtures, (item) => {
-      const result = intersectionBy(
-        map(
-          parseItem(item as string).python_version,
-          (pythonVersion) => pythonVersion,
-        ),
-        values,
-      );
-      return result.length !== 0;
-    });
+    const versions: string[] = [];
+    for (let i = 0; i < values.length; i++) {
+      versions.push(`>=${values[i]}`);
+    }
+    filtered = fixtures.filter(
+      (plugin: { python_version: any }) =>
+        plugin.python_version === versions.toString(),
+    );
+    return filtered.length !== 0;
   }
 
   if (key === 'plugin_type') {
@@ -121,27 +120,22 @@ export function searchPluginFixture(
     });
   }
 
-  if (key === 'open_extension') {
+  if (key === 'save_extension' || key === 'open_extension') {
+    const readerWriter =
+      key === 'save_extension'
+        ? 'reader_file_extensions'
+        : 'writer_file_extensions';
+    const ext: string[] = [];
+    for (let i = 0; i < values.length; i++) {
+      ext.push(`${values[i]}`);
+    }
     filtered = filter(fixtures, (item) => {
       const result = intersectionBy(
         map(
-          parseItem(item as string).reader_file_extensions,
+          parseItem(item as string)[readerWriter],
           (extensions) => extensions,
         ),
-        values,
-      );
-      return result.length !== 0;
-    });
-  }
-
-  if (key === 'save_extension') {
-    filtered = filter(fixtures, (item) => {
-      const result = intersectionBy(
-        map(
-          parseItem(item as string).writer_file_extensions,
-          (extensions) => extensions,
-        ),
-        values,
+        ext,
       );
       return result.length !== 0;
     });

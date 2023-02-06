@@ -132,10 +132,7 @@ export async function verifyFilterResults(
     expect(page.url()).toContain(`page=${currentPageValue as string}`);
     expect(page.url()).toContain(`sort=${sortBy}`);
     filterOptions?.forEach(async (option) => {
-      const param = pluginFilter.name.replace(
-        'operatingSystems',
-        'operatingSystem',
-      );
+      const param = pluginFilter.name;
       expect(page.url()).toContain(
         `${param}=${option
           .replace(/\s+/g, '+')

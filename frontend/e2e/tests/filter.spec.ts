@@ -12,7 +12,7 @@ test.describe('Plugin filter tests', () => {
     await page.goto(`${process.env.BASEURL as string}`);
   });
   TEST_AUTHORS.forEach(async (authors) => {
-    test(`should filter by authors "${authors.toString()}"`, async ({
+    test.only(`should filter by authors "${authors.toString()}"`, async ({
       page,
       viewport,
     }) => {
@@ -34,7 +34,7 @@ test.describe('Plugin filter tests', () => {
     });
   });
   [['reader'], ['widget', 'writer']].forEach(async (pluginTypes) => {
-    test(`should filter by plugin plugin type "${pluginTypes.toString()}"`, async ({
+    test.only(`should filter by plugin plugin type "${pluginTypes.toString()}"`, async ({
       page,
       viewport,
     }) => {
@@ -56,7 +56,7 @@ test.describe('Plugin filter tests', () => {
     });
   });
   [['3D'], ['2D', '3D']].forEach(async (supportedData) => {
-    test(`should filter by ${supportedData.toString()}`, async ({
+    test.only(`should filter by ${supportedData.toString()}`, async ({
       page,
       viewport,
     }) => {
@@ -78,7 +78,7 @@ test.describe('Plugin filter tests', () => {
     });
   });
   [['Medical imaging']].forEach(async (modality) => {
-    test(`should filter by image modality "${modality.toString()}"`, async ({
+    test.only(`should filter by image modality "${modality.toString()}"`, async ({
       page,
       viewport,
     }) => {
@@ -100,7 +100,7 @@ test.describe('Plugin filter tests', () => {
     });
   });
   [['Image registration']].forEach(async (workflowSteps) => {
-    test(`should filter by workflow steps "${workflowSteps.toString()}"`, async ({
+    test.only(`should filter by workflow steps "${workflowSteps.toString()}"`, async ({
       page,
       viewport,
     }) => {
@@ -123,7 +123,7 @@ test.describe('Plugin filter tests', () => {
   });
 
   [['macOS'], ['macOS', 'Linux']].forEach(async (operationSystem) => {
-    test(`should filter by operating system "${operationSystem.toString()}"`, async ({
+    test.only(`should filter by operating system "${operationSystem.toString()}"`, async ({
       page,
       viewport,
     }) => {
@@ -133,7 +133,7 @@ test.describe('Plugin filter tests', () => {
       // filter by
       const filterBy = {
         label: 'Operating system',
-        name: 'operatingSystems',
+        name: 'operatingSystem',
         values: operationSystem,
         category: ['Filter by requirement'],
         key: 'operating_system',
@@ -159,6 +159,72 @@ test.describe('Plugin filter tests', () => {
         values: license,
         category: ['Filter by requirement'],
         key: 'license',
+      };
+      // prepare fixture data to compare against
+      const fixtureData = searchPluginFixture(filterBy, sortBy);
+      await filterPlugins(page, filterBy, sortBy, viewport?.width);
+      await verifyFilterResults(page, filterBy, fixtureData, sortBy);
+    });
+  });
+  [['3.6'], ['3.7', '3.9']].forEach(async (version) => {
+    test.only(`should filter by python version "${version.toString()}"`, async ({
+      page,
+      viewport,
+    }) => {
+      // sort by
+      const sortBy = 'recentlyUpdated';
+
+      // filter by
+      const filterBy = {
+        label: 'Python version',
+        name: 'python',
+        values: version,
+        category: ['Filter by requirement'],
+        key: 'python_version',
+      };
+      // prepare fixture data to compare against
+      const fixtureData = searchPluginFixture(filterBy, sortBy);
+      await filterPlugins(page, filterBy, sortBy, viewport?.width);
+      await verifyFilterResults(page, filterBy, fixtureData, sortBy);
+    });
+  });
+  [['jpg'], ['jpg', 'png']].forEach(async (extension) => {
+    test.only(`should filter by save extensions "${extension.toString()}"`, async ({
+      page,
+      viewport,
+    }) => {
+      // sort by
+      const sortBy = 'recentlyUpdated';
+
+      // filter by
+      const filterBy = {
+        label: 'Save extension',
+        name: 'writerFileExtensions',
+        values: extension,
+        category: ['Filter by requirement'],
+        key: 'save_extension',
+      };
+      // prepare fixture data to compare against
+      const fixtureData = searchPluginFixture(filterBy, sortBy);
+      await filterPlugins(page, filterBy, sortBy, viewport?.width);
+      await verifyFilterResults(page, filterBy, fixtureData, sortBy);
+    });
+  });
+  [['jpg'], ['jpg', 'png']].forEach(async (extension) => {
+    test.only(`should filter by open extensions "${extension.toString()}"`, async ({
+      page,
+      viewport,
+    }) => {
+      // sort by
+      const sortBy = 'recentlyUpdated';
+
+      // filter by
+      const filterBy = {
+        label: 'Open extension',
+        name: 'readerFileExtensions',
+        values: extension,
+        category: ['Filter by requirement'],
+        key: 'open_extension',
       };
       // prepare fixture data to compare against
       const fixtureData = searchPluginFixture(filterBy, sortBy);
