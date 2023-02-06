@@ -29,7 +29,7 @@ export function ActivityDashboard() {
       return true;
     }
 
-    const { timeline, stats } = metrics.activity;
+    const { timeline, stats } = metrics.usage;
 
     // Check if timeline is empty and all stats values are 0
     return [timeline.length, Object.values(stats)].every(

@@ -3,7 +3,7 @@ import { useTranslation } from 'next-i18next';
 import { VictoryLabel, VictoryLabelProps } from 'victory';
 
 import { useMediaQuery } from '@/hooks';
-import { DataPoint } from '@/types/stats';
+import { DataPoint } from '@/types/metrics';
 
 import { useMonthlyStats } from './context';
 

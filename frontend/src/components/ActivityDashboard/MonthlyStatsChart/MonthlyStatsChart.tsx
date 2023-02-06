@@ -9,7 +9,7 @@ import { I18n } from '@/components/I18n';
 import { Text } from '@/components/Text';
 import { useMediaQuery } from '@/hooks';
 import { I18nKeys } from '@/types/i18n';
-import { DataPoint } from '@/types/stats';
+import { DataPoint } from '@/types/metrics';
 
 import { MonthlyStatsProvider } from './context';
 import { DateLine } from './DateLine';

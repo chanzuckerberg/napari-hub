@@ -16,21 +16,38 @@ export interface DataPoint {
 }
 
 interface TimelineDataPoint {
-  timestamp: string;
+  timestamp: number;
+}
+
+interface InstallsTimelineDataPoint extends TimelineDataPoint {
   installs: number;
 }
 
-interface PluginActivityStats {
-  totalMonths: number;
-  totalInstalls: number;
-  installsInLast30Days: number;
+interface CommitsTimelineDataPoint extends TimelineDataPoint {
+  commits: number;
 }
 
-interface PluginActivity {
-  timeline: TimelineDataPoint[];
-  stats: PluginActivityStats;
+interface PluginUsageStats {
+  installs_in_last_30_days: number;
+  total_installs: number;
+}
+
+interface PluginUsage {
+  stats: PluginUsageStats;
+  timeline: InstallsTimelineDataPoint[];
+}
+
+interface PluginMaintenanceStats {
+  latest_commit_timestamp: number | null;
+  total_commits: number | null;
+}
+
+interface PluginMaintenance {
+  stats: PluginMaintenanceStats;
+  timeline: CommitsTimelineDataPoint[];
 }
 
 export interface PluginMetrics {
-  activity: PluginActivity;
+  maintenance: PluginMaintenance;
+  usage: PluginUsage;
 }
