@@ -70,7 +70,9 @@ describe('Plugin Sort', () => {
       sortType: SearchSortType.PluginName,
 
       async testResults() {
-        const resultNames = await page.$$('[data-testid=searchResultName]');
+        const resultNames = await page.$$(
+          '[data-testid=searchResultDisplayName]',
+        );
         const names = await Promise.all(
           resultNames.map((result) => result.textContent()),
         );
