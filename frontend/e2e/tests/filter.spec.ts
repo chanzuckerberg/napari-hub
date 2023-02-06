@@ -100,7 +100,7 @@ test.describe('Plugin filter tests', () => {
     });
   });
   [['Image registration']].forEach(async (workflowSteps) => {
-    test.only(`should filter by workflow steps "${workflowSteps.toString()}"`, async ({
+    test(`should filter by workflow steps "${workflowSteps.toString()}"`, async ({
       page,
       viewport,
     }) => {
@@ -114,6 +114,29 @@ test.describe('Plugin filter tests', () => {
         values: workflowSteps,
         category: ['Filter by category'],
         key: 'workflow_step',
+      };
+      // prepare fixture data to compare against
+      const fixtureData = searchPluginFixture(filterBy, sortBy);
+      await filterPlugins(page, filterBy, sortBy, viewport?.width);
+      await verifyFilterResults(page, filterBy, fixtureData, sortBy);
+    });
+  });
+
+  [['macOS'], ['macOS', 'Linux']].forEach(async (operationSystem) => {
+    test.only(`should filter by operating system "${operationSystem.toString()}"`, async ({
+      page,
+      viewport,
+    }) => {
+      // sort by
+      const sortBy = 'recentlyUpdated';
+
+      // filter by
+      const filterBy = {
+        label: 'Operating system',
+        name: 'operatingSystems',
+        values: operationSystem,
+        category: ['Filter by requirement'],
+        key: 'operating_system',
       };
       // prepare fixture data to compare against
       const fixtureData = searchPluginFixture(filterBy, sortBy);

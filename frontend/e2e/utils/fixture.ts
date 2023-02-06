@@ -5,6 +5,11 @@ import { PluginFilter } from '../types/filter';
 
 let pluginFixtureFile = `e2e/fixtures/local.json`;
 const ENV = (process.env.NODE_ENV as string) || '';
+const OPERATING_SYSTEMS: Record<string, string> = {
+  macOS: 'Operating System :: macOS',
+  Windows: 'Operating System :: Microsoft :: Windows :: Windows 10',
+  Linux: 'Operating System :: POSIX :: Linux',
+};
 
 if (ENV === 'staging' || ENV === 'prod') {
   pluginFixtureFile = `e2e/fixtures/${ENV}.json`;
@@ -155,13 +160,17 @@ export function searchPluginFixture(
   }
 
   if (key === 'operating_system') {
+    const operatingSystems = [[], 'Operating System :: OS Independent'];
+    for (let i = 0; i < values.length; i++) {
+      operatingSystems.push(OPERATING_SYSTEMS[values[i]]);
+    }
     filtered = filter(fixtures, (item) => {
       const result = intersectionBy(
         map(
           parseItem(item as string).operating_system,
           (operatingSystem) => operatingSystem,
         ),
-        values,
+        operatingSystems,
       );
       return result.length !== 0;
     });
