@@ -422,8 +422,8 @@ def _update_activity_timeline_data():
     write_data(csv_string, "activity_dashboard_data/plugin_installs.csv")
 
 
-def _is_not_valid_limit(limit):
-    return not limit.isdigit() or limit == '0'
+def _is_valid_limit(limit):
+    return limit.isdigit() and limit != '0'
 
 
 def _process_for_timeline(plugin_df, limit):
@@ -541,15 +541,14 @@ def get_metrics_for_plugin(plugin: str, limit: str) -> Dict:
     plugin = plugin.lower()
     data = get_install_timeline_data(plugin)
     install_stats = _process_for_stats(data)
-    timeline = [] if _is_not_valid_limit(limit) else _process_for_timeline(data, int(limit))
     commit_activity = get_commit_activity(plugin)
-    if _is_not_valid_limit(limit) or len(commit_activity) == 0:
-        maintenance_timeline = []
-    else:
-        maintenance_timeline = commit_activity.copy()
-        if len(maintenance_timeline) > int(limit):
-            maintenance_timeline = maintenance_timeline[
-                                   len(maintenance_timeline) - int(limit):len(maintenance_timeline)]
+
+    timeline = []
+    maintenance_timeline = []
+    if _is_valid_limit(limit):
+        limit = int(limit)
+        timeline = _process_for_timeline(data, limit)
+        maintenance_timeline = commit_activity[-limit:]
 
     usage_stats = {
         'total_installs': install_stats.get('totalInstalls', 0),
