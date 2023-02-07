@@ -21,14 +21,14 @@ const config: PlaywrightTestConfig = {
         outputFile: '../report/test-results.json',
       },
     ],
-    // [
-    //   'html',
-    //   {
-    //     open: 'on-failure',
-    //     host: 'localhost',
-    //     port: 9223,
-    //   },
-    // ],
+    [
+      'html',
+      {
+        open: 'always',
+        host: 'localhost',
+        port: 9223,
+      },
+    ],
   ],
   projects: [
     {
@@ -46,7 +46,7 @@ const config: PlaywrightTestConfig = {
     actionTimeout: 0,
     baseURL: 'https://www.napari-hub.org/',
     screenshot: 'only-on-failure',
-    trace: 'retain-on-failure',
+    trace: 'on',
     video: 'on',
   },
 };

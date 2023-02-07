@@ -12,7 +12,7 @@ test.describe('Plugin filter tests', () => {
     await page.goto(`${process.env.BASEURL as string}`);
   });
   TEST_AUTHORS.forEach(async (authors) => {
-    test.only(`should filter by authors "${authors.toString()}"`, async ({
+    test(`should filter by authors "${authors.toString()}"`, async ({
       page,
       viewport,
     }) => {
@@ -34,7 +34,7 @@ test.describe('Plugin filter tests', () => {
     });
   });
   [['reader'], ['widget', 'writer']].forEach(async (pluginTypes) => {
-    test.only(`should filter by plugin plugin type "${pluginTypes.toString()}"`, async ({
+    test(`should filter by plugin plugin type "${pluginTypes.toString()}"`, async ({
       page,
       viewport,
     }) => {
@@ -56,7 +56,7 @@ test.describe('Plugin filter tests', () => {
     });
   });
   [['3D'], ['2D', '3D']].forEach(async (supportedData) => {
-    test.only(`should filter by ${supportedData.toString()}`, async ({
+    test(`should filter by ${supportedData.toString()}`, async ({
       page,
       viewport,
     }) => {
@@ -78,7 +78,7 @@ test.describe('Plugin filter tests', () => {
     });
   });
   [['Medical imaging']].forEach(async (modality) => {
-    test.only(`should filter by image modality "${modality.toString()}"`, async ({
+    test(`should filter by image modality "${modality.toString()}"`, async ({
       page,
       viewport,
     }) => {
@@ -100,7 +100,7 @@ test.describe('Plugin filter tests', () => {
     });
   });
   [['Image registration']].forEach(async (workflowSteps) => {
-    test.only(`should filter by workflow steps "${workflowSteps.toString()}"`, async ({
+    test(`should filter by workflow steps "${workflowSteps.toString()}"`, async ({
       page,
       viewport,
     }) => {
@@ -123,7 +123,7 @@ test.describe('Plugin filter tests', () => {
   });
 
   [['macOS'], ['macOS', 'Linux']].forEach(async (operationSystem) => {
-    test.only(`should filter by operating system "${operationSystem.toString()}"`, async ({
+    test(`should filter by operating system "${operationSystem.toString()}"`, async ({
       page,
       viewport,
     }) => {
@@ -145,7 +145,7 @@ test.describe('Plugin filter tests', () => {
     });
   });
   [['Limit to plugins with open source license']].forEach(async (license) => {
-    test.only(`should filter by license "${license.toString()}"`, async ({
+    test(`should filter by license "${license.toString()}"`, async ({
       page,
       viewport,
     }) => {
@@ -167,7 +167,7 @@ test.describe('Plugin filter tests', () => {
     });
   });
   [['3.6'], ['3.7', '3.9']].forEach(async (version) => {
-    test.only(`should filter by python version "${version.toString()}"`, async ({
+    test(`should filter by python version "${version.toString()}"`, async ({
       page,
       viewport,
     }) => {
@@ -189,7 +189,7 @@ test.describe('Plugin filter tests', () => {
     });
   });
   [['jpg'], ['jpg', 'png']].forEach(async (extension) => {
-    test.only(`should filter by save extensions "${extension.toString()}"`, async ({
+    test(`should filter by save extensions "${extension.toString()}"`, async ({
       page,
       viewport,
     }) => {
@@ -211,7 +211,7 @@ test.describe('Plugin filter tests', () => {
     });
   });
   [['jpg'], ['jpg', 'png']].forEach(async (extension) => {
-    test.only(`should filter by open extensions "${extension.toString()}"`, async ({
+    test(`should filter by open extensions "${extension.toString()}"`, async ({
       page,
       viewport,
     }) => {

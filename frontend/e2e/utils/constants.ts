@@ -19,6 +19,23 @@ export const RESULT_AUTHORS = 'searchResultAuthor';
 export const PAGINATION_VALUE = 'paginationValue';
 export const PAGINATION_LEFT = 'paginationLeft';
 export const PAGINATION_RIGHT = 'paginationRight';
+export const SEARCH_INPUT = 'searchBarInput';
+export const SEARCH_BUTTON = 'submitQueryButton';
+export const CLEAR_SEARCH = 'clearQueryButton';
+export const PLUGIN_NAME = 'metadata-displayName';
+export const PLUGIN_SUMMARY = 'metadata-summary';
+export const CONTRIBUTING = 'contributing';
+export const LICENSE = 'license';
+export const ISSUES = 'issues';
+export const METADATA_VERSION = 'metadata-version';
+export const METADATA_RELEASE_DATE = 'metadata-releaseDate';
+export const METADATA_FIRST_RELEASED = 'metadata-firstReleased';
+export const METADATA_LICENSE = 'metadata-license';
+export const METADATA_SUPPORTED_DATA = 'metadata-supportedData';
+export const MEATADATA_PLUGIN_TYPE = 'metadata-pluginType';
+export const MEATADATA_PYTHON_VERSION = 'metadata-pythonVersion';
+export const METADATA_OPERATING_SYSTEM = 'metadata-operatingSystems';
+export const METADATA_REQUIREMENTS = 'metadata-requirements';
 
 export const AUTHORS: Record<string, Array<Array<string>>> = {
   LOCAL: [['Talley Lambert'], ['Carsen Stringer', 'Manan Lalit']],
