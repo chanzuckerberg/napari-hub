@@ -7,19 +7,16 @@ import { searchPluginFixture } from '../utils/fixture';
 const ENV = (process.env.NODE_ENV as string) || '';
 const TEST_AUTHORS = AUTHORS[ENV.toUpperCase()];
 const FILE_EXTENSIONS = EXTENSIONS[ENV.toUpperCase()];
-
+const sortBy = 'Recently updated';
 test.describe('Plugin filter tests', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto(`${process.env.BASEURL as string}`);
   });
   TEST_AUTHORS.forEach(async (authors) => {
-    test(`should filter by authors "${authors.toString()}"`, async ({
+    test.only(`should filter by authors "${authors.toString()}"`, async ({
       page,
       viewport,
     }) => {
-      // sort by
-      const sortBy = 'recentlyUpdated';
-
       // filter by
       const filterBy = {
         label: 'Authors',
@@ -36,13 +33,10 @@ test.describe('Plugin filter tests', () => {
     });
   });
   [['reader'], ['widget', 'writer']].forEach(async (pluginTypes) => {
-    test(`should filter by plugin plugin type "${pluginTypes.toString()}"`, async ({
+    test.only(`should filter by plugin type "${pluginTypes.toString()}"`, async ({
       page,
       viewport,
     }) => {
-      // sort by
-      const sortBy = 'recentlyUpdated';
-
       // filter by
       const filterBy = {
         label: 'Plugin type',
@@ -59,13 +53,10 @@ test.describe('Plugin filter tests', () => {
     });
   });
   [['3D'], ['2D', '3D']].forEach(async (supportedData) => {
-    test(`should filter by ${supportedData.toString()}`, async ({
+    test.only(`should filter by ${supportedData.toString()}`, async ({
       page,
       viewport,
     }) => {
-      // sort by
-      const sortBy = 'recentlyUpdated';
-
       // filter by
       const filterBy = {
         label: 'Supported data',
@@ -82,13 +73,10 @@ test.describe('Plugin filter tests', () => {
     });
   });
   [['Medical imaging']].forEach(async (modality) => {
-    test(`should filter by image modality "${modality.toString()}"`, async ({
+    test.only(`should filter by image modality "${modality.toString()}"`, async ({
       page,
       viewport,
     }) => {
-      // sort by
-      const sortBy = 'recentlyUpdated';
-
       // filter by
       const filterBy = {
         label: 'Image modality',
@@ -105,13 +93,10 @@ test.describe('Plugin filter tests', () => {
     });
   });
   [['Image registration']].forEach(async (workflowSteps) => {
-    test(`should filter by workflow steps "${workflowSteps.toString()}"`, async ({
+    test.only(`should filter by workflow steps "${workflowSteps.toString()}"`, async ({
       page,
       viewport,
     }) => {
-      // sort by
-      const sortBy = 'recentlyUpdated';
-
       // filter by
       const filterBy = {
         label: 'Workflow step',
@@ -129,13 +114,10 @@ test.describe('Plugin filter tests', () => {
   });
 
   [['macOS'], ['macOS', 'Linux']].forEach(async (operatingSystem) => {
-    test(`should filter by operating system "${operatingSystem.toString()}"`, async ({
+    test.only(`should filter by operating system "${operatingSystem.toString()}"`, async ({
       page,
       viewport,
     }) => {
-      // sort by
-      const sortBy = 'recentlyUpdated';
-
       // filter by
       const filterBy = {
         label: 'Operating system',
@@ -156,13 +138,10 @@ test.describe('Plugin filter tests', () => {
     });
   });
   [['Limit to plugins with open source license']].forEach(async (license) => {
-    test(`should filter by license "${license.toString()}"`, async ({
+    test.only(`should filter by license "${license.toString()}"`, async ({
       page,
       viewport,
     }) => {
-      // sort by
-      const sortBy = 'recentlyUpdated';
-
       // filter by
       const filterBy = {
         label: 'License',
@@ -179,13 +158,10 @@ test.describe('Plugin filter tests', () => {
     });
   });
   [['3.6'], ['3.7', '3.9']].forEach(async (version) => {
-    test(`should filter by python version "${version.toString()}"`, async ({
+    test.only(`should filter by python version "${version.toString()}"`, async ({
       page,
       viewport,
     }) => {
-      // sort by
-      const sortBy = 'recentlyUpdated';
-
       // filter by
       const filterBy = {
         label: 'Python version',
@@ -202,13 +178,10 @@ test.describe('Plugin filter tests', () => {
     });
   });
   FILE_EXTENSIONS.forEach(async (extension) => {
-    test(`should filter by save extensions "${extension.toString()}"`, async ({
+    test.only(`should filter by save extensions "${extension.toString()}"`, async ({
       page,
       viewport,
     }) => {
-      // sort by
-      const sortBy = 'recentlyUpdated';
-
       // filter by
       const filterBy = {
         label: 'Save extension',
@@ -225,13 +198,10 @@ test.describe('Plugin filter tests', () => {
     });
   });
   FILE_EXTENSIONS.forEach(async (extension) => {
-    test(`should filter by open extensions "${extension.toString()}"`, async ({
+    test.only(`should filter by open extensions "${extension.toString()}"`, async ({
       page,
       viewport,
     }) => {
-      // sort by
-      const sortBy = 'recentlyUpdated';
-
       // filter by
       const filterBy = {
         label: 'Open extension',

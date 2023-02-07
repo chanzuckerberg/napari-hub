@@ -22,21 +22,19 @@ import {
 const totalPerPage = 15;
 
 const sortOrders: Record<string, string> = {
-  recentlyUpdated: 'Recently updated',
-  pluginName: 'Plugin name',
-  newest: 'Newest',
+  'Recently updated': 'recentlyUpdated',
+  'Plugin name': 'pluginName',
+  Newest: 'newest',
 };
 
 export async function filterPlugins(
   page: Page,
   pluginFilter: PluginFilter,
-  sortBy = 'recentlyUpdated',
+  sortBy = 'Recently updated',
   width?: number,
 ) {
   // sorting order
-  if (sortBy === 'recentlyUpdated') {
-    await page.locator(getByText(sortOrders[sortBy])).nth(1).click();
-  }
+  await page.getByRole('radio', { name: sortBy }).check();
 
   // on smaller screens the filter types are collapsed, so first click the accordion
   await openAccordion(page, pluginFilter.category, width);
@@ -112,7 +110,7 @@ export async function verifyFilterResults(
   pluginFilter: PluginFilter,
   expectedData: any,
   params: string | (string | string[])[][],
-  sortBy = 'recentlyUpdated',
+  sortBy = 'Recently updated',
 ) {
   let currentPageCounter = 1;
   const expectedTotalPages = Math.floor(expectedData.length / totalPerPage) + 1;
@@ -135,7 +133,7 @@ export async function verifyFilterResults(
 
     // verify url
     expect(page.url()).toContain(`page=${currentPageValue as string}`);
-    expect(page.url()).toContain(`sort=${sortBy}`);
+    expect(page.url()).toContain(`sort=${sortOrders[sortBy]}`);
     for (const [key, value] of params) {
       const expected = getQueryParameterValues(page, key as string);
       const diff = expected.filter((x) => !value.includes(x));
@@ -274,10 +272,10 @@ export function formateDate(dateStr: string) {
 }
 
 export function containsAllElements(sourceArr: any, targetArr: any) {
-  return sourceArr.every((i) => targetArr.includes(i));
+  return sourceArr.every((i: any) => targetArr.includes(i));
 }
 
-export function getAuthorNames(authorsObj) {
+export function getAuthorNames(authorsObj: any) {
   const result: Array<string> = [];
   const data = parseItem(authorsObj);
   for (const author of data) {

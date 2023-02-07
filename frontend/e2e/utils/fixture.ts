@@ -165,7 +165,7 @@ export function searchPluginFixture(
   }
 
   // sort results
-  if (sortBy === 'recentlyUpdated') {
+  if (sortBy === 'Recently updated') {
     return orderBy(
       filtered,
       [(plugin) => new Date(parseItem(plugin).release_date as string)],
