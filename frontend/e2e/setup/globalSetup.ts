@@ -23,7 +23,7 @@ async function globalSetup(config: FullConfig): Promise<void> {
   }
 
   // for staging & prd we need to create test data
-  if (ENV === 'staging' || ENV === 'prod') {
+  if (ENV === 'staging_1' || ENV === 'prod') {
     const pluginDataFile = `e2e/fixtures/${ENV}.json`;
     const api = API[ENV.toUpperCase()];
 
