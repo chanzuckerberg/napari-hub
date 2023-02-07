@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 import { satisfies } from '@renovate/pep440';
 
-import { testPluginFilter } from '../../utils/filter';
+import { testPluginFilter } from '../../utils/filter_tobe_deleted';
 
 test.describe('Plugin filter tests', () => {
   // test('should filter by python version', async ({ page, viewport }) => {
