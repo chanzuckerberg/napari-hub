@@ -26,9 +26,8 @@ import { getByID, getByTestID } from '../utils/selectors';
 import { formateDate } from '../utils/filterNew';
 
 const ENV = (process.env.NODE_ENV as string) || '';
-const TEST_AUTHORS = AUTHORS[ENV.toUpperCase()];
 
-test.describe('Utility tests', () => {
+test.describe('Plugin deatils tests', () => {
   test.only('should verify details page', async ({ page }) => {
     await page.goto(`${process.env.BASEURL as string}`);
     const query = 'napari-console';
