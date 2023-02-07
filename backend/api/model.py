@@ -530,8 +530,11 @@ def _update_commit_activity(repo_to_plugin_dict):
             repo = row[0]
             if repo in repo_to_plugin_dict:
                 plugin = repo_to_plugin_dict[repo]
-                data.setdefault(plugin, []).append(
-                    {'timestamp': int(pd.to_datetime(row[1]).strftime("%s")) * 1000, 'commits': int(row[2])})
+                timestamp_raw = row[1]
+                timestamp = int(pd.to_datetime(timestamp_raw).strftime("%s")) * 1000
+                commits = int(row[2])
+                obj = {'timestamp': timestamp, 'commits': commits}
+                data.setdefault(plugin, []).append(obj)
     for plugin in data:
         data[plugin] = sorted(data[plugin], key=lambda x: (x['timestamp']))
     write_data(json.dumps(data), "activity_dashboard_data/commit_activity.json")
