@@ -9,8 +9,7 @@ from collections import defaultdict
 import pandas as pd
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
-from api.s3 import get_cache, cache, write_data, get_install_timeline_data, get_latest_commit, \
-    get_commit_activity, get_recent_activity_data
+from api.s3 import get_cache, cache, write_data, get_install_timeline_data, get_latest_commit, get_commit_activity, get_recent_activity_data
 from utils.utils import render_description, send_alert, get_attribute, get_category_mapping, parse_manifest
 from utils.datadog import report_metrics
 from api.zulip import notify_new_packages
@@ -525,17 +524,12 @@ def _update_commit_activity(repo_to_plugin_dict):
     """
     cursor_list = _execute_query(query, "GITHUB")
     data = {}
-    fields = ['repo', 'month', 'num_commits']
     for cursor in cursor_list:
-        for row in cursor:
-            dict_row = dict(zip(fields, row))
-            repo = dict_row.get('repo')
+        for repo, month, num_commits in cursor:
             if repo in repo_to_plugin_dict:
                 plugin = repo_to_plugin_dict[repo]
-                timestamp_raw = dict_row.get('month')
-                timestamp = int(pd.to_datetime(timestamp_raw).strftime("%s")) * 1000
-                commits_raw = dict_row.get('num_commits')
-                commits = int(commits_raw)
+                timestamp = int(pd.to_datetime(month).strftime("%s")) * 1000
+                commits = int(num_commits)
                 obj = {'timestamp': timestamp, 'commits': commits}
                 data.setdefault(plugin, []).append(obj)
     for plugin in data:
