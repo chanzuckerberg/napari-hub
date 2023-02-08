@@ -525,14 +525,17 @@ def _update_commit_activity(repo_to_plugin_dict):
     """
     cursor_list = _execute_query(query, "GITHUB")
     data = {}
+    fields = ['repo', 'month', 'num_commits']
     for cursor in cursor_list:
         for row in cursor:
-            repo = row[0]
+            dict_row = dict(zip(fields, row))
+            repo = dict_row.get('repo')
             if repo in repo_to_plugin_dict:
                 plugin = repo_to_plugin_dict[repo]
-                timestamp_raw = row[1]
+                timestamp_raw = dict_row.get('month')
                 timestamp = int(pd.to_datetime(timestamp_raw).strftime("%s")) * 1000
-                commits = int(row[2])
+                commits_raw = dict_row.get('num_commits')
+                commits = int(commits_raw)
                 obj = {'timestamp': timestamp, 'commits': commits}
                 data.setdefault(plugin, []).append(obj)
     for plugin in data:
