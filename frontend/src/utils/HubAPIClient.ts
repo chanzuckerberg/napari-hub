@@ -5,11 +5,12 @@ import axios from 'axios';
 import { BROWSER } from '@/constants/env';
 import { PluginData, PluginIndexData } from '@/types';
 import { CollectionData, CollectionIndexData } from '@/types/collections';
-import { PluginMetrics } from '@/types/stats';
+import { PluginMetrics } from '@/types/metrics';
 
 import {
   validateCollectionData,
   validateCollectionIndexData,
+  validateMetricsData,
   validatePluginData,
   validatePluginIndexData,
 } from './validate';
@@ -96,7 +97,7 @@ class HubAPIClient {
 
   async getPluginMetrics(name: string): Promise<PluginMetrics> {
     const { data } = await this.api.get<PluginMetrics>(`/metrics/${name}`);
-    return data;
+    return validateMetricsData(data);
   }
 }
 

@@ -4,7 +4,7 @@ import { VictoryLabel, VictoryLabelProps } from 'victory';
 
 import { usePluginState } from '@/context/plugin';
 import { useMediaQuery } from '@/hooks';
-import { DataPoint } from '@/types/stats';
+import { DataPoint } from '@/types/metrics';
 
 export function PublishedLine(props: VictoryLabelProps) {
   const [t] = useTranslation(['activity']);

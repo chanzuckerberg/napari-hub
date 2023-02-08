@@ -28,4 +28,5 @@ export const DEFAULT_REPO_DATA: PluginRepoData = {
   forks: 0,
   issuesAndPRs: 0,
   stars: 0,
+  createdAt: '',
 };

@@ -228,7 +228,10 @@ export function PluginSearchResult({
           {/* Wrapper div to group plugin name and summary  */}
           <div>
             {/* Plugin name */}
-            <h4 className="font-bold text-lg" data-testid="searchResultName">
+            <h4
+              className="font-bold text-lg"
+              data-testid="searchResultDisplayName"
+            >
               <SkeletonLoader
                 render={() =>
                   renderText(
@@ -244,7 +247,10 @@ export function PluginSearchResult({
             </h4>
 
             {isNpe2Enabled && (
-              <span className="mt-sds-m screen-495:mt-sds-l text-[0.6875rem]">
+              <span
+                className="mt-sds-m screen-495:mt-sds-l text-[0.6875rem]"
+                data-testid="searchResultName"
+              >
                 <SkeletonLoader
                   className="h-12"
                   render={() => renderText(plugin.name, matches.name?.match)}

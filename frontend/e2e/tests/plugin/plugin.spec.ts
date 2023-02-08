@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-import { selectors } from '../../utils/_selectors';
+import { selectors } from '../../utils/selectors';
 import { getTestURL } from '../../utils/utils';
 
 test.describe('/plugin (Plugin Page)', () => {
