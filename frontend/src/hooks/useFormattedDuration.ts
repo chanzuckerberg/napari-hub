@@ -11,9 +11,10 @@ export enum DateBucketType {
 }
 
 export function useDateBucketType(
-  date: dayjs.Dayjs,
+  dateConfig: dayjs.ConfigType,
   now = dayjs(),
 ): DateBucketType {
+  const date = dayjs(dateConfig);
   const days = now.diff(date, 'day');
 
   if (days < 7) {

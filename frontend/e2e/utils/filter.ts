@@ -1,8 +1,9 @@
+/* eslint-disable no-await-in-loop */
 import { expect, Page } from '@playwright/test';
 
 import { FilterKey, FilterType } from '@/store/search/search.store';
 
-import { selectors } from './_selectors';
+import { selectors } from './selectors';
 import { getSearchResultMetadata } from './sort';
 import {
   AccordionTitle,

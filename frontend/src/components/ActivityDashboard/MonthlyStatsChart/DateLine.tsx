@@ -2,17 +2,22 @@ import dayjs from 'dayjs';
 import { useTranslation } from 'next-i18next';
 import { VictoryLabel, VictoryLabelProps } from 'victory';
 
-import { usePluginState } from '@/context/plugin';
 import { useMediaQuery } from '@/hooks';
-import { DataPoint } from '@/types/stats';
+import { DataPoint } from '@/types/metrics';
 
-export function PublishedLine(props: VictoryLabelProps) {
+import { useMonthlyStats } from './context';
+
+export function DateLine(props: VictoryLabelProps) {
   const [t] = useTranslation(['activity']);
   const isScreen600 = useMediaQuery({ minWidth: 'screen-600' });
-  const { plugin } = usePluginState();
   const { x = 0, datum } = props;
   const point = datum as DataPoint;
-  const release = dayjs(plugin?.first_released);
+  const {
+    dateLineI18nKey,
+    startDate,
+    dateLineLabelYOffset: dateLineYOffset,
+  } = useMonthlyStats();
+  const release = dayjs(startDate);
 
   if (
     point.y === null ||
@@ -39,9 +44,9 @@ export function PublishedLine(props: VictoryLabelProps) {
       <VictoryLabel
         {...props}
         x={x}
-        y={isScreen600 ? 110 : 80}
+        y={(isScreen600 ? 110 : 80) + dateLineYOffset}
         angle={-90}
-        text={t('activity:monthlyInstalls.publicRelease')}
+        text={t(dateLineI18nKey) as string}
         style={{
           fontFamily: 'Barlow',
           fontSize: isScreen600 ? 18 : 11,

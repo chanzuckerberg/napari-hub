@@ -108,7 +108,6 @@ function MetadataListItem({ inline, title, values }: MetadataListItemProps) {
                   <Link
                     className="ml-sds-xxs underline inline -mt-sds-xxs"
                     href={value.href}
-                    newTab={!internalLink}
                     onClick={
                       internalLink
                         ? undefined

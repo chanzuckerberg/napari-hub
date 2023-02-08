@@ -1,9 +1,12 @@
 import Skeleton from '@mui/material/Skeleton';
+import clsx from 'clsx';
+import { isObject } from 'lodash';
 import dynamic from 'next/dynamic';
-import { ReactNode, useEffect, useMemo } from 'react';
+import { ReactNode, RefObject, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSnapshot } from 'valtio';
 
+import { CategoryChipContainer } from '@/components/CategoryChip';
 import { Markdown } from '@/components/Markdown';
 import { MetadataHighlighter } from '@/components/MetadataHighlighter';
 import { SkeletonLoader } from '@/components/SkeletonLoader';
@@ -12,6 +15,7 @@ import { useLoadingState } from '@/context/loading';
 import { usePluginState } from '@/context/plugin';
 import { useMediaQuery, usePlausible } from '@/hooks';
 import { pluginTabsStore, resetPluginTabs } from '@/store/pluginTabs';
+import { HubDimension } from '@/types';
 import { PluginTabType } from '@/types/plugin';
 
 import { CallToActionButton } from './CallToActionButton';
@@ -55,7 +59,11 @@ function usePluginTabs() {
   }, [plugin?.citations, t]);
 }
 
-export function PluginTabs() {
+interface Props {
+  containerRef: RefObject<HTMLElement>;
+}
+
+export function PluginTabs({ containerRef }: Props) {
   const { plugin, isEmptyDescription } = usePluginState();
   const [t] = useTranslation(['pluginPage', 'preview']);
   const { activeTab } = useSnapshot(pluginTabsStore);
@@ -82,6 +90,36 @@ export function PluginTabs() {
   if (activeTab === PluginTabType.Description) {
     tabContent = (
       <>
+        {/* Plugin categories */}
+        <ul
+          className={clsx(
+            'flex flex-col text-xs mt-sds-xl',
+            'mb-sds-l screen-495:mb-sds-xl',
+            'gap-sds-m screen-495:gap-sds-l',
+          )}
+        >
+          <SkeletonLoader
+            render={() =>
+              plugin?.category_hierarchy &&
+              isObject(plugin.category_hierarchy) &&
+              Object.entries(plugin.category_hierarchy)
+                .filter(
+                  ([pluginDimension]) =>
+                    !pluginDimension.includes('Supported data'),
+                )
+                .map(([pluginDimension, pluginHierarchies]) => (
+                  <CategoryChipContainer
+                    key={pluginDimension}
+                    dimension={pluginDimension as HubDimension}
+                    hierarchies={pluginHierarchies as string[][]}
+                    containerRef={containerRef}
+                    pluginName={plugin.name ?? ''}
+                  />
+                ))
+            }
+          />
+        </ul>
+
         <SkeletonLoader
           className="h-[600px] mb-sds-xxl"
           render={() => (
@@ -117,7 +155,7 @@ export function PluginTabs() {
   }
 
   return (
-    <>
+    <div className="mt-sds-xl screen-495:mt-sds-xxl">
       <Tabs
         tabs={tabs}
         activeTab={activeTab}
@@ -133,6 +171,6 @@ export function PluginTabs() {
       />
 
       {tabContent}
-    </>
+    </div>
   );
 }

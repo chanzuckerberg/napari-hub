@@ -171,7 +171,7 @@ export function PluginMetadata({
   useEffect(() => {}, []);
 
   const divider = (
-    <Divider className="mb-sds-s screen-875:hidden screen-1425:block" />
+    <Divider className="mb-sds-s screen-875:hidden screen-1425:block bg-gray-300" />
   );
 
   return (

@@ -93,7 +93,6 @@ type WithLabelsInputData<V> = {
  */
 type WithLabelsResult<V> = {
   label: string;
-  previewLabel: string;
   value: V;
 };
 

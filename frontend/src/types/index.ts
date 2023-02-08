@@ -76,6 +76,7 @@ export interface PluginRepoData {
   forks: number;
   issuesAndPRs: number;
   stars: number;
+  createdAt: string;
 }
 
 export type PluginRepoFetchError = Pick<RequestError, 'name' | 'status'>;
@@ -92,10 +93,6 @@ export interface LinkInfo {
    * Title of the link to use.
    */
   title: string;
-  /**
-   * If the link should open in a new tab.
-   */
-  newTab?: boolean;
 }
 
 export type ClassState<T extends object> = {

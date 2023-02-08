@@ -21,6 +21,8 @@ export async function serialize(
         html,
         [externalLinks, { target: '_blank', rel: 'noreferrer' }],
       ],
+      // https://stackoverflow.com/questions/74807529/jsxdev-is-not-a-function-when-using-mdxremote
+      development: false,
     },
   });
 }

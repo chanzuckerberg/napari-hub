@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
 
-import { DataPoint } from '@/types/stats';
+import { DataPoint } from '@/types/metrics';
 
 const getKey = (date: dayjs.ConfigType) => dayjs(date).format('MM/YYYY');
 

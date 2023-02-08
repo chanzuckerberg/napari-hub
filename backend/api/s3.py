@@ -6,7 +6,7 @@ import os
 import os.path
 from datetime import datetime
 from io import StringIO
-from typing import Union, IO, List, Dict
+from typing import Union, IO, List, Dict, Any
 
 import boto3
 import pandas as pd
@@ -89,10 +89,31 @@ def get_install_timeline_data(plugin):
     return plugin_df
 
 
-def get_recent_activity_data() -> Dict:
+def _load_json_from_s3(path: str) -> Dict:
+    """
+    Load activity dashboard .json file from s3
+
+    :param path: path to file in s3
+    :return: dictionary that consists of path-specific data for activity_dashboard backend endpoints
+    """
     try:
-        return json.loads(_get_from_s3("activity_dashboard_data/recent_installs.json"))
+        return json.loads(_get_from_s3(path))
     except Exception as e:
         logging.error(e)
         return {}
 
+
+def get_recent_activity_data() -> Dict:
+    return _load_json_from_s3("activity_dashboard_data/recent_installs.json")
+
+
+def get_latest_commit(plugin: str) -> Any:
+    return _load_json_from_s3("activity_dashboard_data/latest_commits.json").get(plugin)
+
+
+def get_total_commit(plugin: str) -> Any:
+    return _load_json_from_s3("activity_dashboard_data/total_commits.json").get(plugin)
+
+
+def get_commit_activity(plugin: str) -> List:
+    return _load_json_from_s3("activity_dashboard_data/commit_activity.json").get(plugin, [])

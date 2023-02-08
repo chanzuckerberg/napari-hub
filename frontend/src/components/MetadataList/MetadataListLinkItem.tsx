@@ -69,7 +69,6 @@ export function MetadataListLinkItem({
         <Link
           className={clsx(itemClassName, 'underline')}
           href={href}
-          newTab={!internalLink}
           onClick={
             internalLink
               ? undefined
