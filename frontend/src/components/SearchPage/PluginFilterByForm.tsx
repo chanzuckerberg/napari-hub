@@ -52,7 +52,6 @@ const FILTER_LABEL_MAP: Record<FilterType, TFuncKey<'homePage'>> = {
 function useFilterLabel(filterType: FilterType) {
   const [t] = useTranslation(['homePage']);
 
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
   return t(`homePage:${FILTER_LABEL_MAP[filterType]}`) as string;
 }
 

@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 
 import { SearchQueryParams, SearchSortType } from '@/store/search/constants';
 
-import { selectors } from '../../utils/_selectors';
+import { selectors } from '../../utils/selectors';
 import { submitQuery } from '../../utils/search';
 import {
   AccordionTitle,

@@ -1,6 +1,6 @@
 import { expect, Page } from '@playwright/test';
 
-import { selectors } from './_selectors';
+import { selectors } from './selectors';
 
 export async function getResultNames(page: Page) {
   return page.locator(selectors.search.resultName).allInnerTexts();

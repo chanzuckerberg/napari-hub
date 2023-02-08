@@ -1,7 +1,8 @@
+/* eslint-disable no-await-in-loop */
 import { expect, Page } from '@playwright/test';
 
 import { PluginFilter } from '../types/filter';
-import { selectors } from './_selectors';
+import { selectors } from './selectors';
 import {
   PAGINATION_LEFT,
   PAGINATION_RIGHT,

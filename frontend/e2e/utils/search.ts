@@ -1,6 +1,6 @@
 import { Page } from '@playwright/test';
 
-import { selectors } from './_selectors';
+import { selectors } from './selectors';
 
 /**
  * Submits a new search query into the search bar.

@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { expect, test } from '@playwright/test';
 import dayjs from 'dayjs';
 
 import { SearchSortType } from '@/store/search/constants';
 
-import { selectors } from '../../utils/_selectors';
+import { selectors } from '../../utils/selectors';
 import {
   clickOnRadio,
   getSearchResultMetadata,
