@@ -8,7 +8,7 @@ dotenv.config({ path: path.resolve(`.env`) });
  * @param config
  */
 
-export function globalSetup(config: FullConfig): void {
+function globalSetup(config: FullConfig): void {
   // set base url in as environment variable so it is accessible outside tests
   const { baseURL } = config.projects[0].use || 'http://localhost:8080';
   process.env.BASEURL = baseURL;
@@ -17,3 +17,6 @@ export function globalSetup(config: FullConfig): void {
     process.env.CI = 'true';
   }
 }
+
+// eslint-disable-next-line import/no-default-export
+export default globalSetup;
