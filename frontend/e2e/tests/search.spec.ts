@@ -1,10 +1,13 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { expect, test } from '@playwright/test';
+import { SEARCH_RESULT } from 'e2e/utils/constants';
+import { parseItem, searchPluginFixture } from 'e2e/utils/fixture';
+import { verifyPlugin } from 'e2e/utils/plugin';
 import { searchPlugins } from 'e2e/utils/search';
 
 import { SearchQueryParams, SearchSortType } from '@/store/search/constants';
 
-import { submitQuery } from '../utils/search';
-import { selectors } from '../utils/selectors';
+import { getByTestID, selectors } from '../utils/selectors';
 import {
   AccordionTitle,
   getQueryParameterValues,
@@ -15,6 +18,7 @@ import {
 
 const query = 'video';
 const pluginName = 'napari_video';
+const fixture = searchPluginFixture([query]);
 
 test.describe('Plugin search tests', () => {
   test('should update URL parameter when entering query', async ({ page }) => {
@@ -29,18 +33,26 @@ test.describe('Plugin search tests', () => {
 
   test('should render search results for query', async ({ page }) => {
     await searchPlugins(page, query);
-    // todo: compare with fixture data
-    await expect(page.locator(selectors.search.result)).toContainText(
-      pluginName,
-    );
+    let i = 0;
+    for (const plugin of await page.locator(getByTestID(SEARCH_RESULT)).all()) {
+      const data = parseItem(fixture[i]);
+      // eslint-disable-next-line no-await-in-loop
+      await verifyPlugin(plugin, data);
+      i += 1;
+    }
   });
 
   test('should render search results when opening URL with query', async ({
     page,
   }) => {
     await page.goto(getSearchUrl([SearchQueryParams.Search, query]));
-    // todo: compare with fixture data
-    await expect(page.locator(selectors.search.result)).toHaveText(pluginName);
+    let i = 0;
+    for (const plugin of await page.locator(getByTestID(SEARCH_RESULT)).all()) {
+      const data = parseItem(fixture[i]);
+      // eslint-disable-next-line no-await-in-loop
+      await verifyPlugin(plugin, data);
+      i += 1;
+    }
   });
 
   test('should render original list when query is cleared', async ({
@@ -67,7 +79,7 @@ test.describe('Plugin search tests', () => {
     page,
   }) => {
     await page.goto(getTestURL('/about'));
-    await submitQuery(page, query);
+    await searchPlugins(page, query);
     await page.waitForNavigation();
 
     const expectedUrl = getSearchUrl(
@@ -85,7 +97,7 @@ test.describe('Plugin search tests', () => {
     page,
   }) => {
     await page.goto(getSearchUrl());
-    await submitQuery(page, query);
+    await searchPlugins(page, query);
     await page.click('[data-testid=searchResult]');
     await page.waitForNavigation();
 
@@ -111,15 +123,9 @@ test.describe('Plugin search tests', () => {
       'Recently updated',
     );
 
-    await submitQuery(page, query);
+    await searchPlugins(page, query);
     await expect(page.locator(selectors.sort.selected).first()).toHaveText(
       'Relevance',
     );
-  });
-
-  test('should show matched result', async ({ page }) => {
-    await submitQuery(page, query);
-
-    // todo: use verify plugin utility to validate
   });
 });

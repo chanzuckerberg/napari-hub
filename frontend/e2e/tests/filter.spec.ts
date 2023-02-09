@@ -2,7 +2,7 @@ import { test } from '@playwright/test';
 
 import { AUTHORS, EXTENSIONS } from '../utils/constants';
 import { filterPlugins, verifyFilterResults } from '../utils/filter';
-import { searchPluginFixture } from '../utils/fixture';
+import { filterPluginFixture } from '../utils/fixture';
 
 const ENV = (process.env.NODE_ENV as string) || '';
 const TEST_AUTHORS = AUTHORS[ENV.toUpperCase()];
@@ -26,7 +26,7 @@ test.describe('Plugin filter tests', () => {
         key: 'authors',
       };
       // prepare fixture data to compare against
-      const fixtureData = searchPluginFixture(filterBy, sortBy);
+      const fixtureData = filterPluginFixture(filterBy, sortBy);
       await filterPlugins(page, filterBy, sortBy, viewport?.width);
       const params = [['authors', authors]];
       await verifyFilterResults(page, filterBy, fixtureData, params, sortBy);
@@ -46,7 +46,7 @@ test.describe('Plugin filter tests', () => {
         key: 'plugin_type',
       };
       // prepare fixture data to compare against
-      const fixtureData = searchPluginFixture(filterBy, sortBy);
+      const fixtureData = filterPluginFixture(filterBy, sortBy);
       await filterPlugins(page, filterBy, sortBy, viewport?.width);
       const params = [['pluginType', pluginTypes]];
       await verifyFilterResults(page, filterBy, fixtureData, params, sortBy);
@@ -66,7 +66,7 @@ test.describe('Plugin filter tests', () => {
         key: 'supported_data',
       };
       // prepare fixture data to compare against
-      const fixtureData = searchPluginFixture(filterBy, sortBy);
+      const fixtureData = filterPluginFixture(filterBy, sortBy);
       await filterPlugins(page, filterBy, sortBy, viewport?.width);
       const params = [['supportedData', supportedData]];
       await verifyFilterResults(page, filterBy, fixtureData, params, sortBy);
@@ -86,7 +86,7 @@ test.describe('Plugin filter tests', () => {
         key: 'image_modality',
       };
       // prepare fixture data to compare against
-      const fixtureData = searchPluginFixture(filterBy, sortBy);
+      const fixtureData = filterPluginFixture(filterBy, sortBy);
       await filterPlugins(page, filterBy, sortBy, viewport?.width);
       const params = [['imageModality', modality]];
       await verifyFilterResults(page, filterBy, fixtureData, params, sortBy);
@@ -106,7 +106,7 @@ test.describe('Plugin filter tests', () => {
         key: 'workflow_step',
       };
       // prepare fixture data to compare against
-      const fixtureData = searchPluginFixture(filterBy, sortBy);
+      const fixtureData = filterPluginFixture(filterBy, sortBy);
       await filterPlugins(page, filterBy, sortBy, viewport?.width);
       const params = [['workflowStep', workflowSteps]];
       await verifyFilterResults(page, filterBy, fixtureData, params, sortBy);
@@ -127,7 +127,7 @@ test.describe('Plugin filter tests', () => {
         key: 'operating_system',
       };
       // prepare fixture data to compare against
-      const fixtureData = searchPluginFixture(filterBy, sortBy);
+      const fixtureData = filterPluginFixture(filterBy, sortBy);
       await filterPlugins(page, filterBy, sortBy, viewport?.width);
       const osses = [];
       for (const os of operatingSystem) {
@@ -151,7 +151,7 @@ test.describe('Plugin filter tests', () => {
         key: 'license',
       };
       // prepare fixture data to compare against
-      const fixtureData = searchPluginFixture(filterBy, sortBy);
+      const fixtureData = filterPluginFixture(filterBy, sortBy);
       await filterPlugins(page, filterBy, sortBy, viewport?.width);
       const params = [['license', license]];
       await verifyFilterResults(page, filterBy, fixtureData, params, sortBy);
@@ -171,7 +171,7 @@ test.describe('Plugin filter tests', () => {
         key: 'python_version',
       };
       // prepare fixture data to compare against
-      const fixtureData = searchPluginFixture(filterBy, sortBy);
+      const fixtureData = filterPluginFixture(filterBy, sortBy);
       await filterPlugins(page, filterBy, sortBy, viewport?.width);
       const params = [['python', version]];
       await verifyFilterResults(page, filterBy, fixtureData, params, sortBy);
@@ -191,7 +191,7 @@ test.describe('Plugin filter tests', () => {
         key: 'save_extension',
       };
       // prepare fixture data to compare against
-      const fixtureData = searchPluginFixture(filterBy, sortBy);
+      const fixtureData = filterPluginFixture(filterBy, sortBy);
       await filterPlugins(page, filterBy, sortBy, viewport?.width);
       const params = [['writerFileExtensions', extension]];
       await verifyFilterResults(page, filterBy, fixtureData, params, sortBy);
@@ -211,7 +211,7 @@ test.describe('Plugin filter tests', () => {
         key: 'open_extension',
       };
       // prepare fixture data to compare against
-      const fixtureData = searchPluginFixture(filterBy, sortBy);
+      const fixtureData = filterPluginFixture(filterBy, sortBy);
       await filterPlugins(page, filterBy, sortBy, viewport?.width);
       const params = [['readerFileExtensions', extension]];
       await verifyFilterResults(page, filterBy, fixtureData, params, sortBy);
