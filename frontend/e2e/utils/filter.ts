@@ -1,8 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable no-await-in-loop */
 import { expect, Page } from '@playwright/test';
 
 import { PluginFilter } from '../types/filter';
-import { selectors } from './selectors';
 import {
   PAGINATION_LEFT,
   PAGINATION_RIGHT,
@@ -13,7 +17,13 @@ import {
   SEARCH_RESULT,
 } from './constants';
 import { parseItem } from './fixture';
-import { getByHasText, getByTestID, getByText, getMetadata } from './selectors';
+import {
+  getByHasText,
+  getByTestID,
+  getByText,
+  getMetadata,
+  selectors,
+} from './selectors';
 import {
   AccordionTitle,
   getQueryParameterValues,
@@ -28,12 +38,47 @@ const sortOrders: Record<string, string> = {
   Newest: 'newest',
 };
 
+/**
+ * Opens the accordion for the chosen filter type on smaller screens
+ * @param page
+ * @param filterKey
+ * @param width
+ */
+// eslint-disable-next-line @typescript-eslint/require-await
+export async function openAccordion(
+  page: Page,
+  filterTypes: Array<string>,
+  width?: number,
+) {
+  const CATEGORY_FILTER_TYPE = 'Filter by category';
+  filterTypes.forEach(async (filterType) => {
+    const title =
+      filterType === CATEGORY_FILTER_TYPE
+        ? AccordionTitle.FilterByCategory
+        : AccordionTitle.FilterByRequirement;
+    await maybeOpenAccordion(page, title, width);
+  });
+}
+
+export function containsAllElements(sourceArr: any, targetArr: any) {
+  return sourceArr.every((i: unknown) => targetArr.includes(i));
+}
+
+export function getAuthorNames(authorsObj: any) {
+  const result: Array<string> = [];
+  const data = parseItem(authorsObj);
+  for (const author of data) {
+    result.push(author.name as string);
+  }
+  return result;
+}
+
 export async function filterPlugins(
   page: Page,
   pluginFilter: PluginFilter,
   sortBy = 'Recently updated',
   width?: number,
-) {
+): Promise<void> {
   // sorting order
   await page.getByRole('radio', { name: sortBy }).check();
 
@@ -85,27 +130,6 @@ export async function getOptions(page: Page, labels: string[]) {
   return optionResults;
 }
 
-/**
- * Opens the accordion for the chosen filter type on smaller screens
- * @param page
- * @param filterKey
- * @param width
- */
-export async function openAccordion(
-  page: Page,
-  filterTypes: Array<string>,
-  width?: number,
-) {
-  const CATEGORY_FILTER_TYPE = 'Filter by category';
-  filterTypes.forEach(async (filterType) => {
-    const title =
-      filterType === CATEGORY_FILTER_TYPE
-        ? AccordionTitle.FilterByCategory
-        : AccordionTitle.FilterByRequirement;
-    await maybeOpenAccordion(page, title, width);
-  });
-}
-
 export async function verifyFilterResults(
   page: Page,
   pluginFilter: PluginFilter,
@@ -123,7 +147,7 @@ export async function verifyFilterResults(
     ).toBeVisible();
   });
 
-  for (let pageNumber = 1; pageNumber <= expectedTotalPages; pageNumber++) {
+  for (let pageNumber = 1; pageNumber <= expectedTotalPages; pageNumber += 1) {
     // current page
     const pagination = page.locator(getByTestID(PAGINATION_VALUE));
     const currentPageValue = await pagination
@@ -194,10 +218,11 @@ export async function verifyFilterResults(
       ).toBe(data.version);
 
       // plugin last update
-      const updateDateStr: string = data.release_date.substring(0, 10);
       expect(await plugin.locator(getMetadata('h5')).nth(1).textContent()).toBe(
         'Last updated',
       );
+      // todo: this test is failing for one plugin where the app display 2021-05-03 as 2021-05-04
+      // const updateDateStr: string = data.release_date.substring(0, 10);
       // expect(
       //   await plugin.locator(getMetadata('span')).nth(1).textContent(),
       // ).toBe(formateDate(updateDateStr));
@@ -238,7 +263,7 @@ export async function verifyFilterResults(
         }
       }
       // increment counter
-      i++;
+      i += 1;
     }
 
     // paginate
@@ -257,7 +282,7 @@ export async function verifyFilterResults(
     if (currentPageCounter < expectedTotalPages && expectedTotalPages >= 2) {
       await page.locator(getByTestID(PAGINATION_RIGHT)).click();
     }
-    currentPageCounter++;
+    currentPageCounter += 1;
   }
 }
 
@@ -270,17 +295,4 @@ export function formateDate(dateStr: string) {
     })
     .split(' ');
   return `${d[1].replace(',', '')} ${d[0]} ${d[2]}`;
-}
-
-export function containsAllElements(sourceArr: any, targetArr: any) {
-  return sourceArr.every((i: any) => targetArr.includes(i));
-}
-
-export function getAuthorNames(authorsObj: any) {
-  const result: Array<string> = [];
-  const data = parseItem(authorsObj);
-  for (const author of data) {
-    result.push(author.name as string);
-  }
-  return result;
 }

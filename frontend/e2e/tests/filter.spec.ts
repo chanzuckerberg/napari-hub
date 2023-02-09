@@ -12,8 +12,8 @@ test.describe('Plugin filter tests', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto(`${process.env.BASEURL as string}`);
   });
-  TEST_AUTHORS.forEach(async (authors) => {
-    test.only(`should filter by authors "${authors.toString()}"`, async ({
+  TEST_AUTHORS.forEach((authors) => {
+    test(`should filter by authors "${authors.toString()}"`, async ({
       page,
       viewport,
     }) => {
@@ -32,8 +32,8 @@ test.describe('Plugin filter tests', () => {
       await verifyFilterResults(page, filterBy, fixtureData, params, sortBy);
     });
   });
-  [['reader'], ['widget', 'writer']].forEach(async (pluginTypes) => {
-    test.only(`should filter by plugin type "${pluginTypes.toString()}"`, async ({
+  [['reader'], ['widget', 'writer']].forEach((pluginTypes) => {
+    test(`should filter by plugin type "${pluginTypes.toString()}"`, async ({
       page,
       viewport,
     }) => {
@@ -52,8 +52,8 @@ test.describe('Plugin filter tests', () => {
       await verifyFilterResults(page, filterBy, fixtureData, params, sortBy);
     });
   });
-  [['3D'], ['2D', '3D']].forEach(async (supportedData) => {
-    test.only(`should filter by ${supportedData.toString()}`, async ({
+  [['3D'], ['2D', '3D']].forEach((supportedData) => {
+    test(`should filter by ${supportedData.toString()}`, async ({
       page,
       viewport,
     }) => {
@@ -72,8 +72,8 @@ test.describe('Plugin filter tests', () => {
       await verifyFilterResults(page, filterBy, fixtureData, params, sortBy);
     });
   });
-  [['Medical imaging']].forEach(async (modality) => {
-    test.only(`should filter by image modality "${modality.toString()}"`, async ({
+  [['Medical imaging']].forEach((modality) => {
+    test(`should filter by image modality "${modality.toString()}"`, async ({
       page,
       viewport,
     }) => {
@@ -92,8 +92,8 @@ test.describe('Plugin filter tests', () => {
       await verifyFilterResults(page, filterBy, fixtureData, params, sortBy);
     });
   });
-  [['Image registration']].forEach(async (workflowSteps) => {
-    test.only(`should filter by workflow steps "${workflowSteps.toString()}"`, async ({
+  [['Image registration']].forEach((workflowSteps) => {
+    test(`should filter by workflow steps "${workflowSteps.toString()}"`, async ({
       page,
       viewport,
     }) => {
@@ -113,8 +113,8 @@ test.describe('Plugin filter tests', () => {
     });
   });
 
-  [['macOS'], ['macOS', 'Linux']].forEach(async (operatingSystem) => {
-    test.only(`should filter by operating system "${operatingSystem.toString()}"`, async ({
+  [['macOS'], ['macOS', 'Linux']].forEach((operatingSystem) => {
+    test(`should filter by operating system "${operatingSystem.toString()}"`, async ({
       page,
       viewport,
     }) => {
@@ -137,8 +137,8 @@ test.describe('Plugin filter tests', () => {
       await verifyFilterResults(page, filterBy, fixtureData, params, sortBy);
     });
   });
-  [['Limit to plugins with open source license']].forEach(async (license) => {
-    test.only(`should filter by license "${license.toString()}"`, async ({
+  [['Limit to plugins with open source license']].forEach((license) => {
+    test(`should filter by license "${license.toString()}"`, async ({
       page,
       viewport,
     }) => {
@@ -157,8 +157,8 @@ test.describe('Plugin filter tests', () => {
       await verifyFilterResults(page, filterBy, fixtureData, params, sortBy);
     });
   });
-  [['3.6'], ['3.7', '3.9']].forEach(async (version) => {
-    test.only(`should filter by python version "${version.toString()}"`, async ({
+  [['3.6'], ['3.7', '3.9']].forEach((version) => {
+    test(`should filter by python version "${version.toString()}"`, async ({
       page,
       viewport,
     }) => {
@@ -177,8 +177,8 @@ test.describe('Plugin filter tests', () => {
       await verifyFilterResults(page, filterBy, fixtureData, params, sortBy);
     });
   });
-  FILE_EXTENSIONS.forEach(async (extension) => {
-    test.only(`should filter by save extensions "${extension.toString()}"`, async ({
+  FILE_EXTENSIONS.forEach((extension) => {
+    test(`should filter by save extensions "${extension.toString()}"`, async ({
       page,
       viewport,
     }) => {
@@ -197,8 +197,8 @@ test.describe('Plugin filter tests', () => {
       await verifyFilterResults(page, filterBy, fixtureData, params, sortBy);
     });
   });
-  FILE_EXTENSIONS.forEach(async (extension) => {
-    test.only(`should filter by open extensions "${extension.toString()}"`, async ({
+  FILE_EXTENSIONS.forEach((extension) => {
+    test(`should filter by open extensions "${extension.toString()}"`, async ({
       page,
       viewport,
     }) => {
