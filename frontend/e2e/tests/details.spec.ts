@@ -2,7 +2,6 @@ import { test, expect } from '@playwright/test';
 import { getFixture } from '../utils/fixture';
 
 import {
-  AUTHORS,
   SEARCH_INPUT,
   SEARCH_BUTTON,
   CLEAR_SEARCH,
@@ -24,8 +23,6 @@ import {
 } from '../utils/constants';
 import { getByID, getByTestID } from '../utils/selectors';
 import { formateDate } from '../utils/filterNew';
-
-const ENV = (process.env.NODE_ENV as string) || '';
 
 test.describe('Plugin deatils tests', () => {
   test.only('should verify details page', async ({ page }) => {
