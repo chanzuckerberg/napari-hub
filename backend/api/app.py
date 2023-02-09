@@ -1,4 +1,5 @@
 import os
+import traceback
 
 from werkzeug import exceptions
 from apig_wsgi import make_lambda_handler
@@ -157,6 +158,7 @@ def handle_permission_exception(e) -> Response:
 
 @app.errorhandler(Exception)
 def handle_exception(e) -> Response:
+    traceback.print_exc()
     send_alert(f"An unexpected error has occurred in napari hub: {e}")
     return app.make_response(("Internal Server Error", 500))
 
