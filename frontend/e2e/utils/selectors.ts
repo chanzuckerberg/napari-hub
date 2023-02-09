@@ -1,3 +1,8 @@
+import { SearchSortType } from '@/store/search/constants';
+import { FilterKey, FilterType } from '@/store/search/search.store';
+
+import { AccordionTitle } from './utils';
+
 export const getByTestID = (id: string): string => `[data-testid="${id}"]`;
 export const getByText = (text: string): string => `text="${text}"`;
 export const getByCss = (className: string): string => `css=${className}`;
@@ -26,10 +31,6 @@ export const getBySortType = (sortBy: string): string =>
   `[data-sort-type="${sortBy}"]`;
 export const getFilterButton = (filterKey: string): string =>
   `[data-filter="${filterKey}"]`;
-import { SearchSortType } from '@/store/search/constants';
-import { FilterKey, FilterType } from '@/store/search/search.store';
-
-import { AccordionTitle } from './utils';
 
 enum CommonSelectors {
   appBarHome = '[data-testid=appBarHome]:visible',

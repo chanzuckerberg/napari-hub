@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 import fs from 'fs';
 import { filter, intersectionBy, map, orderBy } from 'lodash';
 
@@ -26,7 +30,7 @@ export function getFixture(fileName?: string) {
 }
 
 // fixture for local environment is already parsed; parsing again causes issues
-export function parseItem(text: any) {
+export function parseItem(text: unknown) {
   if (typeof text === 'object') {
     return text;
   }
@@ -97,11 +101,11 @@ export function searchPluginFixture(
   }
   if (key === 'python_version') {
     const versions: string[] = [];
-    for (let i = 0; i < values.length; i++) {
+    for (let i = 0; i < values.length; i += 1) {
       versions.push(`>=${values[i]}`);
     }
     filtered = fixtures.filter(
-      (plugin: { python_version: any }) =>
+      (plugin: { python_version: unknown }) =>
         plugin.python_version === versions.toString(),
     );
     return filtered.length !== 0;
@@ -126,7 +130,7 @@ export function searchPluginFixture(
         ? 'reader_file_extensions'
         : 'writer_file_extensions';
     const ext: string[] = [];
-    for (let i = 0; i < values.length; i++) {
+    for (let i = 0; i < values.length; i += 1) {
       ext.push(`${values[i]}`);
     }
     filtered = filter(fixtures, (item) => {
@@ -149,7 +153,7 @@ export function searchPluginFixture(
 
   if (key === 'operating_system') {
     const operatingSystems = [[], 'Operating System :: OS Independent'];
-    for (let i = 0; i < values.length; i++) {
+    for (let i = 0; i < values.length; i += 1) {
       operatingSystems.push(OPERATING_SYSTEMS[values[i]]);
     }
     filtered = filter(fixtures, (item) => {
@@ -171,13 +175,13 @@ export function searchPluginFixture(
       [(plugin) => new Date(parseItem(plugin).release_date as string)],
       ['desc'],
     );
-  } else if (sortBy === 'newest') {
+  }
+  if (sortBy === 'newest') {
     return orderBy(
       filtered,
       [(plugin) => new Date(parseItem(plugin).first_released as string)],
       ['desc'],
     );
-  } else {
-    return orderBy(filtered, [(plugin) => plugin.name], ['asc']);
   }
+  return orderBy(filtered, [(plugin) => plugin.name], ['asc']);
 }

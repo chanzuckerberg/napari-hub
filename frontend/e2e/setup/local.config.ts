@@ -12,7 +12,6 @@ const config: PlaywrightTestConfig = {
   },
   globalSetup: './globalSetup',
   fullyParallel: true,
-  globalSetup: './globalSetup',
   outputDir: '../report',
   reporter: [
     ['list'],

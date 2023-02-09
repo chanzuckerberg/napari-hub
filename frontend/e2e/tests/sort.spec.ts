@@ -11,7 +11,7 @@ test.describe('Sorting plugin tests', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto(`${process.env.BASEURL as string}`);
   });
-  test.only(`should sort plugins by name`, async ({ page, viewport }) => {
+  test(`should sort plugins by name`, async ({ page, viewport }) => {
     const authors = TEST_AUTHORS[0];
     // sort by
     const sortBy = 'Plugin name';
@@ -30,7 +30,7 @@ test.describe('Sorting plugin tests', () => {
     const params = [['authors', authors]];
     await verifyFilterResults(page, filterBy, fixtureData, params, sortBy);
   });
-  test.only(`should sort plugins by recently updated`, async ({
+  test(`should sort plugins by recently updated`, async ({
     page,
     viewport,
   }) => {
@@ -52,7 +52,7 @@ test.describe('Sorting plugin tests', () => {
     const params = [['authors', authors]];
     await verifyFilterResults(page, filterBy, fixtureData, params, sortBy);
   });
-  test.only(`should sort plugins by newest`, async ({ page, viewport }) => {
+  test(`should sort plugins by newest`, async ({ page, viewport }) => {
     const authors = TEST_AUTHORS[0];
     // sort by
     const sortBy = 'Newest';
