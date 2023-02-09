@@ -201,11 +201,14 @@ def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
     metadata = get_plugin_pypi_metadata(plugin, version=version)
     if not metadata:
         return plugin, metadata
-    github_repo_url = metadata.get('code_repository')
-    if github_repo_url:
-        metadata = {**metadata, **get_github_metadata(github_repo_url)}
-    if 'description' in metadata and github_repo_url:
-        repo = get_github_repo(github_repo_url)
+
+    code_repo_url = metadata.get('code_repository')
+    # TODO Add support for other repos like Bitbucket / GitLab
+    if code_repo_url and 'github.com' in code_repo_url:
+        metadata = {**metadata, **get_github_metadata(code_repo_url)}
+
+    if 'description' in metadata and code_repo_url:
+        repo = get_github_repo(code_repo_url)
         branch = get_github_default_branch(repo)
 
         if repo and branch:
