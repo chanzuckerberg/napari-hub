@@ -7,7 +7,7 @@ import { filter, find, intersectionBy, map, orderBy, pick } from 'lodash';
 
 import { PluginFilter } from '../types/filter';
 
-let pluginFixtureFile = `e2e/fixtures/local.json`;
+let pluginFixtureFile = `../fixtures/local.json`;
 const ENV = (process.env.NODE_ENV as string) || '';
 const OPERATING_SYSTEMS: Record<string, string> = {
   macOS: 'Operating System :: macOS',
@@ -186,22 +186,41 @@ export function filterPluginFixture(
   return orderBy(filtered, [(plugin) => plugin.name], ['asc']);
 }
 
+// export function searchPluginFixture(query: string[]) {
+//   const fixtures = getFixture();
+
+//   let filtered: any = filter(fixtures, (item) => {
+//     const selectedItem = pick(parseItem(item as string), [
+//       'name',
+//       'description',
+//       'display_name',
+//       'description_text',
+//     ]);
+//     const result = find(selectedItem, (data) => {
+//     filtered = filter(query, (q) => {
+//         return data.toLowerCase().includes(q.toLowerCase());
+//       });
+//       return filtered.length !== 0;
+//     });
+//     return result;
+//   });
+// }
 export function searchPluginFixture(query: string[]) {
   const fixtures = getFixture();
 
-  let filtered: any = filter(fixtures, (item) => {
+  let filtered = fixtures.filter((item: any) => {
     const selectedItem = pick(parseItem(item as string), [
       'name',
       'description',
       'display_name',
       'description_text',
     ]);
-    const result = find(selectedItem, (data) => {
-      filtered = filter(query, (q) => {
+    return query.some((q) => {
+      return Object.values(selectedItem).some((data) => {
         return data.toLowerCase().includes(q.toLowerCase());
       });
-      return filtered.length !== 0;
     });
-    return result;
   });
+
+  return filtered;
 }

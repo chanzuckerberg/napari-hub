@@ -8,7 +8,7 @@ export const API: Record<string, string> = {
 };
 
 export const SEARCH_RESULT = 'pluginSearchResult';
-export const RESULT_NAME = 'searchResultName';
+export const RESULT_NAME = 'searchResultDisplayName';
 export const DISPLAY_NAME = 'searchResultDisplayName';
 export const RESULT_SUMMARY = 'searchResultSummary';
 export const RESULT_WORKFLOW_STEPS = '.css-9iedg7';

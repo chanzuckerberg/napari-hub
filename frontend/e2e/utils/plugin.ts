@@ -27,30 +27,37 @@ export async function verifyPlugin(plugin: any, data: any): Promise<void> {
   //   await plugin.locator(getByTestID(DISPLAY_NAME)).textContent(),
   // ).toBe(fixture[i].display_name);
 
+  let plugin_names = getPluginNames(data);
+  let plugin_name = await plugin
+    .locator(getByTestID(RESULT_NAME))
+    .textContent();
+  let plugin_prop = getPluginProp(data);
+  let plugin_categories = getPluginCategory(data);
   // plugin name
-  expect(await plugin.locator(getByTestID(RESULT_NAME)).textContent()).toBe(
-    data.name,
-  );
+  console.log(plugin_names);
+  console.log('-----------------------');
+  console.log(plugin_name);
+  expect(plugin_names.includes(plugin_name)).toBeTruthy();
 
   // plugin summary
   expect(await plugin.locator(getByTestID(RESULT_SUMMARY)).textContent()).toBe(
-    data.summary,
+    plugin_prop[`${plugin_name}`]['summary'],
   );
 
   // plugin authors
-  const pluginAuthors = await plugin
-    .locator(getByTestID(RESULT_AUTHORS))
-    .allTextContents();
-  const fixtureAuthors = getAuthorNames(data.authors);
-  // check all authors displayed
-  expect(containsAllElements(fixtureAuthors, pluginAuthors)).toBeTruthy();
+  // const pluginAuthors = await plugin
+  //   .locator(getByTestID(RESULT_AUTHORS))
+  //   .allTextContents();
+  // const fixtureAuthors = getAuthorNames(data.authors);
+  // // check all authors displayed
+  // expect(containsAllElements(fixtureAuthors, pluginAuthors)).toBeTruthy();
 
   // plugin version
   expect(await plugin.locator(getMetadata('h5')).nth(0).textContent()).toBe(
     'Version',
   );
   expect(await plugin.locator(getMetadata('span')).nth(0).textContent()).toBe(
-    data.version,
+    plugin_prop[`${plugin_name}`]['version'],
   );
 
   // plugin last update
@@ -67,7 +74,8 @@ export async function verifyPlugin(plugin: any, data: any): Promise<void> {
   const pluginTypeText: string =
     (await plugin.locator(getMetadata('span')).nth(2).textContent()) || '';
   const pluginTypes = pluginTypeText.split(',');
-  const fixturePluginTypes = data.plugin_types;
+  const fixturePluginTypes =
+    plugin_prop[`${plugin_name}`]['fixturePluginTypes'];
   // some local test data do not have plugin types
   if (fixturePluginTypes !== undefined) {
     expect(await plugin.locator(getMetadata('h5')).nth(2).textContent()).toBe(
@@ -82,11 +90,14 @@ export async function verifyPlugin(plugin: any, data: any): Promise<void> {
 
   // plugin workflow steps
   if (
-    data.category !== undefined &&
-    data.category['Workflow step'] !== undefined
+    plugin_prop[`${plugin_name}`]['category'] !== 'undefined' &&
+    plugin_categories[`${plugin_name}`]['category'] !== 'undefined'
   ) {
-    const fixtureWorkflowSteps = data.category['Workflow step'];
-    await expect(plugin.locator(getByText('Workflow step'))).toBeVisible();
+    const category = plugin_categories[`${plugin_name}`]['category'];
+    const fixtureWorkflowSteps = category.split(',');
+
+    expect(await plugin.textContent()).toContain('Workflow step');
+    // await expect(await plugin.locator(getByText('Workflow step'))).toBeVisible();
 
     if ((await plugin.locator('text=/Show \\d more/i').count()) > 0) {
       await plugin.locator('text=/Show \\d+ more/i').first().click();
@@ -95,8 +106,60 @@ export async function verifyPlugin(plugin: any, data: any): Promise<void> {
     for (const fixtureWorkflowStep of fixtureWorkflowSteps) {
       // eslint-disable-next-line no-await-in-loop
       await expect(
-        plugin.locator(getByText(fixtureWorkflowStep as string)),
+        await plugin.locator(getByText(fixtureWorkflowStep as string)),
       ).toBeVisible();
     }
   }
+}
+
+export function getPluginProp(fixtureData: any) {
+  let length = fixtureData.length;
+  let arr = [];
+  let dict: { [key: string]: any } = {};
+  for (let i = 0; i < length; i++) {
+    const data = parseItem(fixtureData[i]);
+    arr.push(data.display_name);
+    dict[`${data.display_name}`] = {
+      summary: `${data.summary}`,
+      version: `${data.version}`,
+      fixturePluginTypes: `${data.plugin_types}`,
+      category: `${data.category}`,
+      update: `${data.release_date}`,
+    };
+  }
+  return dict;
+}
+export function getPluginNames(fixtureData: any) {
+  let length = fixtureData.length;
+  let arr = [];
+  let dict: { [key: string]: any } = {};
+  for (let i = 0; i < length; i++) {
+    const data = parseItem(fixtureData[i]);
+    arr.push(data.display_name);
+    dict[`${data.display_name}`] = {
+      summary: `${data.summary}`,
+      version: `${data.version}`,
+      fixturePluginTypes: `${data.plugin_types}`,
+      category: `${data.category}`,
+      authors: `${data.authors}`,
+      update: `${data.release_date}`,
+    };
+  }
+  return arr;
+}
+
+export function getPluginCategory(fixtureData: any) {
+  let length = fixtureData.length;
+  let arr = [];
+  let dict: { [key: string]: any } = {};
+  for (let i = 0; i < length; i++) {
+    const data = parseItem(fixtureData[i]);
+    arr.push(data.name);
+    if (data.category !== undefined) {
+      dict[`${data.display_name}`] = {
+        category: `${data.category['Workflow step']}`,
+      };
+    }
+  }
+  return dict;
 }

@@ -1,0 +1,15 @@
+{
+  "napari_video": { "category": "undefined" },
+  "napari-stracking": { "category": "Object tracking" },
+  "napari-accelerated-pixel-and-object-classification": {
+    "category": "Pixel classification,Object classification,Image annotation,Image feature detection"
+  },
+  "stardist-napari": { "category": "Image Segmentation" },
+  "PartSeg": {
+    "category": "Image Segmentation,Image reconstruction,Image feature detection,Object feature extraction"
+  },
+  "vollseg-napari": { "category": "Image Segmentation" },
+  "napari-annotatorj": {
+    "category": "Image annotation,Image Segmentation,Object classification"
+  }
+}
