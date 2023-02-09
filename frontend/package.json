@@ -132,6 +132,7 @@
   },
   "devDependencies": {
     "@babel/core": "7.17.10",
+    "@babel/helper-string-parser": "^7.19.4",
     "@next/eslint-plugin-next": "12.1.6",
     "@playwright/test": "^1.29.2",
     "@tailwindcss/typography": "0.5.2",
