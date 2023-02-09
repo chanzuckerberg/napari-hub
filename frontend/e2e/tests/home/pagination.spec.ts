@@ -9,7 +9,7 @@ const RESULTS = {
   PAGE_1_DEFAULT: [
     // Display name
     // TODO add tests specifically for display name
-    'Test Plugin',
+    'napari-test-plugin',
     'napari-animation',
     'PlatyMatch',
     'cellpose-napari',
