@@ -36,6 +36,21 @@ export const MEATADATA_PLUGIN_TYPE = 'metadata-pluginType';
 export const MEATADATA_PYTHON_VERSION = 'metadata-pythonVersion';
 export const METADATA_OPERATING_SYSTEM = 'metadata-operatingSystems';
 export const METADATA_REQUIREMENTS = 'metadata-requirements';
+export const AUTHOR = 'a[href*="/?authors"]';
+export const CONT = 'Contributing¶';
+export const CONTRIBUTING_HEADER = 'Contributing¶';
+export const LICENSE_HEADER = 'License¶';
+export const ISSUES_HEADER = 'Issues¶';
+export const SUPPORTED_DATA = 'Supported data:';
+export const PLUGIN_TYPE = 'Plugin type';
+export const REQUIREMENT = 'Requirements:';
+export const HEADER_REGION = '.overflow-x-auto';
+export const ACTIVITY = 'Activity';
+export const BODY_ACCTIVITY_PAGE = '[class="min-h-[200px]"]';
+export const USAGE = 'Usage';
+export const INSTALL = 'Install';
+export const SIDE_BAR = '.sticky';
+export const BUTTON = 'button';
 
 export const AUTHORS: Record<string, Array<Array<string>>> = {
   LOCAL: [['Talley Lambert'], ['Carsen Stringer', 'Manan Lalit']],
