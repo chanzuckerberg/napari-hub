@@ -95,7 +95,7 @@ class TestActivityDashboard(unittest.TestCase):
         return [{timestamp_key: to_timestamp(i), installs_key: to_installs(i)} for i in range(start_range, 0)]
 
     @staticmethod
-    def _generate_expected_metrics(timeline=None, total_installs=0, installs_in_last_30_days=0, latest_commit=None, total_commit=None, commit_activity=[]):
+    def _generate_expected_metrics(timeline=None, total_installs=0, installs_in_last_30_days=0, latest_commit=None, total_commit=None, commit_activity=MOCK_PLUGIN_COMMIT_ACTIVITY_EMPTY):
         return {
             'usage': {
                 'timeline': timeline if timeline else [],
