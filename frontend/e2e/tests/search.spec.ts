@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { searchPlugins } from 'e2e/utils/searchNew';
+import { searchPlugins } from 'e2e/utils/search';
 
 import { SearchQueryParams, SearchSortType } from '@/store/search/constants';
 
