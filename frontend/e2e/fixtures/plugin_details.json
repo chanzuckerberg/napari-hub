@@ -1,0 +1,56 @@
+{
+  "local": {
+    "name": "napari-console",
+    "summary": "A plugin that adds a console to napari",
+    "description": "# napari-console (WIP, under active development)\n\n[![License](https://img.shields.io/pypi/l/napari-console.svg?color=green)](https://github.com/napari/napari-console/raw/master/LICENSE)\n[![PyPI](https://img.shields.io/pypi/v/napari-console.svg?color=green)](https://pypi.org/project/napari-console)\n[![Python Version](https://img.shields.io/pypi/pyversions/napari-console.svg?color=green)](https://python.org)\n[![tests](https://github.com/sofroniewn/napari-console/workflows/tests/badge.svg)](https://github.com/sofroniewn/napari-console/actions)\n[![codecov](https://codecov.io/gh/sofroniewn/napari-console/branch/master/graph/badge.svg)](https://codecov.io/gh/sofroniewn/napari-console)\n\nA plugin that adds a console to napari\n\n----------------------------------\n\nThis [napari] plugin was generated with [Cookiecutter] using with [@napari]'s [cookiecutter-napari-plugin] template.\n\n<!--\nDon't miss the full getting started guide to set up your new package:\nhttps://github.com/napari/cookiecutter-napari-plugin#getting-started\n\nand review the napari docs for plugin developers:\nhttps://napari.org/docs/plugins/index.html\n-->\n\n## Installation\n\nYou can install `napari-console` via [pip]:\n\n    pip install napari-console\n\n## Contributing\n\nContributions are very welcome. Tests can be run with [tox], please ensure\nthe coverage at least stays the same before you submit a pull request.\n\n## License\n\nDistributed under the terms of the [BSD-3] license,\n\"napari-console\" is free and open source software\n\n## Issues\n\nIf you encounter any problems, please [file an issue] along with a detailed description.\n\n[napari]: https://github.com/napari/napari\n[Cookiecutter]: https://github.com/audreyr/cookiecutter\n[@napari]: https://github.com/napari\n[MIT]: http://opensource.org/licenses/MIT\n[BSD-3]: http://opensource.org/licenses/BSD-3-Clause\n[GNU GPL v3.0]: http://www.gnu.org/licenses/gpl-3.0.txt\n[GNU LGPL v3.0]: http://www.gnu.org/licenses/lgpl-3.0.txt\n[Apache Software License 2.0]: http://www.apache.org/licenses/LICENSE-2.0\n[Mozilla Public License 2.0]: https://www.mozilla.org/media/MPL/2.0/index.txt\n[cookiecutter-napari-plugin]: https://github.com/napari/cookiecutter-napari-plugin\n[file an issue]: https://github.com/sofroniewn/napari-console/issues\n[napari]: https://github.com/napari/napari\n[tox]: https://tox.readthedocs.io/en/latest/\n[pip]: https://pypi.org/project/pip/\n[PyPI]: https://pypi.org/\n\n\n",
+    "description_content_type": "text/markdown",
+    "authors": [
+      { "name": "Nicholas Sofroniew", "email": "sofroniewn@gmail.com" }
+    ],
+    "license": "BSD-3",
+    "python_version": "3.7",
+    "release_date": "2022-12-13T17:53:30.374963Z",
+    "version": "0.0.3",
+    "first_released": "2021-01-21T04:42:40.342150Z",
+    "development_status": ["Development Status :: 4 - Beta"],
+    "description_text": "napari-console (WIP, under active development)\n\n\n\n\n\nA plugin that adds a console to napari\n\nThis napari plugin was generated with Cookiecutter using with @napari's cookiecutter-napari-plugin template.\n\nInstallation\nYou can install napari-console via pip:\npip install napari-console\n\nContributing\nContributions are very welcome. Tests can be run with tox, please ensure\nthe coverage at least stays the same before you submit a pull request.\nLicense\nDistributed under the terms of the BSD-3 license,\n\"napari-console\" is free and open source software\nIssues\nIf you encounter any problems, please file an issue along with a detailed description.",
+    "plugin_types": ["widget"],
+    "operating_system": ["linux", "macos", "windows"]
+  },
+  "staging": {
+    "name": "napari-console",
+    "summary": "A plugin that adds a console to napari",
+    "description": "# napari-console (WIP, under active development)\n\n[![License](https://img.shields.io/pypi/l/napari-console.svg?color=green)](https://github.com/napari/napari-console/raw/master/LICENSE)\n[![PyPI](https://img.shields.io/pypi/v/napari-console.svg?color=green)](https://pypi.org/project/napari-console)\n[![Python Version](https://img.shields.io/pypi/pyversions/napari-console.svg?color=green)](https://python.org)\n[![tests](https://github.com/sofroniewn/napari-console/workflows/tests/badge.svg)](https://github.com/sofroniewn/napari-console/actions)\n[![codecov](https://codecov.io/gh/sofroniewn/napari-console/branch/master/graph/badge.svg)](https://codecov.io/gh/sofroniewn/napari-console)\n\nA plugin that adds a console to napari\n\n----------------------------------\n\nThis [napari] plugin was generated with [Cookiecutter] using with [@napari]'s [cookiecutter-napari-plugin] template.\n\n<!--\nDon't miss the full getting started guide to set up your new package:\nhttps://github.com/napari/cookiecutter-napari-plugin#getting-started\n\nand review the napari docs for plugin developers:\nhttps://napari.org/docs/plugins/index.html\n-->\n\n## Installation\n\nYou can install `napari-console` via [pip]:\n\n    pip install napari-console\n\n## Contributing\n\nContributions are very welcome. Tests can be run with [tox], please ensure\nthe coverage at least stays the same before you submit a pull request.\n\n## License\n\nDistributed under the terms of the [BSD-3] license,\n\"napari-console\" is free and open source software\n\n## Issues\n\nIf you encounter any problems, please [file an issue] along with a detailed description.\n\n[napari]: https://github.com/napari/napari\n[Cookiecutter]: https://github.com/audreyr/cookiecutter\n[@napari]: https://github.com/napari\n[MIT]: http://opensource.org/licenses/MIT\n[BSD-3]: http://opensource.org/licenses/BSD-3-Clause\n[GNU GPL v3.0]: http://www.gnu.org/licenses/gpl-3.0.txt\n[GNU LGPL v3.0]: http://www.gnu.org/licenses/lgpl-3.0.txt\n[Apache Software License 2.0]: http://www.apache.org/licenses/LICENSE-2.0\n[Mozilla Public License 2.0]: https://www.mozilla.org/media/MPL/2.0/index.txt\n[cookiecutter-napari-plugin]: https://github.com/napari/cookiecutter-napari-plugin\n[file an issue]: https://github.com/sofroniewn/napari-console/issues\n[napari]: https://github.com/napari/napari\n[tox]: https://tox.readthedocs.io/en/latest/\n[pip]: https://pypi.org/project/pip/\n[PyPI]: https://pypi.org/\n\n\n",
+    "description_content_type": "text/markdown",
+    "authors": [
+      { "name": "Nicholas Sofroniew", "email": "sofroniewn@gmail.com" }
+    ],
+    "license": "BSD-3",
+    "python_version": "3.7",
+    "release_date": "2022-12-13T17:53:30.374963Z",
+    "version": "0.0.7",
+    "first_released": "2021-01-21T04:42:40.342150Z",
+    "development_status": ["Development Status :: 4 - Beta"],
+    "description_text": "napari-console (WIP, under active development)\n\n\n\n\n\nA plugin that adds a console to napari\n\nThis napari plugin was generated with Cookiecutter using with @napari's cookiecutter-napari-plugin template.\n\nInstallation\nYou can install napari-console via pip:\npip install napari-console\n\nContributing\nContributions are very welcome. Tests can be run with tox, please ensure\nthe coverage at least stays the same before you submit a pull request.\nLicense\nDistributed under the terms of the BSD-3 license,\n\"napari-console\" is free and open source software\nIssues\nIf you encounter any problems, please file an issue along with a detailed description.",
+    "plugin_types": ["widget"],
+    "operating_system": ["linux", "macos", "windows"]
+  },
+  "prod": {
+    "name": "napari-console",
+    "summary": "A plugin that adds a console to napari",
+    "description": "# napari-console (WIP, under active development)\n\n[![License](https://img.shields.io/pypi/l/napari-console.svg?color=green)](https://github.com/napari/napari-console/raw/master/LICENSE)\n[![PyPI](https://img.shields.io/pypi/v/napari-console.svg?color=green)](https://pypi.org/project/napari-console)\n[![Python Version](https://img.shields.io/pypi/pyversions/napari-console.svg?color=green)](https://python.org)\n[![tests](https://github.com/sofroniewn/napari-console/workflows/tests/badge.svg)](https://github.com/sofroniewn/napari-console/actions)\n[![codecov](https://codecov.io/gh/sofroniewn/napari-console/branch/master/graph/badge.svg)](https://codecov.io/gh/sofroniewn/napari-console)\n\nA plugin that adds a console to napari\n\n----------------------------------\n\nThis [napari] plugin was generated with [Cookiecutter] using with [@napari]'s [cookiecutter-napari-plugin] template.\n\n<!--\nDon't miss the full getting started guide to set up your new package:\nhttps://github.com/napari/cookiecutter-napari-plugin#getting-started\n\nand review the napari docs for plugin developers:\nhttps://napari.org/docs/plugins/index.html\n-->\n\n## Installation\n\nYou can install `napari-console` via [pip]:\n\n    pip install napari-console\n\n## Contributing\n\nContributions are very welcome. Tests can be run with [tox], please ensure\nthe coverage at least stays the same before you submit a pull request.\n\n## License\n\nDistributed under the terms of the [BSD-3] license,\n\"napari-console\" is free and open source software\n\n## Issues\n\nIf you encounter any problems, please [file an issue] along with a detailed description.\n\n[napari]: https://github.com/napari/napari\n[Cookiecutter]: https://github.com/audreyr/cookiecutter\n[@napari]: https://github.com/napari\n[MIT]: http://opensource.org/licenses/MIT\n[BSD-3]: http://opensource.org/licenses/BSD-3-Clause\n[GNU GPL v3.0]: http://www.gnu.org/licenses/gpl-3.0.txt\n[GNU LGPL v3.0]: http://www.gnu.org/licenses/lgpl-3.0.txt\n[Apache Software License 2.0]: http://www.apache.org/licenses/LICENSE-2.0\n[Mozilla Public License 2.0]: https://www.mozilla.org/media/MPL/2.0/index.txt\n[cookiecutter-napari-plugin]: https://github.com/napari/cookiecutter-napari-plugin\n[file an issue]: https://github.com/sofroniewn/napari-console/issues\n[napari]: https://github.com/napari/napari\n[tox]: https://tox.readthedocs.io/en/latest/\n[pip]: https://pypi.org/project/pip/\n[PyPI]: https://pypi.org/\n\n\n",
+    "description_content_type": "text/markdown",
+    "authors": [
+      { "name": "Nicholas Sofroniew", "email": "sofroniewn@gmail.com" }
+    ],
+    "license": "BSD-3",
+    "python_version": "3.7",
+    "release_date": "2022-12-13T17:53:30.374963Z",
+    "version": "0.0.7",
+    "first_released": "2021-01-21T04:42:40.342150Z",
+    "development_status": ["Development Status :: 4 - Beta"],
+    "description_text": "napari-console (WIP, under active development)\n\n\n\n\n\nA plugin that adds a console to napari\n\nThis napari plugin was generated with Cookiecutter using with @napari's cookiecutter-napari-plugin template.\n\nInstallation\nYou can install napari-console via pip:\npip install napari-console\n\nContributing\nContributions are very welcome. Tests can be run with tox, please ensure\nthe coverage at least stays the same before you submit a pull request.\nLicense\nDistributed under the terms of the BSD-3 license,\n\"napari-console\" is free and open source software\nIssues\nIf you encounter any problems, please file an issue along with a detailed description.",
+    "plugin_types": ["widget"],
+    "operating_system": ["linux", "macos", "windows"]
+  }
+}

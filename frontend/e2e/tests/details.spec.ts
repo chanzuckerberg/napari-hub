@@ -24,12 +24,13 @@ import { formateDate } from '../utils/filterNew';
 import { getFixture } from '../utils/fixture';
 import { getByID, getByTestID } from '../utils/selectors';
 
-test.describe('Plugin deatils tests', () => {
-  test.only('should verify details page', async ({ page }) => {
-    await page.goto(`${process.env.BASEURL as string}`);
-    const query = 'napari-console';
-    const data = getFixture(`e2e/fixtures/test.json`);
+const ENV = (process.env.NODE_ENV as string) || '';
+const data = getFixture(`e2e/fixtures/plugin_details.json`)[ENV];
+const query = 'napari-console';
 
+test.describe('Plugin details tests', () => {
+  test.only('should verify plugin details page', async ({ page }) => {
+    await page.goto(`${process.env.BASEURL as string}`);
     while (
       (await page.locator(getByTestID(SEARCH_INPUT)).getAttribute('value')) !==
       query
