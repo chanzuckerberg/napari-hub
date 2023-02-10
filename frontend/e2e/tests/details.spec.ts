@@ -1,10 +1,19 @@
 import { expect, test } from '@playwright/test';
 
 import {
+  ACTIVITY,
+  AUTHOR,
+  BODY_ACCTIVITY_PAGE,
+  BUTTON,
   CLEAR_SEARCH,
   CONTRIBUTING,
+  CONTRIBUTING_HEADER,
+  HEADER_REGION,
+  INSTALL,
   ISSUES,
+  ISSUES_HEADER,
   LICENSE,
+  LICENSE_HEADER,
   MEATADATA_PLUGIN_TYPE,
   MEATADATA_PYTHON_VERSION,
   METADATA_FIRST_RELEASED,
@@ -16,25 +25,16 @@ import {
   METADATA_VERSION,
   PLUGIN_NAME,
   PLUGIN_SUMMARY,
+  PLUGIN_TYPE,
+  REQUIREMENT,
   SEARCH_BUTTON,
   SEARCH_INPUT,
   SEARCH_RESULT,
-  AUTHOR,
-  CONTRIBUTING_HEADER,
-  LICENSE_HEADER,
-  ISSUES_HEADER,
-  SUPPORTED_DATA,
-  PLUGIN_TYPE,
-  REQUIREMENT,
-  HEADER_REGION,
-  ACTIVITY,
-  BODY_ACCTIVITY_PAGE,
-  USAGE,
-  INSTALL,
   SIDE_BAR,
-  BUTTON,
+  SUPPORTED_DATA,
+  USAGE,
 } from '../utils/constants';
-import { formateDate } from '../utils/filterNew';
+import { formateDate } from '../utils/filter';
 import { getFixture } from '../utils/fixture';
 import { getByID, getByTestID } from '../utils/selectors';
 
@@ -43,7 +43,7 @@ const data = getFixture(`e2e/fixtures/plugin_details.json`)[ENV];
 const query = 'napari-console';
 
 test.describe('Plugin details tests', () => {
-  test.only('should verify plugin details page', async ({ page }) => {
+  test('should verify plugin details page', async ({ page }) => {
     await page.goto(`${process.env.BASEURL as string}`);
     while (
       (await page.locator(getByTestID(SEARCH_INPUT)).getAttribute('value')) !==
@@ -126,7 +126,7 @@ test.describe('Plugin details tests', () => {
       expect(systemType?.toLowerCase()).toContain(system);
     });
 
-    //verify activity page
+    // verify activity page
     expect(await page.locator(HEADER_REGION).textContent()).toContain(ACTIVITY);
 
     await page.locator(HEADER_REGION).getByText(ACTIVITY).click();
