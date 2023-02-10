@@ -25,7 +25,7 @@ const config: PlaywrightTestConfig = {
 
   projects: [
     {
-      name: 'chromium',
+      name: 'desktop',
       use: {
         ...devices['Desktop Chrome'],
         baseURL: 'http://localhost:8080/',
