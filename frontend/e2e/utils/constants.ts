@@ -46,7 +46,7 @@ export const PLUGIN_TYPE = 'Plugin type';
 export const REQUIREMENT = 'Requirements:';
 export const HEADER_REGION = '.overflow-x-auto';
 export const ACTIVITY = 'Activity';
-export const BODY_ACCTIVITY_PAGE = '[class="min-h-[200px]"]';
+export const BODY_ACTIVITY_PAGE = '[class="min-h-[200px]"]';
 export const USAGE = 'Usage';
 export const INSTALL = 'Install';
 export const SIDE_BAR = '.sticky';

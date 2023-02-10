@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test';
 import {
   ACTIVITY,
   AUTHOR,
-  BODY_ACCTIVITY_PAGE,
+  BODY_ACTIVITY_PAGE,
   BUTTON,
   CLEAR_SEARCH,
   CONTRIBUTING,
@@ -94,30 +94,38 @@ test.describe('Plugin details tests', () => {
     expect(
       await page.locator(getByID(METADATA_VERSION)).nth(1).textContent(),
     ).toContain(data.version);
+
     expect(
       await page.locator(getByID(METADATA_RELEASE_DATE)).nth(1).textContent(),
     ).toContain(formateDate(data.release_date.substring(0, 10) as string));
+
     expect(
       await page.locator(getByID(METADATA_FIRST_RELEASED)).nth(1).textContent(),
     ).toContain(formateDate(data.first_released.substring(0, 10) as string));
+
     expect(
       await page.locator(getByID(METADATA_LICENSE)).nth(1).textContent(),
     ).toContain(data.license);
+
     expect(
       await page.locator(getByID(METADATA_SUPPORTED_DATA)).nth(1).textContent(),
     ).toContain(SUPPORTED_DATA);
+
     expect(
       await page.locator(getByID(MEATADATA_PLUGIN_TYPE)).nth(1).textContent(),
     ).toContain(PLUGIN_TYPE);
+
     expect(
       await page.locator(getByID(METADATA_REQUIREMENTS)).nth(1).textContent(),
     ).toContain(REQUIREMENT);
+
     expect(
       await page
         .locator(getByID(MEATADATA_PYTHON_VERSION))
         .nth(1)
         .textContent(),
     ).toContain(data.python_version);
+
     data.operating_system.map(async (system: string) => {
       const systemType = await page
         .locator(getByID(METADATA_OPERATING_SYSTEM))
@@ -131,8 +139,8 @@ test.describe('Plugin details tests', () => {
 
     await page.locator(HEADER_REGION).getByText(ACTIVITY).click();
 
-    expect(await page.locator(BODY_ACCTIVITY_PAGE).textContent()).toContain(
-      USAGE,
-    );
+    expect(
+      await page.locator(BODY_ACTIVITY_PAGE).first().textContent(),
+    ).toContain(USAGE);
   });
 });
