@@ -1,18 +1,13 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { expect, test } from '@playwright/test';
-import { SEARCH_RESULT } from '../utils/constants';
-import { parseItem, searchPluginFixture } from '../utils/fixture';
-import {
-  getPluginCategory,
-  getPluginNames,
-  getPluginProp,
-  verifyPlugin,
-} from '../utils/plugin';
-import * as fs from 'fs';
-import { searchPlugins } from '../utils/search';
 
 import { SearchQueryParams, SearchSortType } from '@/store/search/constants';
 
+import { SEARCH_RESULT } from '../utils/constants';
+import { parseItem, searchPluginFixture } from '../utils/fixture';
+import { verifyPlugin } from '../utils/plugin';
+import { searchPlugins } from '../utils/search';
 import { getByTestID, selectors } from '../utils/selectors';
 import {
   AccordionTitle,
@@ -39,24 +34,11 @@ test.describe('Plugin search tests', () => {
 
   test('should render search results for query', async ({ page }) => {
     await searchPlugins(page, query);
-    let i = 0;
     const data = parseItem(fixture);
-    const data2 = getPluginCategory(data);
-
-    fs.writeFile('file.json', JSON.stringify(data2), 'utf8', (err) => {
-      if (err) {
-        console.error(err);
-        return;
-      }
-      console.log('The file was saved!');
-    });
 
     for (const plugin of await page.locator(getByTestID(SEARCH_RESULT)).all()) {
-      const data = parseItem(fixture);
       // eslint-disable-next-line no-await-in-loop
       await verifyPlugin(plugin, data);
-
-      i += 1;
     }
   });
 
@@ -64,16 +46,14 @@ test.describe('Plugin search tests', () => {
     page,
   }) => {
     await page.goto(getSearchUrl([SearchQueryParams.Search, query]));
-    let i = 0;
     for (const plugin of await page.locator(getByTestID(SEARCH_RESULT)).all()) {
       const data = parseItem(fixture);
       // eslint-disable-next-line no-await-in-loop
       await verifyPlugin(plugin, data);
-      i += 1;
     }
   });
 
-  test.only('should render original list when query is cleared', async ({
+  test('should render original list when query is cleared', async ({
     page,
   }) => {
     await searchPlugins(page, query);
@@ -83,7 +63,7 @@ test.describe('Plugin search tests', () => {
     );
   });
 
-  test.only('should clear query when clicking on app bar home link', async ({
+  test('should clear query when clicking on app bar home link', async ({
     page,
   }) => {
     await searchPlugins(page, query);
@@ -93,7 +73,7 @@ test.describe('Plugin search tests', () => {
     );
   });
 
-  test.only('should redirect to search page when searching from another page', async ({
+  test('should redirect to search page when searching from another page', async ({
     page,
   }) => {
     await page.goto(getTestURL('/about'));

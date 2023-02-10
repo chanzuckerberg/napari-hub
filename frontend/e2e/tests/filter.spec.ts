@@ -8,6 +8,7 @@ const ENV = (process.env.NODE_ENV as string) || '';
 const TEST_AUTHORS = AUTHORS[ENV.toUpperCase()];
 const FILE_EXTENSIONS = EXTENSIONS[ENV.toUpperCase()];
 const sortBy = 'Recently updated';
+
 test.describe('Plugin filter tests', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto(`${process.env.BASEURL as string}`);

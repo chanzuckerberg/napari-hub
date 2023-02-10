@@ -188,14 +188,3 @@ export async function verifyFilterResults(
     currentPageCounter += 1;
   }
 }
-
-export function formateDate(dateStr: string) {
-  const d = new Date(dateStr)
-    .toLocaleString('en-US', {
-      day: '2-digit',
-      month: 'long',
-      year: 'numeric',
-    })
-    .split(' ');
-  return `${d[1].replace(',', '')} ${d[0]} ${d[2]}`;
-}
