@@ -19,6 +19,20 @@ import {
   SEARCH_BUTTON,
   SEARCH_INPUT,
   SEARCH_RESULT,
+  AUTHOR,
+  CONTRIBUTING_HEADER,
+  LICENSE_HEADER,
+  ISSUES_HEADER,
+  SUPPORTED_DATA,
+  PLUGIN_TYPE,
+  REQUIREMENT,
+  HEADER_REGION,
+  ACTIVITY,
+  BODY_ACCTIVITY_PAGE,
+  USAGE,
+  INSTALL,
+  SIDE_BAR,
+  BUTTON,
 } from '../utils/constants';
 import { formateDate } from '../utils/filterNew';
 import { getFixture } from '../utils/fixture';
@@ -54,17 +68,27 @@ test.describe('Plugin details tests', () => {
       data.summary,
     );
 
+    // verify author
+    expect(await page.locator(AUTHOR).textContent()).toBe(data.authors[0].name);
+
     // installation button
-    await expect(
-      page
-        .getByRole('heading', { name: 'Installation ¶' })
-        .getByText('Installation'),
-    ).toBeVisible();
+    expect(await page.locator(SIDE_BAR).getByTestId(BUTTON).textContent()).toBe(
+      INSTALL,
+    );
+
+    // verify the url
+    expect(page.url()).toContain(data.name);
 
     // headers
-    await expect(page.locator(getByID(CONTRIBUTING))).toBeVisible();
-    await expect(page.locator(getByID(LICENSE))).toBeVisible();
-    await expect(page.locator(getByID(ISSUES))).toBeVisible();
+    expect(await page.locator(getByID(CONTRIBUTING)).textContent()).toBe(
+      CONTRIBUTING_HEADER,
+    );
+    expect(await page.locator(getByID(LICENSE)).textContent()).toBe(
+      LICENSE_HEADER,
+    );
+    expect(await page.locator(getByID(ISSUES)).textContent()).toBe(
+      ISSUES_HEADER,
+    );
 
     // side details
     expect(
@@ -79,12 +103,15 @@ test.describe('Plugin details tests', () => {
     expect(
       await page.locator(getByID(METADATA_LICENSE)).nth(1).textContent(),
     ).toContain(data.license);
-    await expect(
-      page.locator(getByID(METADATA_SUPPORTED_DATA)).nth(1),
-    ).toBeVisible();
-    await expect(
-      page.locator(getByID(MEATADATA_PLUGIN_TYPE)).nth(1),
-    ).toBeVisible();
+    expect(
+      await page.locator(getByID(METADATA_SUPPORTED_DATA)).nth(1).textContent(),
+    ).toContain(SUPPORTED_DATA);
+    expect(
+      await page.locator(getByID(MEATADATA_PLUGIN_TYPE)).nth(1).textContent(),
+    ).toContain(PLUGIN_TYPE);
+    expect(
+      await page.locator(getByID(METADATA_REQUIREMENTS)).nth(1).textContent(),
+    ).toContain(REQUIREMENT);
     expect(
       await page
         .locator(getByID(MEATADATA_PYTHON_VERSION))
@@ -98,8 +125,14 @@ test.describe('Plugin details tests', () => {
         .textContent();
       expect(systemType?.toLowerCase()).toContain(system);
     });
-    await expect(
-      page.locator(getByID(METADATA_REQUIREMENTS)).nth(1),
-    ).toBeVisible();
+
+    //verify activity page
+    expect(await page.locator(HEADER_REGION).textContent()).toContain(ACTIVITY);
+
+    await page.locator(HEADER_REGION).getByText(ACTIVITY).click();
+
+    expect(await page.locator(BODY_ACCTIVITY_PAGE).textContent()).toContain(
+      USAGE,
+    );
   });
 });
