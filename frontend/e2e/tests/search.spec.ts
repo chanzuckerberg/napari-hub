@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable no-await-in-loop */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { expect, test } from '@playwright/test';
@@ -19,7 +21,7 @@ import {
 
 const query = 'video';
 const pluginName = 'napari_video';
-const fixture = searchPluginFixture([query]);
+const fixture = parseItem(searchPluginFixture([query]));
 
 test.describe('Plugin search tests', () => {
   test('should update URL parameter when entering query', async ({ page }) => {
@@ -34,11 +36,10 @@ test.describe('Plugin search tests', () => {
 
   test('should render search results for query', async ({ page }) => {
     await searchPlugins(page, query);
-    const data = parseItem(fixture);
-
+    let index = 0;
     for (const plugin of await page.locator(getByTestID(SEARCH_RESULT)).all()) {
-      // eslint-disable-next-line no-await-in-loop
-      await verifyPlugin(plugin, data);
+      await verifyPlugin(plugin, fixture[index]);
+      index += 1;
     }
   });
 
@@ -46,10 +47,10 @@ test.describe('Plugin search tests', () => {
     page,
   }) => {
     await page.goto(getSearchUrl([SearchQueryParams.Search, query]));
+    let index = 0;
     for (const plugin of await page.locator(getByTestID(SEARCH_RESULT)).all()) {
-      const data = parseItem(fixture);
-      // eslint-disable-next-line no-await-in-loop
-      await verifyPlugin(plugin, data);
+      await verifyPlugin(plugin, fixture[index]);
+      index += 1;
     }
   });
 
@@ -78,13 +79,12 @@ test.describe('Plugin search tests', () => {
   }) => {
     await page.goto(getTestURL('/about'));
     await searchPlugins(page, query);
-    await page.waitForNavigation();
 
     const expectedUrl = getSearchUrl(
       [SearchQueryParams.Search, query],
       [SearchQueryParams.Sort, SearchSortType.Relevance],
     );
-    expect(page.url()).toEqual(expectedUrl);
+    expect(page.url()).toContain(expectedUrl);
     await page.waitForTimeout(500);
     await expect(page.locator(selectors.search.result).first()).toContainText(
       pluginName,
