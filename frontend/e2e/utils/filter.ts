@@ -278,10 +278,10 @@ export function formateDate(dateStr: string) {
 }
 
 export function containsAllElements(sourceArr: any, targetArr: any) {
-  return sourceArr.every((i) => targetArr.includes(i));
+  return sourceArr.every((i: any) => targetArr.includes(i));
 }
 
-export function getAuthorNames(authorsObj) {
+export function getAuthorNames(authorsObj: any) {
   const result: Array<string> = [];
   const data = parseItem(authorsObj);
   for (const author of data) {
