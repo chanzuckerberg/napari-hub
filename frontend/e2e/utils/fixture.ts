@@ -189,6 +189,7 @@ export function filterPluginFixture(
 export function searchPluginFixture(query: string[]) {
   const fixtures = getFixture();
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const filtered = fixtures.filter((item: any) => {
     const selectedItem = pick(parseItem(item as string), [
       'name',

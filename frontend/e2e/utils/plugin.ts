@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable no-await-in-loop */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
@@ -5,12 +6,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { expect } from '@playwright/test';
 
-import {
-  DISPLAY_NAME,
-  RESULT_AUTHORS,
-  RESULT_NAME,
-  RESULT_SUMMARY,
-} from './constants';
+import { RESULT_AUTHORS, RESULT_NAME, RESULT_SUMMARY } from './constants';
 import { parseItem } from './fixture';
 import { getByTestID, getByText, getMetadata } from './selectors';
 
