@@ -10,7 +10,8 @@
   "noData": {
     "allData": "No data could be fetched for this plugin. <hubLink href='$t(learnMoreLink)'>Learn more.</hubLink>",
     "monthly": "There is not yet enough data to display for this plugin",
-    "preview": "Activity not available for previews"
+    "preview": "Activity not available for previews",
+    "noCodeRepo": "Metrics not available, this plugin does not have a code repository specified."
   },
   "monthlyInstalls": {
     "title": "Monthly installs in past year",
