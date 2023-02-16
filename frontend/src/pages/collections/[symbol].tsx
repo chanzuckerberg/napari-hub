@@ -75,32 +75,20 @@ export default function Collections({ collection, error }: Props) {
 
   return (
     <>
-      <PageMetadata description={collection?.summary} />
+      <PageMetadata
+        description={collection?.summary}
+        title={collection?.title}
+        url={
+          collection
+            ? `https://napari-hub.org/collections/${collection.title}`
+            : undefined
+        }
+        image={collection?.cover_image}
+        twitterUser={curatorTwitter}
+      />
 
       <Head>
         <title>{title}</title>
-
-        {collection && (
-          <>
-            <meta property="og:title" content={collection.title} />
-            <meta property="og:type" content="article" />
-            <meta
-              property="og:url"
-              content={`https://napari-hub.org/collections/${collection.title}`}
-            />
-            <meta property="og:image" content={collection.cover_image} />
-            <meta property="og:description" content={collection.summary} />
-
-            <meta name="twitter:card" content="summary_large_image" />
-            <meta name="twitter:site" content="@napari_imaging" />
-            <meta name="twitter:title" content={collection.title} />
-            <meta name="twitter:description" content={collection.summary} />
-            <meta name="twitter:image" content={collection.cover_image} />
-            {curatorTwitter && (
-              <meta name="twitter:creator" content={`@${curatorTwitter}`} />
-            )}
-          </>
-        )}
       </Head>
 
       {error ? (

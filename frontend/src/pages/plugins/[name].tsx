@@ -103,7 +103,17 @@ export default function Plugin({ error, plugin, repo, repoFetchError }: Props) {
 
   return (
     <>
-      <PageMetadata keywords={keywords} description={plugin?.summary} />
+      <PageMetadata
+        description={plugin?.summary}
+        keywords={keywords}
+        title={title}
+        twitterUser={plugin?.twitter}
+        url={
+          plugin?.name
+            ? `https://napari-hub.org/plugins/${plugin.name}`
+            : undefined
+        }
+      />
 
       <Head>
         <title>{title}</title>
