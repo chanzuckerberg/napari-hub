@@ -277,6 +277,15 @@ data aws_iam_policy_document backend_policy {
 
   statement {
     actions = [
+      "dynamodb:GetItem",
+      "dynamodb:Query",
+    ]
+
+    resources = [module.install_dynamodb_table.table_arn]
+  }
+
+  statement {
+    actions = [
       "lambda:InvokeFunction"
     ]
 
