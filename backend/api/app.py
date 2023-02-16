@@ -7,6 +7,7 @@ from flask import Flask, Response, jsonify, render_template, request
 from flask_githubapp.core import GitHubApp
 
 from api.collections import get_collections, get_collection
+from api.custom_wsgi import script_path_middleware
 from api.model import get_public_plugins, get_index, get_plugin, get_excluded_plugins, update_cache, \
     move_artifact_to_s3, get_category_mapping, get_categories_mapping, get_manifest, update_activity_data, \
     get_metrics_for_plugin
@@ -21,6 +22,10 @@ app = Flask(__name__)
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 app.url_map.redirect_defaults = False
 preview_app = Flask("Preview")
+
+if os.getenv('DD_ENV') == 'dev':
+    app.wsgi_app = script_path_middleware(f'/{os.getenv("DD_SERVICE")}')(app.wsgi_app)
+
 
 if GITHUB_APP_ID and GITHUB_APP_KEY and GITHUB_APP_SECRET:
     preview_app.config['GITHUBAPP_ID'] = int(GITHUB_APP_ID)
