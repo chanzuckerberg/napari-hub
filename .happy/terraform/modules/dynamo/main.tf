@@ -1,11 +1,11 @@
 module dynamodb {
-  source   = "terraform-aws-modules/dynamodb-table/aws"
-  version = "3.3.2"
+  source      = "terraform-aws-modules/dynamodb-table/aws"
+  version     = "3.1.2"
 
-  name = var.table_name
-  hash_key = var.hash_key
-  range_key = var.range_key
-  attributes = var.attributes
+  name        = var.table_name
+  hash_key    = var.hash_key
+  range_key   = var.range_key
+  attributes  = var.attributes
   table_class = var.table_class
 
   point_in_time_recovery_enabled = var.tags.env == "prod" ? true : false
