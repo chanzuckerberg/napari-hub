@@ -14,6 +14,6 @@ module dynamodb {
 
   autoscaling_enabled = var.autoscaling_enabled
   create_table = var.create_table
-  
+
   tags = var.tags
 }
