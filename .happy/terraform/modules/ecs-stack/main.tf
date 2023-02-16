@@ -97,6 +97,26 @@ module frontend_service {
 resource "random_uuid" "api_key" {
 }
 
+module install_dynamodb_table {
+  source              = "../dynamo"
+  table_name          = "${local.custom_stack_name}-install-activity"
+  hash_key            = "plugin_name"
+  range_key           = "type_timestamp"
+  attributes          = [
+                          {
+                            name = "plugin_name"
+                            type = "S"
+                          },
+                          {
+                            name = "type_timestamp"
+                            type = "S"
+                          }
+                        ]
+  autoscaling_enabled = var.env == "dev" ? false : true
+  create_table        = true
+  tags                = var.tags
+}
+
 module backend_lambda {
   source             = "../lambda-container"
   function_name      = local.backend_function_name
