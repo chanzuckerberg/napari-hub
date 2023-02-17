@@ -11,7 +11,7 @@ import { DEFAULT_REPO_DATA } from '@/constants/plugin';
 import { useLoadingState } from '@/context/loading';
 import { PluginStateProvider } from '@/context/plugin';
 import { PluginData } from '@/types';
-import { fetchRepoData, FetchRepoDataResult } from '@/utils';
+import { fetchRepoData, FetchRepoDataResult, getHubUrlByEnv } from '@/utils';
 import { hubAPI } from '@/utils/HubAPIClient';
 import { getServerSidePropsHandler } from '@/utils/ssr';
 import { getZodErrorMessage } from '@/utils/validate';
@@ -109,9 +109,7 @@ export default function Plugin({ error, plugin, repo, repoFetchError }: Props) {
         title={title}
         twitterUser={plugin?.twitter}
         url={
-          plugin?.name
-            ? `https://napari-hub.org/plugins/${plugin.name}`
-            : undefined
+          plugin?.name ? getHubUrlByEnv(`/plugins/${plugin.name}`) : undefined
         }
       />
 

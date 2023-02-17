@@ -10,6 +10,7 @@ import { ErrorMessage } from '@/components/ErrorMessage';
 import { PageMetadata } from '@/components/PageMetadata';
 import { useLoadingState } from '@/context/loading';
 import { CollectionData } from '@/types/collections';
+import { getHubUrlByEnv } from '@/utils';
 import { hubAPI } from '@/utils/HubAPIClient';
 import { getServerSidePropsHandler } from '@/utils/ssr';
 import { getZodErrorMessage } from '@/utils/validate';
@@ -80,7 +81,7 @@ export default function Collections({ collection, error }: Props) {
         title={collection?.title}
         url={
           collection
-            ? `https://napari-hub.org/collections/${collection.title}`
+            ? getHubUrlByEnv(`/collections/${collection.symbol}`)
             : undefined
         }
         image={collection?.cover_image}
