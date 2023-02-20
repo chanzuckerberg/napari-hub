@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 import fs from 'fs';
 import { filter, intersectionBy, map, orderBy } from 'lodash';
 
@@ -5,6 +9,11 @@ import { PluginFilter } from '../types/filter';
 
 let pluginFixtureFile = `e2e/fixtures/local.json`;
 const ENV = (process.env.NODE_ENV as string) || '';
+const OPERATING_SYSTEMS: Record<string, string> = {
+  macOS: 'Operating System :: macOS',
+  Windows: 'Operating System :: Microsoft :: Windows :: Windows 10',
+  Linux: 'Operating System :: POSIX :: Linux',
+};
 
 if (ENV === 'staging' || ENV === 'prod') {
   pluginFixtureFile = `e2e/fixtures/${ENV}.json`;
@@ -21,7 +30,7 @@ export function getFixture(fileName?: string) {
 }
 
 // fixture for local environment is already parsed; parsing again causes issues
-export function parseItem(text: any) {
+export function parseItem(text: unknown) {
   if (typeof text === 'object') {
     return text;
   }
@@ -36,7 +45,6 @@ export function searchPluginFixture(
   const { key, values } = pluginFilter;
 
   let filtered;
-  console.log('Thois is ++++++++' + values);
   if (key === 'authors') {
     filtered = filter(fixtures, (item) => {
       const result = intersectionBy(
@@ -48,10 +56,13 @@ export function searchPluginFixture(
   }
   if (key === 'supported_data') {
     filtered = filter(fixtures, (item) => {
+      if (!parseItem(item).category) {
+        return false;
+      }
       const result = intersectionBy(
         map(
-          parseItem(item as string).category,
-          (category) => category['Supported data'],
+          parseItem(item as string).category['Supported data'],
+          (data) => data,
         ),
         values,
       );
@@ -60,10 +71,28 @@ export function searchPluginFixture(
   }
   if (key === 'image_modality') {
     filtered = filter(fixtures, (item) => {
+      if (!parseItem(item).category) {
+        return false;
+      }
       const result = intersectionBy(
         map(
-          parseItem(item as string).category_hierarchy,
-          (category_hierarchy) => category_hierarchy['Image modality'],
+          parseItem(item as string).category['Image modality'],
+          (data) => data,
+        ),
+        values,
+      );
+      return result.length !== 0;
+    });
+  }
+  if (key === 'workflow_step') {
+    filtered = filter(fixtures, (item) => {
+      if (!parseItem(item).category) {
+        return false;
+      }
+      const result = intersectionBy(
+        map(
+          parseItem(item as string).category['Workflow step'],
+          (data) => data,
         ),
         values,
       );
@@ -71,16 +100,15 @@ export function searchPluginFixture(
     });
   }
   if (key === 'python_version') {
-    filtered = filter(fixtures, (item) => {
-      const result = intersectionBy(
-        map(
-          parseItem(item as string).python_version,
-          (pythonVersion) => pythonVersion,
-        ),
-        values,
-      );
-      return result.length !== 0;
-    });
+    const versions: string[] = [];
+    for (let i = 0; i < values.length; i += 1) {
+      versions.push(`>=${values[i]}`);
+    }
+    filtered = fixtures.filter(
+      (plugin: { python_version: unknown }) =>
+        plugin.python_version === versions.toString(),
+    );
+    return filtered.length !== 0;
   }
 
   if (key === 'plugin_type') {
@@ -96,80 +124,64 @@ export function searchPluginFixture(
     });
   }
 
-  if (key === 'open_extension') {
+  if (key === 'save_extension' || key === 'open_extension') {
+    const readerWriter =
+      key === 'save_extension'
+        ? 'reader_file_extensions'
+        : 'writer_file_extensions';
+    const ext: string[] = [];
+    for (let i = 0; i < values.length; i += 1) {
+      ext.push(`${values[i]}`);
+    }
     filtered = filter(fixtures, (item) => {
       const result = intersectionBy(
         map(
-          parseItem(item as string).reader_file_extensions,
+          parseItem(item as string)[readerWriter],
           (extensions) => extensions,
         ),
-        values,
-      );
-      return result.length !== 0;
-    });
-  }
-
-  if (key === 'save_extension') {
-    filtered = filter(fixtures, (item) => {
-      const result = intersectionBy(
-        map(
-          parseItem(item as string).writer_file_extensions,
-          (extensions) => extensions,
-        ),
-        values,
+        ext,
       );
       return result.length !== 0;
     });
   }
   if (key === 'license') {
-    filtered = filter(fixtures, (item) => {
-      const result = intersectionBy(
-        map(parseItem(item as string).license, (license) => license),
-        values,
-      );
-      return result.length !== 0;
-    });
     filtered = fixtures.filter(
       (plugin: { license: string }) => plugin.license === values.toString(),
     );
+    return filtered.length !== 0;
   }
 
   if (key === 'operating_system') {
+    const operatingSystems = [[], 'Operating System :: OS Independent'];
+    for (let i = 0; i < values.length; i += 1) {
+      operatingSystems.push(OPERATING_SYSTEMS[values[i]]);
+    }
     filtered = filter(fixtures, (item) => {
       const result = intersectionBy(
         map(
           parseItem(item as string).operating_system,
           (operatingSystem) => operatingSystem,
         ),
-        values,
+        operatingSystems,
       );
       return result.length !== 0;
     });
   }
 
   // sort results
-  let sortedPlugins;
-  if (sortBy === 'recentlyUpdated') {
-    sortedPlugins = orderBy(
+  if (sortBy === 'Recently updated') {
+    return orderBy(
       filtered,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      [
-        (plugin) => {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-          return new Date(parseItem(plugin).release_date);
-        },
-      ],
+      [(plugin) => new Date(parseItem(plugin).release_date as string)],
       ['desc'],
     );
-  } else if (sortBy === 'newest') {
-    sortedPlugins = orderBy(
-      filtered,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      [(plugin) => new Date(parseItem(plugin).first_released)],
-      ['desc'],
-    );
-  } else {
-    sortedPlugins = orderBy(filtered, [(plugin) => plugin.name], ['asc']);
   }
-  return sortedPlugins;
+  if (sortBy === 'newest') {
+    return orderBy(
+      filtered,
+      [(plugin) => new Date(parseItem(plugin).first_released as string)],
+      ['desc'],
+    );
+  }
+  return orderBy(filtered, [(plugin) => plugin.name], ['asc']);
 }

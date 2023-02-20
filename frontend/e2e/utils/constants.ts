@@ -21,12 +21,12 @@ export const PAGINATION_LEFT = 'paginationLeft';
 export const PAGINATION_RIGHT = 'paginationRight';
 
 export const AUTHORS: Record<string, Array<Array<string>>> = {
-  LOCAL: [['Talley Lambert']],
+  LOCAL: [['Talley Lambert'], ['Carsen Stringer', 'Manan Lalit']],
   STAGING: [['Abigail McGovern']],
   PROD: [['Abigail McGovern']],
 };
-export const PLUGIN_TYPE: Record<string, Array<Array<string>>> = {
-  LOCAL: [['Talley Lambert']],
-  STAGING: [['Widget']],
-  PROD: [['Abigail McGovern']],
+export const EXTENSIONS: Record<string, Array<Array<string>>> = {
+  LOCAL: [['jpg'], ['jpg', 'png']],
+  STAGING: [['.jpg'], ['.jpg', '.png']],
+  PROD: [['.jpg'], ['.jpg', '.png']],
 };

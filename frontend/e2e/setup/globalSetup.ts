@@ -11,7 +11,7 @@ dotenv.config({ path: path.resolve(`.env`) });
  * This function is run once at the start of the test
  * @param config
  */
-// eslint-disable-next-line @typescript-eslint/require-await
+
 async function globalSetup(config: FullConfig): Promise<void> {
   // set base url in as environment variable so it is accessible outside tests
   const { baseURL } = config.projects[0].use || 'http://localhost:8080';
@@ -28,7 +28,10 @@ async function globalSetup(config: FullConfig): Promise<void> {
     const api = API[ENV.toUpperCase()];
 
     // get list of plugins
-    const plugins = await ApiGetRequest(api, '/plugins');
+    const plugins: string[] = (await ApiGetRequest(
+      api,
+      '/plugins',
+    )) as string[];
 
     // 1. for each plugin received, call api to get the data
     // 2. save plugin JSON to files
@@ -42,7 +45,7 @@ async function globalSetup(config: FullConfig): Promise<void> {
         await ApiGetRequest(api, `/plugins/${pluginName}`),
       );
       dataArray.push(pluginJson);
-      counter++;
+      counter += 1;
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       if (counter === Object.keys(plugins).length) {
         fs.writeFileSync(pluginDataFile, JSON.stringify(dataArray));
@@ -50,4 +53,6 @@ async function globalSetup(config: FullConfig): Promise<void> {
     });
   }
 }
+
+// eslint-disable-next-line import/no-default-export
 export default globalSetup;

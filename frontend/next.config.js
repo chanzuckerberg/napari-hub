@@ -59,7 +59,7 @@ module.exports = {
   // https://github.com/vercel/next.js/issues/36498
   optimizeFonts: false,
 
-  webpack(config) {
+  webpack(config, { isServer }) {
     // Sets BABEL_ENV to `<[server|client]-[dev|prod]>` depending on the Next.js
     // build.  This is required for the Material UI + babel import plugin to work.
     const env = PROD ? 'prod' : 'dev';
@@ -89,6 +89,14 @@ module.exports = {
         PLAUSIBLE: JSON.stringify(
           ['prod', 'staging'].includes(process.env.ENV),
         ),
+
+        // Add `API_URL` to client at build time so that it can make requests to
+        // the API directly.
+        ...(isServer
+          ? {}
+          : {
+              API_URL: 'http://localhost:8081',
+            }),
       }),
     );
 

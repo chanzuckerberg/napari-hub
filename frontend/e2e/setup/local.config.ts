@@ -8,10 +8,10 @@ dotenv.config({
 
 const config: PlaywrightTestConfig = {
   expect: {
-    timeout: 10000,
+    timeout: 3000,
   },
-  fullyParallel: true,
   globalSetup: './globalSetup',
+  fullyParallel: true,
   outputDir: '../report',
   reporter: [
     ['list'],
@@ -25,13 +25,51 @@ const config: PlaywrightTestConfig = {
 
   projects: [
     {
-      name: 'firefox',
+      name: 'Desktop',
       use: {
-        ...devices['Desktop Firefox'],
+        ...devices['Desktop Chrome'],
         baseURL: 'http://localhost:8080/',
         video: 'on',
-        locale: 'en-US',
-        timezoneId: 'America/New_York',
+      },
+    },
+    {
+      name: 'Screen-300',
+      use: {
+        browserName: 'chromium',
+        viewport: { width: 300, height: 650 },
+        video: 'on',
+      },
+    },
+    {
+      name: 'Screen-600',
+      use: {
+        browserName: 'chromium',
+        viewport: { width: 600, height: 920 },
+        video: 'on',
+      },
+    },
+    {
+      name: 'Screen-875',
+      use: {
+        browserName: 'chromium',
+        viewport: { width: 875, height: 415 },
+        video: 'on',
+      },
+    },
+    {
+      name: 'Screen-1150',
+      use: {
+        browserName: 'chromium',
+        viewport: { width: 1150, height: 712 },
+        video: 'on',
+      },
+    },
+    {
+      name: 'Screen-1425',
+      use: {
+        browserName: 'chromium',
+        viewport: { width: 1425, height: 1080 },
+        video: 'on',
       },
     },
   ],
