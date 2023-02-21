@@ -15,7 +15,7 @@ export function AreaChartLayout({ children, height }: Props) {
       top: 20,
       left: isScreen600 ? 86 : 55,
       bottom: 48,
-      right: 15,
+      right: 20,
     }),
     [isScreen600],
   );
