@@ -109,8 +109,8 @@ async function getCollectionEntries(): Promise<SitemapEntry[]> {
     const data = await hubAPI.getCollectionsIndex();
 
     return data.map((collection) => {
-      const url = `/collections/${collection.name}`;
-      const lastmod = new Date(collection.release_date).toISOString();
+      const url = `/collections/${plugin.name}`;
+      const lastmod = new Date(collection.updated_date).toISOString();
 
       return {
         url,
