@@ -102,13 +102,40 @@ async function getPluginEntries(): Promise<SitemapEntry[]> {
 }
 
 /**
+ * @returns A list of all hub collection sitemap entries.
+ */
+async function getCollectionEntries(): Promise<SitemapEntry[]> {
+  try {
+    const data = await hubAPI.getCollectionsIndex();
+
+    return data.map((collection) => {
+      const url = `/collections/${collection.name}`;
+      const lastmod = new Date(collection.release_date).toISOString();
+
+      return {
+        url,
+        lastmod,
+      };
+    });
+  } catch (err) {
+    logger.error('Unable to fetch collection list:', err);
+  }
+
+  return [];
+}
+
+/**
  * @returns XML string for the dynamic sitemap
  */
 async function renderSiteMap(): Promise<string> {
   const { SitemapStream, streamToPromise } = await import('sitemap');
 
   const entries: SitemapEntry[] = (
-    await Promise.all([getHubEntries(), getPluginEntries()])
+    await Promise.all([
+      getHubEntries(),
+      getPluginEntries(),
+      getCollectionEntries(),
+    ])
   ).flat();
 
   const stream = new SitemapStream({ hostname: process.env.FRONTEND_URL });
