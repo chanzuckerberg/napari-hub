@@ -112,6 +112,37 @@ services:
       naparinet:
         aliases:
           - plugins.naparinet.local
+  data-workflows:
+    image: '${DOCKER_REPO}napari-hub-dev-data-workflows'
+    build:
+      context: data-workflows
+      cache_from:
+        - '${DOCKER_REPO}napari-hub-dev-data-workflows:${STACK_NAME}'
+      args:
+        - BUILDKIT_INLINE_CACHE=1
+        - HAPPY_COMMIT
+        - HAPPY_BRANCH
+        - HAPPY_TAG
+    restart: always
+    depends_on:
+      - localstack
+    ports:
+      - '5000:5000'
+    environment:
+      - PYTHONUNBUFFERED=1
+      - AWS_DEFAULT_REGION=us-west-2
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - BOTO_ENDPOINT_URL=http://localstack:4566
+      - BUCKET=imaging-test-napari-hub
+    # This entrypoint only used for local dev; in cloud we deploy as a Lambda container
+    entrypoint: gunicorn --worker-class gevent --workers 4 --bind 0.0.0.0:5000 napari:app --max-requests 10000 --timeout 5 --keep-alive 5 --log-level info --reload
+    volumes:
+      - ./data-workflows:/var/task
+    networks:
+      naparinet:
+        aliases:
+          - data-workflows.naparinet.local
 networks:
   naparinet:
 volumes:
