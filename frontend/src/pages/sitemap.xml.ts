@@ -113,7 +113,6 @@ async function getCollectionEntries(): Promise<SitemapEntry[]> {
 
       return {
         url,
-        lastmod,
       };
     });
   } catch (err) {
