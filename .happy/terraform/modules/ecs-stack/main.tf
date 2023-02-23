@@ -228,8 +228,12 @@ resource aws_sqs_queue data_workflows_queue {
   message_retention_seconds   = 86400
   receive_wait_time_seconds   = 10
   visibility_timeout_seconds  = 300
-  policy                      = data.aws_iam_policy_document.data_workflows_sqs_policy.json
   tags                        = var.tags
+}
+
+resource aws_sqs_queue_policy data_workflows_queue_policy {
+  queue_url = aws_sqs_queue.data_workflows_queue.url
+  policy = data.aws_iam_policy_document.data_workflows_sqs_policy.json
 }
 
 resource "aws_lambda_event_source_mapping" "data_workflow_sqs_event_source_mapping" {
@@ -405,15 +409,18 @@ data aws_iam_policy_document plugins_policy {
 
 data aws_iam_policy_document data_workflows_sqs_policy {
   statement {
-    actions = ["sqs:SendMessage"]
-    resources = [aws_cloudwatch_event_rule.activity_rule.arn]
-  }
-  statement {
-    actions = [
-      "sqs:ReceiveMessage",
-      "sqs:DeleteMessage",
-    ]
-    resources = [module.data_workflows_lambda.function_arn]
+    sid       = "event_bridge_publish"
+    actions   = ["sqs:SendMessage"]
+    resources = [aws_sqs_queue.data_workflows_queue.arn]
+    principals {
+      type        = "Service"
+      identifiers = ["events.amazonaws.com"]
+    }
+    condition {
+      test     = "ArnLike"
+      variable = "aws:SourceArn"
+      values   = [aws_cloudwatch_event_rule.activity_rule.arn]
+    }
   }
 }
 
