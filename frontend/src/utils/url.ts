@@ -1,7 +1,5 @@
 import { isString } from 'lodash';
 
-import { PROD, STAGING } from '@/constants/env';
-
 /**
  * Checks if the string is an external URL. This works by using the value to
  * create a URL object. URL objects will throw errors for relative URLs if a
@@ -70,18 +68,4 @@ export function setUrlHash(hash: string | undefined | null) {
   const nextUrl = createUrl(window.location.href);
   nextUrl.hash = hash ?? '';
   replaceUrlState(nextUrl);
-}
-
-export function getHubUrlByEnv(path: string): string {
-  let base = 'http://localhost:8080';
-
-  if (PROD) {
-    base = 'https://napari-hub.org';
-  }
-
-  if (STAGING) {
-    base = 'https://staging.napari-hub.org';
-  }
-
-  return createUrl(path, base).href;
 }
