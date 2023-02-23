@@ -199,8 +199,9 @@ module data_workflows_lambda {
   }
 
   environment             = {
-    "SNOWFLAKE_USER" = local.snowflake_user
     "SNOWFLAKE_PASSWORD" = local.snowflake_password
+    "SNOWFLAKE_USER"     = local.snowflake_user
+    "STACK_NAME"         = local.custom_stack_name
   }
 
   log_retention_in_days   = 14
