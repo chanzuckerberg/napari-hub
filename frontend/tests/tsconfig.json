@@ -1,4 +1,0 @@
-{
-  // TODO Remove when overrides are addeded to `tsconfig.json`
-  "extends": "../tsconfig.jest.json"
-}

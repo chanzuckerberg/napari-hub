@@ -74,6 +74,7 @@ export class PluginSearchStore implements Resettable {
 }
 
 export type FilterKey = NonFunctionKeys<PluginSearchStore['filters']>;
+export type FilterType = 'category' | 'requirement';
 
 export type FilterCategoryKeys = keyof Pick<
   PluginSearchStore['filters'],
