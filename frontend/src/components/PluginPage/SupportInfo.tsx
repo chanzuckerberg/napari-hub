@@ -243,13 +243,17 @@ function Links({ children, links }: LinksProps) {
       onOpen={openTooltip}
       onClose={closeTooltip}
       title={
-        <ul>
+        <div className="flex flex-col">
           {links.map((link) => (
-            <li className="hover:bg-hub-gray-100 py-sds-s px-sds-l">
-              <Link href={link.value}>{link.label}</Link>
-            </li>
+            <Link
+              className="py-sds-s px-sds-l hover:bg-hub-gray-100"
+              href={link.value}
+              key={link.value}
+            >
+              {link.label}
+            </Link>
           ))}
-        </ul>
+        </div>
       }
     >
       <ButtonIcon onClick={openTooltip} disabled={hasEmptyLinks}>
