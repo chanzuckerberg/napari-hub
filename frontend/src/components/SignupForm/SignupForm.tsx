@@ -135,7 +135,7 @@ export function SignupForm({ onSubmit, variant = 'default' }: Props) {
               // invisible after submission, this code should be safe to run
               // because `handleSubmit` will not run unless the form is visible.
               handleSubmit(event);
-              setTimeout(() => handleSubmit(event), 150);
+              setTimeout(() => handleSubmit(event));
             }}
             noValidate
             className={clsx(
