@@ -11,6 +11,7 @@ import '@/utils/setupDayjsPlugins';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import Script from 'next/script';
 import { appWithTranslation } from 'next-i18next';
 import { ComponentType, ReactNode } from 'react';
 
@@ -24,6 +25,7 @@ import { usePageTransitions } from '@/hooks';
 import SearchPage from '@/pages/index';
 import PluginPage from '@/pages/plugins/[name]';
 import { FeatureFlagMap, useInitFeatureFlags } from '@/store/featureFlags';
+import { hubspotStore } from '@/store/hubspot';
 import { isPluginPage, isSearchPage } from '@/utils';
 
 type GetLayoutComponent = ComponentType & {
@@ -100,6 +102,13 @@ function App({ Component, pageProps }: AppProps) {
           <meta name="robots" content="noindex" />
         )}
       </Head>
+
+      <Script
+        onLoad={() => {
+          hubspotStore.ready = true;
+        }}
+        src="//js.hsforms.net/forms/v2.js?pre=1"
+      />
 
       <ApplicationProvider dehydratedState={pageProps.dehydratedState}>
         {page}
