@@ -79,6 +79,8 @@ function App({ Component, pageProps }: AppProps) {
   let loader: ReactNode;
   const isLoading = loading && (loader = getLoaderComponent());
   const page = isLoading ? loader : withLayout(<Component {...pageProps} />);
+  const pathName = router.pathname;
+  const canonicalLink = pathName.split('?')[0];
 
   return (
     <>
@@ -99,7 +101,7 @@ function App({ Component, pageProps }: AppProps) {
         {(!PROD || process.env.PREVIEW) && (
           <>
             <meta name="robots" content="noindex" />
-            <link rel="canonical" href={router.pathname} />
+            <link rel="canonical" href={canonicalLink} />
           </>
         )}
       </Head>
