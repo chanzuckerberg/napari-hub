@@ -1,12 +1,17 @@
 import { test } from '@playwright/test';
 
-import { AUTHORS, EXTENSIONS } from '../utils/constants';
-import { filterPlugins, verifyFilterResults } from '../utils/filter';
-import { searchPluginFixture } from '../utils/fixture';
+import {
+  AUTHORS,
+  OPEN_EXTENSIONS,
+  SAVE_EXTENSIONS,
+} from '../../utils/constants';
+import { filterPlugins, verifyFilterResults } from '../../utils/filter';
+import { searchPluginFixture } from '../../utils/fixture';
 
 const ENV = (process.env.NODE_ENV as string) || '';
 const TEST_AUTHORS = AUTHORS[ENV.toUpperCase()];
-const FILE_EXTENSIONS = EXTENSIONS[ENV.toUpperCase()];
+const SAVE_FILE_EXTENSIONS = SAVE_EXTENSIONS[ENV.toUpperCase()];
+const OPEN_FILE_EXTENSIONS = OPEN_EXTENSIONS[ENV.toUpperCase()];
 const sortBy = 'Recently updated';
 test.describe('Plugin filter tests', () => {
   test.beforeEach(async ({ page }) => {
@@ -177,7 +182,7 @@ test.describe('Plugin filter tests', () => {
       await verifyFilterResults(page, filterBy, fixtureData, params, sortBy);
     });
   });
-  FILE_EXTENSIONS.forEach((extension) => {
+  SAVE_FILE_EXTENSIONS.forEach((extension) => {
     test(`should filter by save extensions "${extension.toString()}"`, async ({
       page,
       viewport,
@@ -197,7 +202,7 @@ test.describe('Plugin filter tests', () => {
       await verifyFilterResults(page, filterBy, fixtureData, params, sortBy);
     });
   });
-  FILE_EXTENSIONS.forEach((extension) => {
+  OPEN_FILE_EXTENSIONS.forEach((extension) => {
     test(`should filter by open extensions "${extension.toString()}"`, async ({
       page,
       viewport,

@@ -124,22 +124,26 @@ export function searchPluginFixture(
     });
   }
 
-  if (key === 'save_extension' || key === 'open_extension') {
-    const readerWriter =
-      key === 'save_extension'
-        ? 'reader_file_extensions'
-        : 'writer_file_extensions';
-    const ext: string[] = [];
-    for (let i = 0; i < values.length; i += 1) {
-      ext.push(`${values[i]}`);
-    }
+  if (key === 'open_extension') {
     filtered = filter(fixtures, (item) => {
       const result = intersectionBy(
         map(
-          parseItem(item as string)[readerWriter],
+          parseItem(item as string).reader_file_extensions,
           (extensions) => extensions,
         ),
-        ext,
+        values,
+      );
+      return result.length !== 0;
+    });
+  }
+  if (key === 'save_extension') {
+    filtered = filter(fixtures, (item) => {
+      const result = intersectionBy(
+        map(
+          parseItem(item as string).writer_file_extensions,
+          (extensions) => extensions,
+        ),
+        values,
       );
       return result.length !== 0;
     });
