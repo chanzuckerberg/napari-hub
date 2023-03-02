@@ -36,9 +36,9 @@ test.describe('Plugin Filters', () => {
       options: ['Linux'],
       filterKey: 'operatingSystems',
       params: [['operatingSystem', 'linux']],
-      // testMetadata(operatingSystems) {
-      //   expect(hasLinux(operatingSystems)).toBe(true);
-      // },
+      testMetadata(operatingSystems) {
+        expect(hasLinux(operatingSystems)).toBe(true);
+      },
     });
 
     await testPluginFilter({
