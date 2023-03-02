@@ -133,7 +133,10 @@ export async function verifyFilterResults(
   sortBy = 'Recently updated',
 ) {
   let currentPageCounter = 1;
-  const expectedTotalPages = Math.floor(expectedData.length / totalPerPage) + 1;
+  const expectedTotalPages =
+    expectedData.length < totalPerPage
+      ? 1
+      : Math.ceil(expectedData.length / totalPerPage);
   // Check that filters are enabled
   const filterOptions = pluginFilter.values;
   filterOptions?.forEach(async (option) => {
@@ -172,7 +175,10 @@ export async function verifyFilterResults(
     expect(resultCountValue).toBe(expectedData.length);
 
     // total pages
-    const actualTotalPages = Math.floor(resultCountValue / totalPerPage) + 1;
+    const actualTotalPages =
+      resultCountValue < totalPerPage
+        ? 1
+        : Math.ceil(resultCountValue / totalPerPage);
     expect(actualTotalPages).toBe(expectedTotalPages);
 
     // validate each plugin details on current page

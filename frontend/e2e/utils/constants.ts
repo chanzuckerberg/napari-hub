@@ -24,8 +24,13 @@ export const AUTHORS: Record<string, Array<Array<string>>> = {
   STAGING: [['Abigail McGovern']],
   PROD: [['Abigail McGovern']],
 };
-export const EXTENSIONS: Record<string, Array<Array<string>>> = {
+export const SAVE_EXTENSIONS: Record<string, Array<Array<string>>> = {
   LOCAL: [['jpg'], ['jpg', 'png']],
-  STAGING: [['.jpg'], ['.jpg', '.png']],
-  PROD: [['.jpg'], ['.jpg', '.png']],
+  STAGING: [['.npy'], ['.npy', '.obj']],
+  PROD: [['.npy'], ['.npy', '.obj']],
+};
+export const OPEN_EXTENSIONS: Record<string, Array<Array<string>>> = {
+  LOCAL: [['jpg'], ['jpg', 'png']],
+  STAGING: [['*.npy'], ['*.npy', '*.obj']],
+  PROD: [['*.npy'], ['*.npy', '*.obj']],
 };
