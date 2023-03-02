@@ -18,13 +18,7 @@ import {
   SEARCH_RESULT,
 } from './constants';
 import { parseItem } from './fixture';
-import {
-  getByHasText,
-  getByTestID,
-  getByText,
-  getMetadata,
-  selectors,
-} from './selectors';
+import { getByHasText, getMetadata, selectors } from './selectors';
 import {
   AccordionTitle,
   getQueryParameterValues,
@@ -150,7 +144,7 @@ export async function verifyFilterResults(
 
   for (let pageNumber = 1; pageNumber <= expectedTotalPages; pageNumber += 1) {
     // current page
-    const pagination = page.locator(getByTestID(PAGINATION_VALUE));
+    const pagination = page.getByTestId(PAGINATION_VALUE);
     const currentPageValue = await pagination
       .locator('span')
       .nth(0)
@@ -183,28 +177,28 @@ export async function verifyFilterResults(
 
     // validate each plugin details on current page
     let i = 0;
-    for (const plugin of await page.locator(getByTestID(SEARCH_RESULT)).all()) {
+    for (const plugin of await page.getByTestId(SEARCH_RESULT).all()) {
       const dataIndex = (pageNumber - 1) * 15 + i;
       const data = parseItem(expectedData[dataIndex]);
       // plugin display name
       // todo: uncomment after new test id gets deployed to the environment
       // expect(
-      //   await plugin.locator(getByTestID(DISPLAY_NAME)).textContent(),
+      //   await plugin.getByTestId(DISPLAY_NAME)).textContent(),
       // ).toBe(fixture[i].display_name);
 
       // plugin name
-      expect(await plugin.locator(getByTestID(RESULT_NAME)).textContent()).toBe(
+      expect(await plugin.getByTestId(RESULT_NAME).textContent()).toBe(
         data.name,
       );
 
       // plugin summary
-      expect(
-        await plugin.locator(getByTestID(RESULT_SUMMARY)).textContent(),
-      ).toBe(data.summary);
+      expect(await plugin.getByTestId(RESULT_SUMMARY).textContent()).toBe(
+        data.summary,
+      );
 
       // plugin authors
       const pluginAuthors = await plugin
-        .locator(getByTestID(RESULT_AUTHORS))
+        .getByTestId(RESULT_AUTHORS)
         .allTextContents();
       const fixtureAuthors = getAuthorNames(data.authors);
       // check all authors displayed
@@ -251,7 +245,7 @@ export async function verifyFilterResults(
         data.category['Workflow step'] !== undefined
       ) {
         const fixtureWorkflowSteps = data.category['Workflow step'];
-        await expect(plugin.locator(getByText('Workflow step'))).toBeVisible();
+        await expect(plugin.getByText('Workflow step')).toBeVisible();
 
         if ((await plugin.locator('text=/Show \\d more/i').count()) > 0) {
           await plugin.locator('text=/Show \\d+ more/i').first().click();
@@ -259,7 +253,7 @@ export async function verifyFilterResults(
 
         for (const fixtureWorkflowStep of fixtureWorkflowSteps) {
           await expect(
-            plugin.locator(getByText(fixtureWorkflowStep as string)),
+            plugin.getByText(fixtureWorkflowStep as string),
           ).toBeVisible();
         }
       }
@@ -269,19 +263,19 @@ export async function verifyFilterResults(
 
     // paginate
     if (currentPageCounter === 1) {
-      await expect(page.locator(getByTestID(PAGINATION_LEFT))).toBeDisabled();
+      await expect(page.getByTestId(PAGINATION_LEFT)).toBeDisabled();
       if (expectedTotalPages > 1) {
-        await expect(page.locator(getByTestID(PAGINATION_RIGHT))).toBeVisible();
+        await expect(page.getByTestId(PAGINATION_RIGHT)).toBeVisible();
       }
     }
     if (currentPageCounter === expectedTotalPages) {
-      await expect(page.locator(getByTestID(PAGINATION_RIGHT))).toBeDisabled();
+      await expect(page.getByTestId(PAGINATION_RIGHT)).toBeDisabled();
       if (expectedTotalPages > 1) {
-        await expect(page.locator(getByTestID(PAGINATION_LEFT))).toBeVisible();
+        await expect(page.getByTestId(PAGINATION_LEFT)).toBeVisible();
       }
     }
     if (currentPageCounter < expectedTotalPages && expectedTotalPages >= 2) {
-      await page.locator(getByTestID(PAGINATION_RIGHT)).click();
+      await page.getByTestId(PAGINATION_RIGHT).click();
     }
     currentPageCounter += 1;
   }

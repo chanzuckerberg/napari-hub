@@ -53,6 +53,5 @@ async function globalSetup(config: FullConfig): Promise<void> {
     });
   }
 }
-
 // eslint-disable-next-line import/no-default-export
 export default globalSetup;

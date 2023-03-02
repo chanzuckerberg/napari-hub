@@ -28,7 +28,6 @@ const config: PlaywrightTestConfig = {
       name: 'Desktop',
       use: {
         ...devices['Desktop Chrome'],
-        baseURL: 'http://localhost:8080/',
         video: 'on',
       },
     },

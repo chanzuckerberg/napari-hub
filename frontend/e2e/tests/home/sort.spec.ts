@@ -1,8 +1,8 @@
 import { test } from '@playwright/test';
 
-import { AUTHORS } from '../utils/constants';
-import { filterPlugins, verifyFilterResults } from '../utils/filter';
-import { searchPluginFixture } from '../utils/fixture';
+import { AUTHORS } from '../../utils/constants';
+import { filterPlugins, verifyFilterResults } from '../../utils/filter';
+import { searchPluginFixture } from '../../utils/fixture';
 
 const ENV = (process.env.NODE_ENV as string) || '';
 const TEST_AUTHORS = AUTHORS[ENV.toUpperCase()];

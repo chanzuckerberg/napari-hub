@@ -9,7 +9,7 @@ The [napari hub](https://www.napari-hub.org) lets [napari](https://napari.org) u
 
 ## Our goal
 
-We seek to support the napari community by seeding and growing a healthy ecosystem of napari plugins that enable the imaging community to perform advanced analysis of imaging and microscopy data sets within napari’s rich interactive interface. To do make this happen, we need to
+We seek to support the napari community by seeding and growing a healthy ecosystem of napari plugins that enable the imaging community to perform advanced analysis of imaging and microscopy data sets within napari’s rich interactive interface. To do make this happen, we need to...
 
 1. enable the **bioimaging analysis community** to easily build, share and maintain napari plugins
 2. make it easy for **biology researchers** and **imaging scientists** to find, evaluate, and install these plugins
@@ -23,15 +23,15 @@ Over the second half of 2021, we are committed to...
 * **Lower barriers** for plugin developers to build, share, and maintain their plugins
 * **Learn** more about what metrics give plugin users signal about quality and give plugin developers actionable feedback
 
-You can find our roadmap and other insights into our process (UXR studies, tech specs, designs, and more) by visiting the [napari hub’s wiki.](https://github.com/chanzuckerberg/napari-hub/wiki)
+You can find our roadmap and other insights into our process (user research activities, tech specs, designs, and more) by visiting the [napari hub’s wiki](https://github.com/chanzuckerberg/napari-hub/wiki).
 
 ## How can you help?
 
 Interested in helping us grow a thriving community of plugins for napari? There are a few ways you can get involved.
 
-### Join a UXR session
+### Join a user research session
 
-We rely heavily on User Experience Research to understand the needs and challenges of the bioimaging community, identify opportunities for solutions to these challenges, and get feedback on our work. Whether you’re a bench scientist, work at an imaging core, or develop computational methods, sign up here and we’ll reach out when there’s an interview, focus group, or workshop that matches your background.
+We rely heavily on User Experience Research (UXR) to understand the needs and challenges of the bioimaging community, identify opportunities for solutions to these challenges, and get feedback on our work. Whether you’re a bench scientist, work at an imaging core, or develop computational methods, [sign up here](https://airtable.com/shr0hPRlLfYcnmVJk) and we’ll reach out when there’s an interview, focus group, usability study, or workshop that matches your background.
 
 ### Share your ideas
 
@@ -52,7 +52,7 @@ There are lots of opportunities to get involved with our partners in the napari 
 
 ## Team
 
-We're a cross-functional product team in the [Imaging Program at the Chan Zuckerberg Initiative](https://chanzuckerberg.com/science/programs-resources/imaging/).
+We're a cross-functional product team in the [Imaging program at the Chan Zuckerberg Initiative](https://chanzuckerberg.com/science/programs-resources/imaging/).
 
 - Jeremy Asuncion, Engineering ([@codemonkey800](https://github.com/codemonkey800))
 - Draga Doncila Pop, Engineering ([@DragaDoncila](https://github.com/DragaDoncila))
@@ -62,8 +62,7 @@ We're a cross-functional product team in the [Imaging Program at the Chan Zucker
 - Justine Larsen, Engineering ([@justinelarsen](https://github.com/justinelarsen))
 - Ziyang Liu, Engineering ([@potating-potato](https://github.com/potating-potato))
 - Lucy Obus, User Experience ([@LCObus](https://github.com/LCObus))
-- Lia Prins, Design ([@liaprins-czi](https://github.com/liaprins-czi))
-- Nicholas Sofroniew, Product ([@sofroniewn](https://github.com/sofroniewn))
+- Kandarp Khandwala, User Experience ([@kandarpksk](https://github.com/kandarpksk))
 
 ## Code of Conduct
 
