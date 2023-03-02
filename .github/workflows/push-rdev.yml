@@ -61,7 +61,7 @@ jobs:
         if: ${{ github.event_name == 'delete' && startsWith(github.event.ref, 'dev-') }}
         run: |
           echo ${{ github.event.ref }} | tr '[:upper:]' '[:lower:]' | xargs -I {} -n 1 echo DELETE_STACK_NAME={} >> $GITHUB_ENV
-          echo 'workflow triggered by delete' > ./workflow_artifact/stack_name
+          echo 'invalid' > ./workflow_artifact/stack_name
 
       - name: Delete dev
         if: ${{ github.event_name == 'delete' && startsWith(github.event.ref, 'dev-') }}
