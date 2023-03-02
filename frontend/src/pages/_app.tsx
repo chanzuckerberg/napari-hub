@@ -97,7 +97,10 @@ function App({ Component, pageProps }: AppProps) {
           https://developers.google.com/search/docs/advanced/crawling/block-indexing
         */}
         {(!PROD || process.env.PREVIEW) && (
-          <link rel="canonical" href={router.pathname} />
+          <>
+            <meta name="robots" content="noindex" />
+            <link rel="canonical" href={router.pathname} />
+          </>
         )}
       </Head>
 
