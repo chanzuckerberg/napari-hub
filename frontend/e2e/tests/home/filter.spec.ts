@@ -38,7 +38,7 @@ test.describe('Plugin filter tests', () => {
     });
   });
   [['reader'], ['widget', 'writer']].forEach((pluginTypes) => {
-    test.only(`should filter by plugin type "${pluginTypes.toString()}"`, async ({
+    test(`should filter by plugin type "${pluginTypes.toString()}"`, async ({
       page,
       viewport,
     }) => {
