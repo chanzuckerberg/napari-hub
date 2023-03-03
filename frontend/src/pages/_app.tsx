@@ -79,8 +79,8 @@ function App({ Component, pageProps }: AppProps) {
   let loader: ReactNode;
   const isLoading = loading && (loader = getLoaderComponent());
   const page = isLoading ? loader : withLayout(<Component {...pageProps} />);
-  const pathName = router.pathname;
-  const canonicalLink = pathName.split('?')[0];
+  const pathName = router.asPath;
+  const canonicalLink = 'https://www.napari-hub.org' + pathName.split('?')[0];
 
   return (
     <>
