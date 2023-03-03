@@ -79,6 +79,9 @@ function App({ Component, pageProps }: AppProps) {
   let loader: ReactNode;
   const isLoading = loading && (loader = getLoaderComponent());
   const page = isLoading ? loader : withLayout(<Component {...pageProps} />);
+  const baseURL = 'https://www.napari-hub.org';
+  const path = router.asPath.split('?')[0];
+  const canonicalLink = baseURL + path;
 
   return (
     <>
@@ -92,6 +95,8 @@ function App({ Component, pageProps }: AppProps) {
       }
 
       <Head>
+        <link rel="canonical" href={canonicalLink} />
+
         {/*
           Disable indexing for non-production deployments.
           https://developers.google.com/search/docs/advanced/crawling/block-indexing
