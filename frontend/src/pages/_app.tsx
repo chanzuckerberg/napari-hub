@@ -95,15 +95,14 @@ function App({ Component, pageProps }: AppProps) {
       }
 
       <Head>
+        <link rel="canonical" href={canonicalLink} />
+
         {/*
           Disable indexing for non-production deployments.
           https://developers.google.com/search/docs/advanced/crawling/block-indexing
         */}
         {(!PROD || process.env.PREVIEW) && (
-          <>
-            <meta name="robots" content="noindex" />
-            <link rel="canonical" href={canonicalLink} />
-          </>
+          <meta name="robots" content="noindex" />
         )}
       </Head>
 
