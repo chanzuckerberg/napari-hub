@@ -30,7 +30,7 @@ def update_install_activity():
     _fetch_data_and_write_to_dynamo(updated_plugins, 'DAY', lambda ts: ts)
     _fetch_data_and_write_to_dynamo(updated_plugins, 'MONTH', lambda ts: ts.replace(day=1))
     _fetch_data_and_write_to_dynamo(updated_plugins, 'TOTAL')
-
+    
     set_last_updated_timestamp(current_timestamp)
 
 
