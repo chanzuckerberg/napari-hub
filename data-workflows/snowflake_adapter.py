@@ -23,27 +23,35 @@ def get_plugins_with_activity_since_last_update(last_updated_timestamp, end_time
                 AND TO_TIMESTAMP(ingestion_timestamp) > {_format_timestamp(last_updated_timestamp)}
                 AND TO_TIMESTAMP(ingestion_timestamp) <= {_format_timestamp(end_timestamp)}
             GROUP BY file_project
-            ORDER BY file_project            
+            ORDER BY file_project
+            LIMIT 10 
             """
     return _execute_query(query, "PYPI", {}, _cursor_to_plugin_timestamp_mapper)
 
 
 def get_plugins_install_count_since_timestamp(plugins_by_earliest_ts, granularity, time_mapper):
-    subquery = ' OR '.join([f"""file_project = '{name}' AND timestamp >= {_format_timestamp(time_mapper(ts))}"""
-                            for name, ts in plugins_by_earliest_ts.items()])
+    timestamp_projection = '1' if granularity == 'TOTAL' else f'DATE_TRUNC(\'{granularity}\', timestamp)'
     query = f"""
             SELECT 
-                LOWER(file_project), DATE_TRUNC('{granularity}', timestamp) as granular_timestamp, count(*) as num_downloads
+                LOWER(file_project), {timestamp_projection}, COUNT(*)
             FROM
                 imaging.pypi.labeled_downloads
             WHERE 
                 download_type = 'pip'
                 AND project_type = 'plugin'
-                AND ({subquery})
-            GROUP BY file_project, granular_timestamp
-            ORDER BY file_project, granular_timestamp
+                AND ({_generate_subquery_by_granularity(plugins_by_earliest_ts, granularity, time_mapper)})
+            GROUP BY 1, 2
+            ORDER BY 1, 2
             """
     return _execute_query(query, "PYPI", {}, _cursor_to_plugin_activity_mapper)
+
+
+def _generate_subquery_by_granularity(plugins_by_timestamp, granularity, time_mapper):
+    if granularity == 'TOTAL':
+        return f"""LOWER(file_project) IN ({','.join([f"'{plugin}'" for plugin in plugins_by_timestamp.keys()])})"""
+
+    return ' OR '.join([f"""LOWER(file_project) = '{name}' AND timestamp >= {_format_timestamp(time_mapper(ts))}"""
+                        for name, ts in plugins_by_timestamp.items()])
 
 
 def _format_timestamp(timestamp):
