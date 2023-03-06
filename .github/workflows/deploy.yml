@@ -71,3 +71,16 @@ jobs:
           tfe-token: ${{ secrets.TFE_TOKEN }}
           env: "staging"
           operation: "create-or-update"
+    update-artifacts:
+      name: Setup artifacts on environment deployed to
+      runs-on: ubuntu-latest
+      steps:
+        - name: Set workflow artifact file
+          run: |
+            mkdir -p ./workflow_artifact
+            echo $STACK_NAME > ./workflow_artifact/stack_name
+        - name: Upload stack name artifact
+          uses: actions/upload-artifact@v3
+          with:
+            name: napari_hub_dev_deployment
+            path: workflow_artifact/

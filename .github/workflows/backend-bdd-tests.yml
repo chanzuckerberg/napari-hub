@@ -1,0 +1,38 @@
+name: Backend BDD Tests
+on:
+  workflow_run:
+    workflows: [ 'Push Remote Dev', 'Deploy Changes to Cluster' ]
+    types:
+      - completed
+jobs:
+  # Runs behave tests for backend code
+  bdd-tests:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r test-requirements.txt
+
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: napari_hub_dev_deployment
+          path: workflow_artifact
+
+      - name: Fetch test prefix
+        run: echo "PREFIX=$(cat workflow_artifact/stack_name)" >> $GITHUB_ENV
+
+      - name: Run tests
+        if: ${{ env.PREFIX != 'invalid' }}
+        working-directory: backend
+        run: cd bdd_test && python -m pytest
