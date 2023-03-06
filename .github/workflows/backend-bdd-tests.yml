@@ -18,11 +18,6 @@ jobs:
         with:
           python-version: '3.9'
 
-      - name: Install dependencies
-        run: |
-          pip install --upgrade pip
-          pip install -r test-requirements.txt
-
       - name: Download artifact
         uses: actions/download-artifact@v3
         with:
@@ -35,4 +30,7 @@ jobs:
       - name: Run tests
         if: ${{ env.PREFIX != 'invalid' }}
         working-directory: backend
-        run: cd bdd_test && python -m pytest
+        run: |
+          pip install --upgrade pip
+          pip install -r test-requirements.txt
+          cd bdd_test && python -m pytest
