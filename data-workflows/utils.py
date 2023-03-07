@@ -6,7 +6,7 @@ import boto3
 import os
 
 ssm_client = boto3.client('ssm')
-PARAMETER_NAME = f'/{os.getenv("PREFIX")}/napari-hub/data-workflows/config'
+PARAMETER_NAME = f'/{os.getenv("STACK_NAME")}/napari-hub/data-workflows/config'
 
 
 def get_current_timestamp():
