@@ -7,6 +7,8 @@ from zipfile import ZipFile
 from io import BytesIO
 from collections import defaultdict
 import pandas as pd
+
+from api.install_activity import get_total_installs, get_recent_installs, get_timeline
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
 from api.s3 import get_cache, cache, write_data, get_install_timeline_data, get_latest_commit, get_commit_activity, get_recent_activity_data
@@ -537,34 +539,42 @@ def _update_commit_activity(repo_to_plugin_dict):
     write_data(json.dumps(data), "activity_dashboard_data/commit_activity.json")
 
 
-def get_metrics_for_plugin(plugin: str, limit: str) -> Dict:
-    plugin = plugin.lower()
-    data = get_install_timeline_data(plugin)
-    install_stats = _process_for_stats(data)
-    commit_activity = get_commit_activity(plugin)
-    is_valid_limit = limit.isdigit() and limit != '0'
+def _get_usage_data(plugin, limit, in_test):
+    if in_test:
+        timeline = get_timeline(plugin, limit) if limit else []
+        usage_stats = {
+            'total_installs': get_total_installs(plugin),
+            'installs_in_last_30_days': get_recent_installs(plugin)
+        }
+    else:
+        data = get_install_timeline_data(plugin)
+        install_stats = _process_for_stats(data)
+        usage_stats = {
+            'total_installs': install_stats.get('totalInstalls', 0),
+            'installs_in_last_30_days': get_recent_activity_data().get(plugin, 0)
+        }
+        timeline = _process_for_timeline(data, limit) if limit else []
 
-    timeline = []
+    return {'timeline': timeline, 'stats': usage_stats, }
+
+
+def get_metrics_for_plugin(plugin: str, limit_str: str, in_test: bool) -> Dict:
+    plugin = plugin.lower()
+    commit_activity = get_commit_activity(plugin)
+    is_valid_limit = limit_str.isdigit() and limit_str != '0'
+
     maintenance_timeline = []
+    limit = None
+
     if is_valid_limit:
-        limit = int(limit)
-        timeline = _process_for_timeline(data, limit)
+        limit = int(limit_str)
         maintenance_timeline = commit_activity[-limit:]
 
-    usage_stats = {
-        'total_installs': install_stats.get('totalInstalls', 0),
-        'installs_in_last_30_days': get_recent_activity_data().get(plugin, 0)
-    }
     maintenance_stats = {
         'latest_commit_timestamp': get_latest_commit(plugin),
         'total_commits': sum([item['commits'] for item in commit_activity]),
     }
-    usage_data = {
-        'timeline': timeline,
-        'stats': usage_stats,
+    return {
+        'usage': _get_usage_data(plugin, limit, in_test),
+        'maintenance': {'timeline': maintenance_timeline, 'stats': maintenance_stats, }
     }
-    maintenance_data = {
-        'timeline': maintenance_timeline,
-        'stats': maintenance_stats,
-    }
-    return {'usage': usage_data, 'maintenance': maintenance_data}

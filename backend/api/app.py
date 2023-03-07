@@ -124,7 +124,7 @@ def update_activity() -> Response:
 
 @app.route('/metrics/<plugin>')
 def get_plugin_metrics(plugin: str) -> Response:
-    return jsonify(get_metrics_for_plugin(plugin, request.args.get('limit', '12')))
+    return jsonify(get_metrics_for_plugin(plugin, request.args.get('limit', '12'), request.args.get('test') == 'True'))
 
 
 @app.route('/collections')

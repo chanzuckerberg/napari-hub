@@ -17,3 +17,4 @@ build==0.8.0
 pyOpenSSL==22.0.0
 pandas==1.4.4
 snowflake-connector-python==2.8.0
+pynamodb==5.4.1
