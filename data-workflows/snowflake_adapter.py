@@ -24,7 +24,6 @@ def get_plugins_with_activity_since_last_update(last_updated_timestamp, end_time
                 AND TO_TIMESTAMP(ingestion_timestamp) <= {_format_timestamp(end_timestamp)}
             GROUP BY file_project
             ORDER BY file_project
-            LIMIT 10 
             """
     return _execute_query(query, "PYPI", {}, _cursor_to_plugin_timestamp_mapper)
 
