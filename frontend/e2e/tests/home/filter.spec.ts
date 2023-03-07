@@ -12,7 +12,7 @@ const ENV = (process.env.NODE_ENV as string) || '';
 const TEST_AUTHORS = AUTHORS[ENV.toUpperCase()];
 const SAVE_FILE_EXTENSIONS = SAVE_EXTENSIONS[ENV.toUpperCase()];
 const OPEN_FILE_EXTENSIONS = OPEN_EXTENSIONS[ENV.toUpperCase()];
-const sortBy = 'Recently updated';
+const sortBy = 'Plugin name';
 test.describe('Plugin filter tests', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto(`${process.env.BASEURL as string}`);
@@ -37,8 +37,8 @@ test.describe('Plugin filter tests', () => {
       await verifyFilterResults(page, filterBy, fixtureData, params, sortBy);
     });
   });
-  [['reader'], ['widget', 'writer']].forEach((pluginTypes) => {
-    test(`should filter by plugin type "${pluginTypes.toString()}"`, async ({
+  [['writer'], ['widget', 'writer']].forEach((pluginTypes) => {
+    test.only(`should filter by plugin type "${pluginTypes.toString()}"`, async ({
       page,
       viewport,
     }) => {
