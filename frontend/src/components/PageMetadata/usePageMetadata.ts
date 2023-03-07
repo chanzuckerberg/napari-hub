@@ -10,25 +10,37 @@ const COMMON_KEYWORDS = [
   'chan zuckerberg initiative',
 ];
 
-interface PageMetadata {
-  keywords: string[];
-  description: string;
+export interface PageMetadataProps {
+  description?: string;
+  image?: string;
+  keywords?: string[];
+  title?: string;
+  twitterUser?: string;
+  url?: string;
 }
 
-export function usePageMetadata(pathname: string): PageMetadata | undefined {
+interface PageMetadataMatcher extends PageMetadataProps {
+  regex: RegExp;
+}
+
+export function usePageMetadata(
+  pathname: string,
+): PageMetadataProps | undefined {
   const [t] = useTranslation(['common']);
 
-  const pageMetadata = {
+  const pageMetadata: Record<string, PageMetadataMatcher> = {
     about: {
       regex: /^\/about$/,
       keywords: [...COMMON_KEYWORDS, 'about'],
-      description: t('common:htmlMeta.about.description'),
+      description: t('common:seo.about.description'),
+      title: t('common:seo.about.title'),
     },
 
     contact: {
       regex: /^\/contact$/,
       keywords: [...COMMON_KEYWORDS, 'contact'],
-      description: t('common:htmlMeta.contact.description'),
+      description: t('common:seo.contact.description'),
+      title: t('common:seo.contact.title'),
     },
 
     faq: {
@@ -42,31 +54,32 @@ export function usePageMetadata(pathname: string): PageMetadata | undefined {
         'frequently asked questions',
         'question',
       ],
-      description: t('common:htmlMeta.faq.description'),
+      description: t('common:seo.faq.description'),
+      title: t('common:seo.faq.title'),
     },
 
     privacy: {
       regex: /^\/privacy$/,
       keywords: [...COMMON_KEYWORDS, 'privacy'],
-      description: t('common:htmlMeta.privacy.description'),
+      description: t('common:seo.privacy.description'),
+      title: t('common:seo.privacy.title'),
     },
 
     plugin: {
       regex: /^\/plugins\/.*$/,
       keywords: [...COMMON_KEYWORDS],
-      description: '',
     },
 
     collections: {
       regex: /^\/collections$/,
       keywords: [...COMMON_KEYWORDS, 'collections'],
-      description: t('common:htmlMeta.collections.description'),
+      description: t('common:seo.collections.description'),
+      title: t('common:seo.collections.title'),
     },
 
     collection: {
       regex: /^\/collections\/.*$/,
       keywords: [...COMMON_KEYWORDS, 'collections'],
-      description: '',
     },
 
     home: {
@@ -79,7 +92,8 @@ export function usePageMetadata(pathname: string): PageMetadata | undefined {
         'pypi',
         'algorithm',
       ],
-      description: t('common:htmlMeta.home.description'),
+      description: t('common:seo.home.description'),
+      title: t('common:seo.home.title'),
     },
   };
 
