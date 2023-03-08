@@ -173,9 +173,9 @@ export async function verifyFilterResults(
 
     // result count
     if (pluginFilter.key === 'plugin_type') {
-      //expect(resultCountValue).toBe(expectedData.length-1);
+      // expect(resultCountValue).toBe(expectedData.length-1);
     } else {
-      //expect(resultCountValue).toBe(expectedData.length);
+      // expect(resultCountValue).toBe(expectedData.length);
     }
 
     // total pages
@@ -183,7 +183,7 @@ export async function verifyFilterResults(
       resultCountValue < totalPerPage
         ? 1
         : Math.ceil(resultCountValue / totalPerPage);
-    //expect(actualTotalPages).toBe(expectedTotalPages);
+    expect(actualTotalPages).toBe(expectedTotalPages);
 
     // validate each plugin details on current page
     let i = 0;
@@ -237,7 +237,7 @@ export async function verifyFilterResults(
         (await plugin.locator(getMetadata('span')).nth(2).textContent()) || '';
 
       if (pluginTypeText === 'information not submitted') {
-        //No plugin to verify
+        // No plugin to verify
       } else {
         const pluginTypes = pluginTypeText.split(',');
         const fixturePluginTypes = data.plugin_types;
@@ -268,7 +268,7 @@ export async function verifyFilterResults(
 
         for (const fixtureWorkflowStep of fixtureWorkflowSteps) {
           expect(
-            await (
+            (
               await plugin
                 .getByText(fixtureWorkflowStep as string)
                 .allInnerTexts()
