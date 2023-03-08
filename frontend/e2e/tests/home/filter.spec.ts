@@ -1,4 +1,20 @@
+import { SearchResult } from '@/store/search/search.types';
 import { test } from '@playwright/test';
+export function compareDates(dateA: string, dateB: string): number {
+  // time in ms makes newer dates have higher values
+  return new Date(dateB).getTime() - new Date(dateA).getTime();
+}
+
+function sortByReleaseDate(results: SearchResult[]) {
+  return (
+    results
+      // Create a copy of the array
+      .slice()
+      .sort((a, b) =>
+        compareDates(a.plugin.release_date, b.plugin.release_date),
+      )
+  );
+}
 
 import {
   AUTHORS,

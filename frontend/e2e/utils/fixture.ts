@@ -181,14 +181,6 @@ export function searchPluginFixture(
     );
   }
 
-  // if (sortBy === 'Recently updated') {
-  //      return   filtered.sort((a, b) => {
-  //         const dateA = new Date(a.lastUpdated);
-  //         const dateB = new Date(b.lastUpdated);
-  //         return (dateB.getTime() - dateA.getTime()) as number;
-  //       });
-  //     }
-
   if (sortBy === 'newest') {
     return orderBy(
       filtered,
@@ -205,4 +197,3 @@ export function searchPluginFixture(
     );
   }
 }
-// return orderBy(filtered, [(plugin) => plugin.name], ['asc']);
