@@ -125,7 +125,11 @@ export function Footer() {
 
         <div className="border-r-[1px] border-black" />
 
-        <Link href="https://chanzuckerberg.com" className="ml-sds-xxs">
+        <Link
+          href="https://chanzuckerberg.com"
+          className="ml-sds-xxs"
+          aria-label="czi-link"
+        >
           <CZI
             className="w-[3.3125rem] h-[1.625rem] screen-495:w-[4.625rem] screen-495:h-[2.375rem]"
             variant="large"
