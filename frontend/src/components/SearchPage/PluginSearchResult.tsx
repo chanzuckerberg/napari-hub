@@ -228,7 +228,7 @@ export function PluginSearchResult({
           {/* Wrapper div to group plugin name and summary  */}
           <div>
             {/* Plugin name */}
-            <h4
+            <h3
               className="font-bold text-lg"
               data-testid="searchResultDisplayName"
             >
@@ -244,7 +244,7 @@ export function PluginSearchResult({
                   )
                 }
               />
-            </h4>
+            </h3>
 
             {isNpe2Enabled && (
               <span
@@ -319,7 +319,7 @@ export function PluginSearchResult({
                   key={`${item.label}-${item.value}`}
                   className="grid grid-cols-[auto,1fr]"
                 >
-                  <h5 className="inline whitespace-nowrap">{item.label}</h5>
+                  <h4 className="inline whitespace-nowrap">{item.label}</h4>
                   <span
                     className={clsx(
                       'ml-sds-xxs',

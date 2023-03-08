@@ -118,9 +118,9 @@ export function SignupForm({ onSubmit, variant = 'default' }: Props) {
       <div id={FORM_CONTAINER_ID} className="hidden" />
 
       <div className="col-span-2 screen-495:col-span-3 screen-1425:col-start-2">
-        <h3 className="text-lg font-semibold mb-sds-xxs screen-495:mb-sds-l">
+        <h2 className="text-lg font-semibold mb-sds-xxs screen-495:mb-sds-l">
           {t('footer:signUp.title')}
-        </h3>
+        </h2>
 
         {isSubmitted ? (
           <p>{t('footer:signUp.success')}</p>
