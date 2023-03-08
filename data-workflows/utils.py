@@ -5,8 +5,8 @@ from datetime import datetime
 import boto3
 import os
 
-ssm_client = boto3.client('ssm')
-PARAMETER_NAME = f'/{os.getenv("STACK_NAME")}/napari-hub/data-workflows/config'
+SSM_CLIENT = boto3.client('ssm')
+PARAMETER_NAME:str = f'/{os.getenv("STACK_NAME")}/napari-hub/data-workflows/config'
 
 
 def get_current_timestamp() -> int:
@@ -18,10 +18,10 @@ def datetime_from_millis(millis) -> datetime:
 
 
 def get_last_updated_timestamp() -> int:
-    response = ssm_client.get_parameter(Name=PARAMETER_NAME, WithDecryption=True)
+    response = SSM_CLIENT.get_parameter(Name=PARAMETER_NAME, WithDecryption=True)
     return json.loads(response['Parameter']['Value']).get('last_activity_fetched_timestamp')
 
 
 def set_last_updated_timestamp(timestamp) -> None:
     value = json.dumps({'last_activity_fetched_timestamp': timestamp})
-    ssm_client.put_parameter(Name=PARAMETER_NAME, Value=value, Overwrite=True)
+    SSM_CLIENT.put_parameter(Name=PARAMETER_NAME, Value=value, Overwrite=True)

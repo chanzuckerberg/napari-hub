@@ -5,7 +5,7 @@ from typing import List, Any, Callable
 
 import snowflake.connector
 
-from install_activity import InstallActivityType
+from activity.model import InstallActivityType
 from utils import datetime_from_millis
 
 SNOWFLAKE_USER = os.getenv('SNOWFLAKE_USER')
@@ -25,13 +25,16 @@ def get_plugins_with_activity_since_last_update(start_timestamp: int, end_timest
                 AND TO_TIMESTAMP(ingestion_timestamp) <= {_format_timestamp(end_timestamp)}
             GROUP BY file_project
             ORDER BY file_project
+            LIMIT 2
             """
+
+    print(f'Querying for plugins added between start_timestamp={start_timestamp} end_timestamp={end_timestamp}')
     return _execute_query(query, "PYPI", {}, _cursor_to_plugin_timestamp_mapper)
 
 
 def get_plugins_install_count_since_timestamp(plugins_by_earliest_ts: dict[str, datetime],
                                               install_activity_type: InstallActivityType,
-                                              time_mapper: Callable[[datetime], str]):
+                                              time_mapper: Callable[[datetime], datetime]):
     query = f"""
             SELECT 
                 LOWER(file_project), {install_activity_type.get_query_timestamp_projection()}, COUNT(*)
@@ -44,12 +47,13 @@ def get_plugins_install_count_since_timestamp(plugins_by_earliest_ts: dict[str, 
             GROUP BY 1, 2
             ORDER BY 1, 2
             """
+    print(f'Fetching data for granularity={install_activity_type.name}')
     return _execute_query(query, "PYPI", {}, _cursor_to_plugin_activity_mapper)
 
 
 def _generate_subquery_by_type(plugins_by_timestamp: dict[str, datetime],
                                install_activity_type: InstallActivityType,
-                               time_mapper: Callable[[datetime], str]):
+                               time_mapper: Callable[[datetime], datetime]):
     if install_activity_type is InstallActivityType.TOTAL:
         return f"""LOWER(file_project) IN ({','.join([f"'{plugin}'" for plugin in plugins_by_timestamp.keys()])})"""
 
