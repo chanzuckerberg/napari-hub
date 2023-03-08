@@ -335,7 +335,7 @@ export function PluginSearchResult({
         </ul>
 
         {/* Plugin categories */}
-        <ul
+        <div
           className={clsx(
             'mt-sds-xl text-xs',
             'flex flex-col gap-sds-s',
@@ -362,7 +362,7 @@ export function PluginSearchResult({
                 ))
             }
           />
-        </ul>
+        </div>
       </article>
     );
   }
