@@ -117,6 +117,26 @@ module install_dynamodb_table {
   tags                = var.tags
 }
 
+module github_dynamodb_table {
+  source              = "../dynamo"
+  table_name          = "${local.custom_stack_name}-github-activity"
+  hash_key            = "plugin_name"
+  range_key           = "type_identifier"
+  attributes          = [
+                          {
+                            name = "plugin_name"
+                            type = "S"
+                          },
+                          {
+                            name = "type_identifier"
+                            type = "S"
+                          }
+                        ]
+  autoscaling_enabled = var.env == "dev" ? false : true
+  create_table        = true
+  tags                = var.tags
+}
+
 module backend_lambda {
   source             = "../lambda-container"
   function_name      = local.backend_function_name
@@ -281,7 +301,10 @@ data aws_iam_policy_document backend_policy {
       "dynamodb:Query",
     ]
 
-    resources = [module.install_dynamodb_table.table_arn]
+    resources = [
+      module.install_dynamodb_table.table_arn,
+      module.github_dynamodb_table.table_arn,
+    ]
   }
 
   statement {
