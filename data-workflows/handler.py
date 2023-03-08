@@ -1,5 +1,5 @@
 import json
-from install_activity import update_activity
+from activity.install_activity import update_activity
 
 
 def handle(event, context):
@@ -10,3 +10,7 @@ def handle(event, context):
 
         if event_type == 'activity':
             update_activity()
+
+
+if __name__ == '__main__':
+    update_activity()
