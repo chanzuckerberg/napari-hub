@@ -19,6 +19,11 @@ def _update_activity() -> None:
     parameter_store_adapter.set_last_updated_timestamp(current_timestamp)
 
 
+def _setup_logging():
+    logger = logging.getLogger()
+    logger.setLevel(logging.INFO)
+
+
 def handle(event, context):
     _setup_logging()
 

@@ -13,6 +13,7 @@ from utils import datetime_from_millis
 
 SNOWFLAKE_USER = os.getenv('SNOWFLAKE_USER')
 SNOWFLAKE_PASSWORD = os.getenv('SNOWFLAKE_PASSWORD')
+LOGGER = logging.getLogger()
 
 
 def get_plugins_with_installs_in_window(start_timestamp: int, end_timestamp: int) -> dict[str, datetime]:
@@ -30,7 +31,7 @@ def get_plugins_with_installs_in_window(start_timestamp: int, end_timestamp: int
             ORDER BY file_project
             """
 
-    logging.info(f'Querying for plugins added between start_timestamp={start_timestamp} end_timestamp={end_timestamp}')
+    LOGGER.info(f'Querying for plugins added between start_timestamp={start_timestamp} end_timestamp={end_timestamp}')
     return _mapped_query_results(query, "PYPI", {}, _cursor_to_plugin_timestamp_mapper)
 
 
@@ -48,7 +49,7 @@ def get_plugins_install_count_since_timestamp(plugins_by_earliest_ts: dict[str, 
             GROUP BY 1, 2
             ORDER BY 1, 2
             """
-    logging.info(f'Fetching data for granularity={install_activity_type.name}')
+    LOGGER.info(f'Fetching data for granularity={install_activity_type.name}')
     return _mapped_query_results(query, 'PYPI', {}, _cursor_to_plugin_activity_mapper)
 
 
@@ -89,10 +90,10 @@ def _execute_query(schema: str, query: str) -> Iterable[SnowflakeCursor]:
     try:
         return connection.execute_string(query)
     except Exception:
-        logging.exception(f'Exception when executing query={query}')
+        LOGGER.exception(f'Exception when executing query={query}')
     finally:
         duration = time.perf_counter_ns() - start
-        logging.info(f'Query execution time={duration // 1000000}ms')
+        LOGGER.info(f'Query execution time={duration // 1000000}ms')
 
 
 def _mapped_query_results(query: str, schema: str, accumulator: Any, mapper: Callable) -> Any:
