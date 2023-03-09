@@ -1,48 +1,53 @@
+import logging
+import time
 from datetime import datetime
-from typing import Callable
+from typing import Callable, List
 
-from activity.model import InstallActivityType, InstallActivity
-from snowflake_adapter import get_plugins_with_activity_since_last_update, get_plugins_install_count_since_timestamp
-from utils import get_current_timestamp, get_last_updated_timestamp, set_last_updated_timestamp
+from activity.model import InstallActivityType, InstallActivity, type_timestamp_format_by_type
+from snowflake_adapter import get_plugins_with_installs_in_window, get_plugins_install_count_since_timestamp
 
 
-def update_activity() -> None:
-    last_updated_timestamp = get_last_updated_timestamp()
-    current_timestamp = get_current_timestamp()
-    update_install_activity(last_updated_timestamp, current_timestamp)
-    set_last_updated_timestamp(current_timestamp)
+def _transform_to_dynamo_record(data: dict[str, List], activity_type: InstallActivityType) -> List[InstallActivity]:
+    logging.info(f'Starting item creation for install-activity type={activity_type.name}')
+    type_timestamp_format: Callable[[datetime], str] = type_timestamp_format_by_type[activity_type]
+    timestamp_format: Callable[[datetime], int] = activity_type.get_timestamp()
+
+    items = []
+    for plugin_name, install_activities in data.items():
+        for activity in install_activities:
+            timestamp = activity['timestamp']
+            item = InstallActivity(plugin_name.lower(),
+                                   type_timestamp_format(timestamp),
+                                   granularity=activity_type.name,
+                                   timestamp=timestamp_format(timestamp),
+                                   install_count=activity['count'])
+            items.append(item)
+
+    logging.info(f'Items install-activity type={activity_type.name} count={len(items)}')
+    return items
+
+
+def _write_activity_to_dynamo(items: List[InstallActivity], install_activity_type: InstallActivityType):
+    start = time.perf_counter_ns()
+    with InstallActivity.batch_write() as batch:
+        for item in items:
+            batch.save(item)
+
+    duration = (time.perf_counter_ns() - start) // 1000000
+    logging.info(f'Dynamo write to install-activity type={install_activity_type.name} timeTaken={duration}ms')
+
+
+def _fetch_data_and_write_to_dynamo(data: dict[str, datetime], install_activity_type: InstallActivityType):
+    plugin_install_data = get_plugins_install_count_since_timestamp(data, install_activity_type)
+    records = _transform_to_dynamo_record(plugin_install_data, install_activity_type)
+    _write_activity_to_dynamo(records, install_activity_type)
 
 
 def update_install_activity(last_updated_timestamp: int, current_timestamp: int):
-    updated_plugins = get_plugins_with_activity_since_last_update(last_updated_timestamp, current_timestamp)
-    print(f'updated_plugins_count={len(updated_plugins)}')
+    updated_plugins = get_plugins_with_installs_in_window(last_updated_timestamp, current_timestamp)
+    logging.info(f'Plugins with update count={len(updated_plugins)}')
     if len(updated_plugins) == 0:
         return
-    _fetch_data_and_write_to_dynamo(updated_plugins, InstallActivityType.DAY, lambda ts: ts)
-    _fetch_data_and_write_to_dynamo(updated_plugins, InstallActivityType.MONTH, lambda ts: ts.replace(day=1))
+    _fetch_data_and_write_to_dynamo(updated_plugins, InstallActivityType.DAY)
+    _fetch_data_and_write_to_dynamo(updated_plugins, InstallActivityType.MONTH)
     _fetch_data_and_write_to_dynamo(updated_plugins, InstallActivityType.TOTAL)
-
-
-def _fetch_data_and_write_to_dynamo(data: dict[str, datetime],
-                                    install_activity_type: InstallActivityType,
-                                    time_mapper: Callable[[datetime], datetime] = None):
-    _write_activity_to_dynamo(
-        get_plugins_install_count_since_timestamp(data, install_activity_type, time_mapper),
-        install_activity_type
-    )
-
-
-def _write_activity_to_dynamo(plugin_install_data, install_activity_type: InstallActivityType):
-    type_timestamp_format: Callable[[datetime], str] = install_activity_type.get_type_timestamp_format()
-    timestamp_format: Callable[[datetime], int] = install_activity_type.get_timestamp()
-
-    with InstallActivity.batch_write() as batch:
-        for plugin_name, install_activities in plugin_install_data.items():
-            for activity in install_activities:
-                timestamp = activity['timestamp']
-                item = InstallActivity(plugin_name.lower(),
-                                       type_timestamp_format(timestamp),
-                                       granularity=install_activity_type.name,
-                                       timestamp=timestamp_format(timestamp),
-                                       install_count=activity['count'])
-                batch.save(item)
