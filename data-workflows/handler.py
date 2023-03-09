@@ -4,8 +4,13 @@ import logging
 from activity.handler import update_activity
 
 
+def _setup_logging():
+    logger = logging.getLogger()
+    logger.setLevel(logging.INFO)
+
+
 def handle(event, context):
-    logging.basicConfig(format='%(asctime)s %(name)s %(levelname)s %(module)s %(message)s', level=logging.INFO)
+    _setup_logging()
 
     for record in event.get('Records', []):
         if 'body' not in record:
