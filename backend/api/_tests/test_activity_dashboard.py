@@ -78,7 +78,7 @@ class TestActivityDashboard(unittest.TestCase):
 
     def _verify_results(self, limit, expected, mock_get_install_timeline_data, mock_get_recent_activity_data,  mock_get_commit_activity, mock_get_latest_commit):
         from api.model import get_metrics_for_plugin
-        result = get_metrics_for_plugin(PLUGIN_NAME, limit)
+        result = get_metrics_for_plugin(PLUGIN_NAME, limit, False)
         self.assertEqual(expected, result)
         mock_get_install_timeline_data.assert_called_with(PLUGIN_NAME_CLEAN)
         mock_get_recent_activity_data.assert_called_with()
