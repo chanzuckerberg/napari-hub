@@ -43,8 +43,8 @@ def _fetch_data_and_write_to_dynamo(data: dict[str, datetime], install_activity_
     _write_activity_to_dynamo(records, install_activity_type)
 
 
-def update_install_activity(last_updated_timestamp: int, current_timestamp: int):
-    updated_plugins = get_plugins_with_installs_in_window(last_updated_timestamp, current_timestamp)
+def update_install_activity(start_time: int, end_time: int):
+    updated_plugins = get_plugins_with_installs_in_window(start_time, end_time)
     logging.info(f'Plugins with update count={len(updated_plugins)}')
     if len(updated_plugins) == 0:
         return
