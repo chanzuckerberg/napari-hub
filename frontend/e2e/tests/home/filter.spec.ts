@@ -17,7 +17,7 @@ const ENV = (process.env.NODE_ENV as string) || '';
 const TEST_AUTHORS = AUTHORS[ENV.toUpperCase()];
 const SAVE_FILE_EXTENSIONS = SAVE_EXTENSIONS[ENV.toUpperCase()];
 const OPEN_FILE_EXTENSIONS = OPEN_EXTENSIONS[ENV.toUpperCase()];
-const sortBy = 'Plugin name';
+const sortBy = 'Recently updated';
 test.describe('Plugin filter tests', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto(`${process.env.BASEURL as string}`);
@@ -124,9 +124,7 @@ test.describe('Plugin filter tests', () => {
   });
 
   [['macOS'], ['macOS', 'Linux']].forEach((operatingSystem) => {
-    // test failing and requires detail investigation and fixing
-    // eslint-disable-next-line playwright/no-skipped-test
-    test.skip(`should filter by operating system "${operatingSystem.toString()}"`, async ({
+    test(`should filter by operating system "${operatingSystem.toString()}"`, async ({
       page,
       viewport,
     }) => {

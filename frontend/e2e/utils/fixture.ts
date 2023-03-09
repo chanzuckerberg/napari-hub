@@ -31,7 +31,7 @@ export function getFixture(fileName?: string) {
 
 // fixture for local environment is already parsed; parsing again causes issues
 export function parseItem(text: unknown) {
-  if (typeof text === 'object') {
+  if (typeof text === 'object' || typeof text === 'undefined') {
     return text;
   }
   return JSON.parse(text as string);
@@ -43,7 +43,6 @@ export function searchPluginFixture(
 ) {
   const fixtures = getFixture();
   const { key, values } = pluginFilter;
-
   let filtered;
   if (key === 'authors') {
     filtered = filter(fixtures, (item) => {
@@ -189,11 +188,6 @@ export function searchPluginFixture(
     );
   }
 
-  if (sortBy === 'Plugin name') {
-    return orderBy(
-      filtered,
-      [(plugin) => parseItem(plugin.toLowerCase()).name],
-      ['asc'],
-    );
-  }
+  // default sorting by plugin name
+  return orderBy(filtered, [(plugin) => parseItem(plugin).name], ['asc']);
 }
