@@ -28,10 +28,9 @@ type_timestamp_format_by_type: dict[InstallActivityType, Callable[[datetime], st
     InstallActivityType.DAY: lambda timestamp: f'DAY:{timestamp.strftime("%Y%m%d")}',
 }
 timestamp_mapper_by_type: dict[InstallActivityType, Callable[[datetime], datetime]] = {
-    InstallActivityType.MONTH: lambda timestamp: timestamp,
-    InstallActivityType.DAY: lambda timestamp: timestamp.replace(day=1),
+    InstallActivityType.DAY: lambda timestamp: timestamp,
+    InstallActivityType.MONTH: lambda timestamp: timestamp.replace(day=1),
 }
-
 
 
 class InstallActivity(Model):
