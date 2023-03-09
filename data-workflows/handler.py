@@ -1,8 +1,12 @@
 import json
-from activity.install_activity import update_activity
+import logging
+
+from activity.handler import update_activity
 
 
 def handle(event, context):
+    logging.basicConfig(format='%(asctime)s %(name)s %(levelname)s %(module)s %(message)s', level=logging.INFO)
+
     for record in event.get('Records', []):
         if 'body' not in record:
             continue
@@ -10,7 +14,3 @@ def handle(event, context):
 
         if event_type == 'activity':
             update_activity()
-
-
-if __name__ == '__main__':
-    update_activity()

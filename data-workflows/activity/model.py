@@ -13,15 +13,6 @@ class InstallActivityType(Enum):
     MONTH = 2
     TOTAL = 3
 
-    def get_type_timestamp_format(self) -> Callable[[datetime], str]:
-        if self is InstallActivityType.TOTAL:
-            return lambda timestamp: 'TOTAL:'
-
-        if self is InstallActivityType.MONTH:
-            return lambda timestamp: f'MONTH:{timestamp.strftime("%Y%m")}'
-
-        return lambda timestamp: f'DAY:{timestamp.strftime("%Y%m%d")}'
-
     def get_timestamp(self) -> Callable[[datetime], int]:
         if self is InstallActivityType.TOTAL:
             return lambda timestamp: 0
@@ -29,6 +20,18 @@ class InstallActivityType(Enum):
 
     def get_query_timestamp_projection(self) -> str:
         return '1' if self is InstallActivityType.TOTAL else f'DATE_TRUNC(\'{self.name}\', timestamp)'
+
+
+type_timestamp_format_by_type: dict[InstallActivityType, Callable[[datetime], str]] = {
+    InstallActivityType.TOTAL: lambda timestamp: 'TOTAL:',
+    InstallActivityType.MONTH: lambda timestamp: f'MONTH:{timestamp.strftime("%Y%m")}',
+    InstallActivityType.DAY: lambda timestamp: f'DAY:{timestamp.strftime("%Y%m%d")}',
+}
+timestamp_mapper_by_type: dict[InstallActivityType, Callable[[datetime], datetime]] = {
+    InstallActivityType.MONTH: lambda timestamp: timestamp,
+    InstallActivityType.DAY: lambda timestamp: timestamp.replace(day=1),
+}
+
 
 
 class InstallActivity(Model):
