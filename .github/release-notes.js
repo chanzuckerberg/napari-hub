@@ -133,6 +133,7 @@ async function draftReleaseNotes(github, context, core) {
     owner: context.repo.owner,
     repo: context.repo.repo,
     name: NEXT_RELEASE,
+    tag_name: NEXT_RELEASE,
   }
 
   const { data: releases } = await github.rest.repos.listReleases({
@@ -149,10 +150,7 @@ async function draftReleaseNotes(github, context, core) {
     })
   } else {
     core.notice(`Creating new release ${NEXT_RELEASE}`)
-    await github.rest.repos.createRelease({
-      ...releaseProps,
-      tag_name: NEXT_RELEASE,
-    })
+    await github.rest.repos.createRelease(releaseProps)
   }
 }
 
