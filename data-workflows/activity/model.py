@@ -5,13 +5,13 @@ from pynamodb.models import Model
 from pynamodb.attributes import UnicodeAttribute, NumberAttribute
 
 
-class InstallActivityType(Enum):
+class GitHubActivityType(Enum):
     LATEST = 1
     MONTH = 2
     TOTAL = 3
 
 
-class MaintenanceActivity(Model):
+class GitHubActivity(Model):
     class Meta:
         prefix = os.getenv('STACK_NAME')
         region = os.getenv('AWS_REGION')
