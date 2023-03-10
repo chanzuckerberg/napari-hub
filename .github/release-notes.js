@@ -15,6 +15,25 @@ async function getLatestRelease(github, context) {
   })
 }
 
+function getFormattedDate(dateStr) {
+  const date = new Date(dateStr)
+  const days = date.getDate()
+  const months = date.getMonth() + 1
+
+  let dayStr = `${days}`
+  let monthStr = `${months}`
+
+  if (days < 10) {
+    dayStr = `0${days}`
+  }
+
+  if (months < 10) {
+    monthStr = `0${months}`
+  }
+
+  return `${date.getFullYear()}-${monthStr}-${dayStr}`
+}
+
 /**
  * Gets a list of pull requests since the last release and categorizes them
  * based on the configured PR labels.
@@ -23,19 +42,17 @@ async function categorizePullRequests(github, context) {
   const { LATEST_RELEASE } = process.env
   const { publishDate } = JSON.parse(LATEST_RELEASE)
 
-  const date = new Date(publishDate)
-  const formattedPublishDate = `${date.getFullYear()}-${
-    date.getMonth() + 1
-  }-${date.getDate()}`
+  const formattedPublishDate = getFormattedDate(publishDate)
+  const query = [
+    `repo:${context.repo.owner}/${context.repo.repo}`,
+    `merged:>=${formattedPublishDate}`,
+  ].join(' ')
 
   // There is no API for getting pull requests since a git tag, so we need to
   // use the search API + query params to find merged PRs after the last release
   // date.
   const result = await github.rest.search.issuesAndPullRequests({
-    q: [
-      `repo:${context.repo.owner}/${context.repo.repo}`,
-      `merged:>=${formattedPublishDate}`,
-    ].join(' '),
+    q: query,
   })
 
   const categorizedPullRequests = {}
