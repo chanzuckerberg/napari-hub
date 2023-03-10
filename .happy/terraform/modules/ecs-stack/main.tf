@@ -142,7 +142,7 @@ module github_dynamodb_table {
 
 module category_dynamodb_table {
   source              = "../dynamo"
-  table_name          = "${local.custom_stack_name}-categories"
+  table_name          = "${local.custom_stack_name}-category"
   hash_key            = "name"
   range_key           = "version"
   attributes          = [
