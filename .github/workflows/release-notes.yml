@@ -1,0 +1,65 @@
+# Workflow for creating release notes automatically based on merged pull
+# requests since the last release.
+
+name: Release Notes
+
+on: workflow_dispatch
+
+jobs:
+  release_notes:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+
+      - name: Get data for latest release
+        id: latest_release
+        uses: actions/github-script@v6
+        with:
+          retries: 3
+          result-encoding: string
+          script: |
+            const { getLatestRelease } = require('./.github/release-notes')
+            return await getLatestRelease(github, context)
+
+      - name: Categorize pull requests since last release
+        id: pull_requests
+        uses: actions/github-script@v6
+        env:
+          LATEST_RELEASE: ${{ steps.latest_release.outputs.result }}
+        with:
+          retries: 3
+          result-encoding: string
+          script: |
+            const { categorizePullRequests } = require('./.github/release-notes')
+            return await categorizePullRequests(github, context)
+
+      - name: Get next release tag
+        id: next_release
+        uses: actions/github-script@v6
+        env:
+          LATEST_RELEASE: ${{ steps.latest_release.outputs.result }}
+        with:
+          retries: 3
+          result-encoding: string
+          script: |
+            const { getNextReleaseTag } = require('./.github/release-notes')
+            return await getNextReleaseTag()
+
+      - name: Draft release notes
+        id: draft_release
+        uses: actions/github-script@v6
+        env:
+          LATEST_RELEASE: ${{ steps.latest_release.outputs.result }}
+          NEXT_RELEASE: ${{ steps.next_release.outputs.result }}
+          PULL_REQUESTS: ${{ steps.pull_requests.outputs.result }}
+        with:
+          retries: 3
+          script: |
+            const { draftReleaseNotes } = require('./.github/release-notes')
+            return await draftReleaseNotes(github, context, core)
