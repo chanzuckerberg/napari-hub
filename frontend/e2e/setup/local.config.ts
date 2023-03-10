@@ -7,12 +7,12 @@ dotenv.config({
 });
 
 const config: PlaywrightTestConfig = {
-  workers: 2,
+  // workers: 2,
   expect: {
     timeout: 3000,
   },
   globalSetup: './globalSetup',
-  fullyParallel: false,
+  fullyParallel: true,
   outputDir: '../report',
   reporter: [
     ['list'],

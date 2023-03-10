@@ -5,8 +5,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable no-await-in-loop */
-import { breakpoints } from '@/theme/breakpoints';
 import { expect, Page } from '@playwright/test';
+
+import { breakpoints } from '@/theme/breakpoints';
 
 import { PluginFilter } from '../types/filter';
 import {
@@ -79,7 +80,11 @@ export async function filterPlugins(
   // sorting order
 
   await maybeExpand(page, width);
-  await page.getByRole('radio', { name: sortBy }).check();
+  if (sortBy !== 'Recently updated') {
+    await page
+      .locator(`[data-sort-type="${sortOrders[sortBy]}"]:visible`)
+      .click();
+  }
 
   // on smaller screens the filter types are collapsed, so first click the accordion
   await openAccordion(page, pluginFilter.category, width);

@@ -7,7 +7,7 @@ import { searchPluginFixture } from '../../utils/fixture';
 const ENV = (process.env.NODE_ENV as string) || '';
 const TEST_AUTHORS = AUTHORS[ENV.toUpperCase()];
 
-test.describe('Sorting plugin tests', () => {
+test.describe('Plugin sorting tests', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto(`${process.env.BASEURL as string}`);
   });

@@ -145,7 +145,7 @@ test.describe('Plugin filter tests', () => {
     });
   });
   [['Limit to plugins with open source license']].forEach((license) => {
-    test.skip(`should filter by license "${license.toString()}"`, async ({
+    test(`should filter by license "${license.toString()}"`, async ({
       page,
       viewport,
     }) => {
