@@ -15,7 +15,7 @@ class GitHubActivity(Model):
     class Meta:
         prefix = os.getenv('STACK_NAME')
         region = os.getenv('AWS_REGION')
-        table_name = f'{prefix}-install-activity'
+        table_name = f'{prefix}-github-activity'
         region = region
 
     plugin_name = UnicodeAttribute(hash_key=True)
