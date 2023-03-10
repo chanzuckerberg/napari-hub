@@ -24,7 +24,7 @@ async function categorizePullRequests(github, context) {
   const { publishDate } = JSON.parse(LATEST_RELEASE)
 
   const date = new Date(publishDate)
-  const createdAt = `${date.getFullYear()}-${
+  const formattedPublishDate = `${date.getFullYear()}-${
     date.getMonth() + 1
   }-${date.getDate()}`
 
@@ -35,7 +35,7 @@ async function categorizePullRequests(github, context) {
     q: [
       'is:merged',
       `repo:${context.repo.owner}/${context.repo.repo}`,
-      `created:>=${createdAt}`,
+      `merged:>=${formattedPublishDate}`,
     ].join(' '),
   })
 
