@@ -33,7 +33,6 @@ async function categorizePullRequests(github, context) {
   // date.
   const result = await github.rest.search.issuesAndPullRequests({
     q: [
-      'is:merged',
       `repo:${context.repo.owner}/${context.repo.repo}`,
       `merged:>=${formattedPublishDate}`,
     ].join(' '),
