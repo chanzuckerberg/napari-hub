@@ -74,9 +74,15 @@ async function categorizePullRequests(github, context, exec) {
       title: pr.title,
       number: pr.number,
       user: pr.user.login,
+      merged: pr.merged_at,
     })
 
     categorizedPullRequests[categoryKey] = prs
+  }
+
+  // Sort pull requests by merge date
+  for (const prs of Object.values(categorizedPullRequests)) {
+    prs.sort((pr1, pr2) => new Date(pr1.merged) - new Date(pr2.merged))
   }
 
   return JSON.stringify(categorizedPullRequests)
