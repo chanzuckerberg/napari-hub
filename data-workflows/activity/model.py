@@ -1,6 +1,14 @@
 import os
+from enum import Enum
+
 from pynamodb.models import Model
 from pynamodb.attributes import UnicodeAttribute, NumberAttribute
+
+
+class InstallActivityType(Enum):
+    LATEST = 1
+    MONTH = 2
+    TOTAL = 3
 
 
 class MaintenanceActivity(Model):
