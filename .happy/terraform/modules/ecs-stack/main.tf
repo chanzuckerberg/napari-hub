@@ -261,7 +261,7 @@ resource "aws_cloudwatch_event_rule" "update_rule" {
   tags                = var.tags
 }
 
-resource "aws_cloudwatch_event_target" "update_target" {
+resource aws_cloudwatch_event_target update_target {
     rule = aws_cloudwatch_event_rule.update_rule.name
     arn = module.backend_lambda.function_arn
     input_transformer {
@@ -293,7 +293,7 @@ resource "aws_cloudwatch_event_target" "activity_target" {
     }
 }
 
-resource "aws_cloudwatch_event_target" "activity_target_sqs" {
+resource aws_cloudwatch_event_target activity_target_sqs {
     rule = aws_cloudwatch_event_rule.activity_rule.name
     arn = aws_sqs_queue.data_workflows_queue.arn
     input_transformer {
