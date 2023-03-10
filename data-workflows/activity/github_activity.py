@@ -1,7 +1,20 @@
 import logging
+import time
+from typing import List
+
 from activity.model import GitHubActivityType, GitHubActivity, type_timestamp_format_by_type
 
 LOGGER = logging.getLogger()
+
+
+def _write_activity_to_dynamo(items: List[GitHubActivity], github_activity_type: GitHubActivityType):
+    start = time.perf_counter_ns()
+    with GitHubActivity.batch_write() as batch:
+        for item in items:
+            batch.save(item)
+
+    duration = (time.perf_counter_ns() - start) // 1000000
+    LOGGER.info(f'Dynamo write to github-activity type={github_activity_type.name} timeTaken={duration}ms')
 
 
 def update_github_activity(start_time: int, end_time: int):
