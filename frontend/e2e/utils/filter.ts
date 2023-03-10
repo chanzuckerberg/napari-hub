@@ -5,6 +5,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable no-await-in-loop */
+import { breakpoints } from '@/theme/breakpoints';
 import { expect, Page } from '@playwright/test';
 
 import { PluginFilter } from '../types/filter';
@@ -22,6 +23,7 @@ import { getByHasText, getMetadata, selectors } from './selectors';
 import {
   AccordionTitle,
   getQueryParameterValues,
+  maybeExpand,
   maybeOpenAccordion,
 } from './utils';
 
@@ -75,6 +77,8 @@ export async function filterPlugins(
   width?: number,
 ): Promise<void> {
   // sorting order
+
+  await maybeExpand(page, width);
   await page.getByRole('radio', { name: sortBy }).check();
 
   // on smaller screens the filter types are collapsed, so first click the accordion
@@ -85,6 +89,16 @@ export async function filterPlugins(
 
   // get option values
   const { label, values } = pluginFilter;
+
+  if (
+    (width || 0) < breakpoints['screen-725'] &&
+    pluginFilter.label === 'Authors'
+  ) {
+    // drop down closes for smaller screens
+    // select filter dropdown options
+    await page.getByRole('button', { name: pluginFilter.label }).click();
+  }
+
   for (let i = 0; i < values.length; i += 1) {
     const option = values[i];
     await page
@@ -92,9 +106,26 @@ export async function filterPlugins(
       .getByText(`${option}`)
       .click();
   }
-
-  // close the filter dropdown
-  await page.getByRole('button', { name: label }).click();
+  if (
+    ((width || 0) < breakpoints['screen-725'] &&
+      pluginFilter.label === 'Supported data') ||
+    ((width || 0) < breakpoints['screen-725'] &&
+      pluginFilter.label === 'Workflow step') ||
+    ((width || 0) < breakpoints['screen-725'] &&
+      pluginFilter.label === 'Operating system') ||
+    ((width || 0) < breakpoints['screen-725'] &&
+      pluginFilter.label === 'Python version') ||
+    ((width || 0) < breakpoints['screen-725'] &&
+      pluginFilter.label === 'Save extension') ||
+    ((width || 0) < breakpoints['screen-725'] &&
+      pluginFilter.label === 'Open extension')
+  ) {
+    // close the filter dropdown for smaller screens
+    await page.getByRole('radio', { name: sortBy }).click();
+  } else {
+    // close the filter dropdown
+    await page.getByRole('button', { name: label }).click();
+  }
 }
 
 export async function getOptions(page: Page, labels: string[]) {

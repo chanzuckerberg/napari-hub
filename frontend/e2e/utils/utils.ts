@@ -70,3 +70,10 @@ export async function maybeOpenAccordion(
     await page.getByRole('button', { name: title }).click();
   }
 }
+export async function maybeExpand(page: Page, width = Infinity) {
+  if (width < breakpoints['screen-725']) {
+    await page.getByRole('button', { name: 'Sort' }).click();
+    await page.getByRole('button', { name: 'Filter by category' }).click();
+    await page.getByRole('button', { name: 'Filter by requirement' }).click();
+  }
+}

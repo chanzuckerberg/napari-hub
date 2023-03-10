@@ -7,11 +7,12 @@ dotenv.config({
 });
 
 const config: PlaywrightTestConfig = {
+  workers: 2,
   expect: {
     timeout: 3000,
   },
   globalSetup: './globalSetup',
-  fullyParallel: true,
+  fullyParallel: false,
   outputDir: '../report',
   reporter: [
     ['list'],
@@ -19,6 +20,14 @@ const config: PlaywrightTestConfig = {
       'json',
       {
         outputFile: '../report/test-results.json',
+      },
+    ],
+    [
+      'html',
+      {
+        open: 'on-failure',
+        host: 'localhost',
+        port: 9223,
       },
     ],
   ],
@@ -75,7 +84,7 @@ const config: PlaywrightTestConfig = {
   testDir: '../tests',
   timeout: 60 * 1000,
   use: {
-    actionTimeout: 0,
+    actionTimeout: 10000,
     baseURL: 'http://localhost:8080',
     screenshot: 'only-on-failure',
     trace: 'retain-on-failure',

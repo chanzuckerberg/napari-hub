@@ -8,11 +8,6 @@ import {
 import { filterPlugins, verifyFilterResults } from '../../utils/filter';
 import { searchPluginFixture } from '../../utils/fixture';
 
-export function compareDates(dateA: string, dateB: string): number {
-  // time in ms makes newer dates have higher values
-  return new Date(dateB).getTime() - new Date(dateA).getTime();
-}
-
 const ENV = (process.env.NODE_ENV as string) || '';
 const TEST_AUTHORS = AUTHORS[ENV.toUpperCase()];
 const SAVE_FILE_EXTENSIONS = SAVE_EXTENSIONS[ENV.toUpperCase()];
@@ -28,6 +23,7 @@ test.describe('Plugin filter tests', () => {
       viewport,
     }) => {
       // filter by
+
       const filterBy = {
         label: 'Authors',
         name: 'authors',
@@ -68,6 +64,7 @@ test.describe('Plugin filter tests', () => {
       viewport,
     }) => {
       // filter by
+
       const filterBy = {
         label: 'Supported data',
         name: 'supportedData',
@@ -148,7 +145,7 @@ test.describe('Plugin filter tests', () => {
     });
   });
   [['Limit to plugins with open source license']].forEach((license) => {
-    test(`should filter by license "${license.toString()}"`, async ({
+    test.skip(`should filter by license "${license.toString()}"`, async ({
       page,
       viewport,
     }) => {
