@@ -5,6 +5,10 @@ name: Release Notes
 
 on: workflow_dispatch
 
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   release_notes:
     runs-on: ubuntu-latest
@@ -14,8 +18,10 @@ jobs:
       pull-requests: write
 
     steps:
-      - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Get data for latest release
         id: latest_release
@@ -24,20 +30,27 @@ jobs:
           retries: 3
           result-encoding: string
           script: |
-            const { getLatestRelease } = require('./.github/release-notes')
-            return await getLatestRelease(github, context)
+            const release = require('./.github/release-notes')
+            return await release.getLatestRelease(github, context)
+
+      - name: Get history for release and main
+        run: |
+          git checkout ${{ steps.latest_release.outputs.result }}
+          git checkout main
+          git checkout ${{ github.ref }}
 
       - name: Categorize pull requests since last release
         id: pull_requests
         uses: actions/github-script@v6
         env:
           LATEST_RELEASE: ${{ steps.latest_release.outputs.result }}
+          TARGET_BRANCH: main
         with:
           retries: 3
           result-encoding: string
           script: |
-            const { categorizePullRequests } = require('./.github/release-notes')
-            return await categorizePullRequests(github, context)
+            const release = require('./.github/release-notes')
+            return await release.categorizePullRequests(github, context, exec)
 
       - name: Get next release tag
         id: next_release
@@ -48,8 +61,8 @@ jobs:
           retries: 3
           result-encoding: string
           script: |
-            const { getNextReleaseTag } = require('./.github/release-notes')
-            return await getNextReleaseTag()
+            const release = require('./.github/release-notes')
+            return await release.getNextReleaseTag()
 
       - name: Draft release notes
         id: draft_release
@@ -61,5 +74,5 @@ jobs:
         with:
           retries: 3
           script: |
-            const { draftReleaseNotes } = require('./.github/release-notes')
-            return await draftReleaseNotes(github, context, core)
+            const release = require('./.github/release-notes')
+            return await release.draftReleaseNotes(github, context, core)

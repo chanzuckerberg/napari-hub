@@ -9,55 +9,57 @@ async function getLatestRelease(github, context) {
     repo: context.repo.repo,
   })
 
-  return JSON.stringify({
-    latestRelease: release.name,
-    publishDate: release.published_at,
-  })
+  return release.name
 }
 
-function getFormattedDate(dateStr) {
-  const date = new Date(dateStr)
-  const days = date.getDate()
-  const months = date.getMonth() + 1
+async function getCommitsSinceLastRelease(exec) {
+  const { LATEST_RELEASE, TARGET_BRANCH } = process.env
+  const hashes = []
 
-  let dayStr = `${days}`
-  let monthStr = `${months}`
+  await exec.exec(
+    'git',
+    ['log', '--pretty=format:"%h"', `${LATEST_RELEASE}..${TARGET_BRANCH}`],
+    {
+      listeners: {
+        stdout(data) {
+          const hash = data.toString()
 
-  if (days < 10) {
-    dayStr = `0${days}`
-  }
+          if (hash) {
+            hashes.push(hash)
+          }
+        },
+      },
+    }
+  )
 
-  if (months < 10) {
-    monthStr = `0${months}`
-  }
-
-  return `${date.getFullYear()}-${monthStr}-${dayStr}`
+  return hashes
+    .flatMap(hash => hash.split('\n'))
+    .filter(Boolean)
+    .map(hash => hash.replaceAll('"', ''))
 }
 
 /**
  * Gets a list of pull requests since the last release and categorizes them
  * based on the configured PR labels.
  */
-async function categorizePullRequests(github, context) {
-  const { LATEST_RELEASE } = process.env
-  const { publishDate } = JSON.parse(LATEST_RELEASE)
+async function categorizePullRequests(github, context, exec) {
+  const hashes = await getCommitsSinceLastRelease(exec)
 
-  const formattedPublishDate = getFormattedDate(publishDate)
-  const query = [
-    `repo:${context.repo.owner}/${context.repo.repo}`,
-    `merged:>=${formattedPublishDate}`,
-  ].join(' ')
+  const pullRequests = await Promise.all(
+    hashes.map(async hash => {
+      const {
+        data: [pr],
+      } = await github.rest.repos.listPullRequestsAssociatedWithCommit({
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        commit_sha: hash,
+      })
 
-  // There is no API for getting pull requests since a git tag, so we need to
-  // use the search API + query params to find merged PRs after the last release
-  // date.
-  const result = await github.rest.search.issuesAndPullRequests({
-    q: query,
-  })
+      return pr
+    })
+  )
 
   const categorizedPullRequests = {}
-  const pullRequests = result.data.items
-
   for (const pr of pullRequests) {
     const category = config.categories.find(cat => {
       return cat.labels.some(label =>
@@ -86,7 +88,6 @@ async function categorizePullRequests(github, context) {
  */
 function getNextReleaseTag() {
   const { LATEST_RELEASE } = process.env
-  const { latestRelease } = JSON.parse(LATEST_RELEASE)
 
   const date = new Date()
   const month = date.getMonth() + 1
@@ -101,7 +102,7 @@ function getNextReleaseTag() {
   const versionRegex = new RegExp(
     `v${formattedYear}\.${formattedMonth}\.([0-9]*)`
   )
-  const match = versionRegex.exec(latestRelease)
+  const match = versionRegex.exec(LATEST_RELEASE)
 
   let versionNumber = 0
 
@@ -123,7 +124,6 @@ function getNextReleaseTag() {
  */
 async function draftReleaseNotes(github, context, core) {
   const { LATEST_RELEASE, NEXT_RELEASE, PULL_REQUESTS } = process.env
-  const { latestRelease } = JSON.parse(LATEST_RELEASE)
   const pullRequests = JSON.parse(PULL_REQUESTS)
 
   let body = []
@@ -140,7 +140,7 @@ async function draftReleaseNotes(github, context, core) {
   body.push(
     // Push empty string for newline
     '',
-    `**Full Changelog**: https://github.com/chanzuckerberg/napari-hub/compare/${NEXT_RELEASE}...${latestRelease}`
+    `**Full Changelog**: https://github.com/chanzuckerberg/napari-hub/compare/${NEXT_RELEASE}...${LATEST_RELEASE}`
   )
 
   const releaseProps = {
