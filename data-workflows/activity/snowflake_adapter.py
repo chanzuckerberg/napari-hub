@@ -8,11 +8,9 @@ from typing import List, Any, Callable, Iterable
 import snowflake.connector
 from snowflake.connector.cursor import SnowflakeCursor
 
-from activity.model import InstallActivityType, timestamp_mapper_by_type
-from utils import datetime_from_millis
+from activity.install_activity_model import InstallActivityType, timestamp_mapper_by_type
+from utils.utils import datetime_from_millis
 
-SNOWFLAKE_USER = os.getenv('SNOWFLAKE_USER')
-SNOWFLAKE_PASSWORD = os.getenv('SNOWFLAKE_PASSWORD')
 LOGGER = logging.getLogger()
 
 
@@ -79,8 +77,8 @@ def _cursor_to_plugin_activity_mapper(accumulator: dict[str, List], row: List) -
 
 def _execute_query(schema: str, query: str) -> Iterable[SnowflakeCursor]:
     connection = snowflake.connector.connect(
-        user=SNOWFLAKE_USER,
-        password=SNOWFLAKE_PASSWORD,
+        user=os.getenv('SNOWFLAKE_USER'),
+        password=os.getenv('SNOWFLAKE_PASSWORD'),
         account="CZI-IMAGING",
         warehouse="IMAGING",
         database="IMAGING",

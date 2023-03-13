@@ -1,12 +1,20 @@
 import json
 import logging
 
-from activity.handler import update_activity
+import activity.processor
+import utils.utils as utils
 
 
 def _setup_logging():
     logger = logging.getLogger()
     logger.setLevel(logging.INFO)
+
+
+def _update_activity() -> None:
+    last_updated_timestamp = utils.get_last_updated_timestamp()
+    current_timestamp = utils.get_current_timestamp()
+    activity.processor.update_install_activity(last_updated_timestamp, current_timestamp)
+    utils.set_last_updated_timestamp(current_timestamp)
 
 
 def handle(event, context):
@@ -18,4 +26,4 @@ def handle(event, context):
         event_type = json.loads(record.get('body')).get('type')
 
         if event_type == 'activity':
-            update_activity()
+            _update_activity()
