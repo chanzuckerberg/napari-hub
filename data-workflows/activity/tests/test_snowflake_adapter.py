@@ -40,7 +40,7 @@ def get_plugins_with_installs_in_window_query():
 
 def get_plugins_install_count_since_timestamp_query(projection, subquery):
     return f"""
-            SELECT 
+            SELECT
                 LOWER(file_project) AS plugin, 
                 {projection} AS timestamp, 
                 COUNT(*) AS count
@@ -92,7 +92,6 @@ class TestSnowflakeAdapter:
 
     def test_get_plugins_with_installs_in_window_no_result(self):
         self._expected_cursor_result = [MockSnowflakeCursor([], 2)]
-
         from activity.snowflake_adapter import get_plugins_with_installs_in_window
         actual = get_plugins_with_installs_in_window(START_TIME, END_TIME)
 
