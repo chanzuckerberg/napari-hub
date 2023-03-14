@@ -77,7 +77,6 @@ def _generate_subquery_by_type(plugins_by_timestamp: dict[str, datetime], instal
     return ' OR '.join([f"LOWER(file_project) = '{name}' AND timestamp >= "f"{TIMESTAMP_FORMAT.format(ts)}"
                         for name, ts in plugins_by_formatted_timestamp.items()])
 
-
 def _format_timestamp(timestamp_millis):
     return TIMESTAMP_FORMAT.format(datetime.fromtimestamp(timestamp_millis / 1000.0))
 

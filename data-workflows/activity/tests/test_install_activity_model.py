@@ -17,6 +17,7 @@ def sorting_key(install_activity: InstallActivity):
 
 def generate_expected(data, granularity, type_timestamp_formatter, timestamp_formatter):
     expected = []
+    now = datetime.now().timestamp()
     for key, values in data.items():
         for val in values:
             timestamp = val['timestamp']
@@ -25,7 +26,6 @@ def generate_expected(data, granularity, type_timestamp_formatter, timestamp_for
                                  f'{type_timestamp_formatter(timestamp)}',
                                  granularity=granularity,
                                  timestamp=timestamp_formatter(timestamp),
-                                 install_count=val['count'])
             expected.append(ia)
     return expected
 
@@ -57,6 +57,14 @@ class TestInstallActivity:
         assert InstallActivityType.TOTAL.format_to_timestamp(timestamp) is None
         assert InstallActivityType.TOTAL.get_query_timestamp_projection() == "1"
         assert InstallActivityType.TOTAL.format_to_type_timestamp(timestamp) == "TOTAL:"
+
+
+def generate_expiry_formatter(relative_delta) -> Callable[[datetime], int]:
+    return lambda timestamp: int((timestamp + relative_delta).timestamp())
+
+
+def get_relative_timestamp(**args):
+    return datetime.now() - relativedelta(args)
 
 
 class TestInstallActivityModels:
