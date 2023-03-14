@@ -3,7 +3,17 @@
 
 name: E2E Tests
 
-on: push
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'frontend/**'
+  pull_request:
+    branches:
+      - '**'
+    paths:
+      - 'frontend/**'
 
 defaults:
   run:
@@ -142,7 +152,7 @@ jobs:
       - name: Upload artifacts
         if: ${{ failure() }}
         uses: actions/upload-artifact@v3.1.1
-        with: 
+        with:
           name: e2e-artifacts
           path: frontend/e2e/report
           retention-days: 1
