@@ -17,6 +17,7 @@ locals {
   frontend_cmd = []
   backend_cmd  = []
   plugins_cmd  = []
+  data_workflows_cmd = []
 
   security_groups     = local.secret["security_groups"]
   zone                = local.secret["zone_id"]
@@ -24,6 +25,7 @@ locals {
   frontend_image_repo = local.secret["ecrs"]["frontend"]["url"]
   backend_image_repo  = local.secret["ecrs"]["backend"]["url"]
   plugins_image_repo  = local.secret["ecrs"]["plugins"]["url"]
+  data_workflows_image_repo  = local.secret["ecrs"]["data-workflows"]["url"]
   external_dns        = local.secret["external_zone_name"]
   internal_dns        = local.secret["internal_zone_name"]
   rest_api_id         = local.secret["api_gateway"]["rest_api_id"]
@@ -54,6 +56,7 @@ locals {
   frontend_url = var.frontend_url != "" ? var.frontend_url: try(join("", ["https://", module.frontend_dns.dns_prefix, ".", local.external_dns]), var.frontend_url)
   backend_function_name = "${local.custom_stack_name}-backend"
   plugins_function_name = "${local.custom_stack_name}-plugins"
+  data_workflows_function_name = "${local.custom_stack_name}-data-workflows"
 
   plugin_update_schedule = var.env == "prod" ? "rate(5 minutes)" : var.env == "staging" ? "rate(1 hour)" : "rate(1 day)"
 }
@@ -202,6 +205,63 @@ module plugins_lambda {
 
 }
 
+module data_workflows_lambda {
+  source                  = "../lambda-container"
+  function_name           = local.data_workflows_function_name
+  image_repo              = local.data_workflows_image_repo
+  image_tag               = local.image_tag
+  cmd                     = local.data_workflows_cmd
+  tags                    = var.tags
+
+  vpc_config              = {
+    subnet_ids         = local.cloud_env.private_subnets
+    security_group_ids = local.security_groups
+  }
+
+  environment             = {
+    "SNOWFLAKE_PASSWORD" = local.snowflake_password
+    "SNOWFLAKE_USER"     = local.snowflake_user
+    "STACK_NAME"         = local.custom_stack_name
+  }
+
+  log_retention_in_days   = 14
+  timeout                 = 300
+  memory_size             = 256
+  ephemeral_storage_size  = 512
+}
+
+resource aws_ssm_parameter data_workflow_config {
+  name        = "/${local.custom_stack_name}/napari-hub/data-workflows/config"
+  type        = "SecureString"
+  value       = jsonencode({last_activity_fetched_timestamp = 0})
+  tags        = var.tags
+  lifecycle {
+    ignore_changes = [
+      "value",
+    ]
+  }
+}
+
+resource aws_sqs_queue data_workflows_queue {
+  name                        = "${local.custom_stack_name}-data-workflows"
+  delay_seconds               = 0
+  message_retention_seconds   = 86400
+  receive_wait_time_seconds   = 10
+  visibility_timeout_seconds  = 300
+  tags                        = var.tags
+}
+
+resource aws_sqs_queue_policy data_workflows_queue_policy {
+  queue_url = aws_sqs_queue.data_workflows_queue.url
+  policy = data.aws_iam_policy_document.data_workflows_sqs_policy.json
+}
+
+resource "aws_lambda_event_source_mapping" "data_workflow_sqs_event_source_mapping" {
+  event_source_arn = aws_sqs_queue.data_workflows_queue.arn
+  function_name    = module.data_workflows_lambda.function_arn
+  batch_size       = 1
+}
+
 module api_gateway_proxy_stage {
   source               = "../api-gateway-proxy-stage"
   lambda_function_name = local.backend_function_name
@@ -221,7 +281,7 @@ resource "aws_cloudwatch_event_rule" "update_rule" {
   tags                = var.tags
 }
 
-resource "aws_cloudwatch_event_target" "update_target" {
+resource aws_cloudwatch_event_target update_target {
     rule = aws_cloudwatch_event_rule.update_rule.name
     arn = module.backend_lambda.function_arn
     input_transformer {
@@ -250,6 +310,14 @@ resource "aws_cloudwatch_event_target" "activity_target" {
           httpMethod = "POST",
           headers = {"X-API-Key": random_uuid.api_key.result}
         })
+    }
+}
+
+resource aws_cloudwatch_event_target activity_target_sqs {
+    rule = aws_cloudwatch_event_rule.activity_rule.name
+    arn = aws_sqs_queue.data_workflows_queue.arn
+    input_transformer {
+        input_template = jsonencode({type = "activity"})
     }
 }
 
@@ -318,6 +386,31 @@ data aws_iam_policy_document backend_policy {
   }
 }
 
+data aws_iam_policy_document data_workflows_policy {
+  statement {
+    actions = [
+      "dynamodb:Query",
+      "dynamodb:BatchWriteItem",
+    ]
+    resources = [module.install_dynamodb_table.table_arn]
+  }
+  statement {
+    actions = [
+      "ssm:GetParameter",
+      "ssm:PutParameter",
+    ]
+    resources = [aws_ssm_parameter.data_workflow_config.arn]
+  }
+  statement {
+    actions = [
+      "sqs:ReceiveMessage",
+      "sqs:DeleteMessage",
+      "sqs:GetQueueAttributes",
+    ]
+    resources = [aws_sqs_queue.data_workflows_queue.arn]
+  }
+}
+
 data aws_iam_policy_document plugins_policy {
   statement {
     actions = [
@@ -335,7 +428,23 @@ data aws_iam_policy_document plugins_policy {
 
     resources = ["${local.data_bucket_arn}"]
   }
+}
 
+data aws_iam_policy_document data_workflows_sqs_policy {
+  statement {
+    sid       = "event_bridge_publish"
+    actions   = ["sqs:SendMessage"]
+    resources = [aws_sqs_queue.data_workflows_queue.arn]
+    principals {
+      type        = "Service"
+      identifiers = ["events.amazonaws.com"]
+    }
+    condition {
+      test     = "ArnLike"
+      variable = "aws:SourceArn"
+      values   = [aws_cloudwatch_event_rule.activity_rule.arn]
+    }
+  }
 }
 
 resource aws_iam_role_policy policy {
@@ -348,6 +457,12 @@ resource aws_iam_role_policy plugins_lambda_policy {
   name     = "${local.custom_stack_name}-plugins-lambda-policy"
   role     = module.plugins_lambda.role_name
   policy   = data.aws_iam_policy_document.plugins_policy.json
+}
+
+resource aws_iam_role_policy data_workflows_lambda_policy {
+  name     = "${local.custom_stack_name}-data-workflows-lambda-policy"
+  role     = module.data_workflows_lambda.role_name
+  policy   = data.aws_iam_policy_document.data_workflows_policy.json
 }
 
 resource aws_acm_certificate cert {
