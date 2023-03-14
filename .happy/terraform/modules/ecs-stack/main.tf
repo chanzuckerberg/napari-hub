@@ -115,6 +115,8 @@ module install_dynamodb_table {
                             type = "S"
                           }
                         ]
+  ttl_attribute_name  = "expiry"
+  ttl_enabled         = true
   autoscaling_enabled = var.env == "dev" ? false : true
   create_table        = true
   tags                = var.tags

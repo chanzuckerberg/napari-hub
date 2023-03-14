@@ -10,8 +10,7 @@ LOGGER = logging.getLogger()
 
 def _fetch_data_and_write_to_dynamo(data: dict[str, datetime], install_activity_type: InstallActivityType):
     plugin_install_data = snowflake_adapter.get_plugins_install_count_since_timestamp(data, install_activity_type)
-    records = install_model.transform_to_dynamo_records(plugin_install_data, install_activity_type)
-    install_model.batch_write_to_dynamo(records, install_activity_type)
+    install_model.transform_and_write_to_dynamo(plugin_install_data, install_activity_type)
 
 
 def update_install_activity(start_time: int, end_time: int):

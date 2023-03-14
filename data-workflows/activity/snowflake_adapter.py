@@ -8,7 +8,7 @@ from typing import List, Any, Callable, Iterable
 import snowflake.connector
 from snowflake.connector.cursor import SnowflakeCursor
 
-from activity.install_activity_model import InstallActivityType, timestamp_mapper_by_type
+from activity.install_activity_model import InstallActivityType
 from utils.utils import datetime_from_millis
 
 LOGGER = logging.getLogger()
@@ -55,7 +55,7 @@ def _generate_subquery_by_type(plugins_by_timestamp: dict[str, datetime], instal
     if install_activity_type is InstallActivityType.TOTAL:
         return f"""LOWER(file_project) IN ({','.join([f"'{plugin}'" for plugin in plugins_by_timestamp.keys()])})"""
 
-    timestamp_mapper = timestamp_mapper_by_type[install_activity_type]
+    timestamp_mapper = install_activity_type.get_timestamp_query_formatter()
     return ' OR '.join([f"""LOWER(file_project) = '{name}' AND timestamp >= {_format_timestamp(timestamp_mapper(ts))}"""
                         for name, ts in plugins_by_timestamp.items()])
 
