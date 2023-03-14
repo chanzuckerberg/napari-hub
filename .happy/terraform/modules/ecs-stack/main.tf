@@ -144,14 +144,14 @@ module category_dynamodb_table {
   source              = "../dynamo"
   table_name          = "${local.custom_stack_name}-category"
   hash_key            = "name"
-  range_key           = "version"
+  range_key           = "version_label"
   attributes          = [
                           {
                             name = "name"
                             type = "S"
                           },
                           {
-                            name = "version"
+                            name = "version_label"
                             type = "S"
                           }
                         ]
