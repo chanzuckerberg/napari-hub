@@ -50,7 +50,6 @@ class InstallActivity(Model):
         prefix = os.getenv('STACK_NAME')
         region = os.getenv('AWS_REGION')
         table_name = f'{prefix}-install-activity'
-        region = region
 
     plugin_name = UnicodeAttribute(hash_key=True)
     type_timestamp = UnicodeAttribute(range_key=True)
