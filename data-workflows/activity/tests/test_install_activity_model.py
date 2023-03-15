@@ -1,5 +1,4 @@
 from datetime import datetime, timezone
-from typing import Callable
 from unittest.mock import Mock
 
 import pytest
@@ -16,33 +15,23 @@ def sorting_key(install_activity: InstallActivity):
     return install_activity.plugin_name + ' ' + install_activity.type_timestamp
 
 
-def generate_expected(data, granularity, type_timestamp_formatter, timestamp_formatter, expiry_formatter):
+def generate_expected(data, granularity, type_timestamp_formatter, timestamp_formatter):
     expected = []
-    now = datetime.now().timestamp()
     for key, values in data.items():
         for val in values:
             timestamp = val['timestamp']
-            expiry = expiry_formatter(timestamp)
-
-            if expiry and expiry < now:
-                continue
 
             ia = InstallActivity(key.lower(),
                                  f'{type_timestamp_formatter(timestamp)}',
                                  granularity=granularity,
                                  timestamp=timestamp_formatter(timestamp),
-                                 install_count=val['count'],
-                                 expiry=expiry)
+                                 install_count=val['count'])
             expected.append(ia)
     return expected
 
 
 def timestamp_format(timestamp):
     return timestamp.replace(tzinfo=timezone.utc).timestamp() * 1000
-
-
-def generate_expiry_formatter(relative_delta) -> Callable[[datetime], int]:
-    return lambda timestamp: int((timestamp + relative_delta).timestamp())
 
 
 def get_relative_timestamp(**args):
@@ -78,8 +67,7 @@ class TestInstallActivityModels:
         from activity.install_activity_model import transform_and_write_to_dynamo
         transform_and_write_to_dynamo(data, InstallActivityType.DAY)
 
-        expected = generate_expected(data, 'DAY', lambda ts: f'DAY:{ts.strftime("%Y%m%d")}', timestamp_format,
-                                     generate_expiry_formatter(relativedelta(days=32)))
+        expected = generate_expected(data, 'DAY', lambda ts: f'DAY:{ts.strftime("%Y%m%d")}', timestamp_format)
         self._verify(expected)
 
     def test_transform_to_dynamo_records_for_month(self):
@@ -95,8 +83,7 @@ class TestInstallActivityModels:
         from activity.install_activity_model import transform_and_write_to_dynamo
         transform_and_write_to_dynamo(data, InstallActivityType.MONTH)
 
-        expected = generate_expected(data, 'MONTH', lambda ts: f'MONTH:{ts.strftime("%Y%m")}', timestamp_format,
-                                     generate_expiry_formatter(relativedelta(months=14)))
+        expected = generate_expected(data, 'MONTH', lambda ts: f'MONTH:{ts.strftime("%Y%m")}', timestamp_format)
         self._verify(expected)
 
     def test_transform_to_dynamo_records_for_total(self):
@@ -109,5 +96,5 @@ class TestInstallActivityModels:
         from activity.install_activity_model import transform_and_write_to_dynamo
         transform_and_write_to_dynamo(data, InstallActivityType.TOTAL)
 
-        expected = generate_expected(data, 'TOTAL', lambda ts: f'TOTAL:', lambda ts: None, lambda ts: None)
+        expected = generate_expected(data, 'TOTAL', lambda ts: f'TOTAL:', lambda ts: None)
         self._verify(expected)
