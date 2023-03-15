@@ -2,7 +2,7 @@ from concurrent import futures
 from datetime import datetime
 import json
 import os
-from typing import Tuple, Dict, List, Callable
+from typing import Tuple, Dict, List, Callable, Any
 from zipfile import ZipFile
 from io import BytesIO
 from collections import defaultdict
@@ -539,7 +539,19 @@ def _update_commit_activity(repo_to_plugin_dict):
     write_data(json.dumps(data), "activity_dashboard_data/commit_activity.json")
 
 
-def _get_usage_data(plugin, limit, in_test):
+def _get_usage_data(plugin: str, limit: int, in_test: bool = False) -> Dict[str, Any]:
+    """
+    Fetches plugin usage_data from s3 or dynamo based on the in_test variable
+
+    Parameters:
+            plugin (str): Name of the plugin in lowercase for which usage data needs to be fetched.
+            limit (int): Sets the number of records to be fetched for timeline.
+            in_test (bool): Specifies if the request is in A/B test. Fetch data from dynamo if in test,
+            else fetch from s3. (default= False)
+
+    Returns:
+            usage_data (dict[str, Any]): A dict with the structure {'timeline': List, 'stats': Dict[str, int]}
+    """
     if in_test:
         timeline = get_timeline(plugin, limit) if limit else []
         usage_stats = {
@@ -548,25 +560,39 @@ def _get_usage_data(plugin, limit, in_test):
         }
     else:
         data = get_install_timeline_data(plugin)
-        install_stats = _process_for_stats(data)
         usage_stats = {
-            'total_installs': install_stats.get('totalInstalls', 0),
-            'installs_in_last_30_days': get_recent_activity_data().get(plugin, 0)
+            'total_installs': _process_for_stats(data).get('totalInstalls', 0),
+            'installs_in_last_30_days': get_recent_activity_data().get(plugin, 0),
         }
         timeline = _process_for_timeline(data, limit) if limit else []
 
     return {'timeline': timeline, 'stats': usage_stats, }
 
 
-def get_metrics_for_plugin(plugin: str, limit_str: str, in_test: bool) -> Dict:
+def get_metrics_for_plugin(plugin: str, limit_str: str, in_test: bool) -> Dict[str, Any]:
+    """
+    Fetches plugin metrics from s3 or dynamo based on the in_test variable
+
+    Parameters:
+           plugin (str): Name of the plugin in lowercase for which usage data needs to be fetched.
+           limit_str (str): Specifies the number of records to be fetched for timeline. If value is invalid number,
+           we default it to 0.
+           in_test (bool): Specifies if the request is in A/B test. Fetch data from dynamo if in test,
+           else fetch from s3. (default= False)
+    Returns:
+           metrics (dict[str, Any]): A dict with the structure
+            {
+                'usage': {'timeline': List, 'stats': Dict[str, int]},
+                'maintenance': {'timeline': List, 'stats': Dict[str, int]},
+            }
+    """
     plugin = plugin.lower()
     commit_activity = get_commit_activity(plugin)
-    is_valid_limit = limit_str.isdigit() and limit_str != '0'
 
     maintenance_timeline = []
-    limit = None
+    limit = 0
 
-    if is_valid_limit:
+    if limit_str.isdigit() and limit_str != '0':
         limit = int(limit_str)
         maintenance_timeline = commit_activity[-limit:]
 
