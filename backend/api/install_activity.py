@@ -7,14 +7,11 @@ from dateutil.relativedelta import relativedelta
 from pynamodb.models import Model
 from pynamodb.attributes import UnicodeAttribute, NumberAttribute
 
-prefix = os.getenv('PREFIX')
-region = os.getenv('AWS_REGION')
-
 
 class InstallActivity(Model):
     class Meta:
-        table_name = f'{prefix}-install-activity'
-        region = region
+        table_name = f'{os.getenv("PREFIX")}-install-activity'
+        region = os.getenv('AWS_REGION')
 
     plugin_name = UnicodeAttribute(hash_key=True)
     type_timestamp = UnicodeAttribute(range_key=True)
@@ -49,7 +46,7 @@ def get_timeline(plugin_name: str, month_delta: int = 12) -> List:
     results = {row.timestamp: row.install_count for row in InstallActivity.query(plugin_name, condition)}
 
     start_date = start_date.replace(hour=0, minute=0, second=0, microsecond=0, tzinfo=datetime.timezone.utc)
-    dates = [int((start_date - relativedelta(months=i)).timestamp()) * 1000 for i in range(11, -1, -1)]
+    dates = [int((start_date - relativedelta(months=i)).timestamp()) * 1000 for i in range(month_delta - 1, -1, -1)]
     return list(map(_map_to_timeline(results), dates))
 
 
