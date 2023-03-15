@@ -387,6 +387,7 @@ data aws_iam_policy_document backend_policy {
     actions = [
       "dynamodb:GetItem",
       "dynamodb:Query",
+      "dynamodb:Scan",
     ]
 
     resources = [
