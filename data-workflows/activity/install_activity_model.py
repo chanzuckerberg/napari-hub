@@ -13,25 +13,31 @@ from utils.utils import get_current_timestamp
 LOGGER = logging.getLogger()
 
 
-class InstallActivityType(Enum):
-    DAY = 1
-    MONTH = 2
-    TOTAL = 3
+def to_utc_timestamp_in_millis(timestamp: datetime) -> int:
+    return int(timestamp.replace(tzinfo=timezone.utc).timestamp() * 1000)
 
-    def get_timestamp_format(self) -> Callable[[datetime], Union[int, None]]:
-        if self is InstallActivityType.TOTAL:
-            return lambda timestamp: None
-        return lambda timestamp: timestamp.replace(tzinfo=timezone.utc).timestamp() * 1000
+
+class InstallActivityType(Enum):
+
+    def __new__(cls, value, timestamp_formatter, type_timestamp_formatter):
+        install_activity_type = object.__new__(cls)
+        install_activity_type._value = value
+        install_activity_type.timestamp_formatter = timestamp_formatter
+        install_activity_type.type_timestamp_formatter = type_timestamp_formatter
+        return install_activity_type
+
+    DAY = (1, to_utc_timestamp_in_millis, lambda timestamp: f'DAY:{timestamp.strftime("%Y%m%d")}')
+    MONTH = (2, to_utc_timestamp_in_millis, lambda timestamp: f'MONTH:{timestamp.strftime("%Y%m")}')
+    TOTAL = (3, lambda timestamp: None, lambda timestamp: 'TOTAL:')
+
+    def get_timestamp_formatter(self) -> Callable[[datetime], Union[int, None]]:
+        return self.timestamp_formatter
 
     def get_query_timestamp_projection(self) -> str:
         return '1' if self is InstallActivityType.TOTAL else f"DATE_TRUNC('{self.name}', timestamp)"
-
+    
     def get_type_timestamp_formatter(self) -> Callable[[datetime], str]:
-        if self is InstallActivityType.TOTAL:
-            return lambda timestamp: 'TOTAL:'
-        elif self is InstallActivityType.DAY:
-            return lambda timestamp: f'DAY:{timestamp.strftime("%Y%m%d")}'
-        return lambda timestamp: f'MONTH:{timestamp.strftime("%Y%m")}'
+        return self.type_timestamp_formatter
 
     def get_timestamp_query_formatter(self) -> Callable[[datetime], datetime]:
         return (lambda ts: ts) if self is InstallActivityType.DAY else (lambda ts: ts.replace(day=1))
@@ -61,11 +67,11 @@ def transform_and_write_to_dynamo(data: dict[str, List], activity_type: InstallA
     LOGGER.info(f'Starting item creation for install-activity type={activity_type.name}')
 
     type_timestamp_format: Callable[[datetime], str] = activity_type.get_type_timestamp_formatter()
-    timestamp_format: Callable[[datetime], Union[int, None]] = activity_type.get_timestamp_format()
+    timestamp_format: Callable[[datetime], Union[int, None]] = activity_type.get_timestamp_formatter()
 
     batch = InstallActivity.batch_write()
 
-    start = time.perf_counter_ns()
+    start = time.perf_counter()
     count = 0
     for plugin_name, install_activities in data.items():
         for activity in install_activities:
@@ -80,7 +86,7 @@ def transform_and_write_to_dynamo(data: dict[str, List], activity_type: InstallA
             count += 1
 
     batch.commit()
-    duration = (time.perf_counter_ns() - start) // 1000000
+    duration = (time.perf_counter() - start) * 1000
 
     LOGGER.info(f'Items install-activity type={activity_type.name} count={count}')
     LOGGER.info(f'Transform and write to install-activity type={activity_type.name} timeTaken={duration}ms')

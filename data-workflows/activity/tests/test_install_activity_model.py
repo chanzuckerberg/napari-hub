@@ -31,7 +31,7 @@ def generate_expected(data, granularity, type_timestamp_formatter, timestamp_for
 
 
 def timestamp_format(timestamp):
-    return timestamp.replace(tzinfo=timezone.utc).timestamp() * 1000
+    return int(timestamp.replace(tzinfo=timezone.utc).timestamp() * 1000)
 
 
 def get_relative_timestamp(**args):
