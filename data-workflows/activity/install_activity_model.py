@@ -24,7 +24,7 @@ class InstallActivityType(Enum):
         return lambda timestamp: timestamp.replace(tzinfo=timezone.utc).timestamp() * 1000
 
     def get_query_timestamp_projection(self) -> str:
-        return '1' if self is InstallActivityType.TOTAL else f'DATE_TRUNC(\'{self.name}\', timestamp)'
+        return '1' if self is InstallActivityType.TOTAL else f"DATE_TRUNC('{self.name}', timestamp)"
 
     def get_type_timestamp_formatter(self) -> Callable[[datetime], str]:
         if self is InstallActivityType.TOTAL:
@@ -52,8 +52,8 @@ class InstallActivity(Model):
 
     def __eq__(self, other):
         if isinstance(other, InstallActivity):
-            return (self.plugin_name, self.type_timestamp, self.granularity, self.timestamp, self.install_count) == \
-                   (other.plugin_name, other.type_timestamp, other.granularity, other.timestamp, other.install_count)
+            return ((self.plugin_name, self.type_timestamp, self.granularity, self.timestamp, self.install_count) == 
+                    (other.plugin_name, other.type_timestamp, other.granularity, other.timestamp, other.install_count))
         return False
 
 
