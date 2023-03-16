@@ -6,7 +6,7 @@ from werkzeug.middleware.dispatcher import DispatcherMiddleware
 from flask import Flask, Response, jsonify, render_template, request
 from flask_githubapp.core import GitHubApp
 
-from api.collections import get_collections, get_collection
+from api.plugin_collections import get_collections, get_collection
 from api.custom_wsgi import script_path_middleware
 from api.model import get_public_plugins, get_index, get_plugin, get_excluded_plugins, update_cache, \
     move_artifact_to_s3, get_category_mapping, get_categories_mapping, get_manifest, update_activity_data, \
