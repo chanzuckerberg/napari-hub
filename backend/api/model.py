@@ -11,7 +11,8 @@ import pandas as pd
 from api.install_activity import get_total_installs, get_recent_installs, get_timeline
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
-from api.s3 import get_cache, cache, write_data, get_install_timeline_data, get_latest_commit, get_commit_activity, get_recent_activity_data
+from api.s3 import get_cache, cache, write_data, get_install_timeline_data, get_latest_commit, get_commit_activity, \
+    get_recent_activity_data
 from utils.utils import render_description, send_alert, get_attribute, get_category_mapping, parse_manifest
 from utils.datadog import report_metrics
 from api.zulip import notify_new_packages
@@ -542,15 +543,11 @@ def _update_commit_activity(repo_to_plugin_dict):
 def _get_usage_data(plugin: str, limit: int, in_test: bool = False) -> Dict[str, Any]:
     """
     Fetches plugin usage_data from s3 or dynamo based on the in_test variable
+    :returns (dict[str, Any]): A dict with the structure {'timeline': List, 'stats': Dict[str, int]}
 
-    Parameters:
-            plugin (str): Name of the plugin in lowercase for which usage data needs to be fetched.
-            limit (int): Sets the number of records to be fetched for timeline.
-            in_test (bool): Specifies if the request is in A/B test. Fetch data from dynamo if in test,
-            else fetch from s3. (default= False)
-
-    Returns:
-            usage_data (dict[str, Any]): A dict with the structure {'timeline': List, 'stats': Dict[str, int]}
+    :params str plugin: Name of the plugin in lowercase.
+    :params int limit: Sets the number of records to be fetched for timeline.
+    :params bool in_test: Fetch data from dynamo if True, else fetch from s3. (default= False)
     """
     if in_test:
         timeline = get_timeline(plugin, limit) if limit else []
@@ -572,19 +569,11 @@ def _get_usage_data(plugin: str, limit: int, in_test: bool = False) -> Dict[str,
 def get_metrics_for_plugin(plugin: str, limit_str: str, in_test: bool) -> Dict[str, Any]:
     """
     Fetches plugin metrics from s3 or dynamo based on the in_test variable
+    :return dict[str, Any]: A map with entries for usage and maintenance
 
-    Parameters:
-           plugin (str): Name of the plugin in lowercase for which usage data needs to be fetched.
-           limit_str (str): Specifies the number of records to be fetched for timeline. If value is invalid number,
-           we default it to 0.
-           in_test (bool): Specifies if the request is in A/B test. Fetch data from dynamo if in test,
-           else fetch from s3. (default= False)
-    Returns:
-           metrics (dict[str, Any]): A dict with the structure
-            {
-                'usage': {'timeline': List, 'stats': Dict[str, int]},
-                'maintenance': {'timeline': List, 'stats': Dict[str, int]},
-            }
+    :params str plugin: Name of the plugin in lowercase for which usage data needs to be fetched.
+    :params str limit_str: Number of records to be fetched for timeline. Defaults to 0 for invalid number.
+    :params bool in_test: Fetch data from dynamo if True else fetch from s3. (default= False)
     """
     plugin = plugin.lower()
     commit_activity = get_commit_activity(plugin)

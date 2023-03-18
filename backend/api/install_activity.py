@@ -23,12 +23,10 @@ class InstallActivity(Model):
 
 def get_total_installs(plugin: str) -> int:
     """
-    Fetches plugin total_installs stats from dynamo.
-    Parameters:
-            plugin (str): Name of the plugin in lowercase for which total_installs needs to be computed.
-    Returns:
-            total_installs (int):  It gets the install_count from record of type=TOTAL: of the plugin to get this
-            statistic, if the record does not exist, we return 0.
+    Gets total_installs stats from dynamo for a plugin
+    :return int: total_installs count
+
+    :param str plugin: Name of the plugin in lowercase for which total_installs needs to be computed.
     """
     try:
         return InstallActivity.get(plugin, 'TOTAL:').install_count
@@ -39,16 +37,15 @@ def get_total_installs(plugin: str) -> int:
 def get_recent_installs(plugin: str, day_delta: int = 30) -> int:
     """
     Fetches plugin recent_install stats from dynamo.
-    Parameters:
-            plugin (str): Name of the plugin in lowercase for which recent_install needs to be computed.
-            day_delta (int): Specifies the number of days to include in the computation (Defaults to 30)
-    Returns:
-            recent_install (int): Sum of the number of installs in the last day_delta timeperiod
+    :return int: sum of installs in the last day_delta timeperiod
+
+    :param str plugin: Name of the plugin in lowercase for which recent_install needs to be computed.
+    :param int day_delta: Specifies the number of days to include in the computation (Defaults to 30)
     """
-    day_type_format = lambda timestamp: f'DAY:{timestamp.strftime("%Y%m%d")}'
+    _day_type_format = lambda timestamp: f'DAY:{timestamp.strftime("%Y%m%d")}'
     today = datetime.date.today()
-    upper = day_type_format(today)
-    lower = day_type_format(today - relativedelta(days=day_delta))
+    upper = _day_type_format(today)
+    lower = _day_type_format(today - relativedelta(days=day_delta))
     results = InstallActivity.query(plugin, InstallActivity.type_timestamp.between(lower, upper))
 
     return reduce(lambda acc, count: acc + count, [row.install_count for row in results], 0)
@@ -56,14 +53,11 @@ def get_recent_installs(plugin: str, day_delta: int = 30) -> int:
 
 def get_timeline(plugin: str, month_delta: int = 12) -> List[Dict[str, int]]:
     """
-    Fetches plugin install data at a month level granularity from dynamo. For months that don't have data, we default to
-    zero.
-    Parameters:
-            plugin (str): Name of the plugin in lowercase for which usage data needs to be fetched.
-            month_delta (int): Specifies the number of months for results. (Defaults to 12)
-    Returns:
-            timeline (List[Dict[str, int]]): A list of entries for each month starting at the last month. It has the
-            structure {'timestamp': ..., 'installs': ...}
+    Fetches plugin install count at a month level granularity from dynamo over the last month_delta months.
+    :returns List[Dict[str, int]]: Entries for the month_delta months
+
+    :param str plugin: Name of the plugin in lowercase for which timeline data needs to be fetched.
+    :param int month_delta: Number of months in timeline. (Defaults to 12)
     """
     formatter = lambda timestamp: f'MONTH:{timestamp.strftime("%Y%m")}'
     start_date = datetime.datetime.now().replace(day=1) - relativedelta(months=1)
