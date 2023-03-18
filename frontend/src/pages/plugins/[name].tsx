@@ -11,7 +11,7 @@ import { DEFAULT_REPO_DATA } from '@/constants/plugin';
 import { useLoadingState } from '@/context/loading';
 import { PluginStateProvider } from '@/context/plugin';
 import { PluginData } from '@/types';
-import { fetchRepoData, FetchRepoDataResult } from '@/utils';
+import { createUrl, fetchRepoData, FetchRepoDataResult } from '@/utils';
 import { hubAPI } from '@/utils/HubAPIClient';
 import { getServerSidePropsHandler } from '@/utils/ssr';
 import { getZodErrorMessage } from '@/utils/validate';
@@ -103,7 +103,18 @@ export default function Plugin({ error, plugin, repo, repoFetchError }: Props) {
 
   return (
     <>
-      <PageMetadata keywords={keywords} description={plugin?.summary} />
+      <PageMetadata
+        description={plugin?.summary}
+        keywords={keywords}
+        title={title}
+        twitterUser={plugin?.twitter}
+        url={
+          plugin?.name
+            ? createUrl(`/plugins/${plugin.name}`, process.env.FRONTEND_URL)
+                .href
+            : undefined
+        }
+      />
 
       <Head>
         <title>{title}</title>

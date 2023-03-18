@@ -240,7 +240,10 @@ def update_cache():
     excluded_plugins = get_updated_plugin_exclusion(plugins_metadata)
     visibility_plugins = {"public": {}, "hidden": {}}
     for plugin, version in plugins.items():
-        visibility = plugins_metadata[plugin].get('visibility', 'public')
+        if plugin in excluded_plugins:
+            visibility = excluded_plugins[plugin]
+        else:
+            visibility = plugins_metadata[plugin].get('visibility', 'public')
         if visibility in visibility_plugins:
             visibility_plugins[visibility][plugin] = version
 
@@ -271,6 +274,7 @@ def get_updated_plugin_exclusion(plugins_metadata):
     public: fully visible (default)
     hidden: plugin page exists, but doesn't show up in search listings
     disabled: no plugin page created, does not show up in search listings
+    blocked: no plugin page created, does not show up in search listings
 
     :param plugins_metadata: plugin metadata containing visibility information
     :return: updated exclusion list

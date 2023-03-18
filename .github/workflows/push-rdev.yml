@@ -39,8 +39,9 @@ jobs:
             echo "branch name: ${GITHUB_REF_NAME}, length ${#GITHUB_REF_NAME}, is $((${#GITHUB_REF_NAME} - 32)) characters too long, please use a branch name that's 32 characters or shorter"
             exit 1
           else 
-            echo $GITHUB_REF_NAME | tr '[:upper:]' '[:lower:]' | xargs -I {} -n 1 echo STACK_NAME={} >> $GITHUB_ENV
+            echo $GITHUB_REF_NAME | tr '[:upper:]' '[:lower:]' | xargs -I {} -n 1 echo STACK_NAME={} >> $GITHUB_ENV            
           fi
+
       - name: Create update dev
         if: ${{ github.event_name == 'push' }}
         uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.7.4
@@ -53,9 +54,12 @@ jobs:
           tfe-token: ${{ secrets.TFE_TOKEN }}
           env: "dev"
           operation: "create-or-update"
+
       - name: Delete dev set up stack name
         if: ${{ github.event_name == 'delete' && startsWith(github.event.ref, 'dev-') }}
-        run: echo ${{ github.event.ref }} | tr '[:upper:]' '[:lower:]' | xargs -I {} -n 1 echo DELETE_STACK_NAME={} >> $GITHUB_ENV
+        run: |
+          echo ${{ github.event.ref }} | tr '[:upper:]' '[:lower:]' | xargs -I {} -n 1 echo DELETE_STACK_NAME={} >> $GITHUB_ENV
+
       - name: Delete dev
         if: ${{ github.event_name == 'delete' && startsWith(github.event.ref, 'dev-') }}
         uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.4.0
@@ -66,3 +70,14 @@ jobs:
           operation: "delete"
           tfe-token: ${{ secrets.TFE_TOKEN }}
           env: "dev"
+
+      - name: Create workflow artifact
+        run: | 
+          mkdir -p workflow_artifact
+          if [ ${{ github.event_name == 'delete' }} ]; then echo 'invalid'; else echo $STACK_NAME; fi > workflow_artifact/stack_name
+
+      - name: Upload stack name artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: napari_hub_dev_deployment
+          path: workflow_artifact/stack_name
