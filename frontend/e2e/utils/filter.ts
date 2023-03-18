@@ -94,10 +94,9 @@ export async function filterPlugins(
 
   // get option values
   const { label, values } = pluginFilter;
-
   if (
     (width || 0) < breakpoints['screen-725'] &&
-    pluginFilter.label === 'Authors'
+    !(await page.locator('[role="tooltip"]').isVisible())
   ) {
     // drop down closes for smaller screens
     // select filter dropdown options
@@ -106,6 +105,9 @@ export async function filterPlugins(
 
   for (let i = 0; i < values.length; i += 1) {
     const option = values[i];
+    if (!(await page.locator('[role="tooltip"]').isVisible())) {
+      await page.getByRole('button', { name: pluginFilter.label }).click();
+    }
     await page
       .getByRole('option', { name: `unchecked checkbox ${option}` })
       .getByText(`${option}`)
@@ -163,10 +165,12 @@ export async function getOptions(page: Page, labels: string[]) {
 
 export async function verifyFilterResults(
   page: Page,
+
   pluginFilter: PluginFilter,
   expectedData: any,
   params: string | (string | string[])[][],
   sortBy = 'Recently updated',
+  title?: AccordionTitle,
 ) {
   let currentPageCounter = 1;
   const expectedTotalPages =
@@ -176,6 +180,14 @@ export async function verifyFilterResults(
   // Check that filters are enabled
   const filterOptions = pluginFilter.values;
   filterOptions?.forEach(async (option) => {
+    if (
+      !(await page
+        .getByRole('button', { name: `${option}` })
+        .first()
+        .isVisible())
+    ) {
+      await page.getByRole('button', { name: title }).click();
+    }
     await expect(
       page.getByRole('button', { name: `${option}` }).first(),
     ).toBeVisible();

@@ -8,6 +8,7 @@ dotenv.config({
 
 const config: PlaywrightTestConfig = {
   // workers: 2,
+  repeatEach: 10,
   expect: {
     timeout: 3000,
   },
@@ -94,8 +95,9 @@ const config: PlaywrightTestConfig = {
     actionTimeout: 10000,
     baseURL: 'http://localhost:8080',
     screenshot: 'only-on-failure',
-    trace: 'retain-on-failure',
+    trace: 'on',
     video: 'on',
+    headless: true,
   },
 };
 // eslint-disable-next-line import/no-default-export

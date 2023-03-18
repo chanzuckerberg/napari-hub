@@ -1,4 +1,5 @@
 import { test } from '@playwright/test';
+import { AccordionTitle } from '../../utils/utils';
 
 import {
   AUTHORS,
@@ -15,7 +16,11 @@ const OPEN_FILE_EXTENSIONS = OPEN_EXTENSIONS[ENV.toUpperCase()];
 const sortBy = 'Recently updated';
 test.describe('Plugin filter tests', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto(`${process.env.BASEURL as string}`);
+    try {
+      await page.goto(`${process.env.BASEURL as string}`);
+    } catch (error) {
+      await page.goto(`${process.env.BASEURL as string}`);
+    }
   });
   TEST_AUTHORS.forEach((authors) => {
     test(`should filter by authors "${authors.toString()}"`, async ({
@@ -141,7 +146,14 @@ test.describe('Plugin filter tests', () => {
         osses.push(os.replace('macOS', 'mac').toLowerCase());
       }
       const params = [['operatingSystem', osses]];
-      await verifyFilterResults(page, filterBy, fixtureData, params, sortBy);
+      await verifyFilterResults(
+        page,
+        filterBy,
+        fixtureData,
+        params,
+        sortBy,
+        AccordionTitle.FilterByRequirement,
+      );
     });
   });
   [['Limit to plugins with open source license']].forEach((license) => {
