@@ -25,3 +25,9 @@ class GitHubActivity(Model):
     number_of_commits = NumberAttribute()
     repo = UnicodeAttribute(null=True)
     last_updated_timestamp = NumberAttribute(default_for_new=get_current_timestamp)
+
+    def __eq__(self, other):
+        if isinstance(other, GitHubActivity):
+            return ((self.plugin_name, self.type_identifier, self.granularity, self.timestamp, self.number_of_commits, self.repo) ==
+                    (other.plugin_name, other.type_identifier, other.granularity, other.timestamp, other.number_of_commits, other.repo))
+        return False
