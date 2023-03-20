@@ -160,6 +160,41 @@ module category_dynamodb_table {
   tags                = var.tags
 }
 
+module plugin_dynamodb_table {
+  source              = "../dynamo"
+  table_name          = "${local.custom_stack_name}-plugin"
+  hash_key            = "name"
+  range_key           = "version_type"
+  attributes          = [
+                          {
+                            name = "name"
+                            type = "S"
+                          },
+                          {
+                            name = "version_type"
+                            type = "S"
+                          }
+                        ]
+
+  global_secondary_indexes = [
+                          {
+                            name               = "name_is_latest"
+                            hash_key           = "name"
+                            range_key          = "is_latest"
+                            projection_type    = "ALL"
+                          },
+                          {
+                            name               = "name_excluded"
+                            hash_key           = "name"
+                            range_key          = "excluded"
+                            projection_type    = "KEYS_ONLY"
+                          }
+                        ]
+  autoscaling_enabled = var.env == "dev" ? false : true
+  create_table        = true
+  tags                = var.tags
+}
+
 module backend_lambda {
   source             = "../lambda-container"
   function_name      = local.backend_function_name
