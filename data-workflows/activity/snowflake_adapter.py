@@ -9,9 +9,9 @@ import snowflake.connector
 from snowflake.connector.cursor import SnowflakeCursor
 
 from activity.install_activity_model import InstallActivityType
-from utils.utils import datetime_from_millis
 
 LOGGER = logging.getLogger()
+TIMESTAMP_FORMAT = "TO_TIMESTAMP('{0:%Y-%m-%d %H:%M:%S}')"
 
 
 def get_plugins_with_installs_in_window(start_timestamp: int, end_timestamp: int) -> dict[str, datetime]:
@@ -30,7 +30,7 @@ def get_plugins_with_installs_in_window(start_timestamp: int, end_timestamp: int
             """
 
     LOGGER.info(f'Querying for plugins added between start_timestamp={start_timestamp} end_timestamp={end_timestamp}')
-    return _mapped_query_results(query, "PYPI", {}, _cursor_to_plugin_timestamp_mapper)
+    return _mapped_query_results(query, "PYPI", {}, _cursor_to_timestamp_by_plugin_mapper)
 
 
 def get_plugins_install_count_since_timestamp(plugins_by_earliest_ts: dict[str, datetime],
@@ -55,17 +55,19 @@ def _generate_subquery_by_type(plugins_by_timestamp: dict[str, datetime], instal
     if install_activity_type is InstallActivityType.TOTAL:
         return f"""LOWER(file_project) IN ({','.join([f"'{plugin}'" for plugin in plugins_by_timestamp.keys()])})"""
 
-    timestamp_mapper = install_activity_type.get_timestamp_query_formatter()
-    return ' OR '.join([f"""LOWER(file_project) = '{name}' AND timestamp >= {_format_timestamp(timestamp_mapper(ts))}"""
+    return ' OR '.join([f"LOWER(file_project) = '{name}' AND timestamp >= "
+                        f"{TIMESTAMP_FORMAT.format(install_activity_type.get_timestamp_query_formatter(ts))}"
                         for name, ts in plugins_by_timestamp.items()])
 
 
 def _format_timestamp(timestamp):
-    datetime_obj = timestamp if type(timestamp) is datetime else datetime_from_millis(timestamp)
-    return f"""TO_TIMESTAMP('{datetime_obj.strftime("%Y-%m-%d %H:%M:%S")}')"""
+    return TIMESTAMP_FORMAT.format(datetime.fromtimestamp(timestamp / 1000.0))
 
 
-def _cursor_to_plugin_timestamp_mapper(accumulator: dict[str, datetime], row: List) -> dict[str, datetime]:
+def _cursor_to_timestamp_by_plugin_mapper(accumulator: dict[str, datetime], row: List) -> dict[str, datetime]:
+    """
+
+    """
     accumulator[row[0]] = row[1].replace(hour=0, minute=0, second=0)
     return accumulator
 

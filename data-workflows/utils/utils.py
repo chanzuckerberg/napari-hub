@@ -1,6 +1,5 @@
 import json
 import time
-from datetime import datetime
 
 import boto3
 import os
@@ -10,10 +9,6 @@ PARAMETER_NAME: str = f'/{os.getenv("STACK_NAME")}/napari-hub/data-workflows/con
 
 def get_current_timestamp() -> int:
     return round(time.time() * 1000)
-
-
-def datetime_from_millis(millis) -> datetime:
-    return datetime.fromtimestamp(millis / 1000.0)
 
 
 def get_last_updated_timestamp() -> int:
