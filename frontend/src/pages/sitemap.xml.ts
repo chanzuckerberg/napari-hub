@@ -32,6 +32,9 @@ const HUB_URL_IGNORE_PATTERNS = [
   /\/sitemap\.xml|robots\.txt/,
 
   // Plugin pages
+  /\/collections\/\[symbol\]/,
+
+  // Plugin pages
   /\/plugins\/\[name\]/,
 
   // Plugin preview page
