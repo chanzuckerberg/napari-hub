@@ -52,6 +52,18 @@ def get_plugins_install_count_since_timestamp(plugins_by_earliest_ts: dict[str, 
 
 
 def _generate_subquery_by_type(plugins_by_timestamp: dict[str, datetime], install_activity_type: InstallActivityType):
+    """
+    Returns subquery clause generated from the plugins_by_timestamp data based on the InstallActivityType. It is used to
+    get the install count since a specific starting point for each plugin.
+    If InstallActivityType.TOTAL, fetch the sum of installs over all time, so construct subquery without timestamp
+    constraint.
+    If InstallActivityType.MONTH, fetch the sum of installs from the beginning of the month of the timestamp specified
+    for each of the plugin.
+    If InstallActivityType.DAY, fetch the sum of installs from the beginning of the day of the timestamp specified
+    for each of the plugin.
+    :param dict[str, datetime] plugins_by_timestamp: plugin name by earliest timestamp of install record added
+    :param InstallActivityType install_activity_type:
+    """
     if install_activity_type is InstallActivityType.TOTAL:
         return f"""LOWER(file_project) IN ({','.join([f"'{plugin}'" for plugin in plugins_by_timestamp.keys()])})"""
 
@@ -66,13 +78,24 @@ def _format_timestamp(timestamp):
 
 def _cursor_to_timestamp_by_plugin_mapper(accumulator: dict[str, datetime], row: List) -> dict[str, datetime]:
     """
-
+    Updates the accumulator with data from the record. Timestamp is updated to a day level granularity and added to the
+    accumulator keyed on plugin name.
+    :param dict[str, datetime] accumulator: Accumulator that will be updated with new data
+    :param List row: Row from snowflake cursor
+    :returns: Accumulator after data from row has been updated
     """
     accumulator[row[0]] = row[1].replace(hour=0, minute=0, second=0)
     return accumulator
 
 
 def _cursor_to_plugin_activity_mapper(accumulator: dict[str, List], row: List) -> dict[str, List]:
+    """
+    Updates the accumulator with data from the record. Object with timestamp and count attributes are created from the
+    data and added to the accumulator keyed on plugin name.
+    :param dict[str, datetime] accumulator: Accumulator that will be updated with new data
+    :param List row: Row from snowflake cursor
+    :returns: Accumulator after data from row has been updated
+   """
     accumulator.setdefault(row[0], []).append({'timestamp': row[1], 'count': row[2]})
     return accumulator
 
@@ -86,14 +109,14 @@ def _execute_query(schema: str, query: str) -> Iterable[SnowflakeCursor]:
         database="IMAGING",
         schema=schema
     )
-    start = time.perf_counter_ns()
+    start = time.perf_counter()
     try:
         return connection.execute_string(query)
     except Exception:
         LOGGER.exception(f'Exception when executing query={query}')
     finally:
-        duration = time.perf_counter_ns() - start
-        LOGGER.info(f'Query execution time={duration // 1000000}ms')
+        duration = time.perf_counter() - start
+        LOGGER.info(f'Query execution time={duration * 1000}ms')
 
 
 def _mapped_query_results(query: str, schema: str, accumulator: Any, mapper: Callable) -> Any:
