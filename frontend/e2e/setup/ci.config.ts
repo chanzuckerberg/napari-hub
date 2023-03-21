@@ -24,14 +24,6 @@ const config: PlaywrightTestConfig = {
     [
       'html',
       {
-        open: 'on-failure',
-        host: 'localhost',
-        port: 9223,
-      },
-    ],
-    [
-      'html',
-      {
         outputFile: '../report/report.html',
         open: 'never',
       },

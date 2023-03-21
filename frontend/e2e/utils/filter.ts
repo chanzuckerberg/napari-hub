@@ -93,7 +93,7 @@ export async function filterPlugins(
   await page.getByRole('button', { name: pluginFilter.label }).click();
 
   // get option values
-  const { label, values } = pluginFilter;
+  const { values } = pluginFilter;
   if (
     (width || 0) < breakpoints['screen-725'] &&
     !(await page.locator('[role="tooltip"]').isVisible())
@@ -128,10 +128,10 @@ export async function filterPlugins(
       pluginFilter.label === 'Open extension')
   ) {
     // close the filter dropdown for smaller screens
-    await page.getByRole('radio', { name: sortBy }).click();
+    await page.keyboard.press('Escape');
   } else {
     // close the filter dropdown
-    await page.getByRole('button', { name: label }).click();
+    await page.keyboard.press('Escape');
   }
 }
 
@@ -170,7 +170,6 @@ export async function verifyFilterResults(
   expectedData: any,
   params: string | (string | string[])[][],
   sortBy = 'Recently updated',
-  title?: AccordionTitle,
 ) {
   let currentPageCounter = 1;
   const expectedTotalPages =
@@ -186,11 +185,11 @@ export async function verifyFilterResults(
         .first()
         .isVisible())
     ) {
-      await page.getByRole('button', { name: title }).click();
+      await page.locator('[data-title="Filter by requirement"]').click();
+      await expect(
+        page.getByRole('button', { name: `${option}` }).first(),
+      ).toBeVisible();
     }
-    await expect(
-      page.getByRole('button', { name: `${option}` }).first(),
-    ).toBeVisible();
   });
 
   for (let pageNumber = 1; pageNumber <= expectedTotalPages; pageNumber += 1) {

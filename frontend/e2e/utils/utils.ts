@@ -68,6 +68,7 @@ export async function maybeOpenAccordion(
 ) {
   if (width < breakpoints['screen-875']) {
     await page.getByRole('button', { name: title }).click();
+    await page.waitForTimeout(1000);
   }
 }
 export async function maybeExpand(page: Page, width = Infinity) {
