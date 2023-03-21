@@ -78,12 +78,12 @@ function SearchResultItems() {
 export function PluginSearchResultList() {
   return (
     <section className="col-span-2 screen-1425:col-span-3 space-y-sds-xl ">
-      <h3 className={clsx('flex items-center font-bold text-xl')}>
+      <h2 className={clsx('flex items-center font-bold text-xl')}>
         <I18n
           i18nKey="homePage:browsePlugins"
           components={{ count: <SearchResultCount /> }}
         />
-      </h3>
+      </h2>
 
       <ColumnLayout
         classes={{

@@ -1,15 +1,17 @@
 import clsx from 'clsx';
 import { useTranslation } from 'next-i18next';
+import { ComponentType } from 'react';
 import { GitHub, OrcID, Twitter, Website } from 'src/components/icons';
 import { Link } from 'src/components/Link';
 import { Tooltip } from 'src/components/Tooltip';
 import { CollectionLinks as CollectionLinksType } from 'src/types/collections';
 
+import { IconColorProps } from '../icons/icons.type';
 import { useCollection } from './context';
 
 type LinkKey = keyof CollectionLinksType;
 
-function useLinkData(key: LinkKey) {
+function useLinkData(key: LinkKey): [string, ComponentType<IconColorProps>] {
   const { t } = useTranslation(['collections']);
 
   switch (key) {
@@ -66,7 +68,7 @@ function CollectionLink({ linkKey }: CollectionLinkProps) {
       disableInteractive
       leaveDelay={0}
     >
-      <Link href={link}>
+      <Link aria-label={tooltip} href={link}>
         <Icon className="w-5 h-5" />
       </Link>
     </Tooltip>
@@ -83,7 +85,7 @@ export function CollectionLinks() {
   return (
     <div className="flex space-x-sds-xl mt-sds-xl">
       {filteredLinks.map((key) => (
-        <CollectionLink linkKey={key} />
+        <CollectionLink key={key} linkKey={key} />
       ))}
     </div>
   );

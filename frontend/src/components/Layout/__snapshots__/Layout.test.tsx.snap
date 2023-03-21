@@ -155,11 +155,11 @@ exports[`<Layout /> should match snapshot 1`] = `
       <div
         class="col-span-2 screen-495:col-span-3 screen-1425:col-start-2"
       >
-        <h3
+        <h2
           class="text-lg font-semibold mb-sds-xxs screen-495:mb-sds-l"
         >
           Sign up to receive updates
-        </h3>
+        </h2>
         <form
           class="grid grid-cols-2 screen-875:grid-cols-napari-3 screen-495:gap-x-12 gap-y-sds-l"
           novalidate=""
@@ -397,6 +397,7 @@ exports[`<Layout /> should match snapshot 1`] = `
           class="border-r-[1px] border-black"
         />
         <a
+          aria-label="czi-link"
           class="ml-sds-xxs"
           href="https://chanzuckerberg.com"
           rel="noreferrer"
