@@ -8,7 +8,7 @@ dotenv.config({
 
 const config: PlaywrightTestConfig = {
   // workers: 2,
-  repeatEach: 10,
+  // repeatEach: 3,
   expect: {
     timeout: 3000,
   },

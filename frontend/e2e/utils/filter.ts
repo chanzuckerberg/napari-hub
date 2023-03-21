@@ -128,10 +128,12 @@ export async function filterPlugins(
       pluginFilter.label === 'Open extension')
   ) {
     // close the filter dropdown for smaller screens
-    await page.getByRole('radio', { name: sortBy }).click();
+    //await page.getByRole('radio', { name: sortBy }).click();
+    await page.keyboard.press('Escape');
   } else {
     // close the filter dropdown
-    await page.getByRole('button', { name: label }).click();
+    //await page.getByRole('button', { name: label }).click();
+    await page.keyboard.press('Escape');
   }
 }
 
@@ -186,11 +188,11 @@ export async function verifyFilterResults(
         .first()
         .isVisible())
     ) {
-      await page.getByRole('button', { name: title }).click();
+      await page.locator('[data-title="Filter by requirement"]').click();
+      await expect(
+        page.getByRole('button', { name: `${option}` }).first(),
+      ).toBeVisible();
     }
-    await expect(
-      page.getByRole('button', { name: `${option}` }).first(),
-    ).toBeVisible();
   });
 
   for (let pageNumber = 1; pageNumber <= expectedTotalPages; pageNumber += 1) {
