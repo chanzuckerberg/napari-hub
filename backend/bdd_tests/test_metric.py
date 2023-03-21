@@ -16,40 +16,80 @@ def call_metrics_with_plugin_name(plugin_name, context):
     call_api(context, f'/metrics/{plugin_name}')
 
 
-@then(parsers.parse('it should have {limit:d} entries for timeline'))
-def verify_timeline_limit(context, limit):
-    activity = context['response'].json()['activity']
-    context['activity'] = activity
-    timeline = activity['timeline']
-    assert len(timeline) == limit, f'actual size {len(timeline)} not equal to {limit}'
-    for i, date in enumerate(_generate_dates(limit)):
-        assert timeline[i]['timestamp'] == int(date) * 1000
+@then(parsers.parse('it should only have properties {properties_str}'))
+def verify_response_properties(context, properties_str):
+    properties = properties_str.split(', ')
+    response = context['response'].json()
+    assert len(response) == len(properties)
+    for property in properties:
+        assert property in response, f'{property} not in response'
+        context[property] = response[property]
 
 
-@then(parsers.parse('it should have at least one non-zero installs in timeline'))
-def verify_timeline_has_any_non_zero_installs(context):
-    assert any(item['installs'] > 0 for item in context['activity']['timeline'])
+@then(parsers.parse('it should have {limit:d} entries for usage.timeline'))
+def verify_usage_timeline_limit(context, limit):
+    _validate_timeline(context['usage']['timeline'], limit)
 
 
-@then(parsers.parse('it should have non-zero values for stats'))
-def verify_it_has_non_zero_activity_stats(context):
-    stats = context['activity']['stats']
-    assert stats['installsInLast30Days'] >= 0
-    assert stats['totalInstalls'] > 0
+@then(parsers.parse('it should have {limit:d} entries for maintenance.timeline'))
+def verify_maintenance_timeline_limit(context, limit):
+    _validate_timeline(context['maintenance']['timeline'], limit)
 
 
-@then(parsers.parse('it should have all zero installs in timeline'))
-def verify_timeline_has_any_non_zero_installs(context):
-    assert all(item['installs'] == 0 for item in context['activity']['timeline'])
+@then(parsers.parse('it should have at least one non-zero installs in usage.timeline'))
+def verify_usage_timeline_has_any_non_zero_installs(context):
+    assert any(item['installs'] > 0 for item in context['usage']['timeline'])
 
 
-@then(parsers.parse('it should have zero values for stats and timelines'))
-def verify_it_has_zero_activity_data(context):
-    stats = context['activity']['stats']
-    assert stats['installsInLast30Days'] == 0
-    assert stats['totalInstalls'] == 0
+@then(parsers.parse('it should have at least one non-zero commits in maintenance.timeline'))
+def verify_maintenance_timeline_has_any_non_zero_installs(context):
+    assert any(item['commits'] > 0 for item in context['maintenance']['timeline'])
+
+
+@then(parsers.parse('it should have non-zero values for usage.stats'))
+def verify_it_has_non_zero_usage_stats(context):
+    stats = context['usage']['stats']
+    assert stats['installs_in_last_30_days'] >= 0
+    assert stats['total_installs'] > 0
+
+
+@then(parsers.parse('it should have non-zero values for maintenance.stats'))
+def verify_it_has_non_zero_maintenance_stats(context):
+    stats = context['maintenance']['stats']
+    assert stats['latest_commit_timestamp'] is not None
+    assert stats['total_commits'] > 0
+
+
+@then(parsers.parse('it should have all zero installs in usage.timeline'))
+def verify_usage_timeline_has_any_non_zero_installs(context):
+    assert all(item['installs'] == 0 for item in context['usage']['timeline'])
+
+
+@then(parsers.parse('it should have all zero commits in maintenance.timeline'))
+def verify_maintenance_timeline_has_any_non_zero_commits(context):
+    assert all(item['commits'] == 0 for item in context['maintenance']['timeline'])
+
+
+@then(parsers.parse('it should have zero values for usage.stats'))
+def verify_it_has_zero_usage_data(context):
+    stats = context['usage']['stats']
+    assert stats['installs_in_last_30_days'] == 0
+    assert stats['total_installs'] == 0
+
+
+@then(parsers.parse('it should have zero values for maintenance.stats'))
+def verify_it_has_zero_usage_data(context):
+    stats = context['maintenance']['stats']
+    assert stats['latest_commit_timestamp'] is None
+    assert stats['total_commits'] == 0
 
 
 def _generate_dates(limit):
     start_date = datetime.combine(datetime.now().replace(day=1), datetime.min.time()).replace(tzinfo=timezone.utc)
     return [(start_date - relativedelta(months=i)).timestamp() for i in range(limit, 0, -1)]
+
+
+def _validate_timeline(timeline, limit):
+    assert len(timeline) == limit, f'actual size {len(timeline)} not equal to {limit}'
+    for i, date in enumerate(_generate_dates(limit)):
+        assert timeline[i]['timestamp'] == int(date) * 1000
