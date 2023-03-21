@@ -15,7 +15,6 @@ def get_last_updated_timestamp() -> int:
     response = _get_ssm_client().get_parameter(Name=PARAMETER_NAME, WithDecryption=True)
     return json.loads(response['Parameter']['Value']).get('last_activity_fetched_timestamp')
 
-
 def set_last_updated_timestamp(timestamp) -> None:
     value = json.dumps({'last_activity_fetched_timestamp': timestamp})
     _get_ssm_client().put_parameter(Name=PARAMETER_NAME, Value=value, Overwrite=True)

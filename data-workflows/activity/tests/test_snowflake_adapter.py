@@ -25,7 +25,7 @@ PLUGINS_BY_EARLIEST_TS = {'foo': to_ts(1615680000), 'bar': to_ts(1656979200), 'b
 def get_plugins_with_installs_in_window_query():
     return """
             SELECT 
-                LOWER(file_project), MIN(timestamp)
+                LOWER(file_project) AS plugin, DATE_TRUNC('DAY', MIN(timestamp)) AS earliest_timestamp
             FROM
                 imaging.pypi.labeled_downloads
             WHERE 
@@ -41,7 +41,9 @@ def get_plugins_with_installs_in_window_query():
 def get_plugins_install_count_since_timestamp_query(projection, subquery):
     return f"""
             SELECT 
-                LOWER(file_project), {projection}, COUNT(*)
+                LOWER(file_project) AS plugin, 
+                {projection} AS timestamp, 
+                COUNT(*) AS count
             FROM
                 imaging.pypi.labeled_downloads
             WHERE 
@@ -53,9 +55,29 @@ def get_plugins_install_count_since_timestamp_query(projection, subquery):
             """
 
 
+class MockSnowflakeCursor:
+
+    def __init__(self, data, row_field_count):
+        self._data = data
+        self._size = len(data)
+        self._index = -1
+        self._row_field_count = row_field_count
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self._index < self._size - 1:
+            self._index += 1
+            if self._row_field_count == 3:
+                return self._data[self._index][0], self._data[self._index][1], self._data[self._index][2]
+            else:
+                return self._data[self._index][0], self._data[self._index][1]
+        raise StopIteration
+
+
 class TestSnowflakeAdapter:
     def _get_mock_snowflake_connect(self, *_, **kwargs):
-
         if CONNECTION_PARAMS == kwargs:
             self._connection_mock = Mock()
             self._connection_mock.execute_string.return_value = self._expected_cursor_result
@@ -69,7 +91,7 @@ class TestSnowflakeAdapter:
         monkeypatch.setattr(snowflake.connector, 'connect', self._get_mock_snowflake_connect)
 
     def test_get_plugins_with_installs_in_window_no_result(self):
-        self._expected_cursor_result = [[]]
+        self._expected_cursor_result = [MockSnowflakeCursor([], 2)]
 
         from activity.snowflake_adapter import get_plugins_with_installs_in_window
         actual = get_plugins_with_installs_in_window(START_TIME, END_TIME)
@@ -79,7 +101,8 @@ class TestSnowflakeAdapter:
 
     def test_get_plugins_with_installs_in_window_with_result(self):
         self._expected_cursor_result = [
-            [['foo', to_ts(1615705553)], ['bar', to_ts(1657004753)]], [['baz', to_ts(1687763153)]]
+            MockSnowflakeCursor([['foo', to_ts(1615680000)], ['bar', to_ts(1656979200)]], 2),
+            MockSnowflakeCursor([['baz', to_ts(1687737600)]], 2)
         ]
 
         from activity.snowflake_adapter import get_plugins_with_installs_in_window
@@ -89,8 +112,11 @@ class TestSnowflakeAdapter:
         self._connection_mock.execute_string.assert_called_once_with(get_plugins_with_installs_in_window_query())
 
     @pytest.mark.parametrize('expected_cursor_result,expected', [
-        ([[]], {}),
-        ([[['foo', to_ts(1629072000), 2], ['bar', to_ts(1666656000), 8]], [['foo', to_ts(1662940800), 3]]],
+        ([MockSnowflakeCursor([], 3)], {}),
+        ([
+             MockSnowflakeCursor([['foo', to_ts(1629072000), 2], ['bar', to_ts(1666656000), 8]], 3),
+             MockSnowflakeCursor([['foo', to_ts(1662940800), 3]], 3)
+         ],
          {
              'foo': [{'timestamp': to_ts(1629072000), 'count': 2}, {'timestamp': to_ts(1662940800), 'count': 3}],
              'bar': [{'timestamp': to_ts(1666656000), 'count': 8}],
@@ -110,8 +136,11 @@ class TestSnowflakeAdapter:
         self._connection_mock.execute_string.assert_called_once_with(query)
 
     @pytest.mark.parametrize('expected_cursor_result,expected', [
-        ([[]], {}),
-        ([[['foo', to_ts(1629072000), 2], ['bar', to_ts(1666656000), 8]], [['foo', to_ts(1662940800), 3]]],
+        ([MockSnowflakeCursor([], 3)], {}),
+        ([
+             MockSnowflakeCursor([['foo', to_ts(1629072000), 2], ['bar', to_ts(1666656000), 8]], 3),
+             MockSnowflakeCursor([['foo', to_ts(1662940800), 3]], 3)
+         ],
          {
              'foo': [{'timestamp': to_ts(1629072000), 'count': 2}, {'timestamp': to_ts(1662940800), 'count': 3}],
              'bar': [{'timestamp': to_ts(1666656000), 'count': 8}],
@@ -131,8 +160,11 @@ class TestSnowflakeAdapter:
         self._connection_mock.execute_string.assert_called_once_with(query)
 
     @pytest.mark.parametrize('expected_cursor_result,expected', [
-        ([[]], {}),
-        ([[['foo', to_ts(1629072000), 2], ['bar', to_ts(1666656000), 8]], [['baz', to_ts(1662940800), 10]]],
+        ([MockSnowflakeCursor([], 3)], {}),
+        ([
+             MockSnowflakeCursor([['foo', to_ts(1629072000), 2], ['bar', to_ts(1666656000), 8]], 3),
+             MockSnowflakeCursor([['baz', to_ts(1662940800), 10]], 3)
+         ],
          {
              'foo': [{'timestamp': to_ts(1629072000), 'count': 2}],
              'bar': [{'timestamp': to_ts(1666656000), 'count': 8}],

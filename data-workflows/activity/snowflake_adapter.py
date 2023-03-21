@@ -14,22 +14,22 @@ LOGGER = logging.getLogger()
 TIMESTAMP_FORMAT = "TO_TIMESTAMP('{0:%Y-%m-%d %H:%M:%S}')"
 
 
-def get_plugins_with_installs_in_window(start_timestamp: int, end_timestamp: int) -> dict[str, datetime]:
+def get_plugins_with_installs_in_window(start_millis: int, end_millis: int) -> dict[str, datetime]:
     query = f"""
             SELECT 
-                LOWER(file_project), MIN(timestamp)
+                LOWER(file_project) AS plugin, DATE_TRUNC('DAY', MIN(timestamp)) AS earliest_timestamp
             FROM
                 imaging.pypi.labeled_downloads
             WHERE 
                 download_type = 'pip'
                 AND project_type = 'plugin'
-                AND TO_TIMESTAMP(ingestion_timestamp) > {_format_timestamp(start_timestamp)}
-                AND TO_TIMESTAMP(ingestion_timestamp) <= {_format_timestamp(end_timestamp)}
+                AND TO_TIMESTAMP(ingestion_timestamp) > {_format_timestamp(timestamp_millis=start_millis)}
+                AND TO_TIMESTAMP(ingestion_timestamp) <= {_format_timestamp(timestamp_millis=end_millis)}
             GROUP BY file_project
             ORDER BY file_project
             """
 
-    LOGGER.info(f'Querying for plugins added between start_timestamp={start_timestamp} end_timestamp={end_timestamp}')
+    LOGGER.info(f'Querying for plugins added between start_timestamp={start_millis} end_timestamp={end_millis}')
     return _mapped_query_results(query, "PYPI", {}, _cursor_to_timestamp_by_plugin_mapper)
 
 
@@ -37,7 +37,9 @@ def get_plugins_install_count_since_timestamp(plugins_by_earliest_ts: dict[str, 
                                               install_activity_type: InstallActivityType) -> dict[str, List]:
     query = f"""
             SELECT 
-                LOWER(file_project), {install_activity_type.get_query_timestamp_projection()}, COUNT(*)
+                LOWER(file_project) AS plugin, 
+                {install_activity_type.get_query_timestamp_projection()} AS timestamp, 
+                COUNT(*) AS count
             FROM
                 imaging.pypi.labeled_downloads
             WHERE 
@@ -72,31 +74,34 @@ def _generate_subquery_by_type(plugins_by_timestamp: dict[str, datetime], instal
                         for name, ts in plugins_by_timestamp.items()])
 
 
-def _format_timestamp(timestamp):
-    return TIMESTAMP_FORMAT.format(datetime.fromtimestamp(timestamp / 1000.0))
+def _format_timestamp(timestamp_millis):
+    return TIMESTAMP_FORMAT.format(datetime.fromtimestamp(timestamp_millis / 1000.0))
 
 
-def _cursor_to_timestamp_by_plugin_mapper(accumulator: dict[str, datetime], row: List) -> dict[str, datetime]:
+def _cursor_to_timestamp_by_plugin_mapper(accumulator: dict[str, datetime], cursor) -> dict[str, datetime]:
     """
-    Updates the accumulator with data from the record. Timestamp is updated to a day level granularity and added to the
-    accumulator keyed on plugin name.
+    Updates the accumulator with data from the cursor. Timestamp is added to the accumulator keyed on plugin name.
+    The cursor contains the fields plugin_name and earliest_timestamp
     :param dict[str, datetime] accumulator: Accumulator that will be updated with new data
-    :param List row: Row from snowflake cursor
-    :returns: Accumulator after data from row has been updated
+    :param SnowflakeCursor cursor:
+    :returns: Accumulator after data from cursor has been added
     """
-    accumulator[row[0]] = row[1].replace(hour=0, minute=0, second=0)
+    for plugin, earliest_timestamp in cursor:
+        accumulator[plugin] = earliest_timestamp
     return accumulator
 
 
-def _cursor_to_plugin_activity_mapper(accumulator: dict[str, List], row: List) -> dict[str, List]:
+def _cursor_to_plugin_activity_mapper(accumulator: dict[str, List], cursor) -> dict[str, List]:
     """
-    Updates the accumulator with data from the record. Object with timestamp and count attributes are created from the
-    data and added to the accumulator keyed on plugin name.
-    :param dict[str, datetime] accumulator: Accumulator that will be updated with new data
-    :param List row: Row from snowflake cursor
-    :returns: Accumulator after data from row has been updated
+    Updates the accumulator with data from the cursor. Object with timestamp and count attributes are created from the
+    cursor record and added to the accumulator keyed on plugin name.
+    The cursor contains the fields plugin, timestamp, and count
+    :param dict[str, List] accumulator: Accumulator that will be updated with new data
+    :param SnowflakeCursor cursor:
+    :returns: Accumulator after data from cursor has been added
    """
-    accumulator.setdefault(row[0], []).append({'timestamp': row[1], 'count': row[2]})
+    for plugin, timestamp, count in cursor:
+        accumulator.setdefault(plugin, []).append({'timestamp': timestamp, 'count': count})
     return accumulator
 
 
@@ -119,6 +124,5 @@ def _execute_query(schema: str, query: str) -> Iterable[SnowflakeCursor]:
         LOGGER.info(f'Query execution time={duration * 1000}ms')
 
 
-def _mapped_query_results(query: str, schema: str, accumulator: Any, mapper: Callable) -> Any:
-    cursor_iterable = _execute_query(schema, query)
-    return reduce(mapper, [row for cursor in cursor_iterable for row in cursor], accumulator)
+def _mapped_query_results(query: str, schema: str, accumulator: Any, accumulator_updater: Callable) -> Any:
+    return reduce(accumulator_updater, _execute_query(schema, query), accumulator)

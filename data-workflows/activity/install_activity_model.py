@@ -2,7 +2,7 @@ import logging
 import time
 from datetime import datetime, timezone
 from enum import Enum
-from typing import Callable, List, Union
+from typing import List, Union
 import os
 
 from pynamodb.models import Model
