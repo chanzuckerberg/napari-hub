@@ -1,5 +1,4 @@
 import { test } from '@playwright/test';
-import { AccordionTitle } from '../../utils/utils';
 
 import {
   AUTHORS,
@@ -147,14 +146,7 @@ test.describe('Plugin filter tests', () => {
         osses.push(os.replace('macOS', 'mac').toLowerCase());
       }
       const params = [['operatingSystem', osses]];
-      await verifyFilterResults(
-        page,
-        filterBy,
-        fixtureData,
-        params,
-        sortBy,
-        AccordionTitle.FilterByRequirement,
-      );
+      await verifyFilterResults(page, filterBy, fixtureData, params, sortBy);
     });
   });
   [['Limit to plugins with open source license']].forEach((license) => {
