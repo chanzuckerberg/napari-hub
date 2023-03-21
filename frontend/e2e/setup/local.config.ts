@@ -97,6 +97,7 @@ const config: PlaywrightTestConfig = {
     video: 'on',
     headless: true,
   },
+  workers: 10,
 };
 // eslint-disable-next-line import/no-default-export
 export default config;

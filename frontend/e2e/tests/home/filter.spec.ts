@@ -15,11 +15,7 @@ const OPEN_FILE_EXTENSIONS = OPEN_EXTENSIONS[ENV.toUpperCase()];
 const sortBy = 'Recently updated';
 test.describe('Plugin filter tests', () => {
   test.beforeEach(async ({ page }) => {
-    try {
-      await page.goto(`${process.env.BASEURL as string}`);
-    } catch (error) {
-      await page.goto(`${process.env.BASEURL as string}`);
-    }
+    await page.goto(`${process.env.BASEURL as string}`, { timeout: 60000 });
   });
   TEST_AUTHORS.forEach((authors) => {
     test(`should filter by authors "${authors.toString()}"`, async ({
