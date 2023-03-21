@@ -128,11 +128,9 @@ export async function filterPlugins(
       pluginFilter.label === 'Open extension')
   ) {
     // close the filter dropdown for smaller screens
-    //await page.getByRole('radio', { name: sortBy }).click();
     await page.keyboard.press('Escape');
   } else {
     // close the filter dropdown
-    //await page.getByRole('button', { name: label }).click();
     await page.keyboard.press('Escape');
   }
 }
