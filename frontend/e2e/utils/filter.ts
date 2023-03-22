@@ -22,12 +22,7 @@ import {
 } from './constants';
 import { parseItem } from './fixture';
 import { getByHasText, getMetadata, selectors } from './selectors';
-import {
-  AccordionTitle,
-  getQueryParameterValues,
-  maybeExpand,
-  maybeOpenAccordion,
-} from './utils';
+import { getQueryParameterValues, maybeExpand } from './utils';
 
 const sortOrders: Record<string, string> = {
   'Recently updated': 'recentlyUpdated',
@@ -35,33 +30,16 @@ const sortOrders: Record<string, string> = {
   Newest: 'newest',
 };
 
-/**
- * Opens the accordion for the chosen filter type on smaller screens
- * @param page
- * @param filterKey
- * @param width
- */
-// eslint-disable-next-line @typescript-eslint/require-await
-export async function openAccordion(
-  page: Page,
-  filterTypes: Array<string>,
-  width?: number,
+export function containsAllElements(
+  sourceArr: Array<{ name: string; email: string }>,
+  targetArr: Array<{ name: string; email: string }>,
 ) {
-  const CATEGORY_FILTER_TYPE = 'Filter by category';
-  filterTypes.forEach(async (filterType) => {
-    const title =
-      filterType === CATEGORY_FILTER_TYPE
-        ? AccordionTitle.FilterByCategory
-        : AccordionTitle.FilterByRequirement;
-    await maybeOpenAccordion(page, title, width);
-  });
+  return sourceArr.every((i) => targetArr.includes(i));
 }
 
-export function containsAllElements(sourceArr: any, targetArr: any) {
-  return sourceArr.every((i: unknown) => targetArr.includes(i));
-}
-
-export function getAuthorNames(authorsObj: unknown) {
+export function getAuthorNames(
+  authorsObj: Array<{ name: string; email: string }>,
+) {
   const result: Array<string> = [];
   const data = parseItem(authorsObj);
   for (const author of data) {
@@ -112,26 +90,6 @@ export async function filterPlugins(
       .getByText(`${option}`)
       .click();
   }
-  // if (
-  //   ((width || 0) < breakpoints['screen-725'] &&
-  //     pluginFilter.label === 'Supported data') ||
-  //   ((width || 0) < breakpoints['screen-725'] &&
-  //     pluginFilter.label === 'Workflow step') ||
-  //   ((width || 0) < breakpoints['screen-725'] &&
-  //     pluginFilter.label === 'Operating system') ||
-  //   ((width || 0) < breakpoints['screen-725'] &&
-  //     pluginFilter.label === 'Python version') ||
-  //   ((width || 0) < breakpoints['screen-725'] &&
-  //     pluginFilter.label === 'Save extension') ||
-  //   ((width || 0) < breakpoints['screen-725'] &&
-  //     pluginFilter.label === 'Open extension')
-  // ) {
-  //   // close the filter dropdown for smaller screens
-  //   await page.keyboard.press('Escape');
-  // } else {
-  //   // close the filter dropdown
-  //   await page.keyboard.press('Escape');
-  // }
   const CLOSE_FILTER_DROPDOWN_LABELS = [
     'Supported data',
     'Workflow step',
