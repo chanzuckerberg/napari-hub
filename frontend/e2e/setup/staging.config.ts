@@ -85,7 +85,7 @@ const config: PlaywrightTestConfig = {
     actionTimeout: 0,
     baseURL: 'https://staging.napari-hub.org/',
     screenshot: 'only-on-failure',
-    trace: 'on',
+    trace: 'retain-on-failure',
     video: 'on',
   },
 };

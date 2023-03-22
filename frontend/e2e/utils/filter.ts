@@ -7,6 +7,7 @@
 /* eslint-disable no-await-in-loop */
 import { expect, Page } from '@playwright/test';
 
+import { RESULTS_PER_PAGE } from '@/constants/search';
 import { breakpoints } from '@/theme/breakpoints';
 
 import { PluginFilter } from '../types/filter';
@@ -27,8 +28,6 @@ import {
   maybeExpand,
   maybeOpenAccordion,
 } from './utils';
-
-const totalPerPage = 15;
 
 const sortOrders: Record<string, string> = {
   'Recently updated': 'recentlyUpdated',
@@ -173,9 +172,9 @@ export async function verifyFilterResults(
 ) {
   let currentPageCounter = 1;
   const expectedTotalPages =
-    expectedData.length < totalPerPage
+    expectedData.length < RESULTS_PER_PAGE
       ? 1
-      : Math.ceil(expectedData.length / totalPerPage);
+      : Math.ceil(expectedData.length / RESULTS_PER_PAGE);
   // Check that filters are enabled
   const filterOptions = pluginFilter.values;
   filterOptions?.forEach(async (option) => {
@@ -227,15 +226,15 @@ export async function verifyFilterResults(
 
     // total pages
     const actualTotalPages =
-      resultCountValue < totalPerPage
+      resultCountValue < RESULTS_PER_PAGE
         ? 1
-        : Math.ceil(resultCountValue / totalPerPage);
+        : Math.ceil(resultCountValue / RESULTS_PER_PAGE);
     expect(actualTotalPages).toBe(expectedTotalPages);
 
     // validate each plugin details on current page
     let i = 0;
     for (const plugin of await page.getByTestId(SEARCH_RESULT).all()) {
-      const dataIndex = (pageNumber - 1) * 15 + i;
+      const dataIndex = (pageNumber - 1) * RESULTS_PER_PAGE + i;
       const data = parseItem(expectedData[dataIndex]);
       // plugin display name
       // todo: uncomment after new test id gets deployed to the environment

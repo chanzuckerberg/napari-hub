@@ -93,7 +93,7 @@ const config: PlaywrightTestConfig = {
     actionTimeout: 10000,
     baseURL: 'http://localhost:8080',
     screenshot: 'only-on-failure',
-    trace: 'on',
+    trace: 'retain-on-failure',
     video: 'on',
     headless: true,
   },
