@@ -86,7 +86,7 @@ export async function filterPlugins(
   }
 
   // on smaller screens the filter types are collapsed, so first click the accordion
-  await openAccordion(page, pluginFilter.category, width);
+  //  await openAccordion(page, pluginFilter.category, width);
 
   // select filter dropdown options
   await page.getByRole('button', { name: pluginFilter.label }).click();
@@ -184,7 +184,7 @@ export async function verifyFilterResults(
         .first()
         .isVisible())
     ) {
-      await page.locator('[data-title="Filter by requirement"]').click();
+      await page.locator(`[data-title="${pluginFilter.category[0]}"]`).click();
       await expect(
         page.getByRole('button', { name: `${option}` }).first(),
       ).toBeVisible();
