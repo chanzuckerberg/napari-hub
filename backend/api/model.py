@@ -540,16 +540,16 @@ def _update_commit_activity(repo_to_plugin_dict):
     write_data(json.dumps(data), "activity_dashboard_data/commit_activity.json")
 
 
-def _get_usage_data(plugin: str, limit: int, in_test: bool = False) -> Dict[str, Any]:
+def _get_usage_data(plugin: str, limit: int, use_dynamo: bool = False) -> Dict[str, Any]:
     """
     Fetches plugin usage_data from s3 or dynamo based on the in_test variable
     :returns (dict[str, Any]): A dict with the structure {'timeline': List, 'stats': Dict[str, int]}
 
     :params str plugin: Name of the plugin in lowercase.
     :params int limit: Sets the number of records to be fetched for timeline.
-    :params bool in_test: Fetch data from dynamo if True, else fetch from s3. (default= False)
+    :params bool use_dyanmo: Fetch data from dynamo if True, else fetch from s3. (default= False)
     """
-    if in_test:
+    if use_dynamo:
         timeline = get_timeline(plugin, limit) if limit else []
         usage_stats = {
             'total_installs': get_total_installs(plugin),
@@ -566,14 +566,14 @@ def _get_usage_data(plugin: str, limit: int, in_test: bool = False) -> Dict[str,
     return {'timeline': timeline, 'stats': usage_stats, }
 
 
-def get_metrics_for_plugin(plugin: str, limit_str: str, in_test: bool) -> Dict[str, Any]:
+def get_metrics_for_plugin(plugin: str, limit_str: str, use_dynamo_for_usage: bool) -> Dict[str, Any]:
     """
     Fetches plugin metrics from s3 or dynamo based on the in_test variable
     :return dict[str, Any]: A map with entries for usage and maintenance
 
     :params str plugin: Name of the plugin in lowercase for which usage data needs to be fetched.
     :params str limit_str: Number of records to be fetched for timeline. Defaults to 0 for invalid number.
-    :params bool in_test: Fetch data from dynamo if True else fetch from s3. (default= False)
+    :params bool use_dynamo_for_usage: Fetch data from dynamo if True else fetch from s3. (default= False)
     """
     plugin = plugin.lower()
     commit_activity = get_commit_activity(plugin)
@@ -590,6 +590,6 @@ def get_metrics_for_plugin(plugin: str, limit_str: str, in_test: bool) -> Dict[s
         'total_commits': sum([item['commits'] for item in commit_activity]),
     }
     return {
-        'usage': _get_usage_data(plugin, limit, in_test),
+        'usage': _get_usage_data(plugin, limit, use_dynamo_for_usage),
         'maintenance': {'timeline': maintenance_timeline, 'stats': maintenance_stats, }
     }

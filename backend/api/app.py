@@ -124,7 +124,17 @@ def update_activity() -> Response:
 
 @app.route('/metrics/<plugin>')
 def get_plugin_metrics(plugin: str) -> Response:
-    return jsonify(get_metrics_for_plugin(plugin, request.args.get('limit', '12'), request.args.get('test') == 'True'))
+    """
+    Fetches plugin metrics for usage, and maintenance
+    :return Response: A json object with entries for usage, and maintenance
+
+    :params str plugin: Name of the plugin in lowercase for which usage data needs to be fetched.
+    :query_params limit: Number of months to be fetched for timeline. Defaults to '12'.
+    :query_params use_dynamo_for_usage: Fetch usage data from dynamo if True else fetch from s3. (default= False)
+    """
+    return jsonify(get_metrics_for_plugin(
+            plugin, request.args.get('limit', '12'), request.args.get('use_metric_dynamo_usage') == 'True'
+    ))
 
 
 @app.route('/collections')
