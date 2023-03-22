@@ -71,16 +71,6 @@ jobs:
           tfe-token: ${{ secrets.TFE_TOKEN }}
           env: "dev"
 
-      - name: Create workflow artifact
-        run: | 
-          mkdir -p workflow_artifact
-          if [ ${{ github.event_name == 'delete' }} ]; then echo 'invalid'; else echo $STACK_NAME; fi > workflow_artifact/stack_name
-
-      - name: Upload stack name artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: napari_hub_dev_deployment
-          path: workflow_artifact/stack_name
   # Runs behave tests for backend code
   bdd-tests:
     runs-on: ubuntu-latest
