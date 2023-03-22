@@ -87,11 +87,11 @@ export default function Plugin({ error, plugin, repo, repoFetchError }: Props) {
   if (isLoading) {
     title = `${title} | ${t('pageTitles:loading')}...`;
   } else if (plugin?.name && plugin?.authors) {
-    title = `${title} | ${plugin.name}`;
+    title = `${plugin.name} - ${title}`;
 
     const authors = plugin.authors.map(({ name }) => name).join(', ');
     if (authors) {
-      title = `${title} ${t('pageTitles:by')} ${authors}`;
+      title = `${plugin.name} - ${title} - ${authors}`;
     }
 
     for (const { name } of plugin.authors ?? []) {
