@@ -1,7 +1,7 @@
 import logging
 import time
 from datetime import datetime, timezone
-from enum import Enum
+from enum import Enum, auto
 from typing import List, Union
 import os
 
@@ -19,28 +19,25 @@ def to_utc_timestamp_in_millis(timestamp: datetime) -> int:
 
 class InstallActivityType(Enum):
 
-    def __new__(cls, value, timestamp_formatter, type_timestamp_formatter):
+    def __new__(cls, timestamp_formatter, type_timestamp_formatter):
         install_activity_type = object.__new__(cls)
-        install_activity_type._value_ = value
+        install_activity_type._value_ = auto()
         install_activity_type.timestamp_formatter = timestamp_formatter
         install_activity_type.type_timestamp_formatter = type_timestamp_formatter
         return install_activity_type
 
-    DAY = (1, to_utc_timestamp_in_millis, 'DAY:{0:%Y%m%d}')
-    MONTH = (2, to_utc_timestamp_in_millis, 'MONTH:{0:%Y%m}')
-    TOTAL = (3, lambda timestamp: None, 'TOTAL:')
+    DAY = (to_utc_timestamp_in_millis, 'DAY:{0:%Y%m%d}')
+    MONTH = (to_utc_timestamp_in_millis, 'MONTH:{0:%Y%m}')
+    TOTAL = (lambda timestamp: None, 'TOTAL:')
 
-    def get_timestamp_formatter(self, timestamp: datetime) -> Union[int, None]:
+    def format_to_timestamp(self, timestamp: datetime) -> Union[int, None]:
         return self.timestamp_formatter(timestamp)
+
+    def format_to_type_timestamp(self, timestamp: datetime) -> str:
+        return self.type_timestamp_formatter.format(timestamp)
 
     def get_query_timestamp_projection(self) -> str:
         return '1' if self is InstallActivityType.TOTAL else f"DATE_TRUNC('{self.name}', timestamp)"
-    
-    def get_type_timestamp_formatter(self, timestamp: datetime) -> str:
-        return self.type_timestamp_formatter.format(timestamp)
-
-    def get_timestamp_query_formatter(self, timestamp: datetime) -> datetime:
-        return timestamp if self is InstallActivityType.DAY else timestamp.replace(day=1)
 
 
 class InstallActivity(Model):
@@ -75,9 +72,9 @@ def transform_and_write_to_dynamo(data: dict[str, List], activity_type: InstallA
             timestamp = activity['timestamp']
 
             item = InstallActivity(plugin_name.lower(),
-                                   activity_type.get_type_timestamp_formatter(timestamp),
+                                   activity_type.format_to_type_timestamp(timestamp),
                                    granularity=activity_type.name,
-                                   timestamp=activity_type.get_timestamp_formatter(timestamp),
+                                   timestamp=activity_type.format_to_timestamp(timestamp),
                                    install_count=activity['count'])
             batch.save(item)
             count += 1

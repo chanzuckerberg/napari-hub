@@ -38,6 +38,27 @@ def get_relative_timestamp(**args):
     return datetime.now() - relativedelta(args)
 
 
+class TestInstallActivity:
+
+    def test_day_install_activity_type(self):
+        timestamp = datetime.strptime('03/21/2023 00:00:00', '%m/%d/%Y %H:%M:%S')
+        assert InstallActivityType.DAY.format_to_timestamp(timestamp) == 1679356800000
+        assert InstallActivityType.DAY.get_query_timestamp_projection() == "DATE_TRUNC('DAY', timestamp)"
+        assert InstallActivityType.DAY.format_to_type_timestamp(timestamp) == "DAY:20230321"
+
+    def test_month_install_activity_type(self):
+        timestamp = datetime.strptime('03/21/2023 00:00:00', '%m/%d/%Y %H:%M:%S')
+        assert InstallActivityType.MONTH.format_to_timestamp(timestamp) == 1679356800000
+        assert InstallActivityType.MONTH.get_query_timestamp_projection() == "DATE_TRUNC('MONTH', timestamp)"
+        assert InstallActivityType.MONTH.format_to_type_timestamp(timestamp) == "MONTH:202303"
+
+    def test_total_install_activity_type(self):
+        timestamp = datetime.strptime('03/21/2023 00:00:00', '%m/%d/%Y %H:%M:%S')
+        assert InstallActivityType.TOTAL.format_to_timestamp(timestamp) is None
+        assert InstallActivityType.TOTAL.get_query_timestamp_projection() == "1"
+        assert InstallActivityType.TOTAL.format_to_type_timestamp(timestamp) == "TOTAL:"
+
+
 class TestInstallActivityModels:
 
     @pytest.fixture(autouse=True)

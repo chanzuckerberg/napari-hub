@@ -69,9 +69,13 @@ def _generate_subquery_by_type(plugins_by_timestamp: dict[str, datetime], instal
     if install_activity_type is InstallActivityType.TOTAL:
         return f"""LOWER(file_project) IN ({','.join([f"'{plugin}'" for plugin in plugins_by_timestamp.keys()])})"""
 
-    return ' OR '.join([f"LOWER(file_project) = '{name}' AND timestamp >= "
-                        f"{TIMESTAMP_FORMAT.format(install_activity_type.get_timestamp_query_formatter(ts))}"
-                        for name, ts in plugins_by_timestamp.items()])
+    if install_activity_type is InstallActivityType.MONTH:
+        plugins_by_formatted_timestamp = {plugin: ts.replace(day=1) for plugin, ts in plugins_by_timestamp.items()}
+    else:
+        plugins_by_formatted_timestamp = plugins_by_timestamp
+
+    return ' OR '.join([f"LOWER(file_project) = '{name}' AND timestamp >= "f"{TIMESTAMP_FORMAT.format(ts)}"
+                        for name, ts in plugins_by_formatted_timestamp.items()])
 
 
 def _format_timestamp(timestamp_millis):

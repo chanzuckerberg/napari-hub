@@ -2,7 +2,8 @@ import json
 import logging
 
 import activity.processor
-import utils.utils as utils
+from utils.utils import ParameterStoreAdapter
+import utils.utils
 
 
 def _setup_logging():
@@ -11,10 +12,11 @@ def _setup_logging():
 
 
 def _update_activity() -> None:
-    last_updated_timestamp = utils.get_last_updated_timestamp()
-    current_timestamp = utils.get_current_timestamp()
+    parameter_store_adapter = ParameterStoreAdapter()
+    last_updated_timestamp = parameter_store_adapter.get_last_updated_timestamp()
+    current_timestamp = utils.utils.get_current_timestamp()
     activity.processor.update_install_activity(last_updated_timestamp, current_timestamp)
-    utils.set_last_updated_timestamp(current_timestamp)
+    parameter_store_adapter.set_last_updated_timestamp(current_timestamp)
 
 
 def handle(event, context):
