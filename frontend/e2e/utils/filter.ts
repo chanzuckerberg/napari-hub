@@ -112,24 +112,39 @@ export async function filterPlugins(
       .getByText(`${option}`)
       .click();
   }
+  // if (
+  //   ((width || 0) < breakpoints['screen-725'] &&
+  //     pluginFilter.label === 'Supported data') ||
+  //   ((width || 0) < breakpoints['screen-725'] &&
+  //     pluginFilter.label === 'Workflow step') ||
+  //   ((width || 0) < breakpoints['screen-725'] &&
+  //     pluginFilter.label === 'Operating system') ||
+  //   ((width || 0) < breakpoints['screen-725'] &&
+  //     pluginFilter.label === 'Python version') ||
+  //   ((width || 0) < breakpoints['screen-725'] &&
+  //     pluginFilter.label === 'Save extension') ||
+  //   ((width || 0) < breakpoints['screen-725'] &&
+  //     pluginFilter.label === 'Open extension')
+  // ) {
+  //   // close the filter dropdown for smaller screens
+  //   await page.keyboard.press('Escape');
+  // } else {
+  //   // close the filter dropdown
+  //   await page.keyboard.press('Escape');
+  // }
+  const CLOSE_FILTER_DROPDOWN_LABELS = [
+    'Supported data',
+    'Workflow step',
+    'Operating System',
+    'Python version',
+    'Save extension',
+    'Open extension',
+  ];
+
   if (
-    ((width || 0) < breakpoints['screen-725'] &&
-      pluginFilter.label === 'Supported data') ||
-    ((width || 0) < breakpoints['screen-725'] &&
-      pluginFilter.label === 'Workflow step') ||
-    ((width || 0) < breakpoints['screen-725'] &&
-      pluginFilter.label === 'Operating system') ||
-    ((width || 0) < breakpoints['screen-725'] &&
-      pluginFilter.label === 'Python version') ||
-    ((width || 0) < breakpoints['screen-725'] &&
-      pluginFilter.label === 'Save extension') ||
-    ((width || 0) < breakpoints['screen-725'] &&
-      pluginFilter.label === 'Open extension')
+    (width || 0) < breakpoints['screen-725'] &&
+    CLOSE_FILTER_DROPDOWN_LABELS.includes(pluginFilter.label)
   ) {
-    // close the filter dropdown for smaller screens
-    await page.keyboard.press('Escape');
-  } else {
-    // close the filter dropdown
     await page.keyboard.press('Escape');
   }
 }

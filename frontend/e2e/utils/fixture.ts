@@ -45,7 +45,7 @@ export function searchPluginFixture(
   const { key, values } = pluginFilter;
   let filtered;
   switch (key) {
-    case 'authors':
+    case 'authors': {
       filtered = filter(fixtures, (item) => {
         const result = intersectionBy(
           map(parseItem(item as string).authors, (author) => author.name),
@@ -54,7 +54,8 @@ export function searchPluginFixture(
         return result.length !== 0;
       });
       break;
-    case 'supported_data':
+    }
+    case 'supported_data': {
       filtered = filter(fixtures, (item) => {
         if (!parseItem(item).category) {
           return false;
@@ -69,7 +70,8 @@ export function searchPluginFixture(
         return result.length !== 0;
       });
       break;
-    case 'image_modality':
+    }
+    case 'image_modality': {
       filtered = filter(fixtures, (item) => {
         if (!parseItem(item).category) {
           return false;
@@ -84,7 +86,8 @@ export function searchPluginFixture(
         return result.length !== 0;
       });
       break;
-    case 'workflow_step':
+    }
+    case 'workflow_step': {
       filtered = filter(fixtures, (item) => {
         if (!parseItem(item).category) {
           return false;
@@ -99,7 +102,8 @@ export function searchPluginFixture(
         return result.length !== 0;
       });
       break;
-    case 'python_version':
+    }
+    case 'python_version': {
       const versions: string[] = [];
       for (let i = 0; i < values.length; i += 1) {
         versions.push(`>=${values[i]}`);
@@ -109,8 +113,8 @@ export function searchPluginFixture(
           plugin.python_version === versions.toString(),
       );
       return filtered.length !== 0;
-      break;
-    case 'plugin_type':
+    }
+    case 'plugin_type': {
       filtered = filter(fixtures, (item) => {
         const result = intersectionBy(
           map(
@@ -122,7 +126,8 @@ export function searchPluginFixture(
         return result.length !== 0;
       });
       break;
-    case 'open_extension':
+    }
+    case 'open_extension': {
       filtered = filter(fixtures, (item) => {
         const result = intersectionBy(
           map(
@@ -134,7 +139,8 @@ export function searchPluginFixture(
         return result.length !== 0;
       });
       break;
-    case 'save_extension':
+    }
+    case 'save_extension': {
       filtered = filter(fixtures, (item) => {
         const result = intersectionBy(
           map(
@@ -146,13 +152,14 @@ export function searchPluginFixture(
         return result.length !== 0;
       });
       break;
-    case 'license':
+    }
+    case 'license': {
       filtered = fixtures.filter(
         (plugin: { license: string }) => plugin.license === values.toString(),
       );
       return filtered.length !== 0;
-    default:
-      // eslint-disable-next-line no-case-declarations
+    }
+    default: {
       const operatingSystems = [[], 'Operating System :: OS Independent'];
       for (let i = 0; i < values.length; i += 1) {
         operatingSystems.push(OPERATING_SYSTEMS[values[i]]);
@@ -167,6 +174,7 @@ export function searchPluginFixture(
         );
         return result.length !== 0;
       });
+    }
   }
 
   // sort results
