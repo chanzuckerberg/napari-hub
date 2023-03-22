@@ -7,7 +7,6 @@ Feature: metrics
     And it should have 12 entries for usage.timeline
     And it should have at least one non-zero installs in usage.timeline
     And it should have non-zero values for usage.stats
-#    And it should have 10 entries for maintenance.timeline
     And it should have at least one non-zero commits in maintenance.timeline
     And it should have non-zero values for maintenance.stats
 
@@ -18,7 +17,6 @@ Feature: metrics
     And it should have 12 entries for usage.timeline
     And it should have all zero installs in usage.timeline
     And it should have zero values for usage.stats
-#    And it should have 12 entries for maintenance.timeline
     And it should have all zero commits in maintenance.timeline
     And it should have zero values for maintenance.stats
 
@@ -29,7 +27,6 @@ Feature: metrics
     And it should have 5 entries for usage.timeline
     And it should have at least one non-zero installs in usage.timeline
     And it should have non-zero values for usage.stats
-#    And it should have 5 entries for maintenance.timeline
     And it should have at least one non-zero commits in maintenance.timeline
     And it should have non-zero values for maintenance.stats
 
@@ -40,6 +37,5 @@ Feature: metrics
     And it should have 15 entries for usage.timeline
     And it should have all zero installs in usage.timeline
     And it should have zero values for usage.stats
-#    And it should have 15 entries for maintenance.timeline
     And it should have all zero commits in maintenance.timeline
     And it should have zero values for maintenance.stats
