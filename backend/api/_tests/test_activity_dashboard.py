@@ -44,7 +44,7 @@ class TestActivityDashboard(unittest.TestCase):
             installs_in_last_30_days=25,
             latest_commit=MOCK_PLUGIN_LATEST_COMMIT,
             total_commit=MOCK_PLUGIN_TOTAL_COMMIT,
-            commit_activity=MOCK_PLUGIN_COMMIT_ACTIVITY
+            commit_activity=MOCK_PLUGIN_COMMIT_ACTIVITY_EMPTY
         )
         self._verify_results('3', expected, mock_get_install_timeline_data, mock_get_recent_activity_data, mock_get_commit_activity, mock_get_latest_commit)
 
