@@ -1,5 +1,5 @@
 from concurrent import futures
-from datetime import datetime
+from datetime import date, datetime
 import json
 import os
 from typing import Tuple, Dict, List, Callable
@@ -15,7 +15,6 @@ from utils.datadog import report_metrics
 from api.zulip import notify_new_packages
 import boto3
 import snowflake.connector as sc
-from datetime import date
 from dateutil.relativedelta import relativedelta
 
 index_subset = {'name', 'summary', 'description_text', 'description_content_type',
@@ -443,6 +442,19 @@ def _process_for_timeline(plugin_df, limit):
     return result
 
 
+def _process_maintenance_timeline(commit_activity, limit):
+    maintenance_timeline = []
+    end_date = date.today().replace(day=1) + relativedelta(months=-1)
+    start_date = end_date + relativedelta(months=-limit + 1)
+    end_date_str = str(end_date)
+    start_date_str = str(start_date)
+    for item in commit_activity:
+        item_date_str = datetime.fromtimestamp(item['timestamp'] / 1000).strftime("%Y-%m-%d")
+        if start_date_str <= item_date_str <= end_date_str:
+            maintenance_timeline.append(item)
+    return maintenance_timeline[-limit:]
+
+
 def _process_for_stats(plugin_df):
     if len(plugin_df) == 0:
         return {}
@@ -549,7 +561,7 @@ def get_metrics_for_plugin(plugin: str, limit: str) -> Dict:
     if is_valid_limit:
         limit = int(limit)
         timeline = _process_for_timeline(data, limit)
-        maintenance_timeline = commit_activity[-limit:]
+        maintenance_timeline = _process_maintenance_timeline(commit_activity, limit)
 
     usage_stats = {
         'total_installs': install_stats.get('totalInstalls', 0),
