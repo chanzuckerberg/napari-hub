@@ -23,7 +23,6 @@ test.describe('Plugin filter tests', () => {
       viewport,
     }) => {
       // filter by
-
       const filterBy = {
         label: 'Authors',
         name: 'authors',
@@ -45,6 +44,7 @@ test.describe('Plugin filter tests', () => {
       viewport,
     }) => {
       // filter by
+      // await page.pause();
       const filterBy = {
         label: 'Plugin type',
         name: 'pluginType',

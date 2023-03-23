@@ -1,15 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable no-await-in-loop */
 import { expect, Page } from '@playwright/test';
-
 import { RESULTS_PER_PAGE } from '@/constants/search';
-import { breakpoints } from '@/theme/breakpoints';
-
 import { PluginFilter } from '../types/filter';
 import {
   PAGINATION_LEFT,
@@ -21,7 +11,7 @@ import {
   SEARCH_RESULT,
 } from './constants';
 import { parseItem } from './fixture';
-import { getByHasText, getMetadata, selectors } from './selectors';
+import { getByHasText, getMetadata } from './selectors';
 import { getQueryParameterValues, maybeExpand } from './utils';
 
 const sortOrders: Record<string, string> = {
@@ -29,18 +19,17 @@ const sortOrders: Record<string, string> = {
   'Plugin name': 'pluginName',
   Newest: 'newest',
 };
+interface authorsInterface {
+  name: string;
+  email: string;
+}
 
-export function containsAllElements(
-  sourceArr: Array<{ name: string; email: string }>,
-  targetArr: Array<{ name: string; email: string }>,
-) {
+export function containsAllElements(sourceArr: string[], targetArr: string[]) {
   return sourceArr.every((i) => targetArr.includes(i));
 }
 
-export function getAuthorNames(
-  authorsObj: Array<{ name: string; email: string }>,
-) {
-  const result: Array<string> = [];
+export function getAuthorNames(authorsObj: authorsInterface[]) {
+  const result: string[] = [];
   const data = parseItem(authorsObj);
   for (const author of data) {
     result.push(author.name as string);
@@ -63,23 +52,11 @@ export async function filterPlugins(
       .click();
   }
 
-  // on smaller screens the filter types are collapsed, so first click the accordion
-  //  await openAccordion(page, pluginFilter.category, width);
-
   // select filter dropdown options
   await page.getByRole('button', { name: pluginFilter.label }).click();
 
   // get option values
   const { values } = pluginFilter;
-  if (
-    (width || 0) < breakpoints['screen-725'] &&
-    !(await page.locator('[role="tooltip"]').isVisible())
-  ) {
-    // drop down closes for smaller screens
-    // select filter dropdown options
-    await page.getByRole('button', { name: pluginFilter.label }).click();
-  }
-
   for (let i = 0; i < values.length; i += 1) {
     const option = values[i];
     if (!(await page.locator('[role="tooltip"]').isVisible())) {
@@ -90,49 +67,7 @@ export async function filterPlugins(
       .getByText(`${option}`)
       .click();
   }
-  const CLOSE_FILTER_DROPDOWN_LABELS = [
-    'Supported data',
-    'Workflow step',
-    'Operating System',
-    'Python version',
-    'Save extension',
-    'Open extension',
-  ];
-
-  if (
-    (width || 0) < breakpoints['screen-725'] &&
-    CLOSE_FILTER_DROPDOWN_LABELS.includes(pluginFilter.label)
-  ) {
-    await page.keyboard.press('Escape');
-  }
-}
-
-export async function getOptions(page: Page, labels: string[]) {
-  const labelSet = new Set(labels);
-  const optionNodes = await page.$$(selectors.filters.options);
-
-  interface OptionResult {
-    label: string;
-    node: typeof optionNodes[number];
-    enabled: boolean;
-  }
-
-  const optionResults: OptionResult[] = [];
-
-  for (const node of optionNodes) {
-    const paragraphNode = await node.$('p');
-    const label = await paragraphNode?.textContent();
-    const ariaSelected = await node.getAttribute('aria-selected');
-    if (label && labelSet.has(label)) {
-      optionResults.push({
-        label,
-        node,
-        enabled: ariaSelected === 'true',
-      });
-    }
-  }
-
-  return optionResults;
+  await page.keyboard.press('Escape');
 }
 
 export async function verifyFilterResults(
@@ -189,13 +124,8 @@ export async function verifyFilterResults(
         .textContent()) || '';
 
     const resultCountValue = Number(resultCountText.trim().replace(/\D/g, ''));
-
+    expect(resultCountValue).toBe(expectedData.length);
     // result count
-    if (pluginFilter.key === 'plugin_type') {
-      // expect(resultCountValue).toBe(expectedData.length-1);
-    } else {
-      // expect(resultCountValue).toBe(expectedData.length);
-    }
 
     // total pages
     const actualTotalPages =
@@ -230,6 +160,7 @@ export async function verifyFilterResults(
         .getByTestId(RESULT_AUTHORS)
         .allTextContents();
       const fixtureAuthors = getAuthorNames(data.authors);
+
       // check all authors displayed
       expect(containsAllElements(fixtureAuthors, pluginAuthors)).toBeTruthy();
 
@@ -317,15 +248,4 @@ export async function verifyFilterResults(
     }
     currentPageCounter += 1;
   }
-}
-
-export function formateDate(dateStr: string) {
-  const d = new Date(dateStr)
-    .toLocaleString('en-US', {
-      day: '2-digit',
-      month: 'long',
-      year: 'numeric',
-    })
-    .split(' ');
-  return `${d[1].replace(',', '')} ${d[0]} ${d[2]}`;
 }
