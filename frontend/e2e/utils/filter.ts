@@ -20,7 +20,7 @@ import {
   SEARCH_RESULT,
 } from './constants';
 import { parseItem } from './fixture';
-import { getByHasText, getMetadata } from './selectors';
+import { getMetadata } from './selectors';
 import { getQueryParameterValues, maybeExpand } from './utils';
 
 const sortOrders: Record<string, string> = {
@@ -28,6 +28,7 @@ const sortOrders: Record<string, string> = {
   'Plugin name': 'pluginName',
   Newest: 'newest',
 };
+// eslint-disable-next-line @typescript-eslint/naming-convention
 interface authorsInterface {
   name: string;
   email: string;
