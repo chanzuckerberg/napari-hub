@@ -1,5 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable no-await-in-loop */
 import { expect, Page } from '@playwright/test';
+
 import { RESULTS_PER_PAGE } from '@/constants/search';
+
 import { PluginFilter } from '../types/filter';
 import {
   PAGINATION_LEFT,
