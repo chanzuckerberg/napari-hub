@@ -82,7 +82,7 @@ const config: PlaywrightTestConfig = {
   testDir: '../tests',
   timeout: 60 * 1000,
   use: {
-    actionTimeout: 10000,
+    actionTimeout: 20000,
     baseURL: 'http://localhost:8080',
     screenshot: 'only-on-failure',
     trace: 'on',

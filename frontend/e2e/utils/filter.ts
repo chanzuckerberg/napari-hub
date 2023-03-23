@@ -128,9 +128,10 @@ export async function verifyFilterResults(
 
     // verify results counts
     const resultCountText =
-      (await page
-        .locator(getByHasText('h3', 'Browse plugins:'))
-        .textContent()) || '';
+      (await page.locator('h3').first().textContent()) || '';
+    // (await page
+    //   .locator(getByHasText('h3', 'Browse plugins:'))
+    //   .textContent()) || '';
 
     const resultCountValue = Number(resultCountText.trim().replace(/\D/g, ''));
     expect(resultCountValue).toBe(expectedData.length);
