@@ -1,1 +1,3 @@
-boto3
+snowflake-connector-python==3.0.0
+boto3==1.26.77
+pynamodb==5.4.1
