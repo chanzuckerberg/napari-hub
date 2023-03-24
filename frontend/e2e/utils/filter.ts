@@ -20,7 +20,7 @@ import {
   SEARCH_RESULT,
 } from './constants';
 import { parseItem } from './fixture';
-import { getMetadata } from './selectors';
+import { getByHasText, getMetadata } from './selectors';
 import { getQueryParameterValues, maybeExpand } from './utils';
 
 const sortOrders: Record<string, string> = {
@@ -128,23 +128,22 @@ export async function verifyFilterResults(
     }
 
     // verify results counts
-    // console.log(await page.locator('h3').allInnerTexts());
-    // const resultCountText =
-    //   //  (await page.locator('h3').first().textContent()) || '';
-    //   (await page
-    //     .locator(getByHasText('h3', 'Browse plugins: '))
-    //     .textContent()) || '';
+    console.log(await page.locator('h2').allInnerTexts());
+    const resultCountText =
+      (await page
+        .locator(getByHasText('h2', 'Browse plugins: '))
+        .textContent()) || '';
 
-    // const resultCountValue = Number(resultCountText.trim().replace(/\D/g, ''));
-    // expect(resultCountValue).toBe(expectedData.length);
-    // // result count
+    const resultCountValue = Number(resultCountText.trim().replace(/\D/g, ''));
+    expect(resultCountValue).toBe(expectedData.length);
+    // result count
 
-    // // total pages
-    // const actualTotalPages =
-    //   resultCountValue < RESULTS_PER_PAGE
-    //     ? 1
-    //     : Math.ceil(resultCountValue / RESULTS_PER_PAGE);
-    // expect(actualTotalPages).toBe(expectedTotalPages);
+    // total pages
+    const actualTotalPages =
+      resultCountValue < RESULTS_PER_PAGE
+        ? 1
+        : Math.ceil(resultCountValue / RESULTS_PER_PAGE);
+    expect(actualTotalPages).toBe(expectedTotalPages);
 
     // validate each plugin details on current page
     let i = 0;
@@ -177,7 +176,7 @@ export async function verifyFilterResults(
       expect(containsAllElements(fixtureAuthors, pluginAuthors)).toBeTruthy();
 
       // plugin version
-      expect(await plugin.locator(getMetadata('h5')).nth(0).textContent()).toBe(
+      expect(await plugin.locator(getMetadata('h4')).nth(0).textContent()).toBe(
         'Version',
       );
       expect(
@@ -185,7 +184,7 @@ export async function verifyFilterResults(
       ).toBe(data.version);
 
       // plugin last update
-      expect(await plugin.locator(getMetadata('h5')).nth(1).textContent()).toBe(
+      expect(await plugin.locator(getMetadata('h4')).nth(1).textContent()).toBe(
         'Last updated',
       );
       // todo: this test is failing for one plugin where the app display 2021-05-03 as 2021-05-04
@@ -206,7 +205,7 @@ export async function verifyFilterResults(
         // some local test data do not have plugin types
         if (fixturePluginTypes !== undefined) {
           expect(
-            await plugin.locator(getMetadata('h5')).nth(2).textContent(),
+            await plugin.locator(getMetadata('h4')).nth(2).textContent(),
           ).toBe('Plugin type');
           pluginTypes.forEach((pluginType) => {
             expect(fixturePluginTypes).toContain(
