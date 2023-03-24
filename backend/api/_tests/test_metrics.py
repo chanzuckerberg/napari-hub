@@ -6,7 +6,7 @@ import pytest
 from dateutil.relativedelta import relativedelta
 
 from api._tests.test_fixtures import generate_expected_timeline
-from api.install_activity import InstallActivity
+from api.metrics import InstallActivity
 
 PLUGIN_NAME = 'foo'
 
@@ -41,12 +41,11 @@ class TestInstallActivity:
 
     def test_get_total_installs_has_result(self, monkeypatch):
         expected = 173
-
         mock_install_activity = Mock(return_value=Mock(install_count=expected))
-        monkeypatch.setattr(InstallActivity, 'get', mock_install_activity)
 
-        from api.install_activity import get_total_installs
-        actual = get_total_installs(PLUGIN_NAME)
+        from api.metrics import InstallActivity
+        monkeypatch.setattr(InstallActivity, 'get', mock_install_activity)
+        actual = InstallActivity.get_total_installs(PLUGIN_NAME)
 
         assert actual == expected
         mock_install_activity.assert_called_once_with(PLUGIN_NAME, 'TOTAL:')
@@ -55,10 +54,9 @@ class TestInstallActivity:
         def raise_exception(_, __):
             raise InstallActivity.DoesNotExist()
 
+        from api.metrics import InstallActivity
         monkeypatch.setattr(InstallActivity, 'get', raise_exception)
-
-        from api.install_activity import get_total_installs
-        actual = get_total_installs(PLUGIN_NAME)
+        actual = InstallActivity.get_total_installs(PLUGIN_NAME)
 
         assert actual == 0
 
@@ -69,11 +67,11 @@ class TestInstallActivity:
         ])
     def test_get_recent_installs(self, monkeypatch, results, expected):
         mock_install_activity = Mock(return_value=results)
-        monkeypatch.setattr(InstallActivity, 'query', mock_install_activity)
-
         day_delta = 15
-        from api.install_activity import get_recent_installs
-        actual = get_recent_installs(PLUGIN_NAME, day_delta)
+
+        from api.metrics import InstallActivity
+        monkeypatch.setattr(InstallActivity, 'query', mock_install_activity)
+        actual = InstallActivity.get_recent_installs(PLUGIN_NAME, day_delta)
 
         assert actual == expected
         mock_install_activity.assert_called_once()
@@ -87,10 +85,10 @@ class TestInstallActivity:
     ])
     def test_get_timeline(self, monkeypatch, results, month_delta, expected):
         mock_install_activity = Mock(return_value=results)
-        monkeypatch.setattr(InstallActivity, 'query', mock_install_activity)
 
-        from api.install_activity import get_timeline
-        actual = get_timeline(PLUGIN_NAME, month_delta)
+        from api.metrics import InstallActivity
+        monkeypatch.setattr(InstallActivity, 'query', mock_install_activity)
+        actual = InstallActivity.get_timeline(PLUGIN_NAME, month_delta)
 
         assert actual == expected
         mock_install_activity.assert_called_once()

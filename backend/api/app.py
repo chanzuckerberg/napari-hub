@@ -133,7 +133,7 @@ def get_plugin_metrics(plugin: str) -> Response:
     :query_params use_dynamo_metric_usage: Fetch usage data from dynamo if True else fetch from s3. (default=False)
     """
     return jsonify(get_metrics_for_plugin(
-            plugin, request.args.get('limit', '12'), request.args.get('use_dynamo_metric_usage') == 'True'
+            plugin, request.args.get('limit', '12'), _is_query_param_true('use_dynamo_metric_usage')
     ))
 
 
@@ -191,6 +191,11 @@ def authenticate_request():
 def add_header(response):
     response.headers['Access-Control-Allow-Origin'] = '*'
     return response
+
+
+def _is_query_param_true(param_name: str):
+    value = request.args.get(param_name)
+    return value and value.lower() == 'true'
 
 
 if __name__ == '__main__':
