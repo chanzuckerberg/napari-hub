@@ -18,7 +18,17 @@ import {
 /**
  * URL to hub API to make requests to.
  */
-const API_URL = process.env.API_URL || 'http://localhost:8081';
+const API_URL = (() => {
+  if (PROD) {
+    return 'https://api.napari-hub.org';
+  }
+
+  if (STAGING) {
+    return 'https://api.staging.napari-hub.org';
+  }
+
+  return process.env.API_URL || 'http://localhost:8081';
+})();
 
 /**
  * Host to use for Host header when making requests. Setting this is required
@@ -57,7 +67,7 @@ function isHubAPIErrorResponse(
  */
 class HubAPIClient {
   private api = axios.create({
-    baseURL: BROWSER ? '/api' : API_URL,
+    baseURL: API_URL,
     headers: BROWSER
       ? undefined
       : {
