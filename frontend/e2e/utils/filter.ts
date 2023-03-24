@@ -20,7 +20,7 @@ import {
   SEARCH_RESULT,
 } from './constants';
 import { parseItem } from './fixture';
-import { getMetadata } from './selectors';
+import { getByHasText, getMetadata } from './selectors';
 import { getQueryParameterValues, maybeExpand } from './utils';
 
 const sortOrders: Record<string, string> = {
@@ -128,11 +128,12 @@ export async function verifyFilterResults(
     }
 
     // verify results counts
+    console.log(await page.locator('h3').allInnerTexts());
     const resultCountText =
-      (await page.locator('h3').first().textContent()) || '';
-    // (await page
-    //   .locator(getByHasText('h3', 'Browse plugins:'))
-    //   .textContent()) || '';
+      //  (await page.locator('h3').first().textContent()) || '';
+      (await page
+        .locator(getByHasText('h3', 'Browse plugins: '))
+        .textContent()) || '';
 
     const resultCountValue = Number(resultCountText.trim().replace(/\D/g, ''));
     expect(resultCountValue).toBe(expectedData.length);
