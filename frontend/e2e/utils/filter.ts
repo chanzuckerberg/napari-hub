@@ -20,7 +20,7 @@ import {
   SEARCH_RESULT,
 } from './constants';
 import { parseItem } from './fixture';
-import { getByHasText, getMetadata } from './selectors';
+import { getMetadata } from './selectors';
 import { getQueryParameterValues, maybeExpand } from './utils';
 
 const sortOrders: Record<string, string> = {
@@ -128,7 +128,7 @@ export async function verifyFilterResults(
     }
 
     // verify results counts
-    console.log(await page.locator('h3').allInnerTexts());
+    // console.log(await page.locator('h3').allInnerTexts());
     // const resultCountText =
     //   //  (await page.locator('h3').first().textContent()) || '';
     //   (await page
@@ -137,7 +137,7 @@ export async function verifyFilterResults(
 
     // const resultCountValue = Number(resultCountText.trim().replace(/\D/g, ''));
     // expect(resultCountValue).toBe(expectedData.length);
-    // result count
+    // // result count
 
     // // total pages
     // const actualTotalPages =
