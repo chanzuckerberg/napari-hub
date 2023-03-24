@@ -103,6 +103,21 @@ class TestActivityDashboard(unittest.TestCase):
         )
         self._verify_results('foo', expected, mock_get_commit_activity, mock_get_latest_commit, mock_get_install_timeline_data, mock_get_recent_activity_data)
 
+    @patch.object(model, 'get_latest_commit', return_value=MOCK_PLUGIN_LATEST_COMMIT)
+    @patch.object(model, 'get_commit_activity', return_value=MOCK_PLUGIN_COMMIT_ACTIVITY)
+    @patch.object(model, 'get_recent_activity_data', return_value=MOCK_PLUGIN_RECENT_INSTALLS)
+    @patch.object(model, 'get_install_timeline_data', return_value=MOCK_DF.copy())
+    def test_get_metrics_nonempty_negative_limit(self, mock_get_install_timeline_data, mock_get_recent_activity_data,
+                                                mock_get_commit_activity, mock_get_latest_commit):
+        expected = generate_expected_metrics(
+            total_installs=sum(MOCK_INSTALLS),
+            installs_in_last_30_days=25,
+            latest_commit=MOCK_PLUGIN_LATEST_COMMIT,
+            total_commit=MOCK_PLUGIN_TOTAL_COMMIT,
+            commit_activity=MOCK_PLUGIN_COMMIT_ACTIVITY_EMPTY
+        )
+        self._verify_results('-5', expected, mock_get_commit_activity, mock_get_latest_commit, mock_get_install_timeline_data, mock_get_recent_activity_data)
+
     def _verify_results(self, limit, expected, mock_get_commit_activity, mock_get_latest_commit, mock_get_install_timeline_data, mock_get_recent_activity_data):
         from api.model import get_metrics_for_plugin
         result = get_metrics_for_plugin(PLUGIN_NAME, limit, False)
@@ -120,6 +135,7 @@ class TestMetricModel:
         (MOCK_PLUGIN_COMMIT_ACTIVITY, MOCK_PLUGIN_COMMIT_ACTIVITY, MOCK_PLUGIN_LATEST_COMMIT, MOCK_PLUGIN_TOTAL_COMMIT, 25, 21, generate_expected_timeline(-3), '3'),
         (MOCK_PLUGIN_COMMIT_ACTIVITY, MOCK_PLUGIN_COMMIT_ACTIVITY_EMPTY, MOCK_PLUGIN_LATEST_COMMIT, MOCK_PLUGIN_TOTAL_COMMIT, 25, 21, [], '0'),
         (MOCK_PLUGIN_COMMIT_ACTIVITY, MOCK_PLUGIN_COMMIT_ACTIVITY_EMPTY, MOCK_PLUGIN_LATEST_COMMIT, MOCK_PLUGIN_TOTAL_COMMIT, 25, 21, [], 'foo'),
+        (MOCK_PLUGIN_COMMIT_ACTIVITY, MOCK_PLUGIN_COMMIT_ACTIVITY_EMPTY, MOCK_PLUGIN_LATEST_COMMIT, MOCK_PLUGIN_TOTAL_COMMIT, 25, 21, [], '-5'),
     ])
     def test_metrics_api_using_dynamo(self, monkeypatch, commit_activity_input, commit_activity_result, latest_commit, total_commit, total_installs, recent_installs, timeline, limit):
         monkeypatch.setattr(model, 'get_commit_activity', self._validate_args_return_value(commit_activity_input))

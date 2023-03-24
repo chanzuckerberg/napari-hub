@@ -547,7 +547,7 @@ def _get_usage_data(plugin: str, limit: int, use_dynamo: bool = False) -> Dict[s
 
     :params str plugin: Name of the plugin in lowercase.
     :params int limit: Sets the number of records to be fetched for timeline.
-    :params bool use_dyanmo: Fetch data from dynamo if True, else fetch from s3. (default= False)
+    :params bool use_dynamo: Fetch data from dynamo if True, else fetch from s3. (default= False)
     """
     if use_dynamo:
         timeline = InstallActivity.get_timeline(plugin, limit) if limit else []
@@ -582,7 +582,7 @@ def get_metrics_for_plugin(plugin: str, limit_str: str, use_dynamo_for_usage: bo
     limit = 0
 
     if limit_str.isdigit() and limit_str != '0':
-        limit = int(limit_str)
+        limit = max(int(limit_str), 0)
         maintenance_timeline = commit_activity[-limit:]
 
     maintenance_stats = {
