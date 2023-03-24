@@ -34,17 +34,14 @@ class CategoryModel(Model):
     @classmethod
     def get_category(cls, name: str, version: str):
         category = []
-        try:
-            start = time.perf_counter()
+        start = time.perf_counter()
 
-            for item in cls.query(
-                slugify(name), cls.version_hash.startswith(f"{version}:")
-            ):
-                category.append(_get_category_from_model(item))
+        for item in cls.query(
+            slugify(name), cls.version_hash.startswith(f"{version}:")
+        ):
+            category.append(_get_category_from_model(item))
 
-            print_perf_duration(start, f"CategoryModel.get_category({name})")
-        except Exception as e:
-            print(e)
+        print_perf_duration(start, f"CategoryModel.get_category({name})")
 
         return category
 
