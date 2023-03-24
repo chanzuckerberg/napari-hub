@@ -128,7 +128,6 @@ export async function verifyFilterResults(
     }
 
     // verify results counts
-    console.log(await page.locator('h2').allInnerTexts());
     const resultCountText =
       (await page
         .locator(getByHasText('h2', 'Browse plugins: '))
