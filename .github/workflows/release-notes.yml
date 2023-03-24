@@ -3,7 +3,11 @@
 
 name: Release Notes
 
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
 
 concurrency:
   group: ${{ github.ref }}
