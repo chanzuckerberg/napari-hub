@@ -71,13 +71,27 @@ jobs:
           tfe-token: ${{ secrets.TFE_TOKEN }}
           env: "dev"
 
-      - name: Create workflow artifact
-        run: | 
-          mkdir -p workflow_artifact
-          if [ ${{ github.event_name == 'delete' }} ]; then echo 'invalid'; else echo $STACK_NAME; fi > workflow_artifact/stack_name
+  # Runs behave tests for backend code
+  bdd-tests:
+    runs-on: ubuntu-latest
+    needs: create-update-dev
+    if: ${{ github.event_name == 'push' }}
 
-      - name: Upload stack name artifact
-        uses: actions/upload-artifact@v3
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v3
         with:
-          name: napari_hub_dev_deployment
-          path: workflow_artifact/stack_name
+          python-version: '3.9'
+
+      - name: Fetch test prefix
+        run: echo $GITHUB_REF_NAME | tr '[:upper:]' '[:lower:]' | xargs -I {} -n 1 echo PREFIX={} >> $GITHUB_ENV
+
+      - name: Run tests
+        working-directory: backend
+        run: |
+          pip install --upgrade pip
+          pip install -r test-requirements.txt
+          cd bdd_tests && python -m pytest
