@@ -1,6 +1,6 @@
 import logging
 import time
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 from typing import List, Callable, Union
 import os
@@ -11,6 +11,10 @@ from pynamodb.attributes import UnicodeAttribute, NumberAttribute
 LOGGER = logging.getLogger()
 
 
+def to_utc_timestamp_in_millis(timestamp: datetime) -> int:
+    return int(timestamp.replace(tzinfo=timezone.utc).timestamp() * 1000)
+
+
 class GitHubActivityType(Enum):
     def __new__(cls, value, timestamp_formatter, type_timestamp_formatter):
         install_activity_type = object.__new__(cls)
@@ -19,9 +23,9 @@ class GitHubActivityType(Enum):
         install_activity_type.type_timestamp_formatter = type_timestamp_formatter
         return install_activity_type
 
-    LATEST = 1
-    MONTH = 2
-    TOTAL = 3
+    LATEST = (to_utc_timestamp_in_millis, 'LATEST:{0:%Y%m%d%H%M%S}')
+    MONTH = (to_utc_timestamp_in_millis, 'MONTH:{0:%Y%m}')
+    TOTAL = (lambda timestamp: None, 'TOTAL:')
 
     def get_type_timestamp_formatter(self) -> Callable[[datetime], str]:
         return self.type_timestamp_formatter
