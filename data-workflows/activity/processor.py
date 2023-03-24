@@ -21,3 +21,14 @@ def update_install_activity(start_time: int, end_time: int):
     _fetch_data_and_write_to_dynamo(updated_plugins, InstallActivityType.DAY)
     _fetch_data_and_write_to_dynamo(updated_plugins, InstallActivityType.MONTH)
     _fetch_data_and_write_to_dynamo(updated_plugins, InstallActivityType.TOTAL)
+
+
+def update_github_activity(start_time: int, end_time: int):
+    # TODO: create method for getting github metrics based on start and end time and assign value to updated_plugins
+    updated_plugins = None
+    LOGGER.info(f'Plugins with new github activity count={len(updated_plugins)}')
+    if len(updated_plugins) == 0:
+        return
+    _fetch_data_and_write_to_dynamo(updated_plugins, GitHubActivityType.LATEST)
+    _fetch_data_and_write_to_dynamo(updated_plugins, GitHubActivityType.MONTH)
+    _fetch_data_and_write_to_dynamo(updated_plugins, GitHubActivityType.TOTAL)
