@@ -8,6 +8,8 @@ import os
 from pynamodb.models import Model
 from pynamodb.attributes import UnicodeAttribute, NumberAttribute
 
+from utils.utils import get_current_timestamp
+
 LOGGER = logging.getLogger()
 
 
@@ -27,8 +29,14 @@ class GitHubActivityType(Enum):
     MONTH = (to_utc_timestamp_in_millis, 'MONTH:{0:%Y%m}')
     TOTAL = (lambda timestamp: None, 'TOTAL:')
 
-    def get_type_timestamp_formatter(self) -> Callable[[datetime], str]:
-        return self.type_timestamp_formatter
+    def format_to_timestamp(self, timestamp: datetime) -> Union[int, None]:
+        return self.timestamp_formatter(timestamp)
+
+    def format_to_type_identifier(self, timestamp: datetime) -> str:
+        return self.type_identifier_formatter.format(timestamp)
+
+    def get_query_timestamp_projection(self) -> str:
+        return '1' if self is GitHubActivityType.TOTAL else f"DATE_TRUNC('{self.name}', timestamp)"
 
 
 class GitHubActivity(Model):
