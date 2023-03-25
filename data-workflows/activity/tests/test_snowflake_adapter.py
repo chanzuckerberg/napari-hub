@@ -40,7 +40,7 @@ def get_plugins_with_installs_in_window_query():
 
 def get_plugins_install_count_since_timestamp_query(projection, subquery):
     return f"""
-            SELECT
+            SELECT 
                 LOWER(file_project) AS plugin, 
                 {projection} AS timestamp, 
                 COUNT(*) AS count

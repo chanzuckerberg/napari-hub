@@ -36,7 +36,7 @@ def get_plugins_with_installs_in_window(start_millis: int, end_millis: int) -> d
 def get_plugins_install_count_since_timestamp(plugins_by_earliest_ts: dict[str, datetime],
                                               install_activity_type: InstallActivityType) -> dict[str, List]:
     query = f"""
-            SELECT
+            SELECT 
                 LOWER(file_project) AS plugin, 
                 {install_activity_type.get_query_timestamp_projection()} AS timestamp, 
                 COUNT(*) AS count
@@ -76,6 +76,7 @@ def _generate_subquery_by_type(plugins_by_timestamp: dict[str, datetime], instal
 
     return ' OR '.join([f"LOWER(file_project) = '{name}' AND timestamp >= "f"{TIMESTAMP_FORMAT.format(ts)}"
                         for name, ts in plugins_by_formatted_timestamp.items()])
+
 
 def _format_timestamp(timestamp_millis):
     return TIMESTAMP_FORMAT.format(datetime.fromtimestamp(timestamp_millis / 1000.0))

@@ -59,10 +59,6 @@ class TestInstallActivity:
         assert InstallActivityType.TOTAL.format_to_type_timestamp(timestamp) == "TOTAL:"
 
 
-def get_relative_timestamp(**args):
-    return datetime.now() - relativedelta(args)
-
-
 class TestInstallActivityModels:
 
     @pytest.fixture(autouse=True)
