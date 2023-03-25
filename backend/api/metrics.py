@@ -10,7 +10,7 @@ from pynamodb.attributes import UnicodeAttribute, NumberAttribute
 
 class InstallActivity(Model):
     class Meta:
-        table_name = f'{os.getenv("PREFIX")}-install-activity'
+        table_name = f'{os.getenv("STACK_NAME")}-install-activity'
         region = os.getenv('AWS_REGION')
 
     plugin_name = UnicodeAttribute(hash_key=True)
