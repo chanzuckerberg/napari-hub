@@ -53,7 +53,7 @@ class InstallActivity(Model):
     @staticmethod
     def get_timeline(plugin: str, month_delta: int) -> List[Dict[str, int]]:
         """
-        Fetches plugin install count at a month level granularity from dynamo over the last month_delta months.
+        Fetches plugin install count at a month level granularity from dynamo in the previous month_delta months.
         :returns List[Dict[str, int]]: Entries for the month_delta months
 
         :param str plugin: Name of the plugin in lowercase for which timeline data needs to be fetched.
