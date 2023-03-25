@@ -540,20 +540,20 @@ def _update_commit_activity(repo_to_plugin_dict):
     write_data(json.dumps(data), "activity_dashboard_data/commit_activity.json")
 
 
-def _get_usage_data(plugin: str, limit: int, use_dynamo: bool = False) -> Dict[str, Any]:
+def _get_usage_data(plugin: str, limit: int, use_dynamo: bool) -> Dict[str, Any]:
     """
     Fetches plugin usage_data from s3 or dynamo based on the in_test variable
     :returns (dict[str, Any]): A dict with the structure {'timeline': List, 'stats': Dict[str, int]}
 
     :params str plugin: Name of the plugin in lowercase.
     :params int limit: Sets the number of records to be fetched for timeline.
-    :params bool use_dynamo: Fetch data from dynamo if True, else fetch from s3. (default= False)
+    :params bool use_dynamo: Fetch data from dynamo if True, else fetch from s3.
     """
     if use_dynamo:
         timeline = InstallActivity.get_timeline(plugin, limit) if limit else []
         usage_stats = {
             'total_installs': InstallActivity.get_total_installs(plugin),
-            'installs_in_last_30_days': InstallActivity.get_recent_installs(plugin)
+            'installs_in_last_30_days': InstallActivity.get_recent_installs(plugin, 30)
         }
     else:
         data = get_install_timeline_data(plugin)
@@ -566,7 +566,7 @@ def _get_usage_data(plugin: str, limit: int, use_dynamo: bool = False) -> Dict[s
     return {'timeline': timeline, 'stats': usage_stats, }
 
 
-def get_metrics_for_plugin(plugin: str, limit_str: str, use_dynamo_for_usage: bool) -> Dict[str, Any]:
+def get_metrics_for_plugin(plugin: str, limit: str, use_dynamo_for_usage: bool) -> Dict[str, Any]:
     """
     Fetches plugin metrics from s3 or dynamo based on the in_test variable
     :return dict[str, Any]: A map with entries for usage and maintenance
@@ -579,17 +579,17 @@ def get_metrics_for_plugin(plugin: str, limit_str: str, use_dynamo_for_usage: bo
     commit_activity = get_commit_activity(plugin)
 
     maintenance_timeline = []
-    limit = 0
+    month_delta = 0
 
-    if limit_str.isdigit() and limit_str != '0':
-        limit = max(int(limit_str), 0)
-        maintenance_timeline = commit_activity[-limit:]
+    if limit.isdigit() and limit != '0':
+        month_delta = max(int(limit), 0)
+        maintenance_timeline = commit_activity[-month_delta:]
 
     maintenance_stats = {
         'latest_commit_timestamp': get_latest_commit(plugin),
         'total_commits': sum([item['commits'] for item in commit_activity]),
     }
     return {
-        'usage': _get_usage_data(plugin, limit, use_dynamo_for_usage),
+        'usage': _get_usage_data(plugin, month_delta, use_dynamo_for_usage),
         'maintenance': {'timeline': maintenance_timeline, 'stats': maintenance_stats, }
     }

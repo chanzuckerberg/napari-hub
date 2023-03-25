@@ -34,13 +34,13 @@ class InstallActivity(Model):
             return 0
 
     @staticmethod
-    def get_recent_installs(plugin: str, day_delta: int = 30) -> int:
+    def get_recent_installs(plugin: str, day_delta: int) -> int:
         """
         Fetches plugin recent_install stats from dynamo.
         :return int: sum of installs in the last day_delta timeperiod
 
         :param str plugin: Name of the plugin in lowercase for which recent_install needs to be computed.
-        :param int day_delta: Specifies the number of days to include in the computation (Defaults to 30)
+        :param int day_delta: Specifies the number of days to include in the computation.
         """
         day_type_format = 'DAY:{0:%Y%m%d}'
         today = datetime.date.today()
@@ -51,13 +51,13 @@ class InstallActivity(Model):
         return reduce(lambda acc, count: acc + count, [row.install_count for row in results], 0)
 
     @staticmethod
-    def get_timeline(plugin: str, month_delta: int = 12) -> List[Dict[str, int]]:
+    def get_timeline(plugin: str, month_delta: int) -> List[Dict[str, int]]:
         """
         Fetches plugin install count at a month level granularity from dynamo over the last month_delta months.
         :returns List[Dict[str, int]]: Entries for the month_delta months
 
         :param str plugin: Name of the plugin in lowercase for which timeline data needs to be fetched.
-        :param int month_delta: Number of months in timeline. (Defaults to 12)
+        :param int month_delta: Number of months in timeline.
         """
         month_type_format = 'MONTH:{0:%Y%m}'
         start_date = datetime.datetime.now().replace(day=1) - relativedelta(months=1)
