@@ -8,7 +8,7 @@ from io import BytesIO
 from collections import defaultdict
 import pandas as pd
 
-from api.metrics import InstallActivity
+from api.models.metrics import InstallActivity
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
 from api.s3 import get_cache, cache, write_data, get_install_timeline_data, get_latest_commit, get_commit_activity, \
