@@ -3,6 +3,8 @@ from datetime import datetime
 
 from activity.install_activity_model import InstallActivityType
 import activity.install_activity_model as install_model
+from activity.github_activity_model import GitHubActivityType
+import activity.github_activity_model as github_model
 import activity.snowflake_adapter as snowflake_adapter
 
 LOGGER = logging.getLogger()
@@ -11,6 +13,7 @@ LOGGER = logging.getLogger()
 def _fetch_data_and_write_to_dynamo(data: dict[str, datetime], install_activity_type: InstallActivityType):
     plugin_install_data = snowflake_adapter.get_plugins_install_count_since_timestamp(data, install_activity_type)
     install_model.transform_and_write_to_dynamo(plugin_install_data, install_activity_type)
+    # TODO: apply the same logic as above to github activity data
 
 
 def update_install_activity(start_time: int, end_time: int):
