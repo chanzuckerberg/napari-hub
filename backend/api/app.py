@@ -1,3 +1,4 @@
+import logging
 import os
 
 from werkzeug import exceptions
@@ -39,6 +40,9 @@ else:
 
 github_app = GitHubApp(preview_app)
 handler = make_lambda_handler(app.wsgi_app)
+
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG if os.getenv('IS_DEBUG') else logging.INFO)
 
 
 @app.route('/')
