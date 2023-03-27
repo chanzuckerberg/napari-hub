@@ -1,0 +1,52 @@
+# Workflow for running data-workflows tests for PRs and main branch
+
+name: Data Workflows Tests
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'data-workflows/**'
+  pull_request:
+    branches:
+      - '**'
+    paths:
+      - 'data-workflows/**'
+
+defaults:
+  run:
+    working-directory: data-workflows/
+
+jobs:
+  # Runs pytest for data-workflows code
+  tests:
+    name: pytest
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.9'
+
+      - name: Cache Python environment
+        uses: actions/cache@v3
+        id: pip-cache
+        with:
+          path: ${{ env.pythonLocation }}
+          key: ${{ env.pythonLocation }}-${{ hashFiles('setup.py') }}-${{ hashFiles('dev-requirements.txt') }}
+
+      - name: Install dependencies
+        # need npe2 here to test preview page
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest npe2
+
+      - name: Run unit tests
+        working-directory: data-workflows
+        run : python -m pytest
