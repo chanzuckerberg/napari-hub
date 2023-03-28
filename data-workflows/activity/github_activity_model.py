@@ -25,7 +25,7 @@ class GitHubActivityType(Enum):
         install_activity_type.type_timestamp_formatter = type_timestamp_formatter
         return install_activity_type
 
-    LATEST = (to_utc_timestamp_in_millis, 'LATEST:{0:%Y%m%d%H%M%S}')
+    LATEST = (to_utc_timestamp_in_millis, 'LATEST:')
     MONTH = (to_utc_timestamp_in_millis, 'MONTH:{0:%Y%m}')
     TOTAL = (lambda timestamp: None, 'TOTAL:')
 
