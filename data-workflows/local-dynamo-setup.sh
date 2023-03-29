@@ -23,6 +23,13 @@ if ! command -v jq &> /dev/null; then
     exit
 fi
 
+reset_updated_env_variables() {
+  # Resets environment variables
+  export AWS_ACCESS_KEY_ID=$CURRENT_AWS_ACCESS_KEY_ID
+  export AWS_SECRET_ACCESS_KEY=$CURRENT_AWS_SECRET_ACCESS_KEY
+  export AWS_DEFAULT_REGION=$CURRENT_AWS_DEFAULT_REGION
+}
+
 create_if_not_exists() {
   TABLE_NAME="$PREFIX-$1"
   if $(jq --arg table_name $TABLE_NAME '.TableNames | any(. == $table_name)' <<< "$TABLES_LIST_RESPONSE"); then
@@ -32,7 +39,7 @@ create_if_not_exists() {
 
     SOURCE_TABLE=$(aws dynamodb describe-table --table-name "$SOURCE_PREFIX-$1" --profile $AWS_PROFILE 2>&1)
 
-    if ! $(jq 'has("Table")' <<< "$SOURCE_TABLE"); then
+    if ! $(jq 'has("Table")' <<< "$SOURCE_TABLE" &> /dev/null); then
       echo "Unable to fetch source table $SOURCE_TABLE"
       return 1
     fi
@@ -42,7 +49,7 @@ create_if_not_exists() {
 
     echo "Creating $TABLE_NAME.."
 
-    # TODO: Add GSI to table creation
+    # TODO: Add support for advanced table creation attributes
     TABLE_CREATION=$(aws dynamodb create-table \
     --table-name "$TABLE_NAME" \
     --attribute-definitions "$ATTRIBUTE_DEFINITION" \
@@ -69,40 +76,45 @@ export AWS_SECRET_ACCESS_KEY=fakeSecretAccessKey
 export AWS_DEFAULT_REGION=us-west-2
 
 SOURCE_PREFIX="staging"
-PREFIX="local"
-if [ "$2" != "" ]; then
-  PREFIX=$2
+if [ "$REMOTE_DYNAMO_PREFIX" != "" ]; then
+  SOURCE_PREFIX=$REMOTE_DYNAMO_PREFIX
 fi
+echo "SOURCE_PREFIX=$SOURCE_PREFIX"
 
-LOCAL_DYNAMO_PORT=8000
-if [ "$1" != "" ]; then
-  LOCAL_DYNAMO_PORT=$1
+PREFIX="local"
+if [ "$LOCAL_DYNAMO_PREFIX" != "" ]; then
+  PREFIX=$LOCAL_DYNAMO_PREFIX
 fi
-ENDPOINT_URL="http://localhost:$LOCAL_DYNAMO_PORT"
+echo "PREFIX=$PREFIX"
+
+LOCAL_PORT=8000
+if [ "$LOCAL_DYNAMO_PORT" != "" ]; then
+  LOCAL_PORT=$LOCAL_DYNAMO_PORT
+fi
+echo "LOCAL_PORT=$LOCAL_PORT"
+
+ENDPOINT_URL="http://localhost:$LOCAL_PORT"
 
 # Get list of local tables
 TABLES_LIST_RESPONSE=$(aws dynamodb list-tables --endpoint-url $ENDPOINT_URL 2>&1)
 
 # Check for connection errors
 if [[ $TABLES_LIST_RESPONSE == *"Could not connect to the endpoint URL"* ]]; then
-  echo "Please confirm your local dynamo is running on port: $LOCAL_DYNAMO_PORT."
+  echo "Please confirm your local dynamo is running on port: $LOCAL_PORT."
 fi
 
-if $(jq -e 'has("TableNames")' <<< "$TABLES_LIST_RESPONSE") &> /dev/null; then
-  echo "Successfully connected to dynamo on $ENDPOINT_URL"
+if $(jq -e 'has("TableNames")' <<< "$TABLES_LIST_RESPONSE" &> /dev/null); then
+  echo "Successfully connected to dynamo running on $ENDPOINT_URL"
 else
   echo "Unable to connect to dynamo on $ENDPOINT_URL"
+  reset_updated_env_variables
   exit
 fi
 
-# Create tables from source
-tables=("install-activity" "github-activity" "category" "plugins")
-for table in ${tables[@]}; do
-  create_if_not_exists $table
+# Create tables that don't exist from source for table names passed as arguments
+tables=("$@")
+for table in "${tables[@]}"; do
+  create_if_not_exists "$table"
 done
 
-# Reset environment variables
-export AWS_ACCESS_KEY_ID=$CURRENT_AWS_ACCESS_KEY_ID
-export AWS_SECRET_ACCESS_KEY=$CURRENT_AWS_SECRET_ACCESS_KEY
-export AWS_DEFAULT_REGION=$CURRENT_AWS_DEFAULT_REGION
-
+reset_updated_env_variables
