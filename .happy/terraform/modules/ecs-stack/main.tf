@@ -230,6 +230,29 @@ module plugin_metadata_dynamodb_table {
                           {
                             name = "version_type"
                             type = "S"
+                          },
+                          {
+                            name = "is_latest"
+                            type = "S"
+                          },
+                          {
+                            name = "excluded"
+                            type = "S" #primary key attribute must be a String, Number or Binary. So this is set to S.
+                          }
+                        ]
+  autoscaling_enabled = var.env == "dev" ? false : true
+  create_table        = true
+  tags                = var.tags
+}
+
+module plugin_blocked_dynamodb_table {
+  source              = "../dynamo"
+  table_name          = "${local.custom_stack_name}-plugin-blocked"
+  hash_key            = "name"
+  attributes          = [
+                          {
+                            name = "name"
+                            type = "S"
                           }
                         ]
   autoscaling_enabled = var.env == "dev" ? false : true
