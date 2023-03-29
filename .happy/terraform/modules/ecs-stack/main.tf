@@ -176,11 +176,11 @@ module plugin_dynamodb_table {
                           },
                           {
                             name = "is_latest"
-                            type = "S"
+                            type = "S" #terraform only supports String, Number or Binary for primary key attribute
                           },
                           {
                             name = "excluded"
-                            type = "S" #primary key attribute must be a String, Number or Binary. So this is set to S.
+                            type = "S"
                           }
                         ]
 
@@ -455,6 +455,8 @@ data aws_iam_policy_document backend_policy {
       module.install_dynamodb_table.table_arn,
       module.github_dynamodb_table.table_arn,
       module.category_dynamodb_table.table_arn,
+      module.plugin_dynamodb_table.table_arn,
+      module.plugin_blocked_dynamodb_table.table_arn
     ]
   }
 
@@ -495,6 +497,8 @@ data aws_iam_policy_document data_workflows_policy {
     resources = [
         module.install_dynamodb_table.table_arn,
         module.github_dynamodb_table.table_arn,
+        module.plugin_dynamodb_table.table_arn,
+        module.plugin_blocked_dynamodb_table.table_arn
     ]
   }
   statement {
@@ -530,6 +534,14 @@ data aws_iam_policy_document plugins_policy {
     ]
 
     resources = ["${local.data_bucket_arn}"]
+  }
+
+  statement {
+    actions = [
+      "dynamodb:Query",
+      "dynamodb:PutItem",
+    ]
+    resources = [module.plugin_dynamodb_table.table_arn]
   }
 }
 
