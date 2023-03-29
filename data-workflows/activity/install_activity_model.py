@@ -43,9 +43,8 @@ class InstallActivityType(Enum):
 class InstallActivity(Model):
     class Meta:
         host = os.getenv('LOCAL_DYNAMO_HOST')
-        prefix = os.getenv('STACK_NAME')
         region = os.getenv('AWS_REGION')
-        table_name = f'{prefix}-install-activity'
+        table_name = f'{os.getenv("STACK_NAME")}-install-activity'
 
     plugin_name = UnicodeAttribute(hash_key=True)
     type_timestamp = UnicodeAttribute(range_key=True)
