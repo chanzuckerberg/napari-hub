@@ -11,8 +11,8 @@ const config: PlaywrightTestConfig = {
     timeout: 3000,
   },
   globalSetup: './globalSetup',
-  outputDir: '../report',
   fullyParallel: true,
+  outputDir: '../report',
   reporter: [
     ['list'],
     [
@@ -24,12 +24,12 @@ const config: PlaywrightTestConfig = {
     [
       'html',
       {
-        open: 'always',
-        host: 'localhost',
-        port: 9223,
+        outputFile: '../report/report.html',
+        open: 'never',
       },
     ],
   ],
+
   projects: [
     {
       name: 'Desktop',
@@ -80,13 +80,14 @@ const config: PlaywrightTestConfig = {
     },
   ],
   testDir: '../tests',
-  timeout: 30 * 1000,
+  timeout: 60 * 1000,
   use: {
-    actionTimeout: 0,
-    baseURL: 'https://staging.napari-hub.org/',
+    actionTimeout: 20000,
+    baseURL: 'http://localhost:8080',
     screenshot: 'only-on-failure',
-    trace: 'retain-on-failure',
+    trace: 'on',
     video: 'on',
+    headless: true,
   },
 };
 // eslint-disable-next-line import/no-default-export

@@ -3,6 +3,11 @@ import { FilterKey, FilterType } from '@/store/search/search.store';
 
 import { AccordionTitle } from './utils';
 
+export const getByHasText = (type: string, text: string): string =>
+  `${type}:has-text("${text}")`;
+export const getMetadata = (attribute: string): string =>
+  `[data-testid="searchResultMetadata"] >> ${attribute}`;
+
 enum CommonSelectors {
   appBarHome = '[data-testid=appBarHome]:visible',
 }

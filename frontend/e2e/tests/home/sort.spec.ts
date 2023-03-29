@@ -1,68 +1,74 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { expect, test } from '@playwright/test';
-import dayjs from 'dayjs';
+import { test } from '@playwright/test';
 
-import { SearchSortType } from '@/store/search/constants';
+import { AUTHORS } from '../../utils/constants';
+import { filterPlugins, verifyFilterResults } from '../../utils/filter';
+import { searchPluginFixture } from '../../utils/fixture';
 
-import { selectors } from '../../utils/selectors';
-import {
-  clickOnRadio,
-  getSearchResultMetadata,
-  testPluginSort,
-} from '../../utils/sort';
-import { MetadataLabel } from '../../utils/utils';
+const ENV = (process.env.NODE_ENV as string) || '';
+const TEST_AUTHORS = AUTHORS[ENV.toUpperCase()];
 
-test.describe('Plugin Sort', () => {
-  test('should sort by plugin name', async ({ page, viewport }) => {
-    await testPluginSort({
-      page,
-      width: viewport?.width,
-      sortType: SearchSortType.PluginName,
-
-      async testResults() {
-        const resultNames = await page.$$(selectors.search.resultName);
-        const names = await Promise.all(
-          resultNames.map((result) => result.textContent()),
-        );
-
-        // Check that names are in ascending order.
-        for (let i = 0; i < names.length - 1; i += 1) {
-          const name1 = names[i]!;
-          const name2 = names[i + 1]!;
-
-          expect(name1.localeCompare(name2)).toBeLessThanOrEqual(0);
-        }
-      },
-    });
+test.describe('Plugin sorting tests', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto(`${process.env.BASEURL as string}`, { timeout: 60000 });
   });
+  test(`should sort plugins by name`, async ({ page, viewport }) => {
+    const authors = TEST_AUTHORS[0];
+    // sort by
+    const sortBy = 'Plugin name';
 
-  test('should sort by recently updated', async ({ page, viewport }) => {
-    await testPluginSort({
-      page,
-      width: viewport?.width,
-      sortType: SearchSortType.ReleaseDate,
+    // filter by
+    const filterBy = {
+      label: 'Authors',
+      name: 'authors',
+      values: authors,
+      category: ['Filter by category'],
+      key: 'authors',
+    };
+    // prepare fixture data to compare against
+    const fixtureData = searchPluginFixture(filterBy, sortBy);
+    await filterPlugins(page, filterBy, sortBy, viewport?.width);
+    const params = [['authors', authors]];
+    await verifyFilterResults(page, filterBy, fixtureData, params, sortBy);
+  });
+  test(`should sort plugins by recently updated`, async ({
+    page,
+    viewport,
+  }) => {
+    const authors = TEST_AUTHORS[0];
+    // sort by
+    const sortBy = 'Recently updated';
 
-      async preTestRadios() {
-        // Select different radio first because the `sort` parameter is not
-        // populated on initial load.
-        await clickOnRadio(
-          page,
-          selectors.sort.getRadio(SearchSortType.PluginName),
-        );
-      },
+    // filter by
+    const filterBy = {
+      label: 'Authors',
+      name: 'authors',
+      values: authors,
+      category: ['Filter by category'],
+      key: 'authors',
+    };
+    // prepare fixture data to compare against
+    const fixtureData = searchPluginFixture(filterBy, sortBy);
+    await filterPlugins(page, filterBy, sortBy, viewport?.width);
+    const params = [['authors', authors]];
+    await verifyFilterResults(page, filterBy, fixtureData, params, sortBy);
+  });
+  test(`should sort plugins by newest`, async ({ page, viewport }) => {
+    const authors = TEST_AUTHORS[0];
+    // sort by
+    const sortBy = 'Newest';
 
-      async testResults() {
-        const dates = await getSearchResultMetadata(
-          page,
-          MetadataLabel.ReleaseDate,
-        );
-
-        for (let i = 0; i < dates.length - 1; i += 1) {
-          const date1 = dayjs(dates[i]!);
-          const date2 = dayjs(dates[i + 1]!);
-          expect(date1.isAfter(date2) || date1.isSame(date2)).toBe(true);
-        }
-      },
-    });
+    // filter by
+    const filterBy = {
+      label: 'Authors',
+      name: 'authors',
+      values: authors,
+      category: ['Filter by category'],
+      key: 'authors',
+    };
+    // prepare fixture data to compare against
+    const fixtureData = searchPluginFixture(filterBy, sortBy);
+    await filterPlugins(page, filterBy, sortBy, viewport?.width);
+    const params = [['authors', authors]];
+    await verifyFilterResults(page, filterBy, fixtureData, params, sortBy);
   });
 });
