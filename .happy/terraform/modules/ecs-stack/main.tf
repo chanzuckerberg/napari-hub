@@ -173,21 +173,44 @@ module plugin_dynamodb_table {
                           {
                             name = "version_type"
                             type = "S"
+                          },
+                          {
+                            name = "is_latest"
+                            type = "S"
+                          },
+                          {
+                            name = "excluded"
+                            type = "S" #primary key attribute must be a String, Number or Binary. So this is set to S.
                           }
                         ]
 
   global_secondary_indexes = [
                           {
-                            name               = "name_is_latest"
+                            name               = "latest_plugins"
                             hash_key           = "name"
                             range_key          = "is_latest"
                             projection_type    = "ALL"
                           },
                           {
-                            name               = "name_excluded"
+                            name               = "excluded_plugins"
                             hash_key           = "name"
                             range_key          = "excluded"
                             projection_type    = "KEYS_ONLY"
+                          }
+                        ]
+  autoscaling_enabled = var.env == "dev" ? false : true
+  create_table        = true
+  tags                = var.tags
+}
+
+module plugin_blocked_dynamodb_table {
+  source              = "../dynamo"
+  table_name          = "${local.custom_stack_name}-plugin-blocked"
+  hash_key            = "name"
+  attributes          = [
+                          {
+                            name = "name"
+                            type = "S"
                           }
                         ]
   autoscaling_enabled = var.env == "dev" ? false : true
