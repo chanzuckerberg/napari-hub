@@ -16,6 +16,16 @@ def call_metrics_with_plugin_name(plugin_name, context):
     call_api(context, f'/metrics/{plugin_name}')
 
 
+@given(parsers.parse('we call metrics api for {plugin_name} with limit {limit} and {query_param}'))
+def call_metrics_with_plugin_name_with_limit_and_query_param(plugin_name, limit, query_param, context):
+    call_api(context, f'/metrics/{plugin_name}?limit={limit}&{query_param}')
+
+
+@given(parsers.parse('we call metrics api for {plugin_name} and {query_param}'))
+def call_metrics_with_plugin_name_and_query_param(plugin_name, query_param, context):
+    call_api(context, f'/metrics/{plugin_name}?{query_param}')
+
+
 @then(parsers.parse('it should only have properties {properties_str}'))
 def verify_response_properties(context, properties_str):
     properties = properties_str.split(', ')

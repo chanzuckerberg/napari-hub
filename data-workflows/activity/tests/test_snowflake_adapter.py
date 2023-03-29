@@ -92,7 +92,6 @@ class TestSnowflakeAdapter:
 
     def test_get_plugins_with_installs_in_window_no_result(self):
         self._expected_cursor_result = [MockSnowflakeCursor([], 2)]
-
         from activity.snowflake_adapter import get_plugins_with_installs_in_window
         actual = get_plugins_with_installs_in_window(START_TIME, END_TIME)
 

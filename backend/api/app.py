@@ -1,3 +1,4 @@
+import logging
 import os
 
 from werkzeug import exceptions
@@ -39,6 +40,9 @@ else:
 
 github_app = GitHubApp(preview_app)
 handler = make_lambda_handler(app.wsgi_app)
+
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG if os.getenv('IS_DEBUG') else logging.INFO)
 
 
 @app.route('/')
@@ -124,7 +128,19 @@ def update_activity() -> Response:
 
 @app.route('/metrics/<plugin>')
 def get_plugin_metrics(plugin: str) -> Response:
-    return jsonify(get_metrics_for_plugin(plugin, request.args.get('limit', '12')))
+    """
+    Fetches plugin metrics for usage, and maintenance
+    :return Response: A json object with entries for usage, and maintenance
+
+    :params str plugin: Name of the plugin in lowercase for which usage data needs to be fetched.
+    :query_params limit: Number of months to be fetched for timeline. (default=12).
+    :query_params use_dynamo_metric_usage: Fetch usage data from dynamo if True else fetch from s3. (default=False)
+    """
+    return jsonify(get_metrics_for_plugin(
+        plugin=plugin,
+        limit=request.args.get('limit', '12'),
+        use_dynamo_for_usage=_is_query_param_true('use_dynamo_metric_usage'),
+    ))
 
 
 @app.route('/collections')
@@ -181,6 +197,11 @@ def authenticate_request():
 def add_header(response):
     response.headers['Access-Control-Allow-Origin'] = '*'
     return response
+
+
+def _is_query_param_true(param_name: str):
+    value = request.args.get(param_name)
+    return value and value.lower() == 'true'
 
 
 if __name__ == '__main__':
