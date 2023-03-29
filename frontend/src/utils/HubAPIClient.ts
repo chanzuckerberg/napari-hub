@@ -73,6 +73,13 @@ interface DynamoConfig {
   PLUGIN_MIGRATION: boolean;
 }
 
+const DEFAULT_DYNAMO_CONFIG: DynamoConfig = {
+  METRICS_USAGE_MIGRATION: false,
+  METRICS_MAINTAINENCE_MIGRATION: false,
+  CATEGORY_MIGRATION: false,
+  PLUGIN_MIGRATION: false,
+};
+
 /**
  * Class for interacting with the hub API. Each function makes a request to the
  * hub API and runs client-side data validation on the data to ensure
@@ -89,8 +96,11 @@ class HubAPIClient {
   });
 
   private get dynamoConfig() {
-    return snapshot(featureFlagsStore).s3ToDynamoMigration
-      .config as unknown as DynamoConfig;
+    return (
+      (snapshot(featureFlagsStore).s3ToDynamoMigration.config as unknown as
+        | DynamoConfig
+        | undefined) ?? DEFAULT_DYNAMO_CONFIG
+    );
   }
 
   private async sendRequest<T>(url: string, config?: AxiosRequestConfig<T>) {
