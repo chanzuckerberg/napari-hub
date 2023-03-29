@@ -33,6 +33,10 @@ class CategoryModel(Model):
 
     @classmethod
     def get_category(cls, name: str, version: str):
+        """
+        Gets the category data for a particular category and EDAM version.
+        """
+
         category = []
         start = time.perf_counter()
 
@@ -47,6 +51,10 @@ class CategoryModel(Model):
 
     @classmethod
     def get_all_categories(cls, version: str):
+        """
+        Gets all available category mappings from a particular EDAM version.
+        """
+
         start = time.perf_counter()
         categories = cls.scan(
             cls.version == version,
