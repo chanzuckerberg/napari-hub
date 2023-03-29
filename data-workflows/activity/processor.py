@@ -27,8 +27,7 @@ def update_install_activity(start_time: int, end_time: int):
 
 
 def update_github_activity(start_time: int, end_time: int):
-    # TODO: create method for getting github metrics based on start and end time and assign value to updated_plugins
-    updated_plugins = None
+    updated_plugins = snowflake_adapter.get_plugins_with_commits_in_window(start_time, end_time)
     LOGGER.info(f'Plugins with new github activity count={len(updated_plugins)}')
     if len(updated_plugins) == 0:
         return

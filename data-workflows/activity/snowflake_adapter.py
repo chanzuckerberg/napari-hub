@@ -54,6 +54,24 @@ def get_plugins_install_count_since_timestamp(plugins_by_earliest_ts: dict[str, 
     return _mapped_query_results(query, 'PYPI', {}, _cursor_to_plugin_activity_mapper)
 
 
+def get_plugins_with_commits_in_window(start_millis: int, end_millis: int) -> dict[str, datetime]:
+    query = f"""
+            SELECT 
+                LOWER(repo) AS repo, MIN(commit_author_date) AS earliest_timestamp 
+            FROM 
+                imaging.github.commits  
+            WHERE 
+                repo_type = 'plugin'
+                AND TO_TIMESTAMP(ingestion_timestamp) > {_format_timestamp(timestamp_millis=start_millis)}
+                AND TO_TIMESTAMP(ingestion_timestamp) <= {_format_timestamp(timestamp_millis=end_millis)}
+            GROUP BY repo
+            ORDER BY repo
+            """
+
+    LOGGER.info(f'Querying for plugins added between start_timestamp={start_millis} end_timestamp={end_millis}')
+    return _mapped_query_results(query, "GITHUB", {}, _cursor_to_timestamp_by_plugin_mapper)
+
+
 def _generate_subquery_by_type(plugins_by_timestamp: dict[str, datetime], install_activity_type: InstallActivityType):
     """
     Returns subquery clause generated from the plugins_by_timestamp data based on the InstallActivityType. It is used to
