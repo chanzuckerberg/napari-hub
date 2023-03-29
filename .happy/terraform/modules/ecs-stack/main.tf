@@ -220,11 +220,11 @@ module plugin_metadata_dynamodb_table {
                           },
                           {
                             name = "is_latest"
-                            type = "S"
+                            type = "S" #terraform only supports String, Number or Binary for primary key attribute
                           },
                           {
                             name = "excluded"
-                            type = "S" #primary key attribute must be a String, Number or Binary. So this is set to S.
+                            type = "S"
                           }
                         ]
   autoscaling_enabled = var.env == "dev" ? false : true
