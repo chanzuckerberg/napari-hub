@@ -35,21 +35,21 @@ class GitHubActivityType(Enum):
     def format_to_type_identifier(self, identifier: str) -> str:
         return self.type_identifier_formatter.format(identifier)
 
-    def get_query_timestamp_projection(self) -> str:
+    def get_query_projection(self) -> str:
         if self is GitHubActivityType.LATEST:
-            return '1'
-        elif self is GitHubActivityType.TOTAL:
-            return '2'
+            return '1, max(commit_author_date) as latest_commit'
+        elif self is GitHubActivityType.MONTH:
+            return 'date_trunc('"month"', to_date(commit_author_date)) as month, count(*) as num_commit'
         else:
-            return f"DATE_TRUNC('{self.name}', timestamp)"
+            return '1, count(*) as num_commits'
 
 
 class GitHubActivity(Model):
     class Meta:
+        host = os.getenv('LOCAL_DYNAMO_HOST')
         prefix = os.getenv('STACK_NAME')
         region = os.getenv('AWS_REGION')
         table_name = f'{prefix}-github-activity'
-        region = region
 
     plugin_name = UnicodeAttribute(hash_key=True)
     type_identifier = UnicodeAttribute(range_key=True)
