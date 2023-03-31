@@ -4,6 +4,7 @@ from npe2 import fetch_manifest
 from utils.s3_adapter import S3Adapter
 from models.plugin import Plugin
 
+
 LOGGER = logging.getLogger()
 
 
@@ -29,10 +30,13 @@ def generate_manifest(event, context):
     LOGGER.info(f'Matching manifests in bucket: {existing_manifest_summary}')
     if existing_manifest_summary:
         LOGGER.info("Manifest exists... returning.")
+        Plugin.verify_exists_in_dynamo(plugin, version, key)
         return
 
     # write file to s3 to ensure we never retry this plugin version
-    s3.write_to_s3(json.dumps({}), key)
+    s3_body = json.dumps({})
+    s3.write_to_s3(s3_body, key)
+    Plugin.write_manifest_data(plugin, version, s3_body)
     try:
         LOGGER.info('Discovering manifest...')
         manifest = fetch_manifest(plugin, version)

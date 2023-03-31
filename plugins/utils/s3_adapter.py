@@ -47,7 +47,7 @@ class S3Adapter:
             duration = (time.perf_counter() - start) * 1000
             LOGGER.info(f'Writing object to {self._bucket} path={complete_path} time taken={duration}')
 
-    def get_object_list_in_bucket(self, prefix=""):
+    def get_object_list_in_bucket(self, prefix=''):
         start = time.perf_counter()
         complete_prefix = self._get_complete_path(prefix)
         try:
