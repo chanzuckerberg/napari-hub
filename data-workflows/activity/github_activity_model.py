@@ -36,7 +36,12 @@ class GitHubActivityType(Enum):
         return self.type_identifier_formatter.format(identifier)
 
     def get_query_timestamp_projection(self) -> str:
-        return '1' if self is GitHubActivityType.TOTAL else f"DATE_TRUNC('{self.name}', timestamp)"
+        if self is GitHubActivityType.LATEST:
+            return '1'
+        elif self is GitHubActivityType.TOTAL
+            return '2'
+        else:
+            return f"DATE_TRUNC('{self.name}', timestamp)"
 
 
 class GitHubActivity(Model):
