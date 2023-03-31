@@ -1,8 +1,8 @@
 import json
 import logging
 from npe2 import fetch_manifest
-
 from utils.s3_adapter import S3Adapter
+from models.plugin import Plugin
 
 LOGGER = logging.getLogger()
 
@@ -42,3 +42,4 @@ def generate_manifest(event, context):
         s3_body = json.dumps({'error': str(e)})
 
     s3.write_to_s3(s3_body, key)
+    Plugin.write_manifest_data(plugin, version, s3_body)
