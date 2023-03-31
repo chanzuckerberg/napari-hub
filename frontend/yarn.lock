@@ -187,11 +187,6 @@
   dependencies:
     "@babel/types" "^7.16.7"
 
-"@babel/helper-string-parser@^7.19.4":
-  version "7.19.4"
-  resolved "https://registry.yarnpkg.com/@babel/helper-string-parser/-/helper-string-parser-7.19.4.tgz#38d3acb654b4701a9b77fb0615a96f775c3a9e63"
-  integrity sha512-nHtDoQcuqFmwYNYPz3Rah5ph2p8PFeFCsZk9A/48dPc/rGocJ5J3hAAZ7pb76VWX3fZKu+uEr/FhH5jLx7umrw==
-
 "@babel/helper-validator-identifier@^7.12.11":
   version "7.12.11"
   resolved "https://registry.yarnpkg.com/@babel/helper-validator-identifier/-/helper-validator-identifier-7.12.11.tgz"
@@ -1886,11 +1881,6 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.37.tgz"
   integrity sha512-XYmBiy+ohOR4Lh5jE379fV2IU+6Jn4g5qASinhitfyO71b/sCo6MKsMLF5tc7Zf2CE8hViVQyYSobJNke8OvUw==
 
-"@types/node@^15.14.1":
-  version "15.14.9"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-15.14.9.tgz#bc43c990c3c9be7281868bbc7b8fdd6e2b57adfa"
-  integrity sha512-qjd88DrCxupx/kJD5yQgZdcYKZKSIGBVDIBE1/LTGcNm3d2Np/jxojkdePDdfnBHJc5W7vSMpbJ1aB7p/Py69A==
-
 "@types/node@^17.0.5":
   version "17.0.30"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-17.0.30.tgz#2c6e8512acac70815e8176aa30c38025067880ef"
@@ -2409,11 +2399,6 @@ ajv@^8.0.1:
     json-schema-traverse "^1.0.0"
     require-from-string "^2.0.2"
     uri-js "^4.2.2"
-
-allure-commandline@^2.21.0:
-  version "2.21.0"
-  resolved "https://registry.yarnpkg.com/allure-commandline/-/allure-commandline-2.21.0.tgz#57433c32ac7dec10786a388542a27a1307d1443a"
-  integrity sha512-1MMFkEhMScOFRkisuZwp52KrQVpPuhpK4SgIys9GPLqwczt9NcsI2G11XY2TSWydP5gBaPoSakevFHpqKVHaZw==
 
 ansi-align@^3.0.0:
   version "3.0.0"
@@ -4754,23 +4739,6 @@ expect@^27.5.1:
     jest-matcher-utils "^27.5.1"
     jest-message-util "^27.5.1"
 
-experimental-allure-js-commons@=0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/experimental-allure-js-commons/-/experimental-allure-js-commons-0.0.1.tgz#7fc0a16b614e19544e706e0b2ac75b1bb16227df"
-  integrity sha512-/cduBI0j/Vj4+NyriSu4yHPetuXxOvg2xH10VAs2w9l0P917qKWhRO58gZrn6aXZBDalrmjAQXiqYNz2odNxOg==
-  dependencies:
-    mkdirp "^1.0.4"
-    properties "^1.2.1"
-    uuid "^8.3.0"
-
-experimental-allure-playwright@^0.0.3:
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/experimental-allure-playwright/-/experimental-allure-playwright-0.0.3.tgz#3d39f41c76e5e272b10ee23942a1386346424161"
-  integrity sha512-SLLy5ipeAGRR/z4ZB0IXI8DZnYovoBfFwYV8ChrBbQsaAQJw9ZBCuMIkUHELd/dms+xakxWi6vKOAHEz7DcOvw==
-  dependencies:
-    "@types/node" "^15.14.1"
-    experimental-allure-js-commons "=0.0.1"
-
 express@4.18.1:
   version "4.18.1"
   resolved "https://registry.yarnpkg.com/express/-/express-4.18.1.tgz#7797de8b9c72c857b9cd0e14a5eea80666267caf"
@@ -7079,13 +7047,6 @@ loose-envify@^1.1.0, loose-envify@^1.4.0:
   dependencies:
     js-tokens "^3.0.0 || ^4.0.0"
 
-lowdb@^5.0.5:
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/lowdb/-/lowdb-5.1.0.tgz#3d9f13522ea92e445348a7d455a69ce570c2f51d"
-  integrity sha512-OEysJ2S3j05RqehEypEv3h6EgdV4Y7LTq7LngRNqe1IxsInOm66/sa3fzoI6mmqs2CC+zIJW3vfncGNv2IGi3A==
-  dependencies:
-    steno "^3.0.0"
-
 lower-case@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/lower-case/-/lower-case-2.0.2.tgz"
@@ -7915,11 +7876,6 @@ mkdirp-classic@^0.5.2, mkdirp-classic@^0.5.3:
   version "0.5.3"
   resolved "https://registry.yarnpkg.com/mkdirp-classic/-/mkdirp-classic-0.5.3.tgz#fa10c9115cc6d8865be221ba47ee9bed78601113"
   integrity sha512-gKLcREMhtuZRwRAfqP3RFW+TK4JqApVBtOIftVgjuABpAtpxhPGaDcfvbhNvD0B8iD1oUr/txX35NjcaY6Ns/A==
-
-mkdirp@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-1.0.4.tgz#3eb5ed62622756d79a5f0e2a221dfebad75c2f7e"
-  integrity sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==
 
 mri@^1.1.0:
   version "1.2.0"
@@ -8867,11 +8823,6 @@ prop-types@^15.5.8, prop-types@^15.6.2:
     object-assign "^4.1.1"
     react-is "^16.8.1"
 
-properties@^1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/properties/-/properties-1.2.1.tgz#0ee97a7fc020b1a2a55b8659eda4aa8d869094bd"
-  integrity sha512-qYNxyMj1JeW54i/EWEFsM1cVwxJbtgPp8+0Wg9XjNaK6VE/c4oRi6PNu5p7w1mNXEIQIjV5Wwn8v8Gz82/QzdQ==
-
 property-information@^6.0.0:
   version "6.1.1"
   resolved "https://registry.yarnpkg.com/property-information/-/property-information-6.1.1.tgz#5ca85510a3019726cb9afed4197b7b8ac5926a22"
@@ -9683,9 +9634,9 @@ shebang-regex@^3.0.0:
   integrity sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A==
 
 shell-quote@^1.6.1:
-  version "1.7.2"
-  resolved "https://registry.yarnpkg.com/shell-quote/-/shell-quote-1.7.2.tgz"
-  integrity sha512-mRz/m/JVscCrkMyPqHc/bczi3OQHkLTqXHEFu0zDhK/qfv3UcOA4SVmRCLmos4bhjr9ekVQubj/R7waKapmiQg==
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/shell-quote/-/shell-quote-1.8.0.tgz#20d078d0eaf71d54f43bd2ba14a1b5b9bfa5c8ba"
+  integrity sha512-QHsz8GgQIGKlRi24yFc6a6lN69Idnx634w49ay6+jA5yFh7a1UY+4Rp6HPx/L/1zcEDPEij8cIsiqR6bQsE5VQ==
 
 side-channel@^1.0.4:
   version "1.0.4"
@@ -9926,11 +9877,6 @@ statuses@2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/statuses/-/statuses-2.0.1.tgz#55cb000ccf1d48728bd23c685a063998cf1a1b63"
   integrity sha512-RwNA9Z/7PrK06rYLIzFMlaF+l73iwpzsqRIFgbMLbTcLD6cOao82TaWefPXQvB2fOC4AjuYSEndS7N/mTCbkdQ==
-
-steno@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/steno/-/steno-3.0.0.tgz#212a11e8ef3646b610efc8953842f556fd0df28f"
-  integrity sha512-uZtn7Ht9yXLiYgOsmo8btj4+f7VxyYheMt8g6F1ANjyqByQXEE2Gygjgenp3otHH1TlHsS4JAaRGv5wJ1wvMNw==
 
 string-argv@^0.3.1:
   version "0.3.1"
@@ -10894,7 +10840,7 @@ utils-merge@1.0.1:
   resolved "https://registry.yarnpkg.com/utils-merge/-/utils-merge-1.0.1.tgz"
   integrity sha1-n5VxD1CiZ5R7LMwSR0HBAoQn5xM=
 
-uuid@^8.3.0, uuid@^8.3.2:
+uuid@^8.3.2:
   version "8.3.2"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
   integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
