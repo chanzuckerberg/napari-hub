@@ -38,7 +38,7 @@ class GitHubActivityType(Enum):
     def get_query_timestamp_projection(self) -> str:
         if self is GitHubActivityType.LATEST:
             return '1'
-        elif self is GitHubActivityType.TOTAL
+        elif self is GitHubActivityType.TOTAL:
             return '2'
         else:
             return f"DATE_TRUNC('{self.name}', timestamp)"

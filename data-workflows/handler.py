@@ -12,12 +12,13 @@ def _setup_logging():
 
 
 def _update_activity() -> None:
-    parameter_store_adapter = ParameterStoreAdapter()
-    last_updated_timestamp = parameter_store_adapter.get_last_updated_timestamp()
+    #parameter_store_adapter = ParameterStoreAdapter()
+    #last_updated_timestamp = parameter_store_adapter.get_last_updated_timestamp()
     current_timestamp = utils.utils.get_current_timestamp()
-    activity.processor.update_install_activity(last_updated_timestamp, current_timestamp)
+    last_updated_timestamp = 1 # get timestamp in milliseconds
+    #activity.processor.update_install_activity(last_updated_timestamp, current_timestamp)
     activity.processor.update_github_activity(last_updated_timestamp, current_timestamp)
-    parameter_store_adapter.set_last_updated_timestamp(current_timestamp)
+    #parameter_store_adapter.set_last_updated_timestamp(current_timestamp)
 
 
 def handle(event, context):
@@ -30,3 +31,7 @@ def handle(event, context):
 
         if event_type == 'activity':
             _update_activity()
+
+
+if __name__ == '__main__':
+    handle({'Records': [{'body': '{"type":"activity"}'}]}, None)
