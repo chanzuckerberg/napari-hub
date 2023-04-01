@@ -57,15 +57,16 @@ def get_plugins_install_count_since_timestamp(plugins_by_earliest_ts: dict[str, 
 def get_plugins_commit_count_since_timestamp(plugins_by_earliest_ts: dict[str, datetime],
                                              github_activity_type: GitHubActivityType) -> dict[str, List]:
     # TODO: fill in (...) for the logic to get the commit count since a specific starting point for each plugin
+    subquery = f"""LOWER(repo) IN ({','.join([f"'{plugin}'" for plugin in plugins_by_earliest_ts.keys()])})"""
     query = f"""
             SELECT 
-                LOWER(file_project) AS plugin, 
+                LOWER(repo) AS repo, 
                 {github_activity_type.get_query_projection()}
             FROM
                 imaging.github.commits
             WHERE 
                 repo_type = 'plugin'
-                AND (...)
+                AND {subquery}
             GROUP BY 1, 2
             ORDER BY 1, 2
             """
@@ -81,14 +82,14 @@ def get_plugins_with_commits_in_window(start_millis: int, end_millis: int) -> di
                 imaging.github.commits  
             WHERE 
                 repo_type = 'plugin'
-                AND TO_TIMESTAMP(ingestion_timestamp) > {_format_timestamp(timestamp_millis=start_millis)}
-                AND TO_TIMESTAMP(ingestion_timestamp) <= {_format_timestamp(timestamp_millis=end_millis)}
+                AND TO_TIMESTAMP(ingestion_time) > {_format_timestamp(timestamp_millis=start_millis)}
+                AND TO_TIMESTAMP(ingestion_time) <= {_format_timestamp(timestamp_millis=end_millis)}
             GROUP BY repo
             ORDER BY repo
             """
 
     LOGGER.info(f'Querying for plugins added between start_timestamp={start_millis} end_timestamp={end_millis}')
-    return _mapped_query_results(query, "GITHUB", {}, _cursor_to_timestamp_by_plugin_mapper)
+    return _mapped_query_results(query, 'GITHUB', {}, _cursor_to_timestamp_by_plugin_mapper)
 
 
 def _generate_subquery_by_type(plugins_by_timestamp: dict[str, datetime], install_activity_type: InstallActivityType):

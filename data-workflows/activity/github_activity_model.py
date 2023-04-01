@@ -18,7 +18,7 @@ def to_utc_timestamp_in_millis(timestamp: datetime) -> int:
 
 
 class GitHubActivityType(Enum):
-    def __new__(cls, value, timestamp_formatter, type_identifier_formatter):
+    def __new__(cls, timestamp_formatter, type_identifier_formatter):
         install_activity_type = object.__new__(cls)
         install_activity_type._value = auto()
         install_activity_type.timestamp_formatter = timestamp_formatter
@@ -71,21 +71,20 @@ class GitHubActivity(Model):
 def transform_and_write_to_dynamo(data: dict[str, List], activity_type: GitHubActivityType) -> None:
     LOGGER.info(f'Starting item creation for github-activity type={activity_type.name}')
 
-    type_timestamp_format: Callable[[datetime], str] = activity_type.get_type_timestamp_formatter()
-    timestamp_format: Callable[[datetime], Union[int, None]] = activity_type.get_timestamp_formatter()
-
     batch = GitHubActivity.batch_write()
 
     start = time.perf_counter()
     count = 0
-    for plugin_name, install_activities in data.items():
-        for activity in install_activities:
+    for plugin_name, github_activities in data.items():
+        for activity in github_activities:
             timestamp = activity['timestamp']
+            print(timestamp)
+            print(type(timestamp))
 
             item = GitHubActivity(plugin_name.lower(),
-                                  type_timestamp_format(timestamp),
+                                  activity_type.format_to_type_identifier(timestamp),
                                   granularity=activity_type.name,
-                                  timestamp=timestamp_format(timestamp),
+                                  timestamp=activity_type.format_to_timestamp(timestamp),
                                   number_of_commits=activity['count'],
                                   repo=activity['repo'])
             batch.save(item)
