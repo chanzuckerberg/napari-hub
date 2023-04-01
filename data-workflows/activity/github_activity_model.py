@@ -10,6 +10,8 @@ from pynamodb.attributes import UnicodeAttribute, NumberAttribute
 
 from utils.utils import get_current_timestamp
 
+from backend.api.model import get_public_plugins, get_excluded_plugins
+
 LOGGER = logging.getLogger()
 
 
@@ -75,18 +77,23 @@ def transform_and_write_to_dynamo(data: dict[str, List], activity_type: GitHubAc
 
     start = time.perf_counter()
     count = 0
-    for plugin_name, github_activities in data.items():
+    public_plugins = get_public_plugins()
+    excluded_plugins = get_excluded_plugins()
+    processed_public_plugins = {k.lower(): k for k, v in public_plugins.items()}
+    for repo_name, github_activities in data.items():
         for activity in github_activities:
-            timestamp = activity['timestamp']
-            print(timestamp)
-            print(type(timestamp))
+            plugin_name = repo_name.split('/')[1]
+            if plugin_name in excluded_plugins:
+                continue
+            if plugin_name in processed_public_plugins:
+                plugin_name = processed_public_plugins[plugin_name]
 
-            item = GitHubActivity(plugin_name.lower(),
-                                  activity_type.format_to_type_identifier(timestamp),
+            item = GitHubActivity(plugin_name,
+                                  activity_type.format_to_type_identifier(activity['timestamp']),
                                   granularity=activity_type.name,
-                                  timestamp=activity_type.format_to_timestamp(timestamp),
+                                  timestamp=activity_type.format_to_timestamp(activity['timestamp']),
                                   number_of_commits=activity['count'],
-                                  repo=activity['repo'])
+                                  repo=repo_name)
             batch.save(item)
             count += 1
 
