@@ -56,7 +56,7 @@ def get_plugins_install_count_since_timestamp(plugins_by_earliest_ts: dict[str, 
 
 def get_plugins_commit_count_since_timestamp(plugins_by_earliest_ts: dict[str, datetime],
                                              github_activity_type: GitHubActivityType) -> dict[str, List]:
-    # TODO: fill in (...) for the logic to get the commit count since a specific starting point for each plugin
+    # TODO: construct the subquery for MONTH now that LATEST and TOTAL work
     subquery = f"""LOWER(repo) IN ({','.join([f"'{plugin}'" for plugin in plugins_by_earliest_ts.keys()])})"""
     query = f"""
             SELECT 

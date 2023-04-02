@@ -27,7 +27,7 @@ class GitHubActivityType(Enum):
         install_activity_type.type_identifier_formatter = type_identifier_formatter
         return install_activity_type
 
-    LATEST = (to_utc_timestamp_in_millis, 'LATEST:')
+    LATEST = (lambda timestamp: None, 'LATEST:')
     MONTH = (to_utc_timestamp_in_millis, 'MONTH:{0:%Y%m}')
     TOTAL = (lambda timestamp: None, 'TOTAL:')
 
@@ -87,12 +87,19 @@ def transform_and_write_to_dynamo(data: dict[str, List], activity_type: GitHubAc
                 continue
             if plugin_name in processed_public_plugins:
                 plugin_name = processed_public_plugins[plugin_name]
+            if activity_type.name == "LATEST":
+                timestamp = activity['count']
+                number_of_commits = activity['timestamp']
+            elif activity_type.name == "TOTAL":
+                timestamp = activity['timestamp']
+                number_of_commits = activity['count']
+
 
             item = GitHubActivity(plugin_name,
                                   activity_type.format_to_type_identifier(activity['timestamp']),
                                   granularity=activity_type.name,
-                                  timestamp=activity_type.format_to_timestamp(activity['timestamp']),
-                                  number_of_commits=activity['count'],
+                                  timestamp=timestamp,
+                                  number_of_commits=number_of_commits,
                                   repo=repo_name)
             batch.save(item)
             count += 1
