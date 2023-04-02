@@ -209,11 +209,12 @@ interface LinkData {
 }
 
 interface LinksProps {
+  ariaLabel: string;
   links: LinkData[];
   children: ReactElement;
 }
 
-function Links({ children, links }: LinksProps) {
+function Links({ ariaLabel, children, links }: LinksProps) {
   const [open, setOpen] = useState(false);
   const hasEmptyLinks = links.every((link) => !link.value);
 
@@ -243,16 +244,24 @@ function Links({ children, links }: LinksProps) {
       onOpen={openTooltip}
       onClose={closeTooltip}
       title={
-        <ul>
+        <div className="flex flex-col">
           {links.map((link) => (
-            <li className="hover:bg-hub-gray-100 py-sds-s px-sds-l">
-              <Link href={link.value}>{link.label}</Link>
-            </li>
+            <Link
+              className="py-sds-s px-sds-l hover:bg-hub-gray-100"
+              href={link.value}
+              key={link.value}
+            >
+              {link.label}
+            </Link>
           ))}
-        </ul>
+        </div>
       }
     >
-      <ButtonIcon onClick={openTooltip} disabled={hasEmptyLinks}>
+      <ButtonIcon
+        onClick={openTooltip}
+        disabled={hasEmptyLinks}
+        aria-label={ariaLabel}
+      >
         {hasEmptyLinks
           ? cloneElement<IconColorProps>(children, {
               color: '#999999',
@@ -267,7 +276,7 @@ function CodeLinks() {
   const metadata = usePluginMetadata();
 
   return (
-    <Links links={[metadata.sourceCode]}>
+    <Links ariaLabel="plugin-code-links" links={[metadata.sourceCode]}>
       <Code />
     </Links>
   );
@@ -277,7 +286,10 @@ function WebsiteLinks() {
   const metadata = usePluginMetadata();
 
   return (
-    <Links links={[metadata.projectSite, metadata.documentationSite]}>
+    <Links
+      ariaLabel="plugin-website-links"
+      links={[metadata.projectSite, metadata.documentationSite]}
+    >
       <Website />
     </Links>
   );
@@ -287,7 +299,10 @@ function SupportLinks() {
   const metadata = usePluginMetadata();
 
   return (
-    <Links links={[metadata.supportSite, metadata.reportIssues]}>
+    <Links
+      ariaLabel="plugin-support-links"
+      links={[metadata.supportSite, metadata.reportIssues]}
+    >
       <ProjectSupport className="ml-2" />
     </Links>
   );

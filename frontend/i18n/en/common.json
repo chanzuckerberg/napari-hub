@@ -44,29 +44,35 @@
     "serverError": "Internal server error"
   },
 
-  "htmlMeta": {
+  "seo": {
     "about": {
-      "description": "The napari hub is a service of the Chan Zuckerberg Initiative in collaboration with napari.\nThe napari hub seeks to solve many of the challenges and needs in finding analysis solutions to bioimaging problems."
+      "title": "About the napari hub - Image Analysis Plugins for napari",
+      "description": "Learn about the napari hub, a platform for discovery and sharing of napari plugins that solve your image analysis challenges hosted by Chan Zuckerberg Initiative."
     },
 
     "contact": {
-      "description": "If you would like to contact the napari hub team, you can do so in a variety of ways. For help with or ideas for the napari hub, please check out the discussion board."
+      "title": "Contact Us - napari hub",
+      "description": "Find out how to get in touch for help, issues, or inquiries about the napari hub."
     },
 
     "faq": {
-      "description": "We hope these questions will help you in your napari plugin journey! We endeavour to update this regularly. If you need additional information or assistance, check out the Contact page or you can reach a human at team@napari-hub.org."
+      "title": "Frequently Asked Questions - napari hub",
+      "description": "Learn about how to build and share plugins and use napari and the napari hub."
     },
 
     "home": {
-      "description": "A site for napari plugins. Discover plugins that solve your image analysis challenges, learn how to install into napari, and share image analysis tools with napari’s growing community."
+      "title": "Home",
+      "description": "Discover plugins that solve your image analysis challenges, learn how to install into napari, and share image analysis tools with napari’s growing community."
     },
 
     "privacy": {
-      "description": "Information about napari hub's website privacy notice."
+      "title": "Website Privacy Policy - napari hub",
+      "description": "Learn about the napari hub website privacy policy including how and when we use your data."
     },
 
     "collections": {
-      "description": "Useful, awesome, and interesting plugins curated by the napari community."
+      "title": "Collections",
+      "description": "Find useful, awesome, and interesting plugins curated by the napari community for your image analysis needs."
     }
   }
 }

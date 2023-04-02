@@ -96,13 +96,13 @@ const StyledPopper = styled(Popper)`
 `;
 
 function InputDropdown(props: InputDropdownProps) {
-  const { label, sdsStage } = props;
+  const { label, sdsStage, ...rest } = props;
   const iconSizeClassName = 'w-4 h-4';
 
   return (
     <div className="border-b border-black">
       <Button
-        {...props}
+        {...rest}
         className="text-black w-full flex justify-between p-0 pb-2"
       >
         <span className="font-semibold text-sm">{label}</span>

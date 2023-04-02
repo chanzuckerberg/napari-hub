@@ -36,7 +36,7 @@ export function CollectionPluginList() {
               )}
               href={`/plugins/${plugin.name}`}
             >
-              <h3
+              <h2
                 className={clsx(
                   'leading-[161%] screen-495:leading-[132%] ',
                   'font-semibold text-[14px] screen-495:text-[17px]',
@@ -45,7 +45,7 @@ export function CollectionPluginList() {
                 )}
               >
                 {plugin.display_name || plugin.name}
-              </h3>
+              </h2>
               <span
                 className={clsx(
                   'text-[9px] screen-495:text-[11px]',

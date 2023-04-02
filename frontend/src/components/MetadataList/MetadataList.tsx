@@ -58,7 +58,7 @@ export function MetadataList({
           tooltip={null}
         >
           {/* List title */}
-          <h4
+          <p
             className={clsx(
               // Font
               'font-bold whitespace-nowrap',
@@ -68,7 +68,7 @@ export function MetadataList({
             )}
           >
             {label}:
-          </h4>
+          </p>
 
           {/* List values */}
           <ul

@@ -22,7 +22,7 @@ async function globalSetup(config: FullConfig): Promise<void> {
     process.env.CI = 'true';
   }
 
-  // for staging & prd we need to create test data
+  // for staging & prod we need to create test data
   if (ENV === 'staging' || ENV === 'prod') {
     const pluginDataFile = `e2e/fixtures/${ENV}.json`;
     const api = API[ENV.toUpperCase()];
@@ -53,6 +53,5 @@ async function globalSetup(config: FullConfig): Promise<void> {
     });
   }
 }
-
 // eslint-disable-next-line import/no-default-export
 export default globalSetup;

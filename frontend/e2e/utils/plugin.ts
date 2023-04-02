@@ -4,11 +4,13 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import { expect } from '@playwright/test';
+import { expect, Page } from '@playwright/test';
+import { PluginFilter } from 'e2e/types/filter';
 
 import { RESULT_AUTHORS, RESULT_NAME, RESULT_SUMMARY } from './constants';
-import { parseItem } from './fixture';
-import { getByTestID, getByText, getMetadata } from './selectors';
+import { filterPlugins, verifyFilterResults } from './filter';
+import { parseItem, searchPluginFixture } from './fixture';
+import { getMetadata } from './selectors';
 
 export function formateDate(dateStr: string) {
   const d = new Date(dateStr)
@@ -37,23 +39,21 @@ export async function verifyPlugin(plugin: any, data: any): Promise<void> {
   // plugin display name
   // todo: uncomment after new test id gets deployed to the environment
   // expect(
-  //   await plugin.locator(getByTestID(DISPLAY_NAME)).textContent(),
+  //   await plugin.getByTestId(DISPLAY_NAME)).textContent(),
   // ).toBe(fixture[i].display_name);
 
   // plugin name
   // todo: change this to RESULT_NAME, once the above changed
-  expect(await plugin.locator(getByTestID(RESULT_NAME)).textContent()).toBe(
-    data.name,
-  );
+  expect(await plugin.getByTestId(RESULT_NAME).textContent()).toBe(data.name);
 
   // plugin summary
-  expect(await plugin.locator(getByTestID(RESULT_SUMMARY)).textContent()).toBe(
+  expect(await plugin.getByTestId(RESULT_SUMMARY).textContent()).toBe(
     data.summary,
   );
 
   // plugin authors
   const pluginAuthors = await plugin
-    .locator(getByTestID(RESULT_AUTHORS))
+    .getByTestId(RESULT_AUTHORS)
     .allTextContents();
   const fixtureAuthors = getAuthorNames(data.authors);
   // check all authors displayed
@@ -100,7 +100,7 @@ export async function verifyPlugin(plugin: any, data: any): Promise<void> {
     data.category['Workflow step'] !== undefined
   ) {
     const fixtureWorkflowSteps = data.category['Workflow step'];
-    await expect(plugin.locator(getByText('Workflow step'))).toBeVisible();
+    await expect(plugin.getByText('Workflow step')).toBeVisible();
 
     if ((await plugin.locator('text=/Show \\d more/i').count()) > 0) {
       await plugin.locator('text=/Show \\d+ more/i').first().click();
@@ -108,8 +108,22 @@ export async function verifyPlugin(plugin: any, data: any): Promise<void> {
 
     for (const fixtureWorkflowStep of fixtureWorkflowSteps) {
       await expect(
-        plugin.locator(getByText(fixtureWorkflowStep as string)),
+        plugin.getByText(fixtureWorkflowStep as string),
       ).toBeVisible();
     }
   }
+}
+
+export async function testPlugin(
+  page: Page,
+  filterBy: PluginFilter,
+  params: Array<any>,
+  orderBy: string,
+  viewportWidth?: number,
+) {
+  // prepare fixture data to compare against
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const fixtureData = searchPluginFixture(filterBy, orderBy);
+  await filterPlugins(page, filterBy, orderBy, viewportWidth);
+  await verifyFilterResults(page, filterBy, fixtureData, params, orderBy);
 }

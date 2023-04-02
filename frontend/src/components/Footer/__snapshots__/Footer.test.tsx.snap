@@ -200,6 +200,7 @@ exports[`<Footer /> should match snapshot 1`] = `
         class="border-r-[1px] border-black"
       />
       <a
+        aria-label="czi-link"
         class="ml-sds-xxs"
         href="https://chanzuckerberg.com"
         rel="noreferrer"

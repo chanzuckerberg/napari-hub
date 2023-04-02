@@ -23,7 +23,7 @@ module stack {
   env                   = local.env
   delete_protected      = false
   require_okta          = false
-  frontend_url          = "https://napari-hub.org"
+  frontend_url          = "https://www.napari-hub.org"
   backend_url           = "https://api.napari-hub.org"
   stack_prefix          = "/${var.stack_name}"
   tags                  = local.tags

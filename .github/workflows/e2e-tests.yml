@@ -3,7 +3,21 @@
 
 name: E2E Tests
 
+<<<<<<< HEAD
 on: push
+=======
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'frontend/**'
+  pull_request:
+    branches:
+      - '**'
+    paths:
+      - 'frontend/**'
+>>>>>>> main
 
 defaults:
   run:

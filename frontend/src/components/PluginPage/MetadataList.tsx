@@ -41,7 +41,7 @@ function MetadataListItem({ inline, title, values }: MetadataListItemProps) {
 
   return (
     <li className="mb-sds-l text-sm">
-      <h4
+      <p
         className={clsx(
           // Inline styles
           inline ? 'inline mr-sds-s' : 'block mb-sds-s',
@@ -54,7 +54,7 @@ function MetadataListItem({ inline, title, values }: MetadataListItemProps) {
         )}
       >
         {title}:
-      </h4>
+      </p>
 
       <ul
         className={clsx(

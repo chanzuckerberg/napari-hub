@@ -7,13 +7,12 @@ dotenv.config({
 });
 
 const config: PlaywrightTestConfig = {
-  workers: 1,
   expect: {
-    timeout: 60000,
+    timeout: 3000,
   },
   globalSetup: './globalSetup',
   outputDir: '../report',
-  fullyParallel: false,
+  fullyParallel: true,
   reporter: [
     ['list'],
     [
@@ -86,7 +85,7 @@ const config: PlaywrightTestConfig = {
     actionTimeout: 0,
     baseURL: 'https://staging.napari-hub.org/',
     screenshot: 'only-on-failure',
-    trace: 'on',
+    trace: 'retain-on-failure',
     video: 'on',
   },
 };

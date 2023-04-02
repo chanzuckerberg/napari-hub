@@ -15,8 +15,6 @@ exports[`<PluginComplexFilter /> should match snapshot 1`] = `
         <button
           class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium text-black w-full flex justify-between p-0 pb-2 css-1kjmhix-MuiButtonBase-root-MuiButton-root"
           data-testid="button"
-          label="pluginData:labels.operatingSystem"
-          sdsstage="default"
           tabindex="0"
           type="button"
         >

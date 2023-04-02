@@ -2,14 +2,17 @@ from concurrent import futures
 from datetime import datetime
 import json
 import os
-from typing import Tuple, Dict, List, Callable
+from typing import Tuple, Dict, List, Callable, Any
 from zipfile import ZipFile
 from io import BytesIO
 from collections import defaultdict
 import pandas as pd
+
+from api.models.metrics import InstallActivity
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
-from api.s3 import get_cache, cache, write_data, get_install_timeline_data, get_latest_commit, get_total_commit, get_commit_activity, get_recent_activity_data
+from api.s3 import get_cache, cache, write_data, get_install_timeline_data, get_latest_commit, get_commit_activity, \
+    get_recent_activity_data
 from utils.utils import render_description, send_alert, get_attribute, get_category_mapping, parse_manifest
 from utils.datadog import report_metrics
 from api.zulip import notify_new_packages
@@ -94,6 +97,7 @@ def get_frontend_manifest_metadata(plugin, version):
     interpreted_metadata = parse_manifest(raw_metadata)
     return interpreted_metadata
 
+
 def discover_manifest(plugin: str, version: str = None):
     """
     Invoke plugins lambda to generate manifest & write to cache.
@@ -110,6 +114,7 @@ def discover_manifest(plugin: str, version: str = None):
         Payload=json.dumps(lambda_event),
     )
 
+
 def get_manifest(plugin: str, version: str = None) -> dict:
     """
     Get plugin manifest file for a particular plugin, get latest if version is None.
@@ -123,7 +128,7 @@ def get_manifest(plugin: str, version: str = None) -> dict:
     elif version is None:
         version = plugins[plugin]
     plugin_metadata = get_cache(f'cache/{plugin}/{version}-manifest.json')
-    
+
     # plugin_metadata being None indicates manifest is not cached and needs processing 
     if plugin_metadata is None:
         return {'error': 'Manifest not yet processed.'}
@@ -238,7 +243,10 @@ def update_cache():
     excluded_plugins = get_updated_plugin_exclusion(plugins_metadata)
     visibility_plugins = {"public": {}, "hidden": {}}
     for plugin, version in plugins.items():
-        visibility = plugins_metadata[plugin].get('visibility', 'public')
+        if plugin in excluded_plugins:
+            visibility = excluded_plugins[plugin]
+        else:
+            visibility = plugins_metadata[plugin].get('visibility', 'public')
         if visibility in visibility_plugins:
             visibility_plugins[visibility][plugin] = version
 
@@ -269,6 +277,7 @@ def get_updated_plugin_exclusion(plugins_metadata):
     public: fully visible (default)
     hidden: plugin page exists, but doesn't show up in search listings
     disabled: no plugin page created, does not show up in search listings
+    blocked: no plugin page created, does not show up in search listings
 
     :param plugins_metadata: plugin metadata containing visibility information
     :return: updated exclusion list
@@ -393,7 +402,6 @@ def update_activity_data():
     _update_recent_activity_data()
     repo_to_plugin_dict = _get_repo_to_plugin_dict()
     _update_latest_commits(repo_to_plugin_dict)
-    _update_total_commits(repo_to_plugin_dict)
     _update_commit_activity(repo_to_plugin_dict)
 
 
@@ -418,10 +426,6 @@ def _update_activity_timeline_data():
         for row in cursor:
             csv_string += str(row[0]) + ',' + str(row[1]) + ',' + str(row[2]) + '\n'
     write_data(csv_string, "activity_dashboard_data/plugin_installs.csv")
-
-
-def _is_not_valid_limit(limit):
-    return not limit.isdigit() or limit == '0'
 
 
 def _process_for_timeline(plugin_df, limit):
@@ -508,31 +512,6 @@ def _update_latest_commits(repo_to_plugin_dict):
     write_data(json.dumps(data), "activity_dashboard_data/latest_commits.json")
 
 
-def _update_total_commits(repo_to_plugin_dict):
-    """
-    Get the total commit occurred for the plugin
-    """
-    query = f"""
-        SELECT 
-            repo, sum(1) as total_commits
-        FROM 
-            imaging.github.commits
-        WHERE 
-            repo_type = 'plugin'
-        GROUP BY 1
-        ORDER BY total_commits desc   
-    """
-    cursor_list = _execute_query(query, "GITHUB")
-    data = {}
-    for cursor in cursor_list:
-        for row in cursor:
-            repo = row[0]
-            if repo in repo_to_plugin_dict:
-                plugin = repo_to_plugin_dict[repo]
-                data[plugin] = int(row[1])
-    write_data(json.dumps(data), "activity_dashboard_data/total_commits.json")
-
-
 def _update_commit_activity(repo_to_plugin_dict):
     """
     Get the commit activity occurred for the plugin in the past year
@@ -544,45 +523,73 @@ def _update_commit_activity(repo_to_plugin_dict):
             imaging.github.commits
         WHERE 
             repo_type = 'plugin'
-            AND month >= dateadd(month, -12, DATE_TRUNC(month, CURRENT_DATE())) 
-            AND month < DATE_TRUNC(month, CURRENT_DATE())
         GROUP BY 1,2
     """
-    repo_to_plugin_dict = _get_repo_to_plugin_dict()
     cursor_list = _execute_query(query, "GITHUB")
     data = {}
     for cursor in cursor_list:
-        for row in cursor:
-            repo = row[0]
+        for repo, month, num_commits in cursor:
             if repo in repo_to_plugin_dict:
                 plugin = repo_to_plugin_dict[repo]
-                data.setdefault(plugin, []).append({'timestamp': int(pd.to_datetime(row[1]).strftime("%s")) * 1000, 'commits': int(row[2])})
+                timestamp = int(pd.to_datetime(month).strftime("%s")) * 1000
+                commits = int(num_commits)
+                obj = {'timestamp': timestamp, 'commits': commits}
+                data.setdefault(plugin, []).append(obj)
     for plugin in data:
         data[plugin] = sorted(data[plugin], key=lambda x: (x['timestamp']))
     write_data(json.dumps(data), "activity_dashboard_data/commit_activity.json")
 
 
-def get_metrics_for_plugin(plugin: str, limit: str) -> Dict:
-    plugin = plugin.lower()
-    data = get_install_timeline_data(plugin)
-    install_stats = _process_for_stats(data)
-    timeline = [] if _is_not_valid_limit(limit) else _process_for_timeline(data, int(limit))
-    maintenance_timeline = get_commit_activity(plugin)
+def _get_usage_data(plugin: str, limit: int, use_dynamo: bool) -> Dict[str, Any]:
+    """
+    Fetches plugin usage_data from s3 or dynamo based on the in_test variable
+    :returns (dict[str, Any]): A dict with the structure {'timeline': List, 'stats': Dict[str, int]}
 
-    usage_stats = {
-        'total_installs': install_stats.get('totalInstalls', 0),
-        'installs_in_last_30_days': get_recent_activity_data().get(plugin, 0)
-    }
+    :params str plugin: Name of the plugin in lowercase.
+    :params int limit: Sets the number of records to be fetched for timeline.
+    :params bool use_dynamo: Fetch data from dynamo if True, else fetch from s3.
+    """
+    if use_dynamo:
+        timeline = InstallActivity.get_timeline(plugin, limit) if limit else []
+        usage_stats = {
+            'total_installs': InstallActivity.get_total_installs(plugin),
+            'installs_in_last_30_days': InstallActivity.get_recent_installs(plugin, 30)
+        }
+    else:
+        data = get_install_timeline_data(plugin)
+        usage_stats = {
+            'total_installs': _process_for_stats(data).get('totalInstalls', 0),
+            'installs_in_last_30_days': get_recent_activity_data().get(plugin, 0),
+        }
+        timeline = _process_for_timeline(data, limit) if limit else []
+
+    return {'timeline': timeline, 'stats': usage_stats, }
+
+
+def get_metrics_for_plugin(plugin: str, limit: str, use_dynamo_for_usage: bool) -> Dict[str, Any]:
+    """
+    Fetches plugin metrics from s3 or dynamo based on the in_test variable
+    :return dict[str, Any]: A map with entries for usage and maintenance
+
+    :params str plugin: Name of the plugin in lowercase for which usage data needs to be fetched.
+    :params str limit_str: Number of records to be fetched for timeline. Defaults to 0 for invalid number.
+    :params bool use_dynamo_for_usage: Fetch data from dynamo if True else fetch from s3. (default= False)
+    """
+    plugin = plugin.lower()
+    commit_activity = get_commit_activity(plugin)
+
+    maintenance_timeline = []
+    month_delta = 0
+
+    if limit.isdigit() and limit != '0':
+        month_delta = max(int(limit), 0)
+        maintenance_timeline = commit_activity[-month_delta:]
+
     maintenance_stats = {
         'latest_commit_timestamp': get_latest_commit(plugin),
-        'total_commits': get_total_commit(plugin),
+        'total_commits': sum([item['commits'] for item in commit_activity]),
     }
-    usage_data = {
-        'timeline': timeline,
-        'stats': usage_stats,
+    return {
+        'usage': _get_usage_data(plugin, month_delta, use_dynamo_for_usage),
+        'maintenance': {'timeline': maintenance_timeline, 'stats': maintenance_stats, }
     }
-    maintenance_data = {
-        'timeline': maintenance_timeline,
-        'stats': maintenance_stats,
-    }
-    return {'usage': usage_data, 'maintenance': maintenance_data}

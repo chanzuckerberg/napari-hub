@@ -52,6 +52,7 @@ export function Pagination({
         disabled={isDisabled}
         onClick={type === 'left' ? onPrevPage : onNextPage}
         type="button"
+        aria-label={`pagination-${type}`}
       >
         {type === 'left' ? <ChevronLeft /> : <ChevronRight />}
       </button>

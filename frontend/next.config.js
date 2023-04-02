@@ -49,6 +49,7 @@ module.exports = {
   ...previewOptions,
   i18n: isPreview ? undefined : i18n,
 
+  productionBrowserSourceMaps: true,
   basePath: process.env.BASE_PATH || '',
   pageExtensions: ['ts', 'tsx'],
 
