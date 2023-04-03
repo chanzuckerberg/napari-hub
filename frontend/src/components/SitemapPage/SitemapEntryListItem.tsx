@@ -34,9 +34,9 @@ export function SitemapEntryListItem({
         </Text>
       )}
 
-      <Text variant={isScreen600 ? 'bodyM' : 'bodyS'}>
+      <Text className="mb-sds-m" variant={isScreen600 ? 'bodyM' : 'bodyS'}>
         <Link
-          className="underline block mb-sds-m"
+          className="underline"
           // Pass pathname so it's treated as an internal link
           href={createUrl(entry.url).pathname}
         >
