@@ -52,22 +52,23 @@ def _hash_category(category: Dict[str, str]) -> str:
     return category_hash.hexdigest()
 
 
-def run_seed_s3_categories_workflow(edam_version: str, s3_path: str):
+def run_seed_s3_categories_workflow(version: str, s3_path: str):
     """
     Runs data workflow for populating the category dynamo table from an S3
     source on the same depoyment stack.
     """
 
     bucket = get_required_env("BUCKET")
+    env = get_required_env("ENV")
 
     LOGGER.info(
-        f"Seeding {edam_version} category data from S3 "
-        f"s3_path={s3_path} bucket={bucket} table={CategoryModel.Meta.table_name}"
+        f"Seeding {version} category data from S3 "
+        f"prefix={STACK_NAME} s3_path={s3_path} bucket={bucket} table={CategoryModel.Meta.table_name}"
     )
 
     client = S3Client(
         bucket=bucket,
-        prefix="" if STACK_NAME in ("prod", "staging") else STACK_NAME,
+        prefix=STACK_NAME if env == "dev" else "",
     )
     data = client.load_json_from_s3(s3_path)
 
@@ -79,8 +80,8 @@ def run_seed_s3_categories_workflow(edam_version: str, s3_path: str):
         for category in categories:
             item = CategoryModel(
                 name=slugify(name),
-                version_hash=f"{edam_version}:{_hash_category(category)}",
-                version=edam_version,
+                version_hash=f"{version}:{_hash_category(category)}",
+                version=version,
                 formatted_name=name,
                 dimension=category.get("dimension", ""),
                 hierarchy=category.get("hierarchy", []),

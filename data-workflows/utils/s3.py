@@ -1,9 +1,11 @@
 import boto3
 import json
 import logging
+import time
 
 from os import path
 from typing import Any, Dict
+from utils.time import print_perf_duration
 
 
 class S3Client:
@@ -24,9 +26,11 @@ class S3Client:
         return path.join(self._prefix, s3_path)
 
     def _get_from_s3(self, s3_path):
+        start = time.perf_counter()
         obj = self._client.get_object(
             Bucket=self._bucket, Key=self._get_complete_path(s3_path)
         )
+        print_perf_duration(start, f'_get_from_s3("{s3_path}")')
 
         return obj["Body"].read().decode("utf-8")
 
