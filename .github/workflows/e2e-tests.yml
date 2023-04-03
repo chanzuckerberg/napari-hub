@@ -52,7 +52,8 @@ jobs:
       # --prefer-offline forces yarn to use cache if available
       - name: Install dependencies with yarn
         # if: steps.yarn-cache.outputs.cache-hit != 'true'
-        run: yarn install --prefer-offline --frozen-lockfile
+        #run: yarn install --prefer-offline --frozen-lockfile
+        run: yarn install
 
       - name: Cache playwright binaries
         uses: actions/cache@v3
