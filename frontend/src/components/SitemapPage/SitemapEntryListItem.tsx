@@ -4,6 +4,7 @@ import { Link } from '@/components/Link';
 import { Text } from '@/components/Text';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { SitemapCategory, SitemapEntry } from '@/types/sitemap';
+import { createUrl } from '@/utils';
 import { getPluginFirstLetter } from '@/utils/sitemap';
 
 import { useLabelForSitemapEntry } from './useLabelForSitemapEntry ';
@@ -34,7 +35,11 @@ export function SitemapEntryListItem({
       )}
 
       <Text variant={isScreen600 ? 'bodyM' : 'bodyS'}>
-        <Link className="underline block mb-sds-m" href={entry.url}>
+        <Link
+          className="underline block mb-sds-m"
+          // Pass pathname so it's treated as an internal link
+          href={createUrl(entry.url).pathname}
+        >
           {label}
         </Link>
       </Text>
