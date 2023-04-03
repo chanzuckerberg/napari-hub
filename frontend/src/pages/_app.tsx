@@ -18,6 +18,7 @@ import { ComponentType, ReactNode } from 'react';
 import { ApplicationProvider } from '@/components/ApplicationProvider';
 import { Layout } from '@/components/Layout';
 import { PageMetadata } from '@/components/PageMetadata';
+import { SitemapPage } from '@/components/SitemapPage';
 import { PROD } from '@/constants/env';
 import { DEFAULT_PLUGIN_DATA, DEFAULT_REPO_DATA } from '@/constants/plugin';
 import { LoadingStateProvider } from '@/context/loading';
@@ -26,7 +27,7 @@ import SearchPage from '@/pages/index';
 import PluginPage from '@/pages/plugins/[name]';
 import { FeatureFlagMap, useInitFeatureFlags } from '@/store/featureFlags';
 import { hubspotStore } from '@/store/hubspot';
-import { isPluginPage, isSearchPage } from '@/utils';
+import { isPluginPage, isSearchPage, isSitemapPage } from '@/utils';
 
 type GetLayoutComponent = ComponentType & {
   getLayout?(page: ReactNode): ReactNode;
@@ -68,7 +69,15 @@ function App({ Component, pageProps }: AppProps) {
       </Layout>
     );
 
-    const loaders = [searchPageLoader, pluginPageLoader];
+    const sitemapPageLoader = isSitemapPage(nextUrl) && (
+      <Layout key="/sitemap">
+        <LoadingStateProvider loading>
+          <SitemapPage entries={[]} />
+        </LoadingStateProvider>
+      </Layout>
+    );
+
+    const loaders = [searchPageLoader, pluginPageLoader, sitemapPageLoader];
 
     if (!loaders.some(Boolean)) {
       return null;

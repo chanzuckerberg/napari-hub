@@ -1,12 +1,15 @@
 import clsx from 'clsx';
 import { useTranslation } from 'next-i18next';
+import { useEffect } from 'react';
 
 import { Link } from '@/components/Link';
 import { Text } from '@/components/Text';
+import { useLoadingState } from '@/context/loading';
 import { I18nKeys } from '@/types/i18n';
 import { SitemapCategory, SitemapEntry } from '@/types/sitemap';
 
 import { SitemapEntryList } from './SitemapEntryList';
+import { SitemapLoader } from './SitemapLoader';
 import { useCategorizedSitemapEntries } from './useCategorizedSitemapEntries';
 
 /**
@@ -22,6 +25,14 @@ const CATEGORY_TO_PATH: Record<SitemapCategory, string> = {
 export function SitemapPage({ entries }: { entries: SitemapEntry[] }) {
   const [t] = useTranslation(['common']);
   const categorizedEntries = useCategorizedSitemapEntries(entries);
+  const isLoading = useLoadingState();
+
+  // Scroll to top if loading sitemap page.
+  useEffect(() => {
+    if (isLoading) {
+      window.scrollTo(0, 0);
+    }
+  }, [isLoading]);
 
   return (
     <div
@@ -40,29 +51,36 @@ export function SitemapPage({ entries }: { entries: SitemapEntry[] }) {
         {t('common:sitemap')}
       </Text>
 
-      {Object.entries(categorizedEntries).map(([category, currentEntries]) => (
-        <div
-          className={clsx(
-            'flex flex-col gap-2',
-            'mt-sds-l screen-600:mt-sds-xxl',
-            'screen-600:col-span-2 screen-875:col-span-3',
-          )}
-        >
-          <Text variant="h2">
-            <Link
-              className="underline"
-              href={CATEGORY_TO_PATH[category as SitemapCategory]}
-            >
-              {t(`common:${category}` as I18nKeys<'common'>)}
-            </Link>
-          </Text>
+      {Object.entries(categorizedEntries).map(
+        ([currentCategory, currentEntries]) => {
+          const category = currentCategory as SitemapCategory;
 
-          <SitemapEntryList
-            category={category as SitemapCategory}
-            entries={currentEntries}
-          />
-        </div>
-      ))}
+          return (
+            <div
+              className={clsx(
+                'flex flex-col gap-2',
+                'mt-sds-l screen-600:mt-sds-xxl',
+                'screen-600:col-span-2 screen-875:col-span-3',
+              )}
+            >
+              <Text variant="h2">
+                <Link className="underline" href={CATEGORY_TO_PATH[category]}>
+                  {t(`common:${category}` as I18nKeys<'common'>)}
+                </Link>
+              </Text>
+
+              {isLoading ? (
+                <SitemapLoader category={category} />
+              ) : (
+                <SitemapEntryList
+                  category={category}
+                  entries={currentEntries}
+                />
+              )}
+            </div>
+          );
+        },
+      )}
     </div>
   );
 }

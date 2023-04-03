@@ -17,3 +17,7 @@ export function isSearchPage(url: UrlType): boolean {
 export function isPluginPage(url: UrlType): boolean {
   return getPathname(url).includes('/plugins/');
 }
+
+export function isSitemapPage(url: UrlType): boolean {
+  return getPathname(url).endsWith('/sitemap');
+}
