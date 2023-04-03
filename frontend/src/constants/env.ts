@@ -7,3 +7,5 @@ export const E2E = process.env.E2E === 'true';
 export const PREVIEW = !!process.env.PREVIEW;
 
 export const BROWSER = typeof window !== 'undefined';
+
+export const SERVER = !BROWSER;
