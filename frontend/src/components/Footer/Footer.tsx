@@ -23,6 +23,7 @@ function useFooterItems(): FooterItem[] {
     links.ABOUT,
     links.FAQ,
     links.PRIVACY,
+    links.SITEMAP,
     links.CONTACT,
     { ...links.HUB_REPO, icon: GitHub },
   ];
@@ -92,6 +93,8 @@ export function Footer() {
           'flex flex-row items-center justify-start',
           // spacing
           'mb-6 screen-655:mb-0 screen-655:mr-12',
+          // layout wrapping
+          'flex-wrap col-span-2 gap-y-2',
         )}
       >
         <FooterLinks />
