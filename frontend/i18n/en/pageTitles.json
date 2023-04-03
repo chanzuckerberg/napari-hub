@@ -6,5 +6,6 @@
   "by": "by",
   "loading": "loading",
   "collection": "$t(base) Plugin Collection",
-  "plugin": "napari Plugin"
+  "plugin": "napari Plugin",
+  "sitemap": "Sitemap - napari hub"
 }
