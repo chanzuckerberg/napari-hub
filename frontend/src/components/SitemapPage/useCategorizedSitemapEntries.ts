@@ -4,12 +4,15 @@ import { SitemapCategory, SitemapEntry } from '@/types/sitemap';
 import { createUrl } from '@/utils';
 import { getPluginFirstLetter } from '@/utils/sitemap';
 
-function sortByNameOrURL(entry1: SitemapEntry, entry2: SitemapEntry) {
-  if (entry1.name && entry2.name) {
-    return entry1.name.localeCompare(entry2.name);
-  }
+const NAPARI_PREFIX_REGEX = /^napari[ -]/;
 
-  return entry1.url.localeCompare(entry2.url);
+function getEntryValue(entry: SitemapEntry) {
+  const name = entry.name ?? entry.url.split('/').at(-1) ?? '';
+  return name.toLowerCase().replace(NAPARI_PREFIX_REGEX, '');
+}
+
+function sortByNameOrUrl(entry1: SitemapEntry, entry2: SitemapEntry) {
+  return getEntryValue(entry1).localeCompare(getEntryValue(entry2));
 }
 
 /**
@@ -29,7 +32,7 @@ export function useCategorizedSitemapEntries(entries: SitemapEntry[]) {
 
       [SitemapCategory.Collection]: entries
         .filter((entry) => entry.type === SitemapCategory.Collection)
-        .sort(sortByNameOrURL),
+        .sort(sortByNameOrUrl),
 
       [SitemapCategory.Plugin]: entries
         .filter((entry) => entry.type === SitemapCategory.Plugin)
@@ -41,7 +44,7 @@ export function useCategorizedSitemapEntries(entries: SitemapEntry[]) {
             return firstLetter1.localeCompare(firstLetter2);
           }
 
-          return sortByNameOrURL(entry1, entry2);
+          return sortByNameOrUrl(entry1, entry2);
         }),
     }),
     [entries],
