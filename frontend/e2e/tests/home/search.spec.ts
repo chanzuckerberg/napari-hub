@@ -117,6 +117,7 @@ test.describe('Plugin search', () => {
     );
 
     await searchPlugins(page, 'video');
+    await maybeOpenAccordion(page, AccordionTitle.Sort, viewport?.width);
     await expect(page.locator(selectors.sort.selected).first()).toHaveText(
       'Relevance',
     );
@@ -157,8 +158,8 @@ test.describe('Plugin search', () => {
     await page.goto(getSearchUrl([SearchQueryParams.Search, query]), {
       timeout: 60000,
     });
-    await expect(
-      page.locator(selectors.search.resultSummary).first(),
-    ).toContainText('animation');
+    await expect(page.locator(selectors.search.resultSummary)).toContainText(
+      'animation',
+    );
   });
 });

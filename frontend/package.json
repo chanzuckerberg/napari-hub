@@ -27,6 +27,7 @@
     "lint:src": "eslint src",
     "// Runs e2e tests.": "",
     "e2e:local": "NODE_ENV=local DEBUG=pw:api playwright test --headed -c ./e2e/setup/local.config.ts",
+    "e2e:local:headless": "NODE_ENV=local DEBUG=pw:api playwright test -c ./e2e/setup/local.config.ts",
     "e2e:local:desktop": "NODE_ENV=local DEBUG=pw:api playwright test --headed -c ./e2e/setup/local.config.ts --project Desktop",
     "e2e:local:300": "NODE_ENV=local DEBUG=pw:api playwright test --headed -c ./e2e/setup/local.config.ts --project Screen-300",
     "e2e:ci": "NODE_ENV=local DEBUG=pw:api playwright test -c ./e2e/setup/ci.config.ts",

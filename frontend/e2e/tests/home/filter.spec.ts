@@ -41,7 +41,6 @@ test.describe('Plugin filter tests', () => {
       viewport,
     }) => {
       // filter by
-      // await page.pause();
       const filterBy = {
         label: 'Plugin type',
         name: 'pluginType',
