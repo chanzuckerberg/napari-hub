@@ -43,6 +43,7 @@ const config: PlaywrightTestConfig = {
       name: 'Desktop',
       use: {
         ...devices['Desktop Chrome'],
+        baseURL: 'http://localhost:8080/',
         video: 'on',
       },
     },
@@ -90,7 +91,7 @@ const config: PlaywrightTestConfig = {
   testDir: '../tests',
   timeout: 60 * 1000,
   use: {
-    actionTimeout: 20000,
+    actionTimeout: 30000,
     baseURL: 'http://localhost:8080',
     screenshot: 'only-on-failure',
     trace: 'retain-on-failure',

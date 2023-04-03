@@ -1,8 +1,7 @@
 import { test } from '@playwright/test';
 
 import { AUTHORS } from '../../utils/constants';
-import { filterPlugins, verifyFilterResults } from '../../utils/filter';
-import { searchPluginFixture } from '../../utils/fixture';
+import { testPlugin } from '../../utils/plugin';
 
 const ENV = (process.env.NODE_ENV as string) || '';
 const TEST_AUTHORS = AUTHORS[ENV.toUpperCase()];
@@ -24,11 +23,8 @@ test.describe('Plugin sorting tests', () => {
       category: ['Filter by category'],
       key: 'authors',
     };
-    // prepare fixture data to compare against
-    const fixtureData = searchPluginFixture(filterBy, sortBy);
-    await filterPlugins(page, filterBy, sortBy, viewport?.width);
     const params = [['authors', authors]];
-    await verifyFilterResults(page, filterBy, fixtureData, params, sortBy);
+    await testPlugin(page, filterBy, params, sortBy, viewport?.width);
   });
   test(`should sort plugins by recently updated`, async ({
     page,
@@ -46,11 +42,8 @@ test.describe('Plugin sorting tests', () => {
       category: ['Filter by category'],
       key: 'authors',
     };
-    // prepare fixture data to compare against
-    const fixtureData = searchPluginFixture(filterBy, sortBy);
-    await filterPlugins(page, filterBy, sortBy, viewport?.width);
     const params = [['authors', authors]];
-    await verifyFilterResults(page, filterBy, fixtureData, params, sortBy);
+    await testPlugin(page, filterBy, params, sortBy, viewport?.width);
   });
   test(`should sort plugins by newest`, async ({ page, viewport }) => {
     const authors = TEST_AUTHORS[0];
@@ -65,10 +58,7 @@ test.describe('Plugin sorting tests', () => {
       category: ['Filter by category'],
       key: 'authors',
     };
-    // prepare fixture data to compare against
-    const fixtureData = searchPluginFixture(filterBy, sortBy);
-    await filterPlugins(page, filterBy, sortBy, viewport?.width);
     const params = [['authors', authors]];
-    await verifyFilterResults(page, filterBy, fixtureData, params, sortBy);
+    await testPlugin(page, filterBy, params, sortBy, viewport?.width);
   });
 });

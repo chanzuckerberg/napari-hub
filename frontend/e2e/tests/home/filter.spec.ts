@@ -1,13 +1,11 @@
-import { Page, test } from '@playwright/test';
-import { PluginFilter } from 'e2e/types/filter';
+import { test } from '@playwright/test';
 
 import {
   AUTHORS,
   OPEN_EXTENSIONS,
   SAVE_EXTENSIONS,
 } from '../../utils/constants';
-import { filterPlugins, verifyFilterResults } from '../../utils/filter';
-import { searchPluginFixture } from '../../utils/fixture';
+import { testPlugin } from '../../utils/plugin';
 
 const ENV = (process.env.NODE_ENV as string) || '';
 const TEST_AUTHORS = AUTHORS[ENV.toUpperCase()];
@@ -15,17 +13,6 @@ const SAVE_FILE_EXTENSIONS = SAVE_EXTENSIONS[ENV.toUpperCase()];
 const OPEN_FILE_EXTENSIONS = OPEN_EXTENSIONS[ENV.toUpperCase()];
 const sortBy = 'Recently updated';
 
-async function testPlugin(
-  page: Page,
-  filterBy: PluginFilter,
-  params: Array<any>,
-  viewportWidth?: number,
-) {
-  // prepare fixture data to compare against
-  const fixtureData = searchPluginFixture(filterBy, sortBy);
-  await filterPlugins(page, filterBy, sortBy, viewportWidth);
-  await verifyFilterResults(page, filterBy, fixtureData, params, sortBy);
-}
 test.describe('Plugin filter tests', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto(`${process.env.BASEURL as string}`, { timeout: 60000 });
@@ -45,7 +32,7 @@ test.describe('Plugin filter tests', () => {
       };
 
       const params = [['authors', authors]];
-      await testPlugin(page, filterBy, params, viewport?.width);
+      await testPlugin(page, filterBy, params, sortBy, viewport?.width);
     });
   });
   [['writer'], ['widget', 'writer']].forEach((pluginTypes) => {
@@ -54,7 +41,6 @@ test.describe('Plugin filter tests', () => {
       viewport,
     }) => {
       // filter by
-      // await page.pause();
       const filterBy = {
         label: 'Plugin type',
         name: 'pluginType',
@@ -63,7 +49,7 @@ test.describe('Plugin filter tests', () => {
         key: 'plugin_type',
       };
       const params = [['pluginType', pluginTypes]];
-      await testPlugin(page, filterBy, params, viewport?.width);
+      await testPlugin(page, filterBy, params, sortBy, viewport?.width);
     });
   });
   [['3D'], ['2D', '3D']].forEach((supportedData) => {
@@ -81,7 +67,7 @@ test.describe('Plugin filter tests', () => {
         key: 'supported_data',
       };
       const params = [['supportedData', supportedData]];
-      await testPlugin(page, filterBy, params, viewport?.width);
+      await testPlugin(page, filterBy, params, sortBy, viewport?.width);
     });
   });
   [['Medical imaging']].forEach((modality) => {
@@ -98,7 +84,7 @@ test.describe('Plugin filter tests', () => {
         key: 'image_modality',
       };
       const params = [['imageModality', modality]];
-      await testPlugin(page, filterBy, params, viewport?.width);
+      await testPlugin(page, filterBy, params, sortBy, viewport?.width);
     });
   });
   [['Image registration']].forEach((workflowSteps) => {
@@ -115,7 +101,7 @@ test.describe('Plugin filter tests', () => {
         key: 'workflow_step',
       };
       const params = [['workflowStep', workflowSteps]];
-      await testPlugin(page, filterBy, params, viewport?.width);
+      await testPlugin(page, filterBy, params, sortBy, viewport?.width);
     });
   });
 
@@ -137,7 +123,7 @@ test.describe('Plugin filter tests', () => {
         osses.push(os.replace('macOS', 'mac').toLowerCase());
       }
       const params = [['operatingSystem', osses]];
-      await testPlugin(page, filterBy, params, viewport?.width);
+      await testPlugin(page, filterBy, params, sortBy, viewport?.width);
     });
   });
   [['Limit to plugins with open source license']].forEach((license) => {
@@ -154,7 +140,7 @@ test.describe('Plugin filter tests', () => {
         key: 'license',
       };
       const params = [['license', license]];
-      await testPlugin(page, filterBy, params, viewport?.width);
+      await testPlugin(page, filterBy, params, sortBy, viewport?.width);
     });
   });
   [['3.6'], ['3.7', '3.9']].forEach((version) => {
@@ -171,7 +157,7 @@ test.describe('Plugin filter tests', () => {
         key: 'python_version',
       };
       const params = [['python', version]];
-      await testPlugin(page, filterBy, params, viewport?.width);
+      await testPlugin(page, filterBy, params, sortBy, viewport?.width);
     });
   });
   SAVE_FILE_EXTENSIONS.forEach((extension) => {
@@ -188,7 +174,7 @@ test.describe('Plugin filter tests', () => {
         key: 'save_extension',
       };
       const params = [['writerFileExtensions', extension]];
-      await testPlugin(page, filterBy, params, viewport?.width);
+      await testPlugin(page, filterBy, params, sortBy, viewport?.width);
     });
   });
   OPEN_FILE_EXTENSIONS.forEach((extension) => {
@@ -205,7 +191,7 @@ test.describe('Plugin filter tests', () => {
         key: 'open_extension',
       };
       const params = [['readerFileExtensions', extension]];
-      await testPlugin(page, filterBy, params, viewport?.width);
+      await testPlugin(page, filterBy, params, sortBy, viewport?.width);
     });
   });
 });
