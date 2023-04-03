@@ -2,12 +2,14 @@ import { FormHelperTextProps } from '@mui/material/FormHelperText';
 import TextField from '@mui/material/TextField';
 import clsx from 'clsx';
 import { Button } from 'czifui';
-import Script from 'next/script';
+import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import React, { useEffect, useRef, useState } from 'react';
+import { useSnapshot } from 'valtio';
 
 import { ColumnLayout } from '@/components/ColumnLayout';
 import { usePlausible } from '@/hooks';
+import { hubspotStore } from '@/store/hubspot';
 
 export const FORM_CONTAINER_ID = 'hubspot-form-container';
 const FORM_CONTAINER_ID_QUERY = `#${FORM_CONTAINER_ID}`;
@@ -69,8 +71,9 @@ export function SignupForm({ onSubmit, variant = 'default' }: Props) {
     plausible('Signup');
   };
 
-  const [isHubSpotReady, setIsHubSpotReady] = useState(false);
+  const isHubSpotReady = useSnapshot(hubspotStore).ready;
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const observer = new MutationObserver((mutations) => {
@@ -103,7 +106,7 @@ export function SignupForm({ onSubmit, variant = 'default' }: Props) {
     }
 
     return () => observer.disconnect();
-  }, [isHubSpotReady]);
+  }, [isHubSpotReady, router.asPath]);
 
   return (
     <ColumnLayout
@@ -111,24 +114,29 @@ export function SignupForm({ onSubmit, variant = 'default' }: Props) {
       // Use 3-column layout instead of 4-column layout.
       classes={isHome ? { fourColumn: 'screen-1150:grid-cols-napari-3' } : {}}
     >
-      <Script
-        onLoad={() => setIsHubSpotReady(true)}
-        src="//js.hsforms.net/forms/v2.js?pre=1"
-      />
-
       {/* Create hidden form for submitting the data to HubSpot */}
       <div id={FORM_CONTAINER_ID} className="hidden" />
 
       <div className="col-span-2 screen-495:col-span-3 screen-1425:col-start-2">
-        <h3 className="text-lg font-semibold mb-sds-xxs screen-495:mb-sds-l">
+        <h2 className="text-lg font-semibold mb-sds-xxs screen-495:mb-sds-l">
           {t('footer:signUp.title')}
-        </h3>
+        </h2>
 
         {isSubmitted ? (
           <p>{t('footer:signUp.success')}</p>
         ) : (
           <form
-            onSubmit={handleSubmit}
+            onSubmit={(event) => {
+              // TODO Fix this hack.
+              // Right now there's an issue with hubspot where the signup form
+              // shows an error after the initial submission and then passes
+              // after the 2nd one. This fixes it by doing `handleSubmit` twice
+              // to simulate user clicking on it twice. Because the form becomes
+              // invisible after submission, this code should be safe to run
+              // because `handleSubmit` will not run unless the form is visible.
+              handleSubmit(event);
+              setTimeout(() => handleSubmit(event));
+            }}
             noValidate
             className={clsx(
               // grid

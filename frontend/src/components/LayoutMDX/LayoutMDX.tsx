@@ -21,7 +21,7 @@ export function LayoutMDX({ toc, title, children }: Props) {
   return (
     <>
       <Head>
-        <title>napari hub | {title}</title>
+        <title>{title}</title>
       </Head>
 
       <ColumnLayout className="p-sds-xl  screen-495:p-12 screen-1150:px-0">

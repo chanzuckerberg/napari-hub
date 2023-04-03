@@ -1,3 +1,4 @@
+import logging
 import os
 
 from werkzeug import exceptions
@@ -6,7 +7,8 @@ from werkzeug.middleware.dispatcher import DispatcherMiddleware
 from flask import Flask, Response, jsonify, render_template, request
 from flask_githubapp.core import GitHubApp
 
-from api.collections import get_collections, get_collection
+from api.plugin_collections import get_collections, get_collection
+from api.custom_wsgi import script_path_middleware
 from api.model import get_public_plugins, get_index, get_plugin, get_excluded_plugins, update_cache, \
     move_artifact_to_s3, get_category_mapping, get_categories_mapping, get_manifest, update_activity_data, \
     get_metrics_for_plugin
@@ -22,6 +24,10 @@ app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 app.url_map.redirect_defaults = False
 preview_app = Flask("Preview")
 
+if os.getenv('DD_ENV') == 'dev':
+    app.wsgi_app = script_path_middleware(f'/{os.getenv("DD_SERVICE")}')(app.wsgi_app)
+
+
 if GITHUB_APP_ID and GITHUB_APP_KEY and GITHUB_APP_SECRET:
     preview_app.config['GITHUBAPP_ID'] = int(GITHUB_APP_ID)
     preview_app.config['GITHUBAPP_KEY'] = reformat_ssh_key_to_pem_bytes(GITHUB_APP_KEY)
@@ -34,6 +40,9 @@ else:
 
 github_app = GitHubApp(preview_app)
 handler = make_lambda_handler(app.wsgi_app)
+
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG if os.getenv('IS_DEBUG') else logging.INFO)
 
 
 @app.route('/')
@@ -119,7 +128,19 @@ def update_activity() -> Response:
 
 @app.route('/metrics/<plugin>')
 def get_plugin_metrics(plugin: str) -> Response:
-    return jsonify(get_metrics_for_plugin(plugin, request.args.get('limit', '12')))
+    """
+    Fetches plugin metrics for usage, and maintenance
+    :return Response: A json object with entries for usage, and maintenance
+
+    :params str plugin: Name of the plugin in lowercase for which usage data needs to be fetched.
+    :query_params limit: Number of months to be fetched for timeline. (default=12).
+    :query_params use_dynamo_metric_usage: Fetch usage data from dynamo if True else fetch from s3. (default=False)
+    """
+    return jsonify(get_metrics_for_plugin(
+        plugin=plugin,
+        limit=request.args.get('limit', '12'),
+        use_dynamo_for_usage=_is_query_param_true('use_dynamo_metric_usage'),
+    ))
 
 
 @app.route('/collections')
@@ -176,6 +197,11 @@ def authenticate_request():
 def add_header(response):
     response.headers['Access-Control-Allow-Origin'] = '*'
     return response
+
+
+def _is_query_param_true(param_name: str):
+    value = request.args.get(param_name)
+    return value and value.lower() == 'true'
 
 
 if __name__ == '__main__':

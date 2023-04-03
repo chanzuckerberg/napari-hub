@@ -6,6 +6,7 @@ exports[`<Pagination /> should match snapshot 1`] = `
     class="flex items-center justify-center select-none"
   >
     <button
+      aria-label="pagination-left"
       class="pageButton focus-visible:bg-hub-gray-100 hover:bg-hub-gray-100 opacity-0 cursor-default mr-sds-s"
       data-testid="paginationLeft"
       disabled=""
@@ -46,6 +47,7 @@ exports[`<Pagination /> should match snapshot 1`] = `
       </span>
     </span>
     <button
+      aria-label="pagination-right"
       class="pageButton focus-visible:bg-hub-gray-100 hover:bg-hub-gray-100 ml-sds-xxs"
       data-testid="paginationRight"
       type="button"

@@ -1,3 +1,4 @@
+import { AxiosRequestConfig } from 'axios';
 import { isString } from 'lodash';
 
 /**
@@ -68,4 +69,18 @@ export function setUrlHash(hash: string | undefined | null) {
   const nextUrl = createUrl(window.location.href);
   nextUrl.hash = hash ?? '';
   replaceUrlState(nextUrl);
+}
+
+export function getFullPathFromAxios(url: string, config?: AxiosRequestConfig) {
+  const urlObj = createUrl(url);
+
+  if (config?.params) {
+    for (const [param, value] of Object.entries(
+      config.params as Record<string, string>,
+    )) {
+      urlObj.searchParams.append(param, value);
+    }
+  }
+
+  return urlObj.href.replace(urlObj.origin, '');
 }

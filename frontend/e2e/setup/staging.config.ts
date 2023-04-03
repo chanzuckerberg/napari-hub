@@ -8,7 +8,7 @@ dotenv.config({
 
 const config: PlaywrightTestConfig = {
   expect: {
-    timeout: 60000,
+    timeout: 3000,
   },
   globalSetup: './globalSetup',
   outputDir: '../report',
@@ -21,13 +21,60 @@ const config: PlaywrightTestConfig = {
         outputFile: '../report/test-results.json',
       },
     ],
+    [
+      'html',
+      {
+        open: 'always',
+        host: 'localhost',
+        port: 9223,
+      },
+    ],
   ],
   projects: [
     {
-      name: 'chromium',
+      name: 'Desktop',
       use: {
         ...devices['Desktop Chrome'],
-        baseURL: 'https://www.napari-hub.org/',
+        video: 'on',
+      },
+    },
+    {
+      name: 'Screen-300',
+      use: {
+        browserName: 'chromium',
+        viewport: { width: 300, height: 650 },
+        video: 'on',
+      },
+    },
+    {
+      name: 'Screen-600',
+      use: {
+        browserName: 'chromium',
+        viewport: { width: 600, height: 920 },
+        video: 'on',
+      },
+    },
+    {
+      name: 'Screen-875',
+      use: {
+        browserName: 'chromium',
+        viewport: { width: 875, height: 415 },
+        video: 'on',
+      },
+    },
+    {
+      name: 'Screen-1150',
+      use: {
+        browserName: 'chromium',
+        viewport: { width: 1150, height: 712 },
+        video: 'on',
+      },
+    },
+    {
+      name: 'Screen-1425',
+      use: {
+        browserName: 'chromium',
+        viewport: { width: 1425, height: 1080 },
         video: 'on',
       },
     },
@@ -36,9 +83,9 @@ const config: PlaywrightTestConfig = {
   timeout: 30 * 1000,
   use: {
     actionTimeout: 0,
-    baseURL: 'https://www.napari-hub.org/',
+    baseURL: 'https://staging.napari-hub.org/',
     screenshot: 'only-on-failure',
-    trace: 'on',
+    trace: 'retain-on-failure',
     video: 'on',
   },
 };

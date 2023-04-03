@@ -91,7 +91,7 @@ export function PluginTabs({ containerRef }: Props) {
     tabContent = (
       <>
         {/* Plugin categories */}
-        <ul
+        <div
           className={clsx(
             'flex flex-col text-xs mt-sds-xl',
             'mb-sds-l screen-495:mb-sds-xl',
@@ -118,7 +118,7 @@ export function PluginTabs({ containerRef }: Props) {
                 ))
             }
           />
-        </ul>
+        </div>
 
         <SkeletonLoader
           className="h-[600px] mb-sds-xxl"

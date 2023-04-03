@@ -137,4 +137,6 @@ preview/
 test-results/
 e2e/report/
 e2e/fixtures/plugins/
+e2e/fixtures/prod.json
+e2e/fixtures/staging.json
 playwright-report/

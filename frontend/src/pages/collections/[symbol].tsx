@@ -10,6 +10,7 @@ import { ErrorMessage } from '@/components/ErrorMessage';
 import { PageMetadata } from '@/components/PageMetadata';
 import { useLoadingState } from '@/context/loading';
 import { CollectionData } from '@/types/collections';
+import { createUrl } from '@/utils';
 import { hubAPI } from '@/utils/HubAPIClient';
 import { getServerSidePropsHandler } from '@/utils/ssr';
 import { getZodErrorMessage } from '@/utils/validate';
@@ -64,9 +65,9 @@ export default function Collections({ collection, error }: Props) {
 
   let title = `${t('pageTitles:collection')}`;
   if (isLoading) {
-    title = `${title} | ${t('pageTitles:loading')}...`;
+    title = `${title} - ${t('pageTitles:loading')}...`;
   } else if (collection) {
-    title = `${title} | ${collection.title} by ${collection.curator.name}`;
+    title = `${collection.title} by ${collection.curator.name} - ${title}`;
   }
 
   const curatorTwitter = /https:\/\/twitter.com\/([\w]+)/.exec(
@@ -75,32 +76,23 @@ export default function Collections({ collection, error }: Props) {
 
   return (
     <>
-      <PageMetadata description={collection?.summary} />
+      <PageMetadata
+        description={collection?.summary}
+        title={collection?.title}
+        url={
+          collection
+            ? createUrl(
+                `/collections/${collection.symbol}`,
+                process.env.FRONTEND_URL,
+              ).href
+            : undefined
+        }
+        image={collection?.cover_image}
+        twitterUser={curatorTwitter}
+      />
 
       <Head>
         <title>{title}</title>
-
-        {collection && (
-          <>
-            <meta property="og:title" content={collection.title} />
-            <meta property="og:type" content="article" />
-            <meta
-              property="og:url"
-              content={`https://napari-hub.org/collections/${collection.title}`}
-            />
-            <meta property="og:image" content={collection.cover_image} />
-            <meta property="og:description" content={collection.summary} />
-
-            <meta name="twitter:card" content="summary_large_image" />
-            <meta name="twitter:site" content="@napari_imaging" />
-            <meta name="twitter:title" content={collection.title} />
-            <meta name="twitter:description" content={collection.summary} />
-            <meta name="twitter:image" content={collection.cover_image} />
-            {curatorTwitter && (
-              <meta name="twitter:creator" content={`@${curatorTwitter}`} />
-            )}
-          </>
-        )}
       </Head>
 
       {error ? (

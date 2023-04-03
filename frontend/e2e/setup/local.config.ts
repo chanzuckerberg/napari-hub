@@ -8,10 +8,10 @@ dotenv.config({
 
 const config: PlaywrightTestConfig = {
   expect: {
-    timeout: 10000,
+    timeout: 3000,
   },
-  fullyParallel: true,
   globalSetup: './globalSetup',
+  fullyParallel: true,
   outputDir: '../report',
   reporter: [
     ['list'],
@@ -21,14 +21,68 @@ const config: PlaywrightTestConfig = {
         outputFile: '../report/test-results.json',
       },
     ],
+    [
+      'html',
+      {
+        open: 'on-failure',
+        host: 'localhost',
+        port: 9223,
+      },
+    ],
+    [
+      'html',
+      {
+        outputFile: '../report/report.html',
+        open: 'never',
+      },
+    ],
   ],
 
   projects: [
     {
-      name: 'desktop',
+      name: 'Desktop',
       use: {
         ...devices['Desktop Chrome'],
-        baseURL: 'http://localhost:8080/',
+        video: 'on',
+      },
+    },
+    {
+      name: 'Screen-300',
+      use: {
+        browserName: 'chromium',
+        viewport: { width: 300, height: 650 },
+        video: 'on',
+      },
+    },
+    {
+      name: 'Screen-600',
+      use: {
+        browserName: 'chromium',
+        viewport: { width: 600, height: 920 },
+        video: 'on',
+      },
+    },
+    {
+      name: 'Screen-875',
+      use: {
+        browserName: 'chromium',
+        viewport: { width: 875, height: 415 },
+        video: 'on',
+      },
+    },
+    {
+      name: 'Screen-1150',
+      use: {
+        browserName: 'chromium',
+        viewport: { width: 1150, height: 712 },
+        video: 'on',
+      },
+    },
+    {
+      name: 'Screen-1425',
+      use: {
+        browserName: 'chromium',
+        viewport: { width: 1425, height: 1080 },
         video: 'on',
       },
     },
@@ -36,12 +90,14 @@ const config: PlaywrightTestConfig = {
   testDir: '../tests',
   timeout: 60 * 1000,
   use: {
-    actionTimeout: 0,
+    actionTimeout: 20000,
     baseURL: 'http://localhost:8080',
     screenshot: 'only-on-failure',
     trace: 'retain-on-failure',
     video: 'on',
+    headless: true,
   },
+  workers: 10,
 };
 // eslint-disable-next-line import/no-default-export
 export default config;

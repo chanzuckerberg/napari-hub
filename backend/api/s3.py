@@ -111,9 +111,5 @@ def get_latest_commit(plugin: str) -> Any:
     return _load_json_from_s3("activity_dashboard_data/latest_commits.json").get(plugin)
 
 
-def get_total_commit(plugin: str) -> Any:
-    return _load_json_from_s3("activity_dashboard_data/total_commits.json").get(plugin)
-
-
 def get_commit_activity(plugin: str) -> List:
     return _load_json_from_s3("activity_dashboard_data/commit_activity.json").get(plugin, [])

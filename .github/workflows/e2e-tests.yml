@@ -1,6 +1,19 @@
+# Workflow for running E2E tests for PRs and pushes to the main branch for
+# napari hub frontend code.
+
 name: E2E Tests
 
-on: push
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'frontend/**'
+  pull_request:
+    branches:
+      - '**'
+    paths:
+      - 'frontend/**'
 
 defaults:
   run:
@@ -127,7 +140,7 @@ jobs:
       - name: Start server on port 8080
         run: yarn start &
         env:
-          NODE_ENV: production
+          E2E: true
 
       - name: Run E2E Tests
         env:
@@ -135,9 +148,10 @@ jobs:
           BROWSER: ${{ matrix.browser }}
         run: yarn e2e:ci --shard ${{ matrix.shardCurrent }}/${{ matrix.shardTotal }}
 
-      - uses: actions/upload-artifact@v3
+      - name: Upload artifacts
         if: ${{ failure() }}
+        uses: actions/upload-artifact@v3.1.1
         with:
-          name: e2e-results
-          path: ./e2e/report
+          name: e2e-artifacts
+          path: frontend/e2e/report
           retention-days: 1

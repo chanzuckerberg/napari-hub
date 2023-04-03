@@ -1,1 +1,1 @@
-npx playwright show-trace trace.zips
+npx playwright show-trace trace.zip
