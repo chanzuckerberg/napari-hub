@@ -32,6 +32,6 @@ def update_github_activity(start_time: int, end_time: int):
     LOGGER.info(f'Plugins with new github activity count={len(updated_plugins)}')
     if len(updated_plugins) == 0:
         return
-    #_fetch_data_and_write_to_dynamo(updated_plugins, GitHubActivityType.LATEST)
-    #_fetch_data_and_write_to_dynamo(updated_plugins, GitHubActivityType.MONTH)
+    _fetch_data_and_write_to_dynamo(updated_plugins, GitHubActivityType.LATEST)
+    _fetch_data_and_write_to_dynamo(updated_plugins, GitHubActivityType.MONTH)
     _fetch_data_and_write_to_dynamo(updated_plugins, GitHubActivityType.TOTAL)

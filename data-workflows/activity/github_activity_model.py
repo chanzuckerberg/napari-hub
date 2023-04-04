@@ -1,6 +1,6 @@
 import logging
 import time
-from datetime import datetime, timezone
+from datetime import datetime, timezone, date
 from enum import Enum, auto
 from typing import List, Callable, Union
 import os
@@ -15,7 +15,12 @@ from backend.api.model import get_public_plugins, get_excluded_plugins
 LOGGER = logging.getLogger()
 
 
-def to_utc_timestamp_in_millis(timestamp: datetime) -> int:
+def date_to_utc_timestamp_in_millis(timestamp: date) -> int:
+    timestamp_datetime = datetime(timestamp.year, timestamp.month, timestamp.day)
+    return int(timestamp_datetime.replace(tzinfo=timezone.utc).timestamp() * 1000)
+
+
+def datetime_to_utc_timestamp_in_millis(timestamp: datetime) -> int:
     return int(timestamp.replace(tzinfo=timezone.utc).timestamp() * 1000)
 
 
@@ -28,7 +33,7 @@ class GitHubActivityType(Enum):
         return install_activity_type
 
     LATEST = (lambda timestamp: None, 'LATEST:')
-    MONTH = (to_utc_timestamp_in_millis, 'MONTH:{0:%Y%m}')
+    MONTH = (date_to_utc_timestamp_in_millis, 'MONTH:{0:%Y%m}')
     TOTAL = (lambda timestamp: None, 'TOTAL:')
 
     def format_to_timestamp(self, timestamp: datetime) -> Union[int, None]:
@@ -39,7 +44,7 @@ class GitHubActivityType(Enum):
 
     def get_query_projection(self) -> str:
         if self is GitHubActivityType.LATEST:
-            return '1, max(commit_author_date) as latest_commit'
+            return '1, to_timestamp(max(commit_author_date)) as latest_commit'
         elif self is GitHubActivityType.MONTH:
             return 'date_trunc('"month"', to_date(commit_author_date)) as month, count(*) as num_commit'
         else:
@@ -88,15 +93,17 @@ def transform_and_write_to_dynamo(data: dict[str, List], activity_type: GitHubAc
             if plugin_name in processed_public_plugins:
                 plugin_name = processed_public_plugins[plugin_name]
             if activity_type.name == "LATEST":
-                timestamp = activity['count']
-                number_of_commits = activity['timestamp']
-            elif activity_type.name == "TOTAL":
-                timestamp = activity['timestamp']
-                number_of_commits = activity['count']
-
+                timestamp = datetime_to_utc_timestamp_in_millis(activity['column_2'])
+                number_of_commits = activity['column_1']
+            elif activity_type.name == "MONTH":
+                timestamp = date_to_utc_timestamp_in_millis(activity['column_1'])
+                number_of_commits = activity['column_2']
+            else:
+                timestamp = 0
+                number_of_commits = activity['column_2']
 
             item = GitHubActivity(plugin_name,
-                                  activity_type.format_to_type_identifier(activity['timestamp']),
+                                  activity_type.format_to_type_identifier(activity['column_1']),
                                   granularity=activity_type.name,
                                   timestamp=timestamp,
                                   number_of_commits=number_of_commits,

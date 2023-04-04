@@ -56,8 +56,14 @@ def get_plugins_install_count_since_timestamp(plugins_by_earliest_ts: dict[str, 
 
 def get_plugins_commit_count_since_timestamp(plugins_by_earliest_ts: dict[str, datetime],
                                              github_activity_type: GitHubActivityType) -> dict[str, List]:
-    # TODO: construct the subquery for MONTH now that LATEST and TOTAL work
-    subquery = f"""LOWER(repo) IN ({','.join([f"'{plugin}'" for plugin in plugins_by_earliest_ts.keys()])})"""
+    if github_activity_type is GitHubActivityType.MONTH:
+        plugins_by_formatted_timestamp = {plugin: ts.replace(day=1) for plugin, ts in plugins_by_earliest_ts.items()}
+        subquery = ' OR '.join(
+            [f"LOWER(repo) = '{name}' AND to_timestamp(commit_author_date) >= "f"{TIMESTAMP_FORMAT.format(ts)}"
+             for name, ts in plugins_by_formatted_timestamp.items()])
+    else:
+        subquery = f"""LOWER(repo) IN ({','.join([f"'{plugin}'" for plugin in plugins_by_earliest_ts.keys()])})"""
+
     query = f"""
             SELECT 
                 LOWER(repo) AS repo, 
@@ -77,7 +83,7 @@ def get_plugins_commit_count_since_timestamp(plugins_by_earliest_ts: dict[str, d
 def get_plugins_with_commits_in_window(start_millis: int, end_millis: int) -> dict[str, datetime]:
     query = f"""
             SELECT 
-                LOWER(repo) AS repo, MIN(commit_author_date) AS earliest_timestamp 
+                LOWER(repo) AS repo, DATE_TRUNC('DAY', TO_DATE(min(commit_author_date))) AS earliest_timestamp 
             FROM 
                 imaging.github.commits  
             WHERE 
@@ -136,15 +142,15 @@ def _cursor_to_timestamp_by_plugin_mapper(accumulator: dict[str, datetime], curs
 
 def _cursor_to_plugin_activity_mapper(accumulator: dict[str, List], cursor) -> dict[str, List]:
     """
-    Updates the accumulator with data from the cursor. Object with timestamp and count attributes are created from the
+    Updates the accumulator with data from the cursor. Object with column_1 and column_2 attributes are created from the
     cursor record and added to the accumulator keyed on plugin name.
-    The cursor contains the fields plugin, timestamp, and count
+    The cursor contains the fields plugin, column_1, and column_2
     :param dict[str, List] accumulator: Accumulator that will be updated with new data
     :param SnowflakeCursor cursor:
     :returns: Accumulator after data from cursor has been added
    """
-    for plugin, timestamp, count in cursor:
-        accumulator.setdefault(plugin, []).append({'timestamp': timestamp, 'count': count})
+    for plugin, column_1, column_2 in cursor:
+        accumulator.setdefault(plugin, []).append({'column_1': column_1, 'column_2': column_2})
     return accumulator
 
 
