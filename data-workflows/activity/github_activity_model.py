@@ -80,8 +80,10 @@ def transform_and_write_to_dynamo(data: dict[str, List], activity_type: GitHubAc
             plugin_name = repo_name.split('/')[1]
             if plugin_name in excluded_plugins:
                 continue
-            if plugin_name in processed_public_plugins:
+            elif plugin_name in processed_public_plugins:
+                # get value of plugin name (case-sensitive) since repo_name is in lower case
                 plugin_name = processed_public_plugins[plugin_name]
+
             if activity_type.name == "LATEST":
                 timestamp = datetime_to_utc_timestamp_in_millis(activity['column_2'])
                 commit_count = activity['column_1']
