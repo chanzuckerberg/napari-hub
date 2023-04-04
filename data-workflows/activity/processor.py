@@ -11,9 +11,9 @@ LOGGER = logging.getLogger()
 
 
 def _fetch_data_and_write_to_dynamo(data: dict[str, datetime], activity_type: any):
-    plugin_install_data = snowflake_adapter.get_plugins_install_count_since_timestamp(data, install_activity_type)
+    plugin_install_data = snowflake_adapter.get_plugins_install_count_since_timestamp(data, activity_type)
     plugin_commit_data = snowflake_adapter.get_plugins_commit_count_since_timestamp(data, activity_type)
-    install_model.transform_and_write_to_dynamo(plugin_install_data, install_activity_type)
+    install_model.transform_and_write_to_dynamo(plugin_install_data, activity_type)
     github_model.transform_and_write_to_dynamo(plugin_commit_data, activity_type)
 
 
