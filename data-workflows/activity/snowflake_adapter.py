@@ -8,8 +8,7 @@ from typing import List, Any, Callable, Iterable
 import snowflake.connector
 from snowflake.connector.cursor import SnowflakeCursor
 
-from activity.install_activity_model import InstallActivityType
-from activity.github_activity_model import GitHubActivityType
+from activity.install_activity_model import InstallActivityType, GitHubActivityType
 
 LOGGER = logging.getLogger()
 TIMESTAMP_FORMAT = "TO_TIMESTAMP('{0:%Y-%m-%d %H:%M:%S}')"

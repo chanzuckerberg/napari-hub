@@ -12,7 +12,6 @@ def _setup_logging():
 
 
 def _update_activity() -> None:
-    # note: temporarily commenting these lines of code out for testing purposes only; these changes will be reverted
     parameter_store_adapter = ParameterStoreAdapter()
     last_updated_timestamp = parameter_store_adapter.get_last_updated_timestamp()
     current_timestamp = utils.utils.get_current_timestamp()
@@ -31,7 +30,3 @@ def handle(event, context):
 
         if event_type == 'activity':
             _update_activity()
-
-
-if __name__ == '__main__':
-    handle({'Records': [{'body': '{"type":"activity"}'}]}, None)
