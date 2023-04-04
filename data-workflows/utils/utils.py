@@ -1,12 +1,22 @@
 import json
 import os
 import time
+from datetime import date, datetime, timezone
 
 import boto3
 
 
 def get_current_timestamp() -> int:
     return round(time.time() * 1000)
+
+
+def date_to_utc_timestamp_in_millis(timestamp: date) -> int:
+    timestamp_datetime = datetime(timestamp.year, timestamp.month, timestamp.day)
+    return int(timestamp_datetime.replace(tzinfo=timezone.utc).timestamp() * 1000)
+
+
+def datetime_to_utc_timestamp_in_millis(timestamp: datetime) -> int:
+    return int(timestamp.replace(tzinfo=timezone.utc).timestamp() * 1000)
 
 
 LAST_UPDATED_TIMESTAMP_KEY = 'last_activity_fetched_timestamp'

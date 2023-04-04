@@ -1,6 +1,6 @@
 import logging
 import time
-from datetime import datetime, timezone
+from datetime import datetime
 from enum import Enum, auto
 from typing import List, Union
 import os
@@ -8,13 +8,9 @@ import os
 from pynamodb.models import Model
 from pynamodb.attributes import UnicodeAttribute, NumberAttribute
 
-from utils.utils import get_current_timestamp
+from utils.utils import get_current_timestamp, datetime_to_utc_timestamp_in_millis
 
 LOGGER = logging.getLogger()
-
-
-def to_utc_timestamp_in_millis(timestamp: datetime) -> int:
-    return int(timestamp.replace(tzinfo=timezone.utc).timestamp() * 1000)
 
 
 class InstallActivityType(Enum):
@@ -26,8 +22,8 @@ class InstallActivityType(Enum):
         install_activity_type.type_timestamp_formatter = type_timestamp_formatter
         return install_activity_type
 
-    DAY = (to_utc_timestamp_in_millis, 'DAY:{0:%Y%m%d}')
-    MONTH = (to_utc_timestamp_in_millis, 'MONTH:{0:%Y%m}')
+    DAY = (datetime_to_utc_timestamp_in_millis, 'DAY:{0:%Y%m%d}')
+    MONTH = (datetime_to_utc_timestamp_in_millis, 'MONTH:{0:%Y%m}')
     TOTAL = (lambda timestamp: None, 'TOTAL:')
 
     def format_to_timestamp(self, timestamp: datetime) -> Union[int, None]:

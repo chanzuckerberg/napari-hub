@@ -1,27 +1,18 @@
 import logging
 import time
-from datetime import datetime, timezone, date
+from datetime import datetime
 from enum import Enum, auto
-from typing import List, Callable, Union
+from typing import List, Union
 import os
 
 from pynamodb.models import Model
 from pynamodb.attributes import UnicodeAttribute, NumberAttribute
 
-from utils.utils import get_current_timestamp
+from utils.utils import get_current_timestamp, date_to_utc_timestamp_in_millis, datetime_to_utc_timestamp_in_millis
 
 from backend.api.model import get_public_plugins, get_excluded_plugins
 
 LOGGER = logging.getLogger()
-
-
-def date_to_utc_timestamp_in_millis(timestamp: date) -> int:
-    timestamp_datetime = datetime(timestamp.year, timestamp.month, timestamp.day)
-    return int(timestamp_datetime.replace(tzinfo=timezone.utc).timestamp() * 1000)
-
-
-def datetime_to_utc_timestamp_in_millis(timestamp: datetime) -> int:
-    return int(timestamp.replace(tzinfo=timezone.utc).timestamp() * 1000)
 
 
 class GitHubActivityType(Enum):
@@ -32,7 +23,7 @@ class GitHubActivityType(Enum):
         install_activity_type.type_identifier_formatter = type_identifier_formatter
         return install_activity_type
 
-    LATEST = (lambda timestamp: None, 'LATEST:')
+    LATEST = (datetime_to_utc_timestamp_in_millis, 'LATEST:')
     MONTH = (date_to_utc_timestamp_in_millis, 'MONTH:{0:%Y%m}')
     TOTAL = (lambda timestamp: None, 'TOTAL:')
 
@@ -54,8 +45,10 @@ class GitHubActivityType(Enum):
 class GitHubActivity(Model):
     class Meta:
         host = os.getenv('LOCAL_DYNAMO_HOST')
-        region = os.getenv('AWS_REGION')
-        table_name = f'{os.getenv("STACK_NAME")}-github-activity'
+        #region = os.getenv('AWS_REGION')
+        region = 'us-west-2'
+        #table_name = f'{os.getenv("STACK_NAME")}-github-activity'
+        table_name = 'dev-test-github-activity'
 
     plugin_name = UnicodeAttribute(hash_key=True)
     type_identifier = UnicodeAttribute(range_key=True)
