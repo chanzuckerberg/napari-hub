@@ -7,7 +7,8 @@ export const getByHasText = (type: string, text: string): string =>
   `${type}:has-text("${text}")`;
 export const getMetadata = (attribute: string): string =>
   `[data-testid="searchResultMetadata"] >> ${attribute}`;
-
+export const getByTestID = (id: string): string => `[data-testid="${id}"]`;
+export const getByID = (id: string): string => `[id="${id}"]`;
 enum CommonSelectors {
   appBarHome = '[data-testid=appBarHome]:visible',
 }

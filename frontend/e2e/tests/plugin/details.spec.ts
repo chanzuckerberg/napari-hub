@@ -5,16 +5,49 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { expect, test } from '@playwright/test';
 
-import { formateDate } from '../../utils/filter';
+import { formateDate } from '../../utils/plugin';
 import { getFixture } from '../../utils/fixture';
 import { getByID } from '../../utils/selectors';
-
+import {
+  ACTIVITY,
+  AUTHOR,
+  BUTTON,
+  CLEAR_SEARCH,
+  CONTRIBUTING,
+  CONTRIBUTING_HEADER,
+  HEADER_REGION,
+  INSTALL,
+  ISSUES,
+  ISSUES_HEADER,
+  LICENSE,
+  LICENSE_HEADER,
+  MEATADATA_PLUGIN_TYPE,
+  MEATADATA_PYTHON_VERSION,
+  METADATA_FIRST_RELEASED,
+  METADATA_LICENSE,
+  METADATA_OPERATING_SYSTEM,
+  METADATA_RELEASE_DATE,
+  METADATA_REQUIREMENTS,
+  METADATA_SUPPORTED_DATA,
+  METADATA_VERSION,
+  PLUGIN_NAME,
+  PLUGIN_SUMMARY,
+  PLUGIN_TYPE,
+  REQUIREMENT,
+  SEARCH_BUTTON,
+  SEARCH_INPUT,
+  SEARCH_RESULT,
+  SIDE_BAR,
+  SUPPORTED_DATA,
+  USAGE,
+  BODY_ACTIVITY_PAGE,
+} from '../../utils/constants';
 const ENV = (process.env.NODE_ENV as string) || '';
 const data = getFixture(`e2e/fixtures/plugin_details.json`)[ENV];
 const query = 'napari-console';
 
 test.describe('Plugin details tests', () => {
-  test('should verify plugin details page', async ({ page }) => {
+  test.only('should verify plugin details page', async ({ page }) => {
     await page.goto(`${process.env.BASEURL as string}`);
     while (
       (await page.getByTestId(SEARCH_INPUT).getAttribute('value')) !== query
