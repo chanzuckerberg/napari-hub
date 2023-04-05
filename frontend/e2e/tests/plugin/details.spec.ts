@@ -5,12 +5,10 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { expect, test } from '@playwright/test';
 
-import { formateDate } from '../../utils/plugin';
-import { getFixture } from '../../utils/fixture';
-import { getByID } from '../../utils/selectors';
 import {
   ACTIVITY,
   AUTHOR,
+  BODY_ACTIVITY_PAGE,
   BUTTON,
   CLEAR_SEARCH,
   CONTRIBUTING,
@@ -40,14 +38,17 @@ import {
   SIDE_BAR,
   SUPPORTED_DATA,
   USAGE,
-  BODY_ACTIVITY_PAGE,
 } from '../../utils/constants';
+import { getFixture } from '../../utils/fixture';
+import { formateDate } from '../../utils/plugin';
+import { getByID } from '../../utils/selectors';
+
 const ENV = (process.env.NODE_ENV as string) || '';
 const data = getFixture(`e2e/fixtures/plugin_details.json`)[ENV];
 const query = 'napari-console';
 
 test.describe('Plugin details tests', () => {
-  test.only('should verify plugin details page', async ({ page }) => {
+  test('should verify plugin details page', async ({ page }) => {
     await page.goto(`${process.env.BASEURL as string}`);
     while (
       (await page.getByTestId(SEARCH_INPUT).getAttribute('value')) !== query
