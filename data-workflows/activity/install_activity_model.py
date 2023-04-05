@@ -7,8 +7,8 @@ import os
 
 from pynamodb.models import Model
 from pynamodb.attributes import UnicodeAttribute, NumberAttribute
-
-from utils.utils import get_current_timestamp, datetime_to_utc_timestamp_in_millis
+from nhcommons.utils.time import get_current_timestamp
+from utils.utils import datetime_to_utc_timestamp_in_millis
 
 LOGGER = logging.getLogger()
 

@@ -7,8 +7,8 @@ import os
 
 from pynamodb.models import Model
 from pynamodb.attributes import UnicodeAttribute, NumberAttribute
-
-from utils.utils import get_current_timestamp, date_to_utc_timestamp_in_millis, datetime_to_utc_timestamp_in_millis
+from nhcommons.utils.time import get_current_timestamp
+from utils.utils import date_to_utc_timestamp_in_millis, datetime_to_utc_timestamp_in_millis
 from plugin.helpers import _get_repo_to_plugin_dict
 
 

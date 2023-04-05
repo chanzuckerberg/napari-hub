@@ -3,10 +3,19 @@ import logging
 
 import activity.processor
 import categories.processor
+import plugin.processor
 
 
 LOGGER = logging.getLogger()
 LOGGER.setLevel(logging.INFO)
+
+EVENT_TYPE_BY_PROCESSOR = {
+    'activity': lambda event: activity.processor.update_activity(),
+    'category': lambda event: categories.processor.seed_s3_categories_workflow(
+        event.get("version"), event.get("categories_path")
+    ),
+    'plugin': lambda event: plugin.processor.update_plugin(),
+}
 
 
 def handle(event, context) -> None:
@@ -19,13 +28,7 @@ def handle(event, context) -> None:
         event = json.loads(body)
         event_type = event.get("type", "").lower()
 
-        # TODO: Create a dict for event_type by method to be called
-        if event_type == "activity":
-            activity.processor.update_activity()
-            LOGGER.info(f"Update successful for type={event_type}")
-        elif event_type == "seed-s3-categories":
-            version = event.get("version")
-            categories_path = event.get("categories_path")
-
-            categories.processor.seed_s3_categories_workflow(version, categories_path)
+        processor = EVENT_TYPE_BY_PROCESSOR.get(event_type)
+        if processor:
+            processor(event)
             LOGGER.info(f"Update successful for type={event_type}")

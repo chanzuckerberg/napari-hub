@@ -3,7 +3,7 @@ import logging
 
 from pynamodb.attributes import ListAttribute, NumberAttribute, UnicodeAttribute
 from pynamodb.models import Model
-from utils.utils import get_current_timestamp
+from nhcommons.utils.time import get_current_timestamp
 
 STACK_NAME = os.getenv("STACK_NAME", "local")
 

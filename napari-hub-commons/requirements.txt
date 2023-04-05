@@ -1,1 +1,2 @@
 gunicorn==20.1.0
+pynamodb==5.4.1
