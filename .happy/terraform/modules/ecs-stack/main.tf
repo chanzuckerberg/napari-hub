@@ -395,6 +395,14 @@ resource aws_cloudwatch_event_target update_target {
     }
 }
 
+resource aws_cloudwatch_event_target plugin_target_sqs {
+    rule = aws_cloudwatch_event_rule.update_rule.name
+    arn = aws_sqs_queue.data_workflows_queue.arn
+    input_transformer {
+        input_template = jsonencode({type = "plugin"})
+    }
+}
+
 # Cron job updating the activity data
 resource "aws_cloudwatch_event_rule" "activity_rule" {
   name                = "${local.custom_stack_name}-activity"
@@ -477,7 +485,7 @@ data aws_iam_policy_document backend_policy {
       module.github_dynamodb_table.table_arn,
       module.category_dynamodb_table.table_arn,
       module.plugin_dynamodb_table.table_arn,
-      module.plugin_blocked_dynamodb_table.table_arn
+      module.plugin_blocked_dynamodb_table.table_arn,
     ]
   }
 
@@ -522,6 +530,7 @@ data aws_iam_policy_document data_workflows_policy {
         module.plugin_dynamodb_table.table_arn,
         module.plugin_metadata_dynamodb_table.table_arn,
         module.plugin_blocked_dynamodb_table.table_arn,
+        "${module.plugin_dynamodb_table.table_arn}/index/*",
     ]
   }
   statement {

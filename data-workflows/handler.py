@@ -11,7 +11,8 @@ LOGGER.setLevel(logging.INFO)
 def handle(event, context) -> None:
 
     for record in event.get('Records', []):
-        if 'body' not in record:
+        body = record.get('body')
+        if not body:
             continue
 
         body = record.get('body')
