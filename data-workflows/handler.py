@@ -2,31 +2,23 @@ import json
 import logging
 
 import activity.processor
-from utils.utils import ParameterStoreAdapter
-import utils.utils
 
 
-def _setup_logging():
-    logger = logging.getLogger()
-    logger.setLevel(logging.INFO)
+LOGGER = logging.getLogger()
+LOGGER.setLevel(logging.INFO)
 
 
-def _update_activity() -> None:
-    parameter_store_adapter = ParameterStoreAdapter()
-    last_updated_timestamp = parameter_store_adapter.get_last_updated_timestamp()
-    current_timestamp = utils.utils.get_current_timestamp()
-    activity.processor.update_install_activity(last_updated_timestamp, current_timestamp)
-    activity.processor.update_github_activity(last_updated_timestamp, current_timestamp)
-    parameter_store_adapter.set_last_updated_timestamp(current_timestamp)
-
-
-def handle(event, context):
-    _setup_logging()
+def handle(event, context) -> None:
 
     for record in event.get('Records', []):
         if 'body' not in record:
             continue
-        event_type = json.loads(record.get('body')).get('type')
 
+        body = record.get('body')
+        LOGGER.info(f'Received message with body: {body}')
+        event_type = json.loads(body).get('type', '').lower()
+
+        # TODO: Create a dict for event_type by method to be called
         if event_type == 'activity':
-            _update_activity()
+            activity.processor.update_activity()
+            LOGGER.info(f'Update successful for type={event_type}')
