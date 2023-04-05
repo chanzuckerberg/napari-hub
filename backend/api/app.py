@@ -179,7 +179,7 @@ def authenticate_request():
 
 @app.after_request
 def add_header(response):
-    print('%s %s %s', request.method, request.full_path, response.status)
+    print(f'{request.method} {request.full_path} {response.status}')
     response.headers['Access-Control-Allow-Origin'] = '*'
     return response
 
