@@ -44,7 +44,7 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install -r requirements.txt
-          pip install pytest
+          pip install -r test-requirements.txt
 
       - name: Run unit tests
         working-directory: data-workflows
