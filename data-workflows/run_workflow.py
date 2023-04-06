@@ -1,15 +1,11 @@
 """
-Module containing functionality for running workflows. This can be run either as
-a standalone CLI script or by importing the function `run_workflow()` and
-passing the correct event payload information to the function. This allows us to
-be able to run the workflow in a consistently in different environments like
-local CLI, GitHub actions, or in an AWS lambda.
+Module containing functionality for running data workflows as a standalone script.
 """
 
 import argparse
+import handler
+import json
 
-from activity.update_activity import update_activity
-from categories import run_seed_s3_categories_workflow
 from typing import Dict
 
 
@@ -20,16 +16,7 @@ def run_workflow(event: Dict):
     specified data workflow.
     """
 
-    type = event["type"]
-
-    if type == "activity":
-        update_activity()
-
-    if type == "seed-s3-categories":
-        run_seed_s3_categories_workflow(
-            event["edam_version"],
-            event["s3_path"],
-        )
+    handler.handle({"Records": [{"body": json.dumps(event)}]}, {})
 
 
 def _get_arg_parser():
@@ -42,7 +29,7 @@ def _get_arg_parser():
     seed_s3_categories_parser = subparsers.add_parser(
         "seed-s3-categories", help="categories help"
     )
-    seed_s3_categories_parser.add_argument("--edam-version", required=True)
+    seed_s3_categories_parser.add_argument("--version", required=True)
     seed_s3_categories_parser.add_argument("--s3-path", required=True)
 
     subparsers.add_parser("activity", help="activity help")

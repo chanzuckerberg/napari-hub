@@ -1,6 +1,7 @@
 import json
 import logging
 import activity.processor
+import categories
 
 
 LOGGER = logging.getLogger()
@@ -14,9 +15,25 @@ def handle(event, context) -> None:
 
         body = record.get("body")
         LOGGER.info(f"Received message with body: {body}")
-        event_type = json.loads(body).get("type", "").lower()
+        event = json.loads(body)
+        event_type = event.get("type", "").lower()
 
         # TODO: Create a dict for event_type by method to be called
         if event_type == "activity":
             activity.processor.update_activity()
+            LOGGER.info(f"Update successful for type={event_type}")
+
+        if event_type == "seed-s3-categories":
+            version = event.get("version")
+            s3_path = event.get("s3_path")
+
+            if not version:
+                LOGGER.error(f"Missing 'version' for type={event_type}")
+                return
+
+            if not s3_path:
+                LOGGER.error(f"Missing 's3_path' for type={event_type}")
+                return
+
+            categories.run_seed_s3_categories_workflow(version, s3_path)
             LOGGER.info(f"Update successful for type={event_type}")
