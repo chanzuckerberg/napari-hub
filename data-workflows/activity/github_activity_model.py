@@ -17,11 +17,11 @@ LOGGER = logging.getLogger()
 
 class GitHubActivityType(Enum):
     def __new__(cls, timestamp_formatter, type_identifier_formatter):
-        install_activity_type = object.__new__(cls)
-        install_activity_type._value = auto()
-        install_activity_type.timestamp_formatter = timestamp_formatter
-        install_activity_type.type_identifier_formatter = type_identifier_formatter
-        return install_activity_type
+        github_activity_type = object.__new__(cls)
+        github_activity_type._value = auto()
+        github_activity_type.timestamp_formatter = timestamp_formatter
+        github_activity_type.type_identifier_formatter = type_identifier_formatter
+        return github_activity_type
 
     LATEST = (datetime_to_utc_timestamp_in_millis, 'LATEST:')
     MONTH = (date_to_utc_timestamp_in_millis, 'MONTH:{0:%Y%m}')
@@ -37,9 +37,9 @@ class GitHubActivityType(Enum):
         if self is GitHubActivityType.LATEST:
             return '1, to_timestamp(max(commit_author_date)) as latest_commit'
         elif self is GitHubActivityType.MONTH:
-            return 'date_trunc('"month"', to_date(commit_author_date)) as month, count(*) as num_commit'
+            return 'date_trunc('"month"', to_date(commit_author_date)) as month, count(*) as commit_count'
         else:
-            return '1, count(*) as num_commits'
+            return '1, count(*) as commit_count'
 
 
 class GitHubActivity(Model):
@@ -53,15 +53,15 @@ class GitHubActivity(Model):
     granularity = UnicodeAttribute(attr_name='type')
     timestamp = NumberAttribute(null=True)
     commit_count = NumberAttribute()
-    repo = UnicodeAttribute(null=True)
+    repo = UnicodeAttribute()
     last_updated_timestamp = NumberAttribute(default_for_new=get_current_timestamp)
 
     def __eq__(self, other):
         if isinstance(other, GitHubActivity):
-            return ((self.plugin_name, self.type_identifier, self.granularity, self.timestamp, self.number_of_commits,
+            return ((self.plugin_name, self.type_identifier, self.granularity, self.timestamp, self.commit_count,
                      self.repo) ==
                     (other.plugin_name, other.type_identifier, other.granularity, other.timestamp,
-                     other.number_of_commits, other.repo))
+                     other.commit_count, other.repo))
         return False
 
 
