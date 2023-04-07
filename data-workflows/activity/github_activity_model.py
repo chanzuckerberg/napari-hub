@@ -73,21 +73,17 @@ class GitHubActivityType(Enum):
             return sf._cursor_to_plugin_github_activity_total_mapper
 
     def get_query(self, plugins_by_earliest_ts: dict[str, datetime]) -> str:
-        query_projection = self.get_query_projection()
-        subquery = self._create_subquery(plugins_by_earliest_ts)
-        query_sorting = self.get_query_sorting()
-
         return f"""
                 SELECT 
                     repo, 
-                    {query_projection}
+                    {self.get_query_projection()}
                 FROM
                     imaging.github.commits
                 WHERE 
                     repo_type = 'plugin'
-                    AND {subquery}
-                GROUP BY {query_sorting}
-                ORDER BY {query_sorting}
+                    AND {self._create_subquery(plugins_by_earliest_ts)}
+                GROUP BY {self.get_query_sorting()}
+                ORDER BY {self.get_query_sorting()}
                 """
 
 
