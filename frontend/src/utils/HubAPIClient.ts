@@ -139,7 +139,7 @@ class HubAPIClient {
   async getPluginIndex(): Promise<PluginIndexData[]> {
     const data = await this.sendRequest<PluginIndexData[]>('/plugins/index', {
       params: {
-        use_use_dynamo_plugin: this.dynamoConfig.PLUGIN_MIGRATION,
+        use_dynamo_plugin: this.dynamoConfig.PLUGIN_MIGRATION,
       },
     });
 
@@ -153,7 +153,7 @@ class HubAPIClient {
       `/plugins/${name}`,
       {
         params: {
-          use_use_dynamo_plugin: this.dynamoConfig.PLUGIN_MIGRATION,
+          use_dynamo_plugin: this.dynamoConfig.PLUGIN_MIGRATION,
         },
       },
     );

@@ -398,11 +398,13 @@ def _execute_query(query, schema):
 
 
 def update_activity_data():
+    print("Starting data refresh for metrics")
     _update_activity_timeline_data()
     _update_recent_activity_data()
     repo_to_plugin_dict = _get_repo_to_plugin_dict()
     _update_latest_commits(repo_to_plugin_dict)
     _update_commit_activity(repo_to_plugin_dict)
+    print("Completed data refresh for metrics successfully")
 
 
 def _update_activity_timeline_data():
