@@ -25,7 +25,7 @@ PLUGINS_BY_EARLIEST_TS = {'foo': to_ts(1615680000), 'bar': to_ts(1656979200), 'b
 def get_plugins_with_installs_in_window_query():
     return """
             SELECT 
-                LOWER(file_project) AS plugin, DATE_TRUNC('DAY', MIN(timestamp)) AS earliest_timestamp
+                LOWER(file_project) AS name, DATE_TRUNC('DAY', MIN(timestamp)) AS earliest_timestamp
             FROM
                 imaging.pypi.labeled_downloads
             WHERE 
