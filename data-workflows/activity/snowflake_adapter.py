@@ -1,6 +1,6 @@
 import logging
 import time
-from datetime import datetime, timezone
+from datetime import datetime
 import os
 from functools import reduce
 from typing import List, Any, Callable, Iterable
@@ -113,7 +113,7 @@ def _generate_subquery_by_type(plugins_by_timestamp: dict[str, datetime], instal
 
 
 def _format_timestamp(timestamp_millis):
-    return TIMESTAMP_FORMAT.format(datetime.fromtimestamp(timestamp_millis / 1000.0), tz=timezone.utc)
+    return TIMESTAMP_FORMAT.format(datetime.fromtimestamp(timestamp_millis / 1000.0))
 
 
 def _cursor_to_timestamp_by_name_mapper(accumulator: dict[str, datetime], cursor) -> dict[str, datetime]:
