@@ -9,10 +9,10 @@ from pynamodb.models import Model
 from pynamodb.attributes import UnicodeAttribute, NumberAttribute
 
 from utils.utils import get_current_timestamp, date_to_utc_timestamp_in_millis, datetime_to_utc_timestamp_in_millis
-
-from backend.api.model import get_public_plugins, get_excluded_plugins
+from plugin.s3 import _get_repo_to_plugin_dict
 
 LOGGER = logging.getLogger()
+TIMESTAMP_FORMAT = "TO_TIMESTAMP('{0:%Y-%m-%d %H:%M:%S}')"
 
 
 class GitHubActivityType(Enum):
@@ -23,7 +23,7 @@ class GitHubActivityType(Enum):
         github_activity_type.type_identifier_formatter = type_identifier_formatter
         return github_activity_type
 
-    LATEST = (datetime_to_utc_timestamp_in_millis, 'LATEST:')
+    LATEST = (lambda count: None, 'LATEST:')
     MONTH = (date_to_utc_timestamp_in_millis, 'MONTH:{0:%Y%m}')
     TOTAL = (lambda timestamp: None, 'TOTAL:')
 
@@ -35,11 +35,44 @@ class GitHubActivityType(Enum):
 
     def get_query_projection(self) -> str:
         if self is GitHubActivityType.LATEST:
-            return '1, to_timestamp(max(commit_author_date)) as latest_commit'
+            return 'to_timestamp(max(commit_author_date)) as latest_commit'
         elif self is GitHubActivityType.MONTH:
-            return 'date_trunc('"month"', to_date(commit_author_date)) as month, count(*) as commit_count'
+            return 'date_trunc("month", to_date(commit_author_date)) as month, count(*) as commit_count'
         else:
-            return '1, count(*) as commit_count'
+            return 'count(*) as commit_count'
+
+    def get_query(self, plugins_by_earliest_ts: dict[str, datetime]) -> str:
+        if self is GitHubActivityType.MONTH:
+            query_projection = 'date_trunc("month", to_date(commit_author_date)) as month, count(*) as commit_count'
+            subquery = " OR ".join(
+                [
+                    f"repo = '{name}' AND to_timestamp(commit_author_date) >= "
+                    f"{TIMESTAMP_FORMAT.format(ts.replace(day=1))}"
+                    for name, ts in plugins_by_earliest_ts.items()
+                ]
+            )
+            query_sorting = '1, 2'
+        else:
+            if self is GitHubActivityType.LATEST:
+                query_projection = 'to_timestamp(max(commit_author_date)) as latest_commit'
+            else:
+                query_projection = 'count(*) as commit_count'
+            subquery = f"""repo IN ({','.join([f"'{plugin}'" for plugin in plugins_by_earliest_ts.keys()])})"""
+            query_sorting = '1'
+
+        query = f"""
+                SELECT 
+                    repo, 
+                    {query_projection}
+                FROM
+                    imaging.github.commits
+                WHERE 
+                    repo_type = 'plugin'
+                    AND {subquery}
+                GROUP BY {query_sorting}
+                ORDER BY {query_sorting}
+                """
+        return query
 
 
 class GitHubActivity(Model):
@@ -52,7 +85,7 @@ class GitHubActivity(Model):
     type_identifier = UnicodeAttribute(range_key=True)
     granularity = UnicodeAttribute(attr_name='type')
     timestamp = NumberAttribute(null=True)
-    commit_count = NumberAttribute()
+    commit_count = NumberAttribute(null=True)
     repo = UnicodeAttribute()
     last_updated_timestamp = NumberAttribute(default_for_new=get_current_timestamp)
 
@@ -72,30 +105,29 @@ def transform_and_write_to_dynamo(data: dict[str, List], activity_type: GitHubAc
 
     start = time.perf_counter()
     count = 0
-    public_plugins = get_public_plugins()
-    excluded_plugins = get_excluded_plugins()
-    processed_public_plugins = {k.lower(): k for k, v in public_plugins.items()}
+    repo_to_plugin_dict = _get_repo_to_plugin_dict()
     for repo_name, github_activities in data.items():
         for activity in github_activities:
-            plugin_name = repo_name.split('/')[1]
-            if plugin_name in excluded_plugins:
+            if repo_name not in repo_to_plugin_dict:
                 continue
-            elif plugin_name in processed_public_plugins:
-                # get value of plugin name (case-sensitive) since repo_name is in lower case
-                plugin_name = processed_public_plugins[plugin_name]
+            else:
+                plugin_name = repo_to_plugin_dict[repo_name]
 
             if activity_type.name == "LATEST":
-                timestamp = datetime_to_utc_timestamp_in_millis(activity['column_2'])
-                commit_count = activity['column_1']
+                type_identifier = "LATEST:"
+                timestamp = datetime_to_utc_timestamp_in_millis(activity['timestamp'])
+                commit_count = None
             elif activity_type.name == "MONTH":
-                timestamp = date_to_utc_timestamp_in_millis(activity['column_1'])
-                commit_count = activity['column_2']
+                type_identifier = activity_type.format_to_type_identifier(activity['timestamp'])
+                timestamp = date_to_utc_timestamp_in_millis(activity['timestamp'])
+                commit_count = activity['count']
             else:
+                type_identifier = "TOTAL:"
                 timestamp = None
-                commit_count = activity['column_2']
+                commit_count = activity['count']
 
             item = GitHubActivity(plugin_name,
-                                  activity_type.format_to_type_identifier(activity['column_1']),
+                                  type_identifier,
                                   granularity=activity_type.name,
                                   timestamp=timestamp,
                                   commit_count=commit_count,

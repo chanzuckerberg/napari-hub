@@ -65,13 +65,13 @@ def transform_and_write_to_dynamo(data: dict[str, List], activity_type: InstallA
     count = 0
     for plugin_name, install_activities in data.items():
         for activity in install_activities:
-            timestamp = activity['column_1']
+            timestamp = activity['timestamp']
 
             item = InstallActivity(plugin_name.lower(),
                                    activity_type.format_to_type_timestamp(timestamp),
                                    granularity=activity_type.name,
                                    timestamp=activity_type.format_to_timestamp(timestamp),
-                                   install_count=activity['column_2'])
+                                   install_count=activity['count'])
             batch.save(item)
             count += 1
 

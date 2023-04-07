@@ -12,7 +12,7 @@ def get_current_timestamp() -> int:
 
 def date_to_utc_timestamp_in_millis(timestamp: date) -> int:
     timestamp_datetime = datetime(timestamp.year, timestamp.month, timestamp.day)
-    return int(timestamp_datetime.replace(tzinfo=timezone.utc).timestamp() * 1000)
+    return datetime_to_utc_timestamp_in_millis(timestamp_datetime)
 
 
 def datetime_to_utc_timestamp_in_millis(timestamp: datetime) -> int:
