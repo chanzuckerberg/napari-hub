@@ -31,8 +31,8 @@ def get_plugins_with_installs_in_window_query():
             WHERE 
                 download_type = 'pip'
                 AND project_type = 'plugin'
-                AND TO_TIMESTAMP(ingestion_timestamp) > TO_TIMESTAMP(convert_timezone(''US/Pacific', '2021-03-13 23:05:53'))
-                AND TO_TIMESTAMP(ingestion_timestamp) <= TO_TIMESTAMP(convert_timezone(''US/Pacific', '2022-03-14 00:05:53'))
+                AND TO_TIMESTAMP(ingestion_timestamp) > TO_TIMESTAMP('2021-03-13 23:05:53')
+                AND TO_TIMESTAMP(ingestion_timestamp) <= TO_TIMESTAMP('2022-03-14 00:05:53')
             GROUP BY file_project
             ORDER BY file_project
             """
