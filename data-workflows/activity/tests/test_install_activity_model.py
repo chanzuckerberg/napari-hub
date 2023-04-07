@@ -19,13 +19,13 @@ def generate_expected(data, granularity, type_timestamp_formatter, timestamp_for
     expected = []
     for key, values in data.items():
         for val in values:
-            timestamp = val['column_1']
+            timestamp = val['timestamp']
 
             ia = InstallActivity(key.lower(),
                                  f'{type_timestamp_formatter(timestamp)}',
                                  granularity=granularity,
                                  timestamp=timestamp_formatter(timestamp),
-                                 install_count=val['column_2'])
+                                 install_count=val['count'])
             expected.append(ia)
     return expected
 
