@@ -26,8 +26,8 @@ def get_plugins_with_installs_in_window(start_millis: int, end_millis: int) -> d
                 AND project_type = 'plugin'
                 AND TO_TIMESTAMP(ingestion_timestamp) > {_format_timestamp(timestamp_millis=start_millis)}
                 AND TO_TIMESTAMP(ingestion_timestamp) <= {_format_timestamp(timestamp_millis=end_millis)}
-            GROUP BY file_project
-            ORDER BY file_project
+            GROUP BY name
+            ORDER BY name
             """
 
     LOGGER.info(f'Querying for plugins added between start_timestamp={start_millis} end_timestamp={end_millis}')
@@ -47,8 +47,8 @@ def get_plugins_install_count_since_timestamp(plugins_by_earliest_ts: dict[str, 
                 download_type = 'pip'
                 AND project_type = 'plugin'
                 AND ({_generate_subquery_by_type(plugins_by_earliest_ts, install_activity_type)})
-            GROUP BY 1, 2
-            ORDER BY 1, 2
+            GROUP BY plugin, timestamp
+            ORDER BY plugin, timestamp
             """
     LOGGER.info(f'Fetching data for granularity={install_activity_type.name}')
     return _mapped_query_results(query, 'PYPI', {}, _cursor_to_plugin_install_activity_mapper)
@@ -64,8 +64,8 @@ def get_plugins_with_commits_in_window(start_millis: int, end_millis: int) -> di
                 repo_type = 'plugin'
                 AND TO_TIMESTAMP(ingestion_time) > {_format_timestamp(timestamp_millis=start_millis)}
                 AND TO_TIMESTAMP(ingestion_time) <= {_format_timestamp(timestamp_millis=end_millis)}
-            GROUP BY repo
-            ORDER BY repo
+            GROUP BY name
+            ORDER BY name
             """
 
     LOGGER.info(f'Querying for plugins added between start_timestamp={start_millis} end_timestamp={end_millis}')
@@ -74,17 +74,13 @@ def get_plugins_with_commits_in_window(start_millis: int, end_millis: int) -> di
 
 def get_plugins_commit_count_since_timestamp(plugins_by_earliest_ts: dict[str, datetime],
                                              github_activity_type: GitHubActivityType) -> dict[str, List]:
-    query = github_activity_type.get_query(plugins_by_earliest_ts)
     LOGGER.info(f'Fetching data for granularity={github_activity_type.name}')
-
-    if github_activity_type is GitHubActivityType.LATEST:
-        accumulator_updater = _cursor_to_plugin_github_activity_latest_mapper
-    elif github_activity_type is GitHubActivityType.MONTH:
-        accumulator_updater = _cursor_to_plugin_github_activity_month_mapper
-    else:
-        accumulator_updater = _cursor_to_plugin_github_activity_total_mapper
-
-    return _mapped_query_results(query, 'GITHUB', {}, accumulator_updater)
+    return _mapped_query_results(
+        query=github_activity_type.get_query(plugins_by_earliest_ts),
+        schema="GITHUB",
+        accumulator={},
+        accumulator_updater=github_activity_type.get_accumulator_updater(),
+    )
 
 
 def _generate_subquery_by_type(plugins_by_timestamp: dict[str, datetime], install_activity_type: InstallActivityType):

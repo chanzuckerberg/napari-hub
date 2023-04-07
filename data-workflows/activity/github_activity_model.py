@@ -2,7 +2,7 @@ import logging
 import time
 from datetime import datetime
 from enum import Enum, auto
-from typing import List, Union
+from typing import List, Union, Callable
 import os
 
 from pynamodb.models import Model
@@ -10,6 +10,7 @@ from pynamodb.attributes import UnicodeAttribute, NumberAttribute
 
 from utils.utils import get_current_timestamp, date_to_utc_timestamp_in_millis, datetime_to_utc_timestamp_in_millis
 from plugin.s3 import _get_repo_to_plugin_dict
+
 
 LOGGER = logging.getLogger()
 TIMESTAMP_FORMAT = "TO_TIMESTAMP('{0:%Y-%m-%d %H:%M:%S}')"
@@ -23,18 +24,18 @@ class GitHubActivityType(Enum):
         github_activity_type.type_identifier_formatter = type_identifier_formatter
         return github_activity_type
 
-    LATEST = (datetime_to_utc_timestamp_in_millis, 'LATEST:')
-    MONTH = (date_to_utc_timestamp_in_millis, 'MONTH:{0:%Y%m}')
-    TOTAL = (lambda timestamp: None, 'TOTAL:')
+    LATEST = (datetime_to_utc_timestamp_in_millis, 'LATEST:{0}')
+    MONTH = (date_to_utc_timestamp_in_millis, 'MONTH:{0:%Y%m}:{1}')
+    TOTAL = (lambda timestamp: None, 'TOTAL:{0}')
 
     def format_to_timestamp(self, timestamp: datetime) -> Union[int, None]:
         return self.timestamp_formatter(timestamp)
 
-    def format_to_type_identifier(self, identifier: str) -> str:
+    def format_to_type_identifier(self, identifier: str, repo_name: str) -> str:
         if self is GitHubActivityType.MONTH:
-            return self.type_identifier_formatter.format(identifier)
+            return self.type_identifier_formatter.format(identifier, repo_name)
         else:
-            return f"{self.name}:"
+            return self.type_identifier_formatter.format(repo_name)
 
     def get_query_projection(self) -> str:
         if self is GitHubActivityType.LATEST:
@@ -44,26 +45,39 @@ class GitHubActivityType(Enum):
         else:
             return 'count(*) as commit_count'
 
-    def get_query(self, plugins_by_earliest_ts: dict[str, datetime]) -> str:
+    def _create_subquery(self, plugins_by_earliest_ts: dict[str, datetime]) -> str:
         if self is GitHubActivityType.MONTH:
-            query_projection = 'date_trunc("month", to_date(commit_author_date)) as month, count(*) as commit_count'
-            subquery = " OR ".join(
+            return " OR ".join(
                 [
                     f"repo = '{name}' AND to_timestamp(commit_author_date) >= "
                     f"{TIMESTAMP_FORMAT.format(ts.replace(day=1))}"
                     for name, ts in plugins_by_earliest_ts.items()
                 ]
             )
-            query_sorting = '1, 2'
         else:
-            if self is GitHubActivityType.LATEST:
-                query_projection = 'to_timestamp(max(commit_author_date)) as latest_commit'
-            else:
-                query_projection = 'count(*) as commit_count'
-            subquery = f"""repo IN ({','.join([f"'{plugin}'" for plugin in plugins_by_earliest_ts.keys()])})"""
-            query_sorting = '1'
+            return f"""repo IN ({','.join([f"'{plugin}'" for plugin in plugins_by_earliest_ts.keys()])})"""
 
-        query = f"""
+    def get_query_sorting(self) -> str:
+        if self is GitHubActivityType.MONTH:
+            return 'repo, month'
+        else:
+            return 'repo'
+
+    def get_accumulator_updater(self) -> Callable:
+        import activity.snowflake_adapter as sf
+        if self is GitHubActivityType.LATEST:
+            return sf._cursor_to_plugin_github_activity_latest_mapper
+        elif self is GitHubActivityType.MONTH:
+            return sf._cursor_to_plugin_github_activity_month_mapper
+        else:
+            return sf._cursor_to_plugin_github_activity_total_mapper
+
+    def get_query(self, plugins_by_earliest_ts: dict[str, datetime]) -> str:
+        query_projection = self.get_query_projection()
+        subquery = self._create_subquery(plugins_by_earliest_ts)
+        query_sorting = self.get_query_sorting()
+
+        return f"""
                 SELECT 
                     repo, 
                     {query_projection}
@@ -75,7 +89,6 @@ class GitHubActivityType(Enum):
                 GROUP BY {query_sorting}
                 ORDER BY {query_sorting}
                 """
-        return query
 
 
 class GitHubActivity(Model):
@@ -110,13 +123,11 @@ def transform_and_write_to_dynamo(data: dict[str, List], activity_type: GitHubAc
     count = 0
     repo_to_plugin_dict = _get_repo_to_plugin_dict()
     for repo_name, github_activities in data.items():
+        if repo_name not in repo_to_plugin_dict:
+            continue
         for activity in github_activities:
-            if repo_name not in repo_to_plugin_dict:
-                continue
-            else:
-                plugin_name = repo_to_plugin_dict[repo_name]
-
-            identifier = activity['timestamp'] if 'timestamp' in activity else ''
+            plugin_name = repo_to_plugin_dict[repo_name]
+            identifier = activity.get('timestamp', '')
 
             if activity_type.name == "LATEST":
                 timestamp = datetime_to_utc_timestamp_in_millis(activity['timestamp'])
@@ -129,7 +140,7 @@ def transform_and_write_to_dynamo(data: dict[str, List], activity_type: GitHubAc
                 commit_count = activity['count']
 
             item = GitHubActivity(plugin_name,
-                                  activity_type.format_to_type_identifier(identifier),
+                                  activity_type.format_to_type_identifier(identifier, repo_name),
                                   granularity=activity_type.name,
                                   timestamp=timestamp,
                                   commit_count=commit_count,

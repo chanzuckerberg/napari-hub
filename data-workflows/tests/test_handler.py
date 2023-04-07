@@ -30,7 +30,7 @@ class TestHandle:
         monkeypatch.setattr(utils.utils, 'get_current_timestamp', lambda: CURRENT_TIMESTAMP)
 
         from handler import handle
-        handle({'Records': [{'body': '{"type":"install_activity"}'}, {'body': '{"type":"bar"}'}]}, None)
+        handle({'Records': [{'body': '{"type":"activity"}'}, {'body': '{"type":"bar"}'}]}, None)
 
         self._verify(1)
         self._update_install_activity_call.assert_called_once_with(LAST_UPDATED_TIMESTAMP, CURRENT_TIMESTAMP)
@@ -39,7 +39,7 @@ class TestHandle:
     def test_handle_invalid_json(self):
         with pytest.raises(JSONDecodeError):
             from handler import handle
-            handle({'Records': [{'body': '{"type:"install_activity"}'}]}, None)
+            handle({'Records': [{'body': '{"type:"activity"}'}]}, None)
         self._verify(0)
 
     @pytest.mark.parametrize('event', [
