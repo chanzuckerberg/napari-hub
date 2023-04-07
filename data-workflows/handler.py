@@ -1,17 +1,22 @@
 import json
 import logging
+from datetime import datetime, timezone
 
 import activity.processor
 from utils.utils import ParameterStoreAdapter
 import utils.utils
 
 
+def to_ts(epoch):
+    return datetime.fromtimestamp(epoch, tz=timezone.utc)
+
+
 def _fetch_and_update_timestamps():
     parameter_store_adapter = ParameterStoreAdapter()
     last_updated_timestamp = parameter_store_adapter.get_last_updated_timestamp()
     current_timestamp = utils.utils.get_current_timestamp()
-    parameter_store_adapter.set_last_updated_timestamp(current_timestamp)
-    return last_updated_timestamp, current_timestamp
+    parameter_store_adapter.set_last_updated_timestamp(to_ts(current_timestamp))
+    return to_ts(last_updated_timestamp), to_ts(current_timestamp)
 
 
 def _setup_logging():
