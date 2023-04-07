@@ -1,6 +1,5 @@
 import json
 import logging
-from datetime import datetime, timezone
 
 import activity.processor
 from utils.utils import ParameterStoreAdapter
