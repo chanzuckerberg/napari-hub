@@ -145,8 +145,8 @@ def _cursor_to_plugin_install_activity_mapper(accumulator: dict[str, List], curs
 
 def _cursor_to_plugin_github_activity_latest_mapper(accumulator: dict[str, List], cursor) -> dict[str, List]:
     """
-    Updates the accumulator with data from the cursor. Object with timestamp attribute are created from the
-    cursor record and added to the accumulator keyed on repo name.
+    Updates the accumulator with data from the cursor for GitHubActivityType.LATEST.
+    Object with timestamp is created from the cursor record and added to the accumulator keyed on repo name.
     The cursor contains the fields repo and timestamp
     :param dict[str, List] accumulator: Accumulator that will be updated with new data
     :param SnowflakeCursor cursor:
@@ -159,8 +159,8 @@ def _cursor_to_plugin_github_activity_latest_mapper(accumulator: dict[str, List]
 
 def _cursor_to_plugin_github_activity_month_mapper(accumulator: dict[str, List], cursor) -> dict[str, List]:
     """
-    Updates the accumulator with data from the cursor. Object with timestamp and count attributes are created from the
-    cursor record and added to the accumulator keyed on repo name.
+    Updates the accumulator with data from the cursor for GitHubActivityType.MONTH.
+    Object with timestamp and count is created from the cursor record and added to the accumulator keyed on repo name.
     The cursor contains the fields repo, timestamp, and count
     :param dict[str, List] accumulator: Accumulator that will be updated with new data
     :param SnowflakeCursor cursor:
@@ -173,8 +173,8 @@ def _cursor_to_plugin_github_activity_month_mapper(accumulator: dict[str, List],
 
 def _cursor_to_plugin_github_activity_total_mapper(accumulator: dict[str, List], cursor) -> dict[str, List]:
     """
-    Updates the accumulator with data from the cursor. Object with count attribute are created from the
-    cursor record and added to the accumulator keyed on repo name.
+    Updates the accumulator with data from the cursor for GitHubActivityType.TOTAL.
+    Object with count are created from the cursor record and added to the accumulator keyed on repo name.
     The cursor contains the fields repo and count
     :param dict[str, List] accumulator: Accumulator that will be updated with new data
     :param SnowflakeCursor cursor:
