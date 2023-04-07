@@ -23,7 +23,7 @@ class GitHubActivityType(Enum):
         github_activity_type.type_identifier_formatter = type_identifier_formatter
         return github_activity_type
 
-    LATEST = (lambda count: None, 'LATEST:')
+    LATEST = (datetime_to_utc_timestamp_in_millis, 'LATEST:')
     MONTH = (date_to_utc_timestamp_in_millis, 'MONTH:{0:%Y%m}')
     TOTAL = (lambda timestamp: None, 'TOTAL:')
 
@@ -31,7 +31,10 @@ class GitHubActivityType(Enum):
         return self.timestamp_formatter(timestamp)
 
     def format_to_type_identifier(self, identifier: str) -> str:
-        return self.type_identifier_formatter.format(identifier)
+        if self is GitHubActivityType.MONTH:
+            return self.type_identifier_formatter.format(identifier)
+        else:
+            return f"{self.name}:"
 
     def get_query_projection(self) -> str:
         if self is GitHubActivityType.LATEST:
@@ -113,21 +116,20 @@ def transform_and_write_to_dynamo(data: dict[str, List], activity_type: GitHubAc
             else:
                 plugin_name = repo_to_plugin_dict[repo_name]
 
+            identifier = activity['timestamp'] if 'timestamp' in activity else ''
+
             if activity_type.name == "LATEST":
-                type_identifier = "LATEST:"
                 timestamp = datetime_to_utc_timestamp_in_millis(activity['timestamp'])
                 commit_count = None
             elif activity_type.name == "MONTH":
-                type_identifier = activity_type.format_to_type_identifier(activity['timestamp'])
                 timestamp = date_to_utc_timestamp_in_millis(activity['timestamp'])
                 commit_count = activity['count']
             else:
-                type_identifier = "TOTAL:"
                 timestamp = None
                 commit_count = activity['count']
 
             item = GitHubActivity(plugin_name,
-                                  type_identifier,
+                                  activity_type.format_to_type_identifier(identifier),
                                   granularity=activity_type.name,
                                   timestamp=timestamp,
                                   commit_count=commit_count,
