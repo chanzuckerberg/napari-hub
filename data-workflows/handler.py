@@ -19,9 +19,13 @@ def _setup_logging():
     logger.setLevel(logging.INFO)
 
 
-def _update_activity() -> None:
+def _update_install_activity() -> None:
     last_updated_timestamp, current_timestamp = _fetch_and_update_timestamps()
     activity.processor.update_install_activity(last_updated_timestamp, current_timestamp)
+
+
+def _update_github_activity() -> None:
+    last_updated_timestamp, current_timestamp = _fetch_and_update_timestamps()
     activity.processor.update_github_activity(last_updated_timestamp, current_timestamp)
 
 
@@ -33,5 +37,7 @@ def handle(event, context):
             continue
         event_type = json.loads(record.get('body')).get('type')
 
-        if event_type == 'activity':
-            _update_activity()
+        if event_type == 'install_activity':
+            _update_install_activity()
+        if event_type == 'github_activity':
+            _update_github_activity()
