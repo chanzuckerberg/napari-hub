@@ -18,7 +18,8 @@ LOGGER = logging.getLogger()
 
 class CategoryModel(Model):
     class Meta:
-        region = os.environ.get("AWS_REGION", "us-west-2")
+        host = os.getenv("LOCAL_DYNAMO_HOST")
+        region = os.getenv("AWS_REGION", "us-west-2")
         table_name = f"{STACK_NAME}-category"
 
     name = UnicodeAttribute(hash_key=True)
@@ -52,14 +53,13 @@ def _hash_category(category: Dict[str, str]) -> str:
     return category_hash.hexdigest()
 
 
-def run_seed_s3_categories_workflow(version: str, s3_path: str):
+def run_seed_s3_categories_workflow(version: str, s3_path: str, s3_prefix):
     """
     Runs data workflow for populating the category dynamo table from an S3
     source on the same depoyment stack.
     """
 
     bucket = get_required_env("BUCKET")
-    env = get_required_env("ENV")
 
     LOGGER.info(
         f"Seeding {version} category data from S3 "
@@ -68,7 +68,7 @@ def run_seed_s3_categories_workflow(version: str, s3_path: str):
 
     client = S3Client(
         bucket=bucket,
-        prefix=STACK_NAME if env == "dev" else "",
+        prefix=s3_prefix,
     )
     data = client.load_json_from_s3(s3_path)
 

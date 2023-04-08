@@ -29,8 +29,10 @@ def _get_arg_parser():
     seed_s3_categories_parser = subparsers.add_parser(
         "seed-s3-categories", help="categories help"
     )
+    seed_s3_categories_parser.add_argument("--bucket", required=True)
     seed_s3_categories_parser.add_argument("--version", required=True)
     seed_s3_categories_parser.add_argument("--s3-path", required=True)
+    seed_s3_categories_parser.add_argument("--s3-prefix", default="")
 
     subparsers.add_parser("activity", help="activity help")
 
