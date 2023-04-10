@@ -9,7 +9,7 @@ from pynamodb.models import Model
 from pynamodb.attributes import UnicodeAttribute, NumberAttribute
 
 from utils.utils import get_current_timestamp, date_to_utc_timestamp_in_millis, datetime_to_utc_timestamp_in_millis
-from plugin.s3 import _get_repo_to_plugin_dict
+from plugin.s3 import _get_cache, _get_repo_to_plugin_dict
 
 
 LOGGER = logging.getLogger()
@@ -118,13 +118,17 @@ def transform_and_write_to_dynamo(data: dict[str, List], activity_type: GitHubAc
     start = time.perf_counter()
     count = 0
     repo_to_plugin_dict = _get_repo_to_plugin_dict()
-    for repo_name, github_activities in data.items():
-        if repo_name not in repo_to_plugin_dict:
+    hidden_plugins = _get_cache('cache/hidden-plugins.json')
+    for repo, github_activities in data.items():
+        repo_name = repo.split('/')[1]
+        if repo in repo_to_plugin_dict:
+            plugin_name = repo_to_plugin_dict[repo]
+        elif repo_name in hidden_plugins:
+            plugin_name = repo_name
+        else:
             continue
         for activity in github_activities:
-            plugin_name = repo_to_plugin_dict[repo_name]
             identifier = activity.get('timestamp', '')
-
             if activity_type.name == "LATEST":
                 timestamp = datetime_to_utc_timestamp_in_millis(activity['timestamp'])
                 commit_count = None
@@ -136,11 +140,11 @@ def transform_and_write_to_dynamo(data: dict[str, List], activity_type: GitHubAc
                 commit_count = activity['count']
 
             item = GitHubActivity(plugin_name,
-                                  activity_type.format_to_type_identifier(identifier, repo_name),
+                                  activity_type.format_to_type_identifier(identifier, repo),
                                   granularity=activity_type.name,
                                   timestamp=timestamp,
                                   commit_count=commit_count,
-                                  repo=repo_name)
+                                  repo=repo)
             batch.save(item)
             count += 1
 
