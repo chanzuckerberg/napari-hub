@@ -9,7 +9,7 @@ from pynamodb.models import Model
 from pynamodb.attributes import UnicodeAttribute, NumberAttribute
 
 from utils.utils import get_current_timestamp, date_to_utc_timestamp_in_millis, datetime_to_utc_timestamp_in_millis
-from plugin.s3 import _get_cache, _get_repo_to_plugin_dict
+from plugin.helpers import _get_cache, _get_repo_to_plugin_dict
 
 
 LOGGER = logging.getLogger()
@@ -118,13 +118,9 @@ def transform_and_write_to_dynamo(data: dict[str, List], activity_type: GitHubAc
     start = time.perf_counter()
     count = 0
     repo_to_plugin_dict = _get_repo_to_plugin_dict()
-    hidden_plugins = _get_cache('cache/hidden-plugins.json')
     for repo, github_activities in data.items():
-        repo_name = repo.split('/')[1]
         if repo in repo_to_plugin_dict:
             plugin_name = repo_to_plugin_dict[repo]
-        elif repo_name in hidden_plugins:
-            plugin_name = repo_name
         else:
             continue
         for activity in github_activities:
