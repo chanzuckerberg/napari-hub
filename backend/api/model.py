@@ -480,13 +480,26 @@ def _update_recent_activity_data(number_of_time_periods=30, time_granularity='DA
     write_data(json.dumps(data), "activity_dashboard_data/recent_installs.json")
 
 
+def _update_repo_to_plugin_dict(repo_to_plugin_dict: dict, plugin_obj: dict):
+    code_repository = plugin_obj.get('code_repository')
+    if code_repository:
+        repo_to_plugin_dict[code_repository.replace('https://github.com/', '')] = plugin_obj['name']
+    return repo_to_plugin_dict
+
+
 def _get_repo_to_plugin_dict():
     index_json = get_index()
+    hidden_plugins = get_hidden_plugins()
+    excluded_plugins = get_excluded_plugins()
     repo_to_plugin_dict = {}
     for public_plugin_obj in index_json:
-        code_repository = public_plugin_obj.get('code_repository')
-        if code_repository:
-            repo_to_plugin_dict[code_repository.replace('https://github.com/', '')] = public_plugin_obj['name']
+        repo_to_plugin_dict = _update_repo_to_plugin_dict(repo_to_plugin_dict, public_plugin_obj)
+    for excluded_plugin_name, excluded_plugin_visibility in excluded_plugins.items():
+        if excluded_plugin_visibility == "hidden":
+            excluded_plugin_obj = get_plugin(excluded_plugin_name, hidden_plugins[excluded_plugin_name])
+        else:
+            excluded_plugin_obj = get_plugin(excluded_plugin_name, None)
+        repo_to_plugin_dict = _update_repo_to_plugin_dict(repo_to_plugin_dict, excluded_plugin_obj)
     return repo_to_plugin_dict
 
 
@@ -504,18 +517,14 @@ def _update_latest_commits(repo_to_plugin_dict):
         GROUP BY repo 
         ORDER BY repo
     """
-    hidden_plugins = get_hidden_plugins()
     cursor_list = _execute_query(query, "GITHUB")
     data = {}
     for cursor in cursor_list:
         for row in cursor:
             repo = row[0]
-            repo_name = repo.split('/')[1]
             if repo in repo_to_plugin_dict:
                 plugin = repo_to_plugin_dict[repo]
-            elif repo_name in hidden_plugins:
-                plugin = repo_name
-            data[plugin] = int(pd.to_datetime(row[1]).strftime("%s")) * 1000
+                data[plugin] = int(pd.to_datetime(row[1]).strftime("%s")) * 1000
     write_data(json.dumps(data), "activity_dashboard_data/latest_commits.json")
 
 
@@ -533,18 +542,14 @@ def _update_commit_activity(repo_to_plugin_dict):
         GROUP BY repo, month
         ORDER BY repo, month
     """
-    hidden_plugins = get_hidden_plugins()
     cursor_list = _execute_query(query, "GITHUB")
     data = {}
     for cursor in cursor_list:
         for repo, month, commit_count in cursor:
-            repo_name = repo.split('/')[1]
-            timestamp = int(pd.to_datetime(month).strftime("%s")) * 1000
-            commits = int(commit_count)
             if repo in repo_to_plugin_dict:
+                timestamp = int(pd.to_datetime(month).strftime("%s")) * 1000
+                commits = int(commit_count)
                 data.setdefault(repo_to_plugin_dict[repo], []).append({'timestamp': timestamp, 'commits': commits})
-            elif repo_name in hidden_plugins:
-                data.setdefault(repo_name, []).append({'timestamp': timestamp, 'commits': commits})
     for plugin in data:
         data[plugin] = sorted(data[plugin], key=lambda x: (x['timestamp']))
     write_data(json.dumps(data), "activity_dashboard_data/commit_activity.json")
