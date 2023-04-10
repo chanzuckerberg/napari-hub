@@ -79,7 +79,7 @@ def _generate_subquery_by_type(plugins_by_timestamp: dict[str, datetime], instal
 
 
 def _format_timestamp(timestamp_millis):
-    return TIMESTAMP_FORMAT.format(datetime.fromtimestamp(timestamp_millis / 1000.0))
+    return TIMESTAMP_FORMAT.format(datetime.utcfromtimestamp(timestamp_millis / 1000.0))
 
 
 def _cursor_to_timestamp_by_plugin_mapper(accumulator: dict[str, datetime], cursor) -> dict[str, datetime]:
