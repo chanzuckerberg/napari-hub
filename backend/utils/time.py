@@ -1,4 +1,7 @@
 import time
+import logging
+
+LOGGER = logging.getLogger()
 
 
 def get_current_timestamp() -> int:
@@ -11,4 +14,4 @@ def get_perf_duration(start: float) -> float:
 
 def print_perf_duration(start: float, message: str):
     duration = get_perf_duration(start)
-    print(f"{message} duration={duration}ms")
+    LOGGER.info(f"{message} duration={duration}ms")
