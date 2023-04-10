@@ -501,7 +501,8 @@ def _update_latest_commits(repo_to_plugin_dict):
             imaging.github.commits
         WHERE 
             repo_type = 'plugin'
-        GROUP BY repo
+        GROUP BY repo 
+        ORDER BY repo
     """
     hidden_plugins = get_hidden_plugins()
     cursor_list = _execute_query(query, "GITHUB")
@@ -530,6 +531,7 @@ def _update_commit_activity(repo_to_plugin_dict):
         WHERE 
             repo_type = 'plugin'
         GROUP BY repo, month
+        ORDER BY repo, month
     """
     hidden_plugins = get_hidden_plugins()
     cursor_list = _execute_query(query, "GITHUB")
