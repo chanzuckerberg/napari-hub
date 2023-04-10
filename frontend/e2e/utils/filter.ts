@@ -82,7 +82,6 @@ export async function filterPlugins(
 
 export async function verifyFilterResults(
   page: Page,
-
   pluginFilter: PluginFilter,
   expectedData: any,
   params: string | (string | string[])[][],

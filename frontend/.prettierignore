@@ -12,3 +12,7 @@ pnpm-lock.yaml
 
 # Static assets
 public
+
+# e2e files
+playwright-report
+e2e/report

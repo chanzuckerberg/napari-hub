@@ -1,28 +1,28 @@
-# Workflow for running plugins lambda tests for PRs and main branch
+# Workflow for running data-workflows tests for PRs and main branch
 
-name: Plugins Tests
+name: Data Workflows Tests
 
 on:
   push:
     branches:
       - main
     paths:
-      - 'plugins/**'
+      - 'data-workflows/**'
   pull_request:
     branches:
       - '**'
     paths:
-      - 'plugins/**'
+      - 'data-workflows/**'
 
 defaults:
   run:
-    working-directory: plugins/
+    working-directory: data-workflows/
 
 jobs:
-  # Runs pytest for backend code
+  # Runs pytest for data-workflows code
   tests:
     name: pytest
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     steps:
       - name: Checkout Repo
@@ -31,7 +31,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v3
         with:
-          python-version: "3.9"
+          python-version: '3.9'
 
       - name: Cache Python environment
         uses: actions/cache@v3
@@ -45,9 +45,7 @@ jobs:
           pip install --upgrade pip
           pip install -r requirements.txt
           pip install -r test-requirements.txt
-          pip install pytest
 
-      - name: Run tests
-        working-directory: plugins/
-        run : |
-          python -m pytest .
+      - name: Run unit tests
+        working-directory: data-workflows
+        run : python -m pytest

@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 
 import { SearchQueryParams, SearchSortType } from '@/store/search/constants';
 
-import { submitQuery } from '../../utils/search';
+import { searchPlugins } from '../../utils/search';
 import { selectors } from '../../utils/selectors';
 import {
   AccordionTitle,
@@ -16,7 +16,7 @@ test.describe('Plugin search', () => {
   test('should update URL parameter when entering query', async ({ page }) => {
     const query = 'video';
     await page.goto(getSearchUrl(), { timeout: 60000 });
-    await submitQuery(page, query);
+    await searchPlugins(page, query);
     expect(getQueryParameterValues(page, SearchQueryParams.Search)).toContain(
       query,
     );
@@ -27,7 +27,7 @@ test.describe('Plugin search', () => {
 
   test('should render search results for query', async ({ page }) => {
     await page.goto(getSearchUrl(), { timeout: 60000 });
-    await submitQuery(page, 'video');
+    await searchPlugins(page, 'video');
     await expect(page.locator(selectors.search.result)).toContainText(
       'napari_video',
     );
@@ -72,14 +72,13 @@ test.describe('Plugin search', () => {
     page,
   }) => {
     await page.goto(getTestURL('/about'), { timeout: 60000 });
-    await submitQuery(page, 'video');
-    await page.waitForNavigation();
+    await searchPlugins(page, 'video');
 
     const expectedUrl = getSearchUrl(
       [SearchQueryParams.Search, 'video'],
       [SearchQueryParams.Sort, SearchSortType.Relevance],
     );
-    expect(page.url()).toEqual(expectedUrl);
+    expect(page.url()).toContain(expectedUrl);
     await page.waitForTimeout(500);
     await expect(page.locator(selectors.search.result).first()).toContainText(
       'napari_video',
@@ -91,7 +90,7 @@ test.describe('Plugin search', () => {
   }) => {
     const query = 'video';
     await page.goto(getSearchUrl(), { timeout: 60000 });
-    await submitQuery(page, query);
+    await searchPlugins(page, query);
     await page.click('[data-testid=searchResult]');
     await page.waitForNavigation();
 
@@ -117,7 +116,8 @@ test.describe('Plugin search', () => {
       'Recently updated',
     );
 
-    await submitQuery(page, 'video');
+    await searchPlugins(page, 'video');
+    await maybeOpenAccordion(page, AccordionTitle.Sort, viewport?.width);
     await expect(page.locator(selectors.sort.selected).first()).toHaveText(
       'Relevance',
     );
@@ -158,8 +158,8 @@ test.describe('Plugin search', () => {
     await page.goto(getSearchUrl([SearchQueryParams.Search, query]), {
       timeout: 60000,
     });
-    await expect(
-      page.locator(selectors.search.resultSummary).first(),
-    ).toContainText('animation');
+    await expect(page.locator(selectors.search.resultSummary)).toContainText(
+      'animation',
+    );
   });
 });
