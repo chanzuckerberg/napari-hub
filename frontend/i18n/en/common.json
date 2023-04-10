@@ -23,6 +23,7 @@
   "plugins": "Plugins",
   "privacy": "Privacy",
   "showMore": "Show {{count}} more",
+  "sitemap": "Sitemap",
 
   "ariaLabels": {
     "clearSearchBar": "Clear search bar text",
