@@ -2,6 +2,7 @@ import logging
 import json
 import os
 import os.path
+import re
 from typing import Dict, Optional
 
 import boto3
