@@ -1,7 +1,9 @@
 FROM public.ecr.aws/lambda/python:3.9
 
-COPY requirements.txt .
-RUN ["pip", "install", "-r", "requirements.txt"]
+COPY ./napari-hub-commons ../napari-hub-commons
+COPY ./data-workflows/requirements.txt .
+RUN pip install -r requirements.txt
 
-COPY . .
+COPY ./data-workflows/ .
+
 CMD ["handler.handle"]

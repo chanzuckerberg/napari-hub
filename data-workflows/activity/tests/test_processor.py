@@ -9,8 +9,8 @@ import activity.snowflake_adapter as snowflake
 import activity.processor as processor
 from activity.install_activity_model import InstallActivityType
 from activity.github_activity_model import GitHubActivityType
-import utils.utils as util
 from utils.utils import ParameterStoreAdapter
+import nhcommons
 
 START_TIME = 1234567
 END_TIME = 1239876
@@ -67,7 +67,7 @@ class TestActivityProcessor:
 
     @pytest.fixture(autouse=True)
     def setup_method(self, monkeypatch):
-        monkeypatch.setattr(util, "get_current_timestamp", lambda: END_TIME)
+        monkeypatch.setattr(nhcommons.utils, "get_current_timestamp", lambda: END_TIME)
         self._install_transform_and_write_mock = Mock(
             spec=activity_iam.transform_and_write_to_dynamo
         )
