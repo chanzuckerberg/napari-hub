@@ -225,6 +225,16 @@ def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
     return plugin, metadata
 
 
+def generate_index(plugins_metadata):
+    total_install_by_plugin_name = InstallActivity.get_total_installs_by_plugins(plugins_metadata.keys())
+    response = slice_metadata_to_index_columns(list(plugins_metadata.values()))
+    for plugin_metadata in response:
+        name = plugin_metadata.get('name')
+        if name:
+            plugin_metadata['total_installs'] = total_install_by_plugin_name.get(name, 0)
+    return response
+
+
 def update_cache():
     """
     Update existing caches to reflect new/updated plugins. Files updated:
@@ -258,7 +268,7 @@ def update_cache():
         cache(excluded_plugins, 'excluded_plugins.json')
         cache(visibility_plugins['public'], 'cache/public-plugins.json')
         cache(visibility_plugins['hidden'], 'cache/hidden-plugins.json')
-        cache(slice_metadata_to_index_columns(list(plugins_metadata.values())), 'cache/index.json')
+        cache(generate_index(plugins_metadata), 'cache/index.json')
         notify_new_packages(existing_public_plugins, visibility_plugins['public'], plugins_metadata)
         report_metrics('napari_hub.plugins.count', len(visibility_plugins['public']), ['visibility:public'])
         report_metrics('napari_hub.plugins.count', len(visibility_plugins['hidden']), ['visibility:hidden'])
