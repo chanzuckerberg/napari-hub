@@ -148,14 +148,10 @@ def _update_repo_to_plugin_dict(repo_to_plugin_dict: dict, plugin_obj: dict):
 def _get_repo_to_plugin_dict():
     index_json = _get_cache('cache/index.json')
     hidden_plugins = _get_cache('cache/hidden-plugins.json')
-    excluded_plugins = _get_cache('excluded_plugins.json')
     repo_to_plugin_dict = {}
     for public_plugin_obj in index_json:
         repo_to_plugin_dict = _update_repo_to_plugin_dict(repo_to_plugin_dict, public_plugin_obj)
-    for excluded_plugin_name, excluded_plugin_visibility in excluded_plugins.items():
-        if excluded_plugin_visibility == "hidden":
-            excluded_plugin_obj = get_plugin(excluded_plugin_name, hidden_plugins[excluded_plugin_name])
-        else:
-            excluded_plugin_obj = get_plugin(excluded_plugin_name, None)
-        repo_to_plugin_dict = _update_repo_to_plugin_dict(repo_to_plugin_dict, excluded_plugin_obj)
+    for hidden_plugin_name, hidden_plugin_version in hidden_plugins.items():
+        hidden_plugin_obj = get_plugin(hidden_plugin_name, hidden_plugin_version)
+        repo_to_plugin_dict = _update_repo_to_plugin_dict(repo_to_plugin_dict, hidden_plugin_obj)
     return repo_to_plugin_dict
