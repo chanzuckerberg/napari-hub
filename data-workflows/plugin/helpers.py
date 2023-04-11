@@ -27,5 +27,5 @@ def _get_repo_to_plugin_dict():
     for public_plugin_obj in index_json:
         code_repository = public_plugin_obj.get('code_repository')
         if code_repository:
-            repo_to_plugin_dict[code_repository.replace('https://github.com/', '')] = plugin_obj['name']
+            repo_to_plugin_dict[code_repository.replace('https://github.com/', '')] = public_plugin_obj['name']
     return repo_to_plugin_dict
