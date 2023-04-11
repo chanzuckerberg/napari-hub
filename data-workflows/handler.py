@@ -39,5 +39,5 @@ def handle(event, context):
 
         if event_type == 'install_activity':
             _update_install_activity()
-        if event_type == 'github_activity':
+        elif event_type == 'github_activity':
             _update_github_activity()
