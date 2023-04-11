@@ -243,8 +243,8 @@ module data_workflows_lambda {
     "SNOWFLAKE_PASSWORD" = local.snowflake_password
     "SNOWFLAKE_USER"     = local.snowflake_user
     "STACK_NAME"         = local.custom_stack_name
-    "BUCKET" = local.data_bucket_name
-    "BUCKET_PATH" = var.env == "dev" ? local.custom_stack_name : ""
+    "BUCKET"             = local.data_bucket_name
+    "BUCKET_PATH"        = var.env == "dev" ? local.custom_stack_name : ""
   }
 
   log_retention_in_days   = 14
@@ -414,7 +414,6 @@ data aws_iam_policy_document backend_policy {
 data aws_iam_policy_document data_workflows_policy {
   statement {
     actions = [
-      "s3:PutObject",
       "s3:GetObject",
     ]
 
