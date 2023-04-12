@@ -41,7 +41,7 @@ def get_plugins_with_installs_in_window_query():
 def get_plugins_install_count_since_timestamp_query(projection, subquery):
     return f"""
             SELECT 
-                LOWER(file_project) AS plugin, 
+                LOWER(file_project) AS name, 
                 {projection} AS timestamp, 
                 COUNT(*) AS count
             FROM
@@ -50,8 +50,8 @@ def get_plugins_install_count_since_timestamp_query(projection, subquery):
                 download_type = 'pip'
                 AND project_type = 'plugin'
                 AND ({subquery})
-            GROUP BY plugin, timestamp
-            ORDER BY plugin, timestamp
+            GROUP BY name, timestamp
+            ORDER BY name, timestamp
             """
 
 
