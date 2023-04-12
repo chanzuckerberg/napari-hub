@@ -38,7 +38,7 @@ def get_plugins_install_count_since_timestamp(plugins_by_earliest_ts: dict[str, 
                                               install_activity_type: InstallActivityType) -> dict[str, List]:
     query = f"""
             SELECT 
-                LOWER(file_project) AS plugin, 
+                LOWER(file_project) AS name, 
                 {install_activity_type.get_query_timestamp_projection()} AS timestamp, 
                 COUNT(*) AS count
             FROM
@@ -47,11 +47,11 @@ def get_plugins_install_count_since_timestamp(plugins_by_earliest_ts: dict[str, 
                 download_type = 'pip'
                 AND project_type = 'plugin'
                 AND ({_generate_subquery_by_type(plugins_by_earliest_ts, install_activity_type)})
-            GROUP BY plugin, timestamp
-            ORDER BY plugin, timestamp
+            GROUP BY name, timestamp
+            ORDER BY name, timestamp
             """
     LOGGER.info(f'Fetching data for granularity={install_activity_type.name}')
-    return _mapped_query_results(query, 'PYPI', {}, _cursor_to_plugin_install_activity_mapper)
+    return _mapped_query_results(query, 'PYPI', {}, _cursor_to_plugin_activity_mapper)
 
 
 def get_plugins_with_commits_in_window(start_millis: int, end_millis: int) -> dict[str, datetime]:
@@ -74,12 +74,18 @@ def get_plugins_with_commits_in_window(start_millis: int, end_millis: int) -> di
 
 def get_plugins_commit_count_since_timestamp(plugins_by_earliest_ts: dict[str, datetime],
                                              github_activity_type: GitHubActivityType) -> dict[str, List]:
+    if github_activity_type.name == 'LATEST':
+        accumulator_updater = _cursor_to_plugin_github_activity_latest_mapper
+    elif github_activity_type.name == 'MONTH':
+        accumulator_updater = _cursor_to_plugin_activity_mapper
+    else:
+        accumulator_updater = _cursor_to_plugin_github_activity_total_mapper
     LOGGER.info(f'Fetching data for granularity={github_activity_type.name}')
     return _mapped_query_results(
         query=github_activity_type.get_query(plugins_by_earliest_ts),
         schema="GITHUB",
         accumulator={},
-        accumulator_updater=github_activity_type.get_accumulator_updater(),
+        accumulator_updater=accumulator_updater,
     )
 
 
@@ -125,17 +131,17 @@ def _cursor_to_timestamp_by_name_mapper(accumulator: dict[str, datetime], cursor
     return accumulator
 
 
-def _cursor_to_plugin_install_activity_mapper(accumulator: dict[str, List], cursor) -> dict[str, List]:
+def _cursor_to_plugin_activity_mapper(accumulator: dict[str, List], cursor) -> dict[str, List]:
     """
     Updates the accumulator with data from the cursor. Object with timestamp and count attributes are created from the
-    cursor record and added to the accumulator keyed on plugin name.
-    The cursor contains the fields plugin, timestamp, and count
+    cursor record and added to the accumulator keyed on name.
+    The cursor contains the fields name, timestamp, and count
     :param dict[str, List] accumulator: Accumulator that will be updated with new data
     :param SnowflakeCursor cursor:
     :returns: Accumulator after data from cursor has been added
    """
-    for plugin, timestamp, count in cursor:
-        accumulator.setdefault(plugin, []).append({'timestamp': timestamp, 'count': count})
+    for name, timestamp, count in cursor:
+        accumulator.setdefault(name, []).append({'timestamp': timestamp, 'count': count})
     return accumulator
 
 
@@ -143,27 +149,13 @@ def _cursor_to_plugin_github_activity_latest_mapper(accumulator: dict[str, List]
     """
     Updates the accumulator with data from the cursor for GitHubActivityType.LATEST.
     Object with timestamp is created from the cursor record and added to the accumulator keyed on repo name.
-    The cursor contains the fields repo and timestamp
+    The cursor contains the fields repo name and timestamp
     :param dict[str, List] accumulator: Accumulator that will be updated with new data
     :param SnowflakeCursor cursor:
     :returns: Accumulator after data from cursor has been added
    """
-    for repo, timestamp in cursor:
-        accumulator.setdefault(repo, []).append({'timestamp': timestamp})
-    return accumulator
-
-
-def _cursor_to_plugin_github_activity_month_mapper(accumulator: dict[str, List], cursor) -> dict[str, List]:
-    """
-    Updates the accumulator with data from the cursor for GitHubActivityType.MONTH.
-    Object with timestamp and count is created from the cursor record and added to the accumulator keyed on repo name.
-    The cursor contains the fields repo, timestamp, and count
-    :param dict[str, List] accumulator: Accumulator that will be updated with new data
-    :param SnowflakeCursor cursor:
-    :returns: Accumulator after data from cursor has been added
-   """
-    for repo, timestamp, count in cursor:
-        accumulator.setdefault(repo, []).append({'timestamp': timestamp, 'count': count})
+    for name, timestamp in cursor:
+        accumulator.setdefault(name, []).append({'timestamp': timestamp})
     return accumulator
 
 
@@ -171,13 +163,13 @@ def _cursor_to_plugin_github_activity_total_mapper(accumulator: dict[str, List],
     """
     Updates the accumulator with data from the cursor for GitHubActivityType.TOTAL.
     Object with count are created from the cursor record and added to the accumulator keyed on repo name.
-    The cursor contains the fields repo and count
+    The cursor contains the fields repo name and count
     :param dict[str, List] accumulator: Accumulator that will be updated with new data
     :param SnowflakeCursor cursor:
     :returns: Accumulator after data from cursor has been added
    """
-    for repo, count in cursor:
-        accumulator.setdefault(repo, []).append({'count': count})
+    for name, count in cursor:
+        accumulator.setdefault(name, []).append({'count': count})
     return accumulator
 
 

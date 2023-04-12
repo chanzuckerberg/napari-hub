@@ -2,7 +2,7 @@ import logging
 import time
 from datetime import datetime
 from enum import Enum, auto
-from typing import List, Union, Callable
+from typing import List, Union
 import os
 
 from pynamodb.models import Model
@@ -25,25 +25,21 @@ class GitHubActivityType(Enum):
         return github_activity_type
 
     LATEST = (datetime_to_utc_timestamp_in_millis, 'LATEST:{0}')
-    MONTH = (date_to_utc_timestamp_in_millis, 'MONTH:{0:%Y%m}:{1}')
+    MONTH = (date_to_utc_timestamp_in_millis, 'MONTH:{1:%Y%m}:{0}')
     TOTAL = (lambda timestamp: None, 'TOTAL:{0}')
 
     def format_to_timestamp(self, timestamp: datetime) -> Union[int, None]:
         return self.timestamp_formatter(timestamp)
 
-    def format_to_type_identifier(self, identifier: str, repo_name: str) -> str:
-        if self is GitHubActivityType.MONTH:
-            return self.type_identifier_formatter.format(identifier, repo_name)
-        else:
-            return self.type_identifier_formatter.format(repo_name)
+    def format_to_type_identifier(self, repo_name: str, identifier_timestamp: str) -> str:
+        return self.type_identifier_formatter.format(repo_name, identifier_timestamp)
 
     def get_query_projection(self) -> str:
         if self is GitHubActivityType.LATEST:
-            return 'to_timestamp(max(commit_author_date)) as latest_commit'
+            return 'repo AS name, to_timestamp(max(commit_author_date)) as latest_commit'
         elif self is GitHubActivityType.MONTH:
-            return 'date_trunc("month", to_date(commit_author_date)) as month, count(*) as commit_count'
-        else:
-            return 'count(*) as commit_count'
+            return 'repo AS name, date_trunc("month", to_date(commit_author_date)) as month, count(*) as commit_count'
+        return 'repo AS name, count(*) as commit_count'
 
     def _create_subquery(self, plugins_by_earliest_ts: dict[str, datetime]) -> str:
         if self is GitHubActivityType.MONTH:
@@ -54,28 +50,16 @@ class GitHubActivityType(Enum):
                     for name, ts in plugins_by_earliest_ts.items()
                 ]
             )
-        else:
-            return f"""repo IN ({','.join([f"'{plugin}'" for plugin in plugins_by_earliest_ts.keys()])})"""
+        return f"""repo IN ({','.join([f"'{plugin}'" for plugin in plugins_by_earliest_ts.keys()])})"""
 
     def get_query_sorting(self) -> str:
         if self is GitHubActivityType.MONTH:
-            return 'repo, month'
-        else:
-            return 'repo'
-
-    def get_accumulator_updater(self) -> Callable:
-        import activity.snowflake_adapter as sf
-        if self is GitHubActivityType.LATEST:
-            return sf._cursor_to_plugin_github_activity_latest_mapper
-        elif self is GitHubActivityType.MONTH:
-            return sf._cursor_to_plugin_github_activity_month_mapper
-        else:
-            return sf._cursor_to_plugin_github_activity_total_mapper
+            return 'name, month'
+        return 'name'
 
     def get_query(self, plugins_by_earliest_ts: dict[str, datetime]) -> str:
         return f"""
                 SELECT 
-                    repo, 
                     {self.get_query_projection()}
                 FROM
                     imaging.github.commits
@@ -90,8 +74,8 @@ class GitHubActivityType(Enum):
 class GitHubActivity(Model):
     class Meta:
         host = os.getenv('LOCAL_DYNAMO_HOST')
-        region = os.getenv('AWS_REGION')
-        table_name = f'{os.getenv("STACK_NAME")}-github-activity'
+        region = os.getenv('AWS_REGION', 'us-west-2')
+        table_name = f"{os.getenv('STACK_NAME', 'local')}-github-activity"
 
     plugin_name = UnicodeAttribute(hash_key=True)
     type_identifier = UnicodeAttribute(range_key=True)
@@ -119,26 +103,17 @@ def transform_and_write_to_dynamo(data: dict[str, List], activity_type: GitHubAc
     count = 0
     repo_to_plugin_dict = _get_repo_to_plugin_dict()
     for repo, github_activities in data.items():
-        if repo in repo_to_plugin_dict:
-            plugin_name = repo_to_plugin_dict[repo]
-        else:
+        plugin_name = repo_to_plugin_dict.get(repo)
+        if not plugin_name:
             continue
         for activity in github_activities:
-            identifier = activity.get('timestamp', '')
-            if activity_type.name == "LATEST":
-                timestamp = datetime_to_utc_timestamp_in_millis(activity['timestamp'])
-                commit_count = None
-            elif activity_type.name == "MONTH":
-                timestamp = date_to_utc_timestamp_in_millis(activity['timestamp'])
-                commit_count = activity['count']
-            else:
-                timestamp = None
-                commit_count = activity['count']
-
+            identifier_timestamp = activity.get('timestamp', '')
+            timestamp = activity.get('timestamp')
+            commit_count = activity.get('count')
             item = GitHubActivity(plugin_name,
-                                  activity_type.format_to_type_identifier(identifier, repo),
+                                  activity_type.format_to_type_identifier(repo, identifier_timestamp),
                                   granularity=activity_type.name,
-                                  timestamp=timestamp,
+                                  timestamp=activity_type.format_to_timestamp(timestamp),
                                   commit_count=commit_count,
                                   repo=repo)
             batch.save(item)
