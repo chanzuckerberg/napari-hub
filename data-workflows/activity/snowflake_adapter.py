@@ -29,7 +29,6 @@ def get_plugins_with_installs_in_window(start_millis: int, end_millis: int) -> d
             GROUP BY name
             ORDER BY name
             """
-
     LOGGER.info(f'Querying for plugins added between start_timestamp={start_millis} end_timestamp={end_millis}')
     return _mapped_query_results(query, "PYPI", {}, _cursor_to_timestamp_by_name_mapper)
 
@@ -67,7 +66,6 @@ def get_plugins_with_commits_in_window(start_millis: int, end_millis: int) -> di
             GROUP BY name
             ORDER BY name
             """
-
     LOGGER.info(f'Querying for plugins added between start_timestamp={start_millis} end_timestamp={end_millis}')
     return _mapped_query_results(query, 'GITHUB', {}, _cursor_to_timestamp_by_name_mapper)
 

@@ -104,18 +104,19 @@ def transform_and_write_to_dynamo(data: dict[str, List], activity_type: GitHubAc
     repo_to_plugin_dict = _get_repo_to_plugin_dict()
     for repo, github_activities in data.items():
         plugin_name = repo_to_plugin_dict.get(repo)
-        if not plugin_name:
+        if plugin_name is None:
             continue
         for activity in github_activities:
             identifier_timestamp = activity.get('timestamp', '')
             timestamp = activity.get('timestamp')
             commit_count = activity.get('count')
-            item = GitHubActivity(plugin_name,
-                                  activity_type.format_to_type_identifier(repo, identifier_timestamp),
-                                  granularity=activity_type.name,
-                                  timestamp=activity_type.format_to_timestamp(timestamp),
-                                  commit_count=commit_count,
-                                  repo=repo)
+            item = GitHubActivity(
+                plugin_name,
+                activity_type.format_to_type_identifier(repo, identifier_timestamp),
+                granularity=activity_type.name,
+                timestamp=activity_type.format_to_timestamp(timestamp),
+                commit_count=commit_count,
+                repo=repo)
             batch.save(item)
             count += 1
 
