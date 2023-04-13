@@ -429,11 +429,16 @@ def _update_activity_timeline_data():
     write_data(csv_string, "activity_dashboard_data/plugin_installs.csv")
 
 
-def _process_usage_timeline(plugin_df, limit):
-    date_format = '%Y-%m-%d'
+def __process_for_dates(limit):
     end_date = date.today().replace(day=1) + relativedelta(months=-1)
     start_date = end_date + relativedelta(months=-limit + 1)
     dates = pd.date_range(start=start_date, periods=limit, freq='MS')
+    return start_date, end_date, dates
+
+
+def _process_usage_timeline(plugin_df, limit):
+    date_format = '%Y-%m-%d'
+    start_date, end_date, dates = __process_for_dates(limit)
     plugin_df = plugin_df[(plugin_df['MONTH'] >= start_date.strftime(date_format)) & (
                 plugin_df['MONTH'] <= end_date.strftime(date_format))]
     result = []
@@ -448,13 +453,10 @@ def _process_usage_timeline(plugin_df, limit):
 
 
 def _process_maintenance_timeline(commit_activity, limit):
-    now = datetime.now()
-    end_date = datetime(now.year, now.month - 1, 1) if now.month > 1 else datetime(now.year - 1, 12, 1)
-    start_date = end_date + relativedelta(months=-limit + 1)
-    dates = pd.date_range(start=start_date, periods=limit, freq='MS')
-    maintenance_dict = {item_date: item for item in commit_activity if
-                        (item_date := datetime.utcfromtimestamp(item['timestamp'] / 1000))
-                        and start_date <= item_date <= end_date}
+    start_date, end_date, dates = __process_for_dates(limit)
+    maintenance_dict = {item_datetime: item for item in commit_activity if
+                        (item_datetime := datetime.utcfromtimestamp(item['timestamp'] / 1000))
+                        and start_date <= item_datetime.date() <= end_date}
     return [maintenance_dict.get(cur_date, {'timestamp': int(cur_date.timestamp()) * 1000, 'commits': 0})
             for cur_date in dates]
 
