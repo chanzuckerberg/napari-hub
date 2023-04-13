@@ -144,26 +144,6 @@ class TestActivityDashboard(unittest.TestCase):
         mock_get_install_timeline_data.assert_called_with(PLUGIN_NAME_CLEAN)
         mock_get_recent_activity_data.assert_called_with()
 
-    @staticmethod
-    def _generate_expected_metrics(timeline=None, total_installs=0, installs_in_last_30_days=0, latest_commit=None,
-                                   total_commit=0, commit_activity=None):
-        return {
-            'usage': {
-                'timeline': timeline if timeline else [],
-                'stats': {
-                    'total_installs': total_installs,
-                    'installs_in_last_30_days': installs_in_last_30_days
-                }
-            },
-            'maintenance': {
-                'timeline': commit_activity,
-                'stats': {
-                    'latest_commit_timestamp': latest_commit,
-                    'total_commits': total_commit
-                }
-            }
-        }
-
 
 class TestMetricModel:
     @pytest.mark.parametrize('commit_activity_input, commit_activity_result, latest_commit, total_commit, total_installs,'
