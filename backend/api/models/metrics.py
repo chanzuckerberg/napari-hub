@@ -85,3 +85,18 @@ class InstallActivity(Model):
         start_date = start_date.replace(hour=0, minute=0, second=0, microsecond=0, tzinfo=datetime.timezone.utc)
         dates = [int((start_date - relativedelta(months=i)).timestamp()) * 1000 for i in range(month_delta - 1, -1, -1)]
         return list(map(lambda date: {'timestamp': date, 'installs': results.get(date, 0)}, dates))
+
+
+class GitHubActivity(Model):
+    class Meta:
+        host = os.getenv('LOCAL_DYNAMO_HOST')
+        region = os.getenv('AWS_REGION', 'us-west-2')
+        table_name = f"{os.getenv('STACK_NAME', 'local')}-github-activity"
+
+    plugin_name = UnicodeAttribute(hash_key=True)
+    type_identifier = UnicodeAttribute(range_key=True)
+    granularity = UnicodeAttribute(attr_name='type')
+    timestamp = NumberAttribute(null=True)
+    commit_count = NumberAttribute(null=True)
+    repo = UnicodeAttribute()
+    last_updated_timestamp = NumberAttribute()

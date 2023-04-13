@@ -135,11 +135,14 @@ def get_plugin_metrics(plugin: str) -> Response:
     :params str plugin: Name of the plugin in lowercase for which usage data needs to be fetched.
     :query_params limit: Number of months to be fetched for timeline. (default=12).
     :query_params use_dynamo_metric_usage: Fetch usage data from dynamo if True else fetch from s3. (default=False)
+    :query_params use_dynamo_metric_maintenance: Fetch maintenance data from dynamo if True else fetch from s3.
+                  (default=False)
     """
     return jsonify(get_metrics_for_plugin(
         plugin=plugin,
         limit=request.args.get('limit', '12'),
         use_dynamo_for_usage=_is_query_param_true('use_dynamo_metric_usage'),
+        use_dynamo_for_maintenance=_is_query_param_true('use_dynamo_metric_maintenance'),
     ))
 
 
