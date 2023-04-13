@@ -1,10 +1,11 @@
 {
   "base": "napari hub",
-  "home": "$t(base) | search",
+  "home": "$t(base) - Image Analysis Plugins for napari",
   "preview": "preview",
-  "collections": "$t(base) | collections",
+  "collections": "napari Plugin Collections for Image Analysis - $t(base)",
   "by": "by",
   "loading": "loading",
-  "collection": "$t(base) | collection",
-  "plugin": "$t(base) | plugin"
+  "collection": "$t(base) Plugin Collection",
+  "plugin": "napari Plugin",
+  "sitemap": "Sitemap - napari hub"
 }

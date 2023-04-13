@@ -38,7 +38,7 @@ export function usePageMetadata(
 
     contact: {
       regex: /^\/contact$/,
-      keywords: [...COMMON_KEYWORDS, 'contact'],
+      keywords: [...COMMON_KEYWORDS, 'contact', 'help', 'issue', 'security'],
       description: t('common:seo.contact.description'),
       title: t('common:seo.contact.title'),
     },
@@ -53,6 +53,7 @@ export function usePageMetadata(
         'FAQ',
         'frequently asked questions',
         'question',
+        'answer',
       ],
       description: t('common:seo.faq.description'),
       title: t('common:seo.faq.title'),
@@ -60,7 +61,14 @@ export function usePageMetadata(
 
     privacy: {
       regex: /^\/privacy$/,
-      keywords: [...COMMON_KEYWORDS, 'privacy'],
+      keywords: [
+        ...COMMON_KEYWORDS,
+        'privacy',
+        'personal',
+        'data',
+        'website',
+        'policy',
+      ],
       description: t('common:seo.privacy.description'),
       title: t('common:seo.privacy.title'),
     },
@@ -72,14 +80,20 @@ export function usePageMetadata(
 
     collections: {
       regex: /^\/collections$/,
-      keywords: [...COMMON_KEYWORDS, 'collections'],
+      keywords: [...COMMON_KEYWORDS, 'collections', 'search'],
       description: t('common:seo.collections.description'),
       title: t('common:seo.collections.title'),
     },
 
     collection: {
       regex: /^\/collections\/.*$/,
-      keywords: [...COMMON_KEYWORDS, 'collections'],
+      keywords: [
+        ...COMMON_KEYWORDS,
+        'collections',
+        'find',
+        'curated',
+        'community',
+      ],
     },
 
     home: {
@@ -91,6 +105,7 @@ export function usePageMetadata(
         'python',
         'pypi',
         'algorithm',
+        'search',
       ],
       description: t('common:seo.home.description'),
       title: t('common:seo.home.title'),

@@ -11,6 +11,7 @@ import { E2E } from '@/constants/env';
 import {
   FEATURE_FLAG_LIST,
   FeatureFlagMap,
+  featureFlagsStore,
   getEnabledFeatureFlags,
   getFeatureFlags,
 } from '@/store/featureFlags';
@@ -77,6 +78,9 @@ export function getServerSidePropsHandler<
     const featureFlags = E2E
       ? getEnabledFeatureFlags(...FEATURE_FLAG_LIST)
       : await getFeatureFlags(req.url ?? '/');
+
+    // Assign to feature flag store so that server code can use the state.
+    Object.assign(featureFlagsStore, featureFlags);
 
     const extraProps = await getProps?.(context, featureFlags);
 

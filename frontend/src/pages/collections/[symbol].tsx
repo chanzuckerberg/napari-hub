@@ -65,9 +65,9 @@ export default function Collections({ collection, error }: Props) {
 
   let title = `${t('pageTitles:collection')}`;
   if (isLoading) {
-    title = `${title} | ${t('pageTitles:loading')}...`;
+    title = `${title} - ${t('pageTitles:loading')}...`;
   } else if (collection) {
-    title = `${title} | ${collection.title} by ${collection.curator.name}`;
+    title = `${collection.title} by ${collection.curator.name} - ${title}`;
   }
 
   const curatorTwitter = /https:\/\/twitter.com\/([\w]+)/.exec(

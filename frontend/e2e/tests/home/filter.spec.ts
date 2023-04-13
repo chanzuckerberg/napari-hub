@@ -1,124 +1,197 @@
-import { expect, test } from '@playwright/test';
-import { satisfies } from '@renovate/pep440';
+import { test } from '@playwright/test';
 
-import { testPluginFilter } from '../../utils/filter';
+import {
+  AUTHORS,
+  OPEN_EXTENSIONS,
+  SAVE_EXTENSIONS,
+} from '../../utils/constants';
+import { testPlugin } from '../../utils/plugin';
 
-test.describe('Plugin Filters', () => {
-  test('should filter by python version', async ({ page, viewport }) => {
-    await testPluginFilter({
+const ENV = (process.env.NODE_ENV as string) || '';
+const TEST_AUTHORS = AUTHORS[ENV.toUpperCase()];
+const SAVE_FILE_EXTENSIONS = SAVE_EXTENSIONS[ENV.toUpperCase()];
+const OPEN_FILE_EXTENSIONS = OPEN_EXTENSIONS[ENV.toUpperCase()];
+const sortBy = 'Recently updated';
+
+test.describe('Plugin filter tests', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto(`${process.env.BASEURL as string}`, { timeout: 60000 });
+  });
+  TEST_AUTHORS.forEach((authors) => {
+    test(`should filter by authors "${authors.toString()}"`, async ({
       page,
-      width: viewport?.width,
-      options: ['3.7', '3.8'],
-      filterKey: 'pythonVersion',
-      params: [
-        ['python', '3.7'],
-        ['python', '3.8'],
-      ],
-      testMetadata(versionSpecifiers: string[]) {
-        // Check that every plugin version passes the enabled filter.
-        versionSpecifiers.forEach((specifier) =>
-          expect(
-            satisfies('3.7', specifier) || satisfies('3.8', specifier),
-          ).toBe(true),
-        );
-      },
+      viewport,
+    }) => {
+      // filter by
+      const filterBy = {
+        label: 'Authors',
+        name: 'authors',
+        values: authors,
+        category: ['Filter by category'],
+        key: 'authors',
+      };
+
+      const params = [['authors', authors]];
+      await testPlugin(page, filterBy, params, sortBy, viewport?.width);
+    });
+  });
+  [['writer'], ['widget', 'writer']].forEach((pluginTypes) => {
+    test(`should filter by plugin type "${pluginTypes.toString()}"`, async ({
+      page,
+      viewport,
+    }) => {
+      // filter by
+      const filterBy = {
+        label: 'Plugin type',
+        name: 'pluginType',
+        values: pluginTypes,
+        category: ['Filter by requirement'],
+        key: 'plugin_type',
+      };
+      const params = [['pluginType', pluginTypes]];
+      await testPlugin(page, filterBy, params, sortBy, viewport?.width);
+    });
+  });
+  [['3D'], ['2D', '3D']].forEach((supportedData) => {
+    test(`should filter by ${supportedData.toString()}`, async ({
+      page,
+      viewport,
+    }) => {
+      // filter by
+
+      const filterBy = {
+        label: 'Supported data',
+        name: 'supportedData',
+        values: supportedData,
+        category: ['Filter by requirement'],
+        key: 'supported_data',
+      };
+      const params = [['supportedData', supportedData]];
+      await testPlugin(page, filterBy, params, sortBy, viewport?.width);
+    });
+  });
+  [['Medical imaging']].forEach((modality) => {
+    test(`should filter by image modality "${modality.toString()}"`, async ({
+      page,
+      viewport,
+    }) => {
+      // filter by
+      const filterBy = {
+        label: 'Image modality',
+        name: 'imageModality',
+        values: modality,
+        category: ['Filter by category'],
+        key: 'image_modality',
+      };
+      const params = [['imageModality', modality]];
+      await testPlugin(page, filterBy, params, sortBy, viewport?.width);
+    });
+  });
+  [['Image registration']].forEach((workflowSteps) => {
+    test(`should filter by workflow steps "${workflowSteps.toString()}"`, async ({
+      page,
+      viewport,
+    }) => {
+      // filter by
+      const filterBy = {
+        label: 'Workflow step',
+        name: 'workflowStep',
+        values: workflowSteps,
+        category: ['Filter by category'],
+        key: 'workflow_step',
+      };
+      const params = [['workflowStep', workflowSteps]];
+      await testPlugin(page, filterBy, params, sortBy, viewport?.width);
     });
   });
 
-  test('should filter by operating system', async ({ page, viewport }) => {
-    function hasLinux(operatingSystems: string[]) {
-      return !!operatingSystems.find((os) => os.includes('Linux'));
-    }
-
-    await testPluginFilter({
+  [['macOS'], ['macOS', 'Linux']].forEach((operatingSystem) => {
+    test(`should filter by operating system "${operatingSystem.toString()}"`, async ({
       page,
-      width: viewport?.width,
-      options: ['Linux'],
-      filterKey: 'operatingSystems',
-      params: [['operatingSystem', 'linux']],
-      testMetadata(operatingSystems) {
-        expect(hasLinux(operatingSystems)).toBe(true);
-      },
-    });
-
-    await testPluginFilter({
-      page,
-      width: viewport?.width,
-      options: ['macOS'],
-      filterKey: 'operatingSystems',
-      params: [['operatingSystem', 'mac']],
-      testMetadata(operatingSystems) {
-        expect(hasLinux(operatingSystems)).not.toBe(true);
-      },
+      viewport,
+    }) => {
+      // filter by
+      const filterBy = {
+        label: 'Operating system',
+        name: 'operatingSystem',
+        values: operatingSystem,
+        category: ['Filter by requirement'],
+        key: 'operating_system',
+      };
+      const osses = [];
+      for (const os of operatingSystem) {
+        osses.push(os.replace('macOS', 'mac').toLowerCase());
+      }
+      const params = [['operatingSystem', osses]];
+      await testPlugin(page, filterBy, params, sortBy, viewport?.width);
     });
   });
-
-  test('should filter by license', async ({ page, viewport }) => {
-    await testPluginFilter({
+  [['Limit to plugins with open source license']].forEach((license) => {
+    test(`should filter by license "${license.toString()}"`, async ({
       page,
-      width: viewport?.width,
-      options: [],
-      filterKey: 'license',
-      params: [],
-      testMetadata(licenses) {
-        expect(licenses).toContain('secret');
-      },
-    });
-
-    await testPluginFilter({
-      page,
-      width: viewport?.width,
-      options: ['Limit to plugins with open source license'],
-      filterKey: 'license',
-      params: [['license', 'oss']],
-      testMetadata(licenses) {
-        expect(licenses).not.toContain('secret');
-      },
+      viewport,
+    }) => {
+      // filter by
+      const filterBy = {
+        label: 'License',
+        name: 'license',
+        values: license,
+        category: ['Filter by requirement'],
+        key: 'license',
+      };
+      const params = [['license', license]];
+      await testPlugin(page, filterBy, params, sortBy, viewport?.width);
     });
   });
-
-  test('should filter by workflow step', async ({ page, viewport }) => {
-    const options = ['Image registration', 'Pixel classification'];
-
-    await testPluginFilter({
+  [['3.6'], ['3.7', '3.9']].forEach((version) => {
+    test(`should filter by python version "${version.toString()}"`, async ({
       page,
-      width: viewport?.width,
-      options,
-      filterKey: 'workflowStep',
-      params: [
-        ['workflowStep', options[0]],
-        ['workflowStep', options[1]],
-      ],
+      viewport,
+    }) => {
+      // filter by
+      const filterBy = {
+        label: 'Python version',
+        name: 'python',
+        values: version,
+        category: ['Filter by requirement'],
+        key: 'python_version',
+      };
+      const params = [['python', version]];
+      await testPlugin(page, filterBy, params, sortBy, viewport?.width);
     });
   });
-
-  test('should filter by image modality', async ({ page, viewport }) => {
-    const options = ['Medical imaging', 'Multi-photon microscopy'];
-
-    await testPluginFilter({
+  SAVE_FILE_EXTENSIONS.forEach((extension) => {
+    test(`should filter by save extensions "${extension.toString()}"`, async ({
       page,
-      width: viewport?.width,
-      options,
-      filterKey: 'imageModality',
-      params: [
-        ['imageModality', options[0]],
-        ['imageModality', options[1]],
-      ],
+      viewport,
+    }) => {
+      // filter by
+      const filterBy = {
+        label: 'Save extension',
+        name: 'writerFileExtensions',
+        values: extension,
+        category: ['Filter by requirement'],
+        key: 'save_extension',
+      };
+      const params = [['writerFileExtensions', extension]];
+      await testPlugin(page, filterBy, params, sortBy, viewport?.width);
     });
   });
-
-  test('should filter by supported data', async ({ page, viewport }) => {
-    const options = ['2D', '3D'];
-
-    await testPluginFilter({
+  OPEN_FILE_EXTENSIONS.forEach((extension) => {
+    test(`should filter by open extensions "${extension.toString()}"`, async ({
       page,
-      width: viewport?.width,
-      options,
-      filterKey: 'supportedData',
-      params: [
-        ['supportedData', options[0]],
-        ['supportedData', options[1]],
-      ],
+      viewport,
+    }) => {
+      // filter by
+      const filterBy = {
+        label: 'Open extension',
+        name: 'readerFileExtensions',
+        values: extension,
+        category: ['Filter by requirement'],
+        key: 'open_extension',
+      };
+      const params = [['readerFileExtensions', extension]];
+      await testPlugin(page, filterBy, params, sortBy, viewport?.width);
     });
   });
 });

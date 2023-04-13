@@ -15,5 +15,8 @@ module dynamodb {
   autoscaling_enabled = var.autoscaling_enabled
   create_table = var.create_table
 
+  ttl_enabled = var.ttl_enabled
+  ttl_attribute_name  = var.ttl_attribute_name
+
   tags = var.tags
 }

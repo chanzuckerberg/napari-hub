@@ -147,12 +147,11 @@ jobs:
           CI: true
           BROWSER: ${{ matrix.browser }}
         run: yarn e2e:ci --shard ${{ matrix.shardCurrent }}/${{ matrix.shardTotal }}
-        # run: yarn e2e:ci
 
       - name: Upload artifacts
         if: ${{ failure() }}
         uses: actions/upload-artifact@v3.1.1
-        with:
+        with: 
           name: e2e-artifacts
           path: frontend/e2e/report
           retention-days: 1

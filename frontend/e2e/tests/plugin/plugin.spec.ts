@@ -5,7 +5,9 @@ import { getTestURL } from '../../utils/utils';
 
 test.describe('/plugin (Plugin Page)', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto(getTestURL('/plugins/napari-compressed-labels-io'));
+    await page.goto(getTestURL('/plugins/napari-compressed-labels-io'), {
+      timeout: 60000,
+    });
   });
 
   test('should render details', async ({ page }) => {

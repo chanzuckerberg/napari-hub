@@ -2,14 +2,17 @@ from concurrent import futures
 from datetime import date, datetime
 import json
 import os
-from typing import Tuple, Dict, List, Callable
+from typing import Tuple, Dict, List, Callable, Any
 from zipfile import ZipFile
 from io import BytesIO
 from collections import defaultdict
 import pandas as pd
+
+from api.models.metrics import InstallActivity
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
-from api.s3 import get_cache, cache, write_data, get_install_timeline_data, get_latest_commit, get_commit_activity, get_recent_activity_data
+from api.s3 import get_cache, cache, write_data, get_install_timeline_data, get_latest_commit, get_commit_activity, \
+    get_recent_activity_data
 from utils.utils import render_description, send_alert, get_attribute, get_category_mapping, parse_manifest
 from utils.datadog import report_metrics
 from api.zulip import notify_new_packages
@@ -394,11 +397,13 @@ def _execute_query(query, schema):
 
 
 def update_activity_data():
+    print("Starting data refresh for metrics")
     _update_activity_timeline_data()
     _update_recent_activity_data()
     repo_to_plugin_dict = _get_repo_to_plugin_dict()
     _update_latest_commits(repo_to_plugin_dict)
     _update_commit_activity(repo_to_plugin_dict)
+    print("Completed data refresh for metrics successfully")
 
 
 def _update_activity_timeline_data():
@@ -486,12 +491,26 @@ def _update_recent_activity_data(number_of_time_periods=30, time_granularity='DA
     write_data(json.dumps(data), "activity_dashboard_data/recent_installs.json")
 
 
+def _update_repo_to_plugin_dict(repo_to_plugin_dict: dict, plugin_obj: dict):
+    code_repository = plugin_obj.get('code_repository')
+    if code_repository:
+        repo_to_plugin_dict[code_repository.replace('https://github.com/', '')] = plugin_obj['name']
+    return repo_to_plugin_dict
+
+
 def _get_repo_to_plugin_dict():
     index_json = get_index()
+    hidden_plugins = get_hidden_plugins()
+    excluded_plugins = get_excluded_plugins()
     repo_to_plugin_dict = {}
-    for plugin_obj in index_json:
-        if 'code_repository' in plugin_obj and plugin_obj['code_repository']:
-            repo_to_plugin_dict[plugin_obj['code_repository'].replace('https://github.com/', '')] = plugin_obj['name']
+    for public_plugin_obj in index_json:
+        repo_to_plugin_dict = _update_repo_to_plugin_dict(repo_to_plugin_dict, public_plugin_obj)
+    for excluded_plugin_name, excluded_plugin_visibility in excluded_plugins.items():
+        if excluded_plugin_visibility == "hidden":
+            excluded_plugin_obj = get_plugin(excluded_plugin_name, hidden_plugins[excluded_plugin_name])
+        else:
+            excluded_plugin_obj = get_plugin(excluded_plugin_name, None)
+        repo_to_plugin_dict = _update_repo_to_plugin_dict(repo_to_plugin_dict, excluded_plugin_obj)
     return repo_to_plugin_dict
 
 
@@ -506,9 +525,9 @@ def _update_latest_commits(repo_to_plugin_dict):
             imaging.github.commits
         WHERE 
             repo_type = 'plugin'
-        GROUP BY 1
+        GROUP BY repo 
+        ORDER BY repo
     """
-    # the latest commit is fetched as a tuple of the format (repo, timestamp)
     cursor_list = _execute_query(query, "GITHUB")
     data = {}
     for cursor in cursor_list:
@@ -526,54 +545,77 @@ def _update_commit_activity(repo_to_plugin_dict):
     """
     query = f"""
         SELECT 
-            repo, date_trunc('month', to_date(commit_author_date)) as month, count(*) as num_commits
+            repo, date_trunc('month', to_date(commit_author_date)) as month, count(*) as commit_count
         FROM 
             imaging.github.commits
         WHERE 
             repo_type = 'plugin'
-        GROUP BY 1,2
+        GROUP BY repo, month
+        ORDER BY repo, month
     """
     cursor_list = _execute_query(query, "GITHUB")
     data = {}
     for cursor in cursor_list:
-        for repo, month, num_commits in cursor:
+        for repo, month, commit_count in cursor:
             if repo in repo_to_plugin_dict:
-                plugin = repo_to_plugin_dict[repo]
                 timestamp = int(pd.to_datetime(month).strftime("%s")) * 1000
-                commits = int(num_commits)
-                obj = {'timestamp': timestamp, 'commits': commits}
-                data.setdefault(plugin, []).append(obj)
+                commits = int(commit_count)
+                data.setdefault(repo_to_plugin_dict[repo], []).append({'timestamp': timestamp, 'commits': commits})
     for plugin in data:
         data[plugin] = sorted(data[plugin], key=lambda x: (x['timestamp']))
     write_data(json.dumps(data), "activity_dashboard_data/commit_activity.json")
 
 
-def get_metrics_for_plugin(plugin: str, limit: str) -> Dict:
+def _get_usage_data(plugin: str, limit: int, use_dynamo: bool) -> Dict[str, Any]:
+    """
+    Fetches plugin usage_data from s3 or dynamo based on the in_test variable
+    :returns (dict[str, Any]): A dict with the structure {'timeline': List, 'stats': Dict[str, int]}
+
+    :params str plugin: Name of the plugin in lowercase.
+    :params int limit: Sets the number of records to be fetched for timeline.
+    :params bool use_dynamo: Fetch data from dynamo if True, else fetch from s3.
+    """
+    if use_dynamo:
+        usage_timeline = InstallActivity.get_timeline(plugin, limit) if limit else []
+        usage_stats = {
+            'total_installs': InstallActivity.get_total_installs(plugin),
+            'installs_in_last_30_days': InstallActivity.get_recent_installs(plugin, 30)
+        }
+    else:
+        data = get_install_timeline_data(plugin)
+        usage_stats = {
+            'total_installs': _process_for_stats(data).get('totalInstalls', 0),
+            'installs_in_last_30_days': get_recent_activity_data().get(plugin, 0),
+        }
+        usage_timeline = _process_usage_timeline(data, limit) if limit else []
+
+    return {'timeline': usage_timeline, 'stats': usage_stats, }
+
+
+def get_metrics_for_plugin(plugin: str, limit: str, use_dynamo_for_usage: bool) -> Dict[str, Any]:
+    """
+    Fetches plugin metrics from s3 or dynamo based on the in_test variable
+    :return dict[str, Any]: A map with entries for usage and maintenance
+
+    :params str plugin: Name of the plugin in lowercase for which usage data needs to be fetched.
+    :params str limit_str: Number of records to be fetched for timeline. Defaults to 0 for invalid number.
+    :params bool use_dynamo_for_usage: Fetch data from dynamo if True else fetch from s3. (default= False)
+    """
     plugin = plugin.lower()
-    data = get_install_timeline_data(plugin)
-    install_stats = _process_for_stats(data)
     commit_activity = get_commit_activity(plugin)
-    is_valid_limit = limit.isdigit() and limit != '0'
-    usage_timeline = []
+
     maintenance_timeline = []
-    if is_valid_limit:
-        usage_timeline = _process_usage_timeline(data, int(limit))
+    month_delta = 0
+
+    if limit.isdigit() and int(limit) > 0:
+        month_delta = max(int(limit), 0)
         maintenance_timeline = _process_maintenance_timeline(commit_activity, int(limit))
 
-    usage_stats = {
-        'total_installs': install_stats.get('totalInstalls', 0),
-        'installs_in_last_30_days': get_recent_activity_data().get(plugin, 0),
-    }
     maintenance_stats = {
         'latest_commit_timestamp': get_latest_commit(plugin),
         'total_commits': sum([item['commits'] for item in commit_activity]),
     }
-    usage_data = {
-        'timeline': usage_timeline,
-        'stats': usage_stats,
+    return {
+        'usage': _get_usage_data(plugin, month_delta, use_dynamo_for_usage),
+        'maintenance': {'timeline': maintenance_timeline, 'stats': maintenance_stats, }
     }
-    maintenance_data = {
-        'timeline': maintenance_timeline,
-        'stats': maintenance_stats,
-    }
-    return {'usage': usage_data, 'maintenance': maintenance_data}

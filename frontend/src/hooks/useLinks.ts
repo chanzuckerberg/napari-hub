@@ -56,6 +56,11 @@ export function useLinks() {
       link: '/contact',
     },
 
+    SITEMAP: {
+      title: t('common:sitemap'),
+      link: '/sitemap',
+    },
+
     HUB_REPO: {
       title: t('common:githubRepo'),
       link: 'https://github.com/chanzuckerberg/napari-hub',

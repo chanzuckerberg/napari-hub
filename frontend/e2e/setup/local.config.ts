@@ -21,6 +21,21 @@ const config: PlaywrightTestConfig = {
         outputFile: '../report/test-results.json',
       },
     ],
+    [
+      'html',
+      {
+        open: 'on-failure',
+        host: 'localhost',
+        port: 9223,
+      },
+    ],
+    [
+      'html',
+      {
+        outputFile: '../report/report.html',
+        open: 'never',
+      },
+    ],
   ],
 
   projects: [
@@ -28,6 +43,7 @@ const config: PlaywrightTestConfig = {
       name: 'Desktop',
       use: {
         ...devices['Desktop Chrome'],
+        baseURL: 'http://localhost:8080/',
         video: 'on',
       },
     },
@@ -75,12 +91,14 @@ const config: PlaywrightTestConfig = {
   testDir: '../tests',
   timeout: 60 * 1000,
   use: {
-    actionTimeout: 0,
+    actionTimeout: 30000,
     baseURL: 'http://localhost:8080',
     screenshot: 'only-on-failure',
-    trace: 'on-first-retry',
+    trace: 'retain-on-failure',
     video: 'on',
+    headless: true,
   },
+  workers: 10,
 };
 // eslint-disable-next-line import/no-default-export
 export default config;

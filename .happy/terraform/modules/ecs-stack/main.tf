@@ -193,6 +193,7 @@ module backend_lambda {
     "SNOWFLAKE_USER" = local.snowflake_user
     "SNOWFLAKE_PASSWORD" = local.snowflake_password
     "API_KEY" = random_uuid.api_key.result
+    "STACK_NAME" = local.custom_stack_name
   }
 
   log_retention_in_days = 14

@@ -41,3 +41,15 @@ variable table_name {
 variable tags {
     type      = map(string)
 }
+
+variable ttl_attribute_name {
+  type        = string
+  description = "Please provide the name of the time to live attribute"
+  default     = ""
+}
+
+variable ttl_enabled {
+  type        = bool
+  description = "Please specify if ttl is enabled"
+  default     = false
+}
