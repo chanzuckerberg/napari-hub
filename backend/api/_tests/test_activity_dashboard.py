@@ -61,7 +61,7 @@ class TestActivityDashboard(unittest.TestCase):
     @patch.object(model, 'get_install_timeline_data', return_value=EMPTY_DF.copy())
     def test_get_metrics_empty(self, mock_get_install_timeline_data, mock_get_recent_activity_data,
                                mock_get_commit_activity, mock_get_latest_commit):
-        expected = self._generate_expected_metrics(
+        expected = generate_expected_metrics(
             timeline=generate_expected_usage_timeline(-3, to_installs=lambda i: 0),
             total_commit=MOCK_PLUGIN_TOTAL_COMMIT_EMPTY,
             commit_activity=MOCK_PLUGIN_COMMIT_ACTIVITY_EMPTY
@@ -108,7 +108,7 @@ class TestActivityDashboard(unittest.TestCase):
     @patch.object(model, 'get_install_timeline_data', return_value=MOCK_DF.copy())
     def test_get_metrics_nonempty_invalid_limit(self, mock_get_install_timeline_data, mock_get_recent_activity_data,
                                                 mock_get_commit_activity, mock_get_latest_commit):
-        expected = self._generate_expected_metrics(
+        expected = generate_expected_metrics(
             total_installs=sum(MOCK_INSTALLS),
             installs_in_last_30_days=25,
             latest_commit=MOCK_PLUGIN_LATEST_COMMIT,
