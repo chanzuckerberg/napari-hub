@@ -13,7 +13,7 @@ def generate_expected_usage_timeline(start_range,
     return [{timestamp_key: to_timestamp(i), installs_key: to_installs(i)} for i in range(start_range, 0)]
 
 
-def _generate_expected_maintenance_timeline(start_range,
+def generate_expected_maintenance_timeline(start_range,
                                             timestamp_key='timestamp',
                                             commits_key='commits',
                                             to_commits=lambda i: 3 if i % 2 == 0 else 1):

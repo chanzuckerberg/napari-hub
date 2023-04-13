@@ -7,7 +7,7 @@ from api import model
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
-from api._tests.test_fixtures import generate_expected_usage_timeline, _generate_expected_maintenance_timeline
+from api._tests.test_fixtures import generate_expected_usage_timeline, generate_expected_maintenance_timeline
 
 BASE = datetime.today().date().replace(day=1)
 DATE_LIST = [BASE - relativedelta(months=x) for x in range(12) if x % 2 == 0]
@@ -81,7 +81,7 @@ class TestActivityDashboard(unittest.TestCase):
             installs_in_last_30_days=25,
             latest_commit=MOCK_PLUGIN_LATEST_COMMIT,
             total_commit=MOCK_PLUGIN_TOTAL_COMMIT_NONEMPTY,
-            commit_activity=_generate_expected_maintenance_timeline(-3)
+            commit_activity=generate_expected_maintenance_timeline(-3)
         )
         self._verify_results('3', expected, mock_get_commit_activity, mock_get_latest_commit,
                              mock_get_install_timeline_data, mock_get_recent_activity_data)
