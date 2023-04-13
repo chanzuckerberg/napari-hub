@@ -100,3 +100,39 @@ class GitHubActivity(Model):
     commit_count = NumberAttribute(null=True)
     repo = UnicodeAttribute()
     last_updated_timestamp = NumberAttribute()
+
+    @staticmethod
+    def get_total_commits(plugin: str, repo: str) -> int:
+        """
+        Gets total_commits stats from dynamo for a plugin
+        :return int: total_commits count
+
+        :param str plugin: Name of the plugin in lowercase for which total_commits needs to be computed.
+        :param str repo: Name of the GitHub repo.
+        """
+        start = time.perf_counter()
+        try:
+            return GitHubActivity.get(plugin, f'TOTAL:{repo}').commit_count
+        except GitHubActivity.DoesNotExist:
+            logging.warning(f'No TOTAL:{repo} record found for plugin={plugin}')
+            return 0
+        finally:
+            logging.info(f'get_total_commits for plugin={plugin} time_taken={(time.perf_counter() - start) * 1000}ms')
+
+    @staticmethod
+    def get_latest_commit(plugin: str, repo: str) -> int:
+        """
+        Gets latest_commit timestamp stats from dynamo for a plugin
+        :return int: latest_commit timestamp
+
+        :param str plugin: Name of the plugin in lowercase for which latest_commit needs to be computed.
+        :param str repo: Name of the GitHub repo.
+        """
+        start = time.perf_counter()
+        try:
+            return GitHubActivity.get(plugin, f'LATEST:{repo}').timestamp
+        except GitHubActivity.DoesNotExist:
+            logging.warning(f'No LATEST{repo}: record found for plugin={plugin}')
+            return 0
+        finally:
+            logging.info(f'get_latest_commit for plugin={plugin} time_taken={(time.perf_counter() - start) * 1000}ms')
