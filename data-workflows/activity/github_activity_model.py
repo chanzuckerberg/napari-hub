@@ -111,7 +111,7 @@ def transform_and_write_to_dynamo(data: dict[str, List], activity_type: GitHubAc
             timestamp = activity.get('timestamp')
             commit_count = activity.get('count')
             item = GitHubActivity(
-                plugin_name,
+                plugin_name.lower(),
                 activity_type.format_to_type_identifier(repo, identifier_timestamp),
                 granularity=activity_type.name,
                 timestamp=activity_type.format_to_timestamp(timestamp),
