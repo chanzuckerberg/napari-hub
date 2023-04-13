@@ -424,7 +424,7 @@ def _update_activity_timeline_data():
     write_data(csv_string, "activity_dashboard_data/plugin_installs.csv")
 
 
-def _process_for_timeline(plugin_df, limit):
+def _process_usage_timeline(plugin_df, limit):
     date_format = '%Y-%m-%d'
     end_date = date.today().replace(day=1) + relativedelta(months=-1)
     start_date = end_date + relativedelta(months=-limit + 1)
@@ -443,16 +443,15 @@ def _process_for_timeline(plugin_df, limit):
 
 
 def _process_maintenance_timeline(commit_activity, limit):
-    maintenance_timeline = []
-    end_date = date.today().replace(day=1) + relativedelta(months=-1)
+    now = datetime.now()
+    end_date = datetime(now.year, now.month - 1, 1) if now.month > 1 else datetime(now.year - 1, 12, 1)
     start_date = end_date + relativedelta(months=-limit + 1)
-    end_date_str = str(end_date)
-    start_date_str = str(start_date)
-    for item in commit_activity:
-        item_date_str = datetime.fromtimestamp(item['timestamp'] / 1000).strftime("%Y-%m-%d")
-        if start_date_str <= item_date_str <= end_date_str:
-            maintenance_timeline.append(item)
-    return maintenance_timeline[-limit:]
+    dates = pd.date_range(start=start_date, periods=limit, freq='MS')
+    maintenance_dict = {item_date: item for item in commit_activity if
+                        (item_date := datetime.utcfromtimestamp(item['timestamp'] / 1000))
+                        and start_date <= item_date <= end_date}
+    return [maintenance_dict.get(cur_date, {'timestamp': int(cur_date.timestamp()) * 1000, 'commits': 0})
+            for cur_date in dates]
 
 
 def _process_for_stats(plugin_df):
@@ -555,24 +554,22 @@ def get_metrics_for_plugin(plugin: str, limit: str) -> Dict:
     install_stats = _process_for_stats(data)
     commit_activity = get_commit_activity(plugin)
     is_valid_limit = limit.isdigit() and limit != '0'
-
-    timeline = []
+    usage_timeline = []
     maintenance_timeline = []
     if is_valid_limit:
-        limit = int(limit)
-        timeline = _process_for_timeline(data, limit)
-        maintenance_timeline = _process_maintenance_timeline(commit_activity, limit)
+        usage_timeline = _process_usage_timeline(data, int(limit))
+        maintenance_timeline = _process_maintenance_timeline(commit_activity, int(limit))
 
     usage_stats = {
         'total_installs': install_stats.get('totalInstalls', 0),
-        'installs_in_last_30_days': get_recent_activity_data().get(plugin, 0)
+        'installs_in_last_30_days': get_recent_activity_data().get(plugin, 0),
     }
     maintenance_stats = {
         'latest_commit_timestamp': get_latest_commit(plugin),
         'total_commits': sum([item['commits'] for item in commit_activity]),
     }
     usage_data = {
-        'timeline': timeline,
+        'timeline': usage_timeline,
         'stats': usage_stats,
     }
     maintenance_data = {
