@@ -13,3 +13,8 @@ export const BEGINNING_PAGE = 1;
  * Max search results to show at a time.
  */
 export const RESULTS_PER_PAGE = 15;
+
+/**
+ * Used for removing from plugin name / display name while sorting.
+ */
+export const NAPARI_PREFIX_REGEX = /^napari[ -]/;

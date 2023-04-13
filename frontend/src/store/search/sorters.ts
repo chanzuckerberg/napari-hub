@@ -1,3 +1,5 @@
+import { NAPARI_PREFIX_REGEX } from '@/constants/search';
+
 import { SearchSortType } from './constants';
 import { SearchResult } from './search.types';
 import { SearchResultTransformFunction } from './types';
@@ -38,12 +40,17 @@ function sortByFirstReleased(results: SearchResult[]) {
   );
 }
 
+function getPluginName({ plugin }: SearchResult) {
+  const name = plugin.display_name || plugin.name;
+  return name.toLowerCase().replace(NAPARI_PREFIX_REGEX, '');
+}
+
 function sortByPluginName(results: SearchResult[]) {
   return (
     results
       // Create a copy of the array
       .slice()
-      .sort((a, b) => a.plugin.name.localeCompare(b.plugin.name))
+      .sort((a, b) => getPluginName(a).localeCompare(getPluginName(b)))
   );
 }
 
