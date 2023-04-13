@@ -496,7 +496,7 @@ def _update_recent_activity_data(number_of_time_periods=30, time_granularity='DA
 def _update_repo_to_plugin_dict(repo_to_plugin_dict: dict, plugin_obj: dict):
     code_repository = plugin_obj.get('code_repository')
     if code_repository:
-        repo_to_plugin_dict[code_repository.replace('https://github.com/', '')] = plugin_obj['name']
+        repo_to_plugin_dict[code_repository.replace('https://github.com/', '')] = plugin_obj['name'].lower()
     return repo_to_plugin_dict
 
 
@@ -537,7 +537,8 @@ def _update_latest_commits(repo_to_plugin_dict):
             repo = row[0]
             if repo in repo_to_plugin_dict:
                 plugin = repo_to_plugin_dict[repo]
-                data[plugin] = int(pd.to_datetime(row[1]).strftime("%s")) * 1000
+                timestamp = int(pd.to_datetime(row[1]).strftime("%s")) * 1000
+                data[plugin] = timestamp
     write_data(json.dumps(data), "activity_dashboard_data/latest_commits.json")
 
 
@@ -560,9 +561,10 @@ def _update_commit_activity(repo_to_plugin_dict):
     for cursor in cursor_list:
         for repo, month, commit_count in cursor:
             if repo in repo_to_plugin_dict:
+                plugin = repo_to_plugin_dict[repo]
                 timestamp = int(pd.to_datetime(month).strftime("%s")) * 1000
                 commits = int(commit_count)
-                data.setdefault(repo_to_plugin_dict[repo], []).append({'timestamp': timestamp, 'commits': commits})
+                data.setdefault(plugin, []).append({'timestamp': timestamp, 'commits': commits})
     for plugin in data:
         data[plugin] = sorted(data[plugin], key=lambda x: (x['timestamp']))
     write_data(json.dumps(data), "activity_dashboard_data/commit_activity.json")
