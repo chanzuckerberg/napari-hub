@@ -429,7 +429,7 @@ def _update_activity_timeline_data():
     write_data(csv_string, "activity_dashboard_data/plugin_installs.csv")
 
 
-def __process_for_dates(limit):
+def _process_for_dates(limit):
     end_date = date.today().replace(day=1) + relativedelta(months=-1)
     start_date = end_date + relativedelta(months=-limit + 1)
     dates = pd.date_range(start=start_date, periods=limit, freq='MS')
@@ -438,7 +438,7 @@ def __process_for_dates(limit):
 
 def _process_usage_timeline(plugin_df, limit):
     date_format = '%Y-%m-%d'
-    start_date, end_date, dates = __process_for_dates(limit)
+    start_date, end_date, dates = _process_for_dates(limit)
     plugin_df = plugin_df[(plugin_df['MONTH'] >= start_date.strftime(date_format)) & (
                 plugin_df['MONTH'] <= end_date.strftime(date_format))]
     result = []
@@ -453,7 +453,7 @@ def _process_usage_timeline(plugin_df, limit):
 
 
 def _process_maintenance_timeline(commit_activity, limit):
-    start_date, end_date, dates = __process_for_dates(limit)
+    start_date, end_date, dates = _process_for_dates(limit)
     maintenance_dict = {item_datetime: item for item in commit_activity if
                         (item_datetime := datetime.utcfromtimestamp(item['timestamp'] / 1000))
                         and start_date <= item_datetime.date() <= end_date}
