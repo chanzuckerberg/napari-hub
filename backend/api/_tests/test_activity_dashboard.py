@@ -154,7 +154,8 @@ class TestMetricModel:
         (MOCK_PLUGIN_COMMIT_ACTIVITY_INVALID_LIMIT, MOCK_PLUGIN_COMMIT_ACTIVITY_INVALID_LIMIT, MOCK_PLUGIN_LATEST_COMMIT, MOCK_PLUGIN_TOTAL_COMMIT_EMPTY, 25, 21, [], 'foo'),
         (MOCK_PLUGIN_COMMIT_ACTIVITY_INVALID_LIMIT, MOCK_PLUGIN_COMMIT_ACTIVITY_INVALID_LIMIT, MOCK_PLUGIN_LATEST_COMMIT, MOCK_PLUGIN_TOTAL_COMMIT_EMPTY, 25, 21, [], '-5'),
     ])
-    def test_metrics_api_using_dynamo(self, monkeypatch, commit_activity_input, commit_activity_result, latest_commit, total_commit, total_installs, recent_installs, timeline, limit):
+    def test_metrics_api_using_dynamo(self, monkeypatch, commit_activity_input, commit_activity_result, latest_commit,
+                                      total_commit, total_installs, recent_installs, timeline, limit):
         monkeypatch.setattr(model, 'get_commit_activity', self._validate_args_return_value(commit_activity_input))
         monkeypatch.setattr(model, 'get_latest_commit', self._validate_args_return_value(latest_commit))
         monkeypatch.setattr(model.InstallActivity, 'get_total_installs', self._validate_args_return_value(total_installs))
