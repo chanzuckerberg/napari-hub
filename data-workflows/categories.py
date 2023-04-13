@@ -53,13 +53,18 @@ def _hash_category(category: Dict[str, str]) -> str:
     return category_hash.hexdigest()
 
 
-def run_seed_s3_categories_workflow(version: str, s3_path: str, s3_prefix):
+def run_seed_s3_categories_workflow(version: str, s3_path: str):
     """
     Runs data workflow for populating the category dynamo table from an S3
     source on the same depoyment stack.
     """
 
+    if not all(version, s3_path):
+        LOGGER.error(f"Missing required values version={version} s3_path={s3_path}")
+        raise ValueError()
+
     bucket = get_required_env("BUCKET")
+    s3_prefix = get_required_env("BUCKET_PATH")
 
     LOGGER.info(
         f"Seeding {version} category data from S3 "
