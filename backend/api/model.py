@@ -607,7 +607,7 @@ def get_metrics_for_plugin(plugin: str, limit: str, use_dynamo_for_usage: bool) 
     maintenance_timeline = []
     month_delta = 0
 
-    if limit.isdigit() and int(limit) > 0:
+    if limit.isdigit() and limit != '0':
         month_delta = max(int(limit), 0)
         maintenance_timeline = _process_maintenance_timeline(commit_activity, int(limit))
 
