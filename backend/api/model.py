@@ -454,11 +454,18 @@ def _process_usage_timeline(plugin_df, limit):
 
 def _process_maintenance_timeline(commit_activity, limit):
     start_date, end_date, dates = _process_for_dates(limit)
-    maintenance_dict = {item_datetime: item for item in commit_activity if
-                        (item_datetime := datetime.utcfromtimestamp(item['timestamp'] / 1000))
-                        and start_date <= item_datetime.date() <= end_date}
-    return [maintenance_dict.get(cur_date, {'timestamp': int(cur_date.timestamp()) * 1000, 'commits': 0})
-            for cur_date in dates]
+    maintenance_dict = {}
+    result = []
+    for commit_obj in commit_activity:
+        commit_datetime = datetime.utcfromtimestamp(commit_obj['timestamp'] / 1000)
+        if start_date <= commit_datetime.date() <= end_date:
+            maintenance_dict[commit_datetime]: commit_obj
+    for cur_date in dates:
+        if cur_date in maintenance_dict:
+            result.append(maintenance_dict[cur_date])
+        else:
+            result.append({'timestamp': int(cur_date.timestamp()) * 1000, 'commits': 0})
+    return result
 
 
 def _process_for_stats(plugin_df):
