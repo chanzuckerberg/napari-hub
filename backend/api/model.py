@@ -8,7 +8,7 @@ from io import BytesIO
 from collections import defaultdict
 import pandas as pd
 
-from api.models.metrics import InstallActivity
+from api.models.metrics import InstallActivity, GitHubActivity
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
 from api.s3 import get_cache, cache, write_data, get_install_timeline_data, get_latest_commit, get_commit_activity, \
@@ -587,7 +587,7 @@ def _get_usage_data(plugin: str, limit: int, use_dynamo: bool) -> Dict[str, Any]
     :params bool use_dynamo: Fetch data from dynamo if True, else fetch from s3.
     """
     if use_dynamo:
-        usage_timeline = InstallActivity.get_timeline(plugin, limit) if limit else []
+        usage_timeline = InstallActivity.get_usage_timeline(plugin, limit) if limit else []
         usage_stats = {
             'total_installs': InstallActivity.get_total_installs(plugin),
             'installs_in_last_30_days': InstallActivity.get_recent_installs(plugin, 30)
@@ -603,7 +603,35 @@ def _get_usage_data(plugin: str, limit: int, use_dynamo: bool) -> Dict[str, Any]
     return {'timeline': usage_timeline, 'stats': usage_stats, }
 
 
-def get_metrics_for_plugin(plugin: str, limit: str, use_dynamo_for_usage: bool) -> Dict[str, Any]:
+def _get_maintenance_data(plugin: str, limit: int, repo: str, use_dynamo: bool) -> Dict[str, Any]:
+    """
+    Fetches plugin maintenance_data from s3 or dynamo based on the in_test variable
+    :returns (dict[str, Any]): A dict with the structure {'timeline': List, 'stats': Dict[str, int]}
+
+    :params str plugin: Name of the plugin in lowercase.
+    :params int limit: Sets the number of records to be fetched for timeline.
+    :param str repo: Name of the GitHub repo.
+    :params bool use_dynamo: Fetch data from dynamo if True, else fetch from s3.
+    """
+    if use_dynamo:
+        maintenance_timeline = GitHubActivity.get_maintenance_timeline(plugin, limit, repo) if limit else []
+        maintenance_stats = {
+            'total_commits': GitHubActivity.get_total_commits(plugin, repo),
+            'latest_commit_timestamp': GitHubActivity.get_total_commits(plugin, repo),
+        }
+    else:
+        data = get_commit_activity(plugin)
+        maintenance_stats = {
+            'total_commits': sum([commit_obj['commits'] for commit_obj in data]),
+            'latest_commit_timestamp': get_latest_commit(plugin),
+        }
+        maintenance_timeline = _process_maintenance_timeline(data, limit) if limit else []
+
+    return {'timeline': maintenance_timeline, 'stats': maintenance_stats, }
+
+
+def get_metrics_for_plugin(plugin: str, limit: str, use_dynamo_for_usage: bool,
+                           use_dynamo_for_maintenance: bool) -> Dict[str, Any]:
     """
     Fetches plugin metrics from s3 or dynamo based on the in_test variable
     :return dict[str, Any]: A map with entries for usage and maintenance
@@ -611,22 +639,17 @@ def get_metrics_for_plugin(plugin: str, limit: str, use_dynamo_for_usage: bool) 
     :params str plugin: Name of the plugin in lowercase for which usage data needs to be fetched.
     :params str limit_str: Number of records to be fetched for timeline. Defaults to 0 for invalid number.
     :params bool use_dynamo_for_usage: Fetch data from dynamo if True else fetch from s3. (default= False)
+    :params bool use_dynamo_for_maintenance: Fetch data from dynamo if True else fetch from s3. (default= False)
     """
     plugin = plugin.lower()
-    commit_activity = get_commit_activity(plugin)
+    repo = get_plugin(plugin)
 
-    maintenance_timeline = []
     month_delta = 0
 
     if limit.isdigit() and limit != '0':
         month_delta = max(int(limit), 0)
-        maintenance_timeline = _process_maintenance_timeline(commit_activity, int(limit))
 
-    maintenance_stats = {
-        'latest_commit_timestamp': get_latest_commit(plugin),
-        'total_commits': sum([item['commits'] for item in commit_activity]),
-    }
     return {
         'usage': _get_usage_data(plugin, month_delta, use_dynamo_for_usage),
-        'maintenance': {'timeline': maintenance_timeline, 'stats': maintenance_stats, }
+        'maintenance': _get_maintenance_data(plugin, month_delta, repo, use_dynamo_for_maintenance),
     }
