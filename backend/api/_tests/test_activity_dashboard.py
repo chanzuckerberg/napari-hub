@@ -123,7 +123,7 @@ class TestActivityDashboard(unittest.TestCase):
     @patch.object(model, 'get_recent_activity_data', return_value=MOCK_PLUGIN_RECENT_INSTALLS)
     @patch.object(model, 'get_install_timeline_data', return_value=MOCK_DF.copy())
     def test_get_metrics_nonempty_negative_limit(self, mock_get_install_timeline_data, mock_get_recent_activity_data,
-                                                mock_get_commit_activity, mock_get_latest_commit):
+                                                 mock_get_commit_activity, mock_get_latest_commit):
         expected = generate_expected_metrics(
             total_installs=sum(MOCK_INSTALLS),
             installs_in_last_30_days=25,
@@ -131,11 +131,11 @@ class TestActivityDashboard(unittest.TestCase):
             total_commit=MOCK_PLUGIN_TOTAL_COMMIT_EMPTY,
             commit_activity=MOCK_PLUGIN_COMMIT_ACTIVITY_INVALID_LIMIT
         )
-        self._verify_results('-5', expected, mock_get_commit_activity, mock_get_latest_commit, mock_get_install_timeline_data,
-                             mock_get_recent_activity_data)
+        self._verify_results('-5', expected, mock_get_commit_activity, mock_get_latest_commit,
+                             mock_get_install_timeline_data, mock_get_recent_activity_data)
 
-    def _verify_results(self, limit, expected, mock_get_commit_activity, mock_get_latest_commit, mock_get_install_timeline_data,
-                        mock_get_recent_activity_data):
+    def _verify_results(self, limit, expected, mock_get_commit_activity, mock_get_latest_commit,
+                        mock_get_install_timeline_data, mock_get_recent_activity_data):
         from api.model import get_metrics_for_plugin
         result = get_metrics_for_plugin(PLUGIN_NAME, limit, False)
         self.assertEqual(expected, result)
