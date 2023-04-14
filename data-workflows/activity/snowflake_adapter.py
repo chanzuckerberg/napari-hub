@@ -72,9 +72,9 @@ def get_plugins_with_commits_in_window(start_millis: int, end_millis: int) -> di
 
 def get_plugins_commit_count_since_timestamp(plugins_by_earliest_ts: dict[str, datetime],
                                              github_activity_type: GitHubActivityType) -> dict[str, List]:
-    if github_activity_type.name == 'LATEST':
+    if github_activity_type is GitHubActivityType.LATEST:
         accumulator_updater = _cursor_to_plugin_github_activity_latest_mapper
-    elif github_activity_type.name == 'MONTH':
+    elif github_activity_type is GitHubActivityType.MONTH:
         accumulator_updater = _cursor_to_plugin_activity_mapper
     else:
         accumulator_updater = _cursor_to_plugin_github_activity_total_mapper
