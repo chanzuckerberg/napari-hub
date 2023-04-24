@@ -72,8 +72,7 @@ def get_plugins_with_commits_in_window(start_millis: int, end_millis: int) -> di
 
 def get_plugins_commit_count_since_timestamp(plugins_by_earliest_ts: dict[str, datetime],
                                              github_activity_type: GitHubActivityType) -> dict[str, List]:
-    """
-    This method gets the commit data since a specific starting point for each plugin.
+    """This method gets the commit data since a specific starting point for each plugin.
     If GitHubActivityType.LATEST, fetch the latest commit timestamp, so construct query without commit count constraint
     If GitHubActivityType.MONTH, fetch the sum of commits from the beginning of the month of the timestamp specified
     for each of the plugin.
