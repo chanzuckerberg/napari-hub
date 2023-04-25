@@ -5,8 +5,13 @@ scenarios('category.feature')
 
 
 @given('we call categories api')
-def call_category_without_version(context):
+def call_all_categories(context):
     call_api(context, '/categories')
+
+
+@given(parsers.parse('we call categories api and {query_param}'))
+def call_all_categories_with_query_param(context, query_param):
+    call_api(context, f'/categories?{query_param}')
 
 
 @given(parsers.parse('we call categories api for {category} with version {version}'))
@@ -14,11 +19,21 @@ def call_category_with_version(category, version, context):
     context['category_name'] = category
     call_api(context, f'/categories/{category}/versions/{version}')
 
+@given(parsers.parse('we call categories api for {category} with version {version} and {query_param}'))
+def call_category_with_version_and_query_param(category, version, context, query_param):
+    context['category_name'] = category
+    call_api(context, f'/categories/{category}/versions/{version}?{query_param}')
 
 @given(parsers.parse('we call categories api for {category}'))
 def call_category_without_version(context, category):
     context['category_name'] = category
     call_api(context, f'/categories/{category}')
+
+
+@given(parsers.parse('we call categories api for {category} and {query_param}'))
+def call_category_without_version_and_query_param(context, category, query_param):
+    context['category_name'] = category
+    call_api(context, f'/categories/{category}?{query_param}')
 
 
 def _validate_category(category, name):
