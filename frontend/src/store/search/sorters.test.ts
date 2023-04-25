@@ -1,6 +1,15 @@
-import { isEqual, shuffle as ldshuffle } from 'lodash';
+/* eslint-disable jest/expect-expect */
 
-import { compareDates } from './sorters';
+import { isEqual, shuffle as ldshuffle } from 'lodash';
+import timezoneMock from 'timezone-mock';
+import { Optional } from 'utility-types';
+
+import pluginFixture from '@/fixtures/plugin.json';
+import { PluginIndexData } from '@/types';
+
+import { SearchSortType } from './constants';
+import { SearchResult } from './search.types';
+import { compareDates, sortResults } from './sorters';
 
 function shuffle<T>(array: Array<T>): Array<T> {
   let shuffled: Array<T>;
@@ -69,5 +78,101 @@ describe('compareDates()', () => {
 
     expect(datesShuffled).not.toEqual(datesSorted);
     expect(sortNewToOld(shuffle(datesSorted))).toEqual(datesSorted);
+  });
+});
+
+type ResultEntry = Optional<
+  Pick<
+    PluginIndexData,
+    'name' | 'display_name' | 'release_date' | 'first_released'
+  >
+>;
+
+function getResults(...results: ResultEntry[]): SearchResult[] {
+  return results.map((result, index) => ({
+    index,
+    matches: {},
+    plugin: {
+      ...pluginFixture,
+      ...result,
+    },
+  }));
+}
+
+function testSortedResults({
+  sortType,
+  results,
+  expected,
+}: {
+  sortType: SearchSortType;
+  results: SearchResult[];
+  expected: string[];
+}) {
+  const sortedResults = sortResults(sortType, results);
+  expect(sortedResults.map((result) => result.plugin.name)).toEqual(expected);
+}
+
+describe('sortResults()', () => {
+  it('should sort by first released date', () => {
+    // Use actual Date object
+    timezoneMock.unregister();
+
+    testSortedResults({
+      results: getResults(
+        { name: 'result1', first_released: '01-04-23' },
+        { name: 'result2', first_released: '01-01-23' },
+        { name: 'result3', first_released: '01-07-23' },
+      ),
+      sortType: SearchSortType.FirstReleased,
+      expected: ['result3', 'result1', 'result2'],
+    });
+  });
+
+  it('should sort by release date', () => {
+    // Use actual Date object
+    timezoneMock.unregister();
+
+    testSortedResults({
+      results: getResults(
+        { name: 'result1', release_date: '01-04-23' },
+        { name: 'result2', release_date: '01-01-23' },
+        { name: 'result3', release_date: '01-07-23' },
+      ),
+      sortType: SearchSortType.ReleaseDate,
+      expected: ['result3', 'result1', 'result2'],
+    });
+  });
+
+  it('should sort plugins without display names', () => {
+    testSortedResults({
+      results: getResults({ name: 'c' }, { name: 'napari-a' }, { name: 'b' }),
+      sortType: SearchSortType.PluginName,
+      expected: ['napari-a', 'b', 'c'],
+    });
+  });
+
+  it('should sort plugins with display names', () => {
+    testSortedResults({
+      results: getResults(
+        { name: 'napari-c', display_name: 'c' },
+        { name: 'napari-a', display_name: 'a' },
+        { name: 'napari-b', display_name: 'b' },
+      ),
+      sortType: SearchSortType.PluginName,
+      expected: ['napari-a', 'napari-b', 'napari-c'],
+    });
+  });
+
+  it('should sort plugins with and without display names', () => {
+    testSortedResults({
+      results: getResults(
+        { name: 'napari-d' },
+        { name: 'napari-a', display_name: 'b' },
+        { name: 'napari-c' },
+        { name: 'napari-b', display_name: 'a' },
+      ),
+      sortType: SearchSortType.PluginName,
+      expected: ['napari-b', 'napari-a', 'napari-c', 'napari-d'],
+    });
   });
 });
