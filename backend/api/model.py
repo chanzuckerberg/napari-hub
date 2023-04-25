@@ -617,7 +617,7 @@ def _get_maintenance_data(plugin: str, limit: int, repo: str, use_dynamo: bool) 
         maintenance_timeline = GitHubActivity.get_maintenance_timeline(plugin, limit, repo) if limit else []
         maintenance_stats = {
             'total_commits': GitHubActivity.get_total_commits(plugin, repo),
-            'latest_commit_timestamp': GitHubActivity.get_total_commits(plugin, repo),
+            'latest_commit_timestamp': GitHubActivity.get_latest_commit(plugin, repo),
         }
     else:
         data = get_commit_activity(plugin)
@@ -642,7 +642,8 @@ def get_metrics_for_plugin(plugin: str, limit: str, use_dynamo_for_usage: bool,
     :params bool use_dynamo_for_maintenance: Fetch data from dynamo if True else fetch from s3. (default= False)
     """
     plugin = plugin.lower()
-    repo = get_plugin(plugin)
+    repo_url = get_plugin(plugin).get('code_repository', '')
+    repo = repo_url.replace('https://github.com/', '')
 
     month_delta = 0
 
