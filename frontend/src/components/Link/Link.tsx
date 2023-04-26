@@ -1,11 +1,16 @@
-import NextLink, { LinkProps } from 'next/link';
-import { AnchorHTMLAttributes, forwardRef } from 'react';
+import NextLink from 'next/link';
+import { AnchorHTMLAttributes, ComponentProps, forwardRef } from 'react';
+import { Optional } from 'utility-types';
+
+type LinkProps = ComponentProps<typeof NextLink>;
+
+export type Props = Optional<LinkProps, 'href'>;
 
 /**
  * Component for rendering a Next.js link using an anchor tag. This is mostly
  * to allow Next.js to preload routes and for the anchor tag to pass a11y.
  */
-export const Link = forwardRef<HTMLAnchorElement, LinkProps>(
+export const Link = forwardRef<HTMLAnchorElement, Props>(
   ({ children, href = '', ...props }, ref) => {
     let newTabProps: AnchorHTMLAttributes<HTMLElement> | undefined;
     const url = typeof href === 'string' ? href : href.href;

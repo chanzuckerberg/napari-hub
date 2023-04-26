@@ -45,12 +45,14 @@ export function TotalStats({
       />
 
       <span className="mr-2">
-        {t(infoI18nKey)}{' '}
-        {t(
-          dateBucketType === DateBucketType.LessThanAWeek
-            ? 'activity:duration.lessThan'
-            : 'activity:duration.over',
-        )}
+        <>
+          {t(infoI18nKey)}{' '}
+          {t(
+            dateBucketType === DateBucketType.LessThanAWeek
+              ? 'activity:duration.lessThan'
+              : 'activity:duration.over',
+          )}
+        </>
       </span>
 
       <FormattedDuration date={date} isLoading={isLoading} />

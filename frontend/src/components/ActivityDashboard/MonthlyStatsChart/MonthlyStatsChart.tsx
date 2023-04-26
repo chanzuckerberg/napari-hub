@@ -1,6 +1,7 @@
 import Skeleton from '@mui/material/Skeleton';
 import dayjs from 'dayjs';
 import { useTranslation } from 'next-i18next';
+import { ReactNode } from 'react';
 
 import { AreaChart } from '@/components/ActivityDashboard/AreaChart';
 import { LineTooltip } from '@/components/ActivityDashboard/AreaChart/LineTooltip';
@@ -58,7 +59,7 @@ export function MonthlyStatsChart({
       startDate={startDate}
     >
       <section>
-        <Text variant="bodyS">{t(titleI18nKey)}</Text>
+        <Text variant="bodyS">{t(titleI18nKey) as ReactNode}</Text>
 
         <div className="flex items-center mt-sds-l">
           {isEmpty ? (
