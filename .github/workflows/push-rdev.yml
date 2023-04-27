@@ -26,20 +26,12 @@ jobs:
     runs-on: ubuntu-latest
     if: github.repository == 'chanzuckerberg/napari-hub'
     steps:
-      # - name: Configure AWS Credentials
-      #   uses: aws-actions/configure-aws-credentials@v1
-      #   with:
-      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      #     aws-region: us-west-2
-      #     role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
-      #     role-duration-seconds: 900
-      - name: configure aws credentials
+      - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
-          role-session-name: push_rdev_gha
           aws-region: us-west-2
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          role-duration-seconds: 900
       - name: Login to ECR
         uses: docker/login-action@v1
         with:
