@@ -60,7 +60,7 @@ function CollectionLink({ linkKey }: CollectionLinkProps) {
         tooltip: clsx(
           '!bg-[#f1f1ec] !border !border-[#dcdcdc]',
           '!p-sds-xxs !shadow-none',
-          '!text-[#5b5b5b] !text-xs',
+          '!text-[#5b5b5b] !text-sds-body-xxs',
         ),
       }}
       title={tooltip}
