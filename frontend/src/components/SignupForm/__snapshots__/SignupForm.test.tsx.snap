@@ -23,7 +23,7 @@ exports[`<SignupForm /> should match snapshot 1`] = `
       >
         <div
           aria-label="Email address"
-          class="MuiFormControl-root MuiTextField-root text-sm pt-sds-xxxs h-8 screen-495:h-[35px] col-span-2 screen-495:col-span-1 screen-875:col-span-2 css-1u3bzj6-MuiFormControl-root-MuiTextField-root"
+          class="MuiFormControl-root MuiTextField-root text-sds-body-s pt-sds-xxxs h-8 screen-495:h-[35px] col-span-2 screen-495:col-span-1 screen-875:col-span-2 css-1u3bzj6-MuiFormControl-root-MuiTextField-root"
         >
           <div
             class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-formControl css-1ptx2yq-MuiInputBase-root-MuiInput-root"
@@ -42,7 +42,7 @@ exports[`<SignupForm /> should match snapshot 1`] = `
           </div>
         </div>
         <button
-          class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-disableElevation MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-disableElevation bg-hub-primary-400 hover:bg-hub-primary-500 active:bg-hub-primary-600 text-sm font-semibold text-black h-[35px] col-span-2 screen-495:col-span-1 css-1k16prx-MuiButtonBase-root-MuiButton-root"
+          class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-disableElevation MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-disableElevation bg-hub-primary-400 hover:bg-hub-primary-500 active:bg-hub-primary-600 text-sds-body-s font-semibold text-black h-[35px] col-span-2 screen-495:col-span-1 css-1k16prx-MuiButtonBase-root-MuiButton-root"
           data-testid="submitButton"
           name="subscribe"
           tabindex="0"
