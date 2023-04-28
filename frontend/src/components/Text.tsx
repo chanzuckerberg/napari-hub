@@ -6,7 +6,8 @@ interface TextProps {
   children: ReactNode;
   className?: string;
   element?: keyof ReactHTML;
-  weight?: 'regular' | 'bold';
+  italic?: boolean;
+  weight?: 'regular' | 'bold' | 'semibold';
   variant:
     | 'siteTitle'
     | 'h1'
@@ -75,6 +76,7 @@ export function Text({
   children,
   className,
   element,
+  italic,
   variant,
   weight,
 }: TextProps) {
@@ -142,11 +144,16 @@ export function Text({
           'screen-495:text-[13px] screen-495:leading-[24.5px]',
         ],
 
-        variant.includes('body') && weight === 'bold' && 'font-semibold',
+        variant.includes('body') && [
+          weight === 'bold' && 'font-bold',
+          weight === 'semibold' && 'font-semibold',
+        ],
         variant === 'bodyXXS' && 'text-[9px] leading-[15.8px]',
         variant === 'bodyXS' && 'text-[12px] leading-[16.5px]',
         variant === 'bodyS' && 'text-[14px] leading-[17.5px]',
         variant === 'bodyM' && 'text-[17px] leading-[25.5px]',
+
+        italic && 'italic',
       )}
       element={element}
       variant={variant}
