@@ -112,7 +112,7 @@ export function Text({
         ],
         variant === 'h4' && [
           'font-semibold',
-          'text-[11px] leading-[19.3px]',
+          'text-[12px] leading-[19.3px]',
           'screen-495:text-[17px] screen-495:leading-[24px]',
         ],
         variant === 'h5' && [
@@ -144,7 +144,7 @@ export function Text({
 
         variant.includes('body') && weight === 'bold' && 'font-semibold',
         variant === 'bodyXXS' && 'text-[9px] leading-[15.8px]',
-        variant === 'bodyXS' && 'text-[11px] leading-[16.5px]',
+        variant === 'bodyXS' && 'text-[12px] leading-[16.5px]',
         variant === 'bodyS' && 'text-[14px] leading-[17.5px]',
         variant === 'bodyM' && 'text-[17px] leading-[25.5px]',
       )}
