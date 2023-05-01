@@ -27,11 +27,11 @@ class GitHubActivityType(Enum):
         return github_activity_type
 
     LATEST = (datetime_to_utc_timestamp_in_millis, 'LATEST:{0}',
-              'repo AS name, to_timestamp(max(commit_author_date)) AS latest_commit', 'name')
+              'repo AS name, TO_TIMESTAMP(MAX(commit_author_date)) AS latest_commit', 'name')
     MONTH = (date_to_utc_timestamp_in_millis, 'MONTH:{1:%Y%m}:{0}',
-             'repo AS name, date_trunc("month", to_date(commit_author_date)) AS month, count(*) AS commit_count',
+             'repo AS name, DATE_TRUNC("month", TO_DATE(commit_author_date)) AS month, COUNT(*) AS commit_count',
              'name, month')
-    TOTAL = (lambda timestamp: None, 'TOTAL:{0}', 'repo AS name, count(*) AS commit_count', 'name')
+    TOTAL = (lambda timestamp: None, 'TOTAL:{0}', 'repo AS name, COUNT(*) AS commit_count', 'name')
 
     def format_to_timestamp(self, timestamp: datetime) -> Union[int, None]:
         return self.timestamp_formatter(timestamp)
@@ -43,7 +43,7 @@ class GitHubActivityType(Enum):
         if self is GitHubActivityType.MONTH:
             return " OR ".join(
                 [
-                    f"repo = '{name}' AND to_timestamp(commit_author_date) >= "
+                    f"repo = '{name}' AND TO_TIMESTAMP(commit_author_date) >= "
                     f"{TIMESTAMP_FORMAT.format(ts.replace(day=1))}"
                     for name, ts in plugins_by_earliest_ts.items()
                 ]
