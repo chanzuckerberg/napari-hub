@@ -38,7 +38,7 @@ def get_plugins_install_count_since_timestamp(plugins_by_earliest_ts: dict[str, 
     query = f"""
             SELECT 
                 LOWER(file_project) AS name, 
-                {install_activity_type.get_query_timestamp_projection()} AS timestamp, 
+                {install_activity_type.get_query_timestamp_projection()} AS ts, 
                 COUNT(*) AS count
             FROM
                 imaging.pypi.labeled_downloads
@@ -46,8 +46,8 @@ def get_plugins_install_count_since_timestamp(plugins_by_earliest_ts: dict[str, 
                 download_type = 'pip'
                 AND project_type = 'plugin'
                 AND ({_generate_subquery_by_type(plugins_by_earliest_ts, install_activity_type)})
-            GROUP BY name, timestamp
-            ORDER BY name, timestamp
+            GROUP BY name, ts
+            ORDER BY name, ts
             """
     LOGGER.info(f'Fetching data for granularity={install_activity_type.name}')
     return _mapped_query_results(query, 'PYPI', {}, _cursor_to_plugin_activity_mapper)

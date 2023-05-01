@@ -42,7 +42,7 @@ def get_plugins_install_count_since_timestamp_query(projection, subquery):
     return f"""
             SELECT 
                 LOWER(file_project) AS name, 
-                {projection} AS timestamp, 
+                {projection} AS ts, 
                 COUNT(*) AS count
             FROM
                 imaging.pypi.labeled_downloads
@@ -50,8 +50,8 @@ def get_plugins_install_count_since_timestamp_query(projection, subquery):
                 download_type = 'pip'
                 AND project_type = 'plugin'
                 AND ({subquery})
-            GROUP BY name, timestamp
-            ORDER BY name, timestamp
+            GROUP BY name, ts
+            ORDER BY name, ts
             """
 
 
