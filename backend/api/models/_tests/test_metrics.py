@@ -5,7 +5,7 @@ import pandas as pd
 import pytest
 from dateutil.relativedelta import relativedelta
 
-from api._tests.test_fixtures import generate_expected_usage_timeline
+from api._tests.test_fixtures import generate_installs_timeline
 from api.models.metrics import InstallActivity
 
 PLUGIN_NAME = 'foo'
@@ -80,8 +80,8 @@ class TestInstallActivity:
 
     @pytest.mark.parametrize('results, month_delta, expected', [
         ([], 0, []),
-        ([], 1, generate_expected_usage_timeline(-1, to_installs=lambda i: 0)),
-        (generate_expected_results(-4), 4, generate_expected_usage_timeline(-4)),
+        ([], 1, generate_installs_timeline(-1, to_value=lambda i: 0)),
+        (generate_expected_results(-4), 4, generate_installs_timeline(-4)),
     ])
     def test_get_timeline(self, monkeypatch, results, month_delta, expected):
         mock_install_activity = Mock(return_value=results)

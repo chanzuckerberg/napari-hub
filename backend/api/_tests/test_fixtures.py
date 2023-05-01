@@ -5,18 +5,14 @@ from datetime import datetime
 BASE = datetime.today().date().replace(day=1)
 
 
-def generate_expected_usage_timeline(start_range,
-                                     timestamp_key='timestamp',
-                                     installs_key='installs',
-                                     to_installs=lambda i: 2 if i % 2 == 0 else 0):
+def _generate_timeline(start_range, value_key, to_value, timestamp_key='timestamp'):
     to_timestamp = lambda i: int(pd.Timestamp(BASE + relativedelta(months=i)).timestamp()) * 1000
-    return [{timestamp_key: to_timestamp(i), installs_key: to_installs(i)} for i in range(start_range, 0)]
+    return [{timestamp_key: to_timestamp(i), value_key: to_value(i)} for i in range(start_range, 0)]
 
 
-def generate_expected_maintenance_timeline(start_range,
-                                           timestamp_key='timestamp',
-                                           commits_key='commits',
-                                           to_commits=lambda i: 3 if i % 2 == 0 else 1):
-    to_timestamp = lambda i: int(pd.Timestamp(BASE + relativedelta(months=i)).timestamp()) * 1000
-    return [{timestamp_key: to_timestamp(i), commits_key: to_commits(i)} for i in range(start_range, 0)]
+def generate_installs_timeline(start_range, ts_key='timestamp', to_value=lambda i: 2 if i % 2 == 0 else 0):
+    return _generate_timeline(start_range=start_range, value_key='installs', to_value=to_value, timestamp_key=ts_key)
 
+
+def generate_commits_timeline(start_range, ts_key='timestamp', to_value=lambda i: i + 5):
+    return _generate_timeline(start_range=start_range, value_key='commits', to_value=to_value, timestamp_key=ts_key)
