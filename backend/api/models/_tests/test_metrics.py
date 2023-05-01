@@ -94,3 +94,22 @@ class TestInstallActivity:
         mock_install_activity.assert_called_once()
         assert mock_install_activity.call_args.args[0] == PLUGIN_NAME
         assert str(mock_install_activity.call_args.args[1]) == self._get_expected_condition(month_delta, 'MONTH')
+
+    @pytest.mark.parametrize(
+        'results, expected', [
+            ([], {}),
+            ([Mock(plugin_name='foo', install_count=10)], {'foo': 10}),
+            ([Mock(plugin_name='foo', install_count=10), Mock(plugin_name='bar', install_count=24)],
+             {'foo': 10, 'bar': 24}),
+        ])
+    def test_get_recent_installs(self, monkeypatch, results, expected):
+        mock_batch_get = Mock(return_value=results)
+        plugins = ['foo', 'bar']
+
+        from api.models.metrics import InstallActivity
+        monkeypatch.setattr(InstallActivity, 'batch_get', mock_batch_get)
+        actual = InstallActivity.get_total_installs_by_plugins(plugins)
+
+        assert actual == expected
+        mock_batch_get.assert_called_once()
+        assert mock_batch_get.call_args.args[0] == [(plugin, 'TOTAL:') for plugin in plugins]

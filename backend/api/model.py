@@ -24,7 +24,8 @@ index_subset = {'name', 'summary', 'description_text', 'description_content_type
                 'authors', 'license', 'python_version', 'operating_system',
                 'release_date', 'version', 'first_released',
                 'development_status', 'category', 'display_name', 'plugin_types', 'reader_file_extensions',
-                'writer_file_extensions', 'writer_save_layers', 'npe2', 'error_message', 'code_repository'}
+                'writer_file_extensions', 'writer_save_layers', 'npe2', 'error_message', 'code_repository',
+                'total_installs', }
 
 
 def get_public_plugins() -> Dict[str, str]:
@@ -226,12 +227,16 @@ def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
 
 
 def generate_index(plugins_metadata: Dict[str, Any]):
+    """
+    Adds total_installs to plugins, and slice index to only include specified indexing related columns
+    :param plugins_metadata: plugin metadata dictionary
+    :return: sliced dict metadata for the plugin
+    """
     total_install_by_plugin_name = InstallActivity.get_total_installs_by_plugins(plugins_metadata.keys())
-    response = slice_metadata_to_index_columns(list(plugins_metadata.values()))
-    for plugin_metadata in response:
+    for plugin_metadata in plugins_metadata.values():
         name = plugin_metadata.get('name')
         plugin_metadata['total_installs'] = total_install_by_plugin_name.get(name, 0)
-    return response
+    return slice_metadata_to_index_columns(list(plugins_metadata.values()))
 
 
 def update_cache():
