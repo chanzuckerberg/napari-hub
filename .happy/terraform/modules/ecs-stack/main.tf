@@ -425,8 +425,8 @@ data aws_iam_policy_document data_workflows_policy {
       "dynamodb:BatchWriteItem",
     ]
     resources = [
-    module.install_dynamodb_table.table_arn,
-    module.github_dynamodb_table.table_arn,
+        module.install_dynamodb_table.table_arn,
+        module.github_dynamodb_table.table_arn,
     ]
   }
   statement {
