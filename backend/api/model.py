@@ -225,13 +225,12 @@ def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
     return plugin, metadata
 
 
-def generate_index(plugins_metadata):
+def generate_index(plugins_metadata: Dict[str, Any]):
     total_install_by_plugin_name = InstallActivity.get_total_installs_by_plugins(plugins_metadata.keys())
     response = slice_metadata_to_index_columns(list(plugins_metadata.values()))
     for plugin_metadata in response:
         name = plugin_metadata.get('name')
-        if name:
-            plugin_metadata['total_installs'] = total_install_by_plugin_name.get(name, 0)
+        plugin_metadata['total_installs'] = total_install_by_plugin_name.get(name, 0)
     return response
 
 
