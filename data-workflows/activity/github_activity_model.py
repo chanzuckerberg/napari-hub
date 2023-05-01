@@ -9,7 +9,7 @@ from pynamodb.models import Model
 from pynamodb.attributes import UnicodeAttribute, NumberAttribute
 
 from utils.utils import get_current_timestamp, date_to_utc_timestamp_in_millis, datetime_to_utc_timestamp_in_millis
-from plugin.helpers import _get_cache, _get_repo_to_plugin_dict
+from plugin.helpers import _get_repo_to_plugin_dict
 
 
 LOGGER = logging.getLogger()
@@ -27,11 +27,11 @@ class GitHubActivityType(Enum):
         return github_activity_type
 
     LATEST = (datetime_to_utc_timestamp_in_millis, 'LATEST:{0}',
-              'repo AS name, to_timestamp(max(commit_author_date)) as latest_commit', 'name')
+              'repo AS name, to_timestamp(max(commit_author_date)) AS latest_commit', 'name')
     MONTH = (date_to_utc_timestamp_in_millis, 'MONTH:{1:%Y%m}:{0}',
-             'repo AS name, date_trunc("month", to_date(commit_author_date)) as month, count(*) as commit_count',
+             'repo AS name, date_trunc("month", to_date(commit_author_date)) AS month, count(*) AS commit_count',
              'name, month')
-    TOTAL = (lambda timestamp: None, 'TOTAL:{0}', 'repo AS name, count(*) as commit_count', 'name')
+    TOTAL = (lambda timestamp: None, 'TOTAL:{0}', 'repo AS name, count(*) AS commit_count', 'name')
 
     def format_to_timestamp(self, timestamp: datetime) -> Union[int, None]:
         return self.timestamp_formatter(timestamp)
