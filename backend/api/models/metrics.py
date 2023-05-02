@@ -12,10 +12,10 @@ from pynamodb.attributes import UnicodeAttribute, NumberAttribute
 LOGGER = logging.getLogger()
 
 
-class InstallActivity(Model):
+class InstallActivityDDB(Model):
     class Meta:
         host = os.getenv('LOCAL_DYNAMO_HOST')
-        region = os.getenv('AWS_REGION')
+        region = os.getenv('AWS_REGION', 'us-west-2')
         table_name = f'{os.getenv("STACK_NAME")}-install-activity'
 
     plugin_name = UnicodeAttribute(hash_key=True)
@@ -24,6 +24,9 @@ class InstallActivity(Model):
     timestamp = NumberAttribute(null=True)
     install_count = NumberAttribute()
     last_updated_timestamp = NumberAttribute()
+
+
+class InstallActivity:
 
     @staticmethod
     def get_total_installs(plugin: str) -> int:
@@ -35,8 +38,8 @@ class InstallActivity(Model):
         """
         start = time.perf_counter()
         try:
-            return InstallActivity.get(plugin, 'TOTAL:').install_count
-        except InstallActivity.DoesNotExist:
+            return InstallActivityDDB.get(plugin, 'TOTAL:').install_count
+        except InstallActivityDDB.DoesNotExist:
             logging.warning(f'No TOTAL: record found for plugin={plugin}')
             return 0
         finally:
@@ -57,7 +60,7 @@ class InstallActivity(Model):
         lower = day_type_format.format(today - relativedelta(days=day_delta))
 
         start = time.perf_counter()
-        results = InstallActivity.query(plugin, InstallActivity.type_timestamp.between(lower, upper))
+        results = InstallActivityDDB.query(plugin, InstallActivityDDB.type_timestamp.between(lower, upper))
         duration = (time.perf_counter() - start) * 1000
         logging.info(f'Query for plugin={plugin} day_delta={day_delta} time_taken={duration}ms')
 
@@ -75,10 +78,10 @@ class InstallActivity(Model):
         month_type_format = 'MONTH:{0:%Y%m}'
         start_date = datetime.datetime.now().replace(day=1) - relativedelta(months=1)
         end_date = start_date - relativedelta(months=month_delta - 1)
-        condition = InstallActivity.type_timestamp.between(month_type_format.format(end_date),
+        condition = InstallActivityDDB.type_timestamp.between(month_type_format.format(end_date),
                                                            month_type_format.format(start_date))
         start = time.perf_counter()
-        results = {row.timestamp: row.install_count for row in InstallActivity.query(plugin, condition)}
+        results = {row.timestamp: row.install_count for row in InstallActivityDDB.query(plugin, condition)}
         duration = (time.perf_counter() - start) * 1000
         logging.info(f'Query for plugin={plugin} month_delta={month_delta} time_taken={duration}ms')
 
@@ -89,7 +92,7 @@ class InstallActivity(Model):
     @staticmethod
     def get_total_installs_by_plugins(plugins) -> Dict[str, int]:
         start = time.perf_counter()
-        batch_response = InstallActivity.batch_get(
+        batch_response = InstallActivityDDB.batch_get(
             [(plugin, 'TOTAL:') for plugin in plugins],
             attributes_to_get=["plugin_name", "install_count"]
         )
