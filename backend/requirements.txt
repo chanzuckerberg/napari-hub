@@ -1,6 +1,6 @@
 apig-wsgi==2.14.0
 boto3==1.24.46
-Flask==2.2.1
+Flask==2.3.2
 Flask-GitHubApp==0.3.0
 gunicorn==20.1.0
 pyyaml==6.0
