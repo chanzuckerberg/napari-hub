@@ -85,3 +85,14 @@ class InstallActivity(Model):
         start_date = start_date.replace(hour=0, minute=0, second=0, microsecond=0, tzinfo=datetime.timezone.utc)
         dates = [int((start_date - relativedelta(months=i)).timestamp()) * 1000 for i in range(month_delta - 1, -1, -1)]
         return list(map(lambda date: {'timestamp': date, 'installs': results.get(date, 0)}, dates))
+
+    @staticmethod
+    def get_total_installs_by_plugins(plugins) -> Dict[str, int]:
+        start = time.perf_counter()
+        batch_response = InstallActivity.batch_get(
+            [(plugin, 'TOTAL:') for plugin in plugins],
+            attributes_to_get=["plugin_name", "install_count"]
+        )
+        duration = (time.perf_counter() - start) * 1000
+        logging.info(f'BatchGet for total_installs_by_plugins time_taken={duration}ms')
+        return {item.plugin_name: item.install_count for item in batch_response}
