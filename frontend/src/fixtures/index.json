@@ -520,7 +520,7 @@
     "version": "0.0.1",
     "first_released": "2021-05-02T16:09:10.827132Z",
     "development_status": ["Development Status :: 4 - Beta"],
-    "description_text": "napari-minimal-plugin\n\n\n\n\n\nA minimal plugin\n\nThis napari plugin was generated with Cookiecutter using with @napari's cookiecutter-napari-plugin template.\n\nInstallation\\nYou can install napari-minimal-plugin via pip:\\npip install napari-minimal-plugin\n\nContributing\nContributions are very welcome. Tests can be run with tox, please ensure\nthe coverage at least stays the same before you submit a pull request.\nLicense\nDistributed under the terms of the BSD-3 license,\n\"napari-minimal-plugin\" is free and open source software\nIssues\nIf you encounter any problems, please file an issue along with a detailed description."
+    "description_text": "napari-minimal-plugin\n\n\n\n\n\nA minimal plugin\n\nThis napari plugin was generated with Cookiecutter using with @napari's cookiecutter-napari-plugin template.\n\nInstallation\nYou can install napari-minimal-plugin via pip:\npip install napari-minimal-plugin\n\nContributing\nContributions are very welcome. Tests can be run with tox, please ensure\nthe coverage at least stays the same before you submit a pull request.\nLicense\nDistributed under the terms of the BSD-3 license,\n\"napari-minimal-plugin\" is free and open source software\nIssues\nIf you encounter any problems, please file an issue along with a detailed description."
   },
   {
     "name": "napari-cellfinder",
