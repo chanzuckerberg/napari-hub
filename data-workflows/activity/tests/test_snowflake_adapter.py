@@ -25,24 +25,24 @@ PLUGINS_BY_EARLIEST_TS = {'foo': to_ts(1615680000), 'bar': to_ts(1656979200), 'b
 def get_plugins_with_installs_in_window_query():
     return """
             SELECT 
-                LOWER(file_project) AS plugin, DATE_TRUNC('DAY', MIN(timestamp)) AS earliest_timestamp
+                LOWER(file_project) AS name, DATE_TRUNC('DAY', MIN(timestamp)) AS earliest_timestamp
             FROM
                 imaging.pypi.labeled_downloads
             WHERE 
                 download_type = 'pip'
                 AND project_type = 'plugin'
-                AND TO_TIMESTAMP(ingestion_timestamp) > TO_TIMESTAMP('2021-03-13 23:05:53')
-                AND TO_TIMESTAMP(ingestion_timestamp) <= TO_TIMESTAMP('2022-03-14 00:05:53')
-            GROUP BY file_project
-            ORDER BY file_project
+                AND TO_TIMESTAMP(ingestion_timestamp) > TO_TIMESTAMP('2021-03-14 07:05:53')
+                AND TO_TIMESTAMP(ingestion_timestamp) <= TO_TIMESTAMP('2022-03-14 07:05:53')
+            GROUP BY name
+            ORDER BY name
             """
 
 
 def get_plugins_install_count_since_timestamp_query(projection, subquery):
     return f"""
             SELECT 
-                LOWER(file_project) AS plugin, 
-                {projection} AS timestamp, 
+                LOWER(file_project) AS name, 
+                {projection} AS ts, 
                 COUNT(*) AS count
             FROM
                 imaging.pypi.labeled_downloads
@@ -50,8 +50,8 @@ def get_plugins_install_count_since_timestamp_query(projection, subquery):
                 download_type = 'pip'
                 AND project_type = 'plugin'
                 AND ({subquery})
-            GROUP BY 1, 2
-            ORDER BY 1, 2
+            GROUP BY name, ts
+            ORDER BY name, ts
             """
 
 

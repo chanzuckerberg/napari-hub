@@ -18,3 +18,4 @@ pyOpenSSL==22.0.0
 pandas==1.4.4
 snowflake-connector-python==2.8.0
 pynamodb==5.4.1
+python-slugify==8.0.1

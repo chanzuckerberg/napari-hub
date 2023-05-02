@@ -5,7 +5,7 @@ import pandas as pd
 import pytest
 from dateutil.relativedelta import relativedelta
 
-from api._tests.test_fixtures import generate_expected_timeline
+from api._tests.test_fixtures import generate_installs_timeline
 from api.models.metrics import InstallActivity
 
 PLUGIN_NAME = 'foo'
@@ -80,8 +80,8 @@ class TestInstallActivity:
 
     @pytest.mark.parametrize('results, month_delta, expected', [
         ([], 0, []),
-        ([], 1, generate_expected_timeline(-1, to_installs=lambda i: 0)),
-        (generate_expected_results(-4), 4, generate_expected_timeline(-4)),
+        ([], 1, generate_installs_timeline(-1, to_value=lambda i: 0)),
+        (generate_expected_results(-4), 4, generate_installs_timeline(-4)),
     ])
     def test_get_timeline(self, monkeypatch, results, month_delta, expected):
         mock_install_activity = Mock(return_value=results)
@@ -94,3 +94,22 @@ class TestInstallActivity:
         mock_install_activity.assert_called_once()
         assert mock_install_activity.call_args.args[0] == PLUGIN_NAME
         assert str(mock_install_activity.call_args.args[1]) == self._get_expected_condition(month_delta, 'MONTH')
+
+    @pytest.mark.parametrize(
+        'results, expected', [
+            ([], {}),
+            ([Mock(plugin_name='foo', install_count=10)], {'foo': 10}),
+            ([Mock(plugin_name='foo', install_count=10), Mock(plugin_name='bar', install_count=24)],
+             {'foo': 10, 'bar': 24}),
+        ])
+    def test_get_recent_installs(self, monkeypatch, results, expected):
+        mock_batch_get = Mock(return_value=results)
+        plugins = ['foo', 'bar']
+
+        from api.models.metrics import InstallActivity
+        monkeypatch.setattr(InstallActivity, 'batch_get', mock_batch_get)
+        actual = InstallActivity.get_total_installs_by_plugins(plugins)
+
+        assert actual == expected
+        mock_batch_get.assert_called_once()
+        assert mock_batch_get.call_args.args[0] == [(plugin, 'TOTAL:') for plugin in plugins]
