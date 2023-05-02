@@ -18,7 +18,6 @@ import { pluginTabsStore, resetPluginTabs } from '@/store/pluginTabs';
 import { HubDimension } from '@/types';
 import { PluginTabType } from '@/types/plugin';
 
-import { CallToActionButton } from './CallToActionButton';
 import { CitationInfo } from './CitationInfo';
 import { PluginMetadata } from './PluginMetadata';
 
@@ -134,8 +133,6 @@ export function PluginTabs({ containerRef }: Props) {
             </MetadataHighlighter>
           )}
         />
-
-        <CallToActionButton className="mb-6 screen-495:mb-12 screen-1150:mb-20" />
 
         <PluginMetadata
           enableScrollID={hasPluginMetadataScroll}
