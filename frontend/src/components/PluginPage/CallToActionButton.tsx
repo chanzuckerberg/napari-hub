@@ -31,31 +31,6 @@ export function CallToActionButton({ className }: Props) {
       render={() => (
         <>
           <InstallModal onClose={() => setVisible(false)} visible={visible} />
-
-          <Button
-            className={clsx(
-              className,
-
-              // Button color
-              'text-base text-black font-normal',
-              'bg-hub-primary-400 hover:bg-hub-primary-500 active:bg-hub-primary-600',
-              'transition-colors',
-
-              // Dimensions
-              dimensionsClassName,
-            )}
-            onClick={() => {
-              setVisible(true);
-
-              if (plugin?.name) {
-                plausible('Install', {
-                  plugin: plugin.name,
-                });
-              }
-            }}
-          >
-            {t('common:install')}
-          </Button>
         </>
       )}
     />
