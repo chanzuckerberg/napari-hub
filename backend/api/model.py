@@ -523,6 +523,11 @@ def _get_repo_to_plugin_dict():
     return repo_to_plugin_dict
 
 
+def _get_repo_from_plugin(plugin):
+    repo_url = get_plugin(plugin).get('code_repository', '')
+    return repo_url.replace('https://github.com/', '')
+
+
 def _update_latest_commits(repo_to_plugin_dict):
     """
     Get the latest commit occurred for the plugin
@@ -642,8 +647,7 @@ def get_metrics_for_plugin(plugin: str, limit: str, use_dynamo_for_usage: bool,
     :params bool use_dynamo_for_maintenance: Fetch data from dynamo if True else fetch from s3. (default= False)
     """
     plugin = plugin.lower()
-    repo_url = get_plugin(plugin).get('code_repository', '')
-    repo = repo_url.replace('https://github.com/', '')
+    repo = _get_repo_from_plugin(plugin)
 
     month_delta = 0
 
