@@ -87,7 +87,7 @@ export function Text({
 
         variant === 'siteTitle' && [
           'font-semibold',
-          'text-[33px] leading-[41.3px]',
+          'text-[35px] leading-[43.8px]',
           'screen-495:text-[51px] screen-495:leading-[63.8px]',
         ],
 
@@ -99,34 +99,26 @@ export function Text({
 
         variant === 'h1' && [
           'font-semibold',
-          'text-[23px] leading-[30px]',
+          'text-[24px] leading-[36px]',
           'screen-495:text-[35px] screen-495:leading-[43.8px]',
         ],
         variant === 'h2' && [
           'font-semibold',
-          'text-[16px] leading-[20px]',
+          'text-[20px] leading-[27px]',
           'screen-495:text-[24px] screen-495:leading-[36px]',
         ],
         variant === 'h3' && [
           'font-semibold',
-          'text-[13px] leading-[16.3px]',
+          'text-[18px] leading-[26px]',
           'screen-495:text-[20px] screen-495:leading-[27px]',
         ],
         variant === 'h4' && [
           'font-semibold',
-          'text-[12px] leading-[19.3px]',
+          'text-[16px] leading-[23px]',
           'screen-495:text-[17px] screen-495:leading-[24px]',
         ],
-        variant === 'h5' && [
-          'font-semibold',
-          'text-[9px] leading-[12px]',
-          'screen-495:text-[14px] screen-495:leading-[21px]',
-        ],
-        variant === 'h6' && [
-          'font-semibold',
-          'text-[7px] leading-[10.5px]',
-          'screen-495:text-[11px] screen-495:leading-[16.5px]',
-        ],
+        variant === 'h5' && 'font-semibold text-[14px] leading-[21px]',
+        variant === 'h6' && 'font-semibold text-[12px] leading-[18px]',
 
         variant === 'sidebarHeader' && [
           'font-semibold',
