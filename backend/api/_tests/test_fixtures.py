@@ -5,9 +5,12 @@ from datetime import datetime
 BASE = datetime.today().date().replace(day=1)
 
 
+def _to_timestamp(i):
+    return int(pd.Timestamp(BASE + relativedelta(months=i)).timestamp()) * 1000
+
+
 def _generate_timeline(start_range, value_key, to_value, timestamp_key='timestamp'):
-    to_timestamp = lambda i: int(pd.Timestamp(BASE + relativedelta(months=i)).timestamp()) * 1000
-    return [{timestamp_key: to_timestamp(i), value_key: to_value(i)} for i in range(start_range, 0)]
+    return [{timestamp_key: _to_timestamp(i), value_key: to_value(i)} for i in range(start_range, 0)]
 
 
 def generate_installs_timeline(start_range, ts_key='timestamp', to_value=lambda i: 2 if i % 2 == 0 else 0):
