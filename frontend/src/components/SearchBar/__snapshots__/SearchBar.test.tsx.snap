@@ -8,7 +8,7 @@ exports[`<SearchBar /> should match snapshot 1`] = `
   >
     <input
       aria-label="Search bar for searching for napari plugins."
-      class="flex flex-auto border-none outline-none bg-transparent placeholder-black w-0"
+      class="flex flex-auto border-none outline-none bg-transparent placeholder-gray-500 w-0"
       data-testid="searchBarInput"
       value=""
     />
