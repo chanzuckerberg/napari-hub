@@ -15,8 +15,8 @@ LOGGER = logging.getLogger()
 class InstallActivity(Model):
     class Meta:
         host = os.getenv('LOCAL_DYNAMO_HOST')
-        region = os.getenv('AWS_REGION')
-        table_name = f'{os.getenv("STACK_NAME")}-install-activity'
+        region = os.getenv("AWS_REGION", "us-west-2")
+        table_name = f"{os.getenv('STACK_NAME', 'local')}-install-activity"
 
     plugin_name = UnicodeAttribute(hash_key=True)
     type_timestamp = UnicodeAttribute(range_key=True)
