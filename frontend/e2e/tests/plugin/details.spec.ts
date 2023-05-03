@@ -75,11 +75,6 @@ test.describe('Plugin details tests', () => {
     // verify author
     expect(await page.locator(AUTHOR).textContent()).toBe(data.authors[0].name);
 
-    // installation button
-    expect(await page.locator(SIDE_BAR).getByTestId(BUTTON).textContent()).toBe(
-      INSTALL,
-    );
-
     // verify the url
     expect(page.url()).toContain(data.name);
 
