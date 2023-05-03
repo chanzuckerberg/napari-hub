@@ -139,7 +139,7 @@ export function SearchBar({ large, inputProps, ...props }: Props) {
           'bg-transparent',
 
           // Change placeholder color
-          'placeholder-black',
+          'placeholder-gray-500',
 
           /*
             Inputs have a default width defined by the browser, so we have to
