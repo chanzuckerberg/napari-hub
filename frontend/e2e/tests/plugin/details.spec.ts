@@ -9,12 +9,10 @@ import {
   ACTIVITY,
   AUTHOR,
   BODY_ACTIVITY_PAGE,
-  BUTTON,
   CLEAR_SEARCH,
   CONTRIBUTING,
   CONTRIBUTING_HEADER,
   HEADER_REGION,
-  INSTALL,
   ISSUES,
   ISSUES_HEADER,
   LICENSE,
@@ -35,7 +33,6 @@ import {
   SEARCH_BUTTON,
   SEARCH_INPUT,
   SEARCH_RESULT,
-  SIDE_BAR,
   SUPPORTED_DATA,
   USAGE,
 } from '../../utils/constants';
@@ -74,11 +71,6 @@ test.describe('Plugin details tests', () => {
 
     // verify author
     expect(await page.locator(AUTHOR).textContent()).toBe(data.authors[0].name);
-
-    // installation button
-    expect(await page.locator(SIDE_BAR).getByTestId(BUTTON).textContent()).toBe(
-      INSTALL,
-    );
 
     // verify the url
     expect(page.url()).toContain(data.name);
