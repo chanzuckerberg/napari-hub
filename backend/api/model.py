@@ -608,18 +608,18 @@ def _get_usage_data(plugin: str, limit: int, use_dynamo: bool) -> Dict[str, Any]
     return {'timeline': usage_timeline, 'stats': usage_stats, }
 
 
-def _get_maintenance_data(plugin: str, limit: int, repo: str, use_dynamo: bool) -> Dict[str, Any]:
+def _get_maintenance_data(plugin: str, repo: str, limit: int, use_dynamo: bool) -> Dict[str, Any]:
     """
     Fetches plugin maintenance_data from s3 or dynamo based on the in_test variable
     :returns (dict[str, Any]): A dict with the structure {'timeline': List, 'stats': Dict[str, int]}
 
     :params str plugin: Name of the plugin in lowercase.
-    :params int limit: Sets the number of records to be fetched for timeline.
     :param str repo: Name of the GitHub repo.
+    :params int limit: Sets the number of records to be fetched for timeline.
     :params bool use_dynamo: Fetch data from dynamo if True, else fetch from s3.
     """
     if use_dynamo:
-        maintenance_timeline = GitHubActivity.get_maintenance_timeline(plugin, limit, repo) if limit else []
+        maintenance_timeline = GitHubActivity.get_maintenance_timeline(plugin, repo, limit) if limit else []
         maintenance_stats = {
             'total_commits': GitHubActivity.get_total_commits(plugin, repo),
             'latest_commit_timestamp': GitHubActivity.get_latest_commit(plugin, repo),
@@ -633,7 +633,7 @@ def _get_maintenance_data(plugin: str, limit: int, repo: str, use_dynamo: bool) 
         maintenance_timeline = _process_maintenance_timeline(data, limit) if limit else []
 
     return {'timeline': maintenance_timeline, 'stats': maintenance_stats, }
-
+ backen
 
 def get_metrics_for_plugin(plugin: str, limit: str, use_dynamo_for_usage: bool,
                            use_dynamo_for_maintenance: bool) -> Dict[str, Any]:
@@ -656,5 +656,5 @@ def get_metrics_for_plugin(plugin: str, limit: str, use_dynamo_for_usage: bool,
 
     return {
         'usage': _get_usage_data(plugin, month_delta, use_dynamo_for_usage),
-        'maintenance': _get_maintenance_data(plugin, month_delta, repo, use_dynamo_for_maintenance),
+        'maintenance': _get_maintenance_data(plugin, repo, month_delta, use_dynamo_for_maintenance),
     }

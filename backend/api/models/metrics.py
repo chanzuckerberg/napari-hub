@@ -138,14 +138,14 @@ class GitHubActivity(Model):
             logging.info(f'get_latest_commit for plugin={plugin} time_taken={(time.perf_counter() - start) * 1000}ms')
 
     @staticmethod
-    def get_maintenance_timeline(plugin: str, month_delta: int, repo: str) -> List[Dict[str, int]]:
+    def get_maintenance_timeline(plugin: str, repo: str, month_delta: int) -> List[Dict[str, int]]:
         """
         Fetches plugin commit count at a month level granularity from dynamo in the previous month_delta months.
         :returns List[Dict[str, int]]: Entries for the month_delta months
 
         :param str plugin: Name of the plugin in lowercase for which maintenance timeline data needs to be fetched.
-        :param int month_delta: Number of months in maintenance timeline.
         :param str repo: Name of the GitHub repo.
+        :param int month_delta: Number of months in maintenance timeline.
         """
         month_type_format = 'MONTH:{0:%Y%m}:{1}'
         start_date = datetime.datetime.now().replace(day=1) - relativedelta(months=1)
