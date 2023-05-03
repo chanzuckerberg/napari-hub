@@ -412,14 +412,14 @@ def _update_activity_timeline_data():
     """
     query = """
         SELECT 
-            LOWER(file_project), DATE_TRUNC('month', timestamp) as month, count(*) as num_downloads
+            LOWER(file_project) AS name, DATE_TRUNC('month', timestamp) as month, COUNT(*) as num_downloads
         FROM
             imaging.pypi.labeled_downloads
         WHERE 
             download_type = 'pip'
             AND project_type = 'plugin'
-        GROUP BY file_project, month
-        ORDER BY file_project, month
+        GROUP BY name, month
+        ORDER BY name, month
         """
     cursor_list = _execute_query(query, "PYPI")
     csv_string = "PROJECT,MONTH,NUM_DOWNLOADS_BY_MONTH\n"
@@ -481,15 +481,15 @@ def _update_recent_activity_data(number_of_time_periods=30, time_granularity='DA
     """
     query = f"""
         SELECT 
-            LOWER(file_project), count(*) as num_downloads
+            LOWER(file_project) AS name, COUNT(*) as num_downloads
         FROM
             imaging.pypi.labeled_downloads
         WHERE 
             download_type = 'pip'
             AND project_type = 'plugin'
             AND timestamp > DATEADD({time_granularity}, {number_of_time_periods * -1}, CURRENT_DATE)
-        GROUP BY file_project     
-        ORDER BY file_project
+        GROUP BY name     
+        ORDER BY name
     """
     cursor_list = _execute_query(query, "PYPI")
     data = {}
@@ -524,8 +524,9 @@ def _get_repo_to_plugin_dict():
 
 
 def _get_repo_from_plugin(plugin):
-    repo_url = get_plugin(plugin).get('code_repository', '')
-    return repo_url.replace('https://github.com/', '')
+    plugin_metadata = get_plugin(plugin)
+    repo_url = plugin_metadata.get('code_repository', '')
+    return repo_url.removeprefix('https://github.com/')
 
 
 def _update_latest_commits(repo_to_plugin_dict):
@@ -534,13 +535,13 @@ def _update_latest_commits(repo_to_plugin_dict):
     """
     query = f"""
         SELECT 
-            repo, max(commit_author_date) as latest_commit
+            repo AS name, MAX(commit_author_date) AS latest_commit
         FROM 
             imaging.github.commits
         WHERE 
             repo_type = 'plugin'
-        GROUP BY repo 
-        ORDER BY repo
+        GROUP BY name
+        ORDER BY name
     """
     cursor_list = _execute_query(query, "GITHUB")
     data = {}
@@ -560,13 +561,13 @@ def _update_commit_activity(repo_to_plugin_dict):
     """
     query = f"""
         SELECT 
-            repo, date_trunc('month', to_date(commit_author_date)) as month, count(*) as commit_count
+            repo AS name, DATE_TRUNC('month', TO_DATE(commit_author_date)) AS month, COUNT(*) AS commit_count
         FROM 
             imaging.github.commits
         WHERE 
             repo_type = 'plugin'
-        GROUP BY repo, month
-        ORDER BY repo, month
+        GROUP BY name, month
+        ORDER BY name, month
     """
     cursor_list = _execute_query(query, "GITHUB")
     data = {}
@@ -633,7 +634,7 @@ def _get_maintenance_data(plugin: str, repo: str, limit: int, use_dynamo: bool) 
         maintenance_timeline = _process_maintenance_timeline(data, limit) if limit else []
 
     return {'timeline': maintenance_timeline, 'stats': maintenance_stats, }
- backen
+
 
 def get_metrics_for_plugin(plugin: str, limit: str, use_dynamo_for_usage: bool,
                            use_dynamo_for_maintenance: bool) -> Dict[str, Any]:
