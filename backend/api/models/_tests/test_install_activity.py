@@ -7,7 +7,7 @@ from moto import mock_dynamodb
 
 from api._tests.test_fixtures import generate_installs_timeline
 from api.models._tests.conftest import create_dynamo_table
-from api.models.metrics import InstallActivity
+from api.models import install_activity
 
 PLUGIN_NAME = 'foo'
 
@@ -29,7 +29,7 @@ class TestInstallActivity:
     @pytest.fixture()
     def install_activity_table(self, aws_credentials):
         with mock_dynamodb():
-            yield create_dynamo_table(InstallActivity.DynamoModel, 'install_activity')
+            yield create_dynamo_table(install_activity._InstallActivityModel, 'install-activity')
 
     @staticmethod
     def _to_type_timestamp(granularity, timestamp):
@@ -50,7 +50,7 @@ class TestInstallActivity:
         table.put_item(Item=item)
 
     def test_get_total_installs_has_no_result(self, install_activity_table):
-        actual = InstallActivity.get_total_installs(plugin=PLUGIN_NAME)
+        actual = install_activity.get_total_installs(plugin=PLUGIN_NAME)
 
         assert actual == 0
 
@@ -58,7 +58,7 @@ class TestInstallActivity:
         expected = 173
         self._put_item(install_activity_table, 'TOTAL', None, expected)
 
-        actual = InstallActivity.get_total_installs(plugin=PLUGIN_NAME)
+        actual = install_activity.get_total_installs(plugin=PLUGIN_NAME)
 
         assert actual == expected
 
@@ -73,7 +73,7 @@ class TestInstallActivity:
             timestamp = pd.Timestamp(start - relativedelta(days=period))
             self._put_item(install_activity_table, 'DAY', timestamp, count)
 
-        actual = InstallActivity.get_recent_installs(plugin=PLUGIN_NAME, day_delta=15)
+        actual = install_activity.get_recent_installs(plugin=PLUGIN_NAME, day_delta=15)
 
         assert actual == expected
 
@@ -88,7 +88,7 @@ class TestInstallActivity:
             timestamp = pd.Timestamp(start - relativedelta(months=period))
             self._put_item(install_activity_table, 'MONTH', timestamp, count)
 
-        actual = InstallActivity.get_timeline(PLUGIN_NAME, month_delta)
+        actual = install_activity.get_timeline(PLUGIN_NAME, month_delta)
 
         assert actual == expected
 
@@ -102,6 +102,6 @@ class TestInstallActivity:
         for plugin, count in results:
             self._put_item(install_activity_table, 'TOTAL', None, count, plugin=plugin)
 
-        actual = InstallActivity.get_total_installs_by_plugins(plugins=['foo', 'bar'])
+        actual = install_activity.get_total_installs_by_plugins(plugins=['foo', 'bar'])
 
         assert actual == expected
