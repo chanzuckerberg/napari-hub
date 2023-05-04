@@ -58,7 +58,7 @@ export function getHeadersFromMarkdown(markdown: string): TOCHeader[] {
   // Convert all H2 headings into TOCHeader objects.
   return children
     .filter((node): node is HeadingNode => node.tagName === TOC_HEADER_TAG)
-    .filter((node) => node.children[0].value !== undefined)
+    .filter((node) => node.children[0]?.value !== undefined)
     .map<TOCHeader>((node) => ({
       id: node.properties.id,
       text: node.children[0].value,
