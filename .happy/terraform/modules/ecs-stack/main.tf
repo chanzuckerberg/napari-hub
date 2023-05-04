@@ -164,14 +164,14 @@ module plugin_dynamodb_table {
   source              = "../dynamo"
   table_name          = "${local.custom_stack_name}-plugin"
   hash_key            = "name"
-  range_key           = "version_type"
+  range_key           = "version"
   attributes          = [
                           {
                             name = "name"
                             type = "S"
                           },
                           {
-                            name = "version_type"
+                            name = "version"
                             type = "S"
                           },
                           {
@@ -196,6 +196,26 @@ module plugin_dynamodb_table {
                             hash_key           = "name"
                             range_key          = "excluded"
                             projection_type    = "KEYS_ONLY"
+                          }
+                        ]
+  autoscaling_enabled = var.env == "dev" ? false : true
+  create_table        = true
+  tags                = var.tags
+}
+
+module plugin_metadata_dynamodb_table {
+  source              = "../dynamo"
+  table_name          = "${local.custom_stack_name}-plugin-metadata"
+  hash_key            = "name"
+  range_key           = "version_type"
+  attributes          = [
+                          {
+                            name = "name"
+                            type = "S"
+                          },
+                          {
+                            name = "version_type"
+                            type = "S"
                           }
                         ]
   autoscaling_enabled = var.env == "dev" ? false : true
@@ -491,14 +511,16 @@ data aws_iam_policy_document data_workflows_policy {
   }
   statement {
     actions = [
-      "dynamodb:Query",
       "dynamodb:BatchWriteItem",
+      "dynamodb:GetItem",
+      "dynamodb:Query",
     ]
     resources = [
         module.install_dynamodb_table.table_arn,
         module.github_dynamodb_table.table_arn,
         module.plugin_dynamodb_table.table_arn,
-        module.plugin_blocked_dynamodb_table.table_arn
+        module.plugin_metadata_dynamodb_table.table_arn,
+        module.plugin_blocked_dynamodb_table.table_arn,
     ]
   }
   statement {
@@ -541,7 +563,7 @@ data aws_iam_policy_document plugins_policy {
       "dynamodb:Query",
       "dynamodb:PutItem",
     ]
-    resources = [module.plugin_dynamodb_table.table_arn]
+    resources = [module.plugin_metadata_dynamodb_table.table_arn]
   }
 }
 
