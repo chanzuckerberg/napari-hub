@@ -228,15 +228,7 @@ module plugin_metadata_dynamodb_table {
                             type = "S"
                           },
                           {
-                            name = "version_type"
-                            type = "S"
-                          },
-                          {
-                            name = "is_latest"
-                            type = "S" #terraform only supports String, Number or Binary for primary key attribute
-                          },
-                          {
-                            name = "excluded"
+                            name = "version"
                             type = "S"
                           }
                         ]
@@ -252,6 +244,26 @@ module plugin_blocked_dynamodb_table {
   attributes          = [
                           {
                             name = "name"
+                            type = "S"
+                          }
+                        ]
+  autoscaling_enabled = var.env == "dev" ? false : true
+  create_table        = true
+  tags                = var.tags
+}
+
+module plugin_metadata_dynamodb_table {
+  source              = "../dynamo"
+  table_name          = "${local.custom_stack_name}-plugin-metadata"
+  hash_key            = "name"
+  range_key           = "version_type"
+  attributes          = [
+                          {
+                            name = "name"
+                            type = "S"
+                          },
+                          {
+                            name = "version_type"
                             type = "S"
                           }
                         ]
