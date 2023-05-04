@@ -24,7 +24,8 @@ index_subset = {'name', 'summary', 'description_text', 'description_content_type
                 'authors', 'license', 'python_version', 'operating_system',
                 'release_date', 'version', 'first_released',
                 'development_status', 'category', 'display_name', 'plugin_types', 'reader_file_extensions',
-                'writer_file_extensions', 'writer_save_layers', 'npe2', 'error_message', 'code_repository'}
+                'writer_file_extensions', 'writer_save_layers', 'npe2', 'error_message', 'code_repository',
+                'total_installs', }
 
 
 def get_public_plugins() -> Dict[str, str]:
@@ -225,6 +226,19 @@ def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
     return plugin, metadata
 
 
+def generate_index(plugins_metadata: Dict[str, Any]):
+    """
+    Adds total_installs to plugins, and slice index to only include specified indexing related columns
+    :param plugins_metadata: plugin metadata dictionary
+    :return: sliced dict metadata for the plugin
+    """
+    total_install_by_plugin_name = InstallActivity.get_total_installs_by_plugins(plugins_metadata.keys())
+    for plugin_metadata in plugins_metadata.values():
+        name = plugin_metadata.get('name')
+        plugin_metadata['total_installs'] = total_install_by_plugin_name.get(name, 0)
+    return slice_metadata_to_index_columns(list(plugins_metadata.values()))
+
+
 def update_cache():
     """
     Update existing caches to reflect new/updated plugins. Files updated:
@@ -258,7 +272,7 @@ def update_cache():
         cache(excluded_plugins, 'excluded_plugins.json')
         cache(visibility_plugins['public'], 'cache/public-plugins.json')
         cache(visibility_plugins['hidden'], 'cache/hidden-plugins.json')
-        cache(slice_metadata_to_index_columns(list(plugins_metadata.values())), 'cache/index.json')
+        cache(generate_index(plugins_metadata), 'cache/index.json')
         notify_new_packages(existing_public_plugins, visibility_plugins['public'], plugins_metadata)
         report_metrics('napari_hub.plugins.count', len(visibility_plugins['public']), ['visibility:public'])
         report_metrics('napari_hub.plugins.count', len(visibility_plugins['hidden']), ['visibility:hidden'])

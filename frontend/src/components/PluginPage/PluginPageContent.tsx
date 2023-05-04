@@ -6,7 +6,6 @@ import { SkeletonLoader } from '@/components/SkeletonLoader';
 import { usePluginState } from '@/context/plugin';
 import { useMediaQuery } from '@/hooks';
 
-import { CallToActionButton } from './CallToActionButton';
 import { CitationInfo } from './CitationInfo';
 import { PluginMetadata } from './PluginMetadata';
 
@@ -38,7 +37,6 @@ export function PluginPageContent() {
       />
 
       <div className="mb-6 screen-495:mb-12 screen-1150:mb-20">
-        <CallToActionButton />
         {plugin?.citations && <CitationInfo className="mt-sds-xxl" />}
       </div>
 

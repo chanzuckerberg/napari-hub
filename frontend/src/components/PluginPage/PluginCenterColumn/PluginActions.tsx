@@ -1,6 +1,5 @@
 import clsx from 'clsx';
 
-import { CallToActionButton } from '@/components/PluginPage/CallToActionButton';
 import { SupportInfo } from '@/components/PluginPage/SupportInfo';
 import { SkeletonLoader } from '@/components/SkeletonLoader';
 
@@ -14,7 +13,6 @@ export function PluginActions() {
         'mt-sds-xl',
       )}
     >
-      <CallToActionButton />
       <SkeletonLoader className="h-[228px]" render={() => <SupportInfo />} />
     </div>
   );

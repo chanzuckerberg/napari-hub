@@ -1,10 +1,9 @@
 import { useMemo } from 'react';
 
+import { NAPARI_PREFIX_REGEX } from '@/constants/search';
 import { SitemapCategory, SitemapEntry } from '@/types/sitemap';
 import { createUrl } from '@/utils';
 import { getPluginFirstLetter } from '@/utils/sitemap';
-
-const NAPARI_PREFIX_REGEX = /^napari[ -]/;
 
 function getEntryValue(entry: SitemapEntry) {
   const name = entry.name ?? entry.url.split('/').at(-1) ?? '';

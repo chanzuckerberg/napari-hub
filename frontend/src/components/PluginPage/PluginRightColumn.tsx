@@ -10,7 +10,6 @@ import { useIsFeatureFlagEnabled } from '@/store/featureFlags';
 import { pluginTabsStore } from '@/store/pluginTabs';
 import { PluginTabType } from '@/types/plugin';
 
-import { CallToActionButton } from './CallToActionButton';
 import { ANCHOR } from './CitationInfo.constants';
 import { SupportInfo } from './SupportInfo';
 
@@ -75,8 +74,6 @@ export function PluginRightColumn() {
     <div className="col-start-4 screen-1425:col-start-5 hidden screen-1150:block">
       {/*  Keep CTA button and TOC on screen when scrolling on 2xl. */}
       <div className="sticky top-[50px]">
-        <CallToActionButton />
-
         <SkeletonLoader
           className="h-[228px] my-6"
           render={() => (
