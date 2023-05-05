@@ -31,8 +31,8 @@ class TestInstallActivity:
         with mock_dynamodb():
             yield create_dynamo_table(install_activity._InstallActivityModel, 'install-activity')
 
-    @staticmethod
-    def _to_type_timestamp(granularity, timestamp):
+    @classmethod
+    def _to_type_timestamp(cls, granularity, timestamp):
         if granularity == 'DAY':
             return f'DAY:{timestamp.strftime("%Y%m%d")}'
         elif granularity == 'MONTH':
@@ -63,13 +63,13 @@ class TestInstallActivity:
         assert actual == expected
 
     @pytest.mark.parametrize(
-        'results, expected', [
+        'data, expected', [
             ([(100, 30)], 0),
             ([(10, 5), (24, 12), (19, 10), (100, 30)], 53),
         ])
-    def test_get_recent_installs(self, install_activity_table, results, expected):
+    def test_get_recent_installs(self, install_activity_table, data, expected):
         start = datetime.date.today()
-        for count, period in results:
+        for count, period in data:
             timestamp = pd.Timestamp(start - relativedelta(days=period))
             self._put_item(install_activity_table, 'DAY', timestamp, count)
 
@@ -77,14 +77,14 @@ class TestInstallActivity:
 
         assert actual == expected
 
-    @pytest.mark.parametrize('results, month_delta, expected', [
+    @pytest.mark.parametrize('data, month_delta, expected', [
         ([], 0, []),
         ([], 1, generate_installs_timeline(-1, to_value=lambda i: 0)),
         ([(to_installs(i), i) for i in range(0, 7, 2)], 4, generate_installs_timeline(-4, to_value=to_installs)),
     ])
-    def test_get_timeline(self, install_activity_table, results, month_delta, expected):
+    def test_get_timeline(self, install_activity_table, data, month_delta, expected):
         start = datetime.date.today().replace(day=1)
-        for count, period in results:
+        for count, period in data:
             timestamp = pd.Timestamp(start - relativedelta(months=period))
             self._put_item(install_activity_table, 'MONTH', timestamp, count)
 
@@ -93,13 +93,13 @@ class TestInstallActivity:
         assert actual == expected
 
     @pytest.mark.parametrize(
-        'results, expected', [
+        'data, expected', [
             ([], {}),
             ([('foo', 10)], {'foo': 10}),
             ([('foo', 10), ('bar', 24)], {'foo': 10, 'bar': 24}),
         ])
-    def test_get_total_installs_by_plugins(self, install_activity_table, results, expected):
-        for plugin, count in results:
+    def test_get_total_installs_by_plugins(self, install_activity_table, data, expected):
+        for plugin, count in data:
             self._put_item(install_activity_table, 'TOTAL', None, count, plugin=plugin)
 
         actual = install_activity.get_total_installs_by_plugins(plugins=['foo', 'bar'])
