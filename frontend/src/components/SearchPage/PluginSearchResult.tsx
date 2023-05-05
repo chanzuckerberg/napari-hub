@@ -105,7 +105,7 @@ export function PluginSearchResult({
   plugin,
   style,
 }: Props) {
-  const [t] = useTranslation(['pluginData', 'homePage']);
+  const { t, i18n } = useTranslation(['pluginData', 'homePage']);
   const isLoading = useLoadingState();
   const [isHoveringOverChip, setIsHoveringOverChip] = useState(false);
   const [debouncedIsHoveringOverChip] = useDebounce(isHoveringOverChip, 100);
@@ -146,13 +146,21 @@ export function PluginSearchResult({
     }));
   }
 
+  const numberFormatter = useMemo(
+    () =>
+      new Intl.NumberFormat(i18n.language, {
+        notation: 'compact',
+      }),
+    [i18n.language],
+  );
+
   // TODO consolidate with PluginGithubData component in PluginMetadata.tsx
   const items = isLoading
     ? []
     : getItems(
         {
-          label: t('pluginData:labels.version'),
-          value: plugin.version,
+          label: t('pluginData:labels.totalInstalls'),
+          value: numberFormatter.format(plugin.total_installs),
         },
 
         {
