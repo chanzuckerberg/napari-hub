@@ -624,38 +624,31 @@ def _get_usage_data(plugin: str, limit: int, use_dynamo: bool) -> Dict[str, Any]
     return {'timeline': usage_timeline, 'stats': usage_stats, }
 
 
-def _get_maintenance_data_from_dynamo(plugin: str, repo: str, limit: int) -> Dict[str, Any]:
+def _get_maintenance_data(plugin: str, limit: int, use_dynamo_for_maintenance: bool) -> Dict[str, Any]:
     """
-    Fetches plugin maintenance_data from dynamo
+    Fetches plugin maintenance_data from s3 or dynamo based on the in_test variable
     :returns (dict[str, Any]): A dict with the structure {'timeline': List, 'stats': Dict[str, int]}
-
-    :params str plugin: Name of the plugin in lowercase.
-    :param str repo: Name of the GitHub repo.
-    :params int limit: Sets the number of records to be fetched for timeline.
-    """
-    maintenance_timeline = github_activity.get_maintenance_timeline(plugin, repo, limit) if limit else []
-    maintenance_stats = {
-        'total_commits': github_activity.get_total_commits(plugin, repo),
-        'latest_commit_timestamp': github_activity.get_latest_commit(plugin, repo),
-    }
-
-    return {'timeline': maintenance_timeline, 'stats': maintenance_stats, }
-
-
-def _get_maintenance_data_from_s3(plugin: str, limit: int) -> Dict[str, Any]:
-    """
-    Fetches plugin maintenance_data from s3
-    :returns (dict[str, Any]): A dict with the structure {'timeline': List, 'stats': Dict[str, int]}
-
     :params str plugin: Name of the plugin in lowercase.
     :params int limit: Sets the number of records to be fetched for timeline.
+    :params bool use_dynamo_for_maintenance: Fetch data from dynamo if True, else fetch from s3.
     """
-    data = get_commit_activity(plugin)
-    maintenance_stats = {
-        'total_commits': sum([commit_obj['commits'] for commit_obj in data]),
-        'latest_commit_timestamp': get_latest_commit(plugin),
-    }
-    maintenance_timeline = _process_maintenance_timeline(data, limit) if limit else []
+    if use_dynamo_for_maintenance:
+        maintenance_timeline = []
+        if limit:
+            repo = _get_repo_from_plugin(plugin)
+            maintenance_timeline = github_activity.get_maintenance_timeline(plugin, repo, limit)
+
+        maintenance_stats = {
+            'total_commits': github_activity.get_total_commits(plugin, repo),
+            'latest_commit_timestamp': github_activity.get_latest_commit(plugin, repo),
+        }
+    else:
+        data = get_commit_activity(plugin)
+        maintenance_stats = {
+            'total_commits': sum([commit_obj['commits'] for commit_obj in data]),
+            'latest_commit_timestamp': get_latest_commit(plugin),
+        }
+        maintenance_timeline = _process_maintenance_timeline(data, limit) if limit else []
 
     return {'timeline': maintenance_timeline, 'stats': maintenance_stats, }
 
@@ -678,13 +671,7 @@ def get_metrics_for_plugin(plugin: str, limit: str, use_dynamo_for_usage: bool,
     if limit.isdigit() and limit != '0':
         month_delta = max(int(limit), 0)
 
-    if use_dynamo_for_maintenance:
-        repo = _get_repo_from_plugin(plugin)
-        maintenance_data = _get_maintenance_data_from_dynamo(plugin, repo, month_delta)
-    else:
-        maintenance_data = _get_maintenance_data_from_s3(plugin, month_delta)
-
     return {
         'usage': _get_usage_data(plugin, month_delta, use_dynamo_for_usage),
-        'maintenance': maintenance_data,
+        'maintenance': _get_maintenance_data(plugin, month_delta, use_dynamo_for_maintenance),
     }
