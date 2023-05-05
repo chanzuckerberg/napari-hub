@@ -40,7 +40,7 @@ def setup_local_dynamo():
 def setup_dynamo():
     from models.plugin import Plugin
     Plugin.create_table()
-    return boto3.resource('dynamodb').Table(f'{STACK_NAME}-plugin')
+    return boto3.resource('dynamodb').Table(f'{STACK_NAME}-plugin-metadata')
 
 
 def create_plugin_item(plugin, version, data, include_last_updated_ts):
