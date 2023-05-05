@@ -56,7 +56,7 @@ class TestActivityDashboard(unittest.TestCase):
                                mock_get_commit_activity, mock_get_latest_commit, mock_get_plugin):
         expected = generate_expected_metrics(
             usage_timeline=generate_installs_timeline(start_range=-3, to_value=lambda i: 0),
-            commit_timeline=MOCK_PLUGIN_COMMIT_ACTIVITY_EMPTY
+            maintenance_timeline=MOCK_PLUGIN_COMMIT_ACTIVITY_EMPTY
         )
         self._verify_results('3', expected, mock_get_commit_activity, mock_get_latest_commit,
                              mock_get_install_timeline_data, mock_get_recent_activity_data, mock_get_plugin)
@@ -74,7 +74,7 @@ class TestActivityDashboard(unittest.TestCase):
             installs_in_last_30_days=25,
             latest_commit=MOCK_PLUGIN_LATEST_COMMIT,
             total_commit=MOCK_PLUGIN_TOTAL_COMMIT,
-            commit_timeline=generate_commits_timeline(start_range=-3)
+            maintenance_timeline=generate_commits_timeline(start_range=-3)
         )
         self._verify_results('3', expected, mock_get_commit_activity, mock_get_latest_commit,
                              mock_get_install_timeline_data, mock_get_recent_activity_data, mock_get_plugin)
