@@ -11,7 +11,7 @@ from utils.env import get_required_env
 from utils.s3 import S3Client
 from utils.utils import get_current_timestamp
 
-STACK_NAME = os.getenv("STACK_NAME")
+STACK_NAME = os.getenv("STACK_NAME", "local")
 
 LOGGER = logging.getLogger()
 
