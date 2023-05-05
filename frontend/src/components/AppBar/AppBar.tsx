@@ -5,8 +5,8 @@ import { useRef, useState } from 'react';
 
 import { Menu } from '@/components/icons';
 import { MenuPopover } from '@/components/MenuPopover';
-import { SearchBar } from '@/components/SearchBar';
 
+import { PluginSearchBar } from '../SearchBar/PluginSearchBar';
 import { AppBarLinks } from './AppBarLinks';
 import { useAppBarLinks } from './useAppBarLinks';
 
@@ -71,7 +71,7 @@ export function AppBar() {
             'screen-875:col-span-2 screen-1150:col-span-3',
           )}
         >
-          <SearchBar />
+          <PluginSearchBar />
 
           {/* Menu button */}
           <div className="ml-sds-xl flex screen-600:hidden">

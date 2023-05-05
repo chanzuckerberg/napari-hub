@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { ReactNode } from 'react';
 
-import { SearchBar } from '../SearchBar';
+import { PluginSearchBar } from '../SearchBar/PluginSearchBar';
 import { Text } from '../Text';
 
 interface Props {
@@ -46,7 +46,7 @@ export function SearchSection({
           {subtitle}
         </div>
 
-        <SearchBar
+        <PluginSearchBar
           inputProps={{
             placeholder,
             value,

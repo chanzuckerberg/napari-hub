@@ -12,7 +12,7 @@ import { loadingStore } from '@/store/loading';
 import { useSearchStore } from '@/store/search/context';
 import { scrollToSearchBar } from '@/utils';
 
-import { PluginSearchBar } from './PluginSearchBar';
+import { PluginSearchBarSection } from './PluginSearchBarSection';
 import { PluginSearchControls } from './PluginSearchControls';
 import { PluginSearchResultList } from './PluginSearchResultList';
 
@@ -82,7 +82,7 @@ export function SearchPage() {
     <div className="flex flex-col">
       <Banner />
       <AppBarLanding />
-      <PluginSearchBar />
+      <PluginSearchBarSection />
 
       <div className="flex-grow min-h-screen">
         <ColumnLayout
