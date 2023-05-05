@@ -26,9 +26,9 @@ def run_workflow(event: Dict):
         LOGGER.info(f"Update successful for type={event_type}")
     elif event_type == "seed-s3-categories":
         version = event.get("version")
-        s3_path = event.get("s3_path")
+        categories_path = event.get("categories_path")
 
-        categories.run_seed_s3_categories_workflow(version, s3_path)
+        categories.run_seed_s3_categories_workflow(version, categories_path)
         LOGGER.info(f"Update successful for type={event_type}")
 
 
@@ -43,7 +43,7 @@ def _get_arg_parser():
         "seed-s3-categories", help="categories help"
     )
     seed_s3_categories_parser.add_argument("--version", required=True)
-    seed_s3_categories_parser.add_argument("--s3-path", required=True)
+    seed_s3_categories_parser.add_argument("--categories-path", required=True)
 
     subparsers.add_parser("activity", help="activity help")
 
