@@ -1,5 +1,4 @@
 import { useRouter } from 'next/router';
-import { HTMLProps, InputHTMLAttributes } from 'react';
 import { useSnapshot } from 'valtio';
 
 import { BEGINNING_PAGE } from '@/constants/search';
@@ -13,19 +12,9 @@ import {
 import { useSearchStore } from '@/store/search/context';
 import { isSearchPage, scrollToSearchBar } from '@/utils';
 
-import { SearchBar } from './SearchBar';
+import { Props as SearchBarProps, SearchBar } from './SearchBar';
 
-interface Props extends HTMLProps<HTMLFormElement> {
-  /**
-   * Render large variant of search bar with a larger font size and search icon.
-   */
-  large?: boolean;
-
-  /**
-   * Additional props to pass to the input element.
-   */
-  inputProps?: InputHTMLAttributes<HTMLInputElement>;
-}
+type Props = Omit<SearchBarProps, 'value' | 'onChange' | 'onSubmit'>;
 
 /**
  * Search bar component. This renders an input field with a underline and
@@ -39,7 +28,7 @@ interface Props extends HTMLProps<HTMLFormElement> {
  *
  * This makes the SearchBar component re-useable for non-search enabled pages.
  */
-export function PluginSearchBar({ large, inputProps, ...props }: Props) {
+export function PluginSearchBar(props: Props) {
   const router = useRouter();
   const { searchStore } = useSearchStore();
   const state = useSnapshot(searchStore);
@@ -94,6 +83,7 @@ export function PluginSearchBar({ large, inputProps, ...props }: Props) {
         searchStore.search.query = value;
       }}
       onSubmit={(value) => submitForm(value)}
+      {...props}
     />
   );
 }
