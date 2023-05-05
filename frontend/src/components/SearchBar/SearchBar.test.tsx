@@ -3,6 +3,20 @@ import { fireEvent, render } from '@testing-library/react';
 import { SearchBar } from './SearchBar';
 
 describe('<SearchBar />', () => {
+  it('should match snapshot', () => {
+    const component = render(
+      <SearchBar value="" onSubmit={() => {}} onChange={() => {}} />,
+    );
+    expect(component.asFragment()).toMatchSnapshot();
+  });
+
+  it('should match snapshot when large=true', () => {
+    const component = render(
+      <SearchBar value="" onSubmit={() => {}} onChange={() => {}} large />,
+    );
+    expect(component.asFragment()).toMatchSnapshot();
+  });
+
   it('should update on type when changeOnSubmit=false', async () => {
     const onChange = jest.fn();
     const component = render(
