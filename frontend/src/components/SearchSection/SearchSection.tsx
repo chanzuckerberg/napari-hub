@@ -1,24 +1,15 @@
 import clsx from 'clsx';
 import { ReactNode } from 'react';
 
-import { PluginSearchBar } from '../SearchBar/PluginSearchBar';
-import { Text } from '../Text';
+import { Text } from '@/components/Text';
 
 interface Props {
   title: string;
   subtitle?: ReactNode;
-  placeholder?: string;
-  value: string;
-  onChange(value: string): void;
+  searchBar: ReactNode;
 }
 
-export function SearchSection({
-  title,
-  subtitle,
-  placeholder,
-  value,
-  onChange,
-}: Props) {
+export function SearchSection({ title, subtitle, searchBar }: Props) {
   return (
     <div
       className={clsx(
@@ -46,13 +37,7 @@ export function SearchSection({
           {subtitle}
         </div>
 
-        <PluginSearchBar
-          inputProps={{
-            placeholder,
-            value,
-            onChange: (event) => onChange(event.target.value),
-          }}
-        />
+        {searchBar}
       </div>
     </div>
   );
