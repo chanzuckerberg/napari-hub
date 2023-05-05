@@ -54,6 +54,15 @@ function sortByPluginName(results: SearchResult[]) {
   );
 }
 
+function sortByTotalInstalls(results: SearchResult[]) {
+  return (
+    results
+      // Create a copy of the array
+      .slice()
+      .sort((a, b) => b.plugin.total_installs - a.plugin.total_installs)
+  );
+}
+
 /**
  * Map of sort types to sort functions. Used for calling a particular sort
  * function given the sort type. Each function should return a new copy of the
@@ -65,6 +74,7 @@ const SORTERS: Record<SearchSortType, SearchResultTransformFunction | null> = {
   [SearchSortType.PluginName]: sortByPluginName,
   [SearchSortType.ReleaseDate]: sortByReleaseDate,
   [SearchSortType.FirstReleased]: sortByFirstReleased,
+  [SearchSortType.TotalInstalls]: sortByTotalInstalls,
 };
 
 /**
