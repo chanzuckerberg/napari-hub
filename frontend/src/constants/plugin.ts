@@ -1,27 +1,34 @@
-import { PluginData, PluginRepoData } from '@/types';
+import { PluginData, PluginIndexData, PluginRepoData } from '@/types';
 
-export const DEFAULT_PLUGIN_DATA: PluginData = {
+export const DEFAULT_PLUGIN_INDEX_DATA: PluginIndexData = {
   authors: [],
-  code_repository: '',
   description_content_type: '',
   description_text: '',
   description: '',
   development_status: [],
   display_name: '',
-  documentation: '',
   first_released: '',
   license: '',
   name: '',
   operating_system: [],
-  project_site: '',
   python_version: '',
+  release_date: '',
+  summary: '',
+  total_installs: 0,
+  version: '',
+};
+
+export const DEFAULT_PLUGIN_DATA: PluginData = {
+  ...DEFAULT_PLUGIN_INDEX_DATA,
+  code_repository: '',
+  documentation: '',
+  project_site: '',
   release_date: '',
   report_issues: '',
   requirements: [],
   summary: '',
   support: '',
   twitter: '',
-  version: '',
 };
 
 export const DEFAULT_REPO_DATA: PluginRepoData = {
