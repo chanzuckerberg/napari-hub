@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import { useTranslation } from 'next-i18next';
 import { Link } from 'src/components/Link';
 
+import { Text } from '@/components/Text';
 import { formatDate } from '@/utils';
 
 import { CollectionLinks } from './CollectionLinks';
@@ -30,24 +31,15 @@ export function CollectionInfo() {
         {collection.title}
       </h1>
 
-      <p
-        className={clsx(
-          'mt-sds-xl screen-495:mt-sds-xxl',
-          'text-[11px] screen-495:text-[17px]',
-          'leading-[175%] screen-495:leading-[150%]',
-        )}
+      <Text
+        className="mt-sds-xl screen-495:mt-sds-xxl"
+        element="p"
+        variant="h2"
       >
         {collection.description}
-      </p>
+      </Text>
 
-      <p
-        className={clsx(
-          'space-x-sds-xxs',
-          'mt-sds-xl',
-          'text-[11px] screen-495:text-[14px]',
-          'leading-normal',
-        )}
-      >
+      <Text className="space-x-sds-xxs mt-sds-xl" variant="bodyS">
         <strong>{curator.name}</strong>
         <span>{curator.title},</span>
 
@@ -58,23 +50,17 @@ export function CollectionInfo() {
             {affiliation.institution}
           </Link>
         )}
-      </p>
+      </Text>
 
       <CollectionLinks />
 
-      <p
-        className={clsx(
-          'mt-sds-xl screen-495:mt-sds-xxl',
-          'text-[9px] screen-495:text-[14px]',
-          'leading-[150%] screen-495:leading-[200%]',
-        )}
-      >
+      <Text className="mt-sds-xl screen-495:mt-sds-xxl" variant="bodyXS">
         {t('collections:collectionPage.lastUpdated', {
           replace: {
             date: formatDate(collection.updated_date),
           },
         })}
-      </p>
+      </Text>
     </div>
   );
 }

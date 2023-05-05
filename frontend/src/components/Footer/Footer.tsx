@@ -41,7 +41,7 @@ function FooterLinks() {
         <Link
           className={clsx(
             // font style
-            'whitespace-nowrap font-semibold text-sm',
+            'whitespace-nowrap font-semibold text-sds-body-s',
             // alignment if icon present
             item.icon && 'flex flex-row items-center',
             // spacing (TODO: replace with flex-gap once iOS 14.6 is old)
@@ -102,7 +102,7 @@ export function Footer() {
 
       <span
         className={clsx(
-          'text-xs row-start-2 col-span-2',
+          'text-sds-body-xxs row-start-2 col-span-2',
           'justify-self-end self-center',
           'screen-655:col-span-1 screen-655:whitespace-nowrap',
           'screen-1150:row-start-1 screen-1150:col-start-2',

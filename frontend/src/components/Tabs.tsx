@@ -56,7 +56,7 @@ export function Tabs<T extends string>({
                   <Text
                     className="space-x-sds-xs screen-495:space-x-sds-m"
                     element="p"
-                    variant="h4"
+                    variant="bodyS"
                   >
                     <span>{tab.label}</span>
 
@@ -75,7 +75,7 @@ export function Tabs<T extends string>({
                 <div
                   className={clsx(
                     'w-full h-[3px] group-hover:bg-hub-primary-500',
-                    'mt-sds-xs',
+                    'mt-[12px]',
                     tab.value === activeTab ? 'bg-black' : 'bg-transparent',
                   )}
                 />
