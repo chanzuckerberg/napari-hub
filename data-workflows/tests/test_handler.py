@@ -4,6 +4,7 @@ from unittest.mock import Mock
 import pytest
 
 import activity.processor
+import activity.update_activity
 import handler
 import utils.utils
 
@@ -16,7 +17,7 @@ class TestHandle:
     @pytest.fixture(autouse=True)
     def _setup(self, monkeypatch):
         self._parameter_store_adapter_call = Mock()
-        monkeypatch.setattr(handler, 'ParameterStoreAdapter', self._parameter_store_adapter_call)
+        monkeypatch.setattr(activity.update_activity, 'ParameterStoreAdapter', self._parameter_store_adapter_call)
         self._update_install_activity_call = Mock()
         monkeypatch.setattr(activity.processor, 'update_install_activity', self._update_install_activity_call)
         self._update_github_activity_call = Mock()
