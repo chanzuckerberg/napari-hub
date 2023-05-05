@@ -17,7 +17,7 @@ class S3Client:
     _prefix: str
     _client: Any
 
-    def __init__(self, bucket: str, prefix=""):
+    def __init__(self, bucket: str, prefix: str = ""):
         self._bucket = bucket
         self._prefix = prefix
         self._client = boto3.client("s3")
@@ -25,7 +25,7 @@ class S3Client:
     def _get_complete_path(self, s3_path: str):
         return path.join(self._prefix, s3_path)
 
-    def _get_from_s3(self, s3_path):
+    def _get_from_s3(self, s3_path: str):
         start = time.perf_counter()
         obj = self._client.get_object(
             Bucket=self._bucket, Key=self._get_complete_path(s3_path)
