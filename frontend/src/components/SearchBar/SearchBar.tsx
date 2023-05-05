@@ -9,7 +9,18 @@ import { createUrl, isSearchPage } from '@/utils';
 
 import styles from './SearchBar.module.scss';
 
-interface Props extends HTMLProps<HTMLFormElement> {
+export interface Props
+  extends Omit<
+    HTMLProps<HTMLFormElement>,
+    'value' | 'onChange' | 'onSubmit' | 'placeholder'
+  > {
+  /**
+   * Manages staging state in search bar instead of using `value` directly. This
+   * allows us to use the search bar in a way where the value isn't changed /
+   * submitted until the user submits the form.
+   */
+  changeOnSubmit?: boolean;
+
   /**
    * Render large variant of search bar with a larger font size and search icon.
    */
@@ -20,9 +31,20 @@ interface Props extends HTMLProps<HTMLFormElement> {
    */
   inputProps?: InputHTMLAttributes<HTMLInputElement>;
 
-  changeOnSubmit?: boolean;
+  /**
+   * Function for updating state when the input value changes.
+   */
   onChange(value: string): void;
+
+  /**
+   * Function to call when form is submitted. This will be called for both when
+   * the user submits or clears a query.
+   */
   onSubmit(value: string): void;
+
+  /**
+   * The value of the search query input.
+   */
   value: string;
 }
 
@@ -68,6 +90,14 @@ export function SearchBar({
     }
   }, [changeOnSubmit, value]);
 
+  function handleSubmit(query: string) {
+    onSubmit(query);
+
+    if (changeOnSubmit || !query) {
+      onChange(query);
+    }
+  }
+
   return (
     <form
       data-testid="searchBarForm"
@@ -82,7 +112,11 @@ export function SearchBar({
       )}
       onSubmit={(event) => {
         event.preventDefault();
-        onSubmit(localQuery);
+        const query = changeOnSubmit ? localQuery : value;
+
+        if (query) {
+          handleSubmit(query);
+        }
       }}
       {...props}
     >
@@ -118,7 +152,7 @@ export function SearchBar({
             onChange(newValue);
           }
         }}
-        value={localQuery}
+        value={changeOnSubmit ? localQuery : value}
         {...inputProps}
       />
 
@@ -130,6 +164,8 @@ export function SearchBar({
             : 'common:ariaLabels.submitSearchQuery',
         )}
         data-testid={value ? 'clearQueryButton' : 'submitQueryButton'}
+        // Only allow click if user has entered a value into the search bar
+        disabled={changeOnSubmit ? !localQuery : !value}
         onClick={() => {
           // Clear local query if close button is clicked and the search engine
           // is currently rendering the results for another query.
@@ -143,9 +179,10 @@ export function SearchBar({
             searchQuery = '';
           }
 
-          onSubmit(searchQuery);
+          handleSubmit(searchQuery);
         }}
         size="large"
+        type="button"
       >
         {/* Render close button if the user submitted a query. */}
         {value && isSearchPage(currentPathname) ? (
