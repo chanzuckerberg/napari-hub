@@ -13,9 +13,10 @@ import { SearchSortType } from '@/store/search/constants';
 import { useSearchStore } from '@/store/search/context';
 
 const DEFAULT_SORT_BY_RADIO_ORDER: SearchSortType[] = [
-  SearchSortType.PluginName,
+  SearchSortType.TotalInstalls,
   SearchSortType.ReleaseDate,
   SearchSortType.FirstReleased,
+  SearchSortType.PluginName,
 ];
 
 const SORT_BY_LABELS: Record<SearchSortType, TFuncKey<'homePage'>> = {
@@ -23,6 +24,7 @@ const SORT_BY_LABELS: Record<SearchSortType, TFuncKey<'homePage'>> = {
   [SearchSortType.FirstReleased]: 'sort.newest',
   [SearchSortType.ReleaseDate]: 'sort.recentlyUpdated',
   [SearchSortType.PluginName]: 'sort.pluginName',
+  [SearchSortType.TotalInstalls]: 'sort.totalInstalls',
 };
 
 /**
