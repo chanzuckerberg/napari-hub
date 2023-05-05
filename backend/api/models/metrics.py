@@ -15,8 +15,8 @@ LOGGER = logging.getLogger()
 class InstallActivity(Model):
     class Meta:
         host = os.getenv('LOCAL_DYNAMO_HOST')
-        region = os.getenv("AWS_REGION", "us-west-2")
-        table_name = f"{os.getenv('STACK_NAME', 'local')}-install-activity"
+        region = os.getenv("AWS_REGION")
+        table_name = f'{os.getenv("STACK_NAME")}-install-activity'
 
     plugin_name = UnicodeAttribute(hash_key=True)
     type_timestamp = UnicodeAttribute(range_key=True)
@@ -64,13 +64,13 @@ class InstallActivity(Model):
         return reduce(lambda acc, count: acc + count, [row.install_count for row in results], 0)
 
     @staticmethod
-    def get_usage_timeline(plugin: str, month_delta: int) -> List[Dict[str, int]]:
+    def get_timeline(plugin: str, month_delta: int) -> List[Dict[str, int]]:
         """
         Fetches plugin install count at a month level granularity from dynamo in the previous month_delta months.
         :returns List[Dict[str, int]]: Entries for the month_delta months
 
-        :param str plugin: Name of the plugin in lowercase for which usage timeline data needs to be fetched.
-        :param int month_delta: Number of months in usage timeline.
+        :param str plugin: Name of the plugin in lowercase for which timeline data needs to be fetched.
+        :param int month_delta: Number of months in timeline.
         """
         month_type_format = 'MONTH:{0:%Y%m}'
         start_date = datetime.datetime.now().replace(day=1) - relativedelta(months=1)
