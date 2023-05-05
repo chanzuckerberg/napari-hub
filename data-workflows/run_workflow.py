@@ -17,6 +17,10 @@ def run_workflow(event: Dict):
     Function for running a particular data workflow based on the event type. The
     event dictionary should contain all of the necessary data to run the
     specified data workflow.
+
+    Events:
+        activity: {}
+        seed-s3-categories: { version: string, categories_path: string }
     """
 
     event_type = event.get("type", "").lower()
