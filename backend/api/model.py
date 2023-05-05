@@ -633,18 +633,12 @@ def _get_maintenance_data(plugin: str, limit: int, use_dynamo_for_maintenance: b
     :params bool use_dynamo_for_maintenance: Fetch data from dynamo if True, else fetch from s3.
     """
     if use_dynamo_for_maintenance:
-        maintenance_timeline = []
-        maintenance_total_commits = 0
-        maintenance_latest_commit_timestamp = 0
-        if limit:
-            repo = _get_repo_from_plugin(plugin)
-            maintenance_timeline = github_activity.get_maintenance_timeline(plugin, repo, limit)
-            maintenance_total_commits = github_activity.get_total_commits(plugin, repo)
-            maintenance_latest_commit_timestamp = github_activity.get_latest_commit(plugin, repo)
+        repo = _get_repo_from_plugin(plugin)
+        maintenance_timeline = github_activity.get_maintenance_timeline(plugin, repo, limit) if limit else []
 
         maintenance_stats = {
-            'total_commits': maintenance_total_commits,
-            'latest_commit_timestamp': maintenance_latest_commit_timestamp,
+            'total_commits': github_activity.get_total_commits(plugin, repo),
+            'latest_commit_timestamp': github_activity.get_latest_commit(plugin, repo),
         }
     else:
         data = get_commit_activity(plugin)

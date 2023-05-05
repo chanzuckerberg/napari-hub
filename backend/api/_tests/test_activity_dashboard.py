@@ -17,12 +17,10 @@ EMPTY_DF = pd.DataFrame(columns=['MONTH', 'NUM_DOWNLOADS_BY_MONTH'])
 PLUGIN_NAME = 'StrIng-1'
 PLUGIN_NAME_CLEAN = 'string-1'
 MOCK_PLUGIN_RECENT_INSTALLS = {PLUGIN_NAME_CLEAN: 25, 'foo': 10, 'bar': 30}
-MOCK_PLUGIN_LATEST_COMMIT_EMPTY = 0
 MOCK_PLUGIN_LATEST_COMMIT = 1672531200000
 MOCK_PLUGIN_COMMIT_ACTIVITY_EMPTY = generate_commits_timeline(start_range=-3, to_value=lambda i: 0)
 MOCK_PLUGIN_COMMIT_ACTIVITY = generate_commits_timeline(start_range=-5)
-MOCK_PLUGIN_TOTAL_COMMIT_EMPTY = 0
-MOCK_PLUGIN_TOTAL_COMMIT = sum([activity.get('commits') for activity in MOCK_PLUGIN_COMMIT_ACTIVITY])
+MOCK_PLUGIN_TOTAL_COMMITS = sum([activity.get('commits') for activity in MOCK_PLUGIN_COMMIT_ACTIVITY])
 MOCK_PLUGIN_OBJ_EMPTY = {}
 MOCK_PLUGIN_OBJ = {"name": "string-1", "code_repository": "https://github.com/user/repo"}
 
@@ -75,7 +73,7 @@ class TestActivityDashboard(unittest.TestCase):
             total_installs=sum(MOCK_INSTALLS),
             installs_in_last_30_days=25,
             latest_commit=MOCK_PLUGIN_LATEST_COMMIT,
-            total_commit=MOCK_PLUGIN_TOTAL_COMMIT,
+            total_commit=MOCK_PLUGIN_TOTAL_COMMITS,
             maintenance_timeline=generate_commits_timeline(start_range=-3)
         )
         self._verify_results('3', expected, mock_get_commit_activity, mock_get_latest_commit,
@@ -92,7 +90,7 @@ class TestActivityDashboard(unittest.TestCase):
             total_installs=sum(MOCK_INSTALLS),
             installs_in_last_30_days=25,
             latest_commit=MOCK_PLUGIN_LATEST_COMMIT,
-            total_commit=MOCK_PLUGIN_TOTAL_COMMIT
+            total_commit=MOCK_PLUGIN_TOTAL_COMMITS,
         )
         self._verify_results('0', expected, mock_get_commit_activity, mock_get_latest_commit,
                              mock_get_install_timeline_data, mock_get_recent_activity_data, mock_get_plugin)
@@ -108,7 +106,7 @@ class TestActivityDashboard(unittest.TestCase):
             total_installs=sum(MOCK_INSTALLS),
             installs_in_last_30_days=25,
             latest_commit=MOCK_PLUGIN_LATEST_COMMIT,
-            total_commit=MOCK_PLUGIN_TOTAL_COMMIT,
+            total_commit=MOCK_PLUGIN_TOTAL_COMMITS,
         )
         self._verify_results('foo', expected, mock_get_commit_activity, mock_get_latest_commit,
                              mock_get_install_timeline_data, mock_get_recent_activity_data, mock_get_plugin)
@@ -124,7 +122,7 @@ class TestActivityDashboard(unittest.TestCase):
             total_installs=sum(MOCK_INSTALLS),
             installs_in_last_30_days=25,
             latest_commit=MOCK_PLUGIN_LATEST_COMMIT,
-            total_commit=MOCK_PLUGIN_TOTAL_COMMIT,
+            total_commit=MOCK_PLUGIN_TOTAL_COMMITS,
         )
         self._verify_results('-5', expected, mock_get_commit_activity, mock_get_latest_commit,
                              mock_get_install_timeline_data, mock_get_recent_activity_data, mock_get_plugin)
@@ -145,10 +143,10 @@ class TestMetricModel:
                              'total_installs, recent_installs, usage_timeline, limit, get_plugin', [
         (generate_commits_timeline(start_range=-3, to_value=lambda i: 0), None, 0, 0, 0,
          generate_installs_timeline(start_range=-3, to_value=lambda i: 0), '3', MOCK_PLUGIN_OBJ_EMPTY),
-        ([], MOCK_PLUGIN_LATEST_COMMIT_EMPTY, MOCK_PLUGIN_TOTAL_COMMIT_EMPTY, 25, 21, [], '0', MOCK_PLUGIN_OBJ),
-        ([], MOCK_PLUGIN_LATEST_COMMIT_EMPTY, MOCK_PLUGIN_TOTAL_COMMIT_EMPTY, 25, 21, [], 'foo', MOCK_PLUGIN_OBJ),
-        ([], MOCK_PLUGIN_LATEST_COMMIT_EMPTY, MOCK_PLUGIN_TOTAL_COMMIT_EMPTY, 25, 21, [], '-5', MOCK_PLUGIN_OBJ),
-        (generate_installs_timeline(start_range=-3), MOCK_PLUGIN_LATEST_COMMIT, MOCK_PLUGIN_TOTAL_COMMIT, 25, 21,
+        ([], MOCK_PLUGIN_LATEST_COMMIT, MOCK_PLUGIN_TOTAL_COMMITS, 25, 21, [], '0', MOCK_PLUGIN_OBJ),
+        ([], MOCK_PLUGIN_LATEST_COMMIT, MOCK_PLUGIN_TOTAL_COMMITS, 25, 21, [], 'foo', MOCK_PLUGIN_OBJ),
+        ([], MOCK_PLUGIN_LATEST_COMMIT, MOCK_PLUGIN_TOTAL_COMMITS, 25, 21, [], '-5', MOCK_PLUGIN_OBJ),
+        (generate_installs_timeline(start_range=-3), MOCK_PLUGIN_LATEST_COMMIT, MOCK_PLUGIN_TOTAL_COMMITS, 25, 21,
          generate_installs_timeline(start_range=-3), '3', MOCK_PLUGIN_OBJ)])
     def test_metrics_api_using_dynamo(self, monkeypatch, maintenance_timeline, latest_commit,
                                       total_commits, total_installs, recent_installs, usage_timeline, limit, get_plugin):
