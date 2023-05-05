@@ -156,7 +156,7 @@ class TestMetricModel:
         monkeypatch.setattr(model.github_activity, 'get_maintenance_timeline', self._validate_args_return_value(maintenance_timeline))
         monkeypatch.setattr(model.InstallActivity, 'get_total_installs', self._validate_args_return_value(total_installs))
         monkeypatch.setattr(model.InstallActivity, 'get_recent_installs', self._validate_args_return_value(recent_installs))
-        monkeypatch.setattr(model.InstallActivity, 'get_usage_timeline', self._validate_args_return_value(usage_timeline))
+        monkeypatch.setattr(model.InstallActivity, 'get_timeline', self._validate_args_return_value(usage_timeline))
 
         from api.model import get_metrics_for_plugin
         actual = get_metrics_for_plugin(PLUGIN_NAME, limit, True, True)

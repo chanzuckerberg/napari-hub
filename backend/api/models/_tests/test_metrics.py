@@ -83,12 +83,12 @@ class TestInstallActivity:
         ([], 1, generate_installs_timeline(-1, to_value=lambda i: 0)),
         (generate_expected_results(-4), 4, generate_installs_timeline(-4)),
     ])
-    def test_get_usage_timeline(self, monkeypatch, results, month_delta, expected):
+    def test_get_timeline(self, monkeypatch, results, month_delta, expected):
         mock_install_activity = Mock(return_value=results)
 
         from api.models.metrics import InstallActivity
         monkeypatch.setattr(InstallActivity, 'query', mock_install_activity)
-        actual = InstallActivity.get_usage_timeline(PLUGIN_NAME, month_delta)
+        actual = InstallActivity.get_timeline(PLUGIN_NAME, month_delta)
 
         assert actual == expected
         mock_install_activity.assert_called_once()

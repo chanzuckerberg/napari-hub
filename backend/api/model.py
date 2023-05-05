@@ -609,7 +609,7 @@ def _get_usage_data(plugin: str, limit: int, use_dynamo: bool) -> Dict[str, Any]
     :params bool use_dynamo: Fetch data from dynamo if True, else fetch from s3.
     """
     if use_dynamo:
-        usage_timeline = InstallActivity.get_usage_timeline(plugin, limit) if limit else []
+        usage_timeline = InstallActivity.get_timeline(plugin, limit) if limit else []
         usage_stats = {
             'total_installs': InstallActivity.get_total_installs(plugin),
             'installs_in_last_30_days': InstallActivity.get_recent_installs(plugin, 30)
