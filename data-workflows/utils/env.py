@@ -7,7 +7,7 @@ def get_required_env(key: str) -> str:
     constraint that it must be defined, otherwise the application will be unable
     to run without it.
 
-    :param: key: The key for the environment variable.
+    :param key: The key for the environment variable.
     :type key: str
     :raises ValueError: If environment variable is not defined.
     :return The environment variable value.

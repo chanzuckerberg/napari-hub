@@ -57,6 +57,12 @@ def run_seed_s3_categories_workflow(version: str, categories_path: str):
     """
     Runs data workflow for populating the category dynamo table from an S3
     source on the same depoyment stack.
+
+    :param version: The categories version
+    :type version: str
+    :param categories_path: The categories path in S3
+    :type categories_path: str
+    :raises ValueError: If params are not defined
     """
 
     if not all(version, categories_path):
