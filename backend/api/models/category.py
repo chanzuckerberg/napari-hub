@@ -6,13 +6,13 @@ from collections import defaultdict
 from pynamodb.attributes import ListAttribute, NumberAttribute, UnicodeAttribute
 from pynamodb.models import Model
 from utils.time import get_current_timestamp, print_perf_duration
-from typing import Any, Dict
 
 
 class CategoryModel(Model):
     class Meta:
+        host = os.getenv('LOCAL_DYNAMO_HOST')
         region = os.environ.get("AWS_REGION", "us-west-2")
-        table_name = f"{os.environ.get('PREFIX')}-category"
+        table_name = f"{os.environ.get('STACK_NAME')}-category"
 
     name = UnicodeAttribute(hash_key=True)
     version_hash = UnicodeAttribute(range_key=True)

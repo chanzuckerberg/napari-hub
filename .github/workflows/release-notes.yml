@@ -1,0 +1,82 @@
+# Workflow for creating release notes automatically based on merged pull
+# requests since the last release.
+
+name: Release Notes
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  release_notes:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Get data for latest release
+        id: latest_release
+        uses: actions/github-script@v6
+        with:
+          retries: 3
+          result-encoding: string
+          script: |
+            const release = require('./.github/release-notes')
+            return await release.getLatestRelease(github, context)
+
+      - name: Get history for release and main
+        run: |
+          git checkout ${{ steps.latest_release.outputs.result }}
+          git checkout main
+          git checkout ${{ github.ref }}
+
+      - name: Categorize pull requests since last release
+        id: pull_requests
+        uses: actions/github-script@v6
+        env:
+          LATEST_RELEASE: ${{ steps.latest_release.outputs.result }}
+          TARGET_BRANCH: main
+        with:
+          retries: 3
+          result-encoding: string
+          script: |
+            const release = require('./.github/release-notes')
+            return await release.categorizePullRequests(github, context, exec)
+
+      - name: Get next release tag
+        id: next_release
+        uses: actions/github-script@v6
+        env:
+          LATEST_RELEASE: ${{ steps.latest_release.outputs.result }}
+        with:
+          retries: 3
+          result-encoding: string
+          script: |
+            const release = require('./.github/release-notes')
+            return await release.getNextReleaseTag()
+
+      - name: Draft release notes
+        id: draft_release
+        uses: actions/github-script@v6
+        env:
+          LATEST_RELEASE: ${{ steps.latest_release.outputs.result }}
+          NEXT_RELEASE: ${{ steps.next_release.outputs.result }}
+          PULL_REQUESTS: ${{ steps.pull_requests.outputs.result }}
+        with:
+          retries: 3
+          script: |
+            const release = require('./.github/release-notes')
+            return await release.draftReleaseNotes(github, context, core)

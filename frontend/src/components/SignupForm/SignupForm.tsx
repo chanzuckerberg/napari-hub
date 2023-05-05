@@ -161,7 +161,7 @@ export function SignupForm({ onSubmit, variant = 'default' }: Props) {
               margin="none"
               className={clsx(
                 // font
-                'text-sm',
+                'text-sds-body-s',
                 // make underline align with submit button
                 'pt-sds-xxxs',
                 // sizing
@@ -182,7 +182,7 @@ export function SignupForm({ onSubmit, variant = 'default' }: Props) {
               className={clsx(
                 'bg-hub-primary-400 hover:bg-hub-primary-500 active:bg-hub-primary-600',
                 // font & colors
-                'text-sm font-semibold text-black',
+                'text-sds-body-s font-semibold text-black',
                 // sizing
                 'h-[35px] col-span-2 screen-495:col-span-1',
               )}

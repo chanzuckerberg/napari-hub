@@ -1,6 +1,8 @@
 import clsx from 'clsx';
 
-import { Link } from '../Link';
+import { Link } from '@/components/Link';
+import { Text } from '@/components/Text';
+
 import { useCollection } from './context';
 
 const MAX_COMMENT_LENGTH = 100;
@@ -46,45 +48,50 @@ export function CollectionPluginList() {
               >
                 {plugin.display_name || plugin.name}
               </h2>
-              <span
+
+              <Text
                 className={clsx(
-                  'text-[9px] screen-495:text-[11px]',
-                  'leading-[189%] screen-495:leading-[150%] screen-725:leading-[205%]',
                   'col-span-2 screen-600:col-span-1 screen-600:row-start-2',
                   'screen-875:col-span-2',
                 )}
+                element="span"
+                variant="bodyXS"
               >
                 {plugin.name}
-              </span>
-              <p
+              </Text>
+
+              <Text
                 className={clsx(
-                  'mt-sds-l text-[11px] screen-495:text-[14px]',
+                  'mt-sds-l',
                   'col-span-2 screen-600:col-span-1 screen-600:row-start-3',
                   'screen-875:col-span-2',
                 )}
+                variant="bodyS"
               >
                 {plugin.summary}
-              </p>
+              </Text>
 
-              <p
+              <Text
+                weight="semibold"
                 className={clsx(
-                  'font-semibold mt-sds-l mb-sds-xl',
+                  'mt-sds-l mb-sds-xl',
                   'col-span-2 screen-600:col-span-1 screen-600:row-start-4',
                   'screen-875:col-span-2',
-                  'text-[11px]',
                 )}
+                variant="bodyXS"
               >
                 {plugin.authors.map((author) => author.name).join(', ')}
-              </p>
+              </Text>
 
               {renderedComment && (
-                <p
+                <Text
                   className={clsx(
-                    'italic text-[11px] screen-495:text-[14px]',
                     'col-span-2 screen-600:col-span-1',
                     'screen-600:col-start-2 screen-600:row-start-1 screen-600:row-span-5',
                     'screen-875:col-start-3',
                   )}
+                  italic
+                  variant="bodyS"
                 >
                   {renderedComment}
 
@@ -95,7 +102,7 @@ export function CollectionPluginList() {
                   {(plugin.comment?.length ?? 0) > MAX_COMMENT_LENGTH &&
                     !renderedComment.endsWith('.') &&
                     '...'}
-                </p>
+                </Text>
               )}
             </Link>
           </li>

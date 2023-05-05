@@ -139,6 +139,7 @@ class TestActivityDashboard(unittest.TestCase):
 
 
 class TestMetricModel:
+
     @pytest.mark.parametrize('maintenance_timeline, latest_commit, total_commits, '
                              'total_installs, recent_installs, usage_timeline, limit, get_plugin', [
         (generate_commits_timeline(start_range=-3, to_value=lambda i: 0), None, 0, 0, 0,
@@ -154,9 +155,9 @@ class TestMetricModel:
         monkeypatch.setattr(model.github_activity, 'get_total_commits', self._validate_args_return_value(total_commits))
         monkeypatch.setattr(model.github_activity, 'get_latest_commit', self._validate_args_return_value(latest_commit))
         monkeypatch.setattr(model.github_activity, 'get_maintenance_timeline', self._validate_args_return_value(maintenance_timeline))
-        monkeypatch.setattr(model.InstallActivity, 'get_total_installs', self._validate_args_return_value(total_installs))
-        monkeypatch.setattr(model.InstallActivity, 'get_recent_installs', self._validate_args_return_value(recent_installs))
-        monkeypatch.setattr(model.InstallActivity, 'get_timeline', self._validate_args_return_value(usage_timeline))
+        monkeypatch.setattr(model.install_activity, 'get_total_installs', self._validate_args_return_value(total_installs))
+        monkeypatch.setattr(model.install_activity, 'get_recent_installs', self._validate_args_return_value(recent_installs))
+        monkeypatch.setattr(model.install_activity, 'get_timeline', self._validate_args_return_value(usage_timeline))
 
         from api.model import get_metrics_for_plugin
         actual = get_metrics_for_plugin(PLUGIN_NAME, limit, True, True)

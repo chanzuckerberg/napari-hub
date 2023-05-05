@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import { Button } from 'czifui';
 import { useTranslation } from 'react-i18next';
 
+import { Text } from '@/components/Text';
 import { usePlausible } from '@/hooks';
 
 import { CollectionCard } from './CollectionCard';
@@ -19,10 +20,11 @@ function Intro() {
         'pt-sds-l screen-495:pt-sds-xxl',
         'col-span-2 screen-875:col-span-3',
         'screen-1425:row-start-2 screen-1425:col-start-2',
-        'text-[11px] screen-495:text-[17px]',
       )}
     >
-      <p>{t('collections:collectionsPage.intro')}</p>
+      <Text element="p" variant="h4">
+        {t('collections:collectionsPage.intro')}
+      </Text>
     </div>
   );
 }
@@ -45,7 +47,6 @@ function CreateCollectionButton() {
         'w-full h-[35px] screen-495:h-12',
         'col-span-2 screen-495:col-span-1',
         'screen-875:row-start-3 screen-1425:row-start-3',
-        'text-[11px] screen-495:text-[14px]',
         'screen-1425:col-start-2',
         'text-black',
       )}
@@ -54,7 +55,9 @@ function CreateCollectionButton() {
       target="_blank"
       rel="noreferrer"
     >
-      {t('collections:collectionsPage.createCollection')}
+      <Text variant="bodyS">
+        {t('collections:collectionsPage.createCollection')}
+      </Text>
     </Button>
   );
 }
