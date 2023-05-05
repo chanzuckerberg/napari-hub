@@ -145,9 +145,9 @@ class TestMetricModel:
                                       total_commit, total_installs, recent_installs, timeline, limit):
         monkeypatch.setattr(model, 'get_commit_activity', self._validate_args_return_value(commit_activity_input))
         monkeypatch.setattr(model, 'get_latest_commit', self._validate_args_return_value(latest_commit))
-        monkeypatch.setattr(model.InstallActivity, 'get_total_installs', self._validate_args_return_value(total_installs))
-        monkeypatch.setattr(model.InstallActivity, 'get_recent_installs', self._validate_args_return_value(recent_installs))
-        monkeypatch.setattr(model.InstallActivity, 'get_timeline', self._validate_args_return_value(timeline))
+        monkeypatch.setattr(model.install_activity, 'get_total_installs', self._validate_args_return_value(total_installs))
+        monkeypatch.setattr(model.install_activity, 'get_recent_installs', self._validate_args_return_value(recent_installs))
+        monkeypatch.setattr(model.install_activity, 'get_timeline', self._validate_args_return_value(timeline))
 
         from api.model import get_metrics_for_plugin
         actual = get_metrics_for_plugin(PLUGIN_NAME, limit, True)

@@ -96,5 +96,5 @@ jobs:
         working-directory: backend
         run: |
           pip install --upgrade pip
-          pip install -r test-requirements.txt
+          pip install -r bdd-test-requirements.txt
           cd bdd_tests && python -m pytest

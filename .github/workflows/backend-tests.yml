@@ -45,7 +45,7 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install -r requirements.txt
-          pip install pytest npe2
+          pip install -r test-requirements.txt
 
       - name: Run unit tests
         working-directory: backend
