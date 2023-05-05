@@ -30,7 +30,7 @@ class S3Client:
         obj = self._client.get_object(
             Bucket=self._bucket, Key=self._get_complete_path(s3_path)
         )
-        print_perf_duration(start, f'_get_from_s3("{s3_path}")')
+        print_perf_duration(start, f"_get_from_s3('{s3_path}')")
 
         return obj["Body"].read().decode("utf-8")
 
@@ -38,9 +38,14 @@ class S3Client:
         """
         Load JSON file from S3 path and convert to a Python dictionary.
         """
+        start = time.perf_counter()
+        result = {}
 
         try:
-            return json.loads(self._get_from_s3(s3_path))
+            result = json.loads(self._get_from_s3(s3_path))
         except Exception as e:
             logging.error(e)
-            return {}
+
+        print_perf_duration(start, f"load_json_from_s3('{s3_path}')")
+
+        return result
