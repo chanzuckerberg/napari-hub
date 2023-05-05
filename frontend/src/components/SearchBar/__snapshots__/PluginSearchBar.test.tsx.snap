@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<SearchBar /> should match snapshot 1`] = `
+exports[`<PluginSearchBar /> should match snapshot 1`] = `
 <DocumentFragment>
   <form
     class="flex flex-auto items-center border-b-2 border-black"
