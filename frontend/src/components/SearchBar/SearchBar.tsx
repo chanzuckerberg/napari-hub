@@ -3,19 +3,9 @@ import { ButtonIcon } from 'czifui';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { HTMLProps, InputHTMLAttributes, useEffect, useState } from 'react';
-import { useSnapshot } from 'valtio';
 
 import { Close, Search } from '@/components/icons';
-import { BEGINNING_PAGE } from '@/constants/search';
-import { resetLoadingState } from '@/store/loading';
-import {
-  DEFAULT_SORT_TYPE,
-  SEARCH_PAGE,
-  SearchQueryParams,
-  SearchSortType,
-} from '@/store/search/constants';
-import { useSearchStore } from '@/store/search/context';
-import { createUrl, isSearchPage, scrollToSearchBar } from '@/utils';
+import { createUrl, isSearchPage } from '@/utils';
 
 import styles from './SearchBar.module.scss';
 
@@ -29,6 +19,11 @@ interface Props extends HTMLProps<HTMLFormElement> {
    * Additional props to pass to the input element.
    */
   inputProps?: InputHTMLAttributes<HTMLInputElement>;
+
+  changeOnSubmit?: boolean;
+  onChange(value: string): void;
+  onSubmit(value: string): void;
+  value: string;
 }
 
 /**
@@ -43,16 +38,21 @@ interface Props extends HTMLProps<HTMLFormElement> {
  *
  * This makes the SearchBar component re-useable for non-search enabled pages.
  */
-export function SearchBar({ large, inputProps, ...props }: Props) {
+export function SearchBar({
+  large,
+  inputProps,
+  value,
+  onChange,
+  onSubmit,
+  changeOnSubmit,
+  ...props
+}: Props) {
   const [t] = useTranslation(['common']);
   const router = useRouter();
-  const { searchStore } = useSearchStore();
-  const state = useSnapshot(searchStore);
-  const { query } = state.search;
   const currentPathname = createUrl(router.asPath).pathname;
 
   // Local state for query. This is used to store the current entered query string.
-  const [localQuery, setLocalQuery] = useState(query ?? '');
+  const [localQuery, setLocalQuery] = useState(value ?? '');
 
   const iconClassName = clsx(
     'h-5 w-5',
@@ -63,49 +63,10 @@ export function SearchBar({ large, inputProps, ...props }: Props) {
 
   // Keep local query state in sync with global query state in case it's changed elsewhere.
   useEffect(() => {
-    setLocalQuery(query);
-  }, [query]);
-
-  /**
-   * Performs a search query on form submission. If the user is on the search
-   * page, this runs the query through the search engine. Otherwise, it
-   * redirects to the search page with the query added to the URL.
-   */
-  async function submitForm(searchQuery: string) {
-    // Reset loading state when navigating to the search page.
-    resetLoadingState();
-
-    if (isSearchPage(window.location.pathname)) {
-      if (searchQuery) {
-        scrollToSearchBar({ behavior: 'smooth' });
-        searchStore.search.query = searchQuery;
-        searchStore.sort = SearchSortType.Relevance;
-      } else {
-        searchStore.search.query = '';
-
-        if (state.sort === SearchSortType.Relevance) {
-          searchStore.sort = DEFAULT_SORT_TYPE;
-        }
-      }
-    } else if (searchQuery) {
-      // Set query in global state so that the search bar shows the query while
-      // the search page is loading.
-      searchStore.search.query = searchQuery;
-
-      const url = {
-        pathname: SEARCH_PAGE,
-        query: {
-          // Params will be encoded automatically by Next.js.
-          [SearchQueryParams.Search]: searchQuery,
-          [SearchQueryParams.Sort]: SearchSortType.Relevance,
-        },
-      };
-      await router.push(url);
+    if (changeOnSubmit) {
+      setLocalQuery(value);
     }
-
-    // Reset pagination when searching with a new query.
-    searchStore.page = BEGINNING_PAGE;
-  }
+  }, [changeOnSubmit, value]);
 
   return (
     <form
@@ -119,9 +80,9 @@ export function SearchBar({ large, inputProps, ...props }: Props) {
 
         large && 'text-xl',
       )}
-      onSubmit={async (event) => {
+      onSubmit={(event) => {
         event.preventDefault();
-        await submitForm(localQuery);
+        onSubmit(localQuery);
       }}
       {...props}
     >
@@ -149,8 +110,13 @@ export function SearchBar({ large, inputProps, ...props }: Props) {
           'w-0',
         )}
         onChange={(event) => {
-          const { value } = event.target;
-          setLocalQuery(value);
+          const newValue = event.target.value;
+
+          if (changeOnSubmit) {
+            setLocalQuery(newValue);
+          } else {
+            onChange(newValue);
+          }
         }}
         value={localQuery}
         {...inputProps}
@@ -159,27 +125,30 @@ export function SearchBar({ large, inputProps, ...props }: Props) {
       <ButtonIcon
         className="p-3"
         aria-label={t(
-          query
+          value
             ? 'common:ariaLabels.clearSearchBar'
             : 'common:ariaLabels.submitSearchQuery',
         )}
-        data-testid={query ? 'clearQueryButton' : 'submitQueryButton'}
-        onClick={async () => {
+        data-testid={value ? 'clearQueryButton' : 'submitQueryButton'}
+        onClick={() => {
           // Clear local query if close button is clicked and the search engine
           // is currently rendering the results for another query.
-          let searchQuery = localQuery;
+          let searchQuery = changeOnSubmit ? localQuery : value;
 
-          if (query) {
-            setLocalQuery('');
+          if (value) {
+            if (changeOnSubmit) {
+              setLocalQuery('');
+            }
+
             searchQuery = '';
           }
 
-          await submitForm(searchQuery);
+          onSubmit(searchQuery);
         }}
         size="large"
       >
         {/* Render close button if the user submitted a query. */}
-        {query && isSearchPage(currentPathname) ? (
+        {value && isSearchPage(currentPathname) ? (
           <Close className={clsx(iconClassName, styles.closeIcon)} />
         ) : (
           <Search className={iconClassName} />
