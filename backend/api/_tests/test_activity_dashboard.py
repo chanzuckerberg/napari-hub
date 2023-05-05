@@ -150,13 +150,13 @@ class TestMetricModel:
          generate_installs_timeline(start_range=-3), '3', MOCK_PLUGIN_OBJ_NONEMPTY)])
     def test_metrics_api_using_dynamo(self, monkeypatch, maintenance_timeline, latest_commit,
                                       total_commits, total_installs, recent_installs, usage_timeline, limit, get_plugin):
-        monkeypatch.setattr(model.GitHubActivity, 'get_total_commits', self._validate_args_return_value(total_commits))
-        monkeypatch.setattr(model.GitHubActivity, 'get_latest_commit', self._validate_args_return_value(latest_commit))
-        monkeypatch.setattr(model.GitHubActivity, 'get_maintenance_timeline', self._validate_args_return_value(maintenance_timeline))
+        monkeypatch.setattr(model, 'get_plugin', self._validate_args_return_value(get_plugin))
+        monkeypatch.setattr(model.github_activity, 'get_total_commits', self._validate_args_return_value(total_commits))
+        monkeypatch.setattr(model.github_activity, 'get_latest_commit', self._validate_args_return_value(latest_commit))
+        monkeypatch.setattr(model.github_activity, 'get_maintenance_timeline', self._validate_args_return_value(maintenance_timeline))
         monkeypatch.setattr(model.InstallActivity, 'get_total_installs', self._validate_args_return_value(total_installs))
         monkeypatch.setattr(model.InstallActivity, 'get_recent_installs', self._validate_args_return_value(recent_installs))
         monkeypatch.setattr(model.InstallActivity, 'get_usage_timeline', self._validate_args_return_value(usage_timeline))
-        monkeypatch.setattr(model, 'get_plugin', self._validate_args_return_value(get_plugin))
 
         from api.model import get_metrics_for_plugin
         actual = get_metrics_for_plugin(PLUGIN_NAME, limit, True, True)

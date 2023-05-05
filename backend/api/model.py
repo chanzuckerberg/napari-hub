@@ -8,7 +8,9 @@ from io import BytesIO
 from collections import defaultdict
 import pandas as pd
 
-from api.models.metrics import InstallActivity, GitHubActivity
+from api.models import github_activity
+from api.models.metrics import InstallActivity
+
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
 from api.s3 import get_cache, cache, write_data, get_install_timeline_data, get_latest_commit, get_commit_activity, \
@@ -634,10 +636,10 @@ def _get_maintenance_data(plugin: str, repo: str, limit: int, use_dynamo: bool) 
     :params bool use_dynamo: Fetch data from dynamo if True, else fetch from s3.
     """
     if use_dynamo:
-        maintenance_timeline = GitHubActivity.get_maintenance_timeline(plugin, repo, limit) if limit else []
+        maintenance_timeline = github_activity.get_maintenance_timeline(plugin, repo, limit) if limit else []
         maintenance_stats = {
-            'total_commits': GitHubActivity.get_total_commits(plugin, repo),
-            'latest_commit_timestamp': GitHubActivity.get_latest_commit(plugin, repo),
+            'total_commits': github_activity.get_total_commits(plugin, repo),
+            'latest_commit_timestamp': github_activity.get_latest_commit(plugin, repo),
         }
     else:
         data = get_commit_activity(plugin)
