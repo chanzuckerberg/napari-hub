@@ -634,13 +634,17 @@ def _get_maintenance_data(plugin: str, limit: int, use_dynamo_for_maintenance: b
     """
     if use_dynamo_for_maintenance:
         maintenance_timeline = []
+        maintenance_total_commits = 0
+        maintenance_latest_commit_timestamp = 0
         if limit:
             repo = _get_repo_from_plugin(plugin)
             maintenance_timeline = github_activity.get_maintenance_timeline(plugin, repo, limit)
+            maintenance_total_commits = github_activity.get_total_commits(plugin, repo)
+            maintenance_latest_commit_timestamp = github_activity.get_latest_commit(plugin, repo)
 
         maintenance_stats = {
-            'total_commits': github_activity.get_total_commits(plugin, repo),
-            'latest_commit_timestamp': github_activity.get_latest_commit(plugin, repo),
+            'total_commits': maintenance_total_commits,
+            'latest_commit_timestamp': maintenance_latest_commit_timestamp,
         }
     else:
         data = get_commit_activity(plugin)
