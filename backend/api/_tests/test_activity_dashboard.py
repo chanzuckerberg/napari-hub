@@ -26,7 +26,7 @@ MOCK_PLUGIN_OBJ_NONEMPTY = {"name": "string-1", "code_repository": "https://gith
 
 
 def generate_expected_metrics(usage_timeline=None, total_installs=0, installs_in_last_30_days=0,
-                              latest_commit=None, total_commit=0, commit_timeline=None):
+                              latest_commit=None, total_commit=0, maintenance_timeline=None):
     return {
         'usage': {
             'timeline': usage_timeline if usage_timeline else [],
@@ -36,7 +36,7 @@ def generate_expected_metrics(usage_timeline=None, total_installs=0, installs_in
             }
         },
         'maintenance': {
-            'timeline': commit_timeline if commit_timeline else [],
+            'timeline': maintenance_timeline if maintenance_timeline else [],
             'stats': {
                 'latest_commit_timestamp': latest_commit,
                 'total_commits': total_commit
@@ -139,30 +139,31 @@ class TestActivityDashboard(unittest.TestCase):
 
 
 class TestMetricModel:
-    @pytest.mark.parametrize('commit_activity_input, commit_activity_result, latest_commit, total_commits, '
-                             'total_installs, recent_installs, usage_timeline, limit', [
-        ([], MOCK_PLUGIN_COMMIT_ACTIVITY_EMPTY, None, 0, 0, 0, generate_installs_timeline(start_range=-3, to_value=lambda i: 0), '3'),
-        (MOCK_PLUGIN_COMMIT_ACTIVITY, [], MOCK_PLUGIN_LATEST_COMMIT, MOCK_PLUGIN_TOTAL_COMMIT, 25, 21, [], '0'),
-        (MOCK_PLUGIN_COMMIT_ACTIVITY, [], MOCK_PLUGIN_LATEST_COMMIT, MOCK_PLUGIN_TOTAL_COMMIT, 25, 21, [], 'foo'),
-        (MOCK_PLUGIN_COMMIT_ACTIVITY, [], MOCK_PLUGIN_LATEST_COMMIT, MOCK_PLUGIN_TOTAL_COMMIT, 25, 21, [], '-5'),
-        (MOCK_PLUGIN_COMMIT_ACTIVITY, generate_commits_timeline(start_range=-3, to_value=lambda i: i + 5),
-         MOCK_PLUGIN_LATEST_COMMIT, MOCK_PLUGIN_TOTAL_COMMIT, 25, 21, generate_installs_timeline(start_range=-3), '3'),
-    ])
-    def test_metrics_api_using_dynamo(self, monkeypatch, commit_activity_input, commit_activity_result, latest_commit,
-                                      total_commits, total_installs, recent_installs, usage_timeline, limit):
+    @pytest.mark.parametrize('maintenance_timeline, latest_commit, total_commits, '
+                             'total_installs, recent_installs, usage_timeline, limit, get_plugin', [
+        (generate_commits_timeline(start_range=-3, to_value=lambda i: 0), None, 0, 0, 0,
+         generate_installs_timeline(start_range=-3, to_value=lambda i: 0), '3', MOCK_PLUGIN_OBJ_EMPTY),
+        ([], MOCK_PLUGIN_LATEST_COMMIT, MOCK_PLUGIN_TOTAL_COMMIT, 25, 21, [], '0', MOCK_PLUGIN_OBJ_NONEMPTY),
+        ([], MOCK_PLUGIN_LATEST_COMMIT, MOCK_PLUGIN_TOTAL_COMMIT, 25, 21, [], 'foo', MOCK_PLUGIN_OBJ_NONEMPTY),
+        ([], MOCK_PLUGIN_LATEST_COMMIT, MOCK_PLUGIN_TOTAL_COMMIT, 25, 21, [], '-5', MOCK_PLUGIN_OBJ_NONEMPTY),
+        (generate_installs_timeline(start_range=-3), MOCK_PLUGIN_LATEST_COMMIT, MOCK_PLUGIN_TOTAL_COMMIT, 25, 21,
+         generate_installs_timeline(start_range=-3), '3', MOCK_PLUGIN_OBJ_NONEMPTY)])
+    def test_metrics_api_using_dynamo(self, monkeypatch, maintenance_timeline, latest_commit,
+                                      total_commits, total_installs, recent_installs, usage_timeline, limit, get_plugin):
         monkeypatch.setattr(model.GitHubActivity, 'get_total_commits', self._validate_args_return_value(total_commits))
         monkeypatch.setattr(model.GitHubActivity, 'get_latest_commit', self._validate_args_return_value(latest_commit))
-        monkeypatch.setattr(model.GitHubActivity, 'get_maintenance_timeline', self._validate_args_return_value(commit_activity_input))
+        monkeypatch.setattr(model.GitHubActivity, 'get_maintenance_timeline', self._validate_args_return_value(maintenance_timeline))
         monkeypatch.setattr(model.InstallActivity, 'get_total_installs', self._validate_args_return_value(total_installs))
         monkeypatch.setattr(model.InstallActivity, 'get_recent_installs', self._validate_args_return_value(recent_installs))
         monkeypatch.setattr(model.InstallActivity, 'get_usage_timeline', self._validate_args_return_value(usage_timeline))
+        monkeypatch.setattr(model, 'get_plugin', self._validate_args_return_value(get_plugin))
 
         from api.model import get_metrics_for_plugin
         actual = get_metrics_for_plugin(PLUGIN_NAME, limit, True, True)
 
         expected = generate_expected_metrics(
             total_installs=total_installs, installs_in_last_30_days=recent_installs, usage_timeline=usage_timeline,
-            latest_commit=latest_commit, total_commit=total_commits, commit_timeline=commit_activity_result
+            latest_commit=latest_commit, total_commit=total_commits, maintenance_timeline=maintenance_timeline
         )
         assert actual == expected
 
