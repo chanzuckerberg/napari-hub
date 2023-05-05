@@ -82,7 +82,7 @@ export function PluginRightColumn() {
         />
       </div>
 
-      <div className="sticky top-[200px] mt-[170px] screen-1425:mt-[130px]">
+      <div className="sticky top-[110px]">
         <PluginTOC />
       </div>
     </div>
