@@ -226,6 +226,18 @@ export function PluginComplexFilter({ filterKey }: Props) {
 
   const isSearchEnabled = SEARCH_ENABLED_FILTERS.has(filterKey);
 
+  const options = optionsRef.current.filter(
+    (option) => option.name && option.stateKey,
+  );
+
+  if (filterKey === 'workflowStep') {
+    options.sort((option1, option2) =>
+      workflowStepGroups[option1.stateKey].localeCompare(
+        workflowStepGroups[option2.stateKey],
+      ),
+    );
+  }
+
   return (
     <ComplexFilter
       className={clsx(
@@ -335,9 +347,7 @@ export function PluginComplexFilter({ filterKey }: Props) {
           </div>
         ),
       }}
-      options={optionsRef.current.filter(
-        (option) => option.name && option.stateKey,
-      )}
+      options={options}
       value={pendingState}
       PopperComponent={StyledPopper}
     />
