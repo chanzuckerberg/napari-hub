@@ -8,14 +8,15 @@ from dateutil.relativedelta import relativedelta
 from pynamodb.models import Model
 from pynamodb.attributes import UnicodeAttribute, NumberAttribute
 
+from api.models.helper import set_ddb_metadata
+
 LOGGER = logging.getLogger()
 
 
-class GitHubActivity(Model):
+@set_ddb_metadata('github-activity')
+class _GitHubActivityModel(Model):
     class Meta:
-        host = os.getenv('LOCAL_DYNAMO_HOST')
-        region = os.getenv('AWS_REGION', 'us-west-2')
-        table_name = f"{os.getenv('STACK_NAME', 'local')}-github-activity"
+        pass
 
     plugin_name = UnicodeAttribute(hash_key=True)
     type_identifier = UnicodeAttribute(range_key=True)
@@ -36,8 +37,8 @@ def get_total_commits(plugin: str, repo: str) -> int:
     """
     start = time.perf_counter()
     try:
-        return GitHubActivity.get(plugin, f'TOTAL:{repo}').commit_count
-    except GitHubActivity.DoesNotExist:
+        return _GitHubActivityModel.get(plugin, f'TOTAL:{repo}').commit_count
+    except _GitHubActivityModel.DoesNotExist:
         logging.warning(f'No TOTAL:{repo} record found for plugin={plugin}')
         return 0
     finally:
@@ -54,8 +55,8 @@ def get_latest_commit(plugin: str, repo: str) -> int:
     """
     start = time.perf_counter()
     try:
-        return GitHubActivity.get(plugin, f'LATEST:{repo}').timestamp
-    except GitHubActivity.DoesNotExist:
+        return _GitHubActivityModel.get(plugin, f'LATEST:{repo}').timestamp
+    except _GitHubActivityModel.DoesNotExist:
         logging.warning(f'No LATEST{repo}: record found for plugin={plugin}')
         return 0
     finally:
@@ -74,11 +75,11 @@ def get_maintenance_timeline(plugin: str, repo: str, month_delta: int) -> List[D
     month_type_format = 'MONTH:{0:%Y%m}:{1}'
     start_date = datetime.datetime.now().replace(day=1) - relativedelta(months=1)
     end_date = start_date - relativedelta(months=month_delta - 1)
-    condition = GitHubActivity.type_identifier.between(month_type_format.format(end_date, repo),
-                                                       month_type_format.format(start_date, repo))
+    condition = _GitHubActivityModel.type_identifier.between(month_type_format.format(end_date, repo),
+                                                             month_type_format.format(start_date, repo))
 
     start = time.perf_counter()
-    results = {row.timestamp: row.commit_count for row in GitHubActivity.query(plugin, condition)}
+    results = {row.timestamp: row.commit_count for row in _GitHubActivityModel.query(plugin, condition)}
     duration = (time.perf_counter() - start) * 1000
     logging.info(f'Query for plugin={plugin} month_delta={month_delta} time_taken={duration}ms')
 
