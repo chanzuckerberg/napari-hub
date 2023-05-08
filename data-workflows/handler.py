@@ -22,7 +22,7 @@ def handle(event, context):
             LOGGER.info(f"Update successful for type={event_type}")
         elif event_type == "seed-s3-categories":
             version = event.get("version")
-            categories_path = event.get("categories_path ")
+            categories_path = event.get("categories_path")
 
             categories.run_seed_s3_categories_workflow(version, categories_path)
             LOGGER.info(f"Update successful for type={event_type}")
