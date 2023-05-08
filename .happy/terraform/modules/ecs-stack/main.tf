@@ -160,6 +160,85 @@ module category_dynamodb_table {
   tags                = var.tags
 }
 
+module plugin_dynamodb_table {
+  source              = "../dynamo"
+  table_name          = "${local.custom_stack_name}-plugin"
+  hash_key            = "name"
+  range_key           = "version"
+  attributes          = [
+                          {
+                            name = "name"
+                            type = "S"
+                          },
+                          {
+                            name = "version"
+                            type = "S"
+                          },
+                          {
+                            name = "is_latest"
+                            type = "S" #terraform only supports String, Number or Binary for primary key attribute
+                          },
+                          {
+                            name = "excluded"
+                            type = "S"
+                          }
+                        ]
+
+  global_secondary_indexes = [
+                          {
+                            name               = "${local.custom_stack_name}-latest-plugins"
+                            hash_key           = "name"
+                            range_key          = "is_latest"
+                            projection_type    = "ALL"
+                          },
+                          {
+                            name               = "${local.custom_stack_name}-excluded-plugins"
+                            hash_key           = "name"
+                            range_key          = "excluded"
+                            projection_type    = "INCLUDE"
+                            non_key_attributes = ["is_latest", "last_updated_timestamp"]
+                          }
+                        ]
+  autoscaling_enabled = var.env == "dev" ? false : true
+  create_table        = true
+  tags                = var.tags
+}
+
+module plugin_metadata_dynamodb_table {
+  source              = "../dynamo"
+  table_name          = "${local.custom_stack_name}-plugin-metadata"
+  hash_key            = "name"
+  range_key           = "version_type"
+  attributes          = [
+                          {
+                            name = "name"
+                            type = "S"
+                          },
+                          {
+                            name = "version_type"
+                            type = "S"
+                          }
+                        ]
+  autoscaling_enabled = var.env == "dev" ? false : true
+  create_table        = true
+  tags                = var.tags
+}
+
+module plugin_blocked_dynamodb_table {
+  source              = "../dynamo"
+  table_name          = "${local.custom_stack_name}-plugin-blocked"
+  hash_key            = "name"
+  attributes          = [
+                          {
+                            name = "name"
+                            type = "S"
+                          }
+                        ]
+  autoscaling_enabled = var.env == "dev" ? false : true
+  create_table        = true
+  tags                = var.tags
+}
+
 module backend_lambda {
   source             = "../lambda-container"
   function_name      = local.backend_function_name
@@ -397,6 +476,8 @@ data aws_iam_policy_document backend_policy {
       module.install_dynamodb_table.table_arn,
       module.github_dynamodb_table.table_arn,
       module.category_dynamodb_table.table_arn,
+      module.plugin_dynamodb_table.table_arn,
+      module.plugin_blocked_dynamodb_table.table_arn
     ]
   }
 
@@ -431,12 +512,16 @@ data aws_iam_policy_document data_workflows_policy {
   }
   statement {
     actions = [
-      "dynamodb:Query",
       "dynamodb:BatchWriteItem",
+      "dynamodb:GetItem",
+      "dynamodb:Query",
     ]
     resources = [
         module.install_dynamodb_table.table_arn,
         module.github_dynamodb_table.table_arn,
+        module.plugin_dynamodb_table.table_arn,
+        module.plugin_metadata_dynamodb_table.table_arn,
+        module.plugin_blocked_dynamodb_table.table_arn,
     ]
   }
   statement {
@@ -472,6 +557,14 @@ data aws_iam_policy_document plugins_policy {
     ]
 
     resources = ["${local.data_bucket_arn}"]
+  }
+
+  statement {
+    actions = [
+      "dynamodb:Query",
+      "dynamodb:PutItem",
+    ]
+    resources = [module.plugin_metadata_dynamodb_table.table_arn]
   }
 }
 

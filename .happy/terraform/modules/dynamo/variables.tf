@@ -21,6 +21,12 @@ variable hash_key {
   description = "Please provide the hash key for table"
 }
 
+variable global_secondary_indexes {
+  type        = any
+  description = "Please provide GSI configuration"
+  default     = []
+}
+
 variable range_key {
   type        = string
   description = "Please provide the range key for table"

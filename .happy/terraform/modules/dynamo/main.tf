@@ -10,6 +10,8 @@ module dynamodb {
 
   table_class = var.table_class
 
+  global_secondary_indexes = var.global_secondary_indexes
+
   point_in_time_recovery_enabled = var.tags.env == "prod" ? true : false
 
   autoscaling_enabled = var.autoscaling_enabled
