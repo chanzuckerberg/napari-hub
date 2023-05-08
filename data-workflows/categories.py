@@ -65,7 +65,7 @@ def run_seed_s3_categories_workflow(version: str, categories_path: str):
     :raises ValueError: If params are not defined
     """
 
-    if not all(version, categories_path):
+    if not all([version, categories_path]):
         LOGGER.error(
             f"Missing required values version={version} s3_path={categories_path}"
         )
