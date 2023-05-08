@@ -186,16 +186,17 @@ module plugin_dynamodb_table {
 
   global_secondary_indexes = [
                           {
-                            name               = "latest_plugins"
+                            name               = "${local.custom_stack_name}-latest-plugins"
                             hash_key           = "name"
                             range_key          = "is_latest"
                             projection_type    = "ALL"
                           },
                           {
-                            name               = "excluded_plugins"
+                            name               = "${local.custom_stack_name}-excluded-plugins"
                             hash_key           = "name"
                             range_key          = "excluded"
-                            projection_type    = "KEYS_ONLY"
+                            projection_type    = "INCLUDE"
+                            non_key_attributes = ["is_latest", "last_updated_timestamp"]
                           }
                         ]
   autoscaling_enabled = var.env == "dev" ? false : true
