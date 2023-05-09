@@ -166,7 +166,7 @@ exports[`<Layout /> should match snapshot 1`] = `
         >
           <div
             aria-label="Email address"
-            class="MuiFormControl-root MuiTextField-root text-sm pt-sds-xxxs h-8 screen-495:h-[35px] col-span-2 screen-495:col-span-1 screen-875:col-span-2 css-1u3bzj6-MuiFormControl-root-MuiTextField-root"
+            class="MuiFormControl-root MuiTextField-root text-sds-body-s pt-sds-xxxs h-8 screen-495:h-[35px] col-span-2 screen-495:col-span-1 screen-875:col-span-2 css-1u3bzj6-MuiFormControl-root-MuiTextField-root"
           >
             <div
               class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-formControl css-1ptx2yq-MuiInputBase-root-MuiInput-root"
@@ -185,7 +185,7 @@ exports[`<Layout /> should match snapshot 1`] = `
             </div>
           </div>
           <button
-            class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-disableElevation MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-disableElevation bg-hub-primary-400 hover:bg-hub-primary-500 active:bg-hub-primary-600 text-sm font-semibold text-black h-[35px] col-span-2 screen-495:col-span-1 css-1k16prx-MuiButtonBase-root-MuiButton-root"
+            class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-disableElevation MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-disableElevation bg-hub-primary-400 hover:bg-hub-primary-500 active:bg-hub-primary-600 text-sds-body-s font-semibold text-black h-[35px] col-span-2 screen-495:col-span-1 css-1k16prx-MuiButtonBase-root-MuiButton-root"
             data-testid="submitButton"
             name="subscribe"
             tabindex="0"
@@ -206,37 +206,37 @@ exports[`<Layout /> should match snapshot 1`] = `
         class="w-full flex-1 flex flex-row items-center justify-start mb-6 screen-655:mb-0 screen-655:mr-12 flex-wrap col-span-2 gap-y-2"
       >
         <a
-          class="whitespace-nowrap font-semibold text-sm mr-sds-xl last:mr-0"
+          class="whitespace-nowrap font-semibold text-sds-body-s mr-sds-xl last:mr-0"
           href="/about"
         >
           About
         </a>
         <a
-          class="whitespace-nowrap font-semibold text-sm mr-sds-xl last:mr-0"
+          class="whitespace-nowrap font-semibold text-sds-body-s mr-sds-xl last:mr-0"
           href="/faq"
         >
           FAQ
         </a>
         <a
-          class="whitespace-nowrap font-semibold text-sm mr-sds-xl last:mr-0"
+          class="whitespace-nowrap font-semibold text-sds-body-s mr-sds-xl last:mr-0"
           href="/privacy"
         >
           Privacy
         </a>
         <a
-          class="whitespace-nowrap font-semibold text-sm mr-sds-xl last:mr-0"
+          class="whitespace-nowrap font-semibold text-sds-body-s mr-sds-xl last:mr-0"
           href="/sitemap"
         >
           Sitemap
         </a>
         <a
-          class="whitespace-nowrap font-semibold text-sm mr-sds-xl last:mr-0"
+          class="whitespace-nowrap font-semibold text-sds-body-s mr-sds-xl last:mr-0"
           href="/contact"
         >
           Contact
         </a>
         <a
-          class="whitespace-nowrap font-semibold text-sm flex flex-row items-center mr-sds-xl last:mr-0"
+          class="whitespace-nowrap font-semibold text-sds-body-s flex flex-row items-center mr-sds-xl last:mr-0"
           href="https://github.com/chanzuckerberg/napari-hub"
           rel="noreferrer"
           target="_blank"
@@ -258,7 +258,7 @@ exports[`<Layout /> should match snapshot 1`] = `
         </a>
       </div>
       <span
-        class="text-xs row-start-2 col-span-2 justify-self-end self-center screen-655:col-span-1 screen-655:whitespace-nowrap screen-1150:row-start-1 screen-1150:col-start-2"
+        class="text-sds-body-xxs row-start-2 col-span-2 justify-self-end self-center screen-655:col-span-1 screen-655:whitespace-nowrap screen-1150:row-start-1 screen-1150:col-start-2"
       >
         The napari hub is a service of the &lt;hubLink href='https://chanzuckerberg.com/science/programs-resources/imaging'&gt;Chan Zuckerberg Initiative&lt;/hubLink&gt; in collaboration with &lt;hubLink href='https://napari.org'&gt;napari.&lt;/hubLink
       </span>

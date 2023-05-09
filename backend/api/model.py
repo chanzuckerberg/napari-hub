@@ -8,7 +8,7 @@ from io import BytesIO
 from collections import defaultdict
 import pandas as pd
 
-from api.models.metrics import InstallActivity
+from api.models import install_activity
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
 from api.s3 import get_cache, cache, write_data, get_install_timeline_data, get_latest_commit, get_commit_activity, \
@@ -232,7 +232,7 @@ def generate_index(plugins_metadata: Dict[str, Any]):
     :param plugins_metadata: plugin metadata dictionary
     :return: sliced dict metadata for the plugin
     """
-    total_install_by_plugin_name = InstallActivity.get_total_installs_by_plugins(plugins_metadata.keys())
+    total_install_by_plugin_name = install_activity.get_total_installs_by_plugins(plugins_metadata.keys())
     for plugin_metadata in plugins_metadata.values():
         name = plugin_metadata.get('name')
         plugin_metadata['total_installs'] = total_install_by_plugin_name.get(name, 0)
@@ -601,10 +601,10 @@ def _get_usage_data(plugin: str, limit: int, use_dynamo: bool) -> Dict[str, Any]
     :params bool use_dynamo: Fetch data from dynamo if True, else fetch from s3.
     """
     if use_dynamo:
-        usage_timeline = InstallActivity.get_timeline(plugin, limit) if limit else []
+        usage_timeline = install_activity.get_timeline(plugin, limit) if limit else []
         usage_stats = {
-            'total_installs': InstallActivity.get_total_installs(plugin),
-            'installs_in_last_30_days': InstallActivity.get_recent_installs(plugin, 30)
+            'total_installs': install_activity.get_total_installs(plugin),
+            'installs_in_last_30_days': install_activity.get_recent_installs(plugin, 30)
         }
     else:
         data = get_install_timeline_data(plugin)

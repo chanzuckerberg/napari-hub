@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import Image from 'next/image';
 
 import { Link } from '@/components/Link';
+import { Text } from '@/components/Text';
 import { CollectionIndexData } from '@/types/collections';
 
 interface Props {
@@ -33,29 +34,27 @@ export function CollectionCard({ collection }: Props) {
         />
       </div>
 
-      <h2
+      <Text
         className={clsx(
           'my-[10px] screen-495:my-[20px]',
-          'font-semibold text-[11px] screen-495:text-[17px]',
           LINE_HEIGHT_CLASS_NAME,
         )}
+        variant="h4"
       >
         {collection.title}
-      </h2>
-      <p className="text-[11px] screen-495:text-[14px] leading-[150%]">
-        {collection.summary}
-      </p>
+      </Text>
+      <Text variant="bodyS">{collection.summary}</Text>
 
-      <p
+      <Text
         className={clsx(
           'space-x-sds-xxs mt-sds-m screen-495:mt-sds-xl',
-          'text-[9px] screen-495:text-[11px]',
           LINE_HEIGHT_CLASS_NAME,
         )}
+        variant="bodyXS"
       >
         <span className="font-semibold">{collection.curator.name}</span>
         <span>{collection.curator.affiliation.institution}</span>
-      </p>
+      </Text>
     </Link>
   );
 }
