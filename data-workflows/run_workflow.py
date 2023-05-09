@@ -3,7 +3,7 @@ Module containing functionality for running data workflows as a standalone scrip
 """
 
 import argparse
-import categories
+import categories.processor
 import logging
 import activity.processor
 
@@ -32,7 +32,7 @@ def run_workflow(event: Dict):
         version = event.get("version")
         categories_path = event.get("categories_path")
 
-        categories.run_seed_s3_categories_workflow(version, categories_path)
+        categories.processor.seed_s3_categories_workflow(version, categories_path)
         LOGGER.info(f"Update successful for type={event_type}")
 
 

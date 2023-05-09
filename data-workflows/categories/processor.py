@@ -3,33 +3,15 @@ import time
 import hashlib
 import logging
 
-from pynamodb.attributes import ListAttribute, NumberAttribute, UnicodeAttribute
-from pynamodb.models import Model
+from categories.category_model import CategoryModel
 from slugify import slugify
 from typing import Dict
 from utils.env import get_required_env
 from utils.s3 import S3Client
-from utils.utils import get_current_timestamp
 
 STACK_NAME = os.getenv("STACK_NAME", "local")
 
 LOGGER = logging.getLogger()
-
-
-class CategoryModel(Model):
-    class Meta:
-        host = os.getenv("LOCAL_DYNAMO_HOST")
-        region = os.getenv("AWS_REGION", "us-west-2")
-        table_name = f"{STACK_NAME}-category"
-
-    name = UnicodeAttribute(hash_key=True)
-    version_hash = UnicodeAttribute(range_key=True)
-    version = UnicodeAttribute()
-    formatted_name = UnicodeAttribute()
-    dimension = UnicodeAttribute()
-    hierarchy = ListAttribute()  # List[str]
-    label = UnicodeAttribute()
-    last_updated_timestamp = NumberAttribute(default_for_new=get_current_timestamp)
 
 
 def _hash_category(category: Dict[str, str]) -> str:
@@ -53,7 +35,7 @@ def _hash_category(category: Dict[str, str]) -> str:
     return category_hash.hexdigest()
 
 
-def run_seed_s3_categories_workflow(version: str, categories_path: str):
+def seed_s3_categories_workflow(version: str, categories_path: str):
     """
     Runs data workflow for populating the category dynamo table from an S3
     source on the same depoyment stack.
