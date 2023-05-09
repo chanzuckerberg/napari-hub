@@ -669,3 +669,25 @@ resource "aws_lambda_function_event_invoke_config" "async-config" {
   maximum_event_age_in_seconds = 500
   maximum_retry_attempts       = 0
 }
+
+#module cloudwatch_metric_alarms {
+#  source = "../cloudwatch-alarm"
+#  log_group_name = module.backend_lambda.cloudwatch_log_group_name
+#  name = "${local.custom_stack_name}-backend-error"
+#  metric_filter_pattern = "ERROR"
+#  namespace = "${local.custom_stack_name}-metrics"
+#  metrics_enabled = true
+#}
+
+module cloudwatch_metric_alarms {
+  source = "../cloudwatch-alarm"
+  env = var.env
+  stack_name = local.custom_stack_name
+  metrics_enabled = true
+  alarms_enabled = true
+  backend_lambda_log_group_name = module.backend_lambda.cloudwatch_log_group_name
+  backend_lambda_function_name = module.backend_lambda.function_name
+  data_workflows_lambda_function_name = module.data_workflows_lambda.function_name
+  plugins_lambda_function_name = module.plugins_lambda.function_name
+  tags = var.tags
+}
