@@ -39,13 +39,14 @@ class TestInstallActivity:
             return f'MONTH:{timestamp.strftime("%Y%m")}'
         return 'TOTAL:'
 
-    def _put_item(self, table, granularity, timestamp, install_count, plugin=PLUGIN_NAME):
+    def _put_item(self, table, granularity, timestamp, install_count, is_total=None, plugin=PLUGIN_NAME):
         item = {
             'plugin_name': plugin,
             'type_timestamp': self._to_type_timestamp(granularity, timestamp),
             'install_count': install_count,
             'granularity': granularity,
-            'timestamp': to_millis(timestamp)
+            'timestamp': to_millis(timestamp),
+            'is_total': is_total,
         }
         table.put_item(Item=item)
 
@@ -56,7 +57,7 @@ class TestInstallActivity:
 
     def test_get_total_installs_has_result(self, install_activity_table):
         expected = 173
-        self._put_item(install_activity_table, 'TOTAL', None, expected)
+        self._put_item(install_activity_table, 'TOTAL', None, expected, is_total='true')
 
         actual = install_activity.get_total_installs(plugin=PLUGIN_NAME)
 
@@ -100,7 +101,7 @@ class TestInstallActivity:
         ])
     def test_get_total_installs_by_plugins(self, install_activity_table, data, expected):
         for plugin, count in data:
-            self._put_item(install_activity_table, 'TOTAL', None, count, plugin=plugin)
+            self._put_item(install_activity_table, 'TOTAL', None, count, is_total='true', plugin=plugin)
 
         actual = install_activity.get_total_installs_by_plugins(plugins=['foo', 'bar'])
 
