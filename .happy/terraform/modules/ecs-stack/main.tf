@@ -118,7 +118,7 @@ module install_dynamodb_table {
                             name = "is_total"
                             type = "S"
                           }
-                        ],
+                        ]
    global_secondary_indexes = [
                           {
                             name               = "${local.custom_stack_name}-total-installs"
