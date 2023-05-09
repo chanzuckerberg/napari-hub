@@ -5,8 +5,8 @@ Module containing functionality for running data workflows as a standalone scrip
 import argparse
 import categories
 import logging
+import activity.processor
 
-from activity.update_activity import update_activity
 from typing import Dict
 
 LOGGER = logging.getLogger()
@@ -26,7 +26,7 @@ def run_workflow(event: Dict):
     event_type = event.get("type", "").lower()
 
     if event_type == "activity":
-        update_activity()
+        activity.processor.update_activity()
         LOGGER.info(f"Update successful for type={event_type}")
     elif event_type == "seed-s3-categories":
         version = event.get("version")
