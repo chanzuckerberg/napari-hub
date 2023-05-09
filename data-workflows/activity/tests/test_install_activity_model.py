@@ -15,7 +15,7 @@ def sorting_key(install_activity: InstallActivity):
     return install_activity.plugin_name + ' ' + install_activity.type_timestamp
 
 
-def generate_expected(data, granularity, type_timestamp_formatter, timestamp_formatter):
+def generate_expected(data, granularity, type_timestamp_formatter, timestamp_formatter, is_total=None):
     expected = []
     for key, values in data.items():
         for val in values:
@@ -25,7 +25,9 @@ def generate_expected(data, granularity, type_timestamp_formatter, timestamp_for
                                  f'{type_timestamp_formatter(timestamp)}',
                                  granularity=granularity,
                                  timestamp=timestamp_formatter(timestamp),
-                                 install_count=val['count'])
+                                 install_count=val['count'],
+                                 is_total=is_total,
+                                 )
             expected.append(ia)
     return expected
 
@@ -117,5 +119,5 @@ class TestInstallActivityModels:
         from activity.install_activity_model import transform_and_write_to_dynamo
         transform_and_write_to_dynamo(data, InstallActivityType.TOTAL)
 
-        expected = generate_expected(data, 'TOTAL', lambda ts: f'TOTAL:', lambda ts: None)
+        expected = generate_expected(data, 'TOTAL', lambda ts: f'TOTAL:', lambda ts: None, 'true')
         self._verify(expected)
