@@ -228,41 +228,6 @@ module plugin_metadata_dynamodb_table {
                             type = "S"
                           },
                           {
-                            name = "version"
-                            type = "S"
-                          }
-                        ]
-  autoscaling_enabled = var.env == "dev" ? false : true
-  create_table        = true
-  tags                = var.tags
-}
-
-module plugin_blocked_dynamodb_table {
-  source              = "../dynamo"
-  table_name          = "${local.custom_stack_name}-plugin-blocked"
-  hash_key            = "name"
-  attributes          = [
-                          {
-                            name = "name"
-                            type = "S"
-                          }
-                        ]
-  autoscaling_enabled = var.env == "dev" ? false : true
-  create_table        = true
-  tags                = var.tags
-}
-
-module plugin_metadata_dynamodb_table {
-  source              = "../dynamo"
-  table_name          = "${local.custom_stack_name}-plugin-metadata"
-  hash_key            = "name"
-  range_key           = "version_type"
-  attributes          = [
-                          {
-                            name = "name"
-                            type = "S"
-                          },
-                          {
                             name = "version_type"
                             type = "S"
                           }
