@@ -113,7 +113,7 @@ def get_recent_activity_data() -> Dict:
 
 
 def get_latest_commit(plugin: str) -> Any:
-    return _load_json_from_s3("activity_dashboard_data/latest_commits.json").get(plugin)
+    return _load_json_from_s3("activity_dashboard_data/latest_commits.json").get(plugin, 0)
 
 
 def get_commit_activity(plugin: str) -> List:

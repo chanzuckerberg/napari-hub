@@ -643,7 +643,7 @@ def _get_maintenance_data(plugin: str, limit: int, use_dynamo_for_maintenance: b
         data = get_commit_activity(plugin)
         maintenance_stats = {
             'total_commits': sum([commit_obj['commits'] for commit_obj in data]),
-            'latest_commit_timestamp': get_latest_commit(plugin) if limit else 0,
+            'latest_commit_timestamp': get_latest_commit(plugin),
         }
         maintenance_timeline = _process_maintenance_timeline(data, limit) if limit else []
 
