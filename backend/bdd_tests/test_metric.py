@@ -66,7 +66,7 @@ def verify_it_has_non_zero_usage_stats(context):
 @then(parsers.parse('it should have non-zero values for maintenance.stats'))
 def verify_it_has_non_zero_maintenance_stats(context):
     stats = context['maintenance']['stats']
-    assert stats['latest_commit_timestamp'] is not None
+    assert stats['latest_commit_timestamp'] != 0
     assert stats['total_commits'] > 0
 
 
@@ -90,7 +90,7 @@ def verify_it_has_zero_usage_data(context):
 @then(parsers.parse('it should have zero values for maintenance.stats'))
 def verify_it_has_zero_usage_data(context):
     stats = context['maintenance']['stats']
-    assert stats['latest_commit_timestamp'] is None
+    assert stats['latest_commit_timestamp'] == 0
     assert stats['total_commits'] == 0
 
 
