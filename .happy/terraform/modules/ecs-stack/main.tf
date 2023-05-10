@@ -113,6 +113,19 @@ module install_dynamodb_table {
                           {
                             name = "type_timestamp"
                             type = "S"
+                          },
+                          {
+                            name = "is_total"
+                            type = "S"
+                          }
+                        ]
+   global_secondary_indexes = [
+                          {
+                            name               = "${local.custom_stack_name}-total-installs"
+                            hash_key           = "plugin_name"
+                            range_key          = "is_total"
+                            projection_type    = "INCLUDE"
+                            non_key_attributes = ["install_count", "last_updated_timestamp"]
                           }
                         ]
   autoscaling_enabled = var.env == "dev" ? false : true

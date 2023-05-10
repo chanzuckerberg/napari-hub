@@ -1,16 +1,29 @@
 import datetime
 import logging
+import os
 import time
 from functools import reduce
 from typing import List, Dict
 
 from dateutil.relativedelta import relativedelta
+from pynamodb.indexes import GlobalSecondaryIndex, IncludeProjection
 from pynamodb.models import Model
 from pynamodb.attributes import UnicodeAttribute, NumberAttribute
 
 from api.models.helper import set_ddb_metadata
 
 LOGGER = logging.getLogger()
+
+
+class _TotalInstallsIndex(GlobalSecondaryIndex):
+    class Meta:
+        index_name = f'{os.getenv("STACK_NAME")}-total-installs'
+        projection = IncludeProjection(["install_count", "last_updated_timestamp"])
+
+    plugin_name = UnicodeAttribute(hash_key=True)
+    is_total = UnicodeAttribute(range_key=True)
+    install_count = NumberAttribute()
+    last_updated_timestamp = NumberAttribute()
 
 
 @set_ddb_metadata('install-activity')
@@ -24,7 +37,10 @@ class _InstallActivityModel(Model):
     granularity = UnicodeAttribute(attr_name='type')
     timestamp = NumberAttribute(null=True)
     install_count = NumberAttribute()
+    is_total = UnicodeAttribute(null=True)
     last_updated_timestamp = NumberAttribute()
+
+    total_installs = _TotalInstallsIndex()
 
 
 def get_total_installs(plugin: str) -> int:
@@ -90,10 +106,11 @@ def get_timeline(plugin: str, month_delta: int) -> List[Dict[str, int]]:
 
 def get_total_installs_by_plugins(plugins) -> Dict[str, int]:
     start = time.perf_counter()
-    batch_response = _InstallActivityModel.batch_get(
-        [(plugin, 'TOTAL:') for plugin in plugins],
-        attributes_to_get=["plugin_name", "install_count"]
-    )
+    results = {}
+    for item in _InstallActivityModel.total_installs.scan():
+        if item.plugin_name in plugins:
+            results[item.plugin_name] = item.install_count
+
     duration = (time.perf_counter() - start) * 1000
     logging.info(f'BatchGet for total_installs_by_plugins time_taken={duration}ms')
-    return {item.plugin_name: item.install_count for item in batch_response}
+    return results
