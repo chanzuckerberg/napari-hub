@@ -540,7 +540,7 @@ def _get_repo_to_plugin_dict():
 def _get_repo_from_plugin(plugin):
     plugin_metadata = get_plugin(plugin)
     repo_url = plugin_metadata.get('code_repository', '')
-    return repo_url.removeprefix('https://github.com/')
+    return repo_url.replace('https://github.com/', '')
 
 
 def _update_latest_commits(repo_to_plugin_dict):
