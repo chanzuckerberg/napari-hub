@@ -3,7 +3,7 @@ import setuptools
 description = "shared utilities"
 
 setuptools.setup(
-    name="shared",
+    name="napari-hub-shared",
     version="0.1.0",
     author=", ".join(["Napari Hub Team"]),
     description=description,
