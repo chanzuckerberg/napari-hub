@@ -11,7 +11,7 @@ from api.models import github_activity
 
 PLUGIN_NAME = 'foo'
 REPO_NAME = 'foo/repo'
-EXPECTED_LATEST_COMMIT_TIMESTAMP = 1680912000000
+EXPECTED_LATEST_COMMIT_TIMESTAMP = 1681084800000
 
 
 def to_millis(timestamp):
