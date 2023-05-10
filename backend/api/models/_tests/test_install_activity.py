@@ -46,8 +46,9 @@ class TestInstallActivity:
             'install_count': install_count,
             'granularity': granularity,
             'timestamp': to_millis(timestamp),
-            'is_total': is_total,
         }
+        if is_total:
+            item['is_total'] = is_total
         table.put_item(Item=item)
 
     def test_get_total_installs_has_no_result(self, install_activity_table):
