@@ -7,7 +7,7 @@ from activity.github_activity_model import GitHubActivityType
 import activity.github_activity_model as github_model
 import activity.snowflake_adapter as snowflake
 from utils.utils import ParameterStoreAdapter
-import utils.utils
+import nhcommons
 
 LOGGER = logging.getLogger()
 
@@ -64,7 +64,7 @@ def _update_github_activity(start_time: int, end_time: int) -> None:
 def update_activity() -> None:
     parameter_store = ParameterStoreAdapter()
     last_updated_timestamp = parameter_store.get_last_updated_timestamp()
-    current_timestamp = utils.utils.get_current_timestamp()
+    current_timestamp = nhcommons.utils.get_current_timestamp()
     _update_install_activity(last_updated_timestamp, current_timestamp)
     _update_github_activity(last_updated_timestamp, current_timestamp)
     parameter_store.set_last_updated_timestamp(current_timestamp)

@@ -115,7 +115,8 @@ services:
   data-workflows:
     image: '${DOCKER_REPO}napari-hub-dev-data-workflows'
     build:
-      context: data-workflows
+      context: .
+      dockerfile: data-workflows/Dockerfile
       cache_from:
         - '${DOCKER_REPO}napari-hub-dev-data-workflows:${STACK_NAME}'
       args:
@@ -124,8 +125,6 @@ services:
         - HAPPY_BRANCH
         - HAPPY_TAG
     restart: always
-    depends_on:
-      - localstack
     ports:
       - '5000:5000'
     environment:
@@ -138,7 +137,7 @@ services:
     # This entrypoint only used for local dev; in cloud we deploy as a Lambda container
     entrypoint: gunicorn --worker-class gevent --workers 4 --bind 0.0.0.0:5000 napari:app --max-requests 10000 --timeout 5 --keep-alive 5 --log-level info --reload
     volumes:
-      - ./data-workflows:/var/task
+      - ./data-workflows:/var/task/data-workflows
     networks:
       naparinet:
         aliases:
