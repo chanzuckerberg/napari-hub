@@ -52,7 +52,7 @@ def verify_usage_timeline_has_any_non_zero_installs(context):
 
 
 @then(parsers.parse('it should have at least one non-zero commits in maintenance.timeline'))
-def verify_maintenance_timeline_has_any_non_zero_installs(context):
+def verify_maintenance_timeline_has_any_non_zero_commits(context):
     assert any(item['commits'] > 0 for item in context['maintenance']['timeline'])
 
 
@@ -88,7 +88,7 @@ def verify_it_has_zero_usage_data(context):
 
 
 @then(parsers.parse('it should have zero values for maintenance.stats'))
-def verify_it_has_zero_usage_data(context):
+def verify_it_has_zero_maintenance_data(context):
     stats = context['maintenance']['stats']
     assert stats['latest_commit_timestamp'] == 0
     assert stats['total_commits'] == 0
