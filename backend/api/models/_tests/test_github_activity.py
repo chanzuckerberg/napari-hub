@@ -66,7 +66,7 @@ class TestInstallActivity:
 
     @pytest.mark.parametrize(
         'data, expected', [
-            ([], 0),
+            ([], None),
             ([(10, 5), (24, 12), (19, 10), (100, 30)], EXPECTED_LATEST_COMMIT_TIMESTAMP),
         ])
     def test_get_latest_commit(self, github_activity_table, data, expected):
