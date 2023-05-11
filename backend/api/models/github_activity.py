@@ -1,8 +1,7 @@
 import datetime
 import logging
-import os
 import time
-from typing import List, Dict
+from typing import List, Dict, Any
 
 from dateutil.relativedelta import relativedelta
 from pynamodb.models import Model
@@ -45,7 +44,7 @@ def get_total_commits(plugin: str, repo: str) -> int:
         logging.info(f'get_total_commits for plugin={plugin} time_taken={(time.perf_counter() - start) * 1000}ms')
 
 
-def get_latest_commit(plugin: str, repo: str) -> int:
+def get_latest_commit(plugin: str, repo: str) -> Any:
     """
     Gets latest_commit timestamp stats from dynamo for a plugin
     :return int: latest_commit timestamp
@@ -58,7 +57,7 @@ def get_latest_commit(plugin: str, repo: str) -> int:
         return _GitHubActivityModel.get(plugin, f'LATEST:{repo}').timestamp
     except _GitHubActivityModel.DoesNotExist:
         logging.warning(f'No LATEST{repo}: record found for plugin={plugin}')
-        return 0
+        return None
     finally:
         logging.info(f'get_latest_commit for plugin={plugin} time_taken={(time.perf_counter() - start) * 1000}ms')
 
