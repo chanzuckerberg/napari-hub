@@ -10,7 +10,7 @@ from utils.time import get_current_timestamp, print_perf_duration
 
 class CategoryModel(Model):
     class Meta:
-        host = os.getenv('LOCAL_DYNAMO_HOST')
+        host = os.getenv("LOCAL_DYNAMO_HOST")
         region = os.environ.get("AWS_REGION", "us-west-2")
         table_name = f"{os.environ.get('STACK_NAME')}-category"
 
@@ -77,3 +77,13 @@ class CategoryModel(Model):
         print_perf_duration(start, "CategoryModel.get_all_categories()")
 
         return mapped_categories
+
+    def __eq__(self, other):
+        return isinstance(other, CategoryModel) and (
+            self.name == other.name
+            and self.version == other.version
+            and self.formatted_name == other.formatted_name
+            and self.dimension == other.dimension
+            and self.hierarchy == other.hierarchy
+            and self.label == other.label
+        )
