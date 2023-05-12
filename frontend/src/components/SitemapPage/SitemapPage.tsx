@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import { Link } from '@/components/Link';
 import { Text } from '@/components/Text';
 import { useLoadingState } from '@/context/loading';
+import { useIsFeatureFlagEnabled } from '@/store/featureFlags';
 import { I18nKeys } from '@/types/i18n';
 import { SitemapCategory, SitemapEntry } from '@/types/sitemap';
 
@@ -13,19 +14,24 @@ import { SitemapLoader } from './SitemapLoader';
 import { useCategorizedSitemapEntries } from './useCategorizedSitemapEntries';
 
 /**
- * Mapping of categories to links so that clicking on the category title will
+ * Returns a mapping of categories to links so that clicking on the category title will
  * bring users to their associated page.
  */
-const CATEGORY_TO_PATH: Record<SitemapCategory, string> = {
-  [SitemapCategory.Home]: '/',
-  [SitemapCategory.Plugin]: '/',
-  [SitemapCategory.Collection]: '/collections',
-};
+function useCategoryToPathMap(): Record<SitemapCategory, string> {
+  const isHomePageRedesign = useIsFeatureFlagEnabled('homePageRedesign');
+
+  return {
+    [SitemapCategory.Home]: '/',
+    [SitemapCategory.Plugin]: isHomePageRedesign ? '/plugins' : '/',
+    [SitemapCategory.Collection]: '/collections',
+  };
+}
 
 export function SitemapPage({ entries }: { entries: SitemapEntry[] }) {
   const [t] = useTranslation(['common']);
   const categorizedEntries = useCategorizedSitemapEntries(entries);
   const isLoading = useLoadingState();
+  const categoryToPathMap = useCategoryToPathMap();
 
   // Scroll to top if loading sitemap page.
   useEffect(() => {
@@ -64,7 +70,7 @@ export function SitemapPage({ entries }: { entries: SitemapEntry[] }) {
               )}
             >
               <Text variant="h2">
-                <Link className="underline" href={CATEGORY_TO_PATH[category]}>
+                <Link className="underline" href={categoryToPathMap[category]}>
                   {t(`common:${category}` as I18nKeys<'common'>)}
                 </Link>
               </Text>
