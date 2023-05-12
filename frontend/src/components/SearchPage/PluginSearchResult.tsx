@@ -16,7 +16,12 @@ import { FilterCategoryKeys } from '@/store/search/search.store';
 import { SearchResultMatch } from '@/store/search/search.types';
 import { HubDimension, PluginIndexData } from '@/types';
 import { I18nKeys, I18nPluginDataLabel } from '@/types/i18n';
-import { createUrl, formatDate, formatOperatingSystem } from '@/utils';
+import {
+  createUrl,
+  formatDate,
+  formatNumber,
+  formatOperatingSystem,
+} from '@/utils';
 
 import styles from './PluginSearchResult.module.scss';
 
@@ -146,21 +151,13 @@ export function PluginSearchResult({
     }));
   }
 
-  const numberFormatter = useMemo(
-    () =>
-      new Intl.NumberFormat(i18n.language, {
-        notation: 'compact',
-      }),
-    [i18n.language],
-  );
-
   // TODO consolidate with PluginGithubData component in PluginMetadata.tsx
   const items = isLoading
     ? []
     : getItems(
         {
           label: t('pluginData:labels.totalInstalls'),
-          value: numberFormatter.format(plugin.total_installs),
+          value: formatNumber(plugin.total_installs, i18n.language),
         },
 
         {
