@@ -1,16 +1,8 @@
 import dynamic from 'next/dynamic';
 import withLoadingProps from 'next-dynamic-loading-props';
-import { ReactNode } from 'react';
+import { CodeProps } from 'react-markdown/lib/ast-to-react';
 
-import { MarkdownNode } from './Markdown.types';
 import { SyntaxHighlighterProps } from './SyntaxHighlighter';
-
-interface Props {
-  className?: string;
-  inline?: boolean;
-  children?: ReactNode;
-  node: MarkdownNode;
-}
 
 /**
  * The SyntaxHighlighter component uses a library that only works on the
@@ -48,7 +40,7 @@ export function MarkdownCode({
   children,
   node,
   ...props
-}: Props) {
+}: CodeProps) {
   const match = /language-(\w+)/.exec(className || '');
   const language = match?.[1] ?? '';
 
