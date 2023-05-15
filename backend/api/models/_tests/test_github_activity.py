@@ -11,14 +11,17 @@ from api.models import github_activity
 
 PLUGIN_NAME = 'foo'
 REPO_NAME = 'foo/repo'
-EXPECTED_LATEST_COMMIT_TIMESTAMP = 1681171200000
 
 
 def to_millis(timestamp):
     return int(timestamp.timestamp()) * 1000 if timestamp else None
 
 
-def to_timestamp(start, i):
+def to_timestamp_days(start, i):
+    return to_millis(pd.Timestamp(start - relativedelta(days=i)))
+
+
+def to_timestamp_months(start, i):
     return to_millis(pd.Timestamp(start + relativedelta(months=i)))
 
 
@@ -67,13 +70,13 @@ class TestGitHubActivity:
     @pytest.mark.parametrize(
         'data, expected', [
             ([], None),
-            ([(10, 5), (24, 12), (19, 10), (100, 30)], EXPECTED_LATEST_COMMIT_TIMESTAMP),
+            ([5], to_timestamp_days(datetime.date.today(), 5)),
         ])
     def test_get_latest_commit(self, github_activity_table, data, expected):
         start = datetime.date.today()
-        for count, period in data:
+        for period in data:
             timestamp = pd.Timestamp(start - relativedelta(days=period))
-            self._put_item(github_activity_table, 'LATEST', timestamp, count)
+            self._put_item(github_activity_table, 'LATEST', timestamp, None)
 
         actual = github_activity.get_latest_commit(PLUGIN_NAME, REPO_NAME)
 
@@ -97,11 +100,11 @@ class TestGitHubActivity:
     @pytest.mark.parametrize(
         'data, expected', [
             ([], 0),
-            ([('foo', 10)], 10),
+            ([100], 100),
         ])
     def test_get_total_commits(self, github_activity_table, data, expected):
-        for plugin, count in data:
-            self._put_item(github_activity_table, 'TOTAL', None, count, plugin=plugin)
+        for count in data:
+            self._put_item(github_activity_table, 'TOTAL', None, count)
 
         actual = github_activity.get_total_commits(PLUGIN_NAME, REPO_NAME)
 
