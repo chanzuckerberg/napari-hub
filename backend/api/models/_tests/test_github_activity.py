@@ -26,7 +26,7 @@ def to_commits(i):
     return 2 if i % 2 == 0 else 0
 
 
-class TestInstallActivity:
+class TestGitHubActivity:
 
     @pytest.fixture()
     def github_activity_table(self, aws_credentials):
