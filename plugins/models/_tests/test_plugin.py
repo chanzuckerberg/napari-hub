@@ -33,23 +33,23 @@ class TestPluginModel:
         self._table = setup_dynamo()
         start_time = round(time.time() * 1000)
 
-        from models.plugin import Plugin
-        Plugin.write_manifest_data(PLUGIN, VERSION, DATA_STR)
+        from models.pluginmetadata import PluginMetadata
+        PluginMetadata.write_manifest_data(PLUGIN, VERSION, DATA_STR)
 
         self._verify(start_time=start_time)
 
     def test_write_manifest_data_failure(self, env_variables, aws_credentials):
         with pytest.raises(Exception):
-            from models.plugin import Plugin
-            Plugin.write_manifest_data(PLUGIN, VERSION, DATA_STR)
+            from models.pluginmetadata import PluginMetadata
+            PluginMetadata.write_manifest_data(PLUGIN, VERSION, DATA_STR)
 
     def test_verify_exists_in_dynamo_already_exists(self, env_variables, aws_credentials):
         self._table = setup_dynamo()
         item = create_plugin_item(PLUGIN, VERSION, DATA_JSON, True)
         self._table.put_item(Item=item)
 
-        from models.plugin import Plugin
-        Plugin.verify_exists_in_dynamo(PLUGIN, VERSION, 'foo')
+        from models.pluginmetadata import PluginMetadata
+        PluginMetadata.verify_exists_in_dynamo(PLUGIN, VERSION, 'foo')
 
         self._verify(last_updated_ts=item['last_updated_timestamp'])
 
@@ -60,8 +60,8 @@ class TestPluginModel:
         self._setup_s3(monkeypatch, complete_path)
 
         start_time = round(time.time() * 1000)
-        from models.plugin import Plugin
-        Plugin.verify_exists_in_dynamo(PLUGIN, VERSION, path)
+        from models.pluginmetadata import PluginMetadata
+        PluginMetadata.verify_exists_in_dynamo(PLUGIN, VERSION, path)
 
         self._verify(start_time=start_time)
         assert self._last_modified == self._bucket.Object(complete_path).last_modified
