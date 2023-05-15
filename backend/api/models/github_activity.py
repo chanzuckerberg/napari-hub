@@ -10,7 +10,6 @@ from pynamodb.attributes import UnicodeAttribute, NumberAttribute
 from api.models.helper import set_ddb_metadata
 
 LOGGER = logging.getLogger()
-MONTH_TYPE_FORMAT = 'MONTH:{date}:{repo}'
 
 
 @set_ddb_metadata('github-activity')
@@ -72,10 +71,11 @@ def get_maintenance_timeline(plugin: str, repo: str, month_delta: int) -> List[D
     :param str repo: Name of the GitHub repo.
     :param int month_delta: Number of months in maintenance timeline.
     """
+    month_type_format = 'MONTH:{0:%Y%m}:{1}'
     upper = datetime.datetime.now().replace(day=1) - relativedelta(months=1)
     lower = upper - relativedelta(months=month_delta - 1)
-    condition = _GitHubActivityModel.type_identifier.between(MONTH_TYPE_FORMAT.format(lower.strftime('%Y%m'), repo),
-                                                             MONTH_TYPE_FORMAT.format(upper.strftime('%Y%m'), repo))
+    condition = _GitHubActivityModel.type_identifier.between(month_type_format.format(lower, repo),
+                                                             month_type_format.format(upper, repo))
 
     start = time.perf_counter()
     results = {row.timestamp: row.commit_count for row in _GitHubActivityModel.query(plugin, condition)}
