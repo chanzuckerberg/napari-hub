@@ -27,8 +27,7 @@ def generate_manifest(event, context):
     LOGGER.info(f'Processing {key}')
     # if the manifest for this plugin already exists there's nothing do to
     existing_manifest_summary = s3.get_object_list_in_bucket(key)
-    LOGGER.info(f'Looking if manifests in bucket for {plugin}:{version} '
-                f'{existing_manifest_summary}')
+    LOGGER.info(f'Matching manifests in bucket {existing_manifest_summary}')
     if existing_manifest_summary:
         PluginMetadata.verify_exists_in_dynamo(plugin, version, key)
         LOGGER.info("Manifest exists... returning.")
@@ -43,7 +42,7 @@ def generate_manifest(event, context):
         manifest = fetch_manifest(plugin, version)
         s3_body = manifest.json()
     except Exception as e:
-        LOGGER.exception(f"Failed manifest discovery for {plugin}:{version}...")
+        LOGGER.exception(f"Failed discovery for {plugin}:{version}...")
         s3_body = json.dumps({'error': str(e)})
 
     s3.write_to_s3(s3_body, key)
