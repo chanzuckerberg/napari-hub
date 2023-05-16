@@ -14,9 +14,10 @@ exports[`<SearchBar /> should match snapshot 1`] = `
     />
     <button
       aria-label="Submit search query"
-      class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeLarge p-3 css-1h7qoeq-MuiButtonBase-root-MuiIconButton-root"
+      class="MuiButtonBase-root Mui-disabled MuiIconButton-root Mui-disabled MuiIconButton-sizeLarge p-3 css-d6egol-MuiButtonBase-root-MuiIconButton-root"
       data-testid="submitQueryButton"
-      tabindex="0"
+      disabled=""
+      tabindex="-1"
       type="button"
     >
       <svg
@@ -33,9 +34,45 @@ exports[`<SearchBar /> should match snapshot 1`] = `
           stroke-width="2"
         />
       </svg>
-      <span
-        class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-      />
+    </button>
+  </form>
+</DocumentFragment>
+`;
+
+exports[`<SearchBar /> should match snapshot when large=true 1`] = `
+<DocumentFragment>
+  <form
+    class="flex flex-auto items-center border-b-2 border-black text-xl"
+    data-testid="searchBarForm"
+  >
+    <input
+      aria-label="Search bar for searching for napari plugins."
+      class="flex flex-auto border-none outline-none bg-transparent placeholder-gray-500 w-0"
+      data-testid="searchBarInput"
+      value=""
+    />
+    <button
+      aria-label="Submit search query"
+      class="MuiButtonBase-root Mui-disabled MuiIconButton-root Mui-disabled MuiIconButton-sizeLarge p-3 css-d6egol-MuiButtonBase-root-MuiIconButton-root"
+      data-testid="submitQueryButton"
+      disabled=""
+      tabindex="-1"
+      type="button"
+    >
+      <svg
+        class="h-5 w-5 h-[1.375rem] w-[1.375rem]"
+        fill="none"
+        height="16"
+        viewBox="0 0 16 16"
+        width="16"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M8.32004 7.68001L0.746704 15.2533M10.6667 9.60001C13.0134 9.60001 14.9334 7.68001 14.9334 5.33335C14.9334 2.98668 13.0134 1.06668 10.6667 1.06668C8.32004 1.06668 6.40004 2.98668 6.40004 5.33335C6.40004 7.68001 8.32004 9.60001 10.6667 9.60001Z"
+          stroke="black"
+          stroke-width="2"
+        />
+      </svg>
     </button>
   </form>
 </DocumentFragment>
