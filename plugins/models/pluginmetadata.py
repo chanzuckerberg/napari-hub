@@ -37,13 +37,16 @@ class PluginMetadata(Model):
                        version_type=version_type,
                        version=version, data=data).save()
         duration = (time.perf_counter() - start) * 1000
-        logging.info(f'Put {plugin} {version_type} record time taken={duration}ms')
+        logging.info(f'Put {plugin}:{version_type} record timetaken={duration}ms')
 
     @staticmethod
     def verify_exists_in_dynamo(plugin, version, path):
         try:
             PluginMetadata.get(plugin, _get_version_type(version))
+            LOGGER.info(f'Manifests exists in dynamo for {plugin}:{version}')
         except PluginMetadata.DoesNotExist:
-            logging.warning(f'distribution record does not exist for {plugin} version={version} creating one')
-            PluginMetadata.write_manifest_data(plugin, version, S3Adapter()
-                                               .get_from_s3(path))
+            logging.warning(f'distribution record does not exist for {plugin} '
+                            f'version={version} creating one')
+            PluginMetadata.write_manifest_data(plugin,
+                                               version,
+                                               S3Adapter().get_from_s3(path))

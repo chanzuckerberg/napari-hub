@@ -28,8 +28,8 @@ class S3Adapter:
         try:
             obj = self._client.get_object(Bucket=self._bucket, Key=complete_path)
             return obj['Body'].read().decode('utf-8')
-        except Exception as e:
-            LOGGER.error(f'Error when getting object from {self._bucket} path={complete_path}', e)
+        except Exception:
+            LOGGER.exception(f'Error when getting object from {self._bucket} path={complete_path}')
             return "{}"
         finally:
             duration = (time.perf_counter() - start) * 1000
@@ -41,8 +41,8 @@ class S3Adapter:
         start = time.perf_counter()
         try:
             self._client.put_object(Bucket=self._bucket, Key=complete_path, Body=data)
-        except Exception as e:
-            LOGGER.error(f'Error when writing object to {self._bucket} path={complete_path}', e)
+        except Exception:
+            LOGGER.exception(f'Error when writing object to {self._bucket} path={complete_path}')
         finally:
             duration = (time.perf_counter() - start) * 1000
             LOGGER.info(f'Writing object to {self._bucket} path={complete_path} time taken={duration}')
@@ -52,7 +52,8 @@ class S3Adapter:
         complete_prefix = self._get_complete_path(prefix)
         try:
             bucket_list = self._client.list_objects(Bucket=self._bucket, Prefix=complete_prefix)
-            return ['Contents'] if 'Contents' in bucket_list else []
+            LOGGER.info(f'bucket_list={bucket_list}')
+            return bucket_list.get('Contents', [])
         finally:
             duration = (time.perf_counter() - start) * 1000
             LOGGER.info(f'Getting object list from {self._bucket} prefix={complete_prefix} time taken={duration}')
