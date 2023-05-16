@@ -24,7 +24,7 @@ export function useCategorizedSitemapEntries(entries: SitemapEntry[]) {
       [SitemapCategory.Home]: entries.filter(
         (entry) =>
           entry.type === SitemapCategory.Home &&
-          !['/', '/sitemap', '/collections'].includes(
+          !['/', '/sitemap', '/collections', '/plugins'].includes(
             createUrl(entry.url).pathname,
           ),
       ),

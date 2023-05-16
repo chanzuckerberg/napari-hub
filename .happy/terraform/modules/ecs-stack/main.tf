@@ -113,6 +113,19 @@ module install_dynamodb_table {
                           {
                             name = "type_timestamp"
                             type = "S"
+                          },
+                          {
+                            name = "is_total"
+                            type = "S"
+                          }
+                        ]
+   global_secondary_indexes = [
+                          {
+                            name               = "${local.custom_stack_name}-total-installs"
+                            hash_key           = "plugin_name"
+                            range_key          = "is_total"
+                            projection_type    = "INCLUDE"
+                            non_key_attributes = ["install_count", "last_updated_timestamp"]
                           }
                         ]
   autoscaling_enabled = var.env == "dev" ? false : true
@@ -347,8 +360,8 @@ resource aws_ssm_parameter data_workflow_config {
 resource aws_sqs_queue data_workflows_queue {
   name                        = "${local.custom_stack_name}-data-workflows"
   delay_seconds               = 0
-  message_retention_seconds   = 86400
-  receive_wait_time_seconds   = 10
+  message_retention_seconds   = var.env == "dev" ? 600 : 86400
+  receive_wait_time_seconds   = 20
   visibility_timeout_seconds  = 300
   tags                        = var.tags
 }
@@ -392,6 +405,14 @@ resource aws_cloudwatch_event_target update_target {
           httpMethod = "POST",
           headers = {"X-API-Key": random_uuid.api_key.result}
         })
+    }
+}
+
+resource aws_cloudwatch_event_target plugin_target_sqs {
+    rule = aws_cloudwatch_event_rule.update_rule.name
+    arn = aws_sqs_queue.data_workflows_queue.arn
+    input_transformer {
+        input_template = jsonencode({type = "plugin"})
     }
 }
 
@@ -476,8 +497,9 @@ data aws_iam_policy_document backend_policy {
       module.install_dynamodb_table.table_arn,
       module.github_dynamodb_table.table_arn,
       module.category_dynamodb_table.table_arn,
+      module.plugin_metadata_dynamodb_table.table_arn,
       module.plugin_dynamodb_table.table_arn,
-      module.plugin_blocked_dynamodb_table.table_arn
+      module.plugin_blocked_dynamodb_table.table_arn,
     ]
   }
 
@@ -519,9 +541,11 @@ data aws_iam_policy_document data_workflows_policy {
     resources = [
         module.install_dynamodb_table.table_arn,
         module.github_dynamodb_table.table_arn,
+        module.category_dynamodb_table.table_arn,
         module.plugin_dynamodb_table.table_arn,
         module.plugin_metadata_dynamodb_table.table_arn,
         module.plugin_blocked_dynamodb_table.table_arn,
+        "${module.plugin_dynamodb_table.table_arn}/index/*",
     ]
   }
   statement {

@@ -1,16 +1,19 @@
-import { GetServerSideProps } from 'next';
-
 import { getSitemapEntries } from '@/utils/sitemap.server';
+import { getServerSidePropsHandler } from '@/utils/ssr';
 
 /**
  * @returns XML string for the dynamic sitemap
  */
-async function renderSiteMap(): Promise<string> {
+async function renderSiteMap(filteredPages: RegExp[]): Promise<string> {
   const { SitemapStream, streamToPromise } = await import('sitemap');
 
   const entries = await getSitemapEntries();
   const stream = new SitemapStream({ hostname: process.env.FRONTEND_URL });
-  entries.forEach((entry) => stream.write(entry));
+  entries
+    .filter(
+      (entry) => !filteredPages.some((pattern) => pattern.exec(entry.url)),
+    )
+    .forEach((entry) => stream.write(entry));
   stream.end();
   const result = await streamToPromise(stream);
 
@@ -22,17 +25,24 @@ async function renderSiteMap(): Promise<string> {
  * implemented outside of `pages/api` so that the URL can be located at the root
  * of the URL.
  */
-export const getServerSideProps: GetServerSideProps = async ({ res }) => {
-  const sitemapXml = await renderSiteMap();
+export const getServerSideProps = getServerSidePropsHandler({
+  async getProps({ res }, features) {
+    const filteredPages: RegExp[] = [];
+    if (features.homePageRedesign.value !== 'on') {
+      filteredPages.push(/\/plugins$/);
+    }
 
-  res.setHeader('Content-Type', 'text/xml');
-  res.write(sitemapXml);
-  res.end();
+    const sitemapXml = await renderSiteMap(filteredPages);
 
-  return {
-    props: {},
-  };
-};
+    res.setHeader('Content-Type', 'text/xml');
+    res.write(sitemapXml);
+    res.end();
+
+    return {
+      props: {},
+    };
+  },
+});
 
 // Default export to prevent next.js errors
 export default function serverSitemap(): void {}

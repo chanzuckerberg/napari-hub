@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { ButtonIcon } from 'czifui';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
-import { HTMLProps, useEffect, useState } from 'react';
+import { HTMLProps, InputHTMLAttributes, useEffect, useState } from 'react';
 import { useSnapshot } from 'valtio';
 
 import { Close, Search } from '@/components/icons';
@@ -24,6 +24,11 @@ interface Props extends HTMLProps<HTMLFormElement> {
    * Render large variant of search bar with a larger font size and search icon.
    */
   large?: boolean;
+
+  /**
+   * Additional props to pass to the input element.
+   */
+  inputProps?: InputHTMLAttributes<HTMLInputElement>;
 }
 
 /**
@@ -38,7 +43,7 @@ interface Props extends HTMLProps<HTMLFormElement> {
  *
  * This makes the SearchBar component re-useable for non-search enabled pages.
  */
-export function SearchBar({ large, ...props }: Props) {
+export function SearchBar({ large, inputProps, ...props }: Props) {
   const [t] = useTranslation(['common']);
   const router = useRouter();
   const { searchStore } = useSearchStore();
@@ -133,6 +138,9 @@ export function SearchBar({ large, ...props }: Props) {
           // Remove white colored input background
           'bg-transparent',
 
+          // Change placeholder color
+          'placeholder-gray-500',
+
           /*
             Inputs have a default width defined by the browser, so we have to
             set this explicitly to make the input flexible:
@@ -145,6 +153,7 @@ export function SearchBar({ large, ...props }: Props) {
           setLocalQuery(value);
         }}
         value={localQuery}
+        {...inputProps}
       />
 
       <ButtonIcon

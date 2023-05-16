@@ -46,32 +46,38 @@ class InstallActivity(Model):
     type_timestamp = UnicodeAttribute(range_key=True)
     granularity = UnicodeAttribute(attr_name='type')
     timestamp = NumberAttribute(null=True)
+    is_total = UnicodeAttribute(null=True)
     install_count = NumberAttribute()
     last_updated_timestamp = NumberAttribute(default_for_new=get_current_timestamp)
 
     def __eq__(self, other):
         if isinstance(other, InstallActivity):
-            return ((self.plugin_name, self.type_timestamp, self.granularity, self.timestamp, self.install_count) == 
-                    (other.plugin_name, other.type_timestamp, other.granularity, other.timestamp, other.install_count))
+            return ((self.plugin_name, self.type_timestamp, self.granularity,
+                     self.timestamp, self.install_count, self.is_total) ==
+                    (other.plugin_name, other.type_timestamp, other.granularity,
+                     other.timestamp, other.install_count, other.is_total))
         return False
 
 
-def transform_and_write_to_dynamo(data: dict[str, List], activity_type: InstallActivityType) -> None:
+def transform_and_write_to_dynamo(data: dict[str, List],
+                                  activity_type: InstallActivityType) -> None:
     LOGGER.info(f'Starting item creation for install-activity type={activity_type.name}')
-
     batch = InstallActivity.batch_write()
-
-    start = time.perf_counter()
     count = 0
+    is_total = 'true' if activity_type is InstallActivityType.TOTAL else None
+    start = time.perf_counter()
     for plugin_name, install_activities in data.items():
         for activity in install_activities:
             timestamp = activity['timestamp']
 
-            item = InstallActivity(plugin_name.lower(),
-                                   activity_type.format_to_type_timestamp(timestamp),
-                                   granularity=activity_type.name,
-                                   timestamp=activity_type.format_to_timestamp(timestamp),
-                                   install_count=activity['count'])
+            item = InstallActivity(
+                plugin_name=plugin_name.lower(),
+                type_timestamp=activity_type.format_to_type_timestamp(timestamp),
+                granularity=activity_type.name,
+                timestamp=activity_type.format_to_timestamp(timestamp),
+                install_count=activity['count'],
+                is_total=is_total,
+            )
             batch.save(item)
             count += 1
 
