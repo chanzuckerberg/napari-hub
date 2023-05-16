@@ -4,14 +4,14 @@ variable alarms_enabled {
   default     = true
 }
 
-variable backend_lambda_log_group_name {
-  type        = string
-  description = "Please provide backend lambda's log group name"
-}
-
 variable backend_lambda_function_name {
   type        = string
   description = "Please provide backend lambda function's name"
+}
+
+variable backend_lambda_log_group_name {
+  type        = string
+  description = "Please provide backend lambda's log group name"
 }
 
 variable env {
@@ -24,6 +24,10 @@ variable data_workflows_lambda_function_name {
   description = "Please provide data-workflows lambda function's name"
 }
 
+variable data_workflows_lambda_log_group_name {
+  type        = string
+  description = "Please provide data_workflows lambda's log group name"
+}
 
 variable metrics_enabled {
   type        = bool

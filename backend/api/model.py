@@ -277,6 +277,7 @@ def update_cache():
         report_metrics('napari_hub.plugins.count', len(visibility_plugins['public']), ['visibility:public'])
         report_metrics('napari_hub.plugins.count', len(visibility_plugins['hidden']), ['visibility:hidden'])
         report_metrics('napari_hub.plugins.excluded', len(excluded_plugins))
+        print("plugin update successful")
     else:
         send_alert(f"({datetime.now()})Actions Required! Failed to query pypi for "
                    f"napari plugin packages, switching to backup analysis dump")

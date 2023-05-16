@@ -674,11 +674,12 @@ module alarm_and_monitoring {
   source = "../cloudwatch-alarm"
   env = var.env
   stack_name = local.custom_stack_name
-  metrics_enabled = true
-  alarms_enabled = true
-  backend_lambda_log_group_name = module.backend_lambda.cloudwatch_log_group_name
+  metrics_enabled = false
+  alarms_enabled = false
   backend_lambda_function_name = module.backend_lambda.function_name
+  backend_lambda_log_group_name = module.backend_lambda.cloudwatch_log_group_name
   data_workflows_lambda_function_name = module.data_workflows_lambda.function_name
+  data_workflows_lambda_log_group_name = module.data_workflows_lambda.cloudwatch_log_group_name
   plugins_lambda_function_name = module.plugins_lambda.function_name
   tags = var.tags
 }
