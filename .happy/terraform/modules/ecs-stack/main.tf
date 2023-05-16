@@ -360,8 +360,8 @@ resource aws_ssm_parameter data_workflow_config {
 resource aws_sqs_queue data_workflows_queue {
   name                        = "${local.custom_stack_name}-data-workflows"
   delay_seconds               = 0
-  message_retention_seconds   = 86400
-  receive_wait_time_seconds   = 10
+  message_retention_seconds   = var.env == "dev" ? 600 : 86400
+  receive_wait_time_seconds   = 20
   visibility_timeout_seconds  = 300
   tags                        = var.tags
 }
