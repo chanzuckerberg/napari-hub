@@ -37,7 +37,7 @@ class PluginMetadata(Model):
                        version_type=version_type,
                        version=version, data=data).save()
         duration = (time.perf_counter() - start) * 1000
-        logging.info(f'Put {plugin}:{version_type} record timetaken={duration}ms')
+        logging.info(f'Put {plugin}:{version} record time taken={duration}ms')
 
     @staticmethod
     def verify_exists_in_dynamo(plugin, version, path):

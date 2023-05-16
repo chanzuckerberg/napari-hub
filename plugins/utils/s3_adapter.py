@@ -47,11 +47,11 @@ class S3Adapter:
                                     Key=complete_path,
                                     Body=data)
         except Exception:
-            LOGGER.exception(f'Error when writing object to {self._bucket} '
+            LOGGER.exception(f'Error when writing to {self._bucket} '
                              f'path={complete_path}')
         finally:
             duration = (time.perf_counter() - start) * 1000
-            LOGGER.info(f'Writing object to {self._bucket} path={complete_path}'
+            LOGGER.info(f'Writing to {self._bucket} path={complete_path}'
                         f' time taken={duration}')
 
     def get_object_list_in_bucket(self, path=''):
@@ -60,9 +60,8 @@ class S3Adapter:
         try:
             bucket_list = self._client.list_objects(Bucket=self._bucket,
                                                     Prefix=complete_path)
-            LOGGER.info(f'bucket_list={bucket_list}')
             return bucket_list.get('Contents', [])
         finally:
             duration = (time.perf_counter() - start) * 1000
-            LOGGER.info(f'Getting object list from {self._bucket} '
+            LOGGER.info(f'Listing objects in {self._bucket} '
                         f'prefix={complete_path} time taken={duration}')
