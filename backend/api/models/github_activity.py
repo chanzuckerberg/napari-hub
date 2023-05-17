@@ -59,7 +59,7 @@ def get_latest_commit(plugin: str, repo: str) -> Any:
         logging.warning(f'No LATEST{repo}: record found for plugin={plugin}')
         return None
     finally:
-        logging.info(f'get_latest_commit for plugin={plugin} time_taken={(time.perf_counter() - start) * 1000}ms')
+        logging.info(f'get_latest_commit for plugin={plugin} repo={repo} time_taken={(time.perf_counter() - start) * 1000}ms')
 
 
 def get_maintenance_timeline(plugin: str, repo: str, month_delta: int) -> List[Dict[str, int]]:
@@ -80,7 +80,7 @@ def get_maintenance_timeline(plugin: str, repo: str, month_delta: int) -> List[D
     start = time.perf_counter()
     results = {row.timestamp: row.commit_count for row in _GitHubActivityModel.query(plugin, condition)}
     duration = (time.perf_counter() - start) * 1000
-    logging.info(f'Query for plugin={plugin} month_delta={month_delta} time_taken={duration}ms')
+    logging.info(f'Query for plugin={plugin} repo={repo} month_delta={month_delta} time_taken={duration}ms')
 
     upper = upper.replace(hour=0, minute=0, second=0, microsecond=0, tzinfo=datetime.timezone.utc)
     dates = [int((upper - relativedelta(months=i)).timestamp()) * 1000 for i in range(month_delta - 1, -1, -1)]
