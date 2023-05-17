@@ -41,7 +41,7 @@ def get_total_commits(plugin: str, repo: str) -> int:
         logging.warning(f'No TOTAL:{repo} record found for plugin={plugin}')
         return 0
     finally:
-        logging.info(f'get_total_commits for plugin={plugin} time_taken={(time.perf_counter() - start) * 1000}ms')
+        logging.info(f'get_total_commits for plugin={plugin} repo={repo} time_taken={(time.perf_counter() - start) * 1000}ms')
 
 
 def get_latest_commit(plugin: str, repo: str) -> Any:
