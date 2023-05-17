@@ -10,23 +10,19 @@ from api.models._tests.conftest import create_dynamo_table
 from api.models import github_activity
 
 PLUGIN_NAME = 'foo'
-REPO_NAME = 'foo/repo'
+REPO_NAME = 'repo/foo'
 
 
-def to_millis(timestamp):
-    return int(timestamp.timestamp()) * 1000 if timestamp else None
-
-
-def to_timestamp_days(start, i):
-    return to_millis(pd.Timestamp(start - relativedelta(days=i)))
-
-
-def to_timestamp_months(start, i):
-    return to_millis(pd.Timestamp(start + relativedelta(months=i)))
+def to_timestamp(timestamp):
+    if not timestamp:
+        return None
+    elif isinstance(timestamp, int):
+        return timestamp
+    return int(timestamp.timestamp()) * 1000
 
 
 def to_commits(i):
-    return 2 if i % 2 == 0 else 0
+    return i + 2 if i % 2 == 0 else 0
 
 
 class TestGitHubActivity:
@@ -50,33 +46,21 @@ class TestGitHubActivity:
             'type_identifier': self._to_type_identifier(granularity, repo, timestamp),
             'commit_count': commit_count,
             'granularity': granularity,
-            'timestamp': to_millis(timestamp),
+            'timestamp': to_timestamp(timestamp),
         }
         table.put_item(Item=item)
-
-    def test_get_total_commits_has_no_result(self, github_activity_table):
-        actual = github_activity.get_total_commits(PLUGIN_NAME, REPO_NAME)
-
-        assert actual == 0
-
-    def test_get_total_commits_has_result(self, github_activity_table):
-        expected = 173
-        self._put_item(github_activity_table, 'TOTAL', None, expected)
-
-        actual = github_activity.get_total_commits(PLUGIN_NAME, REPO_NAME)
-
-        assert actual == expected
 
     @pytest.mark.parametrize(
         'data, expected', [
             ([], None),
-            ([5], to_timestamp_days(datetime.date.today(), 5)),
+            ([('bar', 'repo/bar', 123456789)], None),
+            ([(PLUGIN_NAME, 'repo/foo2', 123456789)], None),
+            ([('bar', REPO_NAME, 123456789)], None),
+            ([(PLUGIN_NAME, REPO_NAME, 123456789)], 123456789),
         ])
     def test_get_latest_commit(self, github_activity_table, data, expected):
-        start = datetime.date.today()
-        for period in data:
-            timestamp = pd.Timestamp(start - relativedelta(days=period))
-            self._put_item(github_activity_table, 'LATEST', timestamp, None)
+        for plugin, repo, timestamp in data:
+            self._put_item(github_activity_table, 'LATEST', timestamp, None, plugin=plugin, repo=repo)
 
         actual = github_activity.get_latest_commit(PLUGIN_NAME, REPO_NAME)
 
@@ -100,12 +84,15 @@ class TestGitHubActivity:
     @pytest.mark.parametrize(
         'data, expected', [
             ([], 0),
-            ([100], 100),
+            ([('bar', 'repo/bar', 100)], 0),
+            ([(PLUGIN_NAME, 'repo/foo2', 100)], 0),
+            ([('bar', REPO_NAME, 100)], 0),
+            ([(PLUGIN_NAME, REPO_NAME, 100)], 100),
         ])
     def test_get_total_commits(self, github_activity_table, data, expected):
-        for count in data:
-            self._put_item(github_activity_table, 'TOTAL', None, count)
+        for plugin, repo, count in data:
+            self._put_item(github_activity_table, 'TOTAL', None, count, plugin=plugin, repo=repo)
 
-        actual = github_activity.get_total_commits(PLUGIN_NAME, REPO_NAME)
+        actual = github_activity.get_total_commits(plugin=PLUGIN_NAME, repo=REPO_NAME)
 
         assert actual == expected

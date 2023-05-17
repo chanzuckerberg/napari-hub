@@ -21,7 +21,7 @@ def to_timestamp(start, i):
 
 
 def to_installs(i):
-    return 2 if i % 2 == 0 else 0
+    return i + 2 if i % 2 == 0 else 0
 
 
 class TestInstallActivity:

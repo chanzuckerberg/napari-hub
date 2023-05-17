@@ -10,7 +10,7 @@ def _to_timestamp(i):
 
 
 def _generate_timeline(start_range, value_key, to_value, timestamp_key='timestamp'):
-    return [{timestamp_key: _to_timestamp(i), value_key: to_value(i)} for i in range(start_range, 0)]
+    return [{timestamp_key: _to_timestamp(i), value_key: to_value(-i)} for i in range(start_range, 0)]
 
 
 def generate_installs_timeline(start_range, ts_key='timestamp', to_value=lambda i: 2 if i % 2 == 0 else 0):
