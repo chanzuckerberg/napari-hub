@@ -671,7 +671,7 @@ resource "aws_lambda_function_event_invoke_config" "async-config" {
 }
 
 locals {
-  monitoring_enabled = var.env == "prod" || var.env == "dev"
+  monitoring_enabled = var.env == "prod" || var.env == "staging"
 }
 
 module alarm_and_monitoring {
