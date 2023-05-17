@@ -629,7 +629,7 @@ def _get_maintenance_data(plugin: str, limit: int, use_dynamo_for_maintenance: b
     :returns (dict[str, Any]): A dict with the structure {'timeline': List, 'stats': Dict[str, int]}
     :params str plugin: Name of the plugin in lowercase.
     :params int limit: Sets the number of records to be fetched for timeline.
-    :params bool use_dynamo_for_maintenance: Fetch github data from dynamo if True, else fetch from s3.
+    :params bool use_dynamo_for_maintenance: Fetch GitHub data from dynamo if True, else fetch from s3.
     """
     if use_dynamo_for_maintenance:
         repo = _get_repo_from_plugin(plugin)
