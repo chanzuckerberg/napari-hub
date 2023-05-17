@@ -115,7 +115,8 @@ services:
   data-workflows:
     image: '${DOCKER_REPO}napari-hub-dev-data-workflows'
     build:
-      context: data-workflows
+      context: .
+      dockerfile: data-workflows/Dockerfile
       cache_from:
         - '${DOCKER_REPO}napari-hub-dev-data-workflows:${STACK_NAME}'
       args:
@@ -124,8 +125,6 @@ services:
         - HAPPY_BRANCH
         - HAPPY_TAG
     restart: always
-    depends_on:
-      - localstack
     ports:
       - '5000:5000'
     environment:
