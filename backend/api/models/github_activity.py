@@ -71,10 +71,11 @@ def get_maintenance_timeline(plugin: str, repo: str, month_delta: int) -> List[D
     :param str repo: Name of the GitHub repo.
     :param int month_delta: Number of months in maintenance timeline.
     """
+    MONTH_TYPE_IDENTIFIER = f'MONTH:{{timestamp:%Y%m}}:{repo}'
     upper = datetime.datetime.now().replace(day=1) - relativedelta(months=1)
     lower = upper - relativedelta(months=month_delta - 1)
-    condition = _GitHubActivityModel.type_identifier.between('MONTH:{lower:%Y%m}:{repo}'.format(lower=lower, repo=repo),
-                                                             'MONTH:{upper:%Y%m}:{repo}'.format(upper=upper, repo=repo))
+    condition = _GitHubActivityModel.type_identifier.between(MONTH_TYPE_IDENTIFIER.format(timestamp=lower, repo=repo),
+                                                             MONTH_TYPE_IDENTIFIER.format(timestamp=upper, repo=repo))
 
     start = time.perf_counter()
     results = {row.timestamp: row.commit_count for row in _GitHubActivityModel.query(plugin, condition)}
