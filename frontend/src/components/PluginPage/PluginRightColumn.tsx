@@ -80,9 +80,7 @@ export function PluginRightColumn() {
             <SupportInfo className="mt-sds-xl screen-495:mt-sds-xxl" />
           )}
         />
-      </div>
 
-      <div className="sticky top-[110px]">
         <PluginTOC />
       </div>
     </div>
