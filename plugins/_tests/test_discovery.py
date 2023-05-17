@@ -5,8 +5,14 @@ import pytest
 from botocore.exceptions import ClientError
 from moto import mock_s3, mock_dynamodb
 
-from conftest import TEST_BUCKET_PATH, create_plugin_item, setup_dynamo, \
-    verify_plugin_item, setup_s3, put_s3_object
+from conftest import (
+    TEST_BUCKET_PATH,
+    create_plugin_item,
+    put_s3_object,
+    setup_dynamo,
+    setup_s3,
+    verify_plugin_item,
+)
 
 TEST_PLUGIN = 'test-plugin'
 TEST_VERSION = '0.0.1'
