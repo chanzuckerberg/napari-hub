@@ -670,12 +670,16 @@ resource "aws_lambda_function_event_invoke_config" "async-config" {
   maximum_retry_attempts       = 0
 }
 
+locals {
+  monitoring_enabled = var.env == "prod" || var.env == "dev"
+}
+
 module alarm_and_monitoring {
   source = "../cloudwatch-alarm"
   env = var.env
   stack_name = local.custom_stack_name
-  metrics_enabled = false
-  alarms_enabled = false
+  metrics_enabled = local.monitoring_enabled
+  alarms_enabled = local.monitoring_enabled
   backend_lambda_function_name = module.backend_lambda.function_name
   backend_lambda_log_group_name = module.backend_lambda.cloudwatch_log_group_name
   data_workflows_lambda_function_name = module.data_workflows_lambda.function_name

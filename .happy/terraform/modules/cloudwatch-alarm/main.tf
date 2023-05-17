@@ -4,9 +4,13 @@ locals {
 }
 
 resource aws_sns_topic alarm_sns {
-  name          = "${var.stack_name}-alarm"
-  count         = var.alarms_enabled ? 1 : 0
-  tags          = var.tags
+  name  = "${var.stack_name}-alarm"
+  count = var.alarms_enabled ? 1 : 0
+  tags  = var.tags
+}
+
+locals {
+  alarm_sns_arn = var.alarms_enabled ? aws_sns_topic.alarm_sns[0].arn : ""
 }
 
 data aws_iam_policy_document sns_topic_policy {
@@ -21,13 +25,13 @@ data aws_iam_policy_document sns_topic_policy {
       identifiers = ["cloudwatch.amazonaws.com"]
     }
 
-    resources = [aws_sns_topic.alarm_sns[0].arn]
+    resources = [local.alarm_sns_arn]
     sid = "__default_statement_ID"
   }
 }
 
 resource aws_sns_topic_policy alarm_sns_policy {
-  arn    = aws_sns_topic.alarm_sns[0].arn
+  arn    = local.alarm_sns_arn
   policy = data.aws_iam_policy_document.sns_topic_policy.json
   count  = var.alarms_enabled ? 1 : 0
 }
@@ -88,18 +92,25 @@ resource aws_cloudwatch_log_metric_filter data_workflows_metrics_update_successf
   }
 }
 
+locals {
+  backend_api_500_log_metric_name = var.metrics_enabled ? aws_cloudwatch_log_metric_filter.backend_api_500_log_metric[0].name : "backend_api_500_log_metric"
+  backend_plugin_update_successful_name = var.metrics_enabled ? aws_cloudwatch_log_metric_filter.backend_plugin_update_successful[0].name : "backend_plugin_update_successful"
+  backend_metrics_update_successful_name = var.metrics_enabled ? aws_cloudwatch_log_metric_filter.backend_metrics_update_successful[0].name : "backend_metrics_update_successful"
+  data_workflows_metrics_update_successful_name = var.metrics_enabled ? aws_cloudwatch_log_metric_filter.data_workflows_metrics_update_successful[0].name : "data_workflows_metrics_update_successful"
+}
+
 module backend_api_500_alarm {
   source  = "terraform-aws-modules/cloudwatch/aws//modules/metric-alarm"
   version = "3.3.0"
 
-  alarm_actions       = [aws_sns_topic.alarm_sns[0].arn]
+  alarm_actions       = [local.alarm_sns_arn]
   alarm_name          = "${var.stack_name}-backend-500-alarm"
   alarm_description   = "API returning 500s"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   create_metric_alarm = var.alarms_enabled
   datapoints_to_alarm = 1
   evaluation_periods  = 2
-  metric_name         = aws_cloudwatch_log_metric_filter.backend_api_500_log_metric[0].name
+  metric_name         = local.backend_api_500_log_metric_name
   namespace           = local.metrics_namespace
   period              = local.period
   statistic           = "Sum"
@@ -111,14 +122,14 @@ module plugins_missing_update_alarm {
   source  = "terraform-aws-modules/cloudwatch/aws//modules/metric-alarm"
   version = "3.3.0"
 
-  alarm_actions       = [aws_sns_topic.alarm_sns[0].arn]
+  alarm_actions       = [local.alarm_sns_arn]
   alarm_name          = "${var.stack_name}-plugins-missing-update-alarm"
   alarm_description   = "Plugin update failure"
   comparison_operator = "LessThanThreshold"
   create_metric_alarm = var.alarms_enabled
   datapoints_to_alarm = 2
   evaluation_periods  = 3
-  metric_name         = aws_cloudwatch_log_metric_filter.backend_plugin_update_successful[0].name
+  metric_name         = local.backend_plugin_update_successful_name
   namespace           = local.metrics_namespace
   period              = local.period
   statistic           = "Sum"
@@ -130,7 +141,7 @@ module metrics_missing_update_alarm {
   source  = "terraform-aws-modules/cloudwatch/aws//modules/metric-alarm"
   version = "3.3.0"
 
-  alarm_actions       = [aws_sns_topic.alarm_sns[0].arn]
+  alarm_actions       = [local.alarm_sns_arn]
   alarm_name          = "${var.stack_name}-metrics-missing-update-alarm"
   alarm_description   = "Metrics update failure"
   comparison_operator = "LessThanThreshold"
@@ -148,7 +159,7 @@ module metrics_missing_update_alarm {
 
     metric = [{
       namespace   = local.metrics_namespace
-      metric_name = aws_cloudwatch_log_metric_filter.backend_metrics_update_successful[0].name
+      metric_name = local.backend_metrics_update_successful_name
       period      = 86400
       stat        = "Sum"
       unit        = "Count"
@@ -158,7 +169,7 @@ module metrics_missing_update_alarm {
 
     metric = [{
       namespace   = local.metrics_namespace
-      metric_name = aws_cloudwatch_log_metric_filter.data_workflows_metrics_update_successful[0].name
+      metric_name = local.data_workflows_metrics_update_successful_name
       period      = 86400
       stat        = "Sum"
       unit        = "Count"
@@ -229,6 +240,6 @@ module lambda_errors_alarm {
     }]
     }]
 
-  alarm_actions = [aws_sns_topic.alarm_sns[0].arn]
+  alarm_actions = [local.alarm_sns_arn]
   tags = var.tags
 }
