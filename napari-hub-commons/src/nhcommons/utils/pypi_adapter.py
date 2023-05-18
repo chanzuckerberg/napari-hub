@@ -5,8 +5,8 @@ from typing import Dict, List
 import requests
 from requests import HTTPError
 
-from nhcommons.utils.parser import get_attribute
-from github_adapter import get_repo_url
+from .custom_parser import get_attribute
+from .github_adapter import get_repo_url
 
 
 _NAME_PATTERN = re.compile('class="package-snippet__name">(.+)</span>')

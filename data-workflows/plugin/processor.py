@@ -1,7 +1,7 @@
 from nhcommons.utils import pypi_adapter
 
 from nhcommons.models.plugin_metadata import (
-    update_pypi_record,
+    put_pypi_record,
 )
 from nhcommons.models.plugin import (
     get_all_latest_plugin_by_plugin_name,
@@ -27,11 +27,11 @@ def update_plugin():
     for name, plugin in dynamo_latest_plugins.items():
         if name not in pypi_latest_plugins or \
                 pypi_latest_plugins.get(name) != plugin.version:
-            update_pypi_record(
+            put_pypi_record(
                 plugin=name, version=plugin.version, is_latest=False
             )
 
 
 def _update_for_new_plugin(plugin_name: str, version: str):
-    update_pypi_record(plugin=plugin_name, version=version, is_latest=True)
+    put_pypi_record(plugin=plugin_name, version=version, is_latest=True)
     pass

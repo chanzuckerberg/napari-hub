@@ -20,11 +20,11 @@ def get_stack_name():
 
 
 def set_ddb_metadata(table_name: str,
-                     dynamo_model_cls: Model = None) -> Union[Model, partial]:
+                     dynamo_model_cls: PynamoWrapper = None) -> Union[PynamoWrapper, partial]:
     """
     Sets up the Meta class of dynamo model with required values
-    :returns Union[Model, functools.partial]: if all parameters are available,
-    returns updated Model class, else returns a partial function
+    :returns Union[PynamoWrapper, functools.partial]: if all parameters are available,
+    returns updated PynamoWrapper class, else returns a partial function
 
     :params str table_name: Name of the table in dynamo
     :params Model dynamo_model_cls: Model class inherited from pynamo.Model

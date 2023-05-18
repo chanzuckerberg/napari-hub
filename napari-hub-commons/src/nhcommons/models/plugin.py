@@ -6,9 +6,7 @@ from pynamodb.attributes import (
     BooleanAttribute
 )
 from pynamodb.indexes import GlobalSecondaryIndex, AllProjection
-from pynamodb.models import Model
-
-from helper import (set_ddb_metadata, get_stack_name)
+from .helper import (set_ddb_metadata, get_stack_name, PynamoWrapper)
 
 
 class _LatestPluginIndex(GlobalSecondaryIndex):
@@ -23,10 +21,7 @@ class _LatestPluginIndex(GlobalSecondaryIndex):
 
 
 @set_ddb_metadata('plugin')
-class _Plugin(Model):
-
-    class Meta:
-        pass
+class _Plugin(PynamoWrapper):
 
     name = UnicodeAttribute(hash_key=True)
     version = UnicodeAttribute(range_key=True)

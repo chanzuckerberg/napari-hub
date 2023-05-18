@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class PluginType(Enum):
+class PluginMetadataType(Enum):
 
     def __new__(cls):
         return object.__new__(cls)

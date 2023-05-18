@@ -1,7 +1,7 @@
 import re
 from typing import Dict
 
-from nhcommons.utils.parser import get_attribute
+from .custom_parser import get_attribute
 
 _URL_PATTERN = re.compile("^https://github\\.com/([^/]+)/([^/]+)")
 
