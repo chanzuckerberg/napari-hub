@@ -309,6 +309,7 @@ module plugins_lambda {
   environment = {
     "BUCKET" = local.data_bucket_name
     "BUCKET_PATH" = var.env == "dev" ? local.custom_stack_name : ""
+    "STACK_NAME" = local.custom_stack_name
   }
 
   log_retention_in_days = 14
@@ -585,7 +586,7 @@ data aws_iam_policy_document plugins_policy {
 
   statement {
     actions = [
-      "dynamodb:Query",
+      "dynamodb:GetItem",
       "dynamodb:PutItem",
     ]
     resources = [module.plugin_metadata_dynamodb_table.table_arn]
