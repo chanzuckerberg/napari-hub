@@ -587,7 +587,6 @@ data aws_iam_policy_document plugins_policy {
   statement {
     actions = [
       "dynamodb:GetItem",
-      "dynamodb:Query",
       "dynamodb:PutItem",
     ]
     resources = [module.plugin_metadata_dynamodb_table.table_arn]
