@@ -663,10 +663,9 @@ def get_metrics_for_plugin(plugin: str, limit: str, use_dynamo_for_usage: bool,
     :params bool use_dynamo_for_usage: Fetch data from dynamo if True else fetch from s3. (default= False)
     :params bool use_dynamo_for_maintenance: Fetch data from dynamo if True else fetch from s3. (default= False)
     """
+    repo = _get_repo_from_plugin(plugin) if use_dynamo_for_maintenance else None
     plugin = plugin.lower()
     month_delta = 0
-
-    repo = _get_repo_from_plugin(plugin) if use_dynamo_for_maintenance else None
 
     if limit.isdigit() and limit != '0':
         month_delta = max(int(limit), 0)
