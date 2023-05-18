@@ -635,6 +635,7 @@ def _get_maintenance_data(plugin: str, limit: int, use_dynamo_for_maintenance: b
     """
     if use_dynamo_for_maintenance:
         repo = _get_repo_from_plugin(plugin)
+        plugin = plugin.lower()
         maintenance_timeline = github_activity.get_maintenance_timeline(plugin, repo, limit) if limit else []
 
         maintenance_stats = {
@@ -642,7 +643,7 @@ def _get_maintenance_data(plugin: str, limit: int, use_dynamo_for_maintenance: b
             'latest_commit_timestamp': github_activity.get_latest_commit(plugin, repo),
         }
     else:
-        data = get_commit_activity(plugin)
+        data = get_commit_activity(plugin.lower())
         maintenance_stats = {
             'total_commits': sum([commit_obj['commits'] for commit_obj in data]),
             'latest_commit_timestamp': get_latest_commit(plugin),
@@ -663,14 +664,12 @@ def get_metrics_for_plugin(plugin: str, limit: str, use_dynamo_for_usage: bool,
     :params bool use_dynamo_for_usage: Fetch data from dynamo if True else fetch from s3. (default= False)
     :params bool use_dynamo_for_maintenance: Fetch data from dynamo if True else fetch from s3. (default= False)
     """
-    plugin = plugin.lower()
-
     month_delta = 0
 
     if limit.isdigit() and limit != '0':
         month_delta = max(int(limit), 0)
 
     return {
-        'usage': _get_usage_data(plugin, month_delta, use_dynamo_for_usage),
+        'usage': _get_usage_data(plugin.lower(), month_delta, use_dynamo_for_usage),
         'maintenance': _get_maintenance_data(plugin, month_delta, use_dynamo_for_maintenance),
     }
