@@ -4,12 +4,12 @@ from nhcommons.models.plugin_metadata import (
     put_pypi_record,
 )
 from nhcommons.models.plugin import (
-    get_all_latest_plugin_by_plugin_name,
+    get_all_latest_plugins,
 )
 
 
 def update_plugin():
-    dynamo_latest_plugins = get_all_latest_plugin_by_plugin_name()
+    dynamo_latest_plugins = get_all_latest_plugins()
     pypi_latest_plugins = pypi_adapter.get_all_plugins()
 
     def _is_new_plugin(plugin_version_pair):

@@ -30,6 +30,6 @@ class _Plugin(PynamoWrapper):
     latest_plugin_index = _LatestPluginIndex()
 
 
-def get_all_latest_plugin_by_plugin_name() -> Dict[str, _Plugin]:
+def get_all_latest_plugins() -> Dict[str, _Plugin]:
     return {plugin.name: plugin
             for plugin in _Plugin.latest_plugin_index.scan()}
