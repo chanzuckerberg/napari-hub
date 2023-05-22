@@ -13,17 +13,13 @@ class _PluginMetadata(PynamoWrapper):
 
     name = UnicodeAttribute(hash_key=True)
     version_type = UnicodeAttribute(range_key=True)
-    version = UnicodeAttribute()
-    record_type = UnicodeAttribute()
     is_latest = BooleanAttribute(null=True)
-    data = MapAttribute()
+    data = MapAttribute(null=True)
 
 
 def put_pypi_record(plugin: str, version: str, is_latest: bool):
     _PluginMetadata(
         hash_key=plugin,
         range_key=PluginMetadataType.PYPI.to_version_type(version),
-        version=version,
-        record_type=PluginMetadataType.PYPI.name,
         is_latest=is_latest if is_latest else None
     ).save()

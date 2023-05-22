@@ -25,11 +25,18 @@ class _Plugin(PynamoWrapper):
 
     name = UnicodeAttribute(hash_key=True)
     version = UnicodeAttribute(range_key=True)
-    is_latest = BooleanAttribute()
+    is_latest = BooleanAttribute(null=True)
 
     latest_plugin_index = _LatestPluginIndex()
 
+    def __eq__(self, other):
+        if isinstance(other, _Plugin):
+            return ((self.name, self.version, self.is_latest) ==
+                    (other.name, other.version, other.is_latest))
+        return False
 
-def get_all_latest_plugins() -> Dict[str, _Plugin]:
+
+def get_latest_plugins() -> Dict[str, _Plugin]:
     return {plugin.name: plugin
-            for plugin in _Plugin.latest_plugin_index.scan()}
+            for plugin in _Plugin.latest_plugin_index.scan(
+                attributes_to_get=['name', 'version'])}
