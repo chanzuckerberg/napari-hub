@@ -6,14 +6,13 @@ from pynamodb.attributes import (
 from pynamodb.indexes import GlobalSecondaryIndex, AllProjection
 from pynamodb.models import Model
 
-from helper import set_ddb_metadata
-from nhcommons.utils import get_current_timestamp
+from helper import (set_ddb_metadata, get_stack_name)
 
 
 class _LatestPluginIndex(GlobalSecondaryIndex):
 
     class Meta:
-        index_name = 'latest-plugin'
+        index_name = f'{get_stack_name()}-latest-plugins'
         projection = AllProjection()
 
     name = UnicodeAttribute(hash_key=True)
@@ -30,8 +29,5 @@ class _Plugin(Model):
     name = UnicodeAttribute(hash_key=True)
     version = UnicodeAttribute(range_key=True)
     is_latest = BooleanAttribute()
-    last_updated_timestamp = NumberAttribute(
-        default_for_new=get_current_timestamp
-    )
 
     latest_plugin_index = _LatestPluginIndex()

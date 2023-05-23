@@ -6,8 +6,6 @@ import boto3
 import pytest
 from moto import mock_ssm
 
-import utils.utils
-
 STACK_NAME = 'foo-bar'
 EXPECTED_PARAMETER_NAME = f'/{STACK_NAME}/napari-hub/data-workflows/config'
 TIMESTAMP = 1232453543
