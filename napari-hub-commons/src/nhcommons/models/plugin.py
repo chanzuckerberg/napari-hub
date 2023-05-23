@@ -23,6 +23,9 @@ class _LatestPluginIndex(GlobalSecondaryIndex):
 @set_ddb_metadata('plugin')
 class _Plugin(PynamoWrapper):
 
+    class Meta:
+        pass
+
     name = UnicodeAttribute(hash_key=True)
     version = UnicodeAttribute(range_key=True)
     is_latest = BooleanAttribute(null=True)

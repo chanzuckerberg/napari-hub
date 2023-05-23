@@ -10,6 +10,8 @@ from .plugin_metadata_type import PluginMetadataType
 
 @set_ddb_metadata('plugin-metadata')
 class _PluginMetadata(PynamoWrapper):
+    class Meta:
+        pass
 
     name = UnicodeAttribute(hash_key=True)
     version_type = UnicodeAttribute(range_key=True)

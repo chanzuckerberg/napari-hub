@@ -19,4 +19,4 @@ def create_dynamo_table(pynamo_ddb_model: Model, table_name: str):
     pynamo_ddb_model.create_table()
     return boto3\
         .resource('dynamodb', region_name='us-west-2')\
-        .Table(f'None-{table_name}')
+        .Table(f'local-{table_name}')
