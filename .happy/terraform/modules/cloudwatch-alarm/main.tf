@@ -13,6 +13,13 @@ locals {
   alarm_sns_arn = var.alarms_enabled ? aws_sns_topic.alarm_sns[0].arn : ""
 }
 
+resource aws_sns_topic_subscription alarm_sns_subscription {
+  endpoint  = "napari-hub-monitoring@chanzuckerberg.com"
+  protocol  = "email"
+  topic_arn = local.alarm_sns_arn
+  count     = var.alarms_enabled ? 1 : 0
+}
+
 data aws_iam_policy_document sns_topic_policy {
   policy_id = "__default_policy_ID"
 
@@ -134,64 +141,59 @@ module plugins_missing_update_alarm {
   period              = local.period
   statistic           = "Sum"
   tags                = var.tags
-  threshold           = 2
+  threshold           = 1
 }
 
-module metrics_missing_update_alarm {
+module backend_metrics_missing_update_alarm {
   source  = "terraform-aws-modules/cloudwatch/aws//modules/metric-alarm"
   version = "3.3.0"
 
   alarm_actions       = [local.alarm_sns_arn]
-  alarm_name          = "${var.stack_name}-metrics-missing-update-alarm"
-  alarm_description   = "Metrics update failure"
+  alarm_name          = "${var.stack_name}-backend-metrics-missing-update-alarm"
+  alarm_description   = "Metrics update failure for backend"
   comparison_operator = "LessThanThreshold"
   create_metric_alarm = var.alarms_enabled
   datapoints_to_alarm = 1
   evaluation_periods  = 1
-  metric_query = [{
-    id = "success_count"
-
-    return_data = true
-    expression  = "SUM(METRICS())"
-    label       = "Total Count of Success"
-    }, {
-    id = "backend_workflows_successful"
-
-    metric = [{
-      namespace   = local.metrics_namespace
-      metric_name = local.backend_metrics_update_successful_name
-      period      = 86400
-      stat        = "Sum"
-      unit        = "Count"
-    }]
-    }, {
-    id = "data_workflows_successful"
-
-    metric = [{
-      namespace   = local.metrics_namespace
-      metric_name = local.data_workflows_metrics_update_successful_name
-      period      = 86400
-      stat        = "Sum"
-      unit        = "Count"
-    }]
-    },
-  ]
+  metric_name         = local.backend_metrics_update_successful_name
+  namespace           = local.metrics_namespace
+  period              = 86400
+  statistic           = "Sum"
   tags                = var.tags
   threshold           = 1
 }
 
-module lambda_errors_alarm {
+module data_workflows_metrics_missing_update_alarm {
+  source  = "terraform-aws-modules/cloudwatch/aws//modules/metric-alarm"
+  version = "3.3.0"
+
+  alarm_actions       = [local.alarm_sns_arn]
+  alarm_name          = "${var.stack_name}-data-workflows-metrics-missing-update-alarm"
+  alarm_description   = "Metrics update failure for data-workflows"
+  comparison_operator = "LessThanThreshold"
+  create_metric_alarm = var.alarms_enabled
+  datapoints_to_alarm = 1
+  evaluation_periods  = 1
+  metric_name         = local.data_workflows_metrics_update_successful_name
+  namespace           = local.metrics_namespace
+  period              = 86400
+  statistic           = "Sum"
+  tags                = var.tags
+  threshold           = 1
+}
+
+module backend_lambda_errors_alarm {
   source  = "terraform-aws-modules/cloudwatch/aws//modules/metric-alarm"
   version = "3.3.0"
 
   create_metric_alarm = var.alarms_enabled
-  alarm_name          = "${var.stack_name}-lambda-error-alarm"
-  alarm_description   = "Errors in lambda execution"
+  alarm_name          = "${var.stack_name}-backend-lambda-error-alarm"
+  alarm_description   = "Errors in backend lambda execution"
+  alarm_actions = [local.alarm_sns_arn]
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = 1
-  threshold           = 1
+  threshold           = 2
   datapoints_to_alarm = 1
-
   metric_query = [{
     id = "error_sum"
 
@@ -212,6 +214,28 @@ module lambda_errors_alarm {
         FunctionName = var.backend_lambda_function_name
       }
     }]
+    }]
+  tags = var.tags
+}
+
+module data_workflows_lambda_errors_alarm {
+  source  = "terraform-aws-modules/cloudwatch/aws//modules/metric-alarm"
+  version = "3.3.0"
+
+  create_metric_alarm = var.alarms_enabled
+  alarm_name          = "${var.stack_name}-data-workflows-lambda-error-alarm"
+  alarm_description   = "Errors in data-workflows lambda execution"
+  alarm_actions = [local.alarm_sns_arn]
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = 1
+  threshold           = 2
+  datapoints_to_alarm = 1
+  metric_query = [{
+    id = "error_sum"
+
+    return_data = true
+    expression  = "SUM(METRICS())"
+    label       = "Total Error Count"
     }, {
     id = "data_workflows_error"
 
@@ -221,10 +245,33 @@ module lambda_errors_alarm {
       period      = local.period
       stat        = "Sum"
       unit        = "Count"
+
       dimensions = {
         FunctionName = var.data_workflows_lambda_function_name
       }
     }]
+    }]
+  tags = var.tags
+}
+
+module plugin_lambda_errors_alarm {
+  source  = "terraform-aws-modules/cloudwatch/aws//modules/metric-alarm"
+  version = "3.3.0"
+
+  create_metric_alarm = var.alarms_enabled
+  alarm_name          = "${var.stack_name}-plugin-lambda-error-alarm"
+  alarm_description   = "Errors in plugin lambda execution"
+  alarm_actions = [local.alarm_sns_arn]
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = 1
+  threshold           = 1
+  datapoints_to_alarm = 1
+  metric_query = [{
+    id = "error_sum"
+
+    return_data = true
+    expression  = "SUM(METRICS())"
+    label       = "Total Error Count"
     }, {
     id = "plugin_error"
 
@@ -234,12 +281,11 @@ module lambda_errors_alarm {
       period      = local.period
       stat        = "Sum"
       unit        = "Count"
+
       dimensions = {
         FunctionName = var.plugins_lambda_function_name
       }
     }]
     }]
-
-  alarm_actions = [local.alarm_sns_arn]
   tags = var.tags
 }
