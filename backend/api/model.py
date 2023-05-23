@@ -19,6 +19,9 @@ from api.zulip import notify_new_packages
 import boto3
 import snowflake.connector as sc
 from dateutil.relativedelta import relativedelta
+import logging
+
+LOGGER = logging.getLogger()
 
 index_subset = {'name', 'summary', 'description_text', 'description_content_type',
                 'authors', 'license', 'python_version', 'operating_system',
@@ -277,7 +280,7 @@ def update_cache():
         report_metrics('napari_hub.plugins.count', len(visibility_plugins['public']), ['visibility:public'])
         report_metrics('napari_hub.plugins.count', len(visibility_plugins['hidden']), ['visibility:hidden'])
         report_metrics('napari_hub.plugins.excluded', len(excluded_plugins))
-        print("plugin update successful")
+        LOGGER.info("plugin update successful")
     else:
         send_alert(f"({datetime.now()})Actions Required! Failed to query pypi for "
                    f"napari plugin packages, switching to backup analysis dump")
@@ -412,13 +415,13 @@ def _execute_query(query, schema):
 
 
 def update_activity_data():
-    print("Starting data refresh for metrics")
+    LOGGER.info("Starting data refresh for metrics")
     _update_activity_timeline_data()
     _update_recent_activity_data()
     repo_to_plugin_dict = _get_repo_to_plugin_dict()
     _update_latest_commits(repo_to_plugin_dict)
     _update_commit_activity(repo_to_plugin_dict)
-    print("Completed data refresh for metrics successfully")
+    LOGGER.info("Completed data refresh for metrics successfully")
 
 
 def _update_activity_timeline_data():
