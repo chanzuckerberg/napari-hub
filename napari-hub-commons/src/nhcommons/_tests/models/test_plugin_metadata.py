@@ -4,6 +4,7 @@ import pytest
 from moto import mock_dynamodb
 
 from nhcommons.models import plugin_metadata
+from nhcommons.models.plugin_utils import PluginMetadataType
 
 
 class TestPluginMetadata:
@@ -19,7 +20,7 @@ class TestPluginMetadata:
     )
     def test_put_pypi_record(self, plugin_metadata_table, input):
         start_time = round(time.time() * 1000)
-        plugin_metadata.put_pypi_record('bar', '0.7.1', input)
+        plugin_metadata.put_plugin_metadata('bar', '0.7.1', PluginMetadataType.PYPI, input)
 
         response = plugin_metadata_table.scan()
 

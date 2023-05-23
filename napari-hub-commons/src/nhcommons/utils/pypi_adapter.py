@@ -1,12 +1,12 @@
 import logging
 import re
-import time
 from typing import Any, Optional
 
 import requests
 from requests import HTTPError
 
 from .github_adapter import get_repo_url
+from .request_adapter import get_request
 
 _NAME_PATTERN = re.compile('class="package-snippet__name">(.+)</span>')
 _VERSION_PATTERN = re.compile('class="package-snippet__version">(.+)</span>')
@@ -20,18 +20,7 @@ logger = logging.getLogger(__name__)
 def _get_pypi_response(path: str, params: Optional[dict[str, Any]] = None) \
         -> requests.Response:
     url = _BASE_URL + path
-    start_time = time.perf_counter()
-    try:
-        response = requests.get(url, params=params)
-        if response.status_code != requests.codes.ok:
-            logger.error(f"Error calling {url} params={params}"
-                         f"response.status_code={response.status_code}")
-            response.raise_for_status()
-        return response
-    finally:
-        duration = (time.perf_counter() - start_time) * 1000
-        logger.info(f"PYPI call url={url} params={params} "
-                    f"time_taken={duration} ms")
+    return get_request(url, params=params)
 
 
 def get_all_plugins() -> dict[str, str]:
