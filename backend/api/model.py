@@ -539,9 +539,10 @@ def _get_repo_to_plugin_dict():
 
 def _get_repo_from_plugin(plugin):
     plugin_metadata = get_plugin(plugin)
-    repo_url = plugin_metadata.get('code_repository', '')
-    if repo_url:
-        return repo_url.replace('https://github.com/', '')
+    if plugin_metadata:
+        repo_url = plugin_metadata.get('code_repository', '')
+        if repo_url:
+            return repo_url.replace('https://github.com/', '')
     return None
 
 
