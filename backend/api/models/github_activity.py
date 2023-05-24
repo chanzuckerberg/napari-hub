@@ -46,7 +46,7 @@ def get_total_commits(plugin: str, repo: str) -> int:
 
 def get_latest_commit(plugin: str, repo: str) -> Any:
     """
-    Gets latest_commit timestamp stats from dynamo for a plugin
+    Gets latest_commit timestamp stats from Dynamo for a plugin
     :return int: latest_commit timestamp
 
     :param str plugin: Name of the plugin in lowercase for which latest_commit needs to be computed.
