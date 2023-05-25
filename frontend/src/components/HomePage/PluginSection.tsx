@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { ComponentType } from 'react';
+import { ComponentType, ReactNode } from 'react';
 
 import { IconProps } from '@/components/icons/icons.type';
 import { Link } from '@/components/Link';
@@ -10,7 +10,7 @@ import { PluginCard } from './PluginCard';
 
 interface Props {
   icon: ComponentType<IconProps>;
-  title: string;
+  title: ReactNode;
   seeAllLink: string;
   plugins: PluginHomePageData[];
   metadataToShow?: (keyof PluginHomePageData)[];
