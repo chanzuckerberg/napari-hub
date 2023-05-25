@@ -10,7 +10,7 @@ import {
   SearchSortType,
 } from '@/store/search/constants';
 import { useSearchStore } from '@/store/search/context';
-import { isSearchPage, scrollToSearchBar } from '@/utils';
+import { isHomePage, scrollToSearchBar } from '@/utils';
 
 import { Props as SearchBarProps, SearchBar } from './SearchBar';
 
@@ -43,7 +43,7 @@ export function PluginSearchBar(props: Props) {
     // Reset loading state when navigating to the search page.
     resetLoadingState();
 
-    if (isSearchPage(window.location.pathname)) {
+    if (isHomePage(window.location.pathname)) {
       if (searchQuery) {
         scrollToSearchBar({ behavior: 'smooth' });
         searchStore.search.query = searchQuery;
