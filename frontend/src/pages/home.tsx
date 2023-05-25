@@ -4,11 +4,8 @@ import { ReactNode } from 'react';
 import { z } from 'zod';
 
 import { ErrorMessage } from '@/components/ErrorMessage';
-import {
-  HomePage,
-  HomePageLayout,
-  HomePageProvider,
-} from '@/components/HomePage';
+import { HomePage, HomePageProvider } from '@/components/HomePage';
+import { Layout } from '@/components/Layout';
 import { NotFoundPage } from '@/components/NotFoundPage';
 import { PluginSectionsResponse, PluginSectionType } from '@/types';
 import { hubAPI } from '@/utils/HubAPIClient';
@@ -28,7 +25,7 @@ export const getServerSideProps = getServerSidePropsHandler<Props>({
       status: 200,
     };
 
-    if (!req.url || featureFlags.collections.value !== 'on') {
+    if (!req.url || featureFlags.homePageRedesign.value !== 'on') {
       props.status = 404;
       return { props };
     }
@@ -62,12 +59,18 @@ export default function Home({ pluginSections, error, status }: Props) {
   const [t] = useTranslation(['pageTitles', 'homePage']);
 
   if (status === 404) {
-    return <NotFoundPage />;
+    return (
+      <Layout>
+        <NotFoundPage />
+      </Layout>
+    );
   }
 
   if (error || !pluginSections) {
     return (
-      <ErrorMessage error={error}>{t('homePage:fetchError')}</ErrorMessage>
+      <Layout>
+        <ErrorMessage error={error}>{t('homePage:fetchError')}</ErrorMessage>
+      </Layout>
     );
   }
 
@@ -78,4 +81,4 @@ export default function Home({ pluginSections, error, status }: Props) {
   );
 }
 
-Home.getLayout = (page: ReactNode) => <HomePageLayout>{page}</HomePageLayout>;
+Home.getLayout = (page: ReactNode) => page;
