@@ -35,15 +35,6 @@ function isAxiosError(error: unknown): error is AxiosError {
 }
 
 export const getServerSideProps = getServerSidePropsHandler<Props, Params>({
-  locales: [
-    'pluginData',
-    'pluginPage',
-    'activity',
-
-    // Home page namespace required for page transitions to search page from the
-    // plugin page.
-    'homePage',
-  ],
   /**
    * Fetches plugin data from the hub API. The name of the plugin is extracted
    * from the URL `/plugins/:name` and used for fetching the plugin data.

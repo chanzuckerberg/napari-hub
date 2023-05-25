@@ -27,7 +27,6 @@ interface Props {
 }
 
 export const getServerSideProps = getServerSidePropsHandler<Props>({
-  locales: ['homePage', 'pluginData'],
   async getProps(_, featureFlags) {
     const props: Props = {};
 

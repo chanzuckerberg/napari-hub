@@ -17,7 +17,6 @@ interface Props {
 }
 
 export const getServerSideProps = getServerSidePropsHandler<Props>({
-  locales: ['homePage', 'pluginData', 'collections'],
   /**
    * Fetches i18n and collections API data from the backend for SSR.
    */
