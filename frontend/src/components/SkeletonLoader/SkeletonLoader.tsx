@@ -10,9 +10,16 @@ interface Props {
   className?: string;
 
   /**
+   * Children to render when not loading.
+   */
+  children?: ReactNode;
+
+  /**
    * Render function that returns the node to render when not loading.
    *
    * https://reactjs.org/docs/render-props.html
+   *
+   * @deprecated Use `children` instead.
    */
   render?(): ReactNode;
 }
@@ -20,9 +27,15 @@ interface Props {
 /**
  * Component that renders a skeleton loader when the global loading state is `true`.
  */
-export function SkeletonLoader({ className, render = () => <></> }: Props) {
+export function SkeletonLoader({
+  className,
+  children,
+  render = () => <></>,
+}: Props) {
   const isLoading = useLoadingState();
-  if (!isLoading) return <>{render()}</>;
+
+  if (!isLoading) return <>{children ?? render()}</>;
+
   return (
     <Skeleton
       className={className}
