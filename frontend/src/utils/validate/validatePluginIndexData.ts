@@ -45,7 +45,8 @@ export const pluginIndexDataSchema = z.object({
   first_released: stringSchema,
   license: stringSchema,
   name: stringSchema,
-  total_installs: z.number(),
+  // Make schema optional until available in /plugins/:name
+  total_installs: z.number().optional().default(0),
   operating_system: stringArraySchema,
   plugin_types: getEnumSchemaArray(PluginType),
   python_version: stringSchema,
