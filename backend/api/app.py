@@ -43,6 +43,8 @@ github_app = GitHubApp(preview_app)
 handler = make_lambda_handler(app.wsgi_app)
 
 logger = logging.getLogger()
+FORMAT = "%(asctime)s [%(levelname)s] %(name)s %(module)s %(funcName)s %(message)s"
+logging.basicConfig(format=FORMAT)
 logger.setLevel(logging.DEBUG if os.getenv('IS_DEBUG') else logging.INFO)
 
 
@@ -205,7 +207,7 @@ def authenticate_request():
 
 @app.after_request
 def add_header(response):
-    print(f'{request.method} {request.full_path} {response.status}')
+    logger.info(f'{request.method} {request.full_path} {response.status}')
     response.headers['Access-Control-Allow-Origin'] = '*'
     return response
 
