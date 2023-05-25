@@ -27,7 +27,7 @@ function PluginTOC() {
 
   return (
     <SkeletonLoader
-      className="h-56 mt-sds-xxl"
+      className="h-[500px] mt-sds-xxl"
       render={() => (
         <Markdown.TOC
           className="mt-sds-xxl"
@@ -75,7 +75,7 @@ export function PluginRightColumn() {
       {/*  Keep CTA button and TOC on screen when scrolling on 2xl. */}
       <div className="sticky top-[50px]">
         <SkeletonLoader
-          className="h-[228px] my-6"
+          className="h-[50px]"
           render={() => (
             <SupportInfo className="mt-sds-xl screen-495:mt-sds-xxl" />
           )}

@@ -76,16 +76,6 @@ export function PluginTabs({ containerRef }: Props) {
   const tabs = usePluginTabs();
   let tabContent: ReactNode = null;
 
-  if (isLoading) {
-    return (
-      <div className="grid grid-cols-[repeat(3,92px)] h-8 space-x-sds-m">
-        <Skeleton variant="rectangular" />
-        <Skeleton variant="rectangular" />
-        <Skeleton variant="rectangular" />
-      </div>
-    );
-  }
-
   if (activeTab === PluginTabType.Description) {
     tabContent = (
       <>
@@ -153,19 +143,27 @@ export function PluginTabs({ containerRef }: Props) {
 
   return (
     <div className="mt-sds-xl screen-495:mt-sds-xxl">
-      <Tabs
-        tabs={tabs}
-        activeTab={activeTab}
-        onChange={(tab) => {
-          pluginTabsStore.activeTab = tab.value;
+      {isLoading ? (
+        <div className="grid grid-cols-[repeat(3,92px)] h-8 space-x-sds-m">
+          <Skeleton variant="rectangular" />
+          <Skeleton variant="rectangular" />
+          <Skeleton variant="rectangular" />
+        </div>
+      ) : (
+        <Tabs
+          tabs={tabs}
+          activeTab={activeTab}
+          onChange={(tab) => {
+            pluginTabsStore.activeTab = tab.value;
 
-          plausible('Plugin Tab Nav', {
-            tab: tab.value,
-            plugin: plugin?.name ?? '',
-          });
-        }}
-        underline
-      />
+            plausible('Plugin Tab Nav', {
+              tab: tab.value,
+              plugin: plugin?.name ?? '',
+            });
+          }}
+          underline
+        />
+      )}
 
       {tabContent}
     </div>
