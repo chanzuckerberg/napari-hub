@@ -1,4 +1,3 @@
-import Skeleton from '@mui/material/Skeleton';
 import clsx from 'clsx';
 import { isObject } from 'lodash';
 import dynamic from 'next/dynamic';
@@ -66,9 +65,9 @@ export function PluginTabs({ containerRef }: Props) {
   const { plugin, isEmptyDescription } = usePluginState();
   const [t] = useTranslation(['pluginPage', 'preview']);
   const { activeTab } = useSnapshot(pluginTabsStore);
-  const isLoading = useLoadingState();
   const hasPluginMetadataScroll = useMediaQuery({ maxWidth: 'screen-1425' });
   const plausible = usePlausible();
+  const isLoading = useLoadingState();
 
   // Reset plugin tab state when navigating away from page.
   useEffect(resetPluginTabs, []);
@@ -143,27 +142,20 @@ export function PluginTabs({ containerRef }: Props) {
 
   return (
     <div className="mt-sds-xl screen-495:mt-sds-xxl">
-      {isLoading ? (
-        <div className="grid grid-cols-[repeat(3,92px)] h-8 space-x-sds-m">
-          <Skeleton variant="rectangular" />
-          <Skeleton variant="rectangular" />
-          <Skeleton variant="rectangular" />
-        </div>
-      ) : (
-        <Tabs
-          tabs={tabs}
-          activeTab={activeTab}
-          onChange={(tab) => {
-            pluginTabsStore.activeTab = tab.value;
+      <Tabs
+        tabs={tabs}
+        activeTab={activeTab}
+        onChange={(tab) => {
+          pluginTabsStore.activeTab = tab.value;
 
-            plausible('Plugin Tab Nav', {
-              tab: tab.value,
-              plugin: plugin?.name ?? '',
-            });
-          }}
-          underline
-        />
-      )}
+          plausible('Plugin Tab Nav', {
+            tab: tab.value,
+            plugin: plugin?.name ?? '',
+          });
+        }}
+        underline
+        loading={isLoading}
+      />
 
       {tabContent}
     </div>
