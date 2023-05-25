@@ -10,6 +10,11 @@ interface Props {
   className?: string;
 
   /**
+   * Disables skeleton loading for a component.
+   */
+  disabled?: boolean;
+
+  /**
    * Children to render when not loading.
    */
   children?: ReactNode;
@@ -29,12 +34,13 @@ interface Props {
  */
 export function SkeletonLoader({
   className,
+  disabled = false,
   children,
   render = () => <></>,
 }: Props) {
   const isLoading = useLoadingState();
 
-  if (!isLoading) return <>{children ?? render()}</>;
+  if (!isLoading || disabled) return <>{children ?? render()}</>;
 
   return (
     <Skeleton
