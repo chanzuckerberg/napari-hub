@@ -5,7 +5,7 @@ import { useTranslation } from 'next-i18next';
 import { HTMLProps, InputHTMLAttributes, useEffect, useState } from 'react';
 
 import { Close, Search } from '@/components/icons';
-import { createUrl, isSearchPage } from '@/utils';
+import { createUrl, isHomePage } from '@/utils';
 
 import styles from './SearchBar.module.scss';
 
@@ -185,7 +185,7 @@ export function SearchBar({
         type="button"
       >
         {/* Render close button if the user submitted a query. */}
-        {value && isSearchPage(currentPathname) ? (
+        {value && isHomePage(currentPathname) ? (
           <Close className={clsx(iconClassName, styles.closeIcon)} />
         ) : (
           <Search className={iconClassName} />
