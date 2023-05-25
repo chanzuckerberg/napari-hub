@@ -45,7 +45,7 @@ class TestGitHubActivity:
             'plugin_name': plugin,
             'type_identifier': self._to_type_identifier(granularity, repo, timestamp),
             'commit_count': commit_count,
-            'granularity': granularity,
+            'type': granularity,
             'timestamp': to_timestamp(timestamp),
         }
         table.put_item(Item=item)
