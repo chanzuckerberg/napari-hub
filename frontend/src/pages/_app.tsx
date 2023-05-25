@@ -27,7 +27,7 @@ import SearchPage from '@/pages/index';
 import PluginPage from '@/pages/plugins/[name]';
 import { FeatureFlagMap, useInitFeatureFlags } from '@/store/featureFlags';
 import { hubspotStore } from '@/store/hubspot';
-import { isPluginPage, isSearchPage, isSitemapPage } from '@/utils';
+import { isHomePage, isPluginPage, isSitemapPage } from '@/utils';
 
 type GetLayoutComponent = ComponentType & {
   getLayout?(page: ReactNode): ReactNode;
@@ -55,7 +55,7 @@ function App({ Component, pageProps }: AppProps) {
    * Renders the appropriate loader component for a specific page.
    */
   function getLoaderComponent() {
-    const searchPageLoader = isSearchPage(nextUrl) && (
+    const searchPageLoader = isHomePage(nextUrl) && (
       <LoadingStateProvider loading key="/">
         <SearchPage index={[]} licenses={[]} />
       </LoadingStateProvider>
