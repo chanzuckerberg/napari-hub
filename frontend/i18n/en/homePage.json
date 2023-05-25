@@ -1,5 +1,7 @@
 {
+  "browseAll": "Browse all",
   "browsePlugins": "Browse plugins: <count />",
+  "discoverPlugins": "Discover Plugins",
   "fetchError": "Unable to fetch plugin index",
   "newest": "Newest",
   "recentlyUpdated": "Recently updated",
