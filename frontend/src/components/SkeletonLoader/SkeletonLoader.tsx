@@ -14,13 +14,13 @@ interface Props {
    *
    * https://reactjs.org/docs/render-props.html
    */
-  render(): ReactNode;
+  render?(): ReactNode;
 }
 
 /**
  * Component that renders a skeleton loader when the global loading state is `true`.
  */
-export function SkeletonLoader({ className, render }: Props) {
+export function SkeletonLoader({ className, render = () => <></> }: Props) {
   const isLoading = useLoadingState();
   if (!isLoading) return <>{render()}</>;
   return (
