@@ -16,10 +16,9 @@ class TestCategory:
     def setup_env_variables(self, monkeypatch):
         monkeypatch.setenv("BUCKET", TEST_BUCKET)
         monkeypatch.setenv("BUCKET_PATH", TEST_BUCKET_PATH)
-        monkeypatch.setenv("STACK_NAME", TEST_STACK_NAME)
 
     @pytest.fixture()
-    def install_activity_table(self, aws_credentials, setup_env_variables):
+    def categories_table(self, aws_credentials, setup_env_variables):
         from api.models.category import CategoryModel
 
         with mock_dynamodb():
@@ -28,7 +27,7 @@ class TestCategory:
     def _get_version_hash(self, hash: str) -> str:
         return f"{TEST_CATEGORY_VERSION}:{hash}"
 
-    def _save_models(self):
+    def _seed_data(self):
         from api.models.category import CategoryModel
 
         CategoryModel(
@@ -60,13 +59,13 @@ class TestCategory:
         ).save()
 
     def test_get_category_has_result(
-        self, aws_credentials, setup_env_variables, install_activity_table
+        self, aws_credentials, setup_env_variables, categories_table
     ):
-        self._save_models()
+        self._seed_data()
 
-        from api.models.category import CategoryModel
+        from api.models.category import get_category
 
-        actual = CategoryModel.get_category("name1", TEST_CATEGORY_VERSION)
+        actual = get_category("name1", TEST_CATEGORY_VERSION)
         expected = [
             {
                 "label": "label1",
@@ -86,13 +85,13 @@ class TestCategory:
         self,
         aws_credentials,
         setup_env_variables,
-        install_activity_table,
+        categories_table,
     ):
-        self._save_models()
+        self._seed_data()
 
-        from api.models.category import CategoryModel
+        from api.models.category import get_all_categories
 
-        actual = CategoryModel.get_all_categories(TEST_CATEGORY_VERSION)
+        actual = get_all_categories(TEST_CATEGORY_VERSION)
         expected = {
             "Name1": [
                 {

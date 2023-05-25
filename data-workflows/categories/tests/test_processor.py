@@ -1,9 +1,11 @@
+from typing import Any, Dict
 import boto3
 import json
 import pytest
 
-from conftest import create_dynamo_table
 from categories.category_model import CategoryModel
+from categories.utils import hash_category
+from conftest import create_dynamo_table
 from moto import mock_dynamodb, mock_s3
 
 
@@ -37,6 +39,11 @@ TEST_CATEGORY_DATA = json.dumps(
 )
 
 
+def _get_version_hash(category: Dict[str, Any]):
+    hash = hash_category(category)
+    return f"{TEST_CATEGORY_VERSION}:{hash}"
+
+
 @mock_s3
 class TestPluginManifest:
     @pytest.fixture
@@ -46,7 +53,7 @@ class TestPluginManifest:
         monkeypatch.setenv("STACK_NAME", TEST_STACK_NAME)
 
     @pytest.fixture()
-    def install_activity_table(self, aws_credentials, setup_env_variables):
+    def categories_table(self, aws_credentials, setup_env_variables):
         from categories.category_model import CategoryModel
 
         with mock_dynamodb():
@@ -58,7 +65,7 @@ class TestPluginManifest:
         bucket.create()
 
     def test_write_category_data(
-        self, aws_credentials, setup_env_variables, install_activity_table
+        self, aws_credentials, setup_env_variables, categories_table
     ):
         self._set_up_s3()
         complete_path = f"{TEST_BUCKET_PATH}/{TEST_CATEGORY_PATH}"
@@ -77,6 +84,13 @@ class TestPluginManifest:
         assert data == [
             CategoryModel(
                 name="foo",
+                version_hash=_get_version_hash(
+                    {
+                        "dimension": "dimension1",
+                        "label": "label",
+                        "hierarchy": ["1", "2", "3"],
+                    }
+                ),
                 version=TEST_CATEGORY_VERSION,
                 formatted_name="Foo",
                 dimension="dimension1",
@@ -85,6 +99,13 @@ class TestPluginManifest:
             ),
             CategoryModel(
                 name="foo",
+                version_hash=_get_version_hash(
+                    {
+                        "dimension": "dimension2",
+                        "label": "label",
+                        "hierarchy": ["1", "2"],
+                    }
+                ),
                 version=TEST_CATEGORY_VERSION,
                 formatted_name="Foo",
                 dimension="dimension2",
@@ -94,6 +115,13 @@ class TestPluginManifest:
             CategoryModel(
                 name="foo-bar",
                 version=TEST_CATEGORY_VERSION,
+                version_hash=_get_version_hash(
+                    {
+                        "dimension": "dimension1",
+                        "label": "label",
+                        "hierarchy": ["1", "2"],
+                    }
+                ),
                 formatted_name="Foo Bar",
                 dimension="dimension1",
                 label="label",

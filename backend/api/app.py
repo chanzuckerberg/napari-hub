@@ -12,7 +12,7 @@ from api.custom_wsgi import script_path_middleware
 from api.model import get_public_plugins, get_index, get_plugin, get_excluded_plugins, update_cache, \
     move_artifact_to_s3, get_category_mapping, get_categories_mapping, get_manifest, update_activity_data, \
     get_metrics_for_plugin
-from api.models.category import CategoryModel
+from api.models import category as categories
 from api.shield import get_shield
 from utils.utils import send_alert, reformat_ssh_key_to_pem_bytes
 
@@ -113,7 +113,7 @@ def get_exclusion_list() -> Response:
 @app.route('/categories', defaults={'version': os.getenv('category_version', 'EDAM-BIOIMAGING:alpha06')})
 def get_categories(version: str) -> Response:
     if _is_query_param_true('use_dynamo_category'):
-        return jsonify(CategoryModel.get_all_categories(version))
+        return jsonify(categories.get_all_categories(version))
 
     return jsonify(get_categories_mapping(version))
 
@@ -122,7 +122,7 @@ def get_categories(version: str) -> Response:
 @app.route('/categories/<category>/versions/<version>')
 def get_category(category: str, version: str) -> Response:
     if _is_query_param_true('use_dynamo_category'):
-        return jsonify(CategoryModel.get_category(category, version))
+        return jsonify(categories.get_category(category, version))
 
     return jsonify(get_category_mapping(category, get_categories_mapping(version)))
 

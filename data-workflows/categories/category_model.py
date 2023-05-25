@@ -28,6 +28,7 @@ class CategoryModel(Model):
     def __eq__(self, other):
         return isinstance(other, CategoryModel) and (
             self.name == other.name
+            and self.version_hash == other.version_hash
             and self.version == other.version
             and self.formatted_name == other.formatted_name
             and self.dimension == other.dimension
