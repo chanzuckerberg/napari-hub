@@ -16,9 +16,10 @@
 
   "sort": {
     "newest": "Newest",
-    "pluginName": "Plugin name",
+    "pluginName": "Alphabetical",
     "recentlyUpdated": "Recently updated",
     "relevance": "Relevance",
+    "totalInstalls": "Total installs",
     "title": "Sort"
   },
 

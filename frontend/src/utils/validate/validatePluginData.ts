@@ -60,7 +60,7 @@ const pluginDataSchema = pluginIndexDataSchema
   .or(fallback(DEFAULT_PLUGIN_DATA));
 
 const SANITIZERS: SanitizerMap<PluginData> = {
-  ...PLUGIN_INDEX_DATA_SANITIZERS,
+  ...(PLUGIN_INDEX_DATA_SANITIZERS as SanitizerMap<PluginData>),
 
   category_hierarchy(result) {
     if (!result.category_hierarchy) return;

@@ -16,7 +16,12 @@ import { FilterCategoryKeys } from '@/store/search/search.store';
 import { SearchResultMatch } from '@/store/search/search.types';
 import { HubDimension, PluginIndexData } from '@/types';
 import { I18nKeys, I18nPluginDataLabel } from '@/types/i18n';
-import { createUrl, formatDate, formatOperatingSystem } from '@/utils';
+import {
+  createUrl,
+  formatDate,
+  formatNumber,
+  formatOperatingSystem,
+} from '@/utils';
 
 import styles from './PluginSearchResult.module.scss';
 
@@ -105,7 +110,7 @@ export function PluginSearchResult({
   plugin,
   style,
 }: Props) {
-  const [t] = useTranslation(['pluginData', 'homePage']);
+  const { t, i18n } = useTranslation(['pluginData', 'homePage']);
   const isLoading = useLoadingState();
   const [isHoveringOverChip, setIsHoveringOverChip] = useState(false);
   const [debouncedIsHoveringOverChip] = useDebounce(isHoveringOverChip, 100);
@@ -151,8 +156,8 @@ export function PluginSearchResult({
     ? []
     : getItems(
         {
-          label: t('pluginData:labels.version'),
-          value: plugin.version,
+          label: t('pluginData:labels.totalInstalls'),
+          value: formatNumber(plugin.total_installs, i18n.language),
         },
 
         {

@@ -8,6 +8,7 @@
 import { expect, Page } from '@playwright/test';
 
 import { RESULTS_PER_PAGE } from '@/constants/search';
+import { formatNumber } from '@/utils';
 
 import { PluginFilter } from '../types/filter';
 import {
@@ -173,13 +174,13 @@ export async function verifyFilterResults(
       // check all authors displayed
       expect(containsAllElements(fixtureAuthors, pluginAuthors)).toBeTruthy();
 
-      // plugin version
+      // total installs
       expect(await plugin.locator(getMetadata('h4')).nth(0).textContent()).toBe(
-        'Version',
+        'Total installs',
       );
       expect(
         await plugin.locator(getMetadata('span')).nth(0).textContent(),
-      ).toBe(data.version);
+      ).toBe(formatNumber(data.total_installs));
 
       // plugin last update
       expect(await plugin.locator(getMetadata('h4')).nth(1).textContent()).toBe(

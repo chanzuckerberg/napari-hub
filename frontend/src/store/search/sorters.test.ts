@@ -84,7 +84,11 @@ describe('compareDates()', () => {
 type ResultEntry = Optional<
   Pick<
     PluginIndexData,
-    'name' | 'display_name' | 'release_date' | 'first_released'
+    | 'name'
+    | 'display_name'
+    | 'release_date'
+    | 'first_released'
+    | 'total_installs'
   >
 >;
 
@@ -95,7 +99,7 @@ function getResults(...results: ResultEntry[]): SearchResult[] {
     plugin: {
       ...pluginFixture,
       ...result,
-    },
+    } as PluginIndexData,
   }));
 }
 
@@ -173,6 +177,18 @@ describe('sortResults()', () => {
       ),
       sortType: SearchSortType.PluginName,
       expected: ['napari-b', 'napari-a', 'napari-c', 'napari-d'],
+    });
+  });
+
+  it('should sort by total installs', () => {
+    testSortedResults({
+      results: getResults(
+        { name: 'result1', total_installs: 20 },
+        { name: 'result2', total_installs: 10 },
+        { name: 'result3', total_installs: 30 },
+      ),
+      sortType: SearchSortType.TotalInstalls,
+      expected: ['result3', 'result1', 'result2'],
     });
   });
 });
