@@ -1,4 +1,4 @@
-import { PluginAuthor, PluginData } from 'src/types';
+import { PluginAuthor, PluginData } from './plugin';
 
 export interface CollectionInstitution {
   institution: string;
