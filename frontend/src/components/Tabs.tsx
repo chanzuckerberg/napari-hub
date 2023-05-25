@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import { Tab, Tabs as SDSTabs } from 'czifui';
 import { useTranslation } from 'react-i18next';
 
+import { SkeletonLoader } from './SkeletonLoader';
 import { Text } from './Text';
 
 export interface TabData<T extends string> {
@@ -15,15 +16,31 @@ interface Props<T extends string> {
   tabs: TabData<T>[];
   onChange(tab: TabData<T>): void;
   underline?: boolean;
+  isLoading?: boolean;
+  tabLoaderCount?: number;
 }
 
 export function Tabs<T extends string>({
   activeTab,
-  tabs,
+  tabs: tabsProp,
   onChange,
   underline = false,
+  isLoading,
+  tabLoaderCount = 3,
 }: Props<T>) {
   const [t] = useTranslation(['common']);
+
+  const tabs = isLoading
+    ? Array(tabLoaderCount)
+        .fill(null)
+        .map(
+          (_, index) =>
+            ({
+              label: '',
+              value: `tab-${index}`,
+            } as TabData<T>),
+        )
+    : tabsProp;
 
   return (
     // Scroll container for tabs
@@ -40,6 +57,10 @@ export function Tabs<T extends string>({
         }}
         value={activeTab}
         onChange={(_: unknown, tabValue: string) => {
+          if (isLoading) {
+            return;
+          }
+
           const nextTab = tabs.find((tab) => tab.value === tabValue);
 
           if (nextTab) {
@@ -51,7 +72,10 @@ export function Tabs<T extends string>({
           <Tab
             key={tab.value}
             label={
-              <>
+              <SkeletonLoader
+                loading={isLoading}
+                className="h-[20px] w-[60px] mr-[15px]"
+              >
                 <div className="px-sds-xs screen-495:px-sds-m">
                   <Text
                     className="space-x-sds-xs screen-495:space-x-sds-m"
@@ -79,7 +103,7 @@ export function Tabs<T extends string>({
                     tab.value === activeTab ? 'bg-black' : 'bg-transparent',
                   )}
                 />
-              </>
+              </SkeletonLoader>
             }
             value={tab.value}
             classes={{
