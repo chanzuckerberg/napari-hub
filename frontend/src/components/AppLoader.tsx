@@ -1,5 +1,4 @@
 import { ReactNode } from 'react';
-import { useSnapshot } from 'valtio';
 
 import { Layout } from '@/components/Layout';
 import { SitemapPage } from '@/components/SitemapPage';
@@ -7,10 +6,7 @@ import { DEFAULT_PLUGIN_DATA, DEFAULT_REPO_DATA } from '@/constants/plugin';
 import { LoadingStateProvider } from '@/context/loading';
 import SearchPage from '@/pages/index';
 import PluginPage from '@/pages/plugins/[name]';
-import {
-  featureFlagsStore,
-  useIsFeatureFlagEnabled,
-} from '@/store/featureFlags';
+import { useIsFeatureFlagEnabled } from '@/store/featureFlags';
 import { PluginHomePageData, PluginType } from '@/types';
 import { isHomePage, isPluginPage, isSitemapPage } from '@/utils';
 
@@ -25,7 +21,6 @@ interface Props {
  */
 export function AppLoader({ nextUrl }: Props) {
   const isHomePageRedesign = useIsFeatureFlagEnabled('homePageRedesign');
-  const flags = useSnapshot(featureFlagsStore);
 
   let homePageLoader: ReactNode;
   if (isHomePage(nextUrl)) {
