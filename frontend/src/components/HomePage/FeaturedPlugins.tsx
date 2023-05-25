@@ -7,7 +7,9 @@ import {
   SampleData,
   TrendingInstalls,
 } from '@/components/icons';
+import { useLoadingState } from '@/context/loading';
 
+import { SkeletonLoader } from '../SkeletonLoader';
 import { useHomePage } from './context';
 import { PluginSection } from './PluginSection';
 
@@ -15,6 +17,7 @@ export function FeaturedPlugins() {
   const { pluginSections } = useHomePage();
   const { t } = useTranslation(['homePage']);
   const pluginTypeLabels = t('homePage:pluginTypeLabels');
+  const isLoading = useLoadingState();
 
   const {
     plugin_type: pluginTypeSection,
@@ -45,9 +48,14 @@ export function FeaturedPlugins() {
           icon={SampleData}
           plugins={pluginTypeSection.plugins}
           seeAllLink={`/plugins?pluginType=${pluginTypeSection.type}`}
-          title={t('homePage:pluginSectionTitles.pluginTypes', {
-            type: pluginTypeLabels[pluginTypeSection.type],
-          })}
+          title={
+            <span className="flex items-center gap-x-sds-s">
+              <SkeletonLoader className="w-[60px]" />
+              {t('homePage:pluginSectionTitles.pluginTypes', {
+                type: isLoading ? '' : pluginTypeLabels[pluginTypeSection.type],
+              })}
+            </span>
+          }
           metadataToShow={['total_installs']}
         />
       )}
