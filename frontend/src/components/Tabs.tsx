@@ -16,7 +16,7 @@ interface Props<T extends string> {
   tabs: TabData<T>[];
   onChange(tab: TabData<T>): void;
   underline?: boolean;
-  isLoading?: boolean;
+  loading?: boolean;
   tabLoaderCount?: number;
 }
 
@@ -25,12 +25,12 @@ export function Tabs<T extends string>({
   tabs: tabsProp,
   onChange,
   underline = false,
-  isLoading,
+  loading,
   tabLoaderCount = 3,
 }: Props<T>) {
   const [t] = useTranslation(['common']);
 
-  const tabs = isLoading
+  const tabs = loading
     ? Array(tabLoaderCount)
         .fill(null)
         .map(
@@ -57,7 +57,7 @@ export function Tabs<T extends string>({
         }}
         value={activeTab}
         onChange={(_: unknown, tabValue: string) => {
-          if (isLoading) {
+          if (loading) {
             return;
           }
 
@@ -73,7 +73,7 @@ export function Tabs<T extends string>({
             key={tab.value}
             label={
               <SkeletonLoader
-                loading={isLoading}
+                loading={loading}
                 className="h-[20px] w-[60px] mr-[15px]"
               >
                 <div className="px-sds-xs screen-495:px-sds-m">
