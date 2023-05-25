@@ -10,7 +10,7 @@ function getPathname(url: UrlType) {
   return url.pathname;
 }
 
-export function isSearchPage(url: UrlType): boolean {
+export function isHomePage(url: UrlType): boolean {
   return getPathname(url) === '/';
 }
 
