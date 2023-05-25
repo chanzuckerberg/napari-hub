@@ -8,7 +8,7 @@ from io import BytesIO
 from collections import defaultdict
 import pandas as pd
 
-from api.models import install_activity
+from api.models import github_activity, install_activity
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
 from api.s3 import get_cache, cache, write_data, get_install_timeline_data, get_latest_commit, get_commit_activity, \
@@ -426,14 +426,14 @@ def _update_activity_timeline_data():
     """
     query = """
         SELECT 
-            LOWER(file_project), DATE_TRUNC('month', timestamp) as month, count(*) as num_downloads
+            LOWER(file_project) AS name, DATE_TRUNC('month', timestamp) AS month, COUNT(*) AS num_downloads
         FROM
             imaging.pypi.labeled_downloads
         WHERE 
             download_type = 'pip'
             AND project_type = 'plugin'
-        GROUP BY file_project, month
-        ORDER BY file_project, month
+        GROUP BY name, month
+        ORDER BY name, month
         """
     cursor_list = _execute_query(query, "PYPI")
     csv_string = "PROJECT,MONTH,NUM_DOWNLOADS_BY_MONTH\n"
@@ -495,15 +495,15 @@ def _update_recent_activity_data(number_of_time_periods=30, time_granularity='DA
     """
     query = f"""
         SELECT 
-            LOWER(file_project), count(*) as num_downloads
+            LOWER(file_project) AS name, COUNT(*) AS num_downloads
         FROM
             imaging.pypi.labeled_downloads
         WHERE 
             download_type = 'pip'
             AND project_type = 'plugin'
             AND timestamp > DATEADD({time_granularity}, {number_of_time_periods * -1}, CURRENT_DATE)
-        GROUP BY file_project     
-        ORDER BY file_project
+        GROUP BY name     
+        ORDER BY name
     """
     cursor_list = _execute_query(query, "PYPI")
     data = {}
@@ -537,19 +537,28 @@ def _get_repo_to_plugin_dict():
     return repo_to_plugin_dict
 
 
+def _get_repo_from_plugin(plugin):
+    plugin_metadata = get_plugin(plugin)
+    if plugin_metadata:
+        repo_url = plugin_metadata.get('code_repository')
+        if repo_url:
+            return repo_url.replace('https://github.com/', '')
+    return None
+
+
 def _update_latest_commits(repo_to_plugin_dict):
     """
     Get the latest commit occurred for the plugin
     """
     query = f"""
         SELECT 
-            repo, max(commit_author_date) as latest_commit
+            repo AS name, MAX(commit_author_date) AS latest_commit
         FROM 
             imaging.github.commits
         WHERE 
             repo_type = 'plugin'
-        GROUP BY repo 
-        ORDER BY repo
+        GROUP BY name
+        ORDER BY name
     """
     cursor_list = _execute_query(query, "GITHUB")
     data = {}
@@ -569,13 +578,13 @@ def _update_commit_activity(repo_to_plugin_dict):
     """
     query = f"""
         SELECT 
-            repo, date_trunc('month', to_date(commit_author_date)) as month, count(*) as commit_count
+            repo AS name, DATE_TRUNC('month', TO_DATE(commit_author_date)) AS month, COUNT(*) AS commit_count
         FROM 
             imaging.github.commits
         WHERE 
             repo_type = 'plugin'
-        GROUP BY repo, month
-        ORDER BY repo, month
+        GROUP BY name, month
+        ORDER BY name, month
     """
     cursor_list = _execute_query(query, "GITHUB")
     data = {}
@@ -617,7 +626,35 @@ def _get_usage_data(plugin: str, limit: int, use_dynamo: bool) -> Dict[str, Any]
     return {'timeline': usage_timeline, 'stats': usage_stats, }
 
 
-def get_metrics_for_plugin(plugin: str, limit: str, use_dynamo_for_usage: bool) -> Dict[str, Any]:
+def _get_maintenance_data(plugin: str, repo: Any, limit: int, use_dynamo_for_maintenance: bool) -> Dict[str, Any]:
+    """
+    Fetches plugin maintenance_data from s3 or dynamo based on the in_test variable
+    :returns (dict[str, Any]): A dict with the structure {'timeline': List, 'stats': Dict[str, int]}
+    :params str plugin: Name of the plugin in lowercase.
+    :params repo: Parameter used if use_dynamo_for_maintenance is true
+    :params int limit: Sets the number of records to be fetched for timeline.
+    :params bool use_dynamo_for_maintenance: Fetch GitHub data from dynamo if True, else fetch from s3.
+    """
+    if use_dynamo_for_maintenance:
+        maintenance_timeline = github_activity.get_maintenance_timeline(plugin, repo, limit) if limit else []
+
+        maintenance_stats = {
+            'total_commits': github_activity.get_total_commits(plugin, repo),
+            'latest_commit_timestamp': github_activity.get_latest_commit(plugin, repo),
+        }
+    else:
+        data = get_commit_activity(plugin)
+        maintenance_stats = {
+            'total_commits': sum([commit_obj['commits'] for commit_obj in data]),
+            'latest_commit_timestamp': get_latest_commit(plugin),
+        }
+        maintenance_timeline = _process_maintenance_timeline(data, limit) if limit else []
+
+    return {'timeline': maintenance_timeline, 'stats': maintenance_stats, }
+
+
+def get_metrics_for_plugin(plugin: str, limit: str, use_dynamo_for_usage: bool,
+                           use_dynamo_for_maintenance: bool) -> Dict[str, Any]:
     """
     Fetches plugin metrics from s3 or dynamo based on the in_test variable
     :return dict[str, Any]: A map with entries for usage and maintenance
@@ -625,22 +662,16 @@ def get_metrics_for_plugin(plugin: str, limit: str, use_dynamo_for_usage: bool) 
     :params str plugin: Name of the plugin in lowercase for which usage data needs to be fetched.
     :params str limit_str: Number of records to be fetched for timeline. Defaults to 0 for invalid number.
     :params bool use_dynamo_for_usage: Fetch data from dynamo if True else fetch from s3. (default= False)
+    :params bool use_dynamo_for_maintenance: Fetch data from dynamo if True else fetch from s3. (default= False)
     """
+    repo = _get_repo_from_plugin(plugin) if use_dynamo_for_maintenance else None
     plugin = plugin.lower()
-    commit_activity = get_commit_activity(plugin)
-
-    maintenance_timeline = []
     month_delta = 0
 
     if limit.isdigit() and limit != '0':
         month_delta = max(int(limit), 0)
-        maintenance_timeline = _process_maintenance_timeline(commit_activity, int(limit))
 
-    maintenance_stats = {
-        'latest_commit_timestamp': get_latest_commit(plugin),
-        'total_commits': sum([item['commits'] for item in commit_activity]),
-    }
     return {
         'usage': _get_usage_data(plugin, month_delta, use_dynamo_for_usage),
-        'maintenance': {'timeline': maintenance_timeline, 'stats': maintenance_stats, }
+        'maintenance': _get_maintenance_data(plugin, repo, month_delta, use_dynamo_for_maintenance),
     }
