@@ -334,11 +334,13 @@ module data_workflows_lambda {
   }
 
   environment             = {
-    "SNOWFLAKE_PASSWORD" = local.snowflake_password
-    "SNOWFLAKE_USER"     = local.snowflake_user
-    "STACK_NAME"         = local.custom_stack_name
-    "BUCKET"             = local.data_bucket_name
-    "BUCKET_PATH"        = var.env == "dev" ? local.custom_stack_name : ""
+    "SNOWFLAKE_PASSWORD"    = local.snowflake_password
+    "SNOWFLAKE_USER"        = local.snowflake_user
+    "STACK_NAME"            = local.custom_stack_name
+    "BUCKET"                = local.data_bucket_name
+    "BUCKET_PATH"           = var.env == "dev" ? local.custom_stack_name : ""
+    "GITHUB_CLIENT_ID"      = local.github_client_id
+    "GITHUB_CLIENT_SECRET"  = local.github_client_secret
   }
 
   log_retention_in_days   = local.log_retention_period
