@@ -71,7 +71,7 @@ export function SitemapPage({ entries }: { entries: SitemapEntry[] }) {
             >
               <Text variant="h2">
                 <Link className="underline" href={categoryToPathMap[category]}>
-                  {t(`common:${category}` as I18nKeys<'common'>)}
+                  {t(`common:${category}` as I18nKeys<'common'>) as string}
                 </Link>
               </Text>
 
