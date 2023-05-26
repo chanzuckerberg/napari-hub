@@ -49,8 +49,10 @@ create_if_not_exists() {
 
     optional_params=()
     gsi=$(echo "$source_table" | jq --argjson provisioning "$default_provisioning" \
+      --arg remote "^$remote_dynamo_prefix-" --arg local "$local_dynamo_prefix-" \
       '[.Table | .GlobalSecondaryIndexes[]?
-      | {IndexName, KeySchema, Projection, "ProvisionedThroughput": $provisioning}]')
+      | {IndexName, KeySchema, Projection, "ProvisionedThroughput": $provisioning}
+      | .IndexName |= sub($remote; $local)]')
 
     [ "$gsi" != "[]" ] && optional_params+=(--global-secondary-indexes "$gsi")
 
