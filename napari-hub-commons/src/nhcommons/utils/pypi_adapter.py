@@ -6,7 +6,6 @@ from typing import Dict, List, Any
 import requests
 from requests import HTTPError
 
-from .custom_parser import get_attribute
 from .github_adapter import get_repo_url
 
 _NAME_PATTERN = re.compile('class="package-snippet__name">(.+)</span>')
@@ -15,23 +14,23 @@ _BASE_URL = 'https://pypi.org'
 _SEARCH_URL = f'/search/'
 _PLUGIN_DATA_URL = '/pypi/{plugin}/json'
 
-_LOGGER = logging.getLogger()
+logger = logging.getLogger(__name__)
 
 
-def _get_pypi_response(path: str, params: Dict[str, Any] = None):
+def _get_pypi_response(path: str, params: Dict[str, Any] = None) -> requests.Response:
     url = _BASE_URL + path
     start_time = time.perf_counter()
     try:
         response = requests.get(url, params=params)
         if response.status_code != requests.codes.ok:
-            _LOGGER.error(f"Error calling {url} "
-                          f"response.status_code={response.status_code}")
+            logger.error(f"Error calling {url} params={params}"
+                         f"response.status_code={response.status_code}")
             response.raise_for_status()
         return response
     finally:
         duration = (time.perf_counter() - start_time) * 1000
-        _LOGGER.info(f"PYPI call url={url} params={params} "
-                     f"time_taken={duration}")
+        logger.info(f"PYPI call url={url} params={params} "
+                    f"time_taken={duration} ms")
 
 
 def get_all_plugins() -> Dict[str, str]:
@@ -39,6 +38,7 @@ def get_all_plugins() -> Dict[str, str]:
     Query pypi to get all plugins.
     :returns: all plugin names and latest version
     """
+    logger.info("Getting all napari plugins from PYPI")
     packages = {}
     page = 1
     params = {'o': '-created', 'c': 'Framework :: napari'}
@@ -56,6 +56,7 @@ def get_all_plugins() -> Dict[str, str]:
             page += 1
         except HTTPError:
             break
+    logger.info(f"Total number of napari plugins fetched={len(packages)}")
     return packages
 
 
@@ -70,7 +71,6 @@ def get_plugin_pypi_metadata(plugin: str, version: str) -> Dict[str, Any]:
     # versioned url https://pypi.org/pypi/{plugin}/{version}/json
     # does not track history anymore.
     # see https://github.com/chanzuckerberg/napari-hub/issues/598
-
     try:
         response = _get_pypi_response(_PLUGIN_DATA_URL.format(plugin=plugin))
         return _to_plugin_pypi_metadata(response.json(), version)
@@ -78,7 +78,7 @@ def get_plugin_pypi_metadata(plugin: str, version: str) -> Dict[str, Any]:
         return {}
 
 
-def _filter_prefix(str_list: List[str], prefix: str) -> list:
+def _filter_prefix(str_list: List[str], prefix: str) -> List:
     """
     Filter the list for strings with the given prefix.
 
@@ -89,7 +89,27 @@ def _filter_prefix(str_list: List[str], prefix: str) -> list:
     return [string for string in str_list if string.startswith(prefix)]
 
 
-def _to_plugin_pypi_metadata(plugin: Dict, version: str) -> Dict:
+def _get_authors(raw_name: str) -> List[Dict[str, str]]:
+    """
+    Splits given string by "&", ",", and the word "and" to get list of authors
+    :param raw_name: author name string
+    :return: list of authors
+    """
+    regexp = r'&|,|\sand\s'
+    author_names = re.split(regexp, raw_name)
+    author_names = [name.strip() for name in author_names if
+                    name is not None]
+    return [{'name': name} for name in author_names if name]
+
+
+def _get_release_date(release: List[Dict[str, Any]]) -> str:
+    if len(release) == 0:
+        return ''
+    release_date = release[0].get("upload_time_iso_8601")
+    return release_date or ""
+
+
+def _to_plugin_pypi_metadata(plugin: Dict, version: str) -> Dict[str, Any]:
     """
     Format the plugin metadata to extra relevant information.
 
@@ -97,55 +117,43 @@ def _to_plugin_pypi_metadata(plugin: Dict, version: str) -> Dict:
     :param version: expected version from plugin
     :return: formatted plugin dictionary
     """
-    info = get_attribute(plugin, ["info"])
+    info = plugin.get("info", {})
+    releases = plugin.get("releases", {})
 
-    if version != get_attribute(info, ["version"]):
-        _LOGGER.error(
+    if version != info.get("version"):
+        logger.error(
             f"Index Error: Skipping {plugin}:{version}, "
             f"mismatching PyPI version {info.get('version')}"
         )
         return {}
 
-    # parse raw author names string
-    raw_name = get_attribute(info, ["author"])
-    # currently splitting by "&", ",", and the word "and"
-    regexp = r'&|,|\sand\s'
-    author_names = re.split(regexp, raw_name)
-    author_names = [name.strip() for name in author_names if
-                    name is not None]
-    authors = [{'name': name} for name in author_names if name]
-
-    project_urls = get_attribute(info, ["project_urls"])
+    authors = _get_authors(info.get("author", ""))
+    project_urls = info.get("project_urls", {})
+    classifiers = info.get("classifiers", [])
 
     return {
-        "name": get_attribute(info, ["name"]),
-        "summary": get_attribute(info, ["summary"]),
-        "description": get_attribute(info, ["description"]),
-        "description_content_type": f'{get_attribute(info, ["description_content_type"])}',
+        "name": info.get("name", ""),
+        "summary": info.get("summary", ""),
+        "description": info.get("description", ""),
+        "description_content_type": info.get("description_content_type", ""),
         "authors": authors,
-        "license": get_attribute(info, ["license"]),
-        "python_version": get_attribute(info, ["requires_python"]),
-        "operating_system": _filter_prefix(
-            get_attribute(info, ["classifiers"]), "Operating System"
-        ),
-        "release_date": get_attribute(plugin, ["releases", version, 0,
-                                               "upload_time_iso_8601"]),
+        "license": info.get("license", ""),
+        "python_version": info.get("requires_python", ""),
+        "operating_system": _filter_prefix(classifiers, "Operating System"),
+        "release_date": _get_release_date(releases.get(version, [])),
         "version": version,
         "first_released": min(
-            get_attribute(release, [0, "upload_time_iso_8601"])
-            for _, release in get_attribute(plugin, ["releases"]).items()
-            if get_attribute(release, [0, "upload_time_iso_8601"])
+            release[0]["upload_time_iso_8601"]
+            for _, release in releases.items() if _get_release_date(release)
         ),
-        "development_status": _filter_prefix(
-            get_attribute(info, ["classifiers"]), "Development Status"
-        ),
+        "development_status": _filter_prefix(classifiers, "Development Status"),
 
         # below are plugin details
-        "requirements": get_attribute(info, ["requires_dist"]),
-        "project_site": get_attribute(info, ["home_page"]),
-        "documentation": get_attribute(project_urls, ["Documentation"]),
-        "support": get_attribute(project_urls, ["User Support"]),
-        "report_issues": get_attribute(project_urls, ["Bug Tracker"]),
-        "twitter": get_attribute(project_urls, ["Twitter"]),
-        "code_repository": get_repo_url(project_urls)
+        "requirements": info.get("requires_dist", []),
+        "project_site": info.get("home_page", ""),
+        "documentation": project_urls.get("Documentation", ""),
+        "support": project_urls.get("User Support", ""),
+        "report_issues": project_urls.get("Bug Tracker", ""),
+        "twitter": project_urls.get("Twitter", ""),
+        "code_repository": get_repo_url(project_urls),
     }

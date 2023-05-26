@@ -5,7 +5,7 @@ from pynamodb.attributes import (
 )
 
 from .helper import set_ddb_metadata, PynamoWrapper
-from .plugin_metadata_type import PluginMetadataType
+from .plugin_utils import PluginMetadataType
 
 
 @set_ddb_metadata('plugin-metadata')
@@ -19,7 +19,7 @@ class _PluginMetadata(PynamoWrapper):
     data = MapAttribute(null=True)
 
 
-def put_pypi_record(plugin: str, version: str, is_latest: bool):
+def put_pypi_record(plugin: str, version: str, is_latest: bool) -> None:
     _PluginMetadata(
         hash_key=plugin,
         range_key=PluginMetadataType.PYPI.to_version_type(version),

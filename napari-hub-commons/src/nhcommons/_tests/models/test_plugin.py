@@ -2,13 +2,12 @@ import pytest
 from moto import mock_dynamodb
 
 from nhcommons.models import plugin
-from nhcommons._tests.conftest import create_dynamo_table
 
 
 class TestPlugin:
 
     @pytest.fixture()
-    def plugin_table(self, aws_credentials):
+    def plugin_table(self, aws_credentials, create_dynamo_table):
         with mock_dynamodb():
             yield create_dynamo_table(plugin._Plugin, 'plugin')
 

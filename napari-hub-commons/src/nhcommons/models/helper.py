@@ -15,7 +15,7 @@ class PynamoWrapper(Model):
     )
 
 
-def get_stack_name():
+def get_stack_name() -> str:
     return os.getenv("STACK_NAME", "local")
 
 

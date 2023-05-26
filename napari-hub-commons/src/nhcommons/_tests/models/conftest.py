@@ -1,4 +1,6 @@
+import boto3
 import pytest
+from pynamodb.models import Model
 
 
 @pytest.fixture(scope='module')
@@ -9,3 +11,14 @@ def aws_credentials():
     monkeypatch.setenv("AWS_SECURITY_TOKEN", "testing")
     monkeypatch.setenv("AWS_SESSION_TOKEN", "testing")
     monkeypatch.setenv("AWS_DEFAULT_REGION", "us-east-1")
+
+
+@pytest.fixture(scope='module')
+def create_dynamo_table():
+    def _create_dynamo_table(pynamo_ddb_model: Model, table_name: str):
+        pynamo_ddb_model.create_table()
+        return boto3\
+            .resource('dynamodb', region_name='us-west-2')\
+            .Table(f'local-{table_name}')
+
+    return _create_dynamo_table

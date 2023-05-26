@@ -1,3 +1,5 @@
+import logging
+import time
 from typing import Dict
 
 from pynamodb.attributes import (
@@ -8,9 +10,10 @@ from pynamodb.attributes import (
 from pynamodb.indexes import GlobalSecondaryIndex, AllProjection
 from .helper import (set_ddb_metadata, get_stack_name, PynamoWrapper)
 
+logger = logging.getLogger(__name__)
+
 
 class _LatestPluginIndex(GlobalSecondaryIndex):
-
     class Meta:
         index_name = f'{get_stack_name()}-latest-plugins'
         projection = AllProjection()
@@ -22,7 +25,6 @@ class _LatestPluginIndex(GlobalSecondaryIndex):
 
 @set_ddb_metadata('plugin')
 class _Plugin(PynamoWrapper):
-
     class Meta:
         pass
 
@@ -40,6 +42,15 @@ class _Plugin(PynamoWrapper):
 
 
 def get_latest_plugins() -> Dict[str, _Plugin]:
-    return {plugin.name: plugin
-            for plugin in _Plugin.latest_plugin_index.scan(
-                attributes_to_get=['name', 'version'])}
+    latest_plugins = {}
+    start = time.perf_counter()
+    try:
+        response = _Plugin.latest_plugin_index.scan(
+            attributes_to_get=['name', 'version']
+        )
+        latest_plugins = {plugin.name: plugin for plugin in response}
+        return latest_plugins
+    finally:
+        duration = (time.perf_counter() - start) * 1000
+        count = len(latest_plugins)
+        logger.info(f"latest plugins count={count} time_taken={duration}ms")

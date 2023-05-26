@@ -13,5 +13,5 @@ class TestGithubAdapter:
             ({'bar': 'https://github1.com/test'}, None),
         ]
     )
-    def test_get_latest_plugins(self, input, expected):
+    def test_get_latest_plugins(self, input: str, expected: str):
         assert expected == get_repo_url(input)

@@ -4,13 +4,12 @@ import pytest
 from moto import mock_dynamodb
 
 from nhcommons.models import plugin_metadata
-from nhcommons._tests.conftest import create_dynamo_table
 
 
 class TestPluginMetadata:
 
     @pytest.fixture()
-    def plugin_metadata_table(self, aws_credentials):
+    def plugin_metadata_table(self, aws_credentials, create_dynamo_table):
         with mock_dynamodb():
             yield create_dynamo_table(plugin_metadata._PluginMetadata,
                                       'plugin-metadata')

@@ -6,8 +6,8 @@ import categories.processor
 import plugin.processor
 
 
-LOGGER = logging.getLogger()
-LOGGER.setLevel(logging.INFO)
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 EVENT_TYPE_BY_PROCESSOR = {
     'activity': lambda event: activity.processor.update_activity(),
@@ -24,11 +24,11 @@ def handle(event, context) -> None:
             continue
 
         body = record.get("body")
-        LOGGER.info(f"Received message with body: {body}")
+        logger.info(f"Received message with body: {body}")
         event = json.loads(body)
         event_type = event.get("type", "").lower()
 
         processor = EVENT_TYPE_BY_PROCESSOR.get(event_type)
         if processor:
             processor(event)
-            LOGGER.info(f"Update successful for type={event_type}")
+            logger.info(f"Update successful for type={event_type}")
