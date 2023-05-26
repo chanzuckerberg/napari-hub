@@ -6,12 +6,12 @@ import {
 } from '@testing-library/react';
 import { get } from 'lodash';
 
-import homePageI18n from '@/i18n/en/homePage.json';
-import pluginDataI18n from '@/i18n/en/pluginPage.json';
 import { SearchStoreProvider } from '@/store/search/context';
 import { SearchFilterStore } from '@/store/search/filter.store';
 import { PluginSearchStore } from '@/store/search/search.store';
 
+import homePageI18n from '../../../i18n/en/homePage.json';
+import pluginDataI18n from '../../../i18n/en/pluginData.json';
 import { PluginComplexFilter } from './PluginComplexFilter';
 
 jest.mock('next-i18next', () => ({
