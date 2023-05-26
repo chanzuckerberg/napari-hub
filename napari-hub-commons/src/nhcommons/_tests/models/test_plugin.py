@@ -7,7 +7,7 @@ from nhcommons.models import plugin
 class TestPlugin:
 
     @pytest.fixture()
-    def plugin_table(self, aws_credentials, create_dynamo_table):
+    def plugin_table(self, create_dynamo_table):
         with mock_dynamodb():
             yield create_dynamo_table(plugin._Plugin, 'plugin')
 

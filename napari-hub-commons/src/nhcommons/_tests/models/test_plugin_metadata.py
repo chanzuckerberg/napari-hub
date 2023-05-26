@@ -10,7 +10,7 @@ from nhcommons.models.plugin_utils import PluginMetadataType
 class TestPluginMetadata:
 
     @pytest.fixture()
-    def plugin_metadata_table(self, aws_credentials, create_dynamo_table):
+    def plugin_metadata_table(self, create_dynamo_table):
         with mock_dynamodb():
             yield create_dynamo_table(plugin_metadata._PluginMetadata,
                                       'plugin-metadata')

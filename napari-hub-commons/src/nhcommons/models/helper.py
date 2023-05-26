@@ -24,11 +24,11 @@ def set_ddb_metadata(table_name: str,
         -> Union[PynamoWrapper, partial]:
     """
     Sets up the Meta class of dynamo model with required values
-    :returns Union[PynamoWrapper, functools.partial]: if all parameters are available,
+    :returns Union[PynamoWrapper, functools.partial]: if all parameters available
     returns updated PynamoWrapper class, else returns a partial function
 
     :params str table_name: Name of the table in dynamo
-    :params Model dynamo_model_cls: Model class inherited from pynamo.Model
+    :params PynamoWrapper dynamo_model_cls: class inherited from PynamoWrapper
     """
     if dynamo_model_cls is None:
         return partial(set_ddb_metadata, table_name)

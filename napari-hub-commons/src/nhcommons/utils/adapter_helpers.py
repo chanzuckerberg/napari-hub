@@ -10,7 +10,7 @@ from nhcommons.utils.auth import get_auth
 from nhcommons.utils.request_adapter import get_request
 
 
-_LOGGER = logging.getLogger()
+logger = logging.getLogger()
 
 
 class GithubClientHelper:
@@ -19,6 +19,7 @@ class GithubClientHelper:
     def __new__(cls, *args, **kwargs):
         if not cls._auth:
             cls._auth = get_auth()
+        return object.__new__(cls)
 
     def __init__(self, repo_url: str, branch: str = "HEAD"):
         self._repo_url = repo_url
@@ -29,7 +30,7 @@ class GithubClientHelper:
             api_url = self._to_api_github_url()
             response = get_request(f"{api_url}/license?ref={self._branch}",
                                    auth=self._auth).json()
-            spdx_id = response.get("license", {}).get( "spdx_id", "")
+            spdx_id = response.get("license", {}).get("spdx_id")
             if spdx_id != "NOASSERTION":
                 return spdx_id
 
@@ -69,8 +70,7 @@ class GithubClientHelper:
             response = get_request(api_url, auth=self._auth)
             return response.json() if file_format == "json" else response.text
         except HTTPError:
-            _LOGGER.exception(f"Error fetching {api_url}")
-        return None
+            return None
 
     def _to_api_github_url(self, use_raw_content : bool = False) -> str:
         if use_raw_content:
