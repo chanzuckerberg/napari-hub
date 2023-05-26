@@ -44,7 +44,7 @@ class TestInstallActivity:
             'plugin_name': plugin,
             'type_timestamp': self._to_type_timestamp(granularity, timestamp),
             'install_count': install_count,
-            'granularity': granularity,
+            'type': granularity,
             'timestamp': to_millis(timestamp),
         }
         if is_total:
