@@ -59,9 +59,12 @@ We're a cross-functional product team in the [Imaging program at the Chan Zucker
 - Kira Evans, Engineering ([@kne42](https://github.com/kne42))
 - Justin Kiggins, Product ([@neuromusic](https://github.com/neuromusic))
 - Justine Larsen, Engineering ([@justinelarsen](https://github.com/justinelarsen))
-- Ziyang Liu, Engineering ([@potating-potato](https://github.com/potating-potato))
 - Lucy Obus, User Experience ([@LCObus](https://github.com/LCObus))
 - Kandarp Khandwala, User Experience ([@kandarpksk](https://github.com/kandarpksk))
+
+## Former Members
+- Ziyang Liu, Engineering ([@potating-potato](https://github.com/potating-potato))
+- Kevin Lai, Engineering ([@klai95](https://github.com/klai95))
 
 ## Code of Conduct
 
