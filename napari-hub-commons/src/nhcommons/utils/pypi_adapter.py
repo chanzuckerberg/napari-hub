@@ -99,6 +99,11 @@ def _get_release_date(release: list[dict[str, Any]]) -> str:
     return release_date or ""
 
 
+def _get_default_if_none(json_obj: dict, key: str, default: Any = "") -> Any:
+    value = json_obj.get(key)
+    return value if value else default
+
+
 def _to_plugin_pypi_metadata(plugin: dict, version: str) -> dict[str, Any]:
     """
     Format the plugin metadata to extra relevant information.
@@ -107,8 +112,8 @@ def _to_plugin_pypi_metadata(plugin: dict, version: str) -> dict[str, Any]:
     :param version: expected version from plugin
     :return: formatted plugin dictionary
     """
-    info = plugin.get("info", {})
-    releases = plugin.get("releases", {})
+    info = _get_default_if_none(plugin, "info", {})
+    releases = _get_default_if_none(plugin, "releases", {})
 
     if version != info.get("version"):
         logger.error(
@@ -117,9 +122,9 @@ def _to_plugin_pypi_metadata(plugin: dict, version: str) -> dict[str, Any]:
         )
         return {}
 
-    authors = _get_authors(info.get("author", ""))
-    project_urls = info.get("project_urls", {})
-    classifiers = info.get("classifiers", [])
+    authors = _get_authors(_get_default_if_none(info, "author"))
+    project_urls = _get_default_if_none(info, "project_urls", {})
+    classifiers = _get_default_if_none(info, "classifiers", [])
 
     return {
         "name": info.get("name", ""),

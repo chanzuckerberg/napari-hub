@@ -6,7 +6,8 @@ import categories.processor
 import plugin.processor
 
 
-logging.basicConfig(level=logging.INFO)
+FORMAT = "%(asctime)s [%(levelname)s] %(name)s %(module)s %(funcName)s %(message)s"
+logging.basicConfig(format=FORMAT, level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 EVENT_TYPE_BY_PROCESSOR = {

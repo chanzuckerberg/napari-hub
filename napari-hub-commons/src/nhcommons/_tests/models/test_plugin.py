@@ -26,7 +26,7 @@ class TestPlugin:
         'data, expected', [
             ([('bar', '0.8.1', None)], {}),
             ([('foo', '1.1', True), ('bar', '0.8.1', False), ('baz', '0.0.3', True)],
-             {'foo': plugin._Plugin('foo', '1.1', True), 'baz': plugin._Plugin('baz', '0.0.3', True), })
+             {'foo': '1.1', 'baz': '0.0.3',})
         ]
     )
     def test_get_latest_plugins(self, plugin_table, data, expected):

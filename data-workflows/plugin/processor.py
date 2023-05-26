@@ -1,105 +1,93 @@
 import logging
+from concurrent import futures
 
-from collections import defaultdict
-from typing import Dict
-
-from nhcommons.models.category import get_category
+from plugin.lambda_adapter import LambdaAdapter
 from nhcommons.models.plugin_utils import PluginMetadataType
 from nhcommons.utils import pypi_adapter
 
 from nhcommons.models.plugin_metadata import (
-    put_plugin_metadata, get_plugin_metadata
+    put_plugin_metadata, existing_plugin_metadata_types
 )
-from nhcommons.models.plugin import (
-    get_latest_plugins,
-)
-from nhcommons.utils.custom_parser import render_description
-from nhcommons.utils.github_adapter import get_github_metadata
-
+from nhcommons.models.plugin import get_latest_plugins
+from plugin.metadata import get_formatted_metadata
 
 logger = logging.getLogger(__name__)
 
 
-def update_plugin():
+def update_plugin() -> None:
     dynamo_latest_plugins = get_latest_plugins()
     pypi_latest_plugins = pypi_adapter.get_all_plugins()
 
     def _is_new_plugin(plugin_version_pair):
-        plugin = dynamo_latest_plugins.get(plugin_version_pair[0])
-        return not plugin or plugin.version != plugin_version_pair[1]
+        version = dynamo_latest_plugins.get(plugin_version_pair[0])
+        return not version or version != plugin_version_pair[1]
 
     new_plugins = dict(filter(_is_new_plugin, pypi_latest_plugins.items()))
     logger.info(f"Count of new plugins={len(new_plugins)}")
+
     # update for new version of plugins
-    for plugin_name, version in new_plugins.items():
-        _update_for_new_plugin(plugin_name, version)
+    with futures.ThreadPoolExecutor(max_workers=32) as executor:
+        update_futures = [executor.submit(_update_for_new_plugin, name, version)
+                          for name, version in new_plugins.items()]
+
+    futures.wait(update_futures, return_when='ALL_COMPLETED')
 
     # update for removed plugins and existing older version of plugins
-    for name, plugin in dynamo_latest_plugins.items():
-        logger.info(f"Updating old plugin={name} version={plugin.version}")
-        if pypi_latest_plugins.get(name) != plugin.version:
+    for name, version in dynamo_latest_plugins.items():
+        logger.info(f"Updating old plugin={name} version={version}")
+        if pypi_latest_plugins.get(name) != version:
             put_plugin_metadata(
                 plugin=name,
-                version=plugin.version,
+                version=version,
                 plugin_metadata_type=PluginMetadataType.PYPI
             )
 
 
-def _update_for_new_plugin(plugin_name: str, version: str):
-    logger.info(f"Updating for new plugin={plugin_name} version={version}")
-    put_plugin_metadata(plugin=plugin_name,
+def _update_for_new_plugin(name: str, version: str) -> None:
+    logger.info(f"Update complete for new plugin={name} version={version}")
+    put_plugin_metadata(plugin=name,
                         version=version,
                         is_latest=True,
                         plugin_metadata_type=PluginMetadataType.PYPI)
-    _build_plugin_metadata(plugin_name, version)
-    pass
+    cached_plugins = existing_plugin_metadata_types(name, version)
+    _build_plugin_metadata(name, version, cached_plugins)
+    _build_plugin_manifest(name, version, cached_plugins)
 
 
-def _generate_metadata(pypi_metadata: Dict) -> Dict:
-    github_repo_url = pypi_metadata.get('code_repository')
-    if github_repo_url:
-        return {**pypi_metadata, **get_github_metadata(github_repo_url)}
-    return pypi_metadata
-
-
-def _format_metadata(metadata: Dict) -> Dict:
-    if 'description' in metadata:
-        description = metadata.get('description')
-        metadata['description_text'] = render_description(description)
-    if 'labels' in metadata:
-        category_version = metadata['labels']['ontology']
-        categories = defaultdict(list)
-        category_hierarchy = defaultdict(list)
-        for label_term in metadata['labels']['terms']:
-            for category in get_category(label_term, category_version):
-                dimension = category["dimension"]
-                label = category["label"]
-                if label not in categories[dimension]:
-                    categories[dimension].append(label)
-                category["hierarchy"][0] = label
-                category_hierarchy[dimension].append(category["hierarchy"])
-        metadata['category'] = categories
-        metadata['category_hierarchy'] = category_hierarchy
-        del metadata['labels']
-    return metadata
-
-
-def _build_plugin_metadata(plugin: str, version: str) -> None:
+def _build_plugin_manifest(plugin: str,
+                           version: str,
+                           cache: set[PluginMetadataType]) -> None:
     """
-    Build plugin metadata from multiple sources if one is not already available.
+    Build plugin manifest if one is not already available.
+    Invokes plugins lambda to generate manifest & write to cache.
+    :param plugin: name of the plugin to get
+    :param version: version of the plugin manifest
+    :param cache: types of PluginMetadata that exists in dynamo
     :return: None
     """
-    cached_plugin = get_plugin_metadata(plugin,
-                                        version,
-                                        PluginMetadataType.DISTRIBUTION)
-    if cached_plugin:
+    if PluginMetadataType.DISTRIBUTION in cache:
         return
-    pypi_metadata = pypi_adapter.get_plugin_pypi_metadata(plugin, version)
-    if not pypi_metadata:
+
+    LambdaAdapter().invoke(plugin, version)
+
+
+def _build_plugin_metadata(plugin: str,
+                           version: str,
+                           cache: set[PluginMetadataType]) -> None:
+    """
+    Build plugin metadata from multiple sources if one is not already available.
+    :param plugin: name of the plugin to get
+    :param version: version of the plugin manifest
+    :param cache: types of PluginMetadata that exists in dynamo
+    :return: None
+    """
+    if PluginMetadataType.METADATA in cache:
         return
-    distribution_metadata = _generate_metadata(pypi_metadata)
+    data = get_formatted_metadata(plugin, version)
+    if not data:
+        return
 
     put_plugin_metadata(plugin=plugin,
                         version=version,
-                        plugin_metadata_type=PluginMetadataType.DISTRIBUTION,
-                        data=_format_metadata(distribution_metadata))
+                        plugin_metadata_type=PluginMetadataType.METADATA,
+                        data=data)

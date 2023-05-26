@@ -10,7 +10,7 @@ class PluginMetadataType(Enum):
 
     DISTRIBUTION = ()
     PYPI = ()
-    SOURCE_CONTROL = ()
+    METADATA = ()
 
     def to_version_type(self, version: str) -> str:
         return f"{version}:{self.name}"

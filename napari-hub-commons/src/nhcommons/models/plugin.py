@@ -40,14 +40,14 @@ class _Plugin(PynamoWrapper):
         return False
 
 
-def get_latest_plugins() -> dict[str, _Plugin]:
+def get_latest_plugins() -> dict[str, str]:
     latest_plugins = {}
     start = time.perf_counter()
     try:
         response = _Plugin.latest_plugin_index.scan(
             attributes_to_get=['name', 'version']
         )
-        latest_plugins = {plugin.name: plugin for plugin in response}
+        latest_plugins = {plugin.name: plugin.version for plugin in response}
         return latest_plugins
     finally:
         duration = (time.perf_counter() - start) * 1000
