@@ -1,6 +1,6 @@
 import os
 from functools import partial
-from typing import Union
+from typing import Union, Optional
 
 from pynamodb.attributes import NumberAttribute
 from pynamodb.models import Model
@@ -20,7 +20,8 @@ def get_stack_name() -> str:
 
 
 def set_ddb_metadata(table_name: str,
-                     dynamo_model_cls: PynamoWrapper = None) -> Union[PynamoWrapper, partial]:
+                     dynamo_model_cls: Optional[PynamoWrapper] = None)\
+        -> Union[PynamoWrapper, partial]:
     """
     Sets up the Meta class of dynamo model with required values
     :returns Union[PynamoWrapper, functools.partial]: if all parameters are available,

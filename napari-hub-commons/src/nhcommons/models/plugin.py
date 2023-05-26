@@ -1,6 +1,5 @@
 import logging
 import time
-from typing import Dict
 
 from pynamodb.attributes import (
     UnicodeAttribute,
@@ -41,7 +40,7 @@ class _Plugin(PynamoWrapper):
         return False
 
 
-def get_latest_plugins() -> Dict[str, _Plugin]:
+def get_latest_plugins() -> dict[str, _Plugin]:
     latest_plugins = {}
     start = time.perf_counter()
     try:

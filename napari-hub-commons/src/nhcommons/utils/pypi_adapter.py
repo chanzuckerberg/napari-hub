@@ -1,7 +1,7 @@
 import logging
 import re
 import time
-from typing import Dict, List, Any
+from typing import Any, Optional
 
 import requests
 from requests import HTTPError
@@ -17,7 +17,8 @@ _PLUGIN_DATA_URL = '/pypi/{plugin}/json'
 logger = logging.getLogger(__name__)
 
 
-def _get_pypi_response(path: str, params: Dict[str, Any] = None) -> requests.Response:
+def _get_pypi_response(path: str, params: Optional[dict[str, Any]] = None) \
+        -> requests.Response:
     url = _BASE_URL + path
     start_time = time.perf_counter()
     try:
@@ -33,7 +34,7 @@ def _get_pypi_response(path: str, params: Dict[str, Any] = None) -> requests.Res
                     f"time_taken={duration} ms")
 
 
-def get_all_plugins() -> Dict[str, str]:
+def get_all_plugins() -> dict[str, str]:
     """
     Query pypi to get all plugins.
     :returns: all plugin names and latest version
@@ -60,7 +61,7 @@ def get_all_plugins() -> Dict[str, str]:
     return packages
 
 
-def get_plugin_pypi_metadata(plugin: str, version: str) -> Dict[str, Any]:
+def get_plugin_pypi_metadata(plugin: str, version: str) -> dict[str, Any]:
     """
     Get plugin metadata through pypi API.
 
@@ -78,7 +79,7 @@ def get_plugin_pypi_metadata(plugin: str, version: str) -> Dict[str, Any]:
         return {}
 
 
-def _filter_prefix(str_list: List[str], prefix: str) -> List:
+def _filter_prefix(str_list: list[str], prefix: str) -> list:
     """
     Filter the list for strings with the given prefix.
 
@@ -89,11 +90,11 @@ def _filter_prefix(str_list: List[str], prefix: str) -> List:
     return [string for string in str_list if string.startswith(prefix)]
 
 
-def _get_authors(raw_name: str) -> List[Dict[str, str]]:
+def _get_authors(raw_name: str) -> list[dict[str, str]]:
     """
     Splits given string by "&", ",", and the word "and" to get list of authors
     :param raw_name: author name string
-    :return: list of authors
+    :return: List of authors
     """
     regexp = r'&|,|\sand\s'
     author_names = re.split(regexp, raw_name)
@@ -102,14 +103,14 @@ def _get_authors(raw_name: str) -> List[Dict[str, str]]:
     return [{'name': name} for name in author_names if name]
 
 
-def _get_release_date(release: List[Dict[str, Any]]) -> str:
+def _get_release_date(release: list[dict[str, Any]]) -> str:
     if len(release) == 0:
         return ''
     release_date = release[0].get("upload_time_iso_8601")
     return release_date or ""
 
 
-def _to_plugin_pypi_metadata(plugin: Dict, version: str) -> Dict[str, Any]:
+def _to_plugin_pypi_metadata(plugin: dict, version: str) -> dict[str, Any]:
     """
     Format the plugin metadata to extra relevant information.
 

@@ -1,10 +1,9 @@
 import re
-from typing import Dict
 
 _URL_PATTERN = re.compile("^https://github\\.com/([^/]+)/([^/]+)")
 
 
-def get_repo_url(project_urls: Dict[str, str]) -> [str, None]:
+def get_repo_url(project_urls: dict[str, str]) -> str:
     """
     Get repo url for github.
 

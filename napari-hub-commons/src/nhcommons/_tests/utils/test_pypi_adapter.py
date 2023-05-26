@@ -1,9 +1,11 @@
 import json
-from typing import List, Tuple, Dict
+from typing import Any, Optional
 
 import pytest
 import requests
 from nhcommons.utils import pypi_adapter
+
+ReleasesType = list[dict[str, str]]
 
 
 class MockResponse(requests.Response):
@@ -13,7 +15,7 @@ class MockResponse(requests.Response):
         self._content = content.encode("UTF-8")
 
 
-def plugins() -> List[Tuple[str, str]]:
+def plugins() -> list[tuple[str, str]]:
     return [
         ("foo", "0.23"), ("a-12", "2.0.7"), ("ba-r", "aa-120"), ("Zo-o", "1234")
     ]
@@ -61,7 +63,7 @@ def valid_pypi_data() -> str:
     })
 
 
-def plugin_metadata_valid() -> Dict:
+def plugin_metadata_valid() -> dict[str, Any]:
     return {
         "name": "napari-demo",
         "summary": "example plugin for napari plugin developers",
@@ -93,7 +95,7 @@ def plugin_metadata_valid() -> Dict:
     }
 
 
-def default_pypi_data(release=None):
+def default_pypi_data(release: Optional[ReleasesType] = None):
     return json.dumps({
         "info": {
             "project_urls": {},
@@ -106,7 +108,7 @@ def default_pypi_data(release=None):
     })
 
 
-def plugin_metadata_default(release_date=""):
+def plugin_metadata_default(release_date: str = ""):
     return {
         "name": "",
         "summary": "",
@@ -136,7 +138,7 @@ class TestPypiAdapter:
     def setup_method(self, monkeypatch):
         monkeypatch.setattr(requests, "get", self._mocked_requests_get)
 
-    def _generate_html_data(self, plugin_version_list: List[Tuple[str, str]]):
+    def _generate_html_data(self, plugin_version_list: list[tuple[str, str]]):
         data = [
             f"""
                 <div>
@@ -165,7 +167,7 @@ class TestPypiAdapter:
             (True, {plugin[0]: plugin[1] for plugin in plugins()}),
             (False, {})
     ])
-    def test_get_all_plugins(self, is_valid: bool, expected: Dict[str, str]):
+    def test_get_all_plugins(self, is_valid: bool, expected: dict[str, str]):
         self._version_field = "package-snippet__version" if is_valid else "foo"
         assert expected == pypi_adapter.get_all_plugins()
 
@@ -175,7 +177,10 @@ class TestPypiAdapter:
             ("napari-demo", "0.2.3", plugin_metadata_valid()),
             ("default-demo", "1.9.8", plugin_metadata_default()),
     ])
-    def test_get_plugin_metadata(self, plugin, version, expected):
+    def test_get_plugin_metadata(self,
+                                 plugin: str,
+                                 version: str,
+                                 expected: dict[str, Any]):
         self._release = []
         actual = pypi_adapter.get_plugin_pypi_metadata(plugin, version)
         assert expected == actual
@@ -188,7 +193,9 @@ class TestPypiAdapter:
             ([{}], ""),
             ([], ""),
     ])
-    def test_get_plugin_metadata_release_date(self, release, release_date):
+    def test_get_plugin_metadata_release_date(self,
+                                              release: ReleasesType,
+                                              release_date: str):
         self._release = release
         actual = pypi_adapter.get_plugin_pypi_metadata("default-demo", "1.9.8")
         assert plugin_metadata_default(release_date) == actual
