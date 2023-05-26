@@ -114,19 +114,13 @@ def get_exclusion_list() -> Response:
 
 @app.route('/categories', defaults={'version': os.getenv('category_version', 'EDAM-BIOIMAGING:alpha06')})
 def get_categories(version: str) -> Response:
-    if _is_query_param_true('use_dynamo_category'):
-        return jsonify(CategoryModel.get_all_categories(version))
-
-    return jsonify(get_categories_mapping(version))
+    return jsonify(CategoryModel.get_all_categories(version))
 
 
 @app.route('/categories/<category>', defaults={'version': os.getenv('category_version', 'EDAM-BIOIMAGING:alpha06')})
 @app.route('/categories/<category>/versions/<version>')
 def get_category(category: str, version: str) -> Response:
-    if _is_query_param_true('use_dynamo_category'):
-        return jsonify(CategoryModel.get_category(category, version))
-
-    return jsonify(get_category_mapping(category, get_categories_mapping(version)))
+    return jsonify(CategoryModel.get_category(category, version))
 
 
 @app.route('/activity/update', methods=['POST'])
