@@ -1,6 +1,8 @@
 import clsx from 'clsx';
 import dayjs from 'dayjs';
+import { isNumber, isString } from 'lodash';
 import { useTranslation } from 'next-i18next';
+import { useMemo } from 'react';
 
 import { Text } from '@/components/Text';
 import { I18nKeys, PluginHomePageData } from '@/types';
@@ -22,6 +24,37 @@ const I18N_KEY_MAP: Partial<
   first_released: 'pluginData:labels.firstReleased',
   release_date: 'pluginData:labels.releaseDate',
 };
+
+function MetadataValue({
+  pluginKey,
+  plugin,
+}: {
+  pluginKey: keyof PluginHomePageData;
+  plugin: PluginHomePageData;
+}) {
+  const value = plugin[pluginKey];
+  const { i18n } = useTranslation();
+  const formatter = useMemo(
+    () =>
+      new Intl.NumberFormat(i18n.language, {
+        notation: 'compact',
+      }),
+    [i18n.language],
+  );
+
+  if (
+    ['first_released', 'release_date'].includes(pluginKey) &&
+    isString(value)
+  ) {
+    return <>{dayjs(value).format('DD MMMM YYYY')}</>;
+  }
+
+  if (pluginKey === 'total_installs' && isNumber(value)) {
+    return <>{formatter.format(value)}</>;
+  }
+
+  return <>plugin[pluginKey]</>;
+}
 
 export function PluginCard({ className, metadataToShow, plugin }: Props) {
   const { t } = useTranslation(['pluginData']);
@@ -70,9 +103,7 @@ export function PluginCard({ className, metadataToShow, plugin }: Props) {
             </Text>
 
             <Text className="mr-3" element="span" variant="bodyS" weight="bold">
-              {['first_released', 'release_date'].includes(key)
-                ? dayjs(plugin[key] as string).format('DD MMMM YYYY')
-                : plugin[key]}
+              <MetadataValue plugin={plugin} pluginKey={key} />
             </Text>
           </div>
         ))}
