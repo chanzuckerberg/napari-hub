@@ -218,7 +218,7 @@ class HubAPIClient {
       }
 
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-non-null-assertion
-      const pluginKey = sample(plugins.map((plugin) => plugin.name))!;
+      const pluginKey = plugins[0].name;
 
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const plugin = pluginMap.get(pluginKey)!;
@@ -279,7 +279,7 @@ class HubAPIClient {
         plugins: this.getSectionPlugins({
           pluginMap,
           count: 3,
-          sort: (a, b) => a.total_installs - b.total_installs,
+          sort: (a, b) => b.total_installs - a.total_installs,
         }),
       },
     };
