@@ -59,6 +59,7 @@ locals {
   data_workflows_function_name = "${local.custom_stack_name}-data-workflows"
 
   plugin_update_schedule = var.env == "prod" ? "rate(5 minutes)" : var.env == "staging" ? "rate(1 hour)" : "rate(1 day)"
+  log_retention_period = var.env == "prod" ? 365 : 14
 }
 
 module frontend_dns {
@@ -288,7 +289,7 @@ module backend_lambda {
     "STACK_NAME" = local.custom_stack_name
   }
 
-  log_retention_in_days = 14
+  log_retention_in_days = local.log_retention_period
   timeout               = 300
   memory_size           = 256
 }
@@ -312,7 +313,7 @@ module plugins_lambda {
     "STACK_NAME" = local.custom_stack_name
   }
 
-  log_retention_in_days = 14
+  log_retention_in_days = local.log_retention_period
   timeout               = 150
   memory_size           = 256
   ephemeral_storage_size = 512
@@ -340,7 +341,7 @@ module data_workflows_lambda {
     "BUCKET_PATH"        = var.env == "dev" ? local.custom_stack_name : ""
   }
 
-  log_retention_in_days   = 14
+  log_retention_in_days   = local.log_retention_period
   timeout                 = 300
   memory_size             = 256
   ephemeral_storage_size  = 512
