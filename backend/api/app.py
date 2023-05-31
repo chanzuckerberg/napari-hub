@@ -4,6 +4,7 @@ import os
 from werkzeug import exceptions
 from apig_wsgi import make_lambda_handler
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
+from api.models.category import CategoryModel
 from flask import Flask, Response, jsonify, render_template, request
 from flask_githubapp.core import GitHubApp
 
@@ -43,6 +44,8 @@ github_app = GitHubApp(preview_app)
 handler = make_lambda_handler(app.wsgi_app)
 
 logger = logging.getLogger()
+FORMAT = "%(asctime)s [%(levelname)s] %(name)s %(module)s %(funcName)s %(message)s"
+logging.basicConfig(format=FORMAT)
 logger.setLevel(logging.DEBUG if os.getenv('IS_DEBUG') else logging.INFO)
 
 
@@ -112,19 +115,13 @@ def get_exclusion_list() -> Response:
 
 @app.route('/categories', defaults={'version': os.getenv('category_version', 'EDAM-BIOIMAGING:alpha06')})
 def get_categories(version: str) -> Response:
-    if _is_query_param_true('use_dynamo_category'):
-        return jsonify(categories.get_all_categories(version))
-
-    return jsonify(get_categories_mapping(version))
+    return jsonify(CategoryModel.get_all_categories(version))
 
 
 @app.route('/categories/<category>', defaults={'version': os.getenv('category_version', 'EDAM-BIOIMAGING:alpha06')})
 @app.route('/categories/<category>/versions/<version>')
 def get_category(category: str, version: str) -> Response:
-    if _is_query_param_true('use_dynamo_category'):
-        return jsonify(categories.get_category(category, version))
-
-    return jsonify(get_category_mapping(category, get_categories_mapping(version)))
+    return jsonify(CategoryModel.get_category(category, version))
 
 
 @app.route('/activity/update', methods=['POST'])
@@ -142,11 +139,14 @@ def get_plugin_metrics(plugin: str) -> Response:
     :params str plugin: Name of the plugin in lowercase for which usage data needs to be fetched.
     :query_params limit: Number of months to be fetched for timeline. (default=12).
     :query_params use_dynamo_metric_usage: Fetch usage data from dynamo if True else fetch from s3. (default=False)
+    :query_params use_dynamo_metric_maintenance: Fetch maintenance data from dynamo if True else fetch from s3.
+                  (default=False)
     """
     return jsonify(get_metrics_for_plugin(
         plugin=plugin,
         limit=request.args.get('limit', '12'),
         use_dynamo_for_usage=_is_query_param_true('use_dynamo_metric_usage'),
+        use_dynamo_for_maintenance=_is_query_param_true('use_dynamo_metric_maintenance'),
     ))
 
 
@@ -202,7 +202,7 @@ def authenticate_request():
 
 @app.after_request
 def add_header(response):
-    print(f'{request.method} {request.full_path} {response.status}')
+    logger.info(f'{request.method} {request.full_path} {response.status}')
     response.headers['Access-Control-Allow-Origin'] = '*'
     return response
 

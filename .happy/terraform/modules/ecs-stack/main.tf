@@ -59,6 +59,7 @@ locals {
   data_workflows_function_name = "${local.custom_stack_name}-data-workflows"
 
   plugin_update_schedule = var.env == "prod" ? "rate(5 minutes)" : var.env == "staging" ? "rate(1 hour)" : "rate(1 day)"
+  log_retention_period = var.env == "prod" ? 365 : 14
 }
 
 module frontend_dns {
@@ -288,7 +289,7 @@ module backend_lambda {
     "STACK_NAME" = local.custom_stack_name
   }
 
-  log_retention_in_days = 14
+  log_retention_in_days = local.log_retention_period
   timeout               = 300
   memory_size           = 256
 }
@@ -309,9 +310,10 @@ module plugins_lambda {
   environment = {
     "BUCKET" = local.data_bucket_name
     "BUCKET_PATH" = var.env == "dev" ? local.custom_stack_name : ""
+    "STACK_NAME" = local.custom_stack_name
   }
 
-  log_retention_in_days = 14
+  log_retention_in_days = local.log_retention_period
   timeout               = 150
   memory_size           = 256
   ephemeral_storage_size = 512
@@ -339,7 +341,7 @@ module data_workflows_lambda {
     "BUCKET_PATH"        = var.env == "dev" ? local.custom_stack_name : ""
   }
 
-  log_retention_in_days   = 14
+  log_retention_in_days   = local.log_retention_period
   timeout                 = 300
   memory_size             = 256
   ephemeral_storage_size  = 512
@@ -360,8 +362,8 @@ resource aws_ssm_parameter data_workflow_config {
 resource aws_sqs_queue data_workflows_queue {
   name                        = "${local.custom_stack_name}-data-workflows"
   delay_seconds               = 0
-  message_retention_seconds   = 86400
-  receive_wait_time_seconds   = 10
+  message_retention_seconds   = var.env == "dev" ? 600 : 86400
+  receive_wait_time_seconds   = 20
   visibility_timeout_seconds  = 300
   tags                        = var.tags
 }
@@ -405,6 +407,14 @@ resource aws_cloudwatch_event_target update_target {
           httpMethod = "POST",
           headers = {"X-API-Key": random_uuid.api_key.result}
         })
+    }
+}
+
+resource aws_cloudwatch_event_target plugin_target_sqs {
+    rule = aws_cloudwatch_event_rule.update_rule.name
+    arn = aws_sqs_queue.data_workflows_queue.arn
+    input_transformer {
+        input_template = jsonencode({type = "plugin"})
     }
 }
 
@@ -489,8 +499,9 @@ data aws_iam_policy_document backend_policy {
       module.install_dynamodb_table.table_arn,
       module.github_dynamodb_table.table_arn,
       module.category_dynamodb_table.table_arn,
+      module.plugin_metadata_dynamodb_table.table_arn,
       module.plugin_dynamodb_table.table_arn,
-      module.plugin_blocked_dynamodb_table.table_arn
+      module.plugin_blocked_dynamodb_table.table_arn,
     ]
   }
 
@@ -536,6 +547,7 @@ data aws_iam_policy_document data_workflows_policy {
         module.plugin_dynamodb_table.table_arn,
         module.plugin_metadata_dynamodb_table.table_arn,
         module.plugin_blocked_dynamodb_table.table_arn,
+        "${module.plugin_dynamodb_table.table_arn}/index/*",
     ]
   }
   statement {
@@ -575,7 +587,7 @@ data aws_iam_policy_document plugins_policy {
 
   statement {
     actions = [
-      "dynamodb:Query",
+      "dynamodb:GetItem",
       "dynamodb:PutItem",
     ]
     resources = [module.plugin_metadata_dynamodb_table.table_arn]
@@ -658,4 +670,22 @@ resource "aws_lambda_function_event_invoke_config" "async-config" {
   function_name                = module.plugins_lambda.function_name
   maximum_event_age_in_seconds = 500
   maximum_retry_attempts       = 0
+}
+
+locals {
+  monitoring_enabled = var.env == "prod" || var.env == "staging"
+}
+
+module alarm_and_monitoring {
+  source = "../cloudwatch-alarm"
+  env = var.env
+  stack_name = local.custom_stack_name
+  metrics_enabled = local.monitoring_enabled
+  alarms_enabled = local.monitoring_enabled
+  backend_lambda_function_name = module.backend_lambda.function_name
+  backend_lambda_log_group_name = module.backend_lambda.cloudwatch_log_group_name
+  data_workflows_lambda_function_name = module.data_workflows_lambda.function_name
+  data_workflows_lambda_log_group_name = module.data_workflows_lambda.cloudwatch_log_group_name
+  plugins_lambda_function_name = module.plugins_lambda.function_name
+  tags = var.tags
 }

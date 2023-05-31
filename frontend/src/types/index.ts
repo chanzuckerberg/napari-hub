@@ -42,12 +42,13 @@ export interface PluginIndexData {
   license: string;
   name: string;
   operating_system: string[];
+  plugin_types?: PluginType[];
   python_version: string;
+  reader_file_extensions?: string[];
   release_date: string;
   summary: string;
+  total_installs: number;
   version: string;
-  plugin_types?: PluginType[];
-  reader_file_extensions?: string[];
   writer_file_extensions?: string[];
   writer_save_layers?: PluginWriterSaveLayer[];
 }
@@ -55,7 +56,7 @@ export interface PluginIndexData {
 /**
  * Interface for plugin data response from backend.
  */
-export interface PluginData extends PluginIndexData {
+export interface PluginData extends Omit<PluginIndexData, 'total_installs'> {
   action_repository?: string;
   category_hierarchy?: PluginCategoryHierarchy;
   citations?: CitationData;

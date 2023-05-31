@@ -63,15 +63,16 @@ exports[`<AppBar /> should match snapshot 1`] = `
       >
         <input
           aria-label="Search bar for searching for napari plugins."
-          class="flex flex-auto border-none outline-none bg-transparent w-0"
+          class="flex flex-auto border-none outline-none bg-transparent placeholder-gray-500 w-0"
           data-testid="searchBarInput"
           value=""
         />
         <button
           aria-label="Submit search query"
-          class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeLarge p-3 css-1h7qoeq-MuiButtonBase-root-MuiIconButton-root"
+          class="MuiButtonBase-root Mui-disabled MuiIconButton-root Mui-disabled MuiIconButton-sizeLarge p-3 css-d6egol-MuiButtonBase-root-MuiIconButton-root"
           data-testid="submitQueryButton"
-          tabindex="0"
+          disabled=""
+          tabindex="-1"
           type="button"
         >
           <svg
@@ -88,9 +89,6 @@ exports[`<AppBar /> should match snapshot 1`] = `
               stroke-width="2"
             />
           </svg>
-          <span
-            class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-          />
         </button>
       </form>
       <div

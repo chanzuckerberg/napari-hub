@@ -4,8 +4,8 @@ import { z } from 'zod';
 
 import { CollectionData, CollectionVisibility } from '@/types/collections';
 
+import { pluginAuthorSchema } from './schemas';
 import { collectionIndexDataSchema } from './validateCollectionIndexData';
-import { pluginAuthorSchema } from './validatePluginIndexData';
 
 const collectionPluginSchema = z.object({
   name: z.string(),

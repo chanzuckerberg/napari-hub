@@ -2,7 +2,11 @@ import { PickByValue } from 'utility-types';
 
 import { PluginIndexData, PluginType, PluginWriterSaveLayer } from '@/types';
 
-import { createValidatePluginTest, DELETED } from './testHelpers';
+import {
+  createValidatePluginTest,
+  DELETED,
+  getPluginIndexData,
+} from './testHelpers';
 import { validatePluginIndexData } from './validatePluginIndexData';
 
 type PluginIndexDataKeys<T> = keyof PickByValue<PluginIndexData, T>;
@@ -31,6 +35,7 @@ describe('validatePluginIndexData()', () => {
   createValidatePluginTest({
     key: 'authors',
     validatePlugin: validatePluginIndexData,
+    getFixtureData: getPluginIndexData,
 
     validData: [
       {
@@ -75,6 +80,7 @@ describe('validatePluginIndexData()', () => {
   createValidatePluginTest({
     key: 'category',
     validatePlugin: validatePluginIndexData,
+    getFixtureData: getPluginIndexData,
 
     validData: {
       'Image modality': ['foo'],
@@ -98,6 +104,7 @@ describe('validatePluginIndexData()', () => {
   createValidatePluginTest({
     key: 'display_name',
     validatePlugin: validatePluginIndexData,
+    getFixtureData: getPluginIndexData,
 
     validData: 'foobar',
     invalidData: 42 as never,
@@ -107,6 +114,7 @@ describe('validatePluginIndexData()', () => {
   createValidatePluginTest({
     key: 'plugin_types',
     validatePlugin: validatePluginIndexData,
+    getFixtureData: getPluginIndexData,
 
     validData: [PluginType.Reader, PluginType.Writer, PluginType.SampleData],
 
@@ -125,6 +133,7 @@ describe('validatePluginIndexData()', () => {
   createValidatePluginTest({
     key: 'writer_save_layers',
     validatePlugin: validatePluginIndexData,
+    getFixtureData: getPluginIndexData,
 
     validData: [
       PluginWriterSaveLayer.Image,
@@ -154,6 +163,7 @@ describe('validatePluginIndexData()', () => {
     createValidatePluginTest({
       key,
       validatePlugin: validatePluginIndexData,
+      getFixtureData: getPluginIndexData,
       validData: 'foobar',
       invalidData: 42 as never,
       expectedInvalidDataResult: '',
@@ -164,6 +174,7 @@ describe('validatePluginIndexData()', () => {
     createValidatePluginTest({
       key,
       validatePlugin: validatePluginIndexData,
+      getFixtureData: getPluginIndexData,
       validData: ['foo', 'bar', 'foobar'],
       invalidData: ['foobar', 42, null, undefined, '', NaN] as never,
       expectedInvalidDataResult: ['foobar'],

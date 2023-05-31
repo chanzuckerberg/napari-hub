@@ -1,14 +1,8 @@
 import dynamic from 'next/dynamic';
 import withLoadingProps from 'next-dynamic-loading-props';
-import { ReactNode } from 'react';
+import { CodeProps } from 'react-markdown/lib/ast-to-react';
 
 import { SyntaxHighlighterProps } from './SyntaxHighlighter';
-
-interface Props {
-  className?: string;
-  inline?: boolean;
-  children?: ReactNode;
-}
 
 /**
  * The SyntaxHighlighter component uses a library that only works on the
@@ -40,16 +34,25 @@ const SyntaxHighlighter = withLoadingProps<SyntaxHighlighterProps>(
 /**
  * Component for rendering markdown code with syntax highlighting.
  */
-export function MarkdownCode({ className, inline, children, ...props }: Props) {
+export function MarkdownCode({
+  className,
+  inline,
+  children,
+  node,
+  ...props
+}: CodeProps) {
   const match = /language-(\w+)/.exec(className || '');
   const language = match?.[1] ?? '';
 
   // Remove extra line that usually gets added to the end of files
   const code = String(children).replace(/\n$/, '');
+  const hasLink = node.children.some((child) => child.tagName === 'a');
 
-  return inline ? (
-    <code {...props}>{code}</code>
-  ) : (
+  if (inline || hasLink) {
+    return <code {...props}>{hasLink ? children : code}</code>;
+  }
+
+  return (
     <SyntaxHighlighter language={language} {...props}>
       {code}
     </SyntaxHighlighter>

@@ -68,14 +68,14 @@ function isHubAPIErrorResponse(
 
 interface DynamoConfig {
   METRICS_USAGE_MIGRATION: boolean;
-  METRICS_MAINTAINENCE_MIGRATION: boolean;
+  METRICS_MAINTENANCE_MIGRATION: boolean;
   CATEGORY_MIGRATION: boolean;
   PLUGIN_MIGRATION: boolean;
 }
 
 const DEFAULT_DYNAMO_CONFIG: DynamoConfig = {
   METRICS_USAGE_MIGRATION: false,
-  METRICS_MAINTAINENCE_MIGRATION: false,
+  METRICS_MAINTENANCE_MIGRATION: false,
   CATEGORY_MIGRATION: false,
   PLUGIN_MIGRATION: false,
 };
@@ -179,8 +179,8 @@ class HubAPIClient {
     const data = await this.sendRequest<PluginMetrics>(`/metrics/${name}`, {
       params: {
         use_dynamo_metric_usage: this.dynamoConfig.METRICS_USAGE_MIGRATION,
-        use_dynamo_metric_maintainence:
-          this.dynamoConfig.METRICS_MAINTAINENCE_MIGRATION,
+        use_dynamo_metric_maintenance:
+          this.dynamoConfig.METRICS_MAINTENANCE_MIGRATION,
       },
     });
     return validateMetricsData(data);

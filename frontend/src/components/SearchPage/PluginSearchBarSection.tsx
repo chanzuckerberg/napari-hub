@@ -1,13 +1,14 @@
 import { useTranslation } from 'next-i18next';
 
 import { ColumnLayout } from '@/components/ColumnLayout';
-import { SearchBar } from '@/components/SearchBar';
 import { SEARCH_BAR_ID } from '@/constants/search';
+
+import { PluginSearchBar } from '../SearchBar/PluginSearchBar';
 
 /**
  * Component that renders the landing page search bar.
  */
-export function PluginSearchBar() {
+export function PluginSearchBarSection() {
   const [t] = useTranslation(['homePage']);
 
   return (
@@ -27,7 +28,7 @@ export function PluginSearchBar() {
           {t('homePage:searchBar')}
         </h2>
 
-        <SearchBar aria-describedby="plugin-search-title" large />
+        <PluginSearchBar aria-describedby="plugin-search-title" large />
       </div>
     </ColumnLayout>
   );
