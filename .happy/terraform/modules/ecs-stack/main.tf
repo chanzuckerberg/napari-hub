@@ -384,6 +384,13 @@ resource aws_lambda_event_source_mapping data_workflow_sqs_event_source_mapping 
   batch_size       = 1
 }
 
+resource aws_lambda_event_source_mapping data_workflow_plugin_metadata_event_source_mapping {
+  event_source_arn  = module.plugin_metadata_dynamodb_table.stream_arn
+  function_name     = module.data_workflows_lambda.function_name
+  batch_size        = 100
+  starting_position = "LATEST"
+}
+
 module api_gateway_proxy_stage {
   source               = "../api-gateway-proxy-stage"
   lambda_function_name = local.backend_function_name
