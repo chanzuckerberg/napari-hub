@@ -4,6 +4,7 @@ import os
 from werkzeug import exceptions
 from apig_wsgi import make_lambda_handler
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
+from api.models.category import CategoryModel
 from flask import Flask, Response, jsonify, render_template, request
 from flask_githubapp.core import GitHubApp
 
@@ -12,7 +13,7 @@ from api.custom_wsgi import script_path_middleware
 from api.model import get_public_plugins, get_index, get_plugin, get_excluded_plugins, update_cache, \
     move_artifact_to_s3, get_category_mapping, get_categories_mapping, get_manifest, update_activity_data, \
     get_metrics_for_plugin
-from api.models.category import CategoryModel
+from api.models import category as categories
 from api.shield import get_shield
 from utils.utils import send_alert, reformat_ssh_key_to_pem_bytes
 
