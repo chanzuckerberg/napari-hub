@@ -1,11 +1,13 @@
+/* stylelint-disable selector-class-pattern */
+
 .chevron {
-  width: 24px;
   height: 24px;
+  width: 24px;
 }
 
 .select {
   :global(.MuiOutlinedInput-notchedOutline) {
-    border: none;
+    @apply border-none;
   }
 
   // Rotate chevron when Select is expanded
