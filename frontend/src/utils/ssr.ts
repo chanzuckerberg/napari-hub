@@ -77,6 +77,7 @@ export function getServerSidePropsHandler<
 
     const featureFlags = E2E
       ? getEnabledFeatureFlags(
+          // TODO update E2E tests to test for sort dropdown
           ...FEATURE_FLAG_LIST.filter((flag) => flag !== 'homePageRedesign'),
         )
       : await getFeatureFlags(req.url ?? '/');
