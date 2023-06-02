@@ -16,6 +16,7 @@ export function PluginSearchControls() {
   );
 
   const isNpe2Enabled = useIsFeatureFlagEnabled('npe2');
+  const isHomePageRedesign = useIsFeatureFlagEnabled('homePageRedesign');
   const requirementFilters: FilterKey[] = ['supportedData'];
 
   if (isNpe2Enabled) {
@@ -44,9 +45,12 @@ export function PluginSearchControls() {
       )}
     >
       <AnimateSharedLayout>
-        <PluginSortByForm />
-
-        {divider}
+        {!isHomePageRedesign && (
+          <>
+            <PluginSortByForm />
+            {divider}
+          </>
+        )}
 
         <motion.div layout>
           <PluginFilterByForm
