@@ -5,13 +5,14 @@ import RadioGroup from '@mui/material/RadioGroup';
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'next-i18next';
-import { ReactNode } from 'react';
-import type { TFuncKey } from 'react-i18next';
 import { useSnapshot } from 'valtio';
 
 import { Accordion } from '@/components/Accordion';
+import { SORT_LABELS, SORT_OPTIONS } from '@/constants/search';
+import { useIsFeatureFlagEnabled } from '@/store/featureFlags';
 import { SearchSortType } from '@/store/search/constants';
 import { useSearchStore } from '@/store/search/context';
+import { I18nKeys } from '@/types/i18n';
 
 const DEFAULT_SORT_BY_RADIO_ORDER: SearchSortType[] = [
   SearchSortType.TotalInstalls,
@@ -20,12 +21,12 @@ const DEFAULT_SORT_BY_RADIO_ORDER: SearchSortType[] = [
   SearchSortType.PluginName,
 ];
 
-const SORT_BY_LABELS: Record<SearchSortType, TFuncKey<'homePage'>> = {
-  [SearchSortType.Relevance]: 'sort.relevance',
-  [SearchSortType.FirstReleased]: 'sort.newest',
-  [SearchSortType.ReleaseDate]: 'sort.recentlyUpdated',
-  [SearchSortType.PluginName]: 'sort.pluginName',
-  [SearchSortType.TotalInstalls]: 'sort.totalInstalls',
+const SORT_BY_LABELS: Record<SearchSortType, I18nKeys<'homePage'>> = {
+  [SearchSortType.Relevance]: 'homePage:sort.relevance',
+  [SearchSortType.FirstReleased]: 'homePage:sort.newest',
+  [SearchSortType.ReleaseDate]: 'homePage:sort.recentlyUpdated',
+  [SearchSortType.PluginName]: 'homePage:sort.pluginName',
+  [SearchSortType.TotalInstalls]: 'homePage:sort.totalInstalls',
 };
 
 /**
@@ -35,16 +36,21 @@ function SortForm() {
   const { searchStore } = useSearchStore();
   const state = useSnapshot(searchStore);
   const isSearching = state.search.query;
-  const [t] = useTranslation(['homePage']);
+  const [t] = useTranslation(['homePage', 'pluginsPage']);
+  const isHomePageRedesign = useIsFeatureFlagEnabled('homePageRedesign');
 
   const radios: SearchSortType[] = [];
+  const options = isHomePageRedesign
+    ? SORT_OPTIONS
+    : DEFAULT_SORT_BY_RADIO_ORDER;
+  const labels = isHomePageRedesign ? SORT_LABELS : SORT_BY_LABELS;
 
   // Add relevance sort type if user is searching fro a plugin.
   if (isSearching) {
     radios.push(SearchSortType.Relevance);
   }
 
-  radios.push(...DEFAULT_SORT_BY_RADIO_ORDER);
+  radios.push(...options);
 
   return (
     <FormControl component="fieldset">
@@ -88,7 +94,7 @@ function SortForm() {
                   color="default"
                 />
               }
-              label={t(`homePage:${SORT_BY_LABELS[sortType]}`) as ReactNode}
+              label={t(labels[sortType])}
             />
           </motion.div>
         ))}
@@ -103,13 +109,25 @@ function SortForm() {
  * rendered as-is.
  */
 export function PluginSortByForm() {
-  const [t] = useTranslation(['homePage']);
+  const [t] = useTranslation(['homePage', 'pluginsPage']);
   const form = <SortForm />;
+  const isHomePageRedesign = useIsFeatureFlagEnabled('homePageRedesign');
+  const { searchStore } = useSearchStore();
+  const state = useSnapshot(searchStore);
 
   return (
     <>
       <div className="screen-875:hidden">
-        <Accordion className="uppercase" title={t('homePage:sort.title')}>
+        <Accordion
+          className={clsx(!isHomePageRedesign && 'uppercase')}
+          title={
+            isHomePageRedesign
+              ? `${t('pluginsPage:sortByMobile', {
+                  sortType: t(SORT_LABELS[state.sort]),
+                })}`
+              : t('homePage:sort.title')
+          }
+        >
           {form}
         </Accordion>
       </div>

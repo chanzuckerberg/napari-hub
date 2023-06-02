@@ -7,26 +7,11 @@ import { useSnapshot } from 'valtio';
 
 import { ChevronUp } from '@/components/icons';
 import { Text } from '@/components/Text';
+import { SORT_LABELS, SORT_OPTIONS } from '@/constants/search';
 import { SearchSortType } from '@/store/search/constants';
 import { useSearchStore } from '@/store/search/context';
-import { I18nKeys } from '@/types/i18n';
 
 import styles from './SortDropdown.module.scss';
-
-const SORT_OPTIONS = [
-  SearchSortType.PluginName,
-  SearchSortType.ReleaseDate,
-  SearchSortType.FirstReleased,
-  SearchSortType.TotalInstalls,
-];
-
-const SORT_BY_LABELS: Record<SearchSortType, I18nKeys<'pluginsPage'>> = {
-  [SearchSortType.Relevance]: 'pluginsPage:sort.relevance',
-  [SearchSortType.FirstReleased]: 'pluginsPage:sort.newest',
-  [SearchSortType.ReleaseDate]: 'pluginsPage:sort.recentlyUpdated',
-  [SearchSortType.PluginName]: 'pluginsPage:sort.pluginName',
-  [SearchSortType.TotalInstalls]: 'pluginsPage:sort.installs',
-};
 
 function SortChevronUp() {
   return <ChevronUp className={styles.chevron} />;
@@ -64,7 +49,7 @@ export function SortDropdown() {
         IconComponent={SortChevronUp}
         renderValue={(option) => (
           <Text element="span" variant="h5">
-            {t(SORT_BY_LABELS[option])}
+            {t(SORT_LABELS[option])}
           </Text>
         )}
       >
@@ -78,7 +63,7 @@ export function SortDropdown() {
               weight={state.sort === option ? 'bold' : 'regular'}
               variant="bodyS"
             >
-              {t(SORT_BY_LABELS[option])}
+              {t(SORT_LABELS[option])}
             </Text>
           </MenuItem>
         ))}
