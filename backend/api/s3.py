@@ -6,11 +6,9 @@ import os
 import os.path
 import time
 from datetime import datetime
-from io import StringIO
 from typing import Union, IO, List, Dict, Any
 
 import boto3
-import pandas as pd
 from botocore.client import Config
 from botocore.exceptions import ClientError
 from utils.utils import send_alert
@@ -80,20 +78,6 @@ def _get_from_s3(path):
     return s3_client.get_object(Bucket=bucket, Key=_get_complete_path(path))['Body'].read().decode('utf-8')
 
 
-def get_install_timeline_data(plugin):
-    """
-    Read activity dashboard install data from s3
-
-    :param plugin: plugin name
-    :return: dataframe that consists of plugin-specific data for activity_dashboard backend endpoints
-    """
-    plugin_installs_dataframe = pd.read_csv(StringIO(_get_from_s3("activity_dashboard_data/plugin_installs.csv")))
-    plugin_df = plugin_installs_dataframe[plugin_installs_dataframe.PROJECT == plugin]
-    plugin_df = plugin_df[['MONTH', 'NUM_DOWNLOADS_BY_MONTH']]
-    plugin_df['MONTH'] = pd.to_datetime(plugin_df['MONTH'])
-    return plugin_df
-
-
 def _load_json_from_s3(path: str) -> Dict:
     """
     Load activity dashboard .json file from s3
@@ -106,10 +90,6 @@ def _load_json_from_s3(path: str) -> Dict:
     except Exception as e:
         logging.error(e)
         return {}
-
-
-def get_recent_activity_data() -> Dict:
-    return _load_json_from_s3("activity_dashboard_data/recent_installs.json")
 
 
 def get_latest_commit(plugin: str) -> Any:

@@ -24,6 +24,8 @@ MOCK_PLUGIN_TOTAL_COMMITS = sum([activity.get('commits') for activity in MOCK_PL
 MOCK_PLUGIN_OBJ_EMPTY = {}
 MOCK_PLUGIN_OBJ = {"name": "string-1", "code_repository": "https://github.com/user/repo"}
 
+USAGE_TIMELINE = generate_installs_timeline(start_range=-3)
+
 
 def generate_expected_metrics(usage_timeline=None, total_installs=0, installs_in_last_30_days=0,
                               latest_commit=None, total_commit=0, maintenance_timeline=None):
@@ -50,92 +52,141 @@ class TestActivityDashboard(unittest.TestCase):
     @patch.object(model, 'get_plugin', return_value=MOCK_PLUGIN_OBJ_EMPTY)
     @patch.object(model, 'get_latest_commit', return_value=None)
     @patch.object(model, 'get_commit_activity', return_value=[])
-    @patch.object(model, 'get_recent_activity_data', return_value={})
-    @patch.object(model, 'get_install_timeline_data', return_value=EMPTY_DF.copy())
-    def test_get_metrics_empty(self, mock_get_install_timeline_data, mock_get_recent_activity_data,
-                               mock_get_commit_activity, mock_get_latest_commit, mock_get_plugin):
+    @patch.object(model.install_activity, 'get_recent_installs', return_value=23)
+    @patch.object(model.install_activity, 'get_timeline', return_value=USAGE_TIMELINE)
+    @patch.object(model.install_activity, 'get_total_installs', return_value=47)
+    def test_get_metrics_empty(self,
+                               mock_get_total_installs,
+                               mock_get_install_timeline,
+                               mock_get_recent_activity,
+                               mock_get_commit_activity,
+                               mock_get_latest_commit,
+                               mock_get_plugin):
         expected = generate_expected_metrics(
-            usage_timeline=generate_installs_timeline(start_range=-3, to_value=lambda i: 0),
+            usage_timeline=USAGE_TIMELINE,
+            total_installs=47,
+            installs_in_last_30_days=23,
             maintenance_timeline=MOCK_PLUGIN_COMMIT_ACTIVITY_EMPTY
         )
-        self._verify_results('3', expected, mock_get_commit_activity, mock_get_latest_commit,
-                             mock_get_install_timeline_data, mock_get_recent_activity_data, mock_get_plugin)
+        self._verify_results('3', 3, expected, mock_get_commit_activity, mock_get_latest_commit,
+                             mock_get_install_timeline, mock_get_recent_activity, mock_get_total_installs, mock_get_plugin)
 
     @patch.object(model, 'get_plugin', return_value=MOCK_PLUGIN_OBJ)
     @patch.object(model, 'get_latest_commit', return_value=MOCK_PLUGIN_LATEST_COMMIT)
     @patch.object(model, 'get_commit_activity', return_value=MOCK_PLUGIN_COMMIT_ACTIVITY)
-    @patch.object(model, 'get_recent_activity_data', return_value=MOCK_PLUGIN_RECENT_INSTALLS)
-    @patch.object(model, 'get_install_timeline_data', return_value=MOCK_DF.copy())
-    def test_get_metrics_nonempty(self, mock_get_install_timeline_data, mock_get_recent_activity_data,
-                                  mock_get_commit_activity, mock_get_latest_commit, mock_get_plugin):
+    @patch.object(model.install_activity, 'get_recent_installs', return_value=23)
+    @patch.object(model.install_activity, 'get_timeline', return_value=USAGE_TIMELINE)
+    @patch.object(model.install_activity, 'get_total_installs', return_value=47)
+    def test_get_metrics_nonempty(self,
+                               mock_get_total_installs,
+                               mock_get_install_timeline,
+                               mock_get_recent_activity,
+                               mock_get_commit_activity,
+                               mock_get_latest_commit,
+                               mock_get_plugin):
         expected = generate_expected_metrics(
-            usage_timeline=generate_installs_timeline(start_range=-3),
-            total_installs=sum(MOCK_INSTALLS),
-            installs_in_last_30_days=25,
+            usage_timeline=USAGE_TIMELINE,
+            total_installs=47,
+            installs_in_last_30_days=23,
             latest_commit=MOCK_PLUGIN_LATEST_COMMIT,
             total_commit=MOCK_PLUGIN_TOTAL_COMMITS,
             maintenance_timeline=generate_commits_timeline(start_range=-3)
         )
-        self._verify_results('3', expected, mock_get_commit_activity, mock_get_latest_commit,
-                             mock_get_install_timeline_data, mock_get_recent_activity_data, mock_get_plugin)
+        self._verify_results('3', 3, expected, mock_get_commit_activity, mock_get_latest_commit,
+                             mock_get_install_timeline, mock_get_recent_activity, mock_get_total_installs, mock_get_plugin)
 
     @patch.object(model, 'get_plugin', return_value=MOCK_PLUGIN_OBJ)
     @patch.object(model, 'get_latest_commit', return_value=MOCK_PLUGIN_LATEST_COMMIT)
     @patch.object(model, 'get_commit_activity', return_value=MOCK_PLUGIN_COMMIT_ACTIVITY)
-    @patch.object(model, 'get_recent_activity_data', return_value=MOCK_PLUGIN_RECENT_INSTALLS)
-    @patch.object(model, 'get_install_timeline_data', return_value=MOCK_DF.copy())
-    def test_get_metrics_nonempty_zero_limit(self, mock_get_install_timeline_data, mock_get_recent_activity_data,
-                                             mock_get_commit_activity, mock_get_latest_commit, mock_get_plugin):
+    @patch.object(model.install_activity, 'get_recent_installs', return_value=23)
+    @patch.object(model.install_activity, 'get_timeline')
+    @patch.object(model.install_activity, 'get_total_installs', return_value=47)
+    def test_get_metrics_nonempty_zero_limit(self,
+                               mock_get_total_installs,
+                               mock_get_install_timeline,
+                               mock_get_recent_activity,
+                               mock_get_commit_activity,
+                               mock_get_latest_commit,
+                               mock_get_plugin):
         expected = generate_expected_metrics(
-            total_installs=sum(MOCK_INSTALLS),
-            installs_in_last_30_days=25,
+            usage_timeline=[],
+            total_installs=47,
+            installs_in_last_30_days=23,
             latest_commit=MOCK_PLUGIN_LATEST_COMMIT,
             total_commit=MOCK_PLUGIN_TOTAL_COMMITS,
         )
-        self._verify_results('0', expected, mock_get_commit_activity, mock_get_latest_commit,
-                             mock_get_install_timeline_data, mock_get_recent_activity_data, mock_get_plugin)
+        mock_get_install_timeline.assert_not_called()
+        self._verify_results('0', 0, expected, mock_get_commit_activity, mock_get_latest_commit,
+                             None, mock_get_recent_activity, mock_get_total_installs, mock_get_plugin)
 
     @patch.object(model, 'get_plugin', return_value=MOCK_PLUGIN_OBJ)
     @patch.object(model, 'get_latest_commit', return_value=MOCK_PLUGIN_LATEST_COMMIT)
     @patch.object(model, 'get_commit_activity', return_value=MOCK_PLUGIN_COMMIT_ACTIVITY)
-    @patch.object(model, 'get_recent_activity_data', return_value=MOCK_PLUGIN_RECENT_INSTALLS)
-    @patch.object(model, 'get_install_timeline_data', return_value=MOCK_DF.copy())
-    def test_get_metrics_nonempty_invalid_limit(self, mock_get_install_timeline_data, mock_get_recent_activity_data,
-                                                mock_get_commit_activity, mock_get_latest_commit, mock_get_plugin):
+    @patch.object(model.install_activity, 'get_recent_installs', return_value=23)
+    @patch.object(model.install_activity, 'get_timeline')
+    @patch.object(model.install_activity, 'get_total_installs', return_value=47)
+    def test_get_metrics_nonempty_invalid_limit(self,
+                               mock_get_total_installs,
+                               mock_get_install_timeline,
+                               mock_get_recent_activity,
+                               mock_get_commit_activity,
+                               mock_get_latest_commit,
+                               mock_get_plugin):
         expected = generate_expected_metrics(
-            total_installs=sum(MOCK_INSTALLS),
-            installs_in_last_30_days=25,
+            usage_timeline=[],
+            total_installs=47,
+            installs_in_last_30_days=23,
             latest_commit=MOCK_PLUGIN_LATEST_COMMIT,
             total_commit=MOCK_PLUGIN_TOTAL_COMMITS,
         )
-        self._verify_results('foo', expected, mock_get_commit_activity, mock_get_latest_commit,
-                             mock_get_install_timeline_data, mock_get_recent_activity_data, mock_get_plugin)
+        mock_get_install_timeline.assert_not_called()
+        self._verify_results('foo', 0, expected, mock_get_commit_activity, mock_get_latest_commit,
+                             None, mock_get_recent_activity, mock_get_total_installs, mock_get_plugin)
 
     @patch.object(model, 'get_plugin', return_value=MOCK_PLUGIN_OBJ)
     @patch.object(model, 'get_latest_commit', return_value=MOCK_PLUGIN_LATEST_COMMIT)
     @patch.object(model, 'get_commit_activity', return_value=MOCK_PLUGIN_COMMIT_ACTIVITY)
-    @patch.object(model, 'get_recent_activity_data', return_value=MOCK_PLUGIN_RECENT_INSTALLS)
-    @patch.object(model, 'get_install_timeline_data', return_value=MOCK_DF.copy())
-    def test_get_metrics_nonempty_negative_limit(self, mock_get_install_timeline_data, mock_get_recent_activity_data,
-                                                 mock_get_commit_activity, mock_get_latest_commit, mock_get_plugin):
+    @patch.object(model.install_activity, 'get_recent_installs', return_value=23)
+    @patch.object(model.install_activity, 'get_timeline')
+    @patch.object(model.install_activity, 'get_total_installs', return_value=47)
+    def test_get_metrics_nonempty_negative_limit(self,
+                               mock_get_total_installs,
+                               mock_get_install_timeline,
+                               mock_get_recent_activity,
+                               mock_get_commit_activity,
+                               mock_get_latest_commit,
+                               mock_get_plugin):
         expected = generate_expected_metrics(
-            total_installs=sum(MOCK_INSTALLS),
-            installs_in_last_30_days=25,
+            usage_timeline=[],
+            total_installs=47,
+            installs_in_last_30_days=23,
             latest_commit=MOCK_PLUGIN_LATEST_COMMIT,
             total_commit=MOCK_PLUGIN_TOTAL_COMMITS,
         )
-        self._verify_results('-5', expected, mock_get_commit_activity, mock_get_latest_commit,
-                             mock_get_install_timeline_data, mock_get_recent_activity_data, mock_get_plugin)
+        mock_get_install_timeline.assert_not_called()
+        self._verify_results('-5', 0, expected, mock_get_commit_activity, mock_get_latest_commit,
+                             None, mock_get_recent_activity, mock_get_total_installs, mock_get_plugin)
 
-    def _verify_results(self, limit, expected, mock_get_commit_activity, mock_get_latest_commit,
-                        mock_get_install_timeline_data, mock_get_recent_activity_data, mock_get_plugin):
+    def _verify_results(self,
+                        limit,
+                        parsed_limit,
+                        expected,
+                        mock_get_commit_activity,
+                        mock_get_latest_commit,
+                        mock_get_install_timeline,
+                        mock_get_recent_activity,
+                        mock_get_total_installs,
+                        mock_get_plugin):
         from api.model import get_metrics_for_plugin
-        result = get_metrics_for_plugin(PLUGIN_NAME, limit, False, False)
+        result = get_metrics_for_plugin(PLUGIN_NAME, limit, False)
         self.assertEqual(expected, result)
         mock_get_latest_commit.assert_called_with(PLUGIN_NAME_CLEAN)
         mock_get_commit_activity.assert_called_with(PLUGIN_NAME_CLEAN)
-        mock_get_install_timeline_data.assert_called_with(PLUGIN_NAME_CLEAN)
-        mock_get_recent_activity_data.assert_called_with()
+        mock_get_recent_activity.assert_called_with(PLUGIN_NAME_CLEAN, 30)
+        mock_get_total_installs.assert_called_with(PLUGIN_NAME_CLEAN)
+        mock_get_plugin.assert_not_called()
+        if mock_get_install_timeline:
+            mock_get_install_timeline.assert_called_with(PLUGIN_NAME_CLEAN, parsed_limit)
 
 
 class TestMetricModel:
@@ -160,7 +211,7 @@ class TestMetricModel:
         monkeypatch.setattr(model.install_activity, 'get_timeline', self._validate_args_return_value(usage_timeline))
 
         from api.model import get_metrics_for_plugin
-        actual = get_metrics_for_plugin(PLUGIN_NAME, limit, True, True)
+        actual = get_metrics_for_plugin(PLUGIN_NAME, limit, True)
 
         expected = generate_expected_metrics(
             total_installs=total_installs, installs_in_last_30_days=recent_installs, usage_timeline=usage_timeline,
