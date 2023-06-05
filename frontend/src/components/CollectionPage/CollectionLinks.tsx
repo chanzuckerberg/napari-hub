@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { useTranslation } from 'next-i18next';
-import { ComponentType } from 'react';
+import { ComponentType, ReactNode } from 'react';
 import { GitHub, OrcID, Twitter, Website } from 'src/components/icons';
 import { Link } from 'src/components/Link';
 import { Tooltip } from 'src/components/Tooltip';
@@ -53,6 +53,10 @@ function CollectionLink({ linkKey }: CollectionLinkProps) {
   const [tooltip, Icon] = useLinkData(linkKey);
   const link = useLink(linkKey);
 
+  if (!link) {
+    return null;
+  }
+
   return (
     <Tooltip
       arrow={false}
@@ -63,7 +67,7 @@ function CollectionLink({ linkKey }: CollectionLinkProps) {
           '!text-[#5b5b5b] !text-sds-body-xxs',
         ),
       }}
-      title={tooltip}
+      title={tooltip as ReactNode}
       placement="bottom"
       disableInteractive
       leaveDelay={0}
