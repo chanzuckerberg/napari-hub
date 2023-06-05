@@ -52,7 +52,7 @@ class BatchWriteMock:
 
 
 @mock_s3
-class TestPluginManifest:
+class TestCategoryProcessor:
     @pytest.fixture
     def setup_env_variables(self, monkeypatch):
         monkeypatch.setenv("BUCKET", TEST_BUCKET)
@@ -159,7 +159,6 @@ class TestPluginManifest:
 
     def test_write_category_data_missing_required_env(self):
         import categories.processor
-
         with pytest.raises(ValueError):
             categories.processor.seed_s3_categories_workflow(
                 TEST_CATEGORY_VERSION, TEST_CATEGORY_PATH

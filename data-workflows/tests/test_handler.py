@@ -35,7 +35,7 @@ class TestHandle:
         assert self._seed_s3_categories_workflow.call_count == s3_seed_call_count
         assert self._update_plugin.call_count == plugin_call_count
 
-    @pytest.mark.parametrize('event_type, activity_call, s3_seed_call_count, plugin_call', [
+    @pytest.mark.parametrize('event_type, activity_call, s3_seed_call, plugin_call', [
         ("Activity", 1, 0, 0),
         ("AcTiviTy", 1, 0, 0),
         ("ACTIVITY", 1, 0, 0),
@@ -48,17 +48,17 @@ class TestHandle:
     ])
     def test_handle_event_type_in_different_case( self,
         event_type: str,
-        activity_call_count: int,
-        s3_seed_call_count: int,
+        activity_call: int,
+        s3_seed_call: int,
         plugin_call: int
     ):
         from handler import handle
 
         handle({"Records": [{"body": '{"type":"' + event_type + '"}'}]}, None)
         self._verify(
-            activity_call_count=activity_call_count,
-            s3_seed_call_count=s3_seed_call_count,
-            plugin_call_count=plugin_call
+            activity_call_count=activity_call,
+            s3_seed_call_count=s3_seed_call,
+            plugin_call_count=plugin_call,
         )
 
     def test_handle_valid_event_types(self):
@@ -69,7 +69,11 @@ class TestHandle:
             {"body": '{"type":"bar"}'},
             {'body': '{"type":"plugin"}'},
         ]}, None)
-        self._verify(activity_call_count=1, plugin_call_count=1, s3_seed_call_count=1)
+        self._verify(
+            activity_call_count=1,
+            plugin_call_count=1,
+            s3_seed_call_count=1,
+        )
 
     def test_handle_invalid_json(self):
         with pytest.raises(JSONDecodeError):
