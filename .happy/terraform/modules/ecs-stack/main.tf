@@ -586,6 +586,15 @@ data aws_iam_policy_document data_workflows_policy {
     actions = ["lambda:InvokeFunction"]
     resources = [module.plugins_lambda.function_arn]
   }
+  statement {
+    actions = [
+      "dynamodb:GetShardIterator",
+      "dynamodb:DescribeStream",
+      "dynamodb:GetRecords",
+      "dynamodb:ListStreams",
+    ]
+    resources = [module.plugin_metadata_dynamodb_table.stream_arn]
+  }
 }
 
 data aws_iam_policy_document plugins_policy {
