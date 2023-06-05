@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 EVENT_TYPE_BY_PROCESSOR = {
     'activity': lambda event: activity.processor.update_activity(),
-    'category': lambda event: categories.processor.seed_s3_categories_workflow(
+    'seed-s3-categories': lambda event: categories.processor.seed_s3_categories_workflow(
         event.get("version"), event.get("categories_path")
     ),
     'plugin': lambda event: plugin.processor.update_plugin(),

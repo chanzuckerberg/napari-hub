@@ -11,9 +11,16 @@ import pandas as pd
 from api.models import github_activity, install_activity
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
-from api.s3 import get_cache, cache, write_data, get_install_timeline_data, get_latest_commit, get_commit_activity, \
-    get_recent_activity_data
-from utils.utils import render_description, send_alert, get_attribute, get_category_mapping, parse_manifest
+from api.s3 import (
+    get_cache, cache, write_data, get_latest_commit, get_commit_activity
+)
+from utils.utils import (
+    render_description,
+    send_alert,
+    get_attribute,
+    get_category_mapping,
+    parse_manifest
+)
 from utils.datadog import report_metrics
 from api.zulip import notify_new_packages
 import boto3
@@ -604,30 +611,21 @@ def _update_commit_activity(repo_to_plugin_dict):
     write_data(json.dumps(data), "activity_dashboard_data/commit_activity.json")
 
 
-def _get_usage_data(plugin: str, limit: int, use_dynamo: bool) -> Dict[str, Any]:
+def _get_usage_data(plugin: str, limit: int) -> Dict[str, Any]:
     """
     Fetches plugin usage_data from s3 or dynamo based on the in_test variable
-    :returns (dict[str, Any]): A dict with the structure {'timeline': List, 'stats': Dict[str, int]}
-
+    :returns (dict[str, Any]): A dict with the structure
+    {'timeline': List, 'stats': dict[str, int]}
     :params str plugin: Name of the plugin in lowercase.
     :params int limit: Sets the number of records to be fetched for timeline.
-    :params bool use_dynamo: Fetch data from dynamo if True, else fetch from s3.
     """
-    if use_dynamo:
-        usage_timeline = install_activity.get_timeline(plugin, limit) if limit else []
-        usage_stats = {
+    return {
+        'timeline': install_activity.get_timeline(plugin, limit) if limit else [],
+        'stats': {
             'total_installs': install_activity.get_total_installs(plugin),
             'installs_in_last_30_days': install_activity.get_recent_installs(plugin, 30)
-        }
-    else:
-        data = get_install_timeline_data(plugin)
-        usage_stats = {
-            'total_installs': _process_for_stats(data).get('totalInstalls', 0),
-            'installs_in_last_30_days': get_recent_activity_data().get(plugin, 0),
-        }
-        usage_timeline = _process_usage_timeline(data, limit) if limit else []
-
-    return {'timeline': usage_timeline, 'stats': usage_stats, }
+        },
+    }
 
 
 def _get_maintenance_data(plugin: str, repo: Any, limit: int, use_dynamo_for_maintenance: bool) -> Dict[str, Any]:
@@ -657,7 +655,8 @@ def _get_maintenance_data(plugin: str, repo: Any, limit: int, use_dynamo_for_mai
     return {'timeline': maintenance_timeline, 'stats': maintenance_stats, }
 
 
-def get_metrics_for_plugin(plugin: str, limit: str, use_dynamo_for_usage: bool,
+def get_metrics_for_plugin(plugin: str,
+                           limit: str,
                            use_dynamo_for_maintenance: bool) -> Dict[str, Any]:
     """
     Fetches plugin metrics from s3 or dynamo based on the in_test variable
@@ -665,7 +664,6 @@ def get_metrics_for_plugin(plugin: str, limit: str, use_dynamo_for_usage: bool,
 
     :params str plugin: Name of the plugin in lowercase for which usage data needs to be fetched.
     :params str limit_str: Number of records to be fetched for timeline. Defaults to 0 for invalid number.
-    :params bool use_dynamo_for_usage: Fetch data from dynamo if True else fetch from s3. (default= False)
     :params bool use_dynamo_for_maintenance: Fetch data from dynamo if True else fetch from s3. (default= False)
     """
     repo = _get_repo_from_plugin(plugin) if use_dynamo_for_maintenance else None
@@ -676,6 +674,6 @@ def get_metrics_for_plugin(plugin: str, limit: str, use_dynamo_for_usage: bool,
         month_delta = max(int(limit), 0)
 
     return {
-        'usage': _get_usage_data(plugin, month_delta, use_dynamo_for_usage),
+        'usage': _get_usage_data(plugin, month_delta),
         'maintenance': _get_maintenance_data(plugin, repo, month_delta, use_dynamo_for_maintenance),
     }
