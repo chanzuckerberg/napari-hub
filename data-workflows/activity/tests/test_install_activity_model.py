@@ -1,12 +1,11 @@
 from datetime import datetime, timezone
+from unittest.mock import Mock
 
 import pytest
 from dateutil.relativedelta import relativedelta
-from moto import mock_dynamodb
 
+import activity
 from activity.install_activity_model import InstallActivityType
-from conftest import create_dynamo_table, verify
-from nhcommons.models.install_activity import _InstallActivity
 from activity.install_activity_model import transform_and_write_to_dynamo
 
 
@@ -18,7 +17,7 @@ def generate_expected(data, granularity, type_timestamp_formatter, timestamp_for
             expected.append({
                 "plugin_name": key.lower(),
                 "type_timestamp": f"{type_timestamp_formatter(timestamp)}",
-                "type": granularity,
+                "granularity": granularity,
                 "timestamp": timestamp_formatter(timestamp),
                 "install_count": val['count'],
                 "is_total": is_total,
@@ -56,12 +55,16 @@ class TestInstallActivity:
 
 
 class TestInstallActivityModels:
-    @pytest.fixture()
-    def table(self, aws_credentials):
-        with mock_dynamodb():
-            yield create_dynamo_table(_InstallActivity, "install-activity")
 
-    def test_transform_to_dynamo_records_for_day(self, table, cur_time):
+    @pytest.fixture
+    def mock_batch_write(self, monkeypatch):
+        mock_batch_write = Mock()
+        monkeypatch.setattr(
+            activity.install_activity_model, "batch_write", mock_batch_write
+        )
+        return mock_batch_write
+
+    def test_transform_to_dynamo_records_for_day(self, mock_batch_write):
         data = {
             'FOO': [{'timestamp': get_relative_timestamp(days=45), 'count': 2},
                     {'timestamp': get_relative_timestamp(days=30), 'count': 3}],
@@ -73,9 +76,9 @@ class TestInstallActivityModels:
         transform_and_write_to_dynamo(data, InstallActivityType.DAY)
 
         expected = generate_expected(data, 'DAY', lambda ts: f'DAY:{ts.strftime("%Y%m%d")}', timestamp_format)
-        verify(expected, table, cur_time)
+        mock_batch_write.assert_called_once_with(expected)
 
-    def test_transform_to_dynamo_records_for_month(self, table, cur_time):
+    def test_transform_to_dynamo_records_for_month(self, mock_batch_write):
         data = {
             'FOO': [
                 {'timestamp': get_relative_timestamp(months=24), 'count': 2},
@@ -89,9 +92,9 @@ class TestInstallActivityModels:
         transform_and_write_to_dynamo(data, InstallActivityType.MONTH)
 
         expected = generate_expected(data, 'MONTH', lambda ts: f'MONTH:{ts.strftime("%Y%m")}', timestamp_format)
-        verify(expected, table, cur_time)
+        mock_batch_write.assert_called_once_with(expected)
 
-    def test_transform_to_dynamo_records_for_total(self, table, cur_time):
+    def test_transform_to_dynamo_records_for_total(self, mock_batch_write):
         data = {
             'FOO': [{'timestamp': 1, 'count': 2}],
             'BAR': [{'timestamp': 1, 'count': 8}],
@@ -100,4 +103,4 @@ class TestInstallActivityModels:
         transform_and_write_to_dynamo(data, InstallActivityType.TOTAL)
 
         expected = generate_expected(data, 'TOTAL', lambda ts: f'TOTAL:', lambda ts: None, 'true')
-        verify(expected, table, cur_time)
+        mock_batch_write.assert_called_once_with(expected)

@@ -20,7 +20,7 @@ class _InstallActivity(PynamoWrapper):
     @staticmethod
     def to_model(data: Dict[str, Any]):
         return _InstallActivity(
-            plugin_name=data.get("plugin_name"),
+            plugin_name=data.get("plugin_name").lower(),
             type_timestamp=data.get("type_timestamp"),
             granularity=data.get("granularity"),
             timestamp=data.get("timestamp"),

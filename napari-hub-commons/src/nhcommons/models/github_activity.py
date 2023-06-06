@@ -20,7 +20,7 @@ class _GitHubActivity(PynamoWrapper):
     @staticmethod
     def to_model(data: Dict[str, Any]):
         return _GitHubActivity(
-            plugin_name=data.get("plugin_name"),
+            plugin_name=data.get("plugin_name").lower(),
             type_identifier=data.get("type_identifier"),
             granularity=data.get("granularity"),
             timestamp=data.get("timestamp"),

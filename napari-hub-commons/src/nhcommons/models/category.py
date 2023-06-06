@@ -32,17 +32,6 @@ class _Category(PynamoWrapper):
         )
 
 
-def get_category(category: str, version: str) -> List[Dict]:
-    results = _Category.query(
-        hash_key=slugify(category),
-        range_key_condition=_Category.version_hash.startswith(version),
-        attributes_to_get=["label", "dimension", "hierarchy"]
-    )
-    return [{"label": result.label,
-             "dimension": result.dimension,
-             "hierarchy": result.hierarchy} for result in results]
-
-
 def batch_write(records: List[Dict]) -> None:
     batch = _Category.batch_write()
 

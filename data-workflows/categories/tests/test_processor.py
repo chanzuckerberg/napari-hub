@@ -5,14 +5,11 @@ import pytest
 
 import categories
 from categories.utils import hash_category
-from conftest import create_dynamo_table, verify
-from moto import mock_dynamodb, mock_s3
+from moto import mock_s3
 from unittest.mock import Mock
 from categories.processor import seed_s3_categories_workflow
-from nhcommons.models.category import _Category
 
 TEST_BUCKET = "test-bucket"
-TEST_STACK_NAME = "None"
 TEST_BUCKET_PATH = "test-path"
 TEST_CATEGORY_PATH = "category/EDAM-BIOIMAGING/alpha06.json"
 TEST_VERSION = "EDAM-BIOIMAGING:alpha06"
@@ -51,18 +48,14 @@ class TestCategoryProcessor:
     def env_variables(self, monkeypatch):
         monkeypatch.setenv("BUCKET", TEST_BUCKET)
         monkeypatch.setenv("BUCKET_PATH", TEST_BUCKET_PATH)
-        monkeypatch.setenv("STACK_NAME", TEST_STACK_NAME)
 
-    @pytest.fixture()
-    def table(self, aws_credentials, env_variables):
-        with mock_dynamodb():
-            yield create_dynamo_table(_Category, "category")
-
-    def _set_up_mock_batch_write(self, monkeypatch):
-        self._mock_batch_write = Mock()
+    @pytest.fixture
+    def mock_batch_write(self, monkeypatch):
+        mock_batch_write = Mock()
         monkeypatch.setattr(
-            categories.processor, "batch_write", self._mock_batch_write
+            categories.processor, "batch_write", mock_batch_write
         )
+        return mock_batch_write
 
     def _set_up_s3(self, bucket_name=TEST_BUCKET):
         self._s3 = boto3.resource("s3")
@@ -78,7 +71,7 @@ class TestCategoryProcessor:
     @classmethod
     def generate_expected(cls, name, dimension, label, hierarchy):
         return {
-            "name": name.lower().replace(" ", "-"),
+            "name": name,
             "version_hash": _get_version_hash({
                 "dimension": dimension, "label": label, "hierarchy": hierarchy,
             }),
@@ -89,7 +82,9 @@ class TestCategoryProcessor:
             "hierarchy": hierarchy,
         }
 
-    def test_write_category_data(self, table, cur_time):
+    def test_write_category_data(
+            self, mock_batch_write, aws_credentials, env_variables
+    ):
         self._set_up_s3()
         self._seed_data()
 
@@ -100,42 +95,43 @@ class TestCategoryProcessor:
             self.generate_expected("Foo", "dimension2", "label2", ["1", "2"]),
             self.generate_expected("Foo Bar", "dimension1", "label3", ["1", "2"]),
         ]
-        verify(expected_list, table, cur_time)
+        mock_batch_write.assert_called_once_with(expected_list)
 
-    def test_write_category_data_missing_version(self, table, cur_time):
+    def test_write_category_data_missing_version(self, mock_batch_write):
         with pytest.raises(ValueError):
             seed_s3_categories_workflow("", TEST_CATEGORY_PATH)
 
-        verify([], table, cur_time)
+        mock_batch_write.assert_not_called()
 
-    def test_write_category_data_missing_path(self, table, cur_time):
+    def test_write_category_data_missing_path(self, mock_batch_write):
         with pytest.raises(ValueError):
             seed_s3_categories_workflow(TEST_VERSION, "")
 
-        verify([], table, cur_time)
+        mock_batch_write.assert_not_called()
 
-    def test_write_category_data_missing_required_env(
-        self, table, cur_time, monkeypatch
-    ):
-        monkeypatch.delenv("BUCKET")
+    def test_write_category_data_missing_required_env(self, mock_batch_write):
         with pytest.raises(ValueError):
             seed_s3_categories_workflow(TEST_VERSION, TEST_CATEGORY_PATH)
 
-        verify([], table, cur_time)
+        mock_batch_write.assert_not_called()
 
-    def test_write_category_data_s3_load_error(self, table, cur_time):
+    def test_write_category_data_s3_load_error(
+            self, mock_batch_write, aws_credentials, env_variables
+    ):
         self._set_up_s3()
 
         seed_s3_categories_workflow(TEST_VERSION, TEST_CATEGORY_PATH)
 
-        verify([], table, cur_time)
+        mock_batch_write.assert_called_once_with([])
 
     def test_write_category_data_batch_write_error(
-        self, env_variables, monkeypatch
+            self, aws_credentials, env_variables, monkeypatch
     ):
         self._set_up_s3()
+        self._seed_data()
         monkeypatch.setattr(
             categories.processor, "batch_write", Mock(side_effect=Exception())
         )
+
         with pytest.raises(Exception):
             seed_s3_categories_workflow(TEST_VERSION, TEST_CATEGORY_PATH)
