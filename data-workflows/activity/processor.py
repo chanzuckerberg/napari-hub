@@ -9,7 +9,7 @@ import activity.snowflake_adapter as snowflake
 from utils.utils import ParameterStoreAdapter
 import nhcommons
 
-LOGGER = logging.getLogger()
+LOGGER = logging.getLogger(__name__)
 
 
 def _fetch_install_data_and_write_to_dynamo(

@@ -52,8 +52,8 @@ def put_plugin_metadata(plugin: str,
         ).save()
     finally:
         duration = (time.perf_counter() - start) * 1000
-        logger.info(f"put_plugin_metadata plugin={plugin} "
-                    f"version_type={version_type} time_taken={duration}ms")
+        logger.info(f"plugin={plugin} version_type={version_type} "
+                    f"duration={duration}ms")
 
 
 def existing_plugin_metadata_types(plugin: str, version: str) \
@@ -67,5 +67,4 @@ def existing_plugin_metadata_types(plugin: str, version: str) \
         return {PluginMetadataType[result.type] for result in results}
     finally:
         duration = (time.perf_counter() - start) * 1000
-        logger.info(f"query plugin_metadata for plugin={plugin} "
-                    f"version={version} time_taken={duration}ms")
+        logger.info(f"for plugin={plugin} version={version} duration={duration}ms")

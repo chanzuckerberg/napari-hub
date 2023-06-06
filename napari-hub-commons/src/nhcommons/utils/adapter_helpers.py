@@ -10,7 +10,7 @@ from nhcommons.utils.auth import get_auth
 from nhcommons.utils.request_adapter import get_request
 
 
-logger = logging.getLogger()
+logger = logging.getLogger(__name__)
 
 
 class GithubClientHelper:

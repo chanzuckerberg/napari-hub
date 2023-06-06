@@ -5,9 +5,12 @@ import activity.processor
 import categories.processor
 import plugin.processor
 
-
-FORMAT = "%(asctime)s [%(levelname)s] %(name)s %(module)s %(funcName)s %(message)s"
-logging.basicConfig(format=FORMAT, level=logging.INFO)
+logging.basicConfig(
+    level="INFO",
+    style="{",
+    format="[{levelname}] {asctime} {aws_request_id} {threadName} {name}.{funcName} {message}",
+    force=True,
+)
 logger = logging.getLogger(__name__)
 
 EVENT_TYPE_BY_PROCESSOR = {
@@ -33,8 +36,3 @@ def handle(event, context) -> None:
         if processor:
             processor(event)
             logger.info(f"Update successful for type={event_type}")
-
-
-if __name__ == "__main__":
-    logger.info(f"Received message with body: foo")
-    logger.warning(f"Received message with body: foo")

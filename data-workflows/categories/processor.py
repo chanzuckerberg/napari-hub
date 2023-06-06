@@ -11,7 +11,7 @@ from utils.s3 import S3Client
 
 STACK_NAME = os.getenv("STACK_NAME", "local")
 
-LOGGER = logging.getLogger()
+LOGGER = logging.getLogger(__name__)
 
 
 def _hash_category(category: Dict[str, str]) -> str:

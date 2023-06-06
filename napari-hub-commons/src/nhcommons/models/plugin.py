@@ -52,4 +52,4 @@ def get_latest_plugins() -> dict[str, str]:
     finally:
         duration = (time.perf_counter() - start) * 1000
         count = len(latest_plugins)
-        logger.info(f"latest plugins count={count} time_taken={duration}ms")
+        logger.info(f"latest plugins count={count} duration={duration}ms")
