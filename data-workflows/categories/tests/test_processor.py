@@ -115,7 +115,7 @@ class TestCategoryProcessor:
         verify([], table, cur_time)
 
     def test_write_category_data_missing_required_env(
-            self, table, cur_time, monkeypatch
+        self, table, cur_time, monkeypatch
     ):
         monkeypatch.delenv("BUCKET")
         with pytest.raises(ValueError):
@@ -131,7 +131,7 @@ class TestCategoryProcessor:
         verify([], table, cur_time)
 
     def test_write_category_data_batch_write_error(
-            self, env_variables, monkeypatch
+        self, env_variables, monkeypatch
     ):
         self._set_up_s3()
         monkeypatch.setattr(
