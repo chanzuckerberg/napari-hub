@@ -16,6 +16,11 @@ def aws_credentials():
     os.environ["AWS_DEFAULT_REGION"] = "us-east-1"
 
 
+@pytest.fixture
+def cur_time():
+    return round(time.time() * 1000)
+
+
 def create_dynamo_table(pynamo_ddb_model: Model, table_name: str):
     pynamo_ddb_model.create_table()
     return boto3.resource("dynamodb", region_name="us-west-2").Table(

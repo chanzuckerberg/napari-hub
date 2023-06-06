@@ -1,13 +1,11 @@
-import time
 from datetime import datetime, timezone
-from typing import List
 
 import pytest
 from dateutil.relativedelta import relativedelta
 from moto import mock_dynamodb
 
 from activity.install_activity_model import InstallActivityType
-from conftest import create_dynamo_table
+from conftest import create_dynamo_table, verify
 from nhcommons.models.install_activity import _InstallActivity
 
 
@@ -71,29 +69,7 @@ class TestInstallActivityModels:
         with mock_dynamodb():
             yield create_dynamo_table(_InstallActivity, "install-activity")
 
-    def setup_method(self):
-        self.start_time = round(time.time() * 1000)
-
-    def _verify(self, expected_list: List[dict], table):
-        actual_list = table.scan()["Items"]
-        end_time = round(time.time() * 1000)
-        assert len(actual_list) == len(expected_list)
-
-        def is_match(expected) -> bool:
-            expected_items = set(expected.items())
-            for actual in actual_list:
-                diff_items = set(actual.items()) - expected_items
-                if len(diff_items) != 1:
-                    continue
-                diff = diff_items.pop()
-                if diff[0] == 'last_updated_timestamp' and \
-                       self.start_time <= diff[1] <= end_time:
-                    return True
-            return False
-
-        assert all([is_match(expected) for expected in expected_list])
-
-    def test_transform_to_dynamo_records_for_day(self, table):
+    def test_transform_to_dynamo_records_for_day(self, table, cur_time):
         data = {
             'FOO': [{'timestamp': get_relative_timestamp(days=45), 'count': 2},
                     {'timestamp': get_relative_timestamp(days=30), 'count': 3}],
@@ -111,9 +87,9 @@ class TestInstallActivityModels:
         expected = generate_expected(data, 'DAY',
                                      lambda ts: f'DAY:{ts.strftime("%Y%m%d")}',
                                      timestamp_format)
-        self._verify(expected, table)
+        verify(expected, table, cur_time)
 
-    def test_transform_to_dynamo_records_for_month(self, table):
+    def test_transform_to_dynamo_records_for_month(self, table, cur_time):
         data = {
             'FOO': [
                 {'timestamp': get_relative_timestamp(months=24), 'count': 2},
@@ -133,9 +109,9 @@ class TestInstallActivityModels:
         expected = generate_expected(data, 'MONTH',
                                      lambda ts: f'MONTH:{ts.strftime("%Y%m")}',
                                      timestamp_format)
-        self._verify(expected, table)
+        verify(expected, table, cur_time)
 
-    def test_transform_to_dynamo_records_for_total(self, table):
+    def test_transform_to_dynamo_records_for_total(self, table, cur_time):
         data = {
             'FOO': [{'timestamp': 1, 'count': 2}],
             'BAR': [{'timestamp': 1, 'count': 8}],
@@ -148,4 +124,4 @@ class TestInstallActivityModels:
 
         expected = generate_expected(data, 'TOTAL', lambda ts: f'TOTAL:',
                                      lambda ts: None, 'true')
-        self._verify(expected, table)
+        verify(expected, table, cur_time)
