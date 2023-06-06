@@ -59,4 +59,4 @@ def transform_and_write_to_dynamo(data: dict[str, List],
     duration = (time.perf_counter() - start) * 1000
 
     LOGGER.info(f"Items install-activity type={activity_type.name} count={count}")
-    LOGGER.info(f"Transform and write to install-activity type={activity_type.name} timeTaken={duration}ms")
+    LOGGER.info(f"Transform and write to install-activity type={activity_type.name} duration={duration}ms")

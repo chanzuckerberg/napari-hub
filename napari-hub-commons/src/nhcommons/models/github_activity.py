@@ -21,7 +21,7 @@ class _GitHubActivity(PynamoWrapper):
     def to_model(data: Dict[str, Any]):
         return _GitHubActivity(
             plugin_name=data.get("plugin_name"),
-            type_timestamp=data.get("type_timestamp"),
+            type_identifier=data.get("type_identifier"),
             granularity=data.get("granularity"),
             timestamp=data.get("timestamp"),
             commit_count=data.get("commit_count"),

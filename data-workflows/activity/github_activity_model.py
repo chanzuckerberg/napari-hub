@@ -87,7 +87,7 @@ def transform_and_write_to_dynamo(data: dict[str, List], activity_type: GitHubAc
             commit_count = activity.get('count')
             item = {
                 "plugin_name": plugin_name,
-                "type_timestamp": activity_type.format_to_type_identifier(repo, identifier_timestamp),
+                "type_identifier": activity_type.format_to_type_identifier(repo, identifier_timestamp),
                 "granularity": activity_type.name,
                 "timestamp": activity_type.format_to_timestamp(timestamp),
                 "commit_count": commit_count,
@@ -100,4 +100,4 @@ def transform_and_write_to_dynamo(data: dict[str, List], activity_type: GitHubAc
     duration = (time.perf_counter() - start) * 1000
 
     LOGGER.info(f'Items github-activity type={activity_type.name} count={count}')
-    LOGGER.info(f'Transform and write to github-activity type={activity_type.name} timeTaken={duration}ms')
+    LOGGER.info(f'Transform and write to github-activity type={activity_type.name} duration={duration}ms')
