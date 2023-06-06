@@ -64,7 +64,7 @@ def existing_plugin_metadata_types(plugin: str, version: str) \
         results = _PluginMetadata.query(hash_key=plugin,
                                         range_key_condition=condition,
                                         attributes_to_get=['type'])
-        return{PluginMetadataType[result.type] for result in results}
+        return {PluginMetadataType[result.type] for result in results}
     finally:
         duration = (time.perf_counter() - start) * 1000
         logger.info(f"query plugin_metadata for plugin={plugin} "

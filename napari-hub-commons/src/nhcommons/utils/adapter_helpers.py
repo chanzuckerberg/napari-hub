@@ -38,7 +38,7 @@ class GithubClientHelper:
             pass
         return None
 
-    def get_first_valid_file(self, paths: List[str], file_format: str = "") -> [dict, None]:
+    def get_first_valid_file(self, paths: List[str], file_format: str = "") -> Optional[dict]:
         for file_path in paths:
             file = self.get_file(file_path, file_format)
             if file:

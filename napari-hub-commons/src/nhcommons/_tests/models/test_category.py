@@ -83,4 +83,7 @@ class TestCategory:
                 'label': data["label"]
             })
 
-        assert category.get_category(plugin, version) == expected
+        assert (
+            sorted(category.get_category(plugin, version), key=lambda x: x["label"])
+            == sorted(expected, key=lambda x: x["label"])
+        )
