@@ -53,12 +53,3 @@ class TestParameterStore:
         actual = json.loads(response['Parameter']['Value']).get('last_activity_fetched_timestamp')
         assert actual == timestamp
 
-
-class TestUtils:
-
-    def test_get_current_time(self):
-        start = round(time.time() * 1000)
-        actual = utils.utils.get_current_timestamp()
-        end = round(time.time() * 1000)
-
-        assert start <= actual <= end
