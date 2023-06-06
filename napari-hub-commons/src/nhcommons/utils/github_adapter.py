@@ -1,4 +1,6 @@
 import re
+from typing import Optional
+
 import yaml
 
 from .adapter_helpers import GithubClientHelper, CitationHelper
@@ -18,7 +20,7 @@ _VISIBILITY_SET = {'public', 'disabled', 'hidden'}
 _HUB_CONFIG_KEYS = {'summary', 'authors', 'labels', 'visibility'}
 
 
-def get_repo_url(project_urls: dict[str, str]) -> str:
+def get_repo_url(project_urls: dict[str, str]) -> Optional[str]:
     """
     Get repo url for github.
 

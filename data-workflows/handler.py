@@ -33,3 +33,8 @@ def handle(event, context) -> None:
         if processor:
             processor(event)
             logger.info(f"Update successful for type={event_type}")
+
+
+if __name__ == "__main__":
+    logger.info(f"Received message with body: foo")
+    logger.warning(f"Received message with body: foo")

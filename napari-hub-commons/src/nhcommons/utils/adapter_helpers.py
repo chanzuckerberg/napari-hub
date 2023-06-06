@@ -1,6 +1,6 @@
 import logging
 import os
-from typing import Union, Dict, List
+from typing import Union, Dict, List, Optional
 
 import yaml
 from cffconvert import Citation
@@ -35,10 +35,11 @@ class GithubClientHelper:
                 return spdx_id
 
         except HTTPError:
-            pass
+            logging.warning(f"Unable to fetch license for {self._repo_url}")
         return None
 
-    def get_first_valid_file(self, paths: List[str], file_format: str = "") -> Optional[dict]:
+    def get_first_valid_file(self, paths: List[str], file_format: str = "") \
+            -> Optional[dict]:
         for file_path in paths:
             file = self.get_file(file_path, file_format)
             if file:
@@ -116,7 +117,10 @@ class CitationHelper:
 
         authors = []
         for author_entry in citation_yaml['authors']:
-            if 'given-names' in author_entry and 'family-names' in author_entry and author_entry['given-names'] and author_entry['family-names']:
+            if 'given-names' in author_entry and \
+                    'family-names' in author_entry and \
+                    author_entry['given-names'] and \
+                    author_entry['family-names']:
                 name = author_entry['given-names'] + " " + author_entry['family-names']
                 authors.append({'name': name})
             elif 'name' in author_entry and author_entry['name']:

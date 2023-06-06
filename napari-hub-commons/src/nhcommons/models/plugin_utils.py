@@ -3,14 +3,9 @@ from enum import Enum, auto, EnumMeta
 
 class PluginMetadataType(Enum):
 
-    def __new__(cls):
-        plugin_meta_data_type = object.__new__(cls)
-        plugin_meta_data_type._value_ = auto()
-        return plugin_meta_data_type
-
-    DISTRIBUTION = ()
-    PYPI = ()
-    METADATA = ()
+    DISTRIBUTION = auto()
+    PYPI = auto()
+    METADATA = auto()
 
     def to_version_type(self, version: str) -> str:
         return f"{version}:{self.name}"
@@ -23,12 +18,8 @@ class PluginVisibilityMeta(EnumMeta):
 
 
 class PluginVisibility(Enum, metaclass=PluginVisibilityMeta):
-    def __new__(cls):
-        plugin_visibility = object.__new__(cls)
-        plugin_visibility._value_ = auto()
-        return plugin_visibility
 
-    PUBLIC = ()
-    HIDDEN = ()
-    DISABLED = ()
-    BLOCKED = ()
+    PUBLIC = auto()
+    HIDDEN = auto()
+    DISABLED = auto()
+    BLOCKED = auto()
