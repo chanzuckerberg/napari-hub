@@ -17,14 +17,6 @@ class _InstallActivity(PynamoWrapper):
     is_total = UnicodeAttribute(null=True)
     install_count = NumberAttribute()
 
-    def __eq__(self, other) -> bool:
-        if isinstance(other, _InstallActivity):
-            return ((self.plugin_name, self.type_timestamp, self.granularity,
-                     self.timestamp, self.install_count, self.is_total) ==
-                    (other.plugin_name, other.type_timestamp, other.granularity,
-                     other.timestamp, other.install_count, other.is_total))
-        return False
-
     @staticmethod
     def to_model(data: Dict[str, Any]):
         return _InstallActivity(
@@ -44,4 +36,3 @@ def batch_write(records: List[Dict]) -> None:
         batch.save(_InstallActivity.to_model(record))
 
     batch.commit()
-

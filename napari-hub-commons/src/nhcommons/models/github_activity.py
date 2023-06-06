@@ -17,18 +17,6 @@ class _GitHubActivity(PynamoWrapper):
     commit_count = NumberAttribute(null=True)
     repo = UnicodeAttribute()
 
-    def __eq__(self, other):
-        if isinstance(other, _GitHubActivity):
-            return (
-                    self.plugin_name == other.plugin_name and
-                    self.type_identifier == other.type_identifier and
-                    self.granularity == other.granularity and
-                    self.timestamp == other.timestamp and
-                    self.commit_count == other.commit_count and
-                    self.repo == other.repo
-            )
-        return False
-
     @staticmethod
     def to_model(data: Dict[str, Any]):
         return _GitHubActivity(

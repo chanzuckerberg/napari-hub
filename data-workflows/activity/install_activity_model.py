@@ -35,8 +35,7 @@ class InstallActivityType(Enum):
 
 def transform_and_write_to_dynamo(data: dict[str, List],
                                   activity_type: InstallActivityType) -> None:
-    LOGGER.info(f'Starting item creation for install-activity '
-                f'type={activity_type.name}')
+    LOGGER.info(f"Starting item creation for install-activity type={activity_type.name}")
     batch = []
     count = 0
     is_total = 'true' if activity_type is InstallActivityType.TOTAL else None
@@ -59,6 +58,5 @@ def transform_and_write_to_dynamo(data: dict[str, List],
     batch_write(batch)
     duration = (time.perf_counter() - start) * 1000
 
-    LOGGER.info(f'Items install-activity type={activity_type.name} count={count}')
-    LOGGER.info(f'Transform and write to install-activity '
-                f'type={activity_type.name} timeTaken={duration}ms')
+    LOGGER.info(f"Items install-activity type={activity_type.name} count={count}")
+    LOGGER.info(f"Transform and write to install-activity type={activity_type.name} timeTaken={duration}ms")
