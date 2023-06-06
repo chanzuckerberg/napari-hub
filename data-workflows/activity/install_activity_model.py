@@ -3,12 +3,9 @@ import time
 from datetime import datetime
 from enum import Enum, auto
 from typing import List, Union
-import os
 
-from pynamodb.models import Model
-from pynamodb.attributes import UnicodeAttribute, NumberAttribute
-
-from utils.utils import get_current_timestamp, datetime_to_utc_timestamp_in_millis
+from nhcommons.models.install_activity import batch_write
+from utils.utils import datetime_to_utc_timestamp_in_millis
 
 LOGGER = logging.getLogger()
 
@@ -36,53 +33,32 @@ class InstallActivityType(Enum):
         return '1' if self is InstallActivityType.TOTAL else f"DATE_TRUNC('{self.name}', timestamp)"
 
 
-class InstallActivity(Model):
-    class Meta:
-        host = os.getenv('LOCAL_DYNAMO_HOST')
-        region = os.getenv('AWS_REGION')
-        table_name = f'{os.getenv("STACK_NAME")}-install-activity'
-
-    plugin_name = UnicodeAttribute(hash_key=True)
-    type_timestamp = UnicodeAttribute(range_key=True)
-    granularity = UnicodeAttribute(attr_name='type')
-    timestamp = NumberAttribute(null=True)
-    is_total = UnicodeAttribute(null=True)
-    install_count = NumberAttribute()
-    last_updated_timestamp = NumberAttribute(default_for_new=get_current_timestamp)
-
-    def __eq__(self, other):
-        if isinstance(other, InstallActivity):
-            return ((self.plugin_name, self.type_timestamp, self.granularity,
-                     self.timestamp, self.install_count, self.is_total) ==
-                    (other.plugin_name, other.type_timestamp, other.granularity,
-                     other.timestamp, other.install_count, other.is_total))
-        return False
-
-
 def transform_and_write_to_dynamo(data: dict[str, List],
                                   activity_type: InstallActivityType) -> None:
-    LOGGER.info(f'Starting item creation for install-activity type={activity_type.name}')
-    batch = InstallActivity.batch_write()
+    LOGGER.info(f'Starting item creation for install-activity '
+                f'type={activity_type.name}')
+    batch = []
     count = 0
     is_total = 'true' if activity_type is InstallActivityType.TOTAL else None
     start = time.perf_counter()
     for plugin_name, install_activities in data.items():
         for activity in install_activities:
-            timestamp = activity['timestamp']
+            timestamp = activity["timestamp"]
 
-            item = InstallActivity(
-                plugin_name=plugin_name.lower(),
-                type_timestamp=activity_type.format_to_type_timestamp(timestamp),
-                granularity=activity_type.name,
-                timestamp=activity_type.format_to_timestamp(timestamp),
-                install_count=activity['count'],
-                is_total=is_total,
-            )
-            batch.save(item)
+            item = {
+                "plugin_name": plugin_name.lower(),
+                "type_timestamp": activity_type.format_to_type_timestamp(timestamp),
+                "granularity": activity_type.name,
+                "timestamp": activity_type.format_to_timestamp(timestamp),
+                "install_count": activity["count"],
+                "is_total": is_total,
+            }
+            batch.append(item)
             count += 1
 
-    batch.commit()
+    batch_write(batch)
     duration = (time.perf_counter() - start) * 1000
 
     LOGGER.info(f'Items install-activity type={activity_type.name} count={count}')
-    LOGGER.info(f'Transform and write to install-activity type={activity_type.name} timeTaken={duration}ms')
+    LOGGER.info(f'Transform and write to install-activity '
+                f'type={activity_type.name} timeTaken={duration}ms')
