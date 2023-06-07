@@ -24,12 +24,7 @@ export function PluginSection({
   metadataToShow,
 }: Props) {
   return (
-    <div
-      className={clsx(
-        'col-span-2 screen-875:col-span-3 screen-1150:col-span-3',
-        'screen-1150:col-start-1 screen-1425:col-start-2',
-      )}
-    >
+    <div className="col-span-2 screen-875:col-span-3 screen-1425:col-start-2">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-x-sds-s">
           <Icon className="w-sds-xl h-sds-xl" />
