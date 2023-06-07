@@ -105,7 +105,7 @@ export function PluginCard({ className, metadataToShow, plugin }: Props) {
             {metadataToShow?.map((key) => (
               <div key={key}>
                 <Text element="span" variant="bodyS">
-                  {t(I18N_KEY_MAP[key] as I18nKeys<'pluginData'>)}:
+                  {t(I18N_KEY_MAP[key] as I18nKeys<'pluginData'>) as string}:
                 </Text>
 
                 <Text
@@ -114,9 +114,7 @@ export function PluginCard({ className, metadataToShow, plugin }: Props) {
                   variant="bodyS"
                   weight="bold"
                 >
-                  {['first_released', 'release_date'].includes(key)
-                    ? dayjs(plugin[key] as string).format('DD MMMM YYYY')
-                    : plugin[key]}
+                  <MetadataValue plugin={plugin} pluginKey={key} />
                 </Text>
               </div>
             ))}
