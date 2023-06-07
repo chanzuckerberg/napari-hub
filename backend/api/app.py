@@ -115,13 +115,13 @@ def get_exclusion_list() -> Response:
 
 @app.route('/categories', defaults={'version': os.getenv('category_version', 'EDAM-BIOIMAGING:alpha06')})
 def get_categories(version: str) -> Response:
-    return jsonify(CategoryModel.get_all_categories(version))
+    return jsonify(categories.get_all_categories(version))
 
 
 @app.route('/categories/<category>', defaults={'version': os.getenv('category_version', 'EDAM-BIOIMAGING:alpha06')})
 @app.route('/categories/<category>/versions/<version>')
 def get_category(category: str, version: str) -> Response:
-    return jsonify(CategoryModel.get_category(category, version))
+    return jsonify(categories.get_category(category, version))
 
 
 @app.route('/activity/update', methods=['POST'])
