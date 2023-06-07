@@ -99,7 +99,7 @@ export function PluginCard({ className, metadataToShow, plugin }: Props) {
         {metadataToShow?.map((key) => (
           <div key={key}>
             <Text element="span" variant="bodyS">
-              {t(I18N_KEY_MAP[key] as I18nKeys<'pluginData'>)}:
+              {t(I18N_KEY_MAP[key] as I18nKeys<'pluginData'>) as string}:
             </Text>
 
             <Text className="mr-3" element="span" variant="bodyS" weight="bold">
