@@ -56,7 +56,7 @@ def get_category(name: str, version: str):
     ):
         category.append(_get_category_from_model(item))
 
-    print_perf_duration(start, f"CategoryModel.get_category({name})")
+    print_perf_duration(start, f"get_category({name})")
 
     return category
 
@@ -85,6 +85,6 @@ def get_all_categories(version: str):
             _get_category_from_model(category)
         )
 
-    print_perf_duration(start, "CategoryModel.get_all_categories()")
+    print_perf_duration(start, "get_all_categories()")
 
     return mapped_categories
