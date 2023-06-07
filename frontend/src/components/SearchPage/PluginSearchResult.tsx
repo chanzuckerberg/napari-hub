@@ -44,7 +44,12 @@ interface Props {
   style?: CSSProperties;
 }
 
-interface SearchResultItem {
+interface MetadataItem {
+  label: I18nPluginDataLabel;
+  value: string;
+}
+
+interface ExpandedMetadataItems {
   label: string;
   value: string;
 }
@@ -116,6 +121,7 @@ export function PluginSearchResult({
   const [debouncedIsHoveringOverChip] = useDebounce(isHoveringOverChip, 100);
   const containerRef = useRef<HTMLElement>(null);
   const isNpe2Enabled = useIsFeatureFlagEnabled('npe2');
+  const isHomePageRedesignEnabled = useIsFeatureFlagEnabled('homePageRedesign');
 
   const { searchStore } = useSearchStore();
   const snap = useSnapshot(searchStore);
@@ -139,22 +145,33 @@ export function PluginSearchResult({
   const getLabel = (label: I18nPluginDataLabel) =>
     isString(label) ? label : label.label;
 
-  function getItems(
-    ...items: Array<{
-      label: I18nPluginDataLabel;
-      value: string;
-    }>
-  ): SearchResultItem[] {
+  function getItems(...items: MetadataItem[]): ExpandedMetadataItems[] {
     return items.map((item) => ({
       label: getLabel(item.label),
       value: item.value,
     }));
   }
 
-  // TODO consolidate with PluginGithubData component in PluginMetadata.tsx
-  const items = isLoading
-    ? []
-    : getItems(
+  const metadataItems: MetadataItem[] = [];
+
+  if (!isLoading) {
+    if (isHomePageRedesignEnabled) {
+      metadataItems.push(
+        {
+          label: t('pluginData:labels.firstReleased'),
+          value: formatDate(plugin.first_released),
+        },
+        {
+          label: t('pluginData:labels.releaseDate'),
+          value: formatDate(plugin.release_date),
+        },
+        {
+          label: t('pluginData:labels.installs'),
+          value: formatNumber(plugin.total_installs, i18n.language),
+        },
+      );
+    } else {
+      metadataItems.push(
         {
           label: t('pluginData:labels.totalInstalls'),
           value: formatNumber(plugin.total_installs, i18n.language),
@@ -164,43 +181,43 @@ export function PluginSearchResult({
           label: t('pluginData:labels.releaseDate'),
           value: formatDate(plugin.release_date),
         },
-
-        ...(isNpe2Enabled
-          ? [
-              {
-                label: t('pluginData:labels.pluginType'),
-                value: isArray(plugin.plugin_types)
-                  ? plugin.plugin_types
-                      .map((pluginType) =>
-                        t(
-                          `homePage:filter.requirement.${pluginType}.label` as I18nKeys<'homePage'>,
-                        ),
-                      )
-                      .join(', ')
-                  : '',
-              },
-            ]
-          : [
-              {
-                label: t('pluginData:labels.license'),
-                value: plugin.license,
-              },
-
-              {
-                label: t('pluginData:labels.pythonVersion'),
-                value: plugin.python_version,
-              },
-
-              {
-                label: t('pluginData:labels.operatingSystem'),
-                value: isArray(plugin.operating_system)
-                  ? plugin.operating_system
-                      .map(formatOperatingSystem)
-                      .join(', ')
-                  : '',
-              },
-            ]),
       );
+    }
+
+    if (isNpe2Enabled) {
+      metadataItems.push({
+        label: t('pluginData:labels.pluginType'),
+        value: isArray(plugin.plugin_types)
+          ? plugin.plugin_types
+              .map((pluginType) =>
+                t(
+                  `homePage:filter.requirement.${pluginType}.label` as I18nKeys<'homePage'>,
+                ),
+              )
+              .join(', ')
+          : '',
+      });
+    } else {
+      metadataItems.push(
+        {
+          label: t('pluginData:labels.license'),
+          value: plugin.license,
+        },
+
+        {
+          label: t('pluginData:labels.pythonVersion'),
+          value: plugin.python_version,
+        },
+
+        {
+          label: t('pluginData:labels.operatingSystem'),
+          value: isArray(plugin.operating_system)
+            ? plugin.operating_system.map(formatOperatingSystem).join(', ')
+            : '',
+        },
+      );
+    }
+  }
 
   const isSearching = !isEmpty(matches);
 
@@ -316,7 +333,7 @@ export function PluginSearchResult({
           <SkeletonLoader
             className="h-full"
             render={() =>
-              items.map((item) => (
+              getItems(...metadataItems).map((item) => (
                 <li
                   data-testid="searchResultMetadata"
                   data-label={item.label}
