@@ -75,7 +75,6 @@ def transform_and_write_to_dynamo(data: dict[str, List], activity_type: GitHubAc
     batch = []
 
     start = time.perf_counter()
-    count = 0
     repo_to_plugin_dict = _get_repo_to_plugin_dict()
     for repo, github_activities in data.items():
         plugin_name = repo_to_plugin_dict.get(repo)
@@ -94,10 +93,11 @@ def transform_and_write_to_dynamo(data: dict[str, List], activity_type: GitHubAc
                 "repo": repo,
             }
             batch.append(item)
-            count += 1
 
     batch_write(batch)
     duration = (time.perf_counter() - start) * 1000
 
-    LOGGER.info(f'Items github-activity type={activity_type.name} count={count}')
-    LOGGER.info(f'Transform and write to github-activity type={activity_type.name} duration={duration}ms')
+    LOGGER.info(f'Items github-activity type={activity_type.name} '
+                f'count={len(batch)}')
+    LOGGER.info(f'Transform and write to github-activity '
+                f'type={activity_type.name} duration={duration}ms')

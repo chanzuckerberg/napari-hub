@@ -37,7 +37,6 @@ def transform_and_write_to_dynamo(data: dict[str, List],
                                   activity_type: InstallActivityType) -> None:
     LOGGER.info(f"Starting item creation for install-activity type={activity_type.name}")
     batch = []
-    count = 0
     is_total = 'true' if activity_type is InstallActivityType.TOTAL else None
     start = time.perf_counter()
     for plugin_name, install_activities in data.items():
@@ -53,10 +52,11 @@ def transform_and_write_to_dynamo(data: dict[str, List],
                 "is_total": is_total,
             }
             batch.append(item)
-            count += 1
 
     batch_write(batch)
     duration = (time.perf_counter() - start) * 1000
 
-    LOGGER.info(f"Items install-activity type={activity_type.name} count={count}")
-    LOGGER.info(f"Transform and write to install-activity type={activity_type.name} duration={duration}ms")
+    LOGGER.info(f"Items install-activity type={activity_type.name} "
+                f"count={len(batch)}")
+    LOGGER.info(f"Transform and write to install-activity "
+                f"type={activity_type.name} duration={duration}ms")

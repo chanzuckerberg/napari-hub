@@ -72,3 +72,20 @@ class TestCategory:
         category.batch_write(generate_category_list(True))
 
         verify_table_data(generate_category_list(False), category_table)
+
+    @pytest.mark.parametrize('excluded_field', [
+        "name", "version_hash", "version", "formatted_name", "dimension", "label", "hierarchy"
+    ])
+    def test_batch_write_for_invalid_data(self, excluded_field, category_table):
+        input_data = {
+            "name": "confocal-fluorescence-microscopy",
+            "version_hash": f"{TEST_VERSION}:foo",
+            "version": TEST_VERSION,
+            "formatted_name": "Confocal Fluorescence Microscopy",
+            "dimension": "Image modality",
+            "label": "Fluorescence microscopy",
+            "hierarchy": ["Confocal fluorescence microscopy"],
+        }
+        del input_data[excluded_field]
+        with pytest.raises(KeyError):
+            category.batch_write([input_data])

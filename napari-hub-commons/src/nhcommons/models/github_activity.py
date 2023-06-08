@@ -12,20 +12,20 @@ class _GitHubActivity(PynamoWrapper):
 
     plugin_name = UnicodeAttribute(hash_key=True)
     type_identifier = UnicodeAttribute(range_key=True)
-    granularity = UnicodeAttribute(attr_name='type')
-    timestamp = NumberAttribute(null=True)
     commit_count = NumberAttribute(null=True)
+    granularity = UnicodeAttribute(attr_name='type')
     repo = UnicodeAttribute()
+    timestamp = NumberAttribute(null=True)
 
     @staticmethod
-    def to_model(data: Dict[str, Any]):
+    def from_dict(data: Dict[str, Any]):
         return _GitHubActivity(
-            plugin_name=data.get("plugin_name").lower(),
-            type_identifier=data.get("type_identifier"),
-            granularity=data.get("granularity"),
-            timestamp=data.get("timestamp"),
+            plugin_name=data["plugin_name"].lower(),
+            type_identifier=data["type_identifier"],
             commit_count=data.get("commit_count"),
-            repo=data.get("repo"),
+            granularity=data["granularity"],
+            repo=data["repo"],
+            timestamp=data.get("timestamp"),
         )
 
 
@@ -33,6 +33,6 @@ def batch_write(records: List[Dict]) -> None:
     batch = _GitHubActivity.batch_write()
 
     for record in records:
-        batch.save(_GitHubActivity.to_model(record))
+        batch.save(_GitHubActivity.from_dict(record))
 
     batch.commit()

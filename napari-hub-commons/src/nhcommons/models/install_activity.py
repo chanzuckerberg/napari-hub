@@ -13,19 +13,19 @@ class _InstallActivity(PynamoWrapper):
     plugin_name = UnicodeAttribute(hash_key=True)
     type_timestamp = UnicodeAttribute(range_key=True)
     granularity = UnicodeAttribute(attr_name='type')
-    timestamp = NumberAttribute(null=True)
-    is_total = UnicodeAttribute(null=True)
     install_count = NumberAttribute()
+    is_total = UnicodeAttribute(null=True)
+    timestamp = NumberAttribute(null=True)
 
     @staticmethod
-    def to_model(data: Dict[str, Any]):
+    def from_dict(data: Dict[str, Any]):
         return _InstallActivity(
-            plugin_name=data.get("plugin_name").lower(),
-            type_timestamp=data.get("type_timestamp"),
-            granularity=data.get("granularity"),
-            timestamp=data.get("timestamp"),
-            install_count=data.get("install_count"),
+            plugin_name=data["plugin_name"].lower(),
+            type_timestamp=data["type_timestamp"],
+            granularity=data["granularity"],
+            install_count=data["install_count"],
             is_total=data.get("is_total"),
+            timestamp=data.get("timestamp"),
         )
 
 
@@ -33,6 +33,6 @@ def batch_write(records: List[Dict]) -> None:
     batch = _InstallActivity.batch_write()
 
     for record in records:
-        batch.save(_InstallActivity.to_model(record))
+        batch.save(_InstallActivity.from_dict(record))
 
     batch.commit()

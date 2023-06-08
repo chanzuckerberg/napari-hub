@@ -79,3 +79,18 @@ class TestInstallActivity:
 
         verify_table_data(generate_install_activity_list(False),
                           install_activity_table)
+
+    @pytest.mark.parametrize('excluded_field', [
+        "plugin_name", "type_timestamp", "granularity"
+    ])
+    def test_batch_write_for_invalid_data(self, excluded_field, install_activity_table):
+        input_data = {
+            "plugin_name": "Foo",
+            "type_timestamp": "DAY:20230607",
+            "install_count": 15,
+            "granularity": "DAY",
+            "timestamp": get_relative_timestamp(days=3),
+        }
+        del input_data[excluded_field]
+        with pytest.raises(KeyError):
+            install_activity.batch_write([input_data])

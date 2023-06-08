@@ -47,7 +47,6 @@ def seed_s3_categories_workflow(version: str, categories_path: str):
 
     batch = []
     start = time.perf_counter()
-    count = 0
 
     for name, categories in data.items():
         for category in categories:
@@ -60,9 +59,9 @@ def seed_s3_categories_workflow(version: str, categories_path: str):
                 "hierarchy": category.get("hierarchy", []),
                 "label": category.get("label", ""),
             })
-            count += 1
 
     batch_write(batch)
     duration = (time.perf_counter() - start) * 1000
 
-    LOGGER.info(f"Finished seeding category data count={count} duration={duration}ms")
+    LOGGER.info(f"Finished seeding category data count={len(batch)} "
+                f"duration={duration}ms")
