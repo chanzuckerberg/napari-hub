@@ -72,7 +72,7 @@ def get_github_metadata(repo_url: str, branch: str = 'HEAD') -> dict:
         if authors:
             github_metadata.update({"authors": authors})
     if github_metadata.get('visibility') not in PluginVisibility:
-        github_metadata['visibility'] = 'public'
+        github_metadata['visibility'] = PluginVisibility.PUBLIC.name
 
     yaml_file = github_helper.get_first_valid_file(
         [".napari-hub/config.yml", ".napari/config.yml"]

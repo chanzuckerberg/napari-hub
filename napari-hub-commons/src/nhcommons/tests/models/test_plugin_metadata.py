@@ -50,9 +50,12 @@ class TestPluginMetadata:
         'data, expected', [
             ([], set()),
             (['PYPI'], {PluginMetadataType.PYPI}),
+            (['DISTRIBUTION'], {PluginMetadataType.DISTRIBUTION}),
+            (['METADATA'], {PluginMetadataType.METADATA}),
             (['PYPI', 'DISTRIBUTION', 'METADATA'],
              {PluginMetadataType.DISTRIBUTION, PluginMetadataType.PYPI,
               PluginMetadataType.METADATA}),
+            (['FOO'], set()),
         ]
     )
     def test_get_plugin_metadata_by_type(self, table, data, expected):
@@ -61,7 +64,7 @@ class TestPluginMetadata:
                 'name': 'bar', 'version_type': f'0.5.6:{record}', 'type': record
             })
 
-        actual = plugin_metadata.existing_plugin_metadata_types('bar', '0.5.6')
+        actual = plugin_metadata.get_existing_types('bar', '0.5.6')
 
         assert actual == expected
 

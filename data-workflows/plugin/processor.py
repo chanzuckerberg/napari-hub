@@ -6,7 +6,7 @@ from nhcommons.models.plugin_utils import PluginMetadataType
 from nhcommons.utils import pypi_adapter
 
 from nhcommons.models.plugin_metadata import (
-    put_plugin_metadata, existing_plugin_metadata_types
+    put_plugin_metadata, get_existing_types
 )
 from nhcommons.models.plugin import get_latest_plugins
 from plugin.metadata import get_formatted_metadata
@@ -49,7 +49,7 @@ def _update_for_new_plugin(name: str, version: str) -> None:
                         version=version,
                         is_latest=True,
                         plugin_metadata_type=PluginMetadataType.PYPI)
-    cached_plugins = existing_plugin_metadata_types(name, version)
+    cached_plugins = get_existing_types(name, version)
     _build_plugin_metadata(name, version, cached_plugins)
     _build_plugin_manifest(name, version, cached_plugins)
 

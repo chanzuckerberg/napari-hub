@@ -5,9 +5,15 @@ import boto3
 
 
 class LambdaAdapter:
+    _client = None
+
+    @classmethod
+    def _init_client(cls):
+        cls._client = boto3.client("lambda")
 
     def __init__(self):
-        self._client = boto3.client('lambda')
+        if not self._client:
+            self._init_client()
 
     def invoke(self, plugin: str, version: str) -> None:
         """
@@ -16,7 +22,7 @@ class LambdaAdapter:
         :param version: plugin version to fetch manifest
         """
         self._client.invoke(
-            FunctionName=os.environ.get('PLUGINS_LAMBDA_NAME'),
-            InvocationType='Event',
-            Payload=json.dumps({'plugin': plugin, 'version': version}),
+            FunctionName=os.environ.get("PLUGINS_LAMBDA_NAME"),
+            InvocationType="Event",
+            Payload=json.dumps({"plugin": plugin, "version": version}),
         )

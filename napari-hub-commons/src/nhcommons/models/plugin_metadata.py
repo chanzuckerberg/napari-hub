@@ -25,14 +25,6 @@ class _PluginMetadata(PynamoWrapper):
     is_latest = BooleanAttribute(null=True)
     data = MapAttribute(null=True)
 
-    def __eq__(self, other):
-        if isinstance(other, _PluginMetadata):
-            return ((self.name, self.version_type, self.is_latest,
-                     self.data.as_dict()) ==
-                    (other.name, other.version_type, other.is_latest,
-                     other.data.as_dict()))
-        return False
-
 
 def put_plugin_metadata(plugin: str,
                         version: str,
@@ -56,15 +48,20 @@ def put_plugin_metadata(plugin: str,
                     f"duration={duration}ms")
 
 
-def existing_plugin_metadata_types(plugin: str, version: str) \
-        -> set[PluginMetadataType]:
+def get_existing_types(plugin: str, version: str) -> set[PluginMetadataType]:
     start = time.perf_counter()
     try:
         condition = _PluginMetadata.version_type.startswith(f'{version}:')
         results = _PluginMetadata.query(hash_key=plugin,
                                         range_key_condition=condition,
                                         attributes_to_get=['type'])
-        return {PluginMetadataType[result.type] for result in results}
+        existing_types = set()
+        for result in results:
+            try:
+                existing_types.add(PluginMetadataType[result.type])
+            except KeyError:
+                logger.warning(f"Skipping unknown type {result.type}")
+        return existing_types
     finally:
         duration = (time.perf_counter() - start) * 1000
-        logger.info(f"for plugin={plugin} version={version} duration={duration}ms")
+        logger.info(f"plugin={plugin} version={version} duration={duration}ms")
