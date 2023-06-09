@@ -3,11 +3,12 @@ import time
 from typing import Dict, Any
 
 import requests
+from requests import Response
 
 logger = logging.getLogger(__name__)
 
 
-def get_request(url: str, params: Dict[str, Any] = None, auth=None):
+def get_request(url: str, params: Dict[str, Any] = None, auth=None) -> Response:
     start_time = time.perf_counter()
     try:
         response = requests.get(url, params=params, auth=auth)

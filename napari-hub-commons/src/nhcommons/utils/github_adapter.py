@@ -20,6 +20,10 @@ _VISIBILITY_SET = {'public', 'disabled', 'hidden'}
 _HUB_CONFIG_KEYS = {'summary', 'authors', 'labels', 'visibility'}
 
 
+def is_valid_repo_url(url: str) -> bool:
+    return url and _URL_PATTERN.match(url) is not None
+
+
 def get_repo_url(project_urls: dict[str, str]) -> Optional[str]:
     """
     Get repo url for github.
@@ -78,7 +82,10 @@ def get_github_metadata(repo_url: str, branch: str = 'HEAD') -> dict:
         [".napari-hub/config.yml", ".napari/config.yml"]
     )
     if yaml_file:
-        config = yaml.safe_load(yaml_file)
+        try:
+            config = yaml.safe_load(yaml_file)
+        except Exception:
+            return github_metadata
         # if the yaml.safe_load method returns None, then assign {} to config
         if config is None:
             config = {}

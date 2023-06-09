@@ -1,6 +1,7 @@
 import logging
 import os
-from typing import Union, Dict, List, Optional
+from json import JSONDecodeError
+from typing import Dict, List, Optional
 
 import yaml
 from cffconvert import Citation
@@ -25,7 +26,7 @@ class GithubClientHelper:
         self._repo_url = repo_url
         self._branch = branch
 
-    def get_license(self) -> [str, None]:
+    def get_license(self) -> Optional[str]:
         try:
             api_url = self._to_api_github_url()
             response = get_request(f"{api_url}/license?ref={self._branch}",
@@ -34,24 +35,22 @@ class GithubClientHelper:
             if spdx_id != "NOASSERTION":
                 return spdx_id
 
-        except HTTPError:
+        except (HTTPError, JSONDecodeError):
             logging.warning(f"Unable to fetch license for {self._repo_url}")
         return None
 
     def get_first_valid_file(self, paths: List[str], file_format: str = "") \
-            -> Optional[dict]:
+            -> Optional[str]:
         for file_path in paths:
             file = self.get_file(file_path, file_format)
             if file:
                 return file
         return None
 
-    def get_file(self, file: str = "", file_format: str = "") -> [dict, None]:
+    def get_file(self, file: str = "", file_format: str = "") -> Optional[str]:
         """
         Get file from github.
-        :param download_url: github url to download from
         :param file: filename to get if specified
-        :param branch: branch name to use if specified
         :param file_format: format to return if specified
         :return: file context for the file to download
         """
@@ -86,7 +85,7 @@ class CitationHelper:
     def __init__(self, citation_str):
         self._citation_str = citation_str
 
-    def get_citations(self) -> Union[Dict[str, str], None]:
+    def get_citations(self) -> Optional[Dict[str, str]]:
         """
         Get citation information from the string.
         :return: citation dictionary with parsed citation of different formats,
@@ -104,19 +103,14 @@ class CitationHelper:
             logging.exception(e)
             return None
 
-    def get_citation_author(self) -> Union[List[Dict[str, str]], None]:
+    def get_citation_author(self) -> Optional[List[Dict[str, str]]]:
         """
         Parse author information from citation.
         :return: list of mappings between the string 'name' and the author name
         """
-        try:
-            citation_yaml = yaml.safe_load(self._citation_str)
-        except yaml.YAMLError as e:
-            logging.error(e)
-            return []
-
+        citation_yaml = self._read_yaml()
         authors = []
-        for author_entry in citation_yaml['authors']:
+        for author_entry in citation_yaml.get('authors', []):
             if 'given-names' in author_entry and \
                     'family-names' in author_entry and \
                     author_entry['given-names'] and \
@@ -126,3 +120,10 @@ class CitationHelper:
             elif 'name' in author_entry and author_entry['name']:
                 authors.append({'name': author_entry['name']})
         return authors
+
+    def _read_yaml(self):
+        try:
+            return yaml.safe_load(self._citation_str)
+        except yaml.YAMLError as e:
+            logging.error(e)
+            return {}

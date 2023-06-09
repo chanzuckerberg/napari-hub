@@ -125,6 +125,17 @@ class TestMetadata:
         assert actual == self._plugin_pypi_metadata_response
         verify_calls()
 
+    def test_get_metadata_non_github_code_repository_from_pypi(
+            self, pypi_metadata: dict, verify_calls
+    ) -> None:
+        self._plugin_pypi_metadata_response = pypi_metadata
+        pypi_metadata["code_repository"] = "https://bb.com/czi/napari-demo"
+
+        actual = get_formatted_metadata(PLUGIN, VERSION)
+
+        assert actual == self._plugin_pypi_metadata_response
+        verify_calls()
+
     def test_get_metadata_valid_code_repository_from_pypi(
             self, github_metadata: dict, pypi_metadata: dict, expected: dict, verify_calls
     ) -> None:

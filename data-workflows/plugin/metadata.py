@@ -3,7 +3,9 @@ from typing import Optional
 
 from nhcommons.models.category import get_category
 from nhcommons.utils.custom_parser import render_description
-from nhcommons.utils.github_adapter import get_github_metadata
+from nhcommons.utils.github_adapter import (
+    get_github_metadata, is_valid_repo_url
+)
 from nhcommons.utils.pypi_adapter import get_plugin_pypi_metadata
 
 
@@ -41,7 +43,7 @@ def _format_metadata(metadata: dict) -> dict:
 
 def _generate_metadata(pypi_metadata: dict) -> dict:
     github_repo_url = pypi_metadata.get("code_repository")
-    if github_repo_url:
+    if is_valid_repo_url(github_repo_url):
         github_metadata = get_github_metadata(github_repo_url)
         return {**pypi_metadata, **github_metadata}
     return pypi_metadata
