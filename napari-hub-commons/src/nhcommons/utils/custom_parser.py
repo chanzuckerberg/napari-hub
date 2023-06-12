@@ -11,7 +11,7 @@ def render_description(description: str) -> str:
     """
     if description:
         html = markdown(description)
-        soup = BeautifulSoup(html, 'html.parser')
+        soup = BeautifulSoup(html, "html.parser")
         return soup.get_text()
 
-    return ''
+    return ""

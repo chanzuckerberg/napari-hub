@@ -1,9 +1,14 @@
 import random
+from typing import Any
 
 import pytest
 from moto import mock_dynamodb
 
 from nhcommons.models import category
+
+
+def sort_results(categories: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    return sorted(categories, key=lambda x: x["label"])
 
 
 class TestCategory:
@@ -69,6 +74,12 @@ class TestCategory:
                     "label": "Fluorescence microscopy"
                 }
             ]),
+            ("Abalation", None, []),
+            ("", None, []),
+            (None, "EDAM-BIOIMAGING:alpha07", []),
+            (None, "", []),
+            (None, None, []),
+            ("", "", [])
         ]
     )
     def test_get_category(self, category_table, input, plugin, version, expected):
@@ -83,7 +94,5 @@ class TestCategory:
                 'label': data["label"]
             })
 
-        assert (
-            sorted(category.get_category(plugin, version), key=lambda x: x["label"])
-            == sorted(expected, key=lambda x: x["label"])
-        )
+        actual = category.get_category(plugin, version)
+        assert sort_results(actual) == sort_results(expected)

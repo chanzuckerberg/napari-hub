@@ -1,4 +1,4 @@
-from typing import List, Dict
+from typing import Any
 
 from pynamodb.attributes import UnicodeAttribute, ListAttribute
 from slugify import slugify
@@ -20,7 +20,10 @@ class _Category(PynamoWrapper):
     label = UnicodeAttribute()
 
 
-def get_category(category: str, version: str) -> List[Dict]:
+def get_category(category: str, version: str) -> list[dict[str, Any]]:
+    if not category or not version:
+        return []
+
     results = _Category.query(
          hash_key=slugify(category),
          range_key_condition=_Category.version_hash.startswith(version),

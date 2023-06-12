@@ -153,6 +153,23 @@ class TestMetadata:
         assert actual == expected
         verify_calls(github_metadata_called=True)
 
+    def test_get_metadata_when_labels_has_no_ontology(
+            self, github_metadata: dict, pypi_metadata: dict, expected: dict, verify_calls
+    ) -> None:
+        del github_metadata["description"]
+        del github_metadata["labels"]["ontology"]
+        self._plugin_pypi_metadata_response = pypi_metadata
+        self._github_metadata_response = github_metadata
+
+        actual = get_formatted_metadata(PLUGIN, VERSION)
+
+        del expected["description"]
+        del expected["description_text"]
+        del expected["category"]
+        del expected["category_hierarchy"]
+        assert actual == expected
+        verify_calls(github_metadata_called=True)
+
     def test_get_metadata_with_description(
             self, github_metadata: dict, pypi_metadata: dict, expected: dict, verify_calls
     ) -> None:
