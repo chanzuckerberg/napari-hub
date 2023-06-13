@@ -214,7 +214,7 @@ def build_plugin_metadata(plugin: str, version: str) -> Tuple[str, dict]:
     if not metadata:
         return plugin, metadata
     github_repo_url = metadata.get('code_repository')
-    if github_repo_url:
+    if github_repo_url and github_repo_url.startswith("https://github.com/"):
         metadata = {**metadata, **get_github_metadata(github_repo_url)}
     if 'description' in metadata:
         metadata['description_text'] = render_description(metadata.get('description'))
