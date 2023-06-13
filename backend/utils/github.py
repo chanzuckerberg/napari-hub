@@ -218,11 +218,11 @@ def get_citation_author(citation_str: str) -> Union[List[Dict[str, str]], None]:
         logging.error(e)
         return []
     authors = []
-    for entry in citation_yaml['authors']:
-        if 'given-names' in entry and 'family-names' in entry \
-                and entry['given-names'] and entry['family-names']:
-            author_name = entry['given-names'] + " " + entry['family-names']
-            authors.append({'name': author_name})
-        elif 'name' in entry and entry['name']:
-            authors.append({'name': entry['name']})
+    for author_entry in citation_yaml['authors']:
+        if 'given-names' in author_entry and 'family-names' in author_entry and \
+                author_entry['given-names'] and author_entry['family-names']:
+            authors.append({'name': author_entry['given-names'] + " " +
+                                    author_entry['family-names']})
+        elif 'name' in author_entry and author_entry['name']:
+            authors.append({'name': author_entry['name']})
     return authors
