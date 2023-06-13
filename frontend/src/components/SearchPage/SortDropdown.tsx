@@ -49,7 +49,7 @@ export function SortDropdown() {
         IconComponent={SortChevronUp}
         renderValue={(option) => (
           <Text element="span" variant="h5">
-            {t(SORT_LABELS[option])}
+            {t(SORT_LABELS[option]) as string}
           </Text>
         )}
       >
@@ -63,7 +63,7 @@ export function SortDropdown() {
               weight={state.sort === option ? 'bold' : 'regular'}
               variant="bodyS"
             >
-              {t(SORT_LABELS[option])}
+              {t(SORT_LABELS[option]) as string}
             </Text>
           </MenuItem>
         ))}

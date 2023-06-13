@@ -94,7 +94,7 @@ function SortForm() {
                   color="default"
                 />
               }
-              label={t(labels[sortType])}
+              label={t(labels[sortType]) as string}
             />
           </motion.div>
         ))}
@@ -122,9 +122,11 @@ export function PluginSortByForm() {
           className={clsx(!isHomePageRedesign && 'uppercase')}
           title={
             isHomePageRedesign
-              ? `${t('pluginsPage:sortByMobile', {
-                  sortType: t(SORT_LABELS[state.sort]),
-                })}`
+              ? `${
+                  t('pluginsPage:sortByMobile', {
+                    sortType: t(SORT_LABELS[state.sort]) as string,
+                  }) as string
+                }`
               : t('homePage:sort.title')
           }
         >
