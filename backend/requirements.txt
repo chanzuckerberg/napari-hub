@@ -16,6 +16,6 @@ datadog-lambda==3.60.0
 build==0.8.0
 pyOpenSSL==22.0.0
 pandas==1.4.4
-snowflake-connector-python==2.8.0
+snowflake-connector-python==3.0.2
 pynamodb==5.4.1
 python-slugify==8.0.1
