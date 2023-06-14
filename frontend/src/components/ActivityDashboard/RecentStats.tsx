@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import { useTranslation } from 'next-i18next';
+import { ReactNode } from 'react';
 
 import { Text } from '@/components/Text';
 import { DateBucketType, useDateBucketType } from '@/hooks';
@@ -38,10 +39,10 @@ export function RecentStats({
         />
       )}
 
-      <span className="mr-2">{t(infoI18nKey)}</span>
+      <span className="mr-2">{t(infoI18nKey) as ReactNode}</span>
 
       {durationI18nKey && (
-        <span className="!font-medium">{t(durationI18nKey)}</span>
+        <span className="!font-medium">{t(durationI18nKey) as ReactNode}</span>
       )}
 
       {date && !durationI18nKey && (

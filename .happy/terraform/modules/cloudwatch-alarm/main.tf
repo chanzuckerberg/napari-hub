@@ -44,7 +44,7 @@ resource aws_sns_topic_policy alarm_sns_policy {
 }
 
 resource aws_cloudwatch_log_metric_filter backend_api_500_log_metric {
-  name            = "${var.stack_name}-backend-500-metric-filter"
+  name            = "${var.stack_name}-backend-500-metric"
   log_group_name  = var.backend_lambda_log_group_name
   pattern         = " 500 INTERNAL SERVER ERROR"
   count           = var.metrics_enabled ? 1 : 0
@@ -142,6 +142,7 @@ module plugins_missing_update_alarm {
   statistic           = "Sum"
   tags                = var.tags
   threshold           = 1
+  treat_missing_data  = "breaching"
 }
 
 module backend_metrics_missing_update_alarm {
@@ -161,6 +162,7 @@ module backend_metrics_missing_update_alarm {
   statistic           = "Sum"
   tags                = var.tags
   threshold           = 1
+  treat_missing_data  = "breaching"
 }
 
 module data_workflows_metrics_missing_update_alarm {
@@ -180,6 +182,7 @@ module data_workflows_metrics_missing_update_alarm {
   statistic           = "Sum"
   tags                = var.tags
   threshold           = 1
+  treat_missing_data  = "breaching"
 }
 
 module backend_lambda_errors_alarm {

@@ -76,7 +76,9 @@ export function getServerSidePropsHandler<
     ] as I18nNamespace[]);
 
     const featureFlags = E2E
-      ? getEnabledFeatureFlags(...FEATURE_FLAG_LIST)
+      ? getEnabledFeatureFlags(
+          ...FEATURE_FLAG_LIST.filter((flag) => flag !== 'homePageRedesign'),
+        )
       : await getFeatureFlags(req.url ?? '/');
 
     // Assign to feature flag store so that server code can use the state.

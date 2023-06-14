@@ -236,6 +236,8 @@ module plugin_metadata_dynamodb_table {
   autoscaling_enabled = var.env == "dev" ? false : true
   create_table        = true
   tags                = var.tags
+  stream_enabled      = true
+  stream_view_type    = "KEYS_ONLY"
 }
 
 module plugin_blocked_dynamodb_table {
@@ -357,7 +359,7 @@ resource aws_ssm_parameter data_workflow_config {
   tags        = var.tags
   lifecycle {
     ignore_changes = [
-      "value",
+      value,
     ]
   }
 }
@@ -376,9 +378,9 @@ resource aws_sqs_queue_policy data_workflows_queue_policy {
   policy = data.aws_iam_policy_document.data_workflows_sqs_policy.json
 }
 
-resource "aws_lambda_event_source_mapping" "data_workflow_sqs_event_source_mapping" {
+resource aws_lambda_event_source_mapping data_workflow_sqs_event_source_mapping {
   event_source_arn = aws_sqs_queue.data_workflows_queue.arn
-  function_name    = module.data_workflows_lambda.function_arn
+  function_name    = module.data_workflows_lambda.function_name
   batch_size       = 1
 }
 
@@ -594,7 +596,7 @@ data aws_iam_policy_document plugins_policy {
       "s3:ListBucket",
     ]
 
-    resources = ["${local.data_bucket_arn}"]
+    resources = [local.data_bucket_arn]
   }
 
   statement {
