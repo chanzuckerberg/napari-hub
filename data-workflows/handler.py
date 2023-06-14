@@ -8,7 +8,7 @@ import plugin.processor
 logging.basicConfig(
     level="INFO",
     style="{",
-    format="[{levelname}] {asctime} {aws_request_id} {threadName} {name}.{funcName} {message}",
+    format="[{levelname}] {asctime} {threadName} {name}.{funcName} {message}",
     force=True,
 )
 logger = logging.getLogger(__name__)
