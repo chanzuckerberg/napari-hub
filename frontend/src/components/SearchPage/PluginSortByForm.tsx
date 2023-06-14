@@ -122,11 +122,9 @@ export function PluginSortByForm() {
           className={clsx(!isHomePageRedesign && 'uppercase')}
           title={
             isHomePageRedesign
-              ? `${
-                  t('pluginsPage:sortByMobile', {
-                    sortType: t(SORT_LABELS[state.sort]) as string,
-                  }) as string
-                }`
+              ? `${t('pluginsPage:sortByMobile', {
+                  sortType: t(SORT_LABELS[state.sort]),
+                })}`
               : t('homePage:sort.title')
           }
         >
