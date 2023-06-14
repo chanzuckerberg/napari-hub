@@ -336,16 +336,19 @@ module data_workflows_lambda {
   }
 
   environment             = {
-    "SNOWFLAKE_PASSWORD" = local.snowflake_password
-    "SNOWFLAKE_USER"     = local.snowflake_user
-    "STACK_NAME"         = local.custom_stack_name
-    "BUCKET"             = local.data_bucket_name
-    "BUCKET_PATH"        = var.env == "dev" ? local.custom_stack_name : ""
+    "SNOWFLAKE_PASSWORD"    = local.snowflake_password
+    "SNOWFLAKE_USER"        = local.snowflake_user
+    "STACK_NAME"            = local.custom_stack_name
+    "BUCKET"                = local.data_bucket_name
+    "BUCKET_PATH"           = var.env == "dev" ? local.custom_stack_name : ""
+    "GITHUB_CLIENT_ID"      = local.github_client_id
+    "GITHUB_CLIENT_SECRET"  = local.github_client_secret
+    "PLUGINS_LAMBDA_NAME"   = local.plugins_function_name
   }
 
   log_retention_in_days   = local.log_retention_period
   timeout                 = 300
-  memory_size             = 256
+  memory_size             = 512
   ephemeral_storage_size  = 512
 }
 
@@ -530,10 +533,7 @@ data aws_iam_policy_document backend_policy {
 
 data aws_iam_policy_document data_workflows_policy {
   statement {
-    actions = [
-      "s3:GetObject",
-    ]
-
+    actions = ["s3:GetObject",]
     resources = ["${local.data_bucket_arn}/*"]
   }
   statement {
@@ -553,6 +553,14 @@ data aws_iam_policy_document data_workflows_policy {
     ]
   }
   statement {
+    actions = ["dynamodb:PutItem"]
+    resources = [module.plugin_metadata_dynamodb_table.table_arn]
+  }
+  statement {
+    actions = ["dynamodb:Scan"]
+    resources = [module.plugin_dynamodb_table.table_arn]
+  }
+  statement {
     actions = [
       "ssm:GetParameter",
       "ssm:PutParameter",
@@ -566,6 +574,10 @@ data aws_iam_policy_document data_workflows_policy {
       "sqs:GetQueueAttributes",
     ]
     resources = [aws_sqs_queue.data_workflows_queue.arn]
+  }
+  statement {
+    actions = ["lambda:InvokeFunction"]
+    resources = [module.plugins_lambda.function_arn]
   }
 }
 

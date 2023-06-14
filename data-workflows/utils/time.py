@@ -1,7 +1,7 @@
 import time
 import logging
 
-LOGGER = logging.getLogger()
+LOGGER = logging.getLogger(__name__)
 
 
 def get_perf_duration(start: float) -> float:

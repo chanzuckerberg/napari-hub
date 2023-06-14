@@ -10,7 +10,7 @@ from utils.s3 import S3Client
 
 STACK_NAME = os.getenv("STACK_NAME", "local")
 
-LOGGER = logging.getLogger()
+LOGGER = logging.getLogger(__name__)
 
 
 def seed_s3_categories_workflow(version: str, categories_path: str):

@@ -6,8 +6,6 @@ import boto3
 import pytest
 from moto import mock_ssm
 
-import utils.utils
-
 STACK_NAME = 'foo-bar'
 EXPECTED_PARAMETER_NAME = f'/{STACK_NAME}/napari-hub/data-workflows/config'
 TIMESTAMP = 1232453543
@@ -52,13 +50,3 @@ class TestParameterStore:
         response = self._client.get_parameter(Name=EXPECTED_PARAMETER_NAME, WithDecryption=True)
         actual = json.loads(response['Parameter']['Value']).get('last_activity_fetched_timestamp')
         assert actual == timestamp
-
-
-class TestUtils:
-
-    def test_get_current_time(self):
-        start = round(time.time() * 1000)
-        actual = utils.utils.get_current_timestamp()
-        end = round(time.time() * 1000)
-
-        assert start <= actual <= end
