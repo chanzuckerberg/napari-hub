@@ -1,11 +1,14 @@
+
 import logging
 import time
+from typing import Optional, Any, Union
 
 from pynamodb.attributes import (
     BooleanAttribute,
     MapAttribute,
     UnicodeAttribute,
 )
+from pynamodb.pagination import ResultIterator
 
 from .helper import set_ddb_metadata, PynamoWrapper
 from .plugin_utils import PluginMetadataType
@@ -24,6 +27,16 @@ class _PluginMetadata(PynamoWrapper):
     version = UnicodeAttribute()
     is_latest = BooleanAttribute(null=True)
     data = MapAttribute(null=True)
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "data": self.data.as_dict() if self.data else None,
+            "is_latest": self.is_latest or False,
+            "last_updated_timestamp": self.last_updated_timestamp,
+            "name": self.name,
+            "type": PluginMetadataType[self.type],
+            "version": self.version,
+        }
 
 
 def put_plugin_metadata(plugin: str,
@@ -49,19 +62,32 @@ def put_plugin_metadata(plugin: str,
 
 
 def get_existing_types(plugin: str, version: str) -> set[PluginMetadataType]:
+    results = _query(name=plugin, version=version, projection=['type'])
+    existing_types = set()
+    for result in results:
+        try:
+            existing_types.add(PluginMetadataType[result.type])
+        except KeyError:
+            logger.warning(f"Skipping unknown type {result.type}")
+    return existing_types
+
+
+def query(plugin: str, version: str) -> list[dict[str, Any]]:
+    return [result.to_dict() for result in _query(name=plugin, version=version)]
+
+
+def _query(
+        name: str, version: str, projection: Optional[list[str]] = None
+) -> Union[ResultIterator[_PluginMetadata], list]:
+    if not name or not version:
+        return []
+
     start = time.perf_counter()
     try:
         condition = _PluginMetadata.version_type.startswith(f'{version}:')
-        results = _PluginMetadata.query(hash_key=plugin,
-                                        range_key_condition=condition,
-                                        attributes_to_get=['type'])
-        existing_types = set()
-        for result in results:
-            try:
-                existing_types.add(PluginMetadataType[result.type])
-            except KeyError:
-                logger.warning(f"Skipping unknown type {result.type}")
-        return existing_types
+        return _PluginMetadata.query(hash_key=name,
+                                     range_key_condition=condition,
+                                     attributes_to_get=projection)
     finally:
         duration = (time.perf_counter() - start) * 1000
-        logger.info(f"plugin={plugin} version={version} duration={duration}ms")
+        logger.info(f"plugin={name} version={version} duration={duration}ms")
