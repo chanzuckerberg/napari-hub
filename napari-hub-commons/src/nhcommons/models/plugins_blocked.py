@@ -12,4 +12,4 @@ class _PluginBlocked(PynamoWrapper):
 
 
 def get_all_blocked_plugins() -> set[str]:
-    return {plugin for plugin in _PluginBlocked.scan()}
+    return {plugin.name for plugin in _PluginBlocked.scan()}

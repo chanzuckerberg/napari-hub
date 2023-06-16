@@ -33,22 +33,24 @@ def get_formatted_manifest(data: Optional[dict[str, Any]],
     return _parse_manifest(raw_metadata)
 
 
-def _has_errors(manifest_data: Optional[dict[str, Any]], plugin: str, version: str) -> bool:
+def _has_errors(manifest_data: Optional[dict[str, Any]],
+                plugin: str,
+                version: str) -> bool:
     # manifest_data is None indicates manifest isn't cached and needs processing
     if manifest_data is None:
-        logger.error(f"{plugin}-{version} manifest not yet processed")
+        logger.warning(f"{plugin}-{version} manifest not yet processed")
         return True
 
     # empty dict indicates some lambda error in processing e.g. timed out
     if manifest_data == {}:
-        logger.error(f"Processing for {plugin}-{version} manifest failed due "
-                     f"to external error")
+        logger.warning(f"Processing for {plugin}-{version} manifest failed due "
+                       f"to external error")
         return True
 
     # error written to file indicates manifest discovery failed
     if 'error' in manifest_data:
         error = manifest_data['error']
-        logger.error(f"Error in {plugin}-{version} manifest: {error}")
+        logger.warning(f"Error in {plugin}-{version} manifest: {error}")
         return True
 
     return False

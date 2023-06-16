@@ -4,7 +4,6 @@ from typing import Any
 
 from pynamodb.attributes import (
     UnicodeAttribute,
-    NumberAttribute,
     ListAttribute,
     MapAttribute
 )
@@ -19,18 +18,6 @@ class _LatestPluginIndex(GlobalSecondaryIndex):
         index_name = f"{get_stack_name()}-latest-plugins"
         projection = AllProjection()
 
-    name = UnicodeAttribute(hash_key=True)
-    is_latest = UnicodeAttribute(range_key=True)
-
-    authors = ListAttribute(null=True)
-    data = MapAttribute()
-    code_repository = UnicodeAttribute(null=True)
-    display_name = UnicodeAttribute(null=True)
-    first_released = UnicodeAttribute(null=True)
-    summary = UnicodeAttribute(null=True)
-    release_date = NumberAttribute()
-    last_updated_timestamp = NumberAttribute()
-
 
 @set_ddb_metadata("plugin")
 class _Plugin(PynamoWrapper):
@@ -44,9 +31,9 @@ class _Plugin(PynamoWrapper):
     data = MapAttribute()
     code_repository = UnicodeAttribute(null=True)
     display_name = UnicodeAttribute(null=True)
-    first_released = UnicodeAttribute(null=True)
+    first_released = UnicodeAttribute()
     summary = UnicodeAttribute(null=True)
-    release_date = NumberAttribute()
+    release_date = UnicodeAttribute()
     visibility = UnicodeAttribute(null=True)
 
     is_latest = UnicodeAttribute(null=True)
@@ -70,14 +57,24 @@ def get_latest_plugins() -> dict[str, str]:
         logger.info(f"latest plugins count={count} duration={duration}ms")
 
 
-def put_plugin(plugin: str, version: str, data: dict[str, Any]) -> None:
+def put_plugin(name: str, version: str, record: dict[str, Any]) -> None:
     start = time.perf_counter()
     try:
-        _Plugin(
-            hash_key=plugin,
+        plugin = _Plugin(
+            hash_key=name,
             range_key=version,
-            **data
-        ).save()
+            authors=record.get("authors"),
+            data=record.get("data", {}),
+            code_repository=record.get("code_repository"),
+            display_name=record.get("display_name"),
+            first_released=record.get("first_released"),
+            summary=record.get("summary"),
+            release_date=record.get("release_date"),
+            visibility=record.get("visibility"),
+            is_latest=record.get("is_latest"),
+            excluded=record.get("excluded")
+        )
+        plugin.save()
     finally:
         duration = (time.perf_counter() - start) * 1000
-        logger.info(f"plugin={plugin} version={version} duration={duration}ms")
+        logger.info(f"plugin={name} version={version} duration={duration}ms")
