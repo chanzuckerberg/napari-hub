@@ -550,22 +550,27 @@ data aws_iam_policy_document data_workflows_policy {
       "dynamodb:Query",
     ]
     resources = [
-        module.install_dynamodb_table.table_arn,
-        module.github_dynamodb_table.table_arn,
-        module.category_dynamodb_table.table_arn,
-        module.plugin_dynamodb_table.table_arn,
-        module.plugin_metadata_dynamodb_table.table_arn,
-        module.plugin_blocked_dynamodb_table.table_arn,
-        "${module.plugin_dynamodb_table.table_arn}/index/*",
+      module.install_dynamodb_table.table_arn,
+      module.github_dynamodb_table.table_arn,
+      module.category_dynamodb_table.table_arn,
+      module.plugin_dynamodb_table.table_arn,
+      module.plugin_metadata_dynamodb_table.table_arn,
+      "${module.plugin_dynamodb_table.table_arn}/index/*",
     ]
   }
   statement {
     actions = ["dynamodb:PutItem"]
-    resources = [module.plugin_metadata_dynamodb_table.table_arn]
+    resources = [
+      module.plugin_metadata_dynamodb_table.table_arn,
+      module.plugin_dynamodb_table.table_arn,
+    ]
   }
   statement {
     actions = ["dynamodb:Scan"]
-    resources = [module.plugin_dynamodb_table.table_arn]
+    resources = [
+      module.plugin_dynamodb_table.table_arn,
+      module.plugin_blocked_dynamodb_table.table_arn,
+    ]
   }
   statement {
     actions = [
