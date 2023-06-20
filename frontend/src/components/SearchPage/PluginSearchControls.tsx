@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import { AnimateSharedLayout, motion } from 'framer-motion';
 
+import { useMediaQuery } from '@/hooks';
 import { useIsFeatureFlagEnabled } from '@/store/featureFlags';
 import { FilterKey } from '@/store/search/search.store';
 
@@ -16,6 +17,9 @@ export function PluginSearchControls() {
   );
 
   const isNpe2Enabled = useIsFeatureFlagEnabled('npe2');
+  const isHomePageRedesign = useIsFeatureFlagEnabled('homePageRedesign');
+  const isScreen875 = useMediaQuery({ minWidth: 'screen-875' });
+
   const requirementFilters: FilterKey[] = ['supportedData'];
 
   if (isNpe2Enabled) {
@@ -44,9 +48,12 @@ export function PluginSearchControls() {
       )}
     >
       <AnimateSharedLayout>
-        <PluginSortByForm />
-
-        {divider}
+        {!isHomePageRedesign && (
+          <>
+            <PluginSortByForm />
+            {divider}
+          </>
+        )}
 
         <motion.div layout>
           <PluginFilterByForm
@@ -63,6 +70,8 @@ export function PluginSearchControls() {
             filters={requirementFilters}
           />
         </motion.div>
+
+        {isHomePageRedesign && !isScreen875 && <PluginSortByForm />}
       </AnimateSharedLayout>
     </aside>
   );

@@ -1,0 +1,21 @@
+/* stylelint-disable selector-class-pattern */
+
+.chevron {
+  height: 24px;
+  width: 24px;
+}
+
+.select {
+  :global(.MuiOutlinedInput-notchedOutline) {
+    @apply border-none;
+  }
+
+  // Rotate chevron when Select is expanded
+  [aria-expanded='true'] ~ .chevron {
+    @apply rotate-180;
+  }
+
+  ul.MuiList-root {
+    @apply p-sds-s;
+  }
+}

@@ -7,6 +7,7 @@ import homePage from '../../i18n/en/homePage.json';
 import pageTitles from '../../i18n/en/pageTitles.json';
 import pluginData from '../../i18n/en/pluginData.json';
 import pluginPage from '../../i18n/en/pluginPage.json';
+import pluginsPage from '../../i18n/en/pluginsPage.json';
 import preview from '../../i18n/en/preview.json';
 
 /**
@@ -22,5 +23,6 @@ export const I18nResources = {
   pageTitles,
   pluginData,
   pluginPage,
+  pluginsPage,
   preview,
 };
