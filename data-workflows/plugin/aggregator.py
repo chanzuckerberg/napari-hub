@@ -55,12 +55,12 @@ def _generate_record(plugin: str,
             plugin_record[field] = value
 
     visibility = _get_visibility(plugin, aggregate, blocked_plugins)
-    plugin_record["visibility"] = visibility
+    plugin_record["visibility"] = visibility.name
 
     if metadata_by_type.get(PluginMetadataType.PYPI, {}).get("is_latest"):
         plugin_record["is_latest"] = 'true'
         if visibility != PluginVisibility.PUBLIC:
-            plugin_record["excluded"] = visibility
+            plugin_record["excluded"] = visibility.name
 
     return plugin_record
 
