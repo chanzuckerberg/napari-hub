@@ -31,7 +31,7 @@ Interested in helping us grow a thriving community of plugins for napari? There 
 
 ### Join a user research session
 
-We rely heavily on User Experience Research (UXR) to understand the needs and challenges of the bioimaging community, identify opportunities for solutions to these challenges, and get feedback on our work. Whether you’re a bench scientist, work at an imaging core, or develop computational methods, [sign up here](https://airtable.com/shr0hPRlLfYcnmVJk) and we’ll reach out when there’s an interview, focus group, usability study, or workshop that matches your background.
+We rely heavily on User Experience Research (UXR) to understand the needs and challenges of the bioimaging community, identify opportunities for solutions to these challenges, and get feedback on our work. Whether you’re a bench scientist, work at an imaging core, or develop computational methods, [sign up here](https://bit.ly/napari-user-research-signup) and we’ll reach out when there’s an interview, focus group, usability study, or workshop that matches your background.
 
 ### Share your ideas
 
