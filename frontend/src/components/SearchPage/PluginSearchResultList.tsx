@@ -6,12 +6,15 @@ import { I18n } from '@/components/I18n';
 import { SkeletonLoader } from '@/components/SkeletonLoader';
 import { RESULTS_PER_PAGE } from '@/constants/search';
 import { useLoadingState } from '@/context/loading';
+import { useMediaQuery } from '@/hooks';
+import { useIsFeatureFlagEnabled } from '@/store/featureFlags';
 import { loadingStore } from '@/store/loading';
 import { useSearchStore } from '@/store/search/context';
 import { SearchResult } from '@/store/search/search.types';
 import { PluginIndexData } from '@/types';
 
 import { PluginSearchResult } from './PluginSearchResult';
+import { SortDropdown } from './SortDropdown';
 
 /**
  * Returns an array of fake search results for loading purposes.
@@ -76,14 +79,22 @@ function SearchResultItems() {
 }
 
 export function PluginSearchResultList() {
+  const isHomePageRedesign = useIsFeatureFlagEnabled('homePageRedesign');
+  const isScreen875 = useMediaQuery({ minWidth: 'screen-875' });
+  const isSortVisible = isScreen875 && isHomePageRedesign;
+
   return (
     <section className="col-span-2 screen-1425:col-span-3 space-y-sds-xl ">
-      <h2 className={clsx('flex items-center font-bold text-xl')}>
-        <I18n
-          i18nKey="homePage:browsePlugins"
-          components={{ count: <SearchResultCount /> }}
-        />
-      </h2>
+      <div className="flex justify-between">
+        <h2 className={clsx('flex items-center font-bold text-xl')}>
+          <I18n
+            i18nKey="homePage:browsePlugins"
+            components={{ count: <SearchResultCount /> }}
+          />
+        </h2>
+
+        {isSortVisible && <SortDropdown />}
+      </div>
 
       <ColumnLayout
         classes={{

@@ -7,7 +7,7 @@ from typing import Dict
 import boto3
 from botocore.exceptions import ClientError
 
-LOGGER = logging.getLogger()
+LOGGER = logging.getLogger(__name__)
 
 
 def _get_cache(key: str) -> Dict:

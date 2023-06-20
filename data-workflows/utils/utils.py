@@ -1,13 +1,8 @@
 import boto3
 import json
-import time
 from datetime import date, datetime, timezone
 
 from .env import get_required_env
-
-
-def get_current_timestamp() -> int:
-    return round(time.time() * 1000)
 
 
 LAST_UPDATED_TIMESTAMP_KEY = "last_activity_fetched_timestamp"

@@ -9,7 +9,7 @@ import activity.processor
 
 from typing import Dict
 
-LOGGER = logging.getLogger()
+LOGGER = logging.getLogger(__name__)
 
 
 def run_workflow(event: Dict):
