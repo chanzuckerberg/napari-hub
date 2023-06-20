@@ -8,10 +8,10 @@ IMAGES_BASE_URL = "https://raw.githubusercontent.com/chanzuckerberg/napari-hub-c
 
 
 def get_collections():
+    collections = []
     json_file = get_file(download_url=COLLECTIONS_CONTENTS, file_format="json")
     if not json_file:
-        return None
-    collections = []
+        return collections
     for item in json_file:
         collection_name = item.get("name").replace(".yml", "")
         data = get_collection_preview(collection_name)
