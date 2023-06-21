@@ -23,8 +23,8 @@ const DEFAULT_SORT_BY_RADIO_ORDER: SearchSortType[] = [
 
 const SORT_BY_LABELS: Record<SearchSortType, I18nKeys<'homePage'>> = {
   [SearchSortType.Relevance]: 'homePage:sort.relevance',
-  [SearchSortType.FirstReleased]: 'homePage:sort.newest',
-  [SearchSortType.ReleaseDate]: 'homePage:sort.recentlyUpdated',
+  [SearchSortType.FirstReleased]: 'homePage:newest',
+  [SearchSortType.ReleaseDate]: 'homePage:recentlyUpdated',
   [SearchSortType.PluginName]: 'homePage:sort.pluginName',
   [SearchSortType.TotalInstalls]: 'homePage:sort.totalInstalls',
 };

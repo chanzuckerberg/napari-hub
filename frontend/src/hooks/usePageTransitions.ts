@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 
 import { loadingStore } from '@/store/loading';
 import { Logger } from '@/utils';
-import { isSearchPage } from '@/utils/page';
+import { isHomePage } from '@/utils/page';
 
 const logger = new Logger('usePageTransitions.ts');
 
@@ -34,7 +34,7 @@ export function usePageTransitions() {
       if (shallow) return;
 
       // If user is navigating away from the search page.
-      if (isSearchPage(router) && !isSearchPage(url)) {
+      if (isHomePage(router) && !isHomePage(url)) {
         // Save `scrollY` if navigating away from the search page.
         loadingStore.searchScrollY = window.scrollY;
 

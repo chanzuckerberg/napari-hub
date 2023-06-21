@@ -1,4 +1,3 @@
-import Skeleton from '@mui/material/Skeleton';
 import clsx from 'clsx';
 import { isObject } from 'lodash';
 import dynamic from 'next/dynamic';
@@ -66,25 +65,15 @@ export function PluginTabs({ containerRef }: Props) {
   const { plugin, isEmptyDescription } = usePluginState();
   const [t] = useTranslation(['pluginPage', 'preview']);
   const { activeTab } = useSnapshot(pluginTabsStore);
-  const isLoading = useLoadingState();
   const hasPluginMetadataScroll = useMediaQuery({ maxWidth: 'screen-1425' });
   const plausible = usePlausible();
+  const isLoading = useLoadingState();
 
   // Reset plugin tab state when navigating away from page.
   useEffect(resetPluginTabs, []);
 
   const tabs = usePluginTabs();
   let tabContent: ReactNode = null;
-
-  if (isLoading) {
-    return (
-      <div className="grid grid-cols-[repeat(3,92px)] h-8 space-x-sds-m">
-        <Skeleton variant="rectangular" />
-        <Skeleton variant="rectangular" />
-        <Skeleton variant="rectangular" />
-      </div>
-    );
-  }
 
   if (activeTab === PluginTabType.Description) {
     tabContent = (
@@ -165,6 +154,7 @@ export function PluginTabs({ containerRef }: Props) {
           });
         }}
         underline
+        loading={isLoading}
       />
 
       {tabContent}

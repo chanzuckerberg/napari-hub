@@ -13,7 +13,10 @@ export function PluginActions() {
         'mt-sds-xl',
       )}
     >
-      <SkeletonLoader className="h-[228px]" render={() => <SupportInfo />} />
+      <SkeletonLoader
+        className="h-[40px] w-[100px]"
+        render={() => <SupportInfo />}
+      />
     </div>
   );
 }

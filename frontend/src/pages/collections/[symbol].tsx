@@ -25,7 +25,6 @@ interface Params extends ParsedUrlQuery {
 }
 
 export const getServerSideProps = getServerSidePropsHandler<Props, Params>({
-  locales: ['homePage', 'pluginData', 'collections'],
   /**
    * Fetches i18n and collections API data from the backend for SSR.
    */
