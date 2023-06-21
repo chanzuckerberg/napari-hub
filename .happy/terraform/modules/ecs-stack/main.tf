@@ -384,6 +384,13 @@ resource aws_lambda_event_source_mapping data_workflow_sqs_event_source_mapping 
   batch_size       = 1
 }
 
+resource aws_lambda_event_source_mapping data_workflow_plugin_metadata_event_source_mapping {
+  event_source_arn  = module.plugin_metadata_dynamodb_table.stream_arn
+  function_name     = module.data_workflows_lambda.function_name
+  batch_size        = 100
+  starting_position = "LATEST"
+}
+
 module api_gateway_proxy_stage {
   source               = "../api-gateway-proxy-stage"
   lambda_function_name = local.backend_function_name
@@ -543,22 +550,27 @@ data aws_iam_policy_document data_workflows_policy {
       "dynamodb:Query",
     ]
     resources = [
-        module.install_dynamodb_table.table_arn,
-        module.github_dynamodb_table.table_arn,
-        module.category_dynamodb_table.table_arn,
-        module.plugin_dynamodb_table.table_arn,
-        module.plugin_metadata_dynamodb_table.table_arn,
-        module.plugin_blocked_dynamodb_table.table_arn,
-        "${module.plugin_dynamodb_table.table_arn}/index/*",
+      module.install_dynamodb_table.table_arn,
+      module.github_dynamodb_table.table_arn,
+      module.category_dynamodb_table.table_arn,
+      module.plugin_dynamodb_table.table_arn,
+      module.plugin_metadata_dynamodb_table.table_arn,
+      "${module.plugin_dynamodb_table.table_arn}/index/*",
     ]
   }
   statement {
     actions = ["dynamodb:PutItem"]
-    resources = [module.plugin_metadata_dynamodb_table.table_arn]
+    resources = [
+      module.plugin_metadata_dynamodb_table.table_arn,
+      module.plugin_dynamodb_table.table_arn,
+    ]
   }
   statement {
     actions = ["dynamodb:Scan"]
-    resources = [module.plugin_dynamodb_table.table_arn]
+    resources = [
+      module.plugin_dynamodb_table.table_arn,
+      module.plugin_blocked_dynamodb_table.table_arn,
+    ]
   }
   statement {
     actions = [
@@ -578,6 +590,15 @@ data aws_iam_policy_document data_workflows_policy {
   statement {
     actions = ["lambda:InvokeFunction"]
     resources = [module.plugins_lambda.function_arn]
+  }
+  statement {
+    actions = [
+      "dynamodb:GetShardIterator",
+      "dynamodb:DescribeStream",
+      "dynamodb:GetRecords",
+      "dynamodb:ListStreams",
+    ]
+    resources = [module.plugin_metadata_dynamodb_table.stream_arn]
   }
 }
 
@@ -620,7 +641,10 @@ data aws_iam_policy_document data_workflows_sqs_policy {
     condition {
       test     = "ArnLike"
       variable = "aws:SourceArn"
-      values   = [aws_cloudwatch_event_rule.activity_rule.arn]
+      values   = [
+        aws_cloudwatch_event_rule.activity_rule.arn,
+        aws_cloudwatch_event_rule.update_rule.arn,
+      ]
     }
   }
 }
