@@ -8,7 +8,9 @@ from io import BytesIO
 from collections import defaultdict
 import pandas as pd
 
-from api.models import github_activity, install_activity, plugin
+from api.models import (
+    github_activity, install_activity, plugin, plugin_blocked, plugin_metadata
+)
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
 from api.s3 import (
@@ -45,7 +47,7 @@ def get_public_plugins(use_dynamo: bool = False) -> Dict[str, str]:
     :return: dict of public plugins and their versions
     """
     if use_dynamo:
-        return plugin.get_public_plugins()
+        return plugin.get_latest_by_visibility()
 
     public_plugins = get_cache("cache/public-plugins.json")
     return public_plugins if public_plugins else {}
@@ -92,10 +94,10 @@ def get_plugin(name: str, version: str = None, use_dynamo: bool = False) -> dict
         return {}
     elif version is None:
         version = plugins[name]
-    plugin_metadata = get_cache(f"cache/{name}/{version}.json")
+    metadata = get_cache(f"cache/{name}/{version}.json")
     manifest_metadata = get_frontend_manifest_metadata(name, version)
-    plugin_metadata.update(manifest_metadata)
-    return plugin_metadata if plugin_metadata else {}
+    metadata.update(manifest_metadata)
+    return metadata if metadata else {}
 
 
 def get_frontend_manifest_metadata(plugin, version):
@@ -141,29 +143,33 @@ def get_manifest(name: str, version: str = None, use_dynamo: bool = False) -> di
     :return: plugin manifest dictionary.
     """
     if use_dynamo:
-        plugin_metadata = plugin.get_manifest(name, version)
+        if not version:
+            version = plugin.get_latest_version(name)
+        if not version:
+            return {}
+        manifest_metadata = plugin_metadata.get_manifest(name, version)
     else:
         plugins = get_valid_plugins()
         if name not in plugins:
             return {}
         elif version is None:
             version = plugins[name]
-        plugin_metadata = get_cache(f'cache/{name}/{version}-manifest.json')
+        manifest_metadata = get_cache(f'cache/{name}/{version}-manifest.json')
 
-    # plugin_metadata being None indicates manifest is not cached and needs processing 
-    if plugin_metadata is None:
+    # manifest_metadata being None indicates manifest is not cached and needs processing
+    if manifest_metadata is None:
         return {'error': 'Manifest not yet processed.'}
 
     # empty dict indicates some lambda error in processing e.g. timed out
-    if plugin_metadata == {}:
+    if manifest_metadata == {}:
         return {'error': 'Processing manifest failed due to external error.'}
 
     # error written to file indicates manifest discovery failed
-    if 'error' in plugin_metadata:
-        return {'error': plugin_metadata['error']}
+    if 'error' in manifest_metadata:
+        return {'error': manifest_metadata['error']}
 
     # correct plugin manifest
-    return plugin_metadata
+    return manifest_metadata
 
 
 def get_index(use_dynamo: bool = False) -> dict:
@@ -196,9 +202,12 @@ def get_excluded_plugins(use_dynamo: bool = False) -> Dict[str, str]:
     :return: dict for excluded plugins and their exclusion status
     """
     if use_dynamo:
-        return plugin.get_excluded_plugins()
+        return {
+            **plugin.get_excluded_plugins(),
+            **plugin_blocked.get_blocked_plugins()
+        }
 
-    excluded_plugins = get_cache("cache/excluded_plugins.json")
+    excluded_plugins = get_cache("excluded_plugins.json")
     return excluded_plugins if excluded_plugins else {}
 
 
