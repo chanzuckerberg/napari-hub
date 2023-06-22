@@ -27,7 +27,7 @@ def to_installs(i):
 class TestInstallActivity:
 
     @pytest.fixture()
-    def install_activity_table(self, aws_credentials):
+    def install_activity_table(self, aws_credentials, dynamo_env_variables):
         with mock_dynamodb():
             yield create_dynamo_table(install_activity._InstallActivityModel, 'install-activity')
 

@@ -18,7 +18,9 @@ class TestCategory:
         monkeypatch.setenv("BUCKET_PATH", TEST_BUCKET_PATH)
 
     @pytest.fixture()
-    def categories_table(self, aws_credentials, setup_env_variables):
+    def categories_table(
+            self, aws_credentials, dynamo_env_variables, setup_env_variables
+    ):
         from api.models.category import CategoryModel
 
         with mock_dynamodb():
@@ -83,9 +85,7 @@ class TestCategory:
             hierarchy=["hierarchy3"],
         )
 
-    def test_get_category_has_result(
-        self, aws_credentials, setup_env_variables, categories_table
-    ):
+    def test_get_category_has_result(self, categories_table):
         self._seed_data(categories_table)
 
         from api.models.category import get_category
@@ -106,9 +106,7 @@ class TestCategory:
 
         assert actual == expected
 
-    def test_get_category_has_no_result(
-        self, aws_credentials, setup_env_variables, categories_table
-    ):
+    def test_get_category_has_no_result(self, categories_table):
         self._seed_data(categories_table)
 
         from api.models.category import get_category
@@ -118,12 +116,7 @@ class TestCategory:
 
         assert actual == expected
 
-    def test_get_all_categories(
-        self,
-        aws_credentials,
-        setup_env_variables,
-        categories_table,
-    ):
+    def test_get_all_categories(self, categories_table):
         self._seed_data(categories_table)
 
         from api.models.category import get_all_categories
@@ -153,12 +146,7 @@ class TestCategory:
 
         assert actual == expected
 
-    def test_get_all_categories_empty_table(
-        self,
-        aws_credentials,
-        setup_env_variables,
-        categories_table,
-    ):
+    def test_get_all_categories_empty_table(self, categories_table):
         from api.models.category import get_all_categories
 
         actual = get_all_categories(TEST_CATEGORY_VERSION)
