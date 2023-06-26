@@ -5,7 +5,6 @@
   "fetchError": "Unable to fetch plugin index",
   "newest": "Newest",
   "recentlyUpdated": "Recently updated",
-  "searchBar": "Search for a plugin by keyword or author",
 
   "ariaLabels": {
     "sortPlugins": "Sort plugins by"
