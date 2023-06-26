@@ -6,7 +6,9 @@ import { useRef, useState } from 'react';
 
 import { Menu } from '@/components/icons';
 import { MenuPopover } from '@/components/MenuPopover';
+import { usePageTransitions } from '@/hooks';
 import { useIsFeatureFlagEnabled } from '@/store/featureFlags';
+import { createUrl } from '@/utils';
 
 import { PluginSearchBar } from '../SearchBar/PluginSearchBar';
 import { AppBarLinks } from './AppBarLinks';
@@ -20,9 +22,14 @@ export function AppBar() {
   const [visible, setVisible] = useState(false);
   const links = useAppBarLinks();
   const [t] = useTranslation(['common']);
+
   const isHomePageRedesign = useIsFeatureFlagEnabled('homePageRedesign');
   const router = useRouter();
-  const isPluginsPage = router.pathname === '/plugins';
+  const { nextUrl } = usePageTransitions();
+
+  const isPluginsPage =
+    router.pathname === '/plugins' ||
+    createUrl(nextUrl).pathname === '/plugins';
 
   return (
     <>
