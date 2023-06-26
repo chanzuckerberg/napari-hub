@@ -30,6 +30,7 @@ jest.mock('next/router', () => ({
     query: {},
     events: {
       on: jest.fn(),
+      off: jest.fn(),
     },
   }),
 }));

@@ -34,6 +34,6 @@ export function usePageUtils() {
         return getPathname(url).endsWith('/sitemap');
       },
     }),
-    [],
+    [isHomePageRedesign],
   );
 }
