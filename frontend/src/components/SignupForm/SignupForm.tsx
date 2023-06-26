@@ -126,17 +126,7 @@ export function SignupForm({ onSubmit, variant = 'default' }: Props) {
           <p>{t('footer:signUp.success')}</p>
         ) : (
           <form
-            onSubmit={(event) => {
-              // TODO Fix this hack.
-              // Right now there's an issue with hubspot where the signup form
-              // shows an error after the initial submission and then passes
-              // after the 2nd one. This fixes it by doing `handleSubmit` twice
-              // to simulate user clicking on it twice. Because the form becomes
-              // invisible after submission, this code should be safe to run
-              // because `handleSubmit` will not run unless the form is visible.
-              handleSubmit(event);
-              setTimeout(() => handleSubmit(event));
-            }}
+            onSubmit={handleSubmit}
             noValidate
             className={clsx(
               // grid
