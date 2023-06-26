@@ -18,7 +18,7 @@ interface Props {
   error?: string;
   index?: PluginIndexData[];
   licenses?: SpdxLicenseData[];
-  status: number;
+  status?: number;
 }
 
 export const getServerSideProps = getServerSidePropsHandler<Props>({
@@ -52,7 +52,12 @@ export const getServerSideProps = getServerSidePropsHandler<Props>({
   },
 });
 
-export default function Plugins({ error, index, licenses, status }: Props) {
+export default function Plugins({
+  error,
+  index = [],
+  licenses = [],
+  status = 200,
+}: Props) {
   const [t] = useTranslation(['pageTitles', 'homePage']);
 
   if (status === 404) {
@@ -65,11 +70,9 @@ export default function Plugins({ error, index, licenses, status }: Props) {
         <title>{t('pageTitles:plugins')}</title>
       </Head>
 
-      {error && (
+      {error ? (
         <ErrorMessage error={error}>{t('homePage:fetchError')}</ErrorMessage>
-      )}
-
-      {index && licenses && (
+      ) : (
         <SearchStoreProvider index={index} licenses={licenses}>
           <SearchPage />
         </SearchStoreProvider>
