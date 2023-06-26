@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useSnapshot } from 'valtio';
 
 import { loadingStore } from '@/store/loading';
@@ -27,6 +27,13 @@ interface RouteEvent {
  */
 export function usePageTransitions() {
   const router = useRouter();
+
+  const initalLoadRef = useRef(true);
+  if (initalLoadRef.current) {
+    initalLoadRef.current = false;
+    pageTransitionsStore.nextUrl = router.asPath;
+  }
+
   const snap = useSnapshot(pageTransitionsStore);
   const { isSearchPage } = usePageUtils();
 
