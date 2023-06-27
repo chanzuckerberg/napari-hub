@@ -1,6 +1,6 @@
 import logging
 import time
-from typing import Any
+from typing import Any, Dict
 
 from pynamodb.attributes import (
     UnicodeAttribute,
@@ -44,7 +44,7 @@ class _Plugin(PynamoWrapper):
     latest_plugin_index = _LatestPluginIndex()
 
 
-def get_latest_plugins() -> dict[str, str]:
+def get_latest_plugins() -> Dict[str, str]:
     latest_plugins = {}
     start = time.perf_counter()
     try:
@@ -59,7 +59,7 @@ def get_latest_plugins() -> dict[str, str]:
         logger.info(f"latest plugins count={count} duration={duration}ms")
 
 
-def put_plugin(name: str, version: str, record: dict[str, Any]) -> None:
+def put_plugin(name: str, version: str, record: Dict[str, Any]) -> None:
     start = time.perf_counter()
     try:
         plugin = _Plugin(

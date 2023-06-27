@@ -1,7 +1,7 @@
 
 import logging
 import time
-from typing import Optional, Any, Union
+from typing import Any, Dict, List, Optional, Set, Union
 
 from pynamodb.attributes import (
     BooleanAttribute,
@@ -28,7 +28,7 @@ class _PluginMetadata(PynamoWrapper):
     is_latest = BooleanAttribute(null=True)
     data = MapAttribute(null=True)
 
-    def to_dict(self) -> dict[str, Any]:
+    def to_dict(self) -> Dict[str, Any]:
         return {
             "data": self.data.as_dict() if self.data else None,
             "is_latest": self.is_latest or False,
@@ -43,7 +43,7 @@ def put_plugin_metadata(plugin: str,
                         version: str,
                         plugin_metadata_type: PluginMetadataType,
                         is_latest: bool = False,
-                        data: dict = None) -> None:
+                        data: Dict = None) -> None:
     start = time.perf_counter()
     version_type = plugin_metadata_type.to_version_type(version)
     try:
@@ -61,7 +61,7 @@ def put_plugin_metadata(plugin: str,
                     f"duration={duration}ms")
 
 
-def get_existing_types(plugin: str, version: str) -> set[PluginMetadataType]:
+def get_existing_types(plugin: str, version: str) -> Set[PluginMetadataType]:
     results = _query(name=plugin, version=version, projection=['type'])
     existing_types = set()
     for result in results:
@@ -72,13 +72,13 @@ def get_existing_types(plugin: str, version: str) -> set[PluginMetadataType]:
     return existing_types
 
 
-def query(plugin: str, version: str) -> list[dict[str, Any]]:
+def query(plugin: str, version: str) -> List[Dict[str, Any]]:
     return [result.to_dict() for result in _query(name=plugin, version=version)]
 
 
 def _query(
-        name: str, version: str, projection: Optional[list[str]] = None
-) -> Union[ResultIterator[_PluginMetadata], list]:
+        name: str, version: str, projection: Optional[List[str]] = None
+) -> Union[ResultIterator[_PluginMetadata], List]:
     if not name or not version:
         return []
 

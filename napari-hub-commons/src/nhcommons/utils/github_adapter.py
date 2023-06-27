@@ -1,5 +1,5 @@
 import re
-from typing import Optional
+from typing import Dict, Optional
 
 import yaml
 
@@ -24,7 +24,7 @@ def is_valid_repo_url(url: str) -> bool:
     return url and _URL_PATTERN.match(url) is not None
 
 
-def get_repo_url(project_urls: dict[str, str]) -> Optional[str]:
+def get_repo_url(project_urls: Dict[str, str]) -> Optional[str]:
     """
     Get repo url for github.
 
@@ -43,7 +43,7 @@ def get_repo_url(project_urls: dict[str, str]) -> Optional[str]:
     return None
 
 
-def get_github_metadata(repo_url: str, branch: str = 'HEAD') -> dict:
+def get_github_metadata(repo_url: str, branch: str = 'HEAD') -> Dict:
     """
     Extract extra metadata from the github repo url.
 

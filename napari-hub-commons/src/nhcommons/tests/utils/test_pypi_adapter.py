@@ -1,11 +1,11 @@
 import json
-from typing import Any, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 import pytest
 import requests
 from nhcommons.utils import pypi_adapter
 
-ReleasesType = list[dict[str, str]]
+ReleasesType = List[Dict[str, str]]
 
 
 class MockResponse(requests.Response):
@@ -15,7 +15,7 @@ class MockResponse(requests.Response):
         self._content = content.encode("UTF-8")
 
 
-def plugins() -> list[tuple[str, str]]:
+def plugins() -> List[Tuple[str, str]]:
     return [
         ("foo", "0.23"), ("a-12", "2.0.7"), ("ba-r", "aa-120"), ("Zo-o", "1234")
     ]
@@ -63,7 +63,7 @@ def valid_pypi_data() -> str:
     })
 
 
-def plugin_metadata_valid() -> dict[str, Any]:
+def plugin_metadata_valid() -> Dict[str, Any]:
     return {
         "name": "napari-demo",
         "summary": "example plugin for napari plugin developers",
@@ -138,7 +138,7 @@ class TestPypiAdapter:
     def setup_method(self, monkeypatch):
         monkeypatch.setattr(requests, "get", self._mocked_requests_get)
 
-    def _generate_html_data(self, plugin_version_list: list[tuple[str, str]]):
+    def _generate_html_data(self, plugin_version_list: List[Tuple[str, str]]):
         data = [
             f"""
                 <div>
@@ -167,7 +167,7 @@ class TestPypiAdapter:
             (True, {plugin[0]: plugin[1] for plugin in plugins()}),
             (False, {})
     ])
-    def test_get_all_plugins(self, is_valid: bool, expected: dict[str, str]):
+    def test_get_all_plugins(self, is_valid: bool, expected: Dict[str, str]):
         self._version_field = "package-snippet__version" if is_valid else "foo"
         assert expected == pypi_adapter.get_all_plugins()
 
@@ -180,7 +180,7 @@ class TestPypiAdapter:
     def test_get_plugin_metadata(self,
                                  plugin: str,
                                  version: str,
-                                 expected: dict[str, Any]):
+                                 expected: Dict[str, Any]):
         self._release = []
         actual = pypi_adapter.get_plugin_pypi_metadata(plugin, version)
         assert expected == actual

@@ -1,5 +1,5 @@
 import random
-from typing import Any
+from typing import Any, Dict, List
 
 import pytest
 from moto import mock_dynamodb
@@ -7,7 +7,7 @@ from moto import mock_dynamodb
 from nhcommons.models import category
 
 
-def sort_results(categories: list[dict[str, Any]]) -> list[dict[str, Any]]:
+def sort_results(categories: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     return sorted(categories, key=lambda x: x["label"])
 
 

@@ -1,5 +1,5 @@
 import time
-from typing import Union
+from typing import Dict, List, Union
 
 import pytest
 from moto import mock_dynamodb
@@ -30,7 +30,7 @@ def create_data(name, version, metadata_type, is_latest=False, data=None):
     }
 
 
-def sort(data: list[dict]):
+def sort(data: List[Dict]):
     return sorted(data, key=lambda x: x["type"].name)
 
 
@@ -92,7 +92,7 @@ class TestPluginMetadata:
         def _put_item(name: str,
                       version: str,
                       type: Union[PluginMetadataType, str],
-                      data: dict = None,
+                      data: Dict = None,
                       is_latest: bool = False,
                       last_updated_timestamp: int = 0
                       ):
