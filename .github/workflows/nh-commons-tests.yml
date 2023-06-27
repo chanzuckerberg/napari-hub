@@ -1,0 +1,51 @@
+# Workflow for running napari-hub-commons tests for PRs and main branch
+
+name: Napari Hub Commons Tests
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'napari-hub-commons/**'
+  pull_request:
+    branches:
+      - '**'
+    paths:
+      - 'napari-hub-commons/**'
+
+defaults:
+  run:
+    working-directory: napari-hub-commons/
+
+jobs:
+  # Runs pytest for napari-hub-commons code
+  tests:
+    name: pytest
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.8'
+
+      - name: Cache Python environment
+        uses: actions/cache@v3
+        id: pip-cache
+        with:
+          path: ${{ env.pythonLocation }}
+          key: ${{ env.pythonLocation }}-${{ hashFiles('setup.py') }}-${{ hashFiles('dev-requirements.txt') }}
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -r dev-requirements.txt
+
+      - name: Run unit tests
+        working-directory: napari-hub-commons
+        run : python -m pytest
