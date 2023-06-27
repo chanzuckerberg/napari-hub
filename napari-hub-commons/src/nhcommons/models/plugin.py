@@ -17,6 +17,8 @@ class _LatestPluginIndex(GlobalSecondaryIndex):
     class Meta:
         index_name = f"{get_stack_name()}-latest-plugins"
         projection = AllProjection()
+    name = UnicodeAttribute(hash_key=True)
+    is_latest = UnicodeAttribute(range_key=True)
 
 
 @set_ddb_metadata("plugin")

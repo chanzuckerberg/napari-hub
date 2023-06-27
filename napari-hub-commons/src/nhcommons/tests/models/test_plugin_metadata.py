@@ -183,7 +183,7 @@ class TestPluginMetadata:
         ]
     )
     def test_query_invalid_values(self, seed_data, plugin, version):
-        assert plugin_metadata.query_for_plugin_version(plugin, version) == []
+        assert plugin_metadata.query(plugin, version) == []
 
     @pytest.mark.parametrize(
         "plugin, version, expected", [
@@ -197,5 +197,5 @@ class TestPluginMetadata:
         ]
     )
     def test_query(self, seed_data, plugin, version, expected, request):
-        actual = plugin_metadata.query_for_plugin_version(plugin, version)
+        actual = plugin_metadata.query(plugin, version)
         assert sort(actual) == sort(request.getfixturevalue(expected))
