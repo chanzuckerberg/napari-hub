@@ -23,3 +23,4 @@ class PluginVisibility(Enum, metaclass=PluginVisibilityMeta):
     HIDDEN = auto()
     DISABLED = auto()
     BLOCKED = auto()
+    INVALID = auto()

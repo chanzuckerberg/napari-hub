@@ -1,6 +1,6 @@
 import logging
 import os
-from typing import Optional
+from typing import Dict, List, Optional
 
 import yaml
 from cffconvert import Citation
@@ -38,7 +38,7 @@ class GithubClientHelper:
             logging.error(f"Unable to fetch license for {self._repo_url}")
         return None
 
-    def get_first_valid_file(self, paths: list[str], file_format: str = "") \
+    def get_first_valid_file(self, paths: List[str], file_format: str = "") \
             -> Optional[str]:
         for file_path in paths:
             file = self.get_file(file_path, file_format)
@@ -85,7 +85,7 @@ class CitationHelper:
     def __init__(self, citation_str):
         self._citation_str = citation_str
 
-    def get_citations(self) -> Optional[dict[str, str]]:
+    def get_citations(self) -> Optional[Dict[str, str]]:
         """
         Get citation information from the string.
         :return: citation dictionary with parsed citation of different formats,
@@ -103,7 +103,7 @@ class CitationHelper:
             logging.exception(e)
             return None
 
-    def get_citation_author(self) -> Optional[list[dict[str, str]]]:
+    def get_citation_author(self) -> Optional[List[Dict[str, str]]]:
         """
         Parse author information from citation.
         :return: list of mappings between the string 'name' and the author name
@@ -119,7 +119,7 @@ class CitationHelper:
                 authors.append({"name": entry["name"]})
         return authors
 
-    def _read_yaml(self) -> dict:
+    def _read_yaml(self) -> Dict:
         try:
             return yaml.safe_load(self._citation_str)
         except yaml.YAMLError:
