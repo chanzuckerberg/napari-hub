@@ -49,7 +49,7 @@ export function SyntaxHighlighter({
 
       <Highlight
         {...defaultProps}
-        code={children}
+        code={children.trimStart().trimEnd()} // Ensure no leading or trailing whitespace exists
         language={language as Language}
         // Explicitly pass `undefined` so that we can use a custom CSS theme:
         // https://github.com/FormidableLabs/prism-react-renderer#faq
