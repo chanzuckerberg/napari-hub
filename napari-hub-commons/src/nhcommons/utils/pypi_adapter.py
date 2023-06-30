@@ -17,12 +17,6 @@ _PLUGIN_DATA_URL = '/pypi/{plugin}/json'
 logger = logging.getLogger(__name__)
 
 
-def _get_pypi_response(path: str, params: Optional[Dict[str, Any]] = None) \
-        -> requests.Response:
-    url = _BASE_URL + path
-    return get_request(url, params=params)
-
-
 def get_all_plugins() -> Dict[str, str]:
     """
     Query pypi to get all plugins.
@@ -66,6 +60,12 @@ def get_plugin_pypi_metadata(plugin: str, version: str) -> Dict[str, Any]:
         return _to_plugin_pypi_metadata(response.json(), version)
     except HTTPError:
         return {}
+
+
+def _get_pypi_response(path: str, params: Optional[Dict[str, Any]] = None) \
+        -> requests.Response:
+    url = _BASE_URL + path
+    return get_request(url, params=params)
 
 
 def _filter_prefix(str_list: List[str], prefix: str) -> List:
