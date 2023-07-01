@@ -172,14 +172,18 @@ def get_manifest(name: str, version: str = None, use_dynamo: bool = False) -> di
     return manifest_metadata
 
 
-def get_index(use_dynamo: bool = False) -> dict:
+def get_index(use_dynamo: bool = False) -> List[Dict[str, Any]]:
     """
     Get the index page related metadata for all plugins.
     :param use_dynamo: flag to identify if data source is dynamo
     :return: dict for index page metadata
     """
     if use_dynamo:
-        return plugin.get_index()
+        plugins = plugin.get_index()
+        total_installs = install_activity.get_total_installs_by_plugins()
+        for item in plugins:
+            item["total_installs"] = total_installs.get(item["name"], 0)
+        return plugins
 
     index = get_cache("cache/index.json")
     return index if index else {}
@@ -264,7 +268,7 @@ def generate_index(plugins_metadata: Dict[str, Any]):
     :param plugins_metadata: plugin metadata dictionary
     :return: sliced dict metadata for the plugin
     """
-    total_install_by_plugin_name = install_activity.get_total_installs_by_plugins(plugins_metadata.keys())
+    total_install_by_plugin_name = install_activity.get_total_installs_by_plugins()
     for plugin_metadata in plugins_metadata.values():
         name = plugin_metadata.get('name')
         plugin_metadata['total_installs'] = total_install_by_plugin_name.get(name, 0)

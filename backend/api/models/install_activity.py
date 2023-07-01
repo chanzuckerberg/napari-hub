@@ -104,13 +104,13 @@ def get_timeline(plugin: str, month_delta: int) -> List[Dict[str, int]]:
     return list(map(lambda date: {'timestamp': date, 'installs': results.get(date, 0)}, dates))
 
 
-def get_total_installs_by_plugins(plugins) -> Dict[str, int]:
+def get_total_installs_by_plugins() -> Dict[str, int]:
     start = time.perf_counter()
-    results = {}
-    for item in _InstallActivityModel.total_installs.scan():
-        if item.plugin_name in plugins:
-            results[item.plugin_name] = item.install_count
-
-    duration = (time.perf_counter() - start) * 1000
-    logging.info(f'BatchGet for total_installs_by_plugins time_taken={duration}ms')
-    return results
+    try:
+        iterator = _InstallActivityModel.total_installs.scan(
+                attributes_to_get=["plugin_name", "install_count"]
+        )
+        return {item.plugin_name: item.install_count for item in iterator}
+    finally:
+        duration = (time.perf_counter() - start) * 1000
+        logging.info(f'scan time_taken={duration}ms')

@@ -104,6 +104,6 @@ class TestInstallActivity:
         for plugin, count in data:
             self._put_item(install_activity_table, 'TOTAL', None, count, is_total='true', plugin=plugin)
 
-        actual = install_activity.get_total_installs_by_plugins(plugins=['foo', 'bar'])
+        actual = install_activity.get_total_installs_by_plugins()
 
         assert actual == expected

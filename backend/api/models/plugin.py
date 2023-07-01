@@ -17,12 +17,11 @@ from api.models.helper import set_ddb_metadata
 
 logger = logging.getLogger(__name__)
 INDEX_SUBSET = {
-    "name", "summary", "description_text", "description_content_type",
-    "authors", "license", "python_version", "operating_system",
-    "release_date", "version", "first_released", "development_status",
-    "category", "display_name", "plugin_types", "reader_file_extensions",
-    "writer_file_extensions", "writer_save_layers", "npe2", "error_message",
-    "code_repository", "total_installs",
+    "authors", "category", "code_repository", "description_content_type", 
+    "description_text", "development_status", "display_name", "error_message", 
+    "first_released", "license", "name", "npe2", "operating_system", 
+    "plugin_types", "python_version", "reader_file_extensions", "release_date", 
+    "summary", "version", "writer_file_extensions", "writer_save_layers"
 }
 T = TypeVar("T")
 
@@ -171,5 +170,5 @@ def _to_plugin_version_dict(iterator: Iterator[_Plugin]) -> Dict[str, str]:
 
 
 def _index_list_mapper(plugins: Iterator[_Plugin]) -> List[Dict[str, Any]]:
-    return [{k: plugin[k] for k in INDEX_SUBSET if k in plugin.data.as_dict()}
-            for plugin in plugins if plugin.data]
+    return [{key: data[key] for key in INDEX_SUBSET if key in data}
+            for item in plugins if item.data and (data := item.data.as_dict())]
