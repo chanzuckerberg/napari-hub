@@ -50,17 +50,19 @@ logging.basicConfig(format=FORMAT)
 logger.setLevel(logging.DEBUG if os.getenv('IS_DEBUG') else logging.INFO)
 
 
-@app.route('/')
+@app.route("/")
 def index():
-    return render_template('index.html', stack="/" + os.getenv('BUCKET_PATH') if os.getenv('BUCKET_PATH') else '')
+    stack = "/" + os.getenv("BUCKET_PATH") if os.getenv("BUCKET_PATH") else ""
+    return render_template("index.html", stack=stack)
 
 
 @app.route('/swagger.yml')
 def swagger():
-    return render_template('swagger.yml', local_url=f"- url: {os.getenv('API_URL')}" if os.getenv('API_URL') else '')
+    local_url = f"- url: {os.getenv('API_URL')}" if os.getenv("API_URL") else ""
+    return render_template('swagger.yml', local_url=local_url)
 
 
-@app.route('/plugins/index')
+@app.route("/plugins/index")
 def plugin_index() -> Response:
     use_dynamo_plugins = _is_query_param_true("use_dynamo_plugin")
     return jsonify(get_index(use_dynamo=use_dynamo_plugins))
@@ -72,21 +74,21 @@ def update() -> Response:
     return app.make_response(("Complete", 204))
 
 
-@app.route('/plugins')
+@app.route("/plugins")
 def plugins() -> Response:
     use_dynamo_plugins = _is_query_param_true("use_dynamo_plugin")
     return jsonify(get_public_plugins(use_dynamo=use_dynamo_plugins))
 
 
-@app.route('/plugins/<plugin>', defaults={'version': None})
-@app.route('/plugins/<plugin>/versions/<version>')
+@app.route("/plugins/<plugin>", defaults={"version": None})
+@app.route("/plugins/<plugin>/versions/<version>")
 def versioned_plugin(plugin: str, version: str = None) -> Response:
     use_dynamo_plugins = _is_query_param_true("use_dynamo_plugin")
     return jsonify(get_plugin(plugin, version, use_dynamo_plugins))
 
 
-@app.route('/manifest/<plugin>', defaults={'version': None})
-@app.route('/manifest/<plugin>/versions/<version>')
+@app.route("/manifest/<plugin>", defaults={"version": None})
+@app.route("/manifest/<plugin>/versions/<version>")
 def plugin_manifest(plugin: str, version: str = None) -> Response:
     use_dynamo_plugins = _is_query_param_true("use_dynamo_plugin")
     manifest = get_manifest(plugin, version, use_dynamo_plugins)
@@ -110,13 +112,13 @@ def plugin_manifest(plugin: str, version: str = None) -> Response:
             ("Plugin Manifest Not Found. Manifest discovery failed.", 404))
 
 
-@app.route('/shields/<plugin>')
+@app.route("/shields/<plugin>")
 def shield(plugin: str) -> Response:
     use_dynamo_plugins = _is_query_param_true("use_dynamo_plugin")
     return jsonify(get_shield(plugin, use_dynamo_plugins))
 
 
-@app.route('/plugins/excluded')
+@app.route("/plugins/excluded")
 def get_exclusion_list() -> Response:
     use_dynamo_plugins = _is_query_param_true("use_dynamo_plugin")
     return jsonify(get_excluded_plugins(use_dynamo_plugins))
@@ -216,7 +218,7 @@ def add_header(response):
 
 def _is_query_param_true(param_name: str):
     value = request.args.get(param_name)
-    return value and value.lower() == 'true'
+    return value and value.lower() == "true"
 
 
 if __name__ == '__main__':

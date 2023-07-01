@@ -1,5 +1,6 @@
 import logging
 import time
+from typing import Dict
 
 from pynamodb.attributes import UnicodeAttribute
 from pynamodb.models import Model
@@ -18,7 +19,7 @@ class _PluginBlocked(Model):
     name = UnicodeAttribute(hash_key=True)
 
 
-def get_blocked_plugins() -> dict[str, str]:
+def get_blocked_plugins() -> Dict[str, str]:
     plugins = {}
     start = time.perf_counter()
     try:

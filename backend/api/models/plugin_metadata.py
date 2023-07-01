@@ -1,6 +1,6 @@
 import logging
 import time
-from typing import Any
+from typing import Any, Dict
 
 from pynamodb.attributes import UnicodeAttribute, BooleanAttribute, \
     MapAttribute, NumberAttribute
@@ -26,7 +26,7 @@ class _PluginMetadata(Model):
     last_updated_timestamp = NumberAttribute()
 
 
-def get_manifest(name: str, version: str) -> dict[str, Any]:
+def get_manifest(name: str, version: str) -> Dict[str, Any]:
     version_type = f'{version}:DISTRIBUTION'
     start = time.perf_counter()
     try:

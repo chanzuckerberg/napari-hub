@@ -1,7 +1,7 @@
 import logging
 import os
 import time
-from typing import Optional, Callable, Iterator, Any, TypeVar
+from typing import Optional, Callable, Iterator, Any, TypeVar, Dict, List
 
 from pynamodb.attributes import (
     UnicodeAttribute, ListAttribute, MapAttribute, NumberAttribute
@@ -70,7 +70,7 @@ class _Plugin(Model):
     excluded_plugin_index = _ExcludedPluginIndex()
 
 
-def get_latest_by_visibility(visibility: str = "PUBLIC") -> dict[str, str]:
+def get_latest_by_visibility(visibility: str = "PUBLIC") -> Dict[str, str]:
     return _scan_index(
         index=_Plugin.latest_plugin_index,
         attributes_to_get=["name", "version"],
@@ -79,7 +79,7 @@ def get_latest_by_visibility(visibility: str = "PUBLIC") -> dict[str, str]:
     )
 
 
-def get_index():
+def get_index() -> List[Dict[str, Any]]:
     return _scan_index(
         index=_Plugin.latest_plugin_index,
         attributes_to_get=["name", "version", "data"],
@@ -88,7 +88,7 @@ def get_index():
     )
 
 
-def get_hidden_plugins():
+def get_hidden_plugins() -> Dict[str, str]:
     return _scan_index(
         index=_Plugin.excluded_plugin_index,
         attributes_to_get=["name", "version"],
@@ -97,7 +97,7 @@ def get_hidden_plugins():
     )
 
 
-def get_plugin(name: str, version: str = None) -> dict[str, Any]:
+def get_plugin(name: str, version: str = None) -> Dict[str, Any]:
     visibility = ["PUBLIC", "HIDDEN"]
     kwargs = {
         "attributes_to_get": ["data", "release_date"],
@@ -122,7 +122,7 @@ def get_plugin(name: str, version: str = None) -> dict[str, Any]:
         return {}
 
 
-def get_excluded_plugins():
+def get_excluded_plugins() -> Dict[str, str]:
     return _scan_index(
         index=_Plugin.excluded_plugin_index,
         attributes_to_get=["name", "excluded"],
@@ -145,7 +145,7 @@ def get_latest_version(name: str) -> Optional[str]:
 def _scan_index(
         index: GlobalSecondaryIndex,
         mapper: Callable[[Iterator[_Plugin]], T],
-        attributes_to_get: Optional[list[str]] = None,
+        attributes_to_get: Optional[List[str]] = None,
         filter_conditions: Optional[Condition] = None
 ) -> T:
     plugins = {}
@@ -166,10 +166,10 @@ def _scan_index(
         logger.info(f"type={type(index)} count={count} duration={duration}ms")
 
 
-def _to_plugin_version_dict(iterator: Iterator[_Plugin]) -> dict[str, str]:
+def _to_plugin_version_dict(iterator: Iterator[_Plugin]) -> Dict[str, str]:
     return {plugin.name: plugin.version for plugin in iterator}
 
 
-def _index_list_mapper(plugins: Iterator[_Plugin]) -> list[dict[str, Any]]:
+def _index_list_mapper(plugins: Iterator[_Plugin]) -> List[Dict[str, Any]]:
     return [{k: plugin[k] for k in INDEX_SUBSET if k in plugin.data.as_dict()}
             for plugin in plugins if plugin.data]
