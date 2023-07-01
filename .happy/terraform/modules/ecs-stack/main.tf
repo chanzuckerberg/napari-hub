@@ -514,6 +514,7 @@ data aws_iam_policy_document backend_policy {
       module.plugin_metadata_dynamodb_table.table_arn,
       module.plugin_dynamodb_table.table_arn,
       module.plugin_blocked_dynamodb_table.table_arn,
+      "${module.plugin_dynamodb_table.table_arn}/index/*",
     ]
   }
 
