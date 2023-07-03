@@ -1,16 +1,20 @@
 import yaml
 from api.model import get_plugin
 from utils.github import get_file
+import logging
 
 COLLECTIONS_CONTENTS = "https://api.github.com/repos/chanzuckerberg/napari-hub-collections/contents/collections"
 COLLECTIONS_REPO = "https://github.com/chanzuckerberg/napari-hub-collections"
 IMAGES_BASE_URL = "https://raw.githubusercontent.com/chanzuckerberg/napari-hub-collections/main/images/"
+
+logger = logging.getLogger(__name__)
 
 
 def get_collections():
     collections = []
     json_file = get_file(download_url=COLLECTIONS_CONTENTS, file_format="json")
     if not json_file:
+        logger.warning("Error fetching collection from github")
         return collections
     for item in json_file:
         collection_name = item.get("name").replace(".yml", "")
