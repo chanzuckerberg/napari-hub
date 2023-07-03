@@ -4,19 +4,20 @@ from pytest_bdd import given, scenarios, then, parsers
 from test_utils import call_api, valid_str
 
 required_plugin_keys = {
-    'authors', 'description_content_type', 'description_text',
-    'development_status', 'display_name', 'first_released', 'license', 'name',
-    'operating_system', 'plugin_types', 'python_version',
-    'reader_file_extensions', 'release_date', 'summary', 'version',
-    'writer_file_extensions', 'writer_save_layers'
+    "authors", "description_content_type", "description_text",
+    "development_status", "display_name", "first_released", "license", "name",
+    "operating_system", "plugin_types", "python_version",
+    "reader_file_extensions", "release_date", "summary", "version",
+    "writer_file_extensions", "writer_save_layers"
 }
 required_public_plugin_keys = {
-    'display_name', 'plugin_types', 'reader_file_extensions',
-    'writer_file_extensions', 'writer_save_layers'
+    "display_name", "plugin_types", "reader_file_extensions",
+    "writer_file_extensions", "writer_save_layers"
 }
 
+valid_plugin_types = {"reader", "sample_data", "theme", "widget", "writer"}
 
-scenarios('plugin.feature')
+scenarios("plugin.feature")
 
 
 @given(parsers.parse('we call plugins api for {name} version {version}'))
@@ -77,16 +78,24 @@ def call_excluded_plugins_with_query_param(query_param, context):
 
 
 def _validate_plugin(plugin_data, required_keys):
-    assert plugin_data != {}, f'actual response {json.dumps(plugin_data)}'
-    if valid_str(plugin_data['display_name']):
-        plugin_name = plugin_data['display_name']
+    assert plugin_data != {}, f"actual response {json.dumps(plugin_data)}"
+    if valid_str(plugin_data["display_name"]):
+        plugin_name = plugin_data["display_name"]
     else:
-        plugin_name = plugin_data['name']
-    assert valid_str(plugin_name), f'No name available for plugin {plugin_data}'
+        plugin_name = plugin_data["name"]
+    assert valid_str(plugin_name), f"No name available for plugin {plugin_data}"
+
+    actual_plugin_types = set(plugin_data.get("plugin_types", []))
+    assert actual_plugin_types.issubset(valid_plugin_types), \
+        f"plugin_types contains unexpected value {actual_plugin_types}"
+
+    authors = plugin_data.get("authors", [])
+    for author in authors:
+        assert "name" in author
 
     for key in required_keys:
         assert key in plugin_data, \
-            f'key: {key} not in response for plugin {plugin_name}'
+            f"key: {key} not in response for plugin {plugin_name}"
 
 
 @then('it will have valid plugin response')
@@ -102,11 +111,14 @@ def verify_public_plugins_defaults(context):
         f'count of public plugins is lesser than expected {len(response)}'
 
 
-@then('it will fetch all public plugins')
+@then("it will fetch all public plugins")
 def verify_public_plugins_detailed(context):
-    response = context['response'].json()
+    response = context["response"].json()
     for plugin in response:
         _validate_plugin(plugin, required_public_plugin_keys)
+        name = plugin.get("name")
+        assert 0 <= plugin.get("total_installs", -1), \
+            f"invalid total_installs for {name}"
 
 
 @then('it will have only return plugins with excluded type')
