@@ -22,6 +22,7 @@
     "dev:tsm": "typed-scss-modules -w -e default -p.@ src 'src/**/*.module.scss'",
     "// Runs all linters": "",
     "lint": "run-p lint:*",
+    "lint:fix": "eslint --fix --ext .js --ext .jsx --ext .ts --ext .tsx --ignore-path .gitignore . && prettier --write 'src/**/*.{js,jsx,ts,tsx}'",
     "lint:prettier": "prettier --check .",
     "lint:stylelint": "stylelint '**/*.scss'",
     "lint:eslint": "run-p lint:client lint:src",
