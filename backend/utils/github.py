@@ -72,6 +72,8 @@ def get_file(
             return response.json()
         return response.text
     except HTTPError:
+        logging.exception(f"Error when fetching url={download_url} file={file} "
+                          f"branch={branch}")
         pass
 
     return None
