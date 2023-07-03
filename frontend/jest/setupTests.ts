@@ -28,6 +28,10 @@ beforeAll(() => {
 jest.mock('next/router', () => ({
   useRouter: jest.fn().mockReturnValue({
     query: {},
+    events: {
+      on: jest.fn(),
+      off: jest.fn(),
+    },
   }),
 }));
 

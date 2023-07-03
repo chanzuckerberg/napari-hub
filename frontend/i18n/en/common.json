@@ -22,6 +22,7 @@
   "plausiblePrivacy": "Plausible.io Privacy Policy",
   "plugins": "Plugins",
   "privacy": "Privacy",
+  "searchBarPlaceholder": "Search for a plugin by keyword or author",
   "showMore": "Show {{count}} more",
   "sitemap": "Sitemap",
 

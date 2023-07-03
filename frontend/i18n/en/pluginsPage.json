@@ -1,4 +1,5 @@
 {
+  "plugins": "Plugins",
   "sortBy": "Sort by",
   "sortByMobile": "SORT BY: {{sortType}}",
 

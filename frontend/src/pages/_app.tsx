@@ -50,9 +50,6 @@ function App({ Component, pageProps }: AppProps) {
   let loader: ReactNode;
   const isLoading = loading && (loader = <AppLoader nextUrl={nextUrl} />);
   const page = isLoading ? loader : withLayout(<Component {...pageProps} />);
-  const baseURL = 'https://www.napari-hub.org';
-  const path = router.asPath.split('?')[0];
-  const canonicalLink = baseURL + path;
 
   return (
     <>
@@ -66,7 +63,10 @@ function App({ Component, pageProps }: AppProps) {
       }
 
       <Head>
-        <link rel="canonical" href={canonicalLink} />
+        <link
+          rel="canonical"
+          href={`https://www.napari-hub.org${router.asPath.split('?')[0]}`}
+        />
 
         {/*
           Disable indexing for non-production deployments.

@@ -9,7 +9,7 @@ import { FeaturedPlugins } from './FeaturedPlugins';
 import { HomePageLayout } from './HomePageLayout';
 
 export function HomePage() {
-  const { t } = useTranslation(['homePage']);
+  const { t } = useTranslation(['homePage', 'common']);
   const openSearchPage = useOpenSearchPage();
 
   return (
@@ -23,7 +23,7 @@ export function HomePage() {
         }
         searchBar={
           <SearchBar
-            inputProps={{ placeholder: t('homePage:searchBar') }}
+            inputProps={{ placeholder: t('common:searchBarPlaceholder') }}
             onSubmit={(query) => openSearchPage(query)}
             changeOnSubmit
           />

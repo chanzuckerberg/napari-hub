@@ -1,11 +1,9 @@
 import clsx from 'clsx';
 import { ButtonIcon } from 'czifui';
-import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { InputHTMLAttributes, useEffect, useState } from 'react';
 
 import { Close, Search } from '@/components/icons';
-import { createUrl, isHomePage } from '@/utils';
 
 import styles from './SearchBar.module.scss';
 
@@ -66,8 +64,6 @@ export function SearchBar({
   ...props
 }: Props) {
   const [t] = useTranslation(['common']);
-  const router = useRouter();
-  const currentPathname = createUrl(router.asPath).pathname;
 
   // Local state for query. This is used to store the current entered query string.
   const [localQuery, setLocalQuery] = useState(value ?? '');
@@ -109,10 +105,7 @@ export function SearchBar({
       onSubmit={(event) => {
         event.preventDefault();
         const query = changeOnSubmit ? localQuery : value;
-
-        if (query) {
-          handleSubmit(query);
-        }
+        handleSubmit(query);
       }}
       {...props}
     >
@@ -181,7 +174,7 @@ export function SearchBar({
         type="button"
       >
         {/* Render close button if the user submitted a query. */}
-        {value && isHomePage(currentPathname) ? (
+        {value && changeOnSubmit ? (
           <Close className={clsx(iconClassName, styles.closeIcon)} />
         ) : (
           <Search className={iconClassName} />

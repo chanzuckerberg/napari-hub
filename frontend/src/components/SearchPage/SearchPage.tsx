@@ -8,6 +8,7 @@ import { ColumnLayout } from '@/components/ColumnLayout';
 import { Footer } from '@/components/Footer';
 import { Pagination } from '@/components/Pagination';
 import { SignupForm } from '@/components/SignupForm';
+import { useIsFeatureFlagEnabled } from '@/store/featureFlags';
 import { loadingStore } from '@/store/loading';
 import { useSearchStore } from '@/store/search/context';
 import { scrollToSearchBar } from '@/utils';
@@ -78,10 +79,17 @@ export function SearchPage() {
     return () => document.removeEventListener('scroll', scrollHandler);
   }, []);
 
+  const isHomePageRedesign = useIsFeatureFlagEnabled('homePageRedesign');
+
   return (
     <div className="flex flex-col">
-      <Banner />
-      <AppBarLanding />
+      {!isHomePageRedesign && (
+        <>
+          <Banner />
+          <AppBarLanding />
+        </>
+      )}
+
       <PluginSearchBarSection />
 
       <div className="flex-grow min-h-screen">

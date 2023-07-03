@@ -1,15 +1,32 @@
 import { useTranslation } from 'next-i18next';
 
 import { ColumnLayout } from '@/components/ColumnLayout';
+import { PluginSearchBar } from '@/components/SearchBar/PluginSearchBar';
+import { SearchSection } from '@/components/SearchSection';
 import { SEARCH_BAR_ID } from '@/constants/search';
-
-import { PluginSearchBar } from '../SearchBar/PluginSearchBar';
+import { useIsFeatureFlagEnabled } from '@/store/featureFlags';
 
 /**
  * Component that renders the landing page search bar.
  */
 export function PluginSearchBarSection() {
-  const [t] = useTranslation(['homePage']);
+  const [t] = useTranslation(['homePage', 'pluginsPage', 'common']);
+  const isHomePageRedesign = useIsFeatureFlagEnabled('homePageRedesign');
+
+  if (isHomePageRedesign) {
+    return (
+      <SearchSection
+        title={t('pluginsPage:plugins')}
+        searchBar={
+          <PluginSearchBar
+            aria-describedby="plugin-search-title"
+            large
+            inputProps={{ placeholder: t('common:searchBarPlaceholder') }}
+          />
+        }
+      />
+    );
+  }
 
   return (
     <ColumnLayout
@@ -25,7 +42,7 @@ export function PluginSearchBarSection() {
           id="plugin-search-title"
           className="font-bold text-xl mb-sds-l whitespace-nowrap"
         >
-          {t('homePage:searchBar')}
+          {t('common:searchBarPlaceholder')}
         </h2>
 
         <PluginSearchBar aria-describedby="plugin-search-title" large />
