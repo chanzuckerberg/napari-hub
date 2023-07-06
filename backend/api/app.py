@@ -4,15 +4,16 @@ import os
 from werkzeug import exceptions
 from apig_wsgi import make_lambda_handler
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
-from api.models.category import CategoryModel
 from flask import Flask, Response, jsonify, render_template, request
 from flask_githubapp.core import GitHubApp
 
 from api.plugin_collections import get_collections, get_collection
 from api.custom_wsgi import script_path_middleware
-from api.model import get_public_plugins, get_index, get_plugin, get_excluded_plugins, update_cache, \
-    move_artifact_to_s3, get_category_mapping, get_categories_mapping, get_manifest, update_activity_data, \
+from api.model import (
+    get_public_plugins, get_index, get_plugin, get_excluded_plugins,
+    update_cache, move_artifact_to_s3, get_manifest, update_activity_data,
     get_metrics_for_plugin
+)
 from api.models import category as categories
 from api.shield import get_shield
 from utils.utils import send_alert, reformat_ssh_key_to_pem_bytes
@@ -49,19 +50,22 @@ logging.basicConfig(format=FORMAT)
 logger.setLevel(logging.DEBUG if os.getenv('IS_DEBUG') else logging.INFO)
 
 
-@app.route('/')
+@app.route("/")
 def index():
-    return render_template('index.html', stack="/" + os.getenv('BUCKET_PATH') if os.getenv('BUCKET_PATH') else '')
+    stack = "/" + os.getenv("BUCKET_PATH") if os.getenv("BUCKET_PATH") else ""
+    return render_template("index.html", stack=stack)
 
 
 @app.route('/swagger.yml')
 def swagger():
-    return render_template('swagger.yml', local_url=f"- url: {os.getenv('API_URL')}" if os.getenv('API_URL') else '')
+    local_url = f"- url: {os.getenv('API_URL')}" if os.getenv("API_URL") else ""
+    return render_template('swagger.yml', local_url=local_url)
 
 
-@app.route('/plugins/index')
+@app.route("/plugins/index")
 def plugin_index() -> Response:
-    return jsonify(get_index())
+    use_dynamo_plugins = _is_query_param_true("use_dynamo_plugin")
+    return jsonify(get_index(use_dynamo=use_dynamo_plugins))
 
 
 @app.route('/update', methods=['POST'])
@@ -70,21 +74,24 @@ def update() -> Response:
     return app.make_response(("Complete", 204))
 
 
-@app.route('/plugins')
+@app.route("/plugins")
 def plugins() -> Response:
-    return jsonify(get_public_plugins())
+    use_dynamo_plugins = _is_query_param_true("use_dynamo_plugin")
+    return jsonify(get_public_plugins(use_dynamo=use_dynamo_plugins))
 
 
-@app.route('/plugins/<plugin>', defaults={'version': None})
-@app.route('/plugins/<plugin>/versions/<version>')
+@app.route("/plugins/<plugin>", defaults={"version": None})
+@app.route("/plugins/<plugin>/versions/<version>")
 def versioned_plugin(plugin: str, version: str = None) -> Response:
-    return jsonify(get_plugin(plugin, version))
+    use_dynamo_plugins = _is_query_param_true("use_dynamo_plugin")
+    return jsonify(get_plugin(plugin, version, use_dynamo_plugins))
 
 
-@app.route('/manifest/<plugin>', defaults={'version': None})
-@app.route('/manifest/<plugin>/versions/<version>')
+@app.route("/manifest/<plugin>", defaults={"version": None})
+@app.route("/manifest/<plugin>/versions/<version>")
 def plugin_manifest(plugin: str, version: str = None) -> Response:
-    manifest = get_manifest(plugin, version)
+    use_dynamo_plugins = _is_query_param_true("use_dynamo_plugin")
+    manifest = get_manifest(plugin, version, use_dynamo_plugins)
 
     if not manifest:
         return app.make_response(("Plugin does not exist", 404))
@@ -94,8 +101,10 @@ def plugin_manifest(plugin: str, version: str = None) -> Response:
 
     error = manifest['error']
     if error == 'Manifest not yet processed.':
-        response = app.make_response(("Temporarily Unavailable. Attempting to build manifest. Please check back"
-                                      " in 5 minutes.", 503))
+        response = app.make_response(
+            ("Temporarily Unavailable. Attempting to build manifest. Please "
+             "check back in 5 minutes.", 503)
+        )
         response.headers["Retry-After"] = 300
         return response
     else:
@@ -103,14 +112,16 @@ def plugin_manifest(plugin: str, version: str = None) -> Response:
             ("Plugin Manifest Not Found. Manifest discovery failed.", 404))
 
 
-@app.route('/shields/<plugin>')
+@app.route("/shields/<plugin>")
 def shield(plugin: str) -> Response:
-    return jsonify(get_shield(plugin))
+    use_dynamo_plugins = _is_query_param_true("use_dynamo_plugin")
+    return jsonify(get_shield(plugin, use_dynamo_plugins))
 
 
-@app.route('/plugins/excluded')
+@app.route("/plugins/excluded")
 def get_exclusion_list() -> Response:
-    return jsonify(get_excluded_plugins())
+    use_dynamo_plugins = _is_query_param_true("use_dynamo_plugin")
+    return jsonify(get_excluded_plugins(use_dynamo_plugins))
 
 
 @app.route('/categories', defaults={'version': os.getenv('category_version', 'EDAM-BIOIMAGING:alpha06')})
@@ -207,7 +218,7 @@ def add_header(response):
 
 def _is_query_param_true(param_name: str):
     value = request.args.get(param_name)
-    return value and value.lower() == 'true'
+    return value and value.lower() == "true"
 
 
 if __name__ == '__main__':
