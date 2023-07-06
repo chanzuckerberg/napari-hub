@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 
+import { useIsFeatureFlagEnabled } from '@/store/featureFlags';
 import { LinkInfo } from '@/types';
 import { isExternalUrl } from '@/utils';
 
@@ -29,6 +30,7 @@ export function useLinks() {
   const [t] = useTranslation(['common']);
   const router = useRouter();
   const locale = router.locale ?? 'en';
+  const isHomePageRedesign = useIsFeatureFlagEnabled('homePageRedesign');
 
   return withLinkInfo(locale, {
     HOME: {
@@ -100,7 +102,7 @@ export function useLinks() {
     },
     PLUGINS: {
       title: t('common:plugins'),
-      link: '/',
+      link: isHomePageRedesign ? '/plugins' : '/',
     },
     COLLECTIONS: {
       title: t('common:collections'),
