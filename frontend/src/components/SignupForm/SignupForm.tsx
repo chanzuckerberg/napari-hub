@@ -16,7 +16,7 @@ const FORM_CONTAINER_ID_QUERY = `#${FORM_CONTAINER_ID}`;
 
 interface Props {
   onSubmit?: (event: React.FormEvent) => void;
-  variant?: 'default' | 'home';
+  variant?: 'default' | 'home' | 'search';
 }
 
 /**
@@ -28,7 +28,7 @@ export function SignupForm({ onSubmit, variant = 'default' }: Props) {
   const [error, setError] = useState('');
   const emailRef = useRef<HTMLInputElement | null>(null);
   const plausible = usePlausible();
-  const isHome = variant === 'home';
+  const isThreeColumnLayout = ['home', 'search'].includes(variant);
 
   const validate = () => {
     const validityState = emailRef.current?.validity;
@@ -112,7 +112,11 @@ export function SignupForm({ onSubmit, variant = 'default' }: Props) {
     <ColumnLayout
       className="bg-hub-primary-200 p-sds-xl screen-495:p-12"
       // Use 3-column layout instead of 4-column layout.
-      classes={isHome ? { fourColumn: 'screen-1150:grid-cols-napari-3' } : {}}
+      classes={
+        isThreeColumnLayout
+          ? { fourColumn: 'screen-1150:grid-cols-napari-3' }
+          : {}
+      }
     >
       {/* Create hidden form for submitting the data to HubSpot */}
       <div id={FORM_CONTAINER_ID} className="hidden" />

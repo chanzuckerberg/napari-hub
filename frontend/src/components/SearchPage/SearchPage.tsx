@@ -108,8 +108,12 @@ export function SearchPage() {
 
       <SearchPagination />
 
-      <SignupForm variant="home" />
-      <Footer />
+      {!isHomePageRedesign && (
+        <>
+          <SignupForm variant="home" />
+          <Footer />
+        </>
+      )}
     </div>
   );
 }
