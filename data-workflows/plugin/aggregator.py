@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Optional
 
 from nhcommons.models import plugin_metadata
 from nhcommons.models.plugin import put_plugin
@@ -29,11 +29,19 @@ def aggregate_plugins(updated_plugins: set[tuple[str, str]]) -> None:
         put_plugin(plugin, version, record)
 
 
+def _get_manifest(
+        metadata_by_type: dict[PluginMetadataType, dict]
+) -> Optional[dict[str, Any]]:
+    if PluginMetadataType.DISTRIBUTION not in metadata_by_type:
+        return None
+    return metadata_by_type.get(PluginMetadataType.DISTRIBUTION).get("data")
+
+
 def _generate_aggregate(metadata_by_type: dict[PluginMetadataType, dict],
                         plugin: str,
                         version: str) -> dict[str, Any]:
     metadata = metadata_by_type.get(PluginMetadataType.METADATA).get("data", {})
-    manifest = metadata_by_type.get(PluginMetadataType.DISTRIBUTION).get("data")
+    manifest = _get_manifest(metadata_by_type)
     distribution = get_formatted_manifest(manifest, plugin, version)
     return {**metadata, **distribution}
 

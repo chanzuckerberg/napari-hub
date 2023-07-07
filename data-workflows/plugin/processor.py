@@ -34,8 +34,8 @@ def update_plugin() -> None:
 
     # update for removed plugins and existing older version of plugins
     for name, version in dynamo_latest_plugins.items():
-        logger.info(f"Updating old plugin={name} version={version}")
         if pypi_latest_plugins.get(name) != version:
+            logger.info(f"Updating old plugin={name} version={version}")
             put_plugin_metadata(
                 plugin=name,
                 version=version,
@@ -44,7 +44,7 @@ def update_plugin() -> None:
 
 
 def _update_for_new_plugin(name: str, version: str) -> None:
-    logger.info(f"Update complete for new plugin={name} version={version}")
+    logger.info(f"Update for new plugin={name} version={version}")
     put_plugin_metadata(plugin=name,
                         version=version,
                         is_latest=True,
