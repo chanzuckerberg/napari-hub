@@ -7,6 +7,7 @@ from werkzeug.middleware.dispatcher import DispatcherMiddleware
 from flask import Flask, Response, jsonify, render_template, request
 from flask_githubapp.core import GitHubApp
 
+from api.home import get_plugin_sections
 from api.plugin_collections import get_collections, get_collection
 from api.custom_wsgi import script_path_middleware
 from api.model import (
@@ -85,6 +86,18 @@ def plugins() -> Response:
 def versioned_plugin(plugin: str, version: str = None) -> Response:
     use_dynamo_plugins = _is_query_param_true("use_dynamo_plugin")
     return jsonify(get_plugin(plugin, version, use_dynamo_plugins))
+
+
+@app.route("/plugin/home/sections/<sections>")
+def plugin_home_page_sections(sections: str = "") -> Response:
+    use_dynamo_plugins = _is_query_param_true("use_dynamo_plugin")
+    unique_sections = set(sections.split(","))
+    limit = int(request.args.get("limit", "3"))
+    plugins_by_sections = get_plugin_sections(
+        unique_sections, use_dynamo_plugins, limit
+    )
+    return jsonify(plugins_by_sections)
+
 
 
 @app.route("/manifest/<plugin>", defaults={"version": None})
