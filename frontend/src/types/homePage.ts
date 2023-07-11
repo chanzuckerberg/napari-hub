@@ -16,7 +16,7 @@ export type PluginSection<T = Record<string, unknown>> = T & {
 };
 
 export enum PluginSectionType {
-  pluginType = 'plugin_type',
+  pluginType = 'plugin_types',
   newest = 'newest',
   recentlyUpdated = 'recently_updated',
   topInstalls = 'top_installed',

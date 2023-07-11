@@ -34,7 +34,6 @@ app.get('/plugins/index', async (_, res) => {
 function getSectionPlugins({ limit, pluginMap, filter = () => true, sort }) {
   const result = [];
 
-  let i = 0;
   while (result.length < limit && pluginMap.size > 0) {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     let plugins = Array.from(pluginMap.values()).filter(filter);
@@ -81,12 +80,12 @@ app.get('/plugin/home/sections/:sections', (req, res) => {
     ) || 'sample_data';
 
   const data = {
-    plugin_type: {
+    plugin_types: {
       type: pluginDataType,
       plugins: getSectionPlugins({
         pluginMap,
         limit,
-        filter: (plugin) => !!plugin.plugin_types?.includes(pluginDataType),
+        filter: (plugin) => !!plugin.plugin_types.includes(pluginDataType),
       }),
     },
 
