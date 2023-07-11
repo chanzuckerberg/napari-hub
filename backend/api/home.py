@@ -1,3 +1,4 @@
+import logging
 from typing import List, Dict, Set, Callable, Union
 
 from api.model import get_index
@@ -12,6 +13,9 @@ DEFAULT_FIELDS = {
 PLUGIN_TYPES = ["reader", "sample_data", "widget", "writer"]
 
 
+logger = logging.getLogger(__name__)
+
+
 def _filtered(data: Dict) -> Dict:
     return {field: data.get(field) for field in DEFAULT_FIELDS}
 
@@ -23,7 +27,7 @@ def _get_plugin_type() -> str:
 
 def _get_plugins_by_type(index: List[Dict], limit: int) -> Dict:
     plugin_type = _get_plugin_type()
-
+    logger.info(f"plugin_type section of type={plugin_type}")
     plugins_of_type = list(
         filter(lambda item: plugin_type in item.get("plugin_types", []), index)
     )
@@ -64,12 +68,22 @@ def get_handler_by_section_name() -> Dict[str, Callable]:
     }
 
 
+def _has_valid_sections(sections: Set):
+    return set(get_handler_by_section_name().keys()).isdisjoint(sections)
+
+
 def get_plugin_sections(
         sections: Set[str], use_dynamo: bool, limit: int = 3
 ) -> Dict[str, Dict]:
     response = {}
+    if not _has_valid_sections(sections):
+        logger.warning("No processing as there are no valid sections")
+        return response
+
     index = get_index(use_dynamo)
     for name, handler in get_handler_by_section_name().items():
         if name.lower() in sections:
-            response.update(handler(index, limit))
+            section = handler(index, limit)
+            logger.info(f"Section for {name} has {len(section.get('plugins'))}")
+            response.update(section)
     return response

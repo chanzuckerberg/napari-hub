@@ -20,13 +20,8 @@ base_url = _get_base_url()
 headers = {'User-Agent': 'bdd-test'}
 
 
-def verify_response_status_code(context, status_code):
-    actual = context["response"].status_code
-    assert int(status_code) == actual, f"status code of {actual} was unexpected"
-
-
 def call_api(context, endpoint):
-    context['response'] = requests.get(f'{base_url}{endpoint}', headers=headers)
+    context["response"] = requests.get(f"{base_url}{endpoint}", headers=headers)
 
 
 def valid_str(value):

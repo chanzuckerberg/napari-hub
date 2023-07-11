@@ -99,7 +99,6 @@ def plugin_home_page_sections(sections: str = "") -> Response:
     return jsonify(plugins_by_sections)
 
 
-
 @app.route("/manifest/<plugin>", defaults={"version": None})
 @app.route("/manifest/<plugin>/versions/<version>")
 def plugin_manifest(plugin: str, version: str = None) -> Response:
