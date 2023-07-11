@@ -40,7 +40,7 @@ export function AppLoader({ nextUrl }: Props) {
             },
             newest: { plugins },
             recently_updated: { plugins },
-            top_installs: { plugins },
+            top_installed: { plugins },
           }}
         >
           <HomePage />

@@ -23,7 +23,7 @@ export function FeaturedPlugins() {
     plugin_type: pluginTypeSection,
     newest: newestSection,
     recently_updated: recentlyUpdatedSection,
-    top_installs: topInstallsSection,
+    top_installed: topInstallsSection,
   } = pluginSections;
 
   return (

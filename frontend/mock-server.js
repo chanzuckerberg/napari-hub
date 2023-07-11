@@ -106,7 +106,7 @@ app.get('/plugin/home/sections/:sections', (req, res) => {
       }),
     },
 
-    top_installs: {
+    top_installed: {
       plugins: getSectionPlugins({
         pluginMap,
         limit,

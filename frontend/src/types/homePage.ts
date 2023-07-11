@@ -19,7 +19,7 @@ export enum PluginSectionType {
   pluginType = 'plugin_type',
   newest = 'newest',
   recentlyUpdated = 'recently_updated',
-  topInstalls = 'top_installs',
+  topInstalls = 'top_installed',
 }
 
 export interface PluginSectionsResponse {
