@@ -199,7 +199,7 @@ class HubAPIClient {
     }
 
     return this.sendRequest<PluginSectionsResponse>(
-      `/plugins/home/sections/${sections.join(',')}`,
+      `/plugin/home/sections/${sections.join(',')}`,
     );
   }
 }

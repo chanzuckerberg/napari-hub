@@ -64,7 +64,7 @@ function compareDates(dateA, dateB) {
   return new Date(dateB).getTime() - new Date(dateA).getTime();
 }
 
-app.get('/plugins/home/sections/:sections', (req, res) => {
+app.get('/plugin/home/sections/:sections', (req, res) => {
   const limit = +req.query.limit || 3;
   const sections = req.params.sections.split(',');
   const pluginMap = new Map(pluginIndex.map((plugin) => [plugin.name, plugin]));
