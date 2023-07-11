@@ -25,38 +25,58 @@ def _get_plugin_type() -> str:
     return PLUGIN_TYPES[index]
 
 
-def _get_plugins_by_type(index: List[Dict], limit: int) -> Dict:
+def _add_to_exclusions(exclude: Set[str], plugins: List[Dict]) -> None:
+    for plugin in plugins:
+        exclude.add(plugin.get("name"))
+
+
+def _get_plugins_by_type(index: List[Dict], limit: int, exclude: Set) -> Dict:
     plugin_type = _get_plugin_type()
     logger.info(f"plugin_type section of type={plugin_type}")
     plugins_of_type = list(
         filter(lambda item: plugin_type in item.get("plugin_types", []), index)
     )
     rand_sample = sample(plugins_of_type, min(limit, len(index)))
-    random_sample = [_filtered(plugin) for plugin in rand_sample]
-    return {"plugin_types": {"type": plugin_type, "plugins": random_sample}}
+    sampled_plugins = [_filtered(plugin) for plugin in rand_sample]
+    _add_to_exclusions(exclude, sampled_plugins)
+    return {"type": plugin_type, "plugins": sampled_plugins}
 
 
 def _get_plugins_by_sort(
-        index: List[Dict], limit: int, key: str, default_val: Union[str, int]
+        index: List[Dict],
+        limit: int,
+        key: str,
+        default_val: Union[str, int],
+        exclude: Set[str]
 ) -> Dict[str, List]:
     index.sort(key=lambda item: item.get(key, default_val))
     upper_limit = min(limit, len(index))
-    return {"plugins": [_filtered(index.pop()) for i in range(0, upper_limit)]}
+    plugins = []
+    while len(plugins) < upper_limit and len(index) > 0:
+        plugin = index.pop()
+        name = plugin.get("name")
+        if name in exclude:
+            continue
+        exclude.add(name)
+        plugins.append(_filtered(plugin))
+
+    return {"plugins": plugins}
 
 
-def _get_newest_plugins(index: List[Dict], limit: int) -> Dict:
-    plugins = _get_plugins_by_sort(index, limit, "first_released", "")
-    return {"newest": plugins}
+def _get_newest_plugins(index: List[Dict], limit: int, exclude: Set) -> Dict:
+    return _get_plugins_by_sort(index, limit, "first_released", "", exclude)
 
 
-def _get_recently_updated_plugins(index: List[Dict], limit: int) -> Dict:
-    plugins = _get_plugins_by_sort(index, limit, "release_date", "")
-    return {"recently_updated": plugins}
+def _get_recently_updated_plugins(
+        index: List[Dict], limit: int, exclude: Set
+) -> Dict:
+    return _get_plugins_by_sort(index, limit, "release_date", "", exclude)
 
 
-def _get_top_installed_plugins(index: List[Dict], limit: int) -> Dict:
-    plugins = _get_plugins_by_sort(index, limit, "total_installs", 0)
-    return {"top_install": plugins}
+def _get_top_installed_plugins(
+        index: List[Dict], limit: int, exclude: Set
+) -> Dict:
+    return _get_plugins_by_sort(index, limit, "total_installs", 0, exclude)
 
 
 def get_handler_by_section_name() -> Dict[str, Callable]:
@@ -64,26 +84,27 @@ def get_handler_by_section_name() -> Dict[str, Callable]:
         "plugin_types": _get_plugins_by_type,
         "newest": _get_newest_plugins,
         "recently_updated": _get_recently_updated_plugins,
-        "top_install": _get_top_installed_plugins,
+        "top_installed": _get_top_installed_plugins,
     }
 
 
-def _has_valid_sections(sections: Set):
+def _has_no_valid_sections(sections: Set):
     return set(get_handler_by_section_name().keys()).isdisjoint(sections)
 
 
 def get_plugin_sections(
         sections: Set[str], use_dynamo: bool, limit: int = 3
 ) -> Dict[str, Dict]:
-    response = {}
-    if not _has_valid_sections(sections):
+    if _has_no_valid_sections(sections):
         logger.warning("No processing as there are no valid sections")
-        return response
+        return {}
+    response = {}
 
+    plugins_encountered = set()
     index = get_index(use_dynamo)
     for name, handler in get_handler_by_section_name().items():
-        if name.lower() in sections:
-            section = handler(index, limit)
-            logger.info(f"Section for {name} has {len(section.get('plugins'))}")
-            response.update(section)
+        if name in sections:
+            response[name] = handler(index, limit, plugins_encountered)
+            logger.info(f"fetched data for {name} section")
+
     return response
