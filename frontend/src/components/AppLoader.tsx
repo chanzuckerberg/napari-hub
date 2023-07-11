@@ -34,13 +34,13 @@ export function AppLoader({ nextUrl }: Props) {
       <LoadingStateProvider loading key="/">
         <HomePageProvider
           pluginSections={{
-            plugin_type: {
+            plugin_types: {
               plugins,
               type: PluginType.SampleData,
             },
             newest: { plugins },
             recently_updated: { plugins },
-            top_installs: { plugins },
+            top_installed: { plugins },
           }}
         >
           <HomePage />

@@ -1,19 +1,16 @@
 /* eslint-disable max-classes-per-file */
 
 import axios, { AxiosRequestConfig } from 'axios';
-import { sample, set, shuffle } from 'lodash';
 import { snapshot } from 'valtio';
 
 import { BROWSER, PROD, SERVER, STAGING } from '@/constants/env';
 import { featureFlagsStore } from '@/store/featureFlags';
-import { compareDates } from '@/store/search/sorters';
 import {
   PluginData,
   PluginIndexData,
   PluginMetrics,
   PluginSectionsResponse,
   PluginSectionType,
-  PluginType,
 } from '@/types';
 import { CollectionData, CollectionIndexData } from '@/types/collections';
 
@@ -194,102 +191,16 @@ class HubAPIClient {
     return validateMetricsData(data);
   }
 
-  private getSectionPlugins({
-    count,
-    pluginMap,
-    filter = () => true,
-    sort,
-  }: {
-    count: number;
-    pluginMap: Map<string, PluginIndexData>;
-    filter?: (plugin: PluginIndexData) => boolean;
-    sort?: (a: PluginIndexData, b: PluginIndexData) => number;
-  }) {
-    const result: PluginIndexData[] = [];
-
-    while (result.length < count && pluginMap.size > 0) {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      let plugins = Array.from(pluginMap.values()).filter(filter)!;
-
-      if (sort) {
-        plugins.sort(sort);
-      } else {
-        plugins = shuffle(plugins);
-      }
-
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-non-null-assertion
-      const pluginKey = plugins[0].name;
-
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const plugin = pluginMap.get(pluginKey)!;
-      pluginMap.delete(pluginKey);
-
-      result.push(plugin);
-    }
-
-    return result;
-  }
-
-  // TODO Replace with actual API calls, for now create data client-side
-  // TODO Add data validation
   async getPluginSections(
     sections: PluginSectionType[],
   ): Promise<PluginSectionsResponse> {
-    const index = await this.getPluginIndex();
-    const pluginMap = new Map(index.map((plugin) => [plugin.name, plugin]));
-
-    const pluginDataType =
-      sample(
-        Array.from(
-          new Set(
-            index
-              .flatMap((plugin) => plugin.plugin_types ?? [])
-              .filter((pluginType) => pluginType !== PluginType.Theme),
-          ),
-        ),
-      ) ?? PluginType.SampleData;
-
-    const data: PluginSectionsResponse = {
-      plugin_type: {
-        type: pluginDataType,
-        plugins: this.getSectionPlugins({
-          pluginMap,
-          count: 3,
-          filter: (plugin) => !!plugin.plugin_types?.includes(pluginDataType),
-        }),
-      },
-
-      newest: {
-        plugins: this.getSectionPlugins({
-          pluginMap,
-          count: 3,
-          sort: (a, b) => compareDates(a.first_released, b.first_released),
-        }),
-      },
-
-      recently_updated: {
-        plugins: this.getSectionPlugins({
-          pluginMap,
-          count: 3,
-          sort: (a, b) => compareDates(a.release_date, b.release_date),
-        }),
-      },
-
-      top_installs: {
-        plugins: this.getSectionPlugins({
-          pluginMap,
-          count: 3,
-          sort: (a, b) => b.total_installs - a.total_installs,
-        }),
-      },
-    };
-
-    const response: PluginSectionsResponse = {};
-    for (const section of sections) {
-      set(response, section, data[section]);
+    if (sections.length === 0) {
+      return {};
     }
 
-    return response;
+    return this.sendRequest<PluginSectionsResponse>(
+      `/plugin/home/sections/${sections.join(',')}`,
+    );
   }
 }
 
