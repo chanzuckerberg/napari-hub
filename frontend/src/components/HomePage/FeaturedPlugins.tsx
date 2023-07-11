@@ -20,7 +20,7 @@ export function FeaturedPlugins() {
   const isLoading = useLoadingState();
 
   const {
-    plugin_type: pluginTypeSection,
+    plugin_types: pluginTypeSection,
     newest: newestSection,
     recently_updated: recentlyUpdatedSection,
     top_installed: topInstallsSection,
