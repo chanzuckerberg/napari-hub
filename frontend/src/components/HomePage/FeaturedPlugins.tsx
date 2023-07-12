@@ -47,6 +47,11 @@ export function FeaturedPlugins() {
         <PluginSection
           icon={SampleData}
           plugins={pluginTypeSection.plugins}
+          pluginType={pluginTypeSection.type}
+          row={0}
+          section={t('homePage:pluginSectionTitles.pluginTypes', {
+            type: pluginTypeLabels[pluginTypeSection.type],
+          })}
           seeAllLink={`/plugins?pluginType=${pluginTypeSection.type}`}
           title={
             <span className="flex items-center gap-x-sds-s">
@@ -63,30 +68,36 @@ export function FeaturedPlugins() {
       {newestSection && (
         <PluginSection
           icon={Newest}
+          metadataToShow={['first_released']}
           plugins={newestSection.plugins}
+          row={1}
+          section={t('homePage:newest')}
           seeAllLink="/plugins?sort=newest"
           title={t('homePage:newest')}
-          metadataToShow={['first_released']}
         />
       )}
 
       {recentlyUpdatedSection && (
         <PluginSection
           icon={RecentlyUpdated}
+          metadataToShow={['release_date']}
           plugins={recentlyUpdatedSection.plugins}
+          row={2}
+          section={t('homePage:recentlyUpdated')}
           seeAllLink="/plugins?sort=recentlyUpdated"
           title={t('homePage:recentlyUpdated')}
-          metadataToShow={['release_date']}
         />
       )}
 
       {topInstallsSection && (
         <PluginSection
           icon={TrendingInstalls}
+          metadataToShow={['total_installs']}
           plugins={topInstallsSection.plugins}
+          row={3}
+          section={t('homePage:pluginSectionTitles.trendingInstalls')}
           seeAllLink="/plugins?sort=totalInstalls"
           title={t('homePage:pluginSectionTitles.trendingInstalls')}
-          metadataToShow={['total_installs']}
         />
       )}
     </div>

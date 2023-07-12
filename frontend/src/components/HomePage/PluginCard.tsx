@@ -7,12 +7,17 @@ import { useMemo } from 'react';
 import { Link } from '@/components/Link';
 import { SkeletonLoader } from '@/components/SkeletonLoader';
 import { Text } from '@/components/Text';
-import { I18nKeys, PluginHomePageData } from '@/types';
+import { usePlausible } from '@/hooks';
+import { I18nKeys, PluginHomePageData, PluginType } from '@/types';
 
 interface Props {
   className?: string;
+  column: number;
   metadataToShow?: (keyof PluginHomePageData)[];
   plugin: PluginHomePageData;
+  pluginType?: PluginType;
+  row: number;
+  section: string;
 }
 
 const MAX_AUTHORS_COUNT = 3;
@@ -56,8 +61,17 @@ function MetadataValue({
   return <>plugin[pluginKey]</>;
 }
 
-export function PluginCard({ className, metadataToShow, plugin }: Props) {
+export function PluginCard({
+  className,
+  column,
+  metadataToShow,
+  plugin,
+  pluginType,
+  row,
+  section,
+}: Props) {
   const { t } = useTranslation(['pluginData']);
+  const plausible = usePlausible();
 
   return (
     <SkeletonLoader
@@ -71,6 +85,19 @@ export function PluginCard({ className, metadataToShow, plugin }: Props) {
             className,
           )}
           href={`/plugins/${plugin.name}`}
+          onClick={() =>
+            plausible('Home Plugin Section Click', {
+              row,
+              column,
+              plugin_name: plugin.name,
+              section,
+
+              // Only add `plugin_type` to payload if defined
+              ...(typeof pluginType === 'string'
+                ? { plugin_type: pluginType }
+                : {}),
+            })
+          }
         >
           <div>
             <Text variant="h4">{plugin.display_name || plugin.name}</Text>

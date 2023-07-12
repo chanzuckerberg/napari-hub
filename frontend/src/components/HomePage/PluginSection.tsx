@@ -4,24 +4,30 @@ import { ComponentType, ReactNode } from 'react';
 import { IconProps } from '@/components/icons/icons.type';
 import { Link } from '@/components/Link';
 import { Text } from '@/components/Text';
-import { PluginHomePageData } from '@/types';
+import { PluginHomePageData, PluginType } from '@/types';
 
 import { PluginCard } from './PluginCard';
 
 interface Props {
   icon: ComponentType<IconProps>;
-  title: ReactNode;
-  seeAllLink: string;
-  plugins: PluginHomePageData[];
   metadataToShow?: (keyof PluginHomePageData)[];
+  plugins: PluginHomePageData[];
+  pluginType?: PluginType;
+  row: number;
+  section: string;
+  seeAllLink: string;
+  title: ReactNode;
 }
 
 export function PluginSection({
   icon: Icon,
-  title,
-  seeAllLink,
-  plugins,
   metadataToShow,
+  plugins,
+  pluginType,
+  row,
+  section,
+  seeAllLink,
+  title,
 }: Props) {
   return (
     <div className="col-span-2 screen-875:col-span-3 screen-1425:col-start-2">
@@ -45,9 +51,14 @@ export function PluginSection({
         {plugins.map((plugin, index) => (
           <PluginCard
             className={clsx(index === 2 && 'hidden screen-875:flex')}
-            key={plugin.name}
-            plugin={plugin}
+            column={index}
+            // eslint-disable-next-line react/no-array-index-key
+            key={`${plugin.name}-${index}`}
             metadataToShow={metadataToShow}
+            plugin={plugin}
+            pluginType={pluginType}
+            row={row}
+            section={section}
           />
         ))}
       </div>
