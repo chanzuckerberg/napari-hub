@@ -36,7 +36,7 @@ def _get_plugins_by_type(index: List[Dict], limit: int, exclude: Set) -> Dict:
     plugins_of_type = list(
         filter(lambda item: plugin_type in item.get("plugin_types", []), index)
     )
-    rand_sample = sample(plugins_of_type, min(limit, len(index)))
+    rand_sample = sample(plugins_of_type, min(limit, len(plugins_of_type)))
     sampled_plugins = [_filtered(plugin) for plugin in rand_sample]
     _add_to_exclusions(exclude, sampled_plugins)
     return {"type": plugin_type, "plugins": sampled_plugins}
