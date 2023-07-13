@@ -7,6 +7,7 @@ on:
   push:
     branches:
       - main
+      - joshua/improve-e2e-tests
     paths:
       - 'frontend/**'
   pull_request:
