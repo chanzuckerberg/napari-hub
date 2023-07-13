@@ -11,7 +11,8 @@ on:
       - unlabeled
       - ready_for_review
     branches:
-        - main
+      #- main
+      - joshua/enforce-release-label-workflow
 
 jobs:
   checkLabels:
