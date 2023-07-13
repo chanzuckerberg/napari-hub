@@ -1,6 +1,6 @@
 # Workflow for enforcing labels for on main branch PRs
 
-name: Enforce Labels
+name: Enforce Release Labels
 
 on:
   pull_request_target:
