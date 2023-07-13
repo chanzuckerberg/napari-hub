@@ -24,7 +24,7 @@ def get_blocked_plugins() -> Dict[str, str]:
     plugins = {}
     start = time.perf_counter()
     try:
-        plugins = {plgn.name: plgn.reason if plgn.reason else "blocked"
+        plugins = {plgn.name: plgn.reason or "blocked"
                    for plgn in _PluginBlocked.scan()}
         return plugins
     except Exception:
