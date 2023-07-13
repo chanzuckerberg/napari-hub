@@ -9,7 +9,11 @@ from collections import defaultdict
 import pandas as pd
 
 from api.models import (
-    github_activity, install_activity, plugin, plugin_blocked, plugin_metadata
+    github_activity,
+    install_activity,
+    plugin as plugin_model,
+    plugin_blocked,
+    plugin_metadata as plugin_metadata_model
 )
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
@@ -47,7 +51,7 @@ def get_public_plugins(use_dynamo: bool = False) -> Dict[str, str]:
     :return: dict of public plugins and their versions
     """
     if use_dynamo:
-        return plugin.get_latest_by_visibility()
+        return plugin_model.get_latest_by_visibility()
 
     public_plugins = get_cache("cache/public-plugins.json")
     return public_plugins if public_plugins else {}
@@ -60,7 +64,7 @@ def get_hidden_plugins(use_dynamo: bool = False) -> Dict[str, str]:
     :return: dict of hidden plugins and their versions
     """
     if use_dynamo:
-        return plugin.get_hidden_plugins()
+        return plugin_model.get_hidden_plugins()
 
     hidden_plugins = get_cache('cache/hidden-plugins.json')
     return hidden_plugins if hidden_plugins else {}
@@ -87,7 +91,7 @@ def get_plugin(name: str, version: str = None, use_dynamo: bool = False) -> dict
     :return: plugin metadata dictionary
     """
     if use_dynamo:
-        return plugin.get_plugin(name, version)
+        return plugin_model.get_plugin(name, version)
 
     plugins = get_valid_plugins()
     if name not in plugins:
@@ -144,10 +148,10 @@ def get_manifest(name: str, version: str = None, use_dynamo: bool = False) -> di
     """
     if use_dynamo:
         if not version:
-            version = plugin.get_latest_version(name)
+            version = plugin_model.get_latest_version(name)
         if not version:
             return {}
-        manifest_metadata = plugin_metadata.get_manifest(name, version)
+        manifest_metadata = plugin_metadata_model.get_manifest(name, version)
     else:
         plugins = get_valid_plugins()
         if name not in plugins:
@@ -179,7 +183,7 @@ def get_index(use_dynamo: bool = False) -> List[Dict[str, Any]]:
     :return: dict for index page metadata
     """
     if use_dynamo:
-        plugins = plugin.get_index()
+        plugins = plugin_model.get_index()
         total_installs = install_activity.get_total_installs_by_plugins()
         for item in plugins:
             item["total_installs"] = total_installs.get(item["name"], 0)
@@ -207,7 +211,7 @@ def get_excluded_plugins(use_dynamo: bool = False) -> Dict[str, str]:
     """
     if use_dynamo:
         return {
-            **plugin.get_excluded_plugins(),
+            **plugin_model.get_excluded_plugins(),
             **plugin_blocked.get_blocked_plugins()
         }
 
