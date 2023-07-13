@@ -91,8 +91,8 @@ jobs:
       fail-fast: false
       matrix:
         browser: [chrome, firefox, webkit]
-        shardCurrent: [1, 2, 3, 4, 5]
-        shardTotal: [5]
+        shardCurrent: [1, 2, 3, 4, 5, 6]
+        shardTotal: [6]
 
     steps:
       - name: Checkout Repo
