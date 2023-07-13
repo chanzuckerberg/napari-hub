@@ -1,4 +1,5 @@
 # Workflow for enforcing labels for on main branch PRs
+# .github/workflows/enforce-labels.yml
 
 name: Enforce Release Labels
 
@@ -21,19 +22,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Use Node.js
+      - name: Install Node.js
         uses: actions/setup-node@v2
-        with:
-            node-version: '20'
-
 
       - name: Install dependencies
-        run: npm install @octokit/rest @actions/github
+        run: npm install
 
       - name: Check for labels
-        run: |
-          node .github/check-labels.js
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-
+        uses: actions/github-script@v5
+        with:
+          script: |
+            const checkLabels = require('./.github/check-labels.js');
+            checkLabels({github, context, core});
