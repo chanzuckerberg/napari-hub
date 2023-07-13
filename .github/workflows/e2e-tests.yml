@@ -6,10 +6,10 @@ name: E2E Tests
 on:
   push:
     branches:
-      - main
-      - joshua/improve-e2e-tests
-    paths:
-      - 'frontend/**'
+      #- main
+      - joshua/improve-e2e-tests # TODO: Remove before PR
+    #paths:
+    #  - 'frontend/**'
   pull_request:
     branches:
       - '**'
