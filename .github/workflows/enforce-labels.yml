@@ -25,11 +25,8 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v2
 
-      - name: Install dependencies
-        run: npm install
-
       - name: Check for labels
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         with:
           script: |
             const checkLabels = require('./.github/check-labels.js');
