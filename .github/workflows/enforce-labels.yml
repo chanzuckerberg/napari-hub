@@ -1,5 +1,4 @@
 # Workflow for enforcing labels for on main branch PRs
-# .github/workflows/enforce-labels.yml
 
 name: Enforce Release Labels
 
@@ -12,8 +11,7 @@ on:
       - unlabeled
       - ready_for_review
     branches:
-      #- main
-      - joshua/enforce-release-label-workflow
+      - main
 
 jobs:
   checkLabels:
