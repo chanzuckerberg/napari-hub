@@ -8,7 +8,7 @@ module.exports = async ({github, context, core}) => {
     return;
   }
 
-  const labels = await github.issues.listLabelsOnIssue({
+  const labels = await github.rest.issues.listLabelsOnIssue({
     owner: context.repo.owner,
     repo: context.repo.repo,
     issue_number: pr.number,
