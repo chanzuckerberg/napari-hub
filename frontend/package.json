@@ -33,7 +33,7 @@
     "e2e:local:headless": "NODE_ENV=local DEBUG=pw:api playwright test -c ./e2e/setup/local.config.ts",
     "e2e:local:desktop": "NODE_ENV=local DEBUG=pw:api playwright test --headed -c ./e2e/setup/local.config.ts --project Desktop",
     "e2e:local:300": "NODE_ENV=local DEBUG=pw:api playwright test --headed -c ./e2e/setup/local.config.ts --project Screen-300",
-    "e2e:ci": "NODE_ENV=local DEBUG=pw:api playwright test -c ./e2e/setup/ci.config.ts",
+    "e2e:ci": "NODE_ENV=staging DEBUG=pw:api playwright test -c ./e2e/setup/staging.config.ts",
     "e2e:local:debug": "NODE_ENV=local DEBUG=pw:browser*,pw:api NODE_ENV=local playwright test --headed -c ./e2e/setup/local.config.ts",
     "e2e:report": "playwright show-report",
     "e2e:staging:desktop": "NODE_ENV=staging DEBUG=pw:api playwright test --headed --project Desktop -c ./e2e/setup/staging.config.ts",
