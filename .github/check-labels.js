@@ -20,7 +20,7 @@ module.exports = async ({github, context, core}) => {
   const hasRequiredLabel = labelNames.some((name) => configLabels.includes(name));
 
   if (!hasRequiredLabel) {
-    await github.issues.createComment({
+    await github.rest.issues.createComment({
       owner: context.repo.owner,
       repo: context.repo.repo,
       issue_number: pr.number,
