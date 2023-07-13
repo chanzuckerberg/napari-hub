@@ -77,19 +77,73 @@ class TestPlugin:
 
     @pytest.fixture()
     def data(
-            self, plugin1_data2_2, plugin1_data2_3, plugin2_data0_5, plugin2_data1_0_0, plugin4_data
+            self,
+            plugin1_data2_2,
+            plugin1_data2_3,
+            plugin2_data0_5,
+            plugin2_data1_0_0,
+            plugin4_data
     ):
         return [
-            {"name": "plugin-1", "version": "2.2", "visibility": "PUBLIC",  "data": plugin1_data2_2},
-            {"name": "plugin-1", "version": "2.3", "visibility": "PUBLIC", "is_latest": "true", "data": plugin1_data2_3},
-            {"name": "plugin-2", "version": "0.5", "visibility": "HIDDEN", "excluded": "HIDDEN", "is_latest": "true", "data": plugin2_data0_5},
-            {"name": "plugin-2", "version": "1.0.0", "visibility": "HIDDEN", "excluded": "HIDDEN", "is_latest": "true", "data": plugin2_data1_0_0},
-            {"name": "plugin-3", "version": "1.5", "visibility": "DISABLED", "excluded": "DISABLED",},
-            {"name": "plugin-3", "version": "1.6", "visibility": "DISABLED", "excluded": "DISABLED", "is_latest": "true"},
-            {"name": "plugin-4", "version": "5.0", "visibility": "PUBLIC", "is_latest": "true", "data": plugin4_data},
+            {
+                "name": "plugin-1",
+                "version": "2.2",
+                "visibility": "PUBLIC",
+                "data": plugin1_data2_2,
+            },
+            {
+                "name": "plugin-1",
+                "version": "2.3",
+                "visibility": "PUBLIC",
+                "is_latest": "true",
+                "data": plugin1_data2_3,
+            },
+            {
+                "name": "plugin-2",
+                "version": "0.5",
+                "visibility": "HIDDEN",
+                "excluded": "HIDDEN",
+                "is_latest": "true",
+                "data": plugin2_data0_5,
+            },
+            {
+                "name": "plugin-2",
+                "version": "1.0.0",
+                "visibility": "HIDDEN",
+                "excluded": "HIDDEN",
+                "is_latest": "true",
+                "data": plugin2_data1_0_0,
+            },
+            {
+                "name": "plugin-3",
+                "version": "1.5",
+                "visibility": "DISABLED",
+                "excluded": "DISABLED",
+            },
+            {
+                "name": "plugin-3",
+                "version": "1.6",
+                "visibility": "DISABLED",
+                "excluded": "DISABLED",
+                "is_latest": "true",
+            },
+            {
+                "name": "plugin-4",
+                "version": "5.0",
+                "visibility": "PUBLIC",
+                "is_latest": "true",
+                "data": plugin4_data,
+            },
         ]
 
-    def _put_items(self, table, data):
+    @pytest.fixture()
+    def get_fixture(self, request):
+        def _get_fixture(name):
+            return request.getfixturevalue(name) if name else {}
+        return _get_fixture
+
+    @classmethod
+    def _put_items(cls, table, data):
         for item in data:
             if item.get("data", {}).get("release_date"):
                 item["release_date"] = item["data"]["release_date"]
@@ -99,6 +153,7 @@ class TestPlugin:
             self, plugin_table, data
     ):
         self._put_items(plugin_table, data)
+
         actual = plugin.get_latest_by_visibility()
 
         assert actual == {"plugin-1": "2.3", "plugin-4": "5.0"}
@@ -126,7 +181,9 @@ class TestPlugin:
         actual = plugin.get_latest_by_visibility(visibility)
         assert actual == expected
 
-    def test_get_index_with_data(self, plugin_table, data, plugin1_data2_3, plugin4_data):
+    def test_get_index_with_data(
+            self, plugin_table, data, plugin1_data2_3, plugin4_data
+    ):
         self._put_items(plugin_table, data)
 
         actual = plugin.get_index()
@@ -151,45 +208,47 @@ class TestPlugin:
         actual = plugin.get_hidden_plugins()
         assert actual == {}
 
-    @pytest.mark.parametrize("name, version, has_data", [
-        ("plugin-1", "2.2", True),
-        ("plugin-1", "2.4", False),
-        ("plugin-2", "0.5", True),
-        ("plugin-8", "2.2", False),
+    @pytest.mark.parametrize("name, version, has_data, fixture_name", [
+        ("plugin-1", "2.2", True, "plugin1_data2_2"),
+        ("plugin-1", "2.4", False, None),
+        ("plugin-2", "0.5", True, "plugin2_data0_5"),
+        ("plugin-8", "2.2", False, None),
     ])
     def test_get_plugin_with_version(
-            self, plugin_table, data, plugin1_data2_2, plugin2_data0_5, name, version, has_data
+            self,
+            plugin_table,
+            data,
+            get_fixture,
+            name,
+            version,
+            has_data,
+            fixture_name
     ):
         self._put_items(plugin_table, data)
 
         actual = plugin.get_plugin(name, version)
 
-        expected = {}
-        if name == "plugin-1" and version == "2.2":
-            expected = plugin1_data2_2
-        elif name == "plugin-2" and version == "0.5":
-            expected = plugin2_data0_5
+        expected = get_fixture(fixture_name)
         assert actual == expected
 
-    @pytest.mark.parametrize("name, has_data", [
-        ("plugin-1", True), ("plugin-2", True), ("plugin-8",  False),
+    @pytest.mark.parametrize("name, has_data, fixture_name", [
+        ("plugin-1", True, "plugin1_data2_2"),
+        ("plugin-2", True, "plugin2_data1_0_0"),
+        ("plugin-8",  False, None),
     ])
     def test_get_plugin_without_version(
-            self, plugin_table, data, plugin1_data2_2, plugin2_data1_0_0, name, has_data
+            self, plugin_table, data, get_fixture, name, has_data, fixture_name
     ):
         self._put_items(plugin_table, data)
 
         actual = plugin.get_plugin(name, None)
 
-        expected = {}
-        if name == "plugin-1":
-            expected = plugin1_data2_2
-        elif name == "plugin-2":
-            expected = plugin2_data1_0_0
+        expected = get_fixture(fixture_name)
         assert actual == expected
 
     def test_get_excluded_plugins(self, plugin_table, data):
         self._put_items(plugin_table, data)
+
         actual = plugin.get_excluded_plugins()
 
         assert actual == {"plugin-2": "hidden", "plugin-3": "disabled"}

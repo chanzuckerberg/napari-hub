@@ -16,7 +16,8 @@ class TestPluginMetadata:
                 plugin_metadata._PluginMetadata, "plugin-metadata"
             )
 
-    def _put_items(self, table):
+    @classmethod
+    def _put_item(cls, table):
         item = {
             "name": "plugin-1",
             "version_type": "1.1:DISTRIBUTION",
@@ -33,7 +34,7 @@ class TestPluginMetadata:
     def test_get_blocked_plugins(
             self, plugin_metadata_table, name, version, expected
     ):
-        self._put_items(plugin_metadata_table)
+        self._put_item(plugin_metadata_table)
 
         actual = plugin_metadata.get_manifest(name, version)
         assert actual == expected
