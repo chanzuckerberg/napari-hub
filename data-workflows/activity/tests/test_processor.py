@@ -10,6 +10,7 @@ import activity.processor as processor
 from activity.install_activity_model import InstallActivityType
 from activity.github_activity_model import GitHubActivityType
 from utils.utils import ParameterStoreAdapter
+from nhcommons.models.plugin import get_plugin_name_by_repo
 import nhcommons
 
 START_TIME = 1234567
@@ -26,6 +27,7 @@ PLUGINS_WITH_COMMITS_IN_WINDOW = {
     GitHubActivityType.MONTH: {"bazg": ["data3g", "data4g"]},
     GitHubActivityType.TOTAL: {"hapg": ["data5g"]},
 }
+MOCK_PLUGIN_BY_REPO = {"napari-demo": "chanzuckerberg/napari-demo"}
 
 
 class TestActivityProcessor:
@@ -33,8 +35,8 @@ class TestActivityProcessor:
         self._parameter_store.set_last_updated_timestamp \
             .assert_called_once_with(END_TIME)
 
-    @staticmethod
-    def _setup_snowflake_response(monkeypatch, data):
+    @classmethod
+    def _setup_snowflake_response(cls, monkeypatch, data):
         monkeypatch.setattr(
             snowflake, "get_plugins_with_installs_in_window", lambda _, __: data
         )
@@ -58,8 +60,9 @@ class TestActivityProcessor:
             spec=ParameterStoreAdapter,
             get_last_updated_timestamp=lambda: START_TIME,
         )
-        monkeypatch.setattr(processor, "ParameterStoreAdapter",
-                            lambda: self._parameter_store)
+        monkeypatch.setattr(
+            processor, "ParameterStoreAdapter", lambda: self._parameter_store
+        )
 
         yield
 
@@ -67,45 +70,51 @@ class TestActivityProcessor:
 
     @pytest.fixture(autouse=True)
     def setup_method(self, monkeypatch):
-        monkeypatch.setattr(nhcommons.utils, "get_current_timestamp", lambda: END_TIME)
-        self._install_transform_and_write_mock = Mock(
+        monkeypatch.setattr(
+            nhcommons.utils, "get_current_timestamp", lambda: END_TIME
+        )
+        self._installs_mock = Mock(
             spec=activity_iam.transform_and_write_to_dynamo
         )
-        self._commits_transform_and_write_mock = Mock(
+        self._commits_mock = Mock(
             spec=activity_gam.transform_and_write_to_dynamo
+        )
+        self._plugin_mock = Mock(
+            spec=get_plugin_name_by_repo, return_value=MOCK_PLUGIN_BY_REPO
         )
 
     def test_update_install_activity_with_new_updates(self, monkeypatch):
         self._setup_snowflake_response(monkeypatch, MOCK_DATA)
 
         monkeypatch.setattr(
-            activity_iam, "transform_and_write_to_dynamo",
-            self._install_transform_and_write_mock,
+            activity_iam, "transform_and_write_to_dynamo", self._installs_mock
         )
         monkeypatch.setattr(
-            activity_gam, "transform_and_write_to_dynamo",
-            self._commits_transform_and_write_mock,
+            activity_gam, "transform_and_write_to_dynamo", self._commits_mock
+        )
+        monkeypatch.setattr(
+            processor, "get_plugin_name_by_repo", self._plugin_mock
         )
 
-        from activity.processor import update_activity
-        update_activity()
+        processor.update_activity()
 
-        assert self._install_transform_and_write_mock.call_count == 3
+        assert self._installs_mock.call_count == 3
         for iat in InstallActivityType:
-            self._install_transform_and_write_mock.assert_any_call(
+            self._installs_mock.assert_any_call(
                 PLUGINS_WITH_INSTALLS_IN_WINDOW[iat], iat
             )
-        assert self._commits_transform_and_write_mock.call_count == 3
+        assert self._commits_mock.call_count == 3
         for gat in GitHubActivityType:
-            self._commits_transform_and_write_mock.assert_any_call(
-                PLUGINS_WITH_COMMITS_IN_WINDOW[gat], gat
+            self._commits_mock.assert_any_call(
+                PLUGINS_WITH_COMMITS_IN_WINDOW[gat], gat, MOCK_PLUGIN_BY_REPO
             )
+        self._plugin_mock.assert_called_once()
 
     def test_update_install_activity_with_no_new_updates(self, monkeypatch):
         self._setup_snowflake_response(monkeypatch, [])
 
-        from activity.processor import update_activity
-        update_activity()
+        processor.update_activity()
 
-        assert self._install_transform_and_write_mock.call_count == 0
-        assert self._commits_transform_and_write_mock.call_count == 0
+        self._installs_mock.assert_not_called()
+        self._commits_mock.assert_not_called()
+        self._plugin_mock.assert_not_called()
