@@ -1,6 +1,7 @@
 const config = require('./release-notes.config')
 
 module.exports = async ({github, context, core}) => {
+
     const pr = context.payload.pull_request;
 
     if (!pr) {
@@ -51,4 +52,3 @@ module.exports = async ({github, context, core}) => {
         }
     }
 }
-  
