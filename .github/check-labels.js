@@ -26,7 +26,7 @@ module.exports = async ({github, context, core}) => {
         issue_number: pr.number,
     });
 
-    const botComments = comments.data.filter((comment) => comment.user.login === 'github-actions' && comment.body === botCommentBody);
+    const botComments = comments.data.filter((comment) => comment.user.login === 'github-actions[bot]' && comment.body === botCommentBody);
 
     if (!hasRequiredLabel) {
         // If the PR does not have a release label and if the bot has not left a comment before, leave a comment and fail the test.  
