@@ -18,7 +18,7 @@ def generate_expected(data, granularity, type_id, ts_formatter):
         for val in values:
             ts = val.get("timestamp")
             item = {
-                "plugin_name": PLUGIN_BY_REPO.get(repo),
+                "plugin_name": PLUGIN_BY_REPO.get(repo).lower(),
                 "type_identifier": f"{type_id.format(repo=repo, ts=ts)}",
                 "granularity": granularity,
                 "timestamp": ts_formatter(ts),
