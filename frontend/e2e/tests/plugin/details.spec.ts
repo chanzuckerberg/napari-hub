@@ -37,7 +37,7 @@ import {
   USAGE,
 } from '../../utils/constants';
 import { getFixture } from '../../utils/fixture';
-import { formateDate } from '../../utils/plugin';
+import { formatDate } from '../../utils/plugin';
 import { getByID } from '../../utils/selectors';
 
 const ENV = (process.env.NODE_ENV as string) || '';
@@ -93,11 +93,11 @@ test.describe('Plugin details tests', () => {
 
     expect(
       await page.locator(getByID(METADATA_RELEASE_DATE)).nth(1).textContent(),
-    ).toContain(formateDate(data.release_date.substring(0, 10) as string));
+    ).toContain(formatDate(data.release_date.substring(0, 10) as string));
 
     expect(
       await page.locator(getByID(METADATA_FIRST_RELEASED)).nth(1).textContent(),
-    ).toContain(formateDate(data.first_released.substring(0, 10) as string));
+    ).toContain(formatDate(data.first_released.substring(0, 10) as string));
 
     expect(
       await page.locator(getByID(METADATA_LICENSE)).nth(1).textContent(),

@@ -12,7 +12,7 @@ import { filterPlugins, verifyFilterResults } from './filter';
 import { parseItem, searchPluginFixture } from './fixture';
 import { getMetadata } from './selectors';
 
-export function formateDate(dateStr: string) {
+export function formatDate(dateStr: string) {
   const d = new Date(dateStr)
     .toLocaleString('en-US', {
       day: '2-digit',
