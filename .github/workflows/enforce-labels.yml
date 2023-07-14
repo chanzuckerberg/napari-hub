@@ -11,8 +11,7 @@ on:
       - unlabeled
       - ready_for_review
     branches:
-      #- main
-      - joshua/enforce-release-label-workflow # TODO: Remove this comment before PR
+      - main
 
 jobs:
   checkLabels:
