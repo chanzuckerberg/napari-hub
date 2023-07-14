@@ -65,7 +65,8 @@ class GitHubActivityType(Enum):
                     for name, ts in plugins_by_earliest_ts.items()
                 ]
             )
-        return f"""repo IN ({','.join([f"'{plugin}'" for plugin in plugins_by_earliest_ts.keys()])})"""
+        plugins = [f"'{plugin}'" for plugin in plugins_by_earliest_ts.keys()]
+        return f"""repo IN ({','.join(plugins)})"""
 
     def get_query(self, plugins_by_earliest_ts: dict[str, datetime]) -> str:
         return f"""
@@ -141,7 +142,8 @@ def transform_and_write_to_dynamo(data: dict[str, list],
                 granularity=granularity,
                 timestamp=activity_type.format_to_timestamp(timestamp),
                 commit_count=commit_count,
-                repo=repo)
+                repo=repo
+            )
             batch.save(item)
             count += 1
 
