@@ -22,7 +22,7 @@ module.exports = async ({github, context, core}) => {
     const botCommentBody = "⚠️ This PR does not have a [release label](https://github.com/chanzuckerberg/napari-hub/blob/main/.github/release-notes.config.js). Please add one before merging.";
 
     const comments = await github.rest.issues.listComments({
-         owner: context.repo.owner,
+        owner: context.repo.owner,
         repo: context.repo.repo,
         issue_number: pr.number,
     });
@@ -33,10 +33,10 @@ module.exports = async ({github, context, core}) => {
         // If the PR does not have a release label and if the bot has not left a comment before, leave a comment and fail the test.  
         if (botComments.length === 0) {
             await github.rest.issues.createComment({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            issue_number: pr.number,
-            body: botCommentBody,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pr.number,
+                body: botCommentBody,
             });
 
             core.setFailed("Missing release label");
