@@ -119,16 +119,31 @@ test.describe('Plugin search', () => {
     viewport,
   }) => {
     await page.goto(getSearchUrl(), { timeout: 60000 });
-    await maybeOpenAccordion(page, AccordionTitle.Sort, viewport?.width);
-    await expect(page.locator(selectors.sort.selected).first()).toContainText(
-      'Recently updated',
-    );
 
-    await searchPlugins(page, 'video');
-    await maybeOpenAccordion(page, AccordionTitle.Sort, viewport?.width);
-    await expect(page.locator(selectors.sort.selected).first()).toHaveText(
-      'Relevance',
-    );
+    // eslint-disable-next-line playwright/no-conditional-in-test
+    if ((viewport?.width ?? 0) >= 875) {
+      await page.click(selectors.sort.sortDropdown);
+      await expect(
+        page.locator(selectors.sort.sortDropdown).first(),
+      ).toContainText('Recently Updated');
+
+      await searchPlugins(page, 'video');
+      await page.click(selectors.sort.sortDropdown);
+      await expect(
+        page.locator(selectors.sort.sortDropdown).first(),
+      ).toContainText('Relevance');
+    } else {
+      await maybeOpenAccordion(page, AccordionTitle.Sort, viewport?.width);
+      await expect(page.locator(selectors.sort.selected).first()).toContainText(
+        'Recently Updated',
+      );
+
+      await searchPlugins(page, 'video');
+      await maybeOpenAccordion(page, AccordionTitle.Sort, viewport?.width);
+      await expect(page.locator(selectors.sort.selected).first()).toHaveText(
+        'Relevance',
+      );
+    }
   });
 
   test('should show result with match in name', async ({ page }) => {
