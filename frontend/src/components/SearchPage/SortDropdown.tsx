@@ -38,6 +38,7 @@ export function SortDropdown() {
       </Text>
 
       <Select
+        data-testid="sortDropdown"
         className={clsx(styles.select, 'w-[185px] hover:bg-hub-gray-100')}
         classes={{
           select: 'p-sds-s',
@@ -55,6 +56,8 @@ export function SortDropdown() {
       >
         {options.map((option) => (
           <MenuItem
+            data-testid="sortOption"
+            data-sort-type={option}
             className="bg-white hover:bg-hub-gray-100 p-sds-s m-sds-s"
             key={option}
             value={option}
