@@ -11,6 +11,8 @@ export const getByTestID = (id: string): string => `[data-testid="${id}"]`;
 export const getByID = (id: string): string => `[id="${id}"]`;
 enum CommonSelectors {
   appBarHome = '[data-testid=appBarHome]:visible',
+  plugins = 'a[href="/plugins"]:visible',
+  mobileMenuButton = '[data-testid="mobileMenuButtonContainer"] [data-testid=iconButton]',
 }
 
 enum SearchSelectors {
@@ -25,6 +27,7 @@ enum SearchSelectors {
 enum SortSelectors {
   selected = '[data-testid=sortByRadio][data-selected=true]:visible',
   selectedVisible = '[data-testid=sortByRadio][data-selected=true]',
+  sortDropdown = '[data-testid=sortDropdown]',
 }
 
 enum PluginSelectors {
@@ -74,6 +77,10 @@ export const selectors = {
 
     getRadioInput(sort: SearchSortType) {
       return `input[value=${sort}]:visible`;
+    },
+
+    getSortDropdownItem(sort: SearchSortType) {
+      return `[data-testid=sortOption][data-sort-option=${sort}]:visible`;
     },
   },
 };
