@@ -2,7 +2,7 @@ import logging
 import time
 from datetime import datetime
 from enum import Enum, auto
-from typing import Union
+from typing import Union, Optional
 import os
 
 from pynamodb.models import Model
@@ -29,30 +29,33 @@ class GitHubActivityType(Enum):
 
     LATEST = (
         datetime_to_utc_timestamp_in_millis,
-        "LATEST:{0}",
-        "repo AS name, TO_TIMESTAMP(MAX(commit_author_date)) AS latest_commit",
+        "LATEST:{repo}",
+        "TO_TIMESTAMP(MAX(commit_author_date)) AS latest_commit",
         "name"
     )
     MONTH = (
         date_to_utc_timestamp_in_millis,
-        "MONTH:{1:%Y%m}:{0}",
-        "repo AS name, DATE_TRUNC('month', TO_DATE(commit_author_date)) AS month, COUNT(*) AS commit_count",
+        "MONTH:{timestamp:%Y%m}:{repo}",
+        "DATE_TRUNC('month', TO_DATE(commit_author_date)) AS month, "
+        "COUNT(*) AS commit_count",
         "name, month"
     )
     TOTAL = (
         lambda timestamp: None,
-        "TOTAL:{0}",
-        "repo AS name, COUNT(*) AS commit_count",
+        "TOTAL:{repo}",
+        "COUNT(*) AS commit_count",
         "name"
     )
 
     def format_to_timestamp(self, timestamp: datetime) -> Union[int, None]:
         return self.timestamp_formatter(timestamp)
 
-    def format_to_type_identifier(
-            self, repo_name: str, id_timestamp: str
-    ) -> str:
-        return self.type_identifier_formatter.format(repo_name, id_timestamp)
+    def format_to_type_identifier(self,
+                                  repo_name: str,
+                                  timestamp: Optional[datetime]) -> str:
+        return self.type_identifier_formatter.format(
+            repo=repo_name, timestamp=timestamp
+        )
 
     def _create_subquery(
             self, plugins_by_earliest_ts: dict[str, datetime]
@@ -66,11 +69,12 @@ class GitHubActivityType(Enum):
                 ]
             )
         plugins = [f"'{plugin}'" for plugin in plugins_by_earliest_ts.keys()]
-        return f"""repo IN ({','.join(plugins)})"""
+        return f"repo IN ({','.join(plugins)})"
 
     def get_query(self, plugins_by_earliest_ts: dict[str, datetime]) -> str:
         return f"""
-                SELECT 
+                SELECT
+                    repo AS name,
                     {self.query_projection}
                 FROM
                     imaging.github.commits
@@ -133,12 +137,11 @@ def transform_and_write_to_dynamo(data: dict[str, list],
         if plugin_name is None:
             continue
         for activity in github_activities:
-            identifier_ts = activity.get("timestamp", "")
             timestamp = activity.get("timestamp")
             commit_count = activity.get("count")
             item = GitHubActivity(
                 plugin_name.lower(),
-                activity_type.format_to_type_identifier(repo, identifier_ts),
+                activity_type.format_to_type_identifier(repo, timestamp),
                 granularity=granularity,
                 timestamp=activity_type.format_to_timestamp(timestamp),
                 commit_count=commit_count,
