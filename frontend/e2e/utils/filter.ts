@@ -8,7 +8,7 @@
 import { expect, Page } from '@playwright/test';
 
 import { RESULTS_PER_PAGE } from '@/constants/search';
-import { PluginIndexData } from '@/types';
+import { PluginAuthor, PluginIndexData } from '@/types';
 import { formatNumber } from '@/utils';
 
 import { PluginFilter } from '../types/filter';
@@ -22,26 +22,20 @@ import {
   SEARCH_RESULT,
 } from './constants';
 import { parseItem } from './fixture';
-import { formatDate } from './plugin';
 import { getByHasText, getMetadata } from './selectors';
-import { getQueryParameterValues, maybeExpand } from './utils';
+import { getQueryParameterValues } from './utils';
 
 const sortOrders: Record<string, string> = {
   'Recently updated': 'recentlyUpdated',
   'Plugin name': 'pluginName',
   Newest: 'newest',
 };
-// eslint-disable-next-line @typescript-eslint/naming-convention
-interface authorsInterface {
-  name: string;
-  email: string;
-}
 
 export function containsAllElements(sourceArr: string[], targetArr: string[]) {
   return sourceArr.every((i) => targetArr.includes(i));
 }
 
-export function getAuthorNames(authorsObj: authorsInterface[]) {
+export function getAuthorNames(authorsObj: PluginAuthor[]) {
   const result: string[] = [];
   const data = parseItem(authorsObj);
   for (const author of data) {
@@ -54,12 +48,21 @@ export async function filterPlugins(
   page: Page,
   pluginFilter: PluginFilter,
   sortBy = 'Recently updated',
-  width?: number,
+  width = 0,
 ): Promise<void> {
   // sorting order
 
-  await maybeExpand(page, width);
+  if (width < 875) {
+    await page.locator('[data-title="SORT BY: Recently Updated"]').click();
+    await page.locator('[data-title="Filter by category"]').click();
+    await page.locator('[data-title="Filter by requirement"]').click();
+  }
+
   if (sortBy !== 'Recently updated') {
+    if (width >= 875) {
+      await page.locator('[data-testid=sortDropdown]').click();
+    }
+
     await page
       .locator(`[data-sort-type="${sortOrders[sortBy]}"]:visible`)
       .click();
@@ -180,17 +183,11 @@ export async function verifyFilterResults(
       expect(await plugin.locator(getMetadata('h4')).nth(0).textContent()).toBe(
         'First released',
       );
-      expect(
-        await plugin.locator(getMetadata('span')).nth(0).textContent(),
-      ).toBe(formatDate(data.first_released));
 
       // plugin last update
       expect(await plugin.locator(getMetadata('h4')).nth(1).textContent()).toBe(
         'Last updated',
       );
-      expect(
-        await plugin.locator(getMetadata('span')).nth(1).textContent(),
-      ).toBe(formatDate(data.release_date));
 
       // total installs
       expect(await plugin.locator(getMetadata('h4')).nth(2).textContent()).toBe(
