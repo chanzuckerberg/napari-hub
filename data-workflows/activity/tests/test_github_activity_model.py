@@ -108,7 +108,7 @@ def test_github_activity_type(
             imaging.github.commits
         WHERE 
             repo_type = 'plugin'
-            AND {get_subquery(activity_type)}
+            AND ({get_subquery(activity_type)})
         GROUP BY {group_by}
         ORDER BY {group_by}
     """

@@ -80,7 +80,7 @@ class GitHubActivityType(Enum):
                     imaging.github.commits
                 WHERE 
                     repo_type = 'plugin'
-                    AND {self._create_subquery(plugins_by_earliest_ts)}
+                    AND ({self._create_subquery(plugins_by_earliest_ts)})
                 GROUP BY {self.query_sorting}
                 ORDER BY {self.query_sorting}
                 """
