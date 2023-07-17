@@ -13,7 +13,7 @@ from utils.utils import (
 )
 
 
-LOGGER = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)
 TIMESTAMP_FORMAT = "TO_TIMESTAMP('{0:%Y-%m-%d %H:%M:%S}')"
 
 
@@ -125,7 +125,7 @@ def transform_and_write_to_dynamo(data: dict[str, list],
     :param dict[str, str] plugin_name_by_repo: dict mapping repo to plugin name
     """
     granularity = activity_type.name
-    LOGGER.info(f"Starting for github-activity type={granularity}")
+    logger.info(f"Starting for github-activity type={granularity}")
 
     batch = GitHubActivity.batch_write()
 
@@ -135,6 +135,7 @@ def transform_and_write_to_dynamo(data: dict[str, list],
     for repo, github_activities in data.items():
         plugin_name = plugin_name_by_repo.get(repo)
         if plugin_name is None:
+            logger.warning(f"Unable to find plugin name for repo={repo}")
             continue
         for activity in github_activities:
             timestamp = activity.get("timestamp")
@@ -153,5 +154,5 @@ def transform_and_write_to_dynamo(data: dict[str, list],
     batch.commit()
     duration = (time.perf_counter() - start) * 1000
 
-    LOGGER.info(f"Completed processing for github-activity type={granularity} "
+    logger.info(f"Completed processing for github-activity type={granularity} "
                 f"count={count} timeTaken={duration}ms")

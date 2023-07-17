@@ -10,7 +10,7 @@ from pynamodb.attributes import UnicodeAttribute, NumberAttribute
 from nhcommons.utils.time import get_current_timestamp
 from utils.utils import datetime_to_utc_timestamp_in_millis
 
-LOGGER = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 
 class InstallActivityType(Enum):
@@ -64,7 +64,7 @@ class InstallActivity(Model):
 def transform_and_write_to_dynamo(data: dict[str, List],
                                   activity_type: InstallActivityType) -> None:
     granularity = activity_type.name
-    LOGGER.info(f"Starting for install-activity type={granularity}")
+    logger.info(f"Starting for install-activity type={granularity}")
     batch = InstallActivity.batch_write()
     count = 0
     is_total = "true" if activity_type is InstallActivityType.TOTAL else None
@@ -87,5 +87,5 @@ def transform_and_write_to_dynamo(data: dict[str, List],
     batch.commit()
     duration = (time.perf_counter() - start) * 1000
 
-    LOGGER.info(f"Completed processing for install-activity type={granularity} "
+    logger.info(f"Completed processing for install-activity type={granularity} "
                 f"count={count} timeTaken={duration}ms")
