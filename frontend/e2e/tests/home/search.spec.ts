@@ -58,11 +58,19 @@ test.describe('Plugin search', () => {
 
   test('should clear query when clicking on app bar home link', async ({
     page,
+    viewport,
   }) => {
     await page.goto(getSearchUrl([SearchQueryParams.Search, 'video']), {
       timeout: 60000,
     });
-    await page.click(selectors.common.appBarHome);
+
+    // eslint-disable-next-line playwright/no-conditional-in-test
+    if ((viewport?.width ?? 0) < 600) {
+      await page.click(selectors.common.mobileMenuButton);
+    }
+
+    await page.click(selectors.common.plugins);
+    await page.waitForURL('/plugins');
     await expect(page.locator(selectors.search.result).first()).not.toHaveText(
       'napari_video',
     );
