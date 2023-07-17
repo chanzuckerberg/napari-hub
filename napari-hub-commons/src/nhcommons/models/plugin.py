@@ -11,6 +11,7 @@ from pynamodb.indexes import GlobalSecondaryIndex, AllProjection
 from pynamodb.pagination import ResultIterator
 
 from .helper import (set_ddb_metadata, get_stack_name, PynamoWrapper)
+from ..utils.adapter_helpers import GithubClientHelper
 
 logger = logging.getLogger(__name__)
 
@@ -106,4 +107,4 @@ def _to_plugin_name_by_repo(results: ResultIterator[_Plugin]) -> Dict[str, str]:
 def _to_repo(plugin: _Plugin) -> Optional[str]:
     if not plugin.code_repository:
         return None
-    return plugin.code_repository.replace("https://github.com/", "")
+    return GithubClientHelper.replace_github_url(plugin.code_repository, "")
