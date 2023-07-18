@@ -96,6 +96,7 @@ exports[`<Layout /> should match snapshot 1`] = `
         </form>
         <div
           class="ml-sds-xl flex screen-600:hidden"
+          data-testid="mobileMenuButtonContainer"
         >
           <button
             class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeLarge p-2 css-1h7qoeq-MuiButtonBase-root-MuiIconButton-root"

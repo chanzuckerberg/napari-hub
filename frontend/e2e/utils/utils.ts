@@ -1,6 +1,6 @@
 import { Page } from '@playwright/test';
 
-import { SEARCH_PAGE, SearchQueryParams } from '@/store/search/constants';
+import { SearchQueryParams } from '@/store/search/constants';
 import { breakpoints } from '@/theme/breakpoints';
 
 export const TEST_URL = process.env.BASEURL || 'http://localhost:8080';
@@ -32,7 +32,7 @@ export function getTestURL(pathname: string) {
  * @returns The search URL.
  */
 export function getSearchUrl(...params: string[][]) {
-  const url = new URL(SEARCH_PAGE, TEST_URL);
+  const url = new URL('/plugins', TEST_URL);
 
   for (const [key, value] of params) {
     url.searchParams.append(key, value);
@@ -69,12 +69,5 @@ export async function maybeOpenAccordion(
   if (width < breakpoints['screen-875']) {
     await page.getByRole('button', { name: title }).click();
     await page.waitForTimeout(1000);
-  }
-}
-export async function maybeExpand(page: Page, width = Infinity) {
-  if (width < breakpoints['screen-725']) {
-    await page.locator('[data-title="Sort"]').click();
-    await page.locator('[data-title="Filter by category"]').click();
-    await page.locator('[data-title="Filter by requirement"]').click();
   }
 }

@@ -15,7 +15,9 @@ const sortBy = 'Recently updated';
 
 test.describe('Plugin filter tests', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto(`${process.env.BASEURL as string}`, { timeout: 60000 });
+    await page.goto(`${process.env.BASEURL as string}/plugins`, {
+      timeout: 60000,
+    });
   });
   TEST_AUTHORS.forEach((authors) => {
     test(`should filter by authors "${authors.toString()}"`, async ({

@@ -86,7 +86,10 @@ export function AppBar() {
           {isHomePageRedesign && !isPluginsPage && <PluginSearchBar />}
 
           {/* Menu button */}
-          <div className="ml-sds-xl flex screen-600:hidden">
+          <div
+            className="ml-sds-xl flex screen-600:hidden"
+            data-testid="mobileMenuButtonContainer"
+          >
             <ButtonIcon
               className="p-2"
               onClick={() => setVisible(true)}

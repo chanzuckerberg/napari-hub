@@ -119,7 +119,7 @@ class HubAPIClient {
       });
 
       if (SERVER) {
-        logger.info(`${method} ${path} status=${status}`);
+        logger.info(`${method} ${url} status=${status}`);
       }
 
       return data;

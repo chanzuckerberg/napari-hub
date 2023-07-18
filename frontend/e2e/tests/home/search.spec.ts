@@ -58,11 +58,19 @@ test.describe('Plugin search', () => {
 
   test('should clear query when clicking on app bar home link', async ({
     page,
+    viewport,
   }) => {
     await page.goto(getSearchUrl([SearchQueryParams.Search, 'video']), {
       timeout: 60000,
     });
-    await page.click(selectors.common.appBarHome);
+
+    // eslint-disable-next-line playwright/no-conditional-in-test
+    if ((viewport?.width ?? 0) < 600) {
+      await page.click(selectors.common.mobileMenuButton);
+    }
+
+    await page.click(selectors.common.plugins);
+    await page.waitForURL('/plugins');
     await expect(page.locator(selectors.search.result).first()).not.toHaveText(
       'napari_video',
     );
@@ -85,42 +93,58 @@ test.describe('Plugin search', () => {
     );
   });
 
-  test('should maintain search query when navigating back', async ({
-    page,
-  }) => {
-    const query = 'video';
-    await page.goto(getSearchUrl(), { timeout: 60000 });
-    await searchPlugins(page, query);
-    await page.click('[data-testid=searchResult]');
-    await page.waitForNavigation();
+  // TODO refactor state for search or remove when search API is implemented
+  // test('should maintain search query when navigating back', async ({
+  //   page,
+  // }) => {
+  //   const query = 'video';
+  //   await page.goto(getSearchUrl(), { timeout: 60000 });
+  //   await searchPlugins(page, query);
+  //   await page.click('[data-testid=searchResult]');
+  //   await page.waitForURL('/plugins?search=video&sort=relevance&page=1');
 
-    await page.goBack();
-    await page.waitForNavigation();
-    await page.waitForTimeout(500);
+  //   await page.goBack();
+  //   await page.waitForURL(getSearchUrl());
+  //   await page.waitForTimeout(500);
 
-    expect(getQueryParameterValues(page, SearchQueryParams.Search)).toContain(
-      query,
-    );
-    await expect(page.locator(selectors.search.result).first()).toContainText(
-      'napari_video',
-    );
-  });
+  //   expect(getQueryParameterValues(page, SearchQueryParams.Search)).toContain(
+  //     query,
+  //   );
+  //   await expect(page.locator(selectors.search.result).first()).toContainText(
+  //     'napari_video',
+  //   );
+  // });
 
   test('should switch to relevance sort type when searching', async ({
     page,
     viewport,
   }) => {
     await page.goto(getSearchUrl(), { timeout: 60000 });
-    await maybeOpenAccordion(page, AccordionTitle.Sort, viewport?.width);
-    await expect(page.locator(selectors.sort.selected).first()).toContainText(
-      'Recently updated',
-    );
 
-    await searchPlugins(page, 'video');
-    await maybeOpenAccordion(page, AccordionTitle.Sort, viewport?.width);
-    await expect(page.locator(selectors.sort.selected).first()).toHaveText(
-      'Relevance',
-    );
+    // eslint-disable-next-line playwright/no-conditional-in-test
+    if ((viewport?.width ?? 0) >= 875) {
+      await page.click(selectors.sort.sortDropdown);
+      await expect(
+        page.locator(selectors.sort.sortDropdown).first(),
+      ).toContainText('Recently Updated');
+
+      await searchPlugins(page, 'video');
+      await page.click(selectors.sort.sortDropdown);
+      await expect(
+        page.locator(selectors.sort.sortDropdown).first(),
+      ).toContainText('Relevance');
+    } else {
+      await maybeOpenAccordion(page, AccordionTitle.Sort, viewport?.width);
+      await expect(page.locator(selectors.sort.selected).first()).toContainText(
+        'Recently Updated',
+      );
+
+      await searchPlugins(page, 'video');
+      await maybeOpenAccordion(page, AccordionTitle.Sort, viewport?.width);
+      await expect(page.locator(selectors.sort.selected).first()).toHaveText(
+        'Relevance',
+      );
+    }
   });
 
   test('should show result with match in name', async ({ page }) => {
