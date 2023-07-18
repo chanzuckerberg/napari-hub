@@ -85,7 +85,12 @@ app.get('/plugin/home/sections/:sections', (req, res) => {
       plugins: getSectionPlugins({
         pluginMap,
         limit,
-        filter: (plugin) => !!plugin.plugin_types.includes(pluginDataType),
+        filter: (plugin) =>
+          !!(
+            plugin &&
+            plugin.plugin_types &&
+            plugin.plugin_types.includes(pluginDataType)
+          ),
       }),
     },
 
