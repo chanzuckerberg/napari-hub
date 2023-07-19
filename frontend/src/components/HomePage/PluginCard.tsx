@@ -79,7 +79,7 @@ export function PluginCard({
       render={() => (
         <Link
           className={clsx(
-            'flex flex-col justify-between h-full',
+            'flex flex-col justify-between h-full gap-sds-l',
             'border border-hub-gray-300 hover:border-black',
             'p-sds-l',
             className,
@@ -106,7 +106,7 @@ export function PluginCard({
             </Text>
           </div>
 
-          <div>
+          <div className="flex flex-col gap-sds-l">
             <p>
               <Text element="span" weight="bold" variant="bodyS">
                 {plugin.authors
