@@ -14,6 +14,7 @@ import { useRouter } from 'next/router';
 import Script from 'next/script';
 import { appWithTranslation } from 'next-i18next';
 import { ComponentType, ReactNode } from 'react';
+import { useSnapshot } from 'valtio';
 
 import { ApplicationProvider } from '@/components/ApplicationProvider';
 import { AppLoader } from '@/components/AppLoader';
@@ -23,13 +24,16 @@ import { PROD } from '@/constants/env';
 import { usePageTransitions } from '@/hooks';
 import { FeatureFlagMap, useInitFeatureFlags } from '@/store/featureFlags';
 import { hubspotStore } from '@/store/hubspot';
+import { pageTransitionsStore } from '@/store/pageTransitions';
 
 type GetLayoutComponent = ComponentType & {
   getLayout?(page: ReactNode): ReactNode;
 };
 
 function App({ Component, pageProps }: AppProps) {
-  const { loading, nextUrl } = usePageTransitions();
+  usePageTransitions();
+  const { loading, nextUrl } = useSnapshot(pageTransitionsStore);
+
   const router = useRouter();
 
   const featureFlags = pageProps.featureFlags as FeatureFlagMap | undefined;

@@ -3,11 +3,12 @@ import { ButtonIcon } from 'czifui';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { useRef, useState } from 'react';
+import { useSnapshot } from 'valtio';
 
 import { Menu } from '@/components/icons';
 import { MenuPopover } from '@/components/MenuPopover';
-import { usePageTransitions } from '@/hooks';
 import { useIsFeatureFlagEnabled } from '@/store/featureFlags';
+import { pageTransitionsStore } from '@/store/pageTransitions';
 import { createUrl } from '@/utils';
 
 import { PluginSearchBar } from '../SearchBar/PluginSearchBar';
@@ -25,7 +26,7 @@ export function AppBar() {
 
   const isHomePageRedesign = useIsFeatureFlagEnabled('homePageRedesign');
   const router = useRouter();
-  const { nextUrl } = usePageTransitions();
+  const { nextUrl } = useSnapshot(pageTransitionsStore);
 
   const isPluginsPage =
     router.pathname === '/plugins' ||
