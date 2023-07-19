@@ -102,7 +102,7 @@ export function PluginFilterByForm(props: Props) {
   return (
     <>
       <div className="screen-875:hidden">
-        <Accordion className="uppercase" title={label}>
+        <Accordion titleClassName="uppercase" title={label}>
           <ClearAllButton {...props} />
 
           {form}

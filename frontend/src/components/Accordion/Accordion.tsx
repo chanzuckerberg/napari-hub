@@ -13,6 +13,7 @@ interface Props {
   children: ReactNode;
   className?: string;
   title?: string;
+  titleClassName?: string;
   variant?: 'default' | 'faq';
 }
 
@@ -23,6 +24,7 @@ export function Accordion({
   children,
   className,
   title,
+  titleClassName,
   variant = 'default',
 }: Props) {
   const isDefault = variant === 'default';
@@ -45,6 +47,7 @@ export function Accordion({
           'p-0 font-semibold',
           styles.summary,
           isDefault && 'flex-row-reverse',
+          titleClassName,
         )}
         classes={{
           expandIconWrapper: styles.expandIcon,
