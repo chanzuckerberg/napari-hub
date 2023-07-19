@@ -82,7 +82,7 @@ export function CategoryChipContainer({
     const stateKey = STATE_KEY_MAP[dimension];
 
     if (!stateKey) return {};
-    if (router.pathname === '/') return snap.filters[stateKey];
+    if (router.pathname === '/plugins') return snap.filters[stateKey];
 
     const result: Record<string, boolean | undefined> = {};
     const params = createUrl(router.asPath).searchParams;
@@ -90,6 +90,8 @@ export function CategoryChipContainer({
 
     return result;
   }, [dimension, router.asPath, router.pathname, snap.filters]);
+
+  console.log('breh', activeMap);
 
   const categoryNodes = (
     categories ? Array.from(categories) : Array.from(hierarchies)
