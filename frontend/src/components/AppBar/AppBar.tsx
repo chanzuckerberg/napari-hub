@@ -77,7 +77,7 @@ export function AppBar() {
             'w-full',
 
             // Align container to the right of the grid cell
-            'justify-self-end',
+            'justify-end',
 
             // Use more columns on larger screens
             'screen-875:col-span-2 screen-1150:col-span-3',
