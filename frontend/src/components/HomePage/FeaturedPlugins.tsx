@@ -1,5 +1,4 @@
 import clsx from 'clsx';
-import { IconProps } from 'czifui';
 import { useTranslation } from 'next-i18next';
 import { ComponentType } from 'react';
 
@@ -11,8 +10,9 @@ import {
   SampleData,
   Widget,
 } from '@/components/icons';
+import { IconProps } from '@/components/icons/icons.type';
 import { useLoadingState } from '@/context/loading';
-import { PluginType } from '@/types';
+import { PluginHomePageData, PluginType } from '@/types';
 
 import { SkeletonLoader } from '../SkeletonLoader';
 import { useHomePage } from './context';
@@ -24,6 +24,19 @@ const PLUGIN_TYPE_TO_ICON_MAP: Record<PluginType, ComponentType<IconProps>> = {
   [PluginType.Theme]: () => null,
   [PluginType.Widget]: Widget,
   [PluginType.Writer]: FileWriter,
+};
+
+// TODO Replace metadata key with specific one associated with plugin type when
+// data is available on the backend.
+const PLUGIN_TYPE_TO_METADATA_KEY: Record<
+  PluginType,
+  keyof PluginHomePageData
+> = {
+  [PluginType.Reader]: 'total_installs',
+  [PluginType.SampleData]: 'total_installs',
+  [PluginType.Theme]: 'total_installs',
+  [PluginType.Widget]: 'total_installs',
+  [PluginType.Writer]: 'total_installs',
 };
 
 export function FeaturedPlugins() {
@@ -74,7 +87,7 @@ export function FeaturedPlugins() {
               })}
             </span>
           }
-          metadataToShow={['total_installs']}
+          metadataToShow={[PLUGIN_TYPE_TO_METADATA_KEY[pluginTypeSection.type]]}
         />
       )}
 
