@@ -1,12 +1,30 @@
 import clsx from 'clsx';
+import { IconProps } from 'czifui';
 import { useTranslation } from 'next-i18next';
+import { ComponentType } from 'react';
 
-import { Newest, RecentlyUpdated, SampleData } from '@/components/icons';
+import {
+  FileReader,
+  FileWriter,
+  Newest,
+  RecentlyUpdated,
+  SampleData,
+  Widget,
+} from '@/components/icons';
 import { useLoadingState } from '@/context/loading';
+import { PluginType } from '@/types';
 
 import { SkeletonLoader } from '../SkeletonLoader';
 import { useHomePage } from './context';
 import { PluginSection } from './PluginSection';
+
+const PLUGIN_TYPE_TO_ICON_MAP: Record<PluginType, ComponentType<IconProps>> = {
+  [PluginType.Reader]: FileReader,
+  [PluginType.SampleData]: SampleData,
+  [PluginType.Theme]: () => null,
+  [PluginType.Widget]: Widget,
+  [PluginType.Writer]: FileWriter,
+};
 
 export function FeaturedPlugins() {
   const { pluginSections } = useHomePage();
@@ -39,7 +57,8 @@ export function FeaturedPlugins() {
     >
       {pluginTypeSection && (
         <PluginSection
-          icon={SampleData}
+          iconLoading={isLoading}
+          icon={PLUGIN_TYPE_TO_ICON_MAP[pluginTypeSection.type]}
           plugins={pluginTypeSection.plugins}
           pluginType={pluginTypeSection.type}
           row={0}
