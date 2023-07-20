@@ -24,8 +24,6 @@ export function AppLoader({ nextUrl }: Props) {
   const isHomePageRedesign = useIsFeatureFlagEnabled('homePageRedesign');
   const pageUtils = usePageUtils();
 
-  console.log('next url', nextUrl);
-
   let homePageLoader: ReactNode;
   if (isHomePageRedesign && pageUtils.isHomePage(nextUrl)) {
     const plugins = Array(3)

@@ -91,8 +91,6 @@ export function CategoryChipContainer({
     return result;
   }, [dimension, router.asPath, router.pathname, snap.filters]);
 
-  console.log('breh', activeMap);
-
   const categoryNodes = (
     categories ? Array.from(categories) : Array.from(hierarchies)
   )
