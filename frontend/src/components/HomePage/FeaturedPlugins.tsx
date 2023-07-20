@@ -1,12 +1,7 @@
 import clsx from 'clsx';
 import { useTranslation } from 'next-i18next';
 
-import {
-  Newest,
-  RecentlyUpdated,
-  SampleData,
-  TrendingInstalls,
-} from '@/components/icons';
+import { Newest, RecentlyUpdated, SampleData } from '@/components/icons';
 import { useLoadingState } from '@/context/loading';
 
 import { SkeletonLoader } from '../SkeletonLoader';
@@ -23,7 +18,6 @@ export function FeaturedPlugins() {
     plugin_types: pluginTypeSection,
     newest: newestSection,
     recently_updated: recentlyUpdatedSection,
-    top_installed: topInstallsSection,
   } = pluginSections;
 
   return (
@@ -86,18 +80,6 @@ export function FeaturedPlugins() {
           section={t('homePage:recentlyUpdated')}
           seeAllLink="/plugins?sort=recentlyUpdated"
           title={t('homePage:recentlyUpdated')}
-        />
-      )}
-
-      {topInstallsSection && (
-        <PluginSection
-          icon={TrendingInstalls}
-          metadataToShow={['total_installs']}
-          plugins={topInstallsSection.plugins}
-          row={3}
-          section={t('homePage:pluginSectionTitles.trendingInstalls')}
-          seeAllLink="/plugins?sort=totalInstalls"
-          title={t('homePage:pluginSectionTitles.trendingInstalls')}
         />
       )}
     </div>

@@ -36,7 +36,6 @@ export const getServerSideProps = getServerSidePropsHandler<Props>({
           PluginSectionType.pluginType,
           PluginSectionType.newest,
           PluginSectionType.recentlyUpdated,
-          PluginSectionType.topInstalls,
         ]);
       } else {
         const index = await hubAPI.getPluginIndex();
