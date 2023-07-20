@@ -4,15 +4,9 @@ from unittest.mock import Mock
 import pytest
 from dateutil.relativedelta import relativedelta
 
-from activity.install_activity_model import InstallActivityType, InstallActivity
-
-
-def to_ts(epoch):
-    return datetime.fromtimestamp(epoch)
-
-
-def sorting_key(install_activity: InstallActivity):
-    return install_activity.plugin_name + ' ' + install_activity.type_timestamp
+from activity.install_activity_model import (
+    InstallActivityType, InstallActivity, transform_and_write_to_dynamo
+)
 
 
 def generate_expected(data, granularity, type_timestamp_formatter, timestamp_formatter, is_total=None):
@@ -32,33 +26,26 @@ def generate_expected(data, granularity, type_timestamp_formatter, timestamp_for
     return expected
 
 
-def timestamp_format(timestamp):
+def ts_format(timestamp):
     return int(timestamp.replace(tzinfo=timezone.utc).timestamp() * 1000)
 
 
 def get_relative_timestamp(**args):
-    return datetime.now() - relativedelta(args)
+    return datetime.now() - relativedelta(**args)
 
 
-class TestInstallActivity:
-
-    def test_day_install_activity_type(self):
-        timestamp = datetime.strptime('03/21/2023 00:00:00', '%m/%d/%Y %H:%M:%S')
-        assert InstallActivityType.DAY.format_to_timestamp(timestamp) == 1679356800000
-        assert InstallActivityType.DAY.get_query_timestamp_projection() == "DATE_TRUNC('DAY', timestamp)"
-        assert InstallActivityType.DAY.format_to_type_timestamp(timestamp) == "DAY:20230321"
-
-    def test_month_install_activity_type(self):
-        timestamp = datetime.strptime('03/21/2023 00:00:00', '%m/%d/%Y %H:%M:%S')
-        assert InstallActivityType.MONTH.format_to_timestamp(timestamp) == 1679356800000
-        assert InstallActivityType.MONTH.get_query_timestamp_projection() == "DATE_TRUNC('MONTH', timestamp)"
-        assert InstallActivityType.MONTH.format_to_type_timestamp(timestamp) == "MONTH:202303"
-
-    def test_total_install_activity_type(self):
-        timestamp = datetime.strptime('03/21/2023 00:00:00', '%m/%d/%Y %H:%M:%S')
-        assert InstallActivityType.TOTAL.format_to_timestamp(timestamp) is None
-        assert InstallActivityType.TOTAL.get_query_timestamp_projection() == "1"
-        assert InstallActivityType.TOTAL.format_to_type_timestamp(timestamp) == "TOTAL:"
+@pytest.mark.parametrize(
+    "activity_type, timestamp, projection, type_timestamp", [
+        (InstallActivityType.DAY, 1679356800000, "DATE_TRUNC('DAY', timestamp)", "DAY:20230321"),
+        (InstallActivityType.MONTH, 1679356800000, "DATE_TRUNC('MONTH', timestamp)", "MONTH:202303"),
+        (InstallActivityType.TOTAL, None, "1", "TOTAL:")
+    ]
+)
+def test_install_activity_type(activity_type, timestamp, projection, type_timestamp):
+    input_ts = datetime.strptime("03/21/2023", "%m/%d/%Y")
+    assert activity_type.format_to_timestamp(input_ts) == timestamp
+    assert activity_type.get_query_timestamp_projection() == projection
+    assert activity_type.format_to_type_timestamp(input_ts) == type_timestamp
 
 
 class TestInstallActivityModels:
@@ -66,7 +53,9 @@ class TestInstallActivityModels:
     @pytest.fixture(autouse=True)
     def _setup_method(self, monkeypatch):
         self._batch_write_mock = Mock()
-        monkeypatch.setattr(InstallActivity, 'batch_write', lambda: self._batch_write_mock)
+        monkeypatch.setattr(
+            InstallActivity, 'batch_write', lambda: self._batch_write_mock
+        )
 
     def _verify(self, expected):
         _batch_write_save_mock = self._batch_write_mock.save
@@ -87,10 +76,11 @@ class TestInstallActivityModels:
                     {'timestamp': get_relative_timestamp(days=23), 'count': 10}],
         }
 
-        from activity.install_activity_model import transform_and_write_to_dynamo
         transform_and_write_to_dynamo(data, InstallActivityType.DAY)
 
-        expected = generate_expected(data, 'DAY', lambda ts: f'DAY:{ts.strftime("%Y%m%d")}', timestamp_format)
+        expected = generate_expected(
+            data, 'DAY', lambda ts: f'DAY:{ts.strftime("%Y%m%d")}', ts_format
+        )
         self._verify(expected)
 
     def test_transform_to_dynamo_records_for_month(self):
@@ -103,10 +93,11 @@ class TestInstallActivityModels:
                     {'timestamp': get_relative_timestamp(months=11), 'count': 7}],
         }
 
-        from activity.install_activity_model import transform_and_write_to_dynamo
         transform_and_write_to_dynamo(data, InstallActivityType.MONTH)
 
-        expected = generate_expected(data, 'MONTH', lambda ts: f'MONTH:{ts.strftime("%Y%m")}', timestamp_format)
+        expected = generate_expected(
+            data, 'MONTH', lambda ts: f'MONTH:{ts.strftime("%Y%m")}', ts_format
+        )
         self._verify(expected)
 
     def test_transform_to_dynamo_records_for_total(self):
@@ -116,8 +107,9 @@ class TestInstallActivityModels:
             'BAZ': [{'timestamp': 1, 'count': 3}]
         }
 
-        from activity.install_activity_model import transform_and_write_to_dynamo
         transform_and_write_to_dynamo(data, InstallActivityType.TOTAL)
 
-        expected = generate_expected(data, 'TOTAL', lambda ts: f'TOTAL:', lambda ts: None, 'true')
+        expected = generate_expected(
+            data, 'TOTAL', lambda ts: f'TOTAL:', lambda ts: None, 'true'
+        )
         self._verify(expected)

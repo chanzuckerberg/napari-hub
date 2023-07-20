@@ -72,12 +72,16 @@ class GithubClientHelper:
             logger.error(f"Encountered error fetching {api_url}")
             return None
 
+    @classmethod
+    def replace_github_url(cls, repo_url: str, replacement: str = "") -> str:
+        return repo_url.replace("https://github.com/", replacement)
+
     def _to_api_github_url(self, use_raw_content: bool = False) -> str:
         if use_raw_content:
             replacement = "https://raw.githubusercontent.com/"
         else:
             replacement = "https://api.github.com/repos/"
-        return self._repo_url.replace("https://github.com/", replacement)
+        return self.replace_github_url(self._repo_url, replacement)
 
 
 class CitationHelper:
