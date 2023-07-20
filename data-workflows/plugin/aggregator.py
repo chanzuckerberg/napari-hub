@@ -29,19 +29,25 @@ def aggregate_plugins(updated_plugins: set[tuple[str, str]]) -> None:
         put_plugin(plugin, version, record)
 
 
-def _get_manifest(
-        metadata_by_type: dict[PluginMetadataType, dict]
+def _get_data_from_metadata(
+        metadata_by_type: dict[PluginMetadataType, dict],
+        plugin_metadata_type: PluginMetadataType,
+        default_value: Optional[dict]
 ) -> Optional[dict[str, Any]]:
-    if PluginMetadataType.DISTRIBUTION not in metadata_by_type:
-        return None
-    return metadata_by_type.get(PluginMetadataType.DISTRIBUTION).get("data")
+    if plugin_metadata_type not in metadata_by_type:
+        return default_value
+    return metadata_by_type.get(plugin_metadata_type).get("data")
 
 
 def _generate_aggregate(metadata_by_type: dict[PluginMetadataType, dict],
                         plugin: str,
                         version: str) -> dict[str, Any]:
-    metadata = metadata_by_type.get(PluginMetadataType.METADATA).get("data", {})
-    manifest = _get_manifest(metadata_by_type)
+    metadata = _get_data_from_metadata(
+        metadata_by_type, PluginMetadataType.METADATA, {}
+    )
+    manifest = _get_data_from_metadata(
+        metadata_by_type, PluginMetadataType.DISTRIBUTION, None
+    )
     distribution = get_formatted_manifest(manifest, plugin, version)
     return {**metadata, **distribution}
 
