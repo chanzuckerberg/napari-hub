@@ -6,10 +6,12 @@ import { Link } from '@/components/Link';
 import { Text } from '@/components/Text';
 import { PluginHomePageData, PluginType } from '@/types';
 
+import { SkeletonLoader } from '../SkeletonLoader';
 import { PluginCard } from './PluginCard';
 
 interface Props {
   icon: ComponentType<IconProps>;
+  iconLoading?: boolean;
   metadataToShow?: (keyof PluginHomePageData)[];
   plugins: PluginHomePageData[];
   pluginType?: PluginType;
@@ -21,6 +23,7 @@ interface Props {
 
 export function PluginSection({
   icon: Icon,
+  iconLoading,
   metadataToShow,
   plugins,
   pluginType,
@@ -33,7 +36,9 @@ export function PluginSection({
     <div className="col-span-2 screen-875:col-span-3 screen-1425:col-start-2">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-x-sds-s">
-          <Icon className="w-sds-xl h-sds-xl" />
+          <SkeletonLoader className="w-sds-xl h-sds-xl" disabled={!iconLoading}>
+            <Icon className="w-sds-xl h-sds-xl" />
+          </SkeletonLoader>
           <Text variant="h2">{title}</Text>
         </div>
 

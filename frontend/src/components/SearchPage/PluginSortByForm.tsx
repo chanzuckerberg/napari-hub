@@ -119,7 +119,7 @@ export function PluginSortByForm() {
     <>
       <div className="screen-875:hidden">
         <Accordion
-          className={clsx(!isHomePageRedesign && 'uppercase')}
+          titleClassName={clsx(!isHomePageRedesign && 'uppercase')}
           title={
             isHomePageRedesign
               ? `${t('pluginsPage:sortByMobile', {
