@@ -3,7 +3,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import clsx from 'clsx';
 import { useTranslation } from 'next-i18next';
-import { useSnapshot } from 'valtio';
+import { proxy, useSnapshot } from 'valtio';
 
 import { ChevronUp } from '@/components/icons';
 import { Text } from '@/components/Text';
@@ -13,8 +13,29 @@ import { useSearchStore } from '@/store/search/context';
 
 import styles from './SortDropdown.module.scss';
 
+const openState = proxy({
+  open: false,
+});
+
+function openDropdown() {
+  openState.open = true;
+}
+
 function SortChevronUp() {
-  return <ChevronUp className={styles.chevron} />;
+  const { open } = useSnapshot(openState);
+
+  return (
+    <div
+      onKeyDown={openDropdown}
+      onClick={openDropdown}
+      tabIndex={0}
+      role="button"
+    >
+      <ChevronUp
+        className={clsx(styles.chevron, 'cursor-pointer', open && 'rotate-180')}
+      />
+    </div>
+  );
 }
 
 export function SortDropdown() {
@@ -22,6 +43,7 @@ export function SortDropdown() {
   const { searchStore } = useSearchStore();
   const state = useSnapshot(searchStore);
   const isSearching = !!state.search.query;
+  const { open: isDropdownOpen } = useSnapshot(openState);
 
   const options: SearchSortType[] = [];
 
@@ -48,6 +70,11 @@ export function SortDropdown() {
           searchStore.sort = event.target.value as SearchSortType;
         }}
         IconComponent={SortChevronUp}
+        open={isDropdownOpen}
+        onOpen={openDropdown}
+        onClose={() => {
+          openState.open = false;
+        }}
         renderValue={(option) => (
           <Text element="span" variant="h5">
             {t(SORT_LABELS[option]) as string}

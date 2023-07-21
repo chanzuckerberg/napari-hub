@@ -55,7 +55,7 @@ exports[`<AppBar /> should match snapshot 1`] = `
       </nav>
     </div>
     <div
-      class="flex items-center w-full justify-self-end screen-875:col-span-2 screen-1150:col-span-3"
+      class="flex items-center w-full justify-end screen-875:col-span-2 screen-1150:col-span-3"
     >
       <form
         class="flex flex-auto items-center border-b-2 border-black"
@@ -63,7 +63,7 @@ exports[`<AppBar /> should match snapshot 1`] = `
       >
         <input
           aria-label="Search bar for searching for napari plugins."
-          class="flex flex-auto border-none outline-none bg-transparent placeholder-gray-500 w-0"
+          class="flex flex-auto border-none outline-none bg-transparent placeholder-gray-500 text-sds-body-s screen-495:text-sds-body-m w-0"
           data-testid="searchBarInput"
           value=""
         />
