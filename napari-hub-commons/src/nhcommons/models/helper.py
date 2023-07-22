@@ -33,7 +33,7 @@ def set_ddb_metadata(table_name: str,
     if dynamo_model_cls is None:
         return partial(set_ddb_metadata, table_name)
 
-    dynamo_model_cls.Meta.host = os.getenv('LOCAL_DYNAMO_HOST')
-    dynamo_model_cls.Meta.region = os.getenv('AWS_REGION', 'us-west-2')
-    dynamo_model_cls.Meta.table_name = f'{get_stack_name()}-{table_name}'
+    dynamo_model_cls.Meta.host = os.getenv("LOCAL_DYNAMO_HOST")
+    dynamo_model_cls.Meta.region = os.getenv("AWS_REGION", "us-west-2")
+    dynamo_model_cls.Meta.table_name = f"{get_stack_name()}-{table_name}"
     return dynamo_model_cls

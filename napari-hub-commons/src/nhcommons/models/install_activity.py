@@ -1,18 +1,16 @@
-from typing import Dict, Any, List
-
-from pynamodb.attributes import UnicodeAttribute, NumberAttribute
-
-from nhcommons.models.helper import set_ddb_metadata, PynamoWrapper
+from typing import (Dict, Any, List)
+from pynamodb.attributes import (UnicodeAttribute, NumberAttribute)
+from nhcommons.models.helper import (set_ddb_metadata, PynamoWrapper)
 
 
-@set_ddb_metadata('install-activity')
+@set_ddb_metadata("install-activity")
 class _InstallActivity(PynamoWrapper):
     class Meta:
         pass
 
     plugin_name = UnicodeAttribute(hash_key=True)
     type_timestamp = UnicodeAttribute(range_key=True)
-    granularity = UnicodeAttribute(attr_name='type')
+    granularity = UnicodeAttribute(attr_name="type")
     install_count = NumberAttribute()
     is_total = UnicodeAttribute(null=True)
     timestamp = NumberAttribute(null=True)

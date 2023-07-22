@@ -66,15 +66,21 @@ class TestCategory:
     @pytest.fixture()
     def category_table(self, create_dynamo_table):
         with mock_dynamodb():
-            yield create_dynamo_table(category._Category, 'category')
+            yield create_dynamo_table(category._Category, "category")
 
     def test_batch_write(self, category_table, verify_table_data):
         category.batch_write(generate_category_list(True))
 
         verify_table_data(generate_category_list(False), category_table)
 
-    @pytest.mark.parametrize('excluded_field', [
-        "name", "version_hash", "version", "formatted_name", "dimension", "label", "hierarchy"
+    @pytest.mark.parametrize("excluded_field", [
+        "dimension",
+        "formatted_name",
+        "hierarchy",
+        "label",
+        "name",
+        "version",
+        "version_hash",
     ])
     def test_batch_write_for_invalid_data(self, excluded_field, category_table):
         input_data = {

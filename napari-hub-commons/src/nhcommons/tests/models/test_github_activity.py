@@ -13,7 +13,7 @@ def get_type_identifier(granularity: str,
     if granularity == "TOTAL":
         return f"TOTAL:{repo}"
     elif granularity == "MONTH":
-        return f"MONTH:{timestamp.strftime('%Y%m')}:{repo}"
+        return f"""MONTH:{timestamp.strftime("%Y%m")}:{repo}"""
 
     return f"LATEST:{repo}"
 
@@ -73,21 +73,22 @@ def generate_github_activity_list(is_input: bool) -> List[Dict[str, Any]]:
 class TestGithubActivity:
 
     @pytest.fixture()
-    def github_activity_table(self, create_dynamo_table):
+    def table(self, create_dynamo_table):
         with mock_dynamodb():
-            yield create_dynamo_table(github_activity._GitHubActivity,
-                                      'github-activity')
+            yield create_dynamo_table(
+                github_activity._GitHubActivity, "github-activity"
+            )
 
-    def test_batch_write(self, github_activity_table, verify_table_data):
+    def test_batch_write(self, table, verify_table_data):
         github_activity.batch_write(generate_github_activity_list(True))
 
         verify_table_data(generate_github_activity_list(False),
-                          github_activity_table)
+                          table)
 
-    @pytest.mark.parametrize('excluded_field', [
+    @pytest.mark.parametrize("excluded_field", [
         "plugin_name", "type_identifier", "granularity", "repo"
     ])
-    def test_batch_write_for_invalid_data(self, excluded_field, github_activity_table):
+    def test_batch_write_for_invalid_data(self, excluded_field, table):
         input_data = {
             "plugin_name": "Foo",
             "type_identifier": "LATEST:foo/bar",

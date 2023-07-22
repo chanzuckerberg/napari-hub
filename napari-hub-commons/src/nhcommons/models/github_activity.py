@@ -1,11 +1,10 @@
-from typing import Dict, Any, List
+from typing import (Dict, Any, List)
 
-from pynamodb.attributes import UnicodeAttribute, NumberAttribute
+from pynamodb.attributes import (UnicodeAttribute, NumberAttribute)
+from nhcommons.models.helper import (set_ddb_metadata, PynamoWrapper)
 
-from nhcommons.models.helper import set_ddb_metadata, PynamoWrapper
 
-
-@set_ddb_metadata('github-activity')
+@set_ddb_metadata("github-activity")
 class _GitHubActivity(PynamoWrapper):
     class Meta:
         pass
@@ -13,7 +12,7 @@ class _GitHubActivity(PynamoWrapper):
     plugin_name = UnicodeAttribute(hash_key=True)
     type_identifier = UnicodeAttribute(range_key=True)
     commit_count = NumberAttribute(null=True)
-    granularity = UnicodeAttribute(attr_name='type')
+    granularity = UnicodeAttribute(attr_name="type")
     repo = UnicodeAttribute()
     timestamp = NumberAttribute(null=True)
 

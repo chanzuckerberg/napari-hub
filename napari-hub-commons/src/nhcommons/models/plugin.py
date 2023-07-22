@@ -2,11 +2,7 @@ import logging
 import time
 from typing import Any, Dict
 
-from pynamodb.attributes import (
-    UnicodeAttribute,
-    ListAttribute,
-    MapAttribute
-)
+from pynamodb.attributes import (UnicodeAttribute, ListAttribute, MapAttribute)
 from pynamodb.indexes import GlobalSecondaryIndex, AllProjection
 from .helper import (set_ddb_metadata, get_stack_name, PynamoWrapper)
 

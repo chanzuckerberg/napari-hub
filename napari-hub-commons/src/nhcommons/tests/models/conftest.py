@@ -11,7 +11,7 @@ AWS_REGION = "us-east-2"
 STACK_NAME = "testing-stack"
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope="module")
 def aws_credentials():
     monkeypatch = pytest.MonkeyPatch()
     monkeypatch.setenv("AWS_ACCESS_KEY_ID", "testing")
@@ -21,7 +21,7 @@ def aws_credentials():
     monkeypatch.setenv("AWS_DEFAULT_REGION", "us-east-1")
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope="module")
 def dynamo_env_variables():
     moto.dynamodb.urls.url_bases.append(LOCAL_DYNAMO_HOST)
     monkeypatch = pytest.MonkeyPatch()
@@ -70,7 +70,7 @@ def verify_table_data():
                 if len(diff_items) != 1:
                     continue
                 diff = diff_items.pop()
-                if diff[0] == 'last_updated_timestamp' and \
+                if diff[0] == "last_updated_timestamp" and \
                         start_time <= diff[1] <= end_time:
                     return True
             return False

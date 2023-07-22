@@ -6,7 +6,7 @@ from slugify import slugify
 from nhcommons.models.helper import set_ddb_metadata, PynamoWrapper
 
 
-@set_ddb_metadata('category')
+@set_ddb_metadata("category")
 class _Category(PynamoWrapper):
     class Meta:
         pass
