@@ -5,9 +5,14 @@ import { snapshot } from 'valtio';
 
 import { BROWSER, PROD, SERVER, STAGING } from '@/constants/env';
 import { featureFlagsStore } from '@/store/featureFlags';
-import { PluginData, PluginIndexData } from '@/types';
+import {
+  PluginData,
+  PluginIndexData,
+  PluginMetrics,
+  PluginSectionsResponse,
+  PluginSectionType,
+} from '@/types';
 import { CollectionData, CollectionIndexData } from '@/types/collections';
-import { PluginMetrics } from '@/types/metrics';
 
 import { Logger } from './logger';
 import { getFullPathFromAxios } from './url';
@@ -184,6 +189,18 @@ class HubAPIClient {
       },
     });
     return validateMetricsData(data);
+  }
+
+  async getPluginSections(
+    sections: PluginSectionType[],
+  ): Promise<PluginSectionsResponse> {
+    if (sections.length === 0) {
+      return {};
+    }
+
+    return this.sendRequest<PluginSectionsResponse>(
+      `/plugin/home/sections/${sections.join(',')}`,
+    );
   }
 }
 

@@ -11,7 +11,7 @@ from snowflake.connector.cursor import SnowflakeCursor
 from activity.install_activity_model import InstallActivityType
 from activity.github_activity_model import GitHubActivityType
 
-LOGGER = logging.getLogger()
+LOGGER = logging.getLogger(__name__)
 TIMESTAMP_FORMAT = "TO_TIMESTAMP('{0:%Y-%m-%d %H:%M:%S}')"
 
 

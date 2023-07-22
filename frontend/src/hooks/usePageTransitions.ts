@@ -1,9 +1,12 @@
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef } from 'react';
+import { useSnapshot } from 'valtio';
 
 import { loadingStore } from '@/store/loading';
+import { pageTransitionsStore } from '@/store/pageTransitions';
 import { Logger } from '@/utils';
-import { isSearchPage } from '@/utils/page';
+
+import { usePageUtils } from './usePageUtils';
 
 const logger = new Logger('usePageTransitions.ts');
 
@@ -24,10 +27,15 @@ interface RouteEvent {
  */
 export function usePageTransitions() {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
 
-  // URL state for components to know what URL is currently loading.
-  const [nextUrl, setNextUrl] = useState('');
+  const initalLoadRef = useRef(true);
+  if (initalLoadRef.current) {
+    initalLoadRef.current = false;
+    pageTransitionsStore.nextUrl = router.asPath;
+  }
+
+  const snap = useSnapshot(pageTransitionsStore);
+  const { isSearchPage } = usePageUtils();
 
   useEffect(() => {
     function onLoading(url: string, { shallow }: RouteEvent) {
@@ -46,13 +54,13 @@ export function usePageTransitions() {
         );
       }
 
-      setNextUrl(url);
-      setLoading(true);
+      pageTransitionsStore.nextUrl = url;
+      pageTransitionsStore.loading = true;
     }
 
     function onFinishLoading(_: string, { shallow }: RouteEvent) {
       if (shallow) return;
-      setLoading(false);
+      pageTransitionsStore.loading = false;
     }
 
     const onError = (error: Error, url: string, event: RouteEvent) => {
@@ -69,7 +77,7 @@ export function usePageTransitions() {
       router.events.off('routeChangeComplete', onFinishLoading);
       router.events.off('routeChangeError', onError);
     };
-  }, [router]);
+  }, [isSearchPage, router]);
 
-  return { loading, nextUrl };
+  return snap;
 }

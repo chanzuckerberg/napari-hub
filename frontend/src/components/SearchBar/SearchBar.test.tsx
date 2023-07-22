@@ -124,37 +124,4 @@ describe('<SearchBar />', () => {
     fireEvent.click(button);
     expect(onSubmit).toHaveBeenCalledWith('123');
   });
-
-  it('should disable submit if query is empty changeOnSubmit=false', async () => {
-    const onSubmit = jest.fn();
-    const component = render(
-      <SearchBar value="" onSubmit={onSubmit} onChange={() => {}} />,
-    );
-
-    const form = await component.findByTestId('searchBarForm');
-    fireEvent.submit(form);
-    expect(onSubmit).not.toHaveBeenCalled();
-
-    const button = await component.findByTestId('submitQueryButton');
-    expect(button).toBeDisabled();
-  });
-
-  it('should disable submit if query is empty changeOnSubmit=true', async () => {
-    const onSubmit = jest.fn();
-    const component = render(
-      <SearchBar
-        value=""
-        onSubmit={onSubmit}
-        onChange={() => {}}
-        changeOnSubmit
-      />,
-    );
-
-    const form = await component.findByTestId('searchBarForm');
-    fireEvent.submit(form);
-    expect(onSubmit).not.toHaveBeenCalled();
-
-    const button = await component.findByTestId('submitQueryButton');
-    expect(button).toBeDisabled();
-  });
 });

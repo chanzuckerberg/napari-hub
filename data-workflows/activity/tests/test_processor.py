@@ -105,7 +105,6 @@ class TestActivityProcessor:
         self._setup_snowflake_response(monkeypatch, [])
 
         from activity.processor import update_activity
-
         update_activity()
 
         assert self._install_transform_and_write_mock.call_count == 0

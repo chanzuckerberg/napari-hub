@@ -29,7 +29,7 @@ exports[`<Layout /> should match snapshot 1`] = `
           >
             <a
               class="ml-sds-xl"
-              href="/"
+              href="/plugins"
             >
               Plugins
             </a>

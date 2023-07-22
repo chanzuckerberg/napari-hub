@@ -16,7 +16,7 @@ const FORM_CONTAINER_ID_QUERY = `#${FORM_CONTAINER_ID}`;
 
 interface Props {
   onSubmit?: (event: React.FormEvent) => void;
-  variant?: 'default' | 'home';
+  variant?: 'default' | 'home' | 'search';
 }
 
 /**
@@ -28,7 +28,7 @@ export function SignupForm({ onSubmit, variant = 'default' }: Props) {
   const [error, setError] = useState('');
   const emailRef = useRef<HTMLInputElement | null>(null);
   const plausible = usePlausible();
-  const isHome = variant === 'home';
+  const isThreeColumnLayout = ['home', 'search'].includes(variant);
 
   const validate = () => {
     const validityState = emailRef.current?.validity;
@@ -112,7 +112,11 @@ export function SignupForm({ onSubmit, variant = 'default' }: Props) {
     <ColumnLayout
       className="bg-hub-primary-200 p-sds-xl screen-495:p-12"
       // Use 3-column layout instead of 4-column layout.
-      classes={isHome ? { fourColumn: 'screen-1150:grid-cols-napari-3' } : {}}
+      classes={
+        isThreeColumnLayout
+          ? { fourColumn: 'screen-1150:grid-cols-napari-3' }
+          : {}
+      }
     >
       {/* Create hidden form for submitting the data to HubSpot */}
       <div id={FORM_CONTAINER_ID} className="hidden" />
@@ -126,17 +130,7 @@ export function SignupForm({ onSubmit, variant = 'default' }: Props) {
           <p>{t('footer:signUp.success')}</p>
         ) : (
           <form
-            onSubmit={(event) => {
-              // TODO Fix this hack.
-              // Right now there's an issue with hubspot where the signup form
-              // shows an error after the initial submission and then passes
-              // after the 2nd one. This fixes it by doing `handleSubmit` twice
-              // to simulate user clicking on it twice. Because the form becomes
-              // invisible after submission, this code should be safe to run
-              // because `handleSubmit` will not run unless the form is visible.
-              handleSubmit(event);
-              setTimeout(() => handleSubmit(event));
-            }}
+            onSubmit={handleSubmit}
             noValidate
             className={clsx(
               // grid

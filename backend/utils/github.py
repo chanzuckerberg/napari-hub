@@ -2,7 +2,8 @@ import json
 import logging
 import os.path
 import re
-from typing import Dict, Union, IO
+from json import JSONDecodeError
+from typing import Dict, Union, IO, List
 
 import requests
 import yaml
@@ -10,7 +11,7 @@ from cffconvert.citation import Citation
 from requests.auth import HTTPBasicAuth
 from requests.exceptions import HTTPError
 
-from utils.utils import get_attribute, render_description
+from utils.utils import get_attribute
 from utils.auth import HTTPBearerAuth
 
 # Environment variable set through ecs stack terraform module
@@ -71,6 +72,8 @@ def get_file(
             return response.json()
         return response.text
     except HTTPError:
+        logging.exception(f"Error when fetching url={download_url} file={file} "
+                          f"branch={branch}")
         pass
 
     return None
@@ -88,7 +91,7 @@ def get_license(url: str, branch: str = 'HEAD') -> [str, None]:
             return None
         else:
             return spdx_id
-    except HTTPError:
+    except (HTTPError, JSONDecodeError):
         return None
 
 
@@ -172,7 +175,8 @@ def get_citations(citation_str: str) -> Union[Dict[str, str], None]:
     """
     Get citation information from the string.
     :param citation_str: citation string to parse
-    :return: citation dictionary with parsed citation of different formats, None if not valid citation
+    :return: citation dictionary with parsed citation of different formats,
+    None if not valid citation
     """
     try:
         citation = Citation(cffstr=citation_str)
@@ -203,7 +207,8 @@ def get_artifact(url: str, token: str) -> Union[IO[bytes], None]:
             return response.raw
     return None
 
-def get_citation_author(citation_str: str) -> Union[Dict[str, str], None]:
+
+def get_citation_author(citation_str: str) -> Union[List[Dict[str, str]], None]:
     """
     Parse author information from citation.
     :param citation_str: citation string to parse

@@ -11,9 +11,6 @@ interface Props {
 }
 
 export const getServerSideProps = getServerSidePropsHandler<Props>({
-  // Include home page and plugin page locales for page transition loading states
-  locales: ['homePage', 'pluginPage'],
-
   async getProps() {
     return {
       props: {

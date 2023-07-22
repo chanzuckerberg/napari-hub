@@ -7,7 +7,7 @@ from typing import List, Union
 from nhcommons.models.install_activity import batch_write
 from utils.utils import datetime_to_utc_timestamp_in_millis
 
-LOGGER = logging.getLogger()
+LOGGER = logging.getLogger(__name__)
 
 
 class InstallActivityType(Enum):

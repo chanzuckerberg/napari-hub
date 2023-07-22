@@ -28,7 +28,7 @@ def to_commits(i):
 class TestGitHubActivity:
 
     @pytest.fixture()
-    def github_activity_table(self, aws_credentials):
+    def github_activity_table(self, aws_credentials, dynamo_env_variables):
         with mock_dynamodb():
             yield create_dynamo_table(github_activity._GitHubActivityModel, 'github-activity')
 

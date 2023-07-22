@@ -27,7 +27,7 @@ def to_installs(i):
 class TestInstallActivity:
 
     @pytest.fixture()
-    def install_activity_table(self, aws_credentials):
+    def install_activity_table(self, aws_credentials, dynamo_env_variables):
         with mock_dynamodb():
             yield create_dynamo_table(install_activity._InstallActivityModel, 'install-activity')
 
@@ -104,6 +104,6 @@ class TestInstallActivity:
         for plugin, count in data:
             self._put_item(install_activity_table, 'TOTAL', None, count, is_total='true', plugin=plugin)
 
-        actual = install_activity.get_total_installs_by_plugins(plugins=['foo', 'bar'])
+        actual = install_activity.get_total_installs_by_plugins()
 
         assert actual == expected

@@ -336,16 +336,19 @@ module data_workflows_lambda {
   }
 
   environment             = {
-    "SNOWFLAKE_PASSWORD" = local.snowflake_password
-    "SNOWFLAKE_USER"     = local.snowflake_user
-    "STACK_NAME"         = local.custom_stack_name
-    "BUCKET"             = local.data_bucket_name
-    "BUCKET_PATH"        = var.env == "dev" ? local.custom_stack_name : ""
+    "SNOWFLAKE_PASSWORD"    = local.snowflake_password
+    "SNOWFLAKE_USER"        = local.snowflake_user
+    "STACK_NAME"            = local.custom_stack_name
+    "BUCKET"                = local.data_bucket_name
+    "BUCKET_PATH"           = var.env == "dev" ? local.custom_stack_name : ""
+    "GITHUB_CLIENT_ID"      = local.github_client_id
+    "GITHUB_CLIENT_SECRET"  = local.github_client_secret
+    "PLUGINS_LAMBDA_NAME"   = local.plugins_function_name
   }
 
   log_retention_in_days   = local.log_retention_period
   timeout                 = 300
-  memory_size             = 256
+  memory_size             = 512
   ephemeral_storage_size  = 512
 }
 
@@ -379,6 +382,13 @@ resource aws_lambda_event_source_mapping data_workflow_sqs_event_source_mapping 
   event_source_arn = aws_sqs_queue.data_workflows_queue.arn
   function_name    = module.data_workflows_lambda.function_name
   batch_size       = 1
+}
+
+resource aws_lambda_event_source_mapping data_workflow_plugin_metadata_event_source_mapping {
+  event_source_arn  = module.plugin_metadata_dynamodb_table.stream_arn
+  function_name     = module.data_workflows_lambda.function_name
+  batch_size        = 100
+  starting_position = "LATEST"
 }
 
 module api_gateway_proxy_stage {
@@ -504,6 +514,7 @@ data aws_iam_policy_document backend_policy {
       module.plugin_metadata_dynamodb_table.table_arn,
       module.plugin_dynamodb_table.table_arn,
       module.plugin_blocked_dynamodb_table.table_arn,
+      "${module.plugin_dynamodb_table.table_arn}/index/*",
     ]
   }
 
@@ -530,10 +541,7 @@ data aws_iam_policy_document backend_policy {
 
 data aws_iam_policy_document data_workflows_policy {
   statement {
-    actions = [
-      "s3:GetObject",
-    ]
-
+    actions = ["s3:GetObject",]
     resources = ["${local.data_bucket_arn}/*"]
   }
   statement {
@@ -543,13 +551,26 @@ data aws_iam_policy_document data_workflows_policy {
       "dynamodb:Query",
     ]
     resources = [
-        module.install_dynamodb_table.table_arn,
-        module.github_dynamodb_table.table_arn,
-        module.category_dynamodb_table.table_arn,
-        module.plugin_dynamodb_table.table_arn,
-        module.plugin_metadata_dynamodb_table.table_arn,
-        module.plugin_blocked_dynamodb_table.table_arn,
-        "${module.plugin_dynamodb_table.table_arn}/index/*",
+      module.install_dynamodb_table.table_arn,
+      module.github_dynamodb_table.table_arn,
+      module.category_dynamodb_table.table_arn,
+      module.plugin_dynamodb_table.table_arn,
+      module.plugin_metadata_dynamodb_table.table_arn,
+      "${module.plugin_dynamodb_table.table_arn}/index/*",
+    ]
+  }
+  statement {
+    actions = ["dynamodb:PutItem"]
+    resources = [
+      module.plugin_metadata_dynamodb_table.table_arn,
+      module.plugin_dynamodb_table.table_arn,
+    ]
+  }
+  statement {
+    actions = ["dynamodb:Scan"]
+    resources = [
+      module.plugin_dynamodb_table.table_arn,
+      module.plugin_blocked_dynamodb_table.table_arn,
     ]
   }
   statement {
@@ -566,6 +587,19 @@ data aws_iam_policy_document data_workflows_policy {
       "sqs:GetQueueAttributes",
     ]
     resources = [aws_sqs_queue.data_workflows_queue.arn]
+  }
+  statement {
+    actions = ["lambda:InvokeFunction"]
+    resources = [module.plugins_lambda.function_arn]
+  }
+  statement {
+    actions = [
+      "dynamodb:GetShardIterator",
+      "dynamodb:DescribeStream",
+      "dynamodb:GetRecords",
+      "dynamodb:ListStreams",
+    ]
+    resources = [module.plugin_metadata_dynamodb_table.stream_arn]
   }
 }
 
@@ -608,7 +642,10 @@ data aws_iam_policy_document data_workflows_sqs_policy {
     condition {
       test     = "ArnLike"
       variable = "aws:SourceArn"
-      values   = [aws_cloudwatch_event_rule.activity_rule.arn]
+      values   = [
+        aws_cloudwatch_event_rule.activity_rule.arn,
+        aws_cloudwatch_event_rule.update_rule.arn,
+      ]
     }
   }
 }

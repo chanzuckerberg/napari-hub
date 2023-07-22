@@ -10,7 +10,7 @@ from utils.utils import (
 )
 from plugin.helpers import _get_repo_to_plugin_dict
 
-LOGGER = logging.getLogger()
+LOGGER = logging.getLogger(__name__)
 TIMESTAMP_FORMAT = "TO_TIMESTAMP('{0:%Y-%m-%d %H:%M:%S}')"
 
 

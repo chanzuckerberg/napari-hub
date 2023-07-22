@@ -8,6 +8,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { ParsedUrlQuery } from 'querystring';
 
 import { E2E } from '@/constants/env';
+import { I18nResources } from '@/constants/i18n';
 import {
   FEATURE_FLAG_LIST,
   FeatureFlagMap,
@@ -15,22 +16,14 @@ import {
   getEnabledFeatureFlags,
   getFeatureFlags,
 } from '@/store/featureFlags';
-import { I18nNamespace } from '@/types/i18n';
 
 /**
  * Common locales that are included on every page
  */
-const DEFAULT_LOCALES = ['common', 'footer', 'pageTitles'] as const;
-
 interface GetServerSidePropsHandlerOptions<
   P,
   Q extends ParsedUrlQuery = ParsedUrlQuery,
 > {
-  /**
-   * List of i18n locales to include in the current page.
-   */
-  locales?: Exclude<I18nNamespace, typeof DEFAULT_LOCALES[number]>[];
-
   /**
    * Function for getting additional props to pass to the page.
    */
@@ -60,7 +53,6 @@ export function getServerSidePropsHandler<
   P,
   Q extends ParsedUrlQuery = ParsedUrlQuery,
 >({
-  locales = [],
   getProps,
 }: GetServerSidePropsHandlerOptions<P, Q>): GetServerSideProps<
   ServerSidePropsHandlerProps<P>,
@@ -68,15 +60,14 @@ export function getServerSidePropsHandler<
 > {
   return async (context) => {
     const { locale, req } = context;
-    const translationProps = await serverSideTranslations(locale ?? 'en', [
-      'common',
-      'footer',
-      'pageTitles',
-      ...locales,
-    ] as I18nNamespace[]);
+    const translationProps = await serverSideTranslations(
+      locale ?? 'en',
+      Object.keys(I18nResources),
+    );
 
     const featureFlags = E2E
       ? getEnabledFeatureFlags(
+          // TODO update E2E tests to test for sort dropdown
           ...FEATURE_FLAG_LIST.filter((flag) => flag !== 'homePageRedesign'),
         )
       : await getFeatureFlags(req.url ?? '/');
