@@ -10,11 +10,12 @@ on:
       - joshua/improve-e2e-tests # TODO: Remove before PR
     #paths:
     #  - 'frontend/**'
-  pull_request:
-    branches:
-      - '**'
-    paths:
-      - 'frontend/**'
+  
+  #pull_request:
+  #  branches:
+  #    - '**'
+  #  paths:
+  #    - 'frontend/**'
 
 defaults:
   run:
