@@ -1,5 +1,5 @@
 # This workflow runs on every release to leave a comment on all PRs included in the release and to notify slack of the release.
-name: Release Test & Notify
+name: Release Notify
 
 on:
   push:
