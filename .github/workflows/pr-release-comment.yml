@@ -1,0 +1,21 @@
+name: PR Release Comment
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Comment on PRs
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const commentOnPRs = require('./.github/pr-release-comment');
+          commentOnPRs({github, context, core});
