@@ -24,7 +24,7 @@ defaults:
 jobs:
   e2e-setup:
     name: E2E Setup
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repo
@@ -81,7 +81,7 @@ jobs:
   e2e:
     # name: E2E tests ${{ matrix.browser }}
     name: E2E tests ${{ matrix.browser }} ${{ matrix.shardCurrent }} / ${{ matrix.shardTotal }}
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     needs: e2e-setup
 
     concurrency:
