@@ -1,9 +1,13 @@
+import logging
+import time
 from typing import Any, Dict, List
 
 from pynamodb.attributes import UnicodeAttribute, ListAttribute
 from slugify import slugify
 
 from nhcommons.models.helper import set_ddb_metadata, PynamoWrapper
+
+logger = logging.getLogger(__name__)
 
 
 @set_ddb_metadata("category")
@@ -33,12 +37,17 @@ class _Category(PynamoWrapper):
 
 
 def batch_write(records: List[Dict]) -> None:
-    batch = _Category.batch_write()
+    start = time.perf_counter()
+    try:
+        batch = _Category.batch_write()
 
-    for record in records:
-        batch.save(_Category.from_dict(record))
+        for record in records:
+            batch.save(_Category.from_dict(record))
 
-    batch.commit()
+        batch.commit()
+    finally:
+        duration = (time.perf_counter() - start) * 1000
+        logger.info(f"_Category duration={duration}ms")
 
 
 def get_category(category: str, version: str) -> List[Dict[str, Any]]:

@@ -1,7 +1,11 @@
+import logging
+import time
 from typing import (Dict, Any, List)
 
 from pynamodb.attributes import (UnicodeAttribute, NumberAttribute)
 from nhcommons.models.helper import (set_ddb_metadata, PynamoWrapper)
+
+logger = logging.getLogger(__name__)
 
 
 @set_ddb_metadata("github-activity")
@@ -29,9 +33,14 @@ class _GitHubActivity(PynamoWrapper):
 
 
 def batch_write(records: List[Dict]) -> None:
-    batch = _GitHubActivity.batch_write()
+    start = time.perf_counter()
+    try:
+        batch = _GitHubActivity.batch_write()
 
-    for record in records:
-        batch.save(_GitHubActivity.from_dict(record))
+        for record in records:
+            batch.save(_GitHubActivity.from_dict(record))
 
-    batch.commit()
+        batch.commit()
+    finally:
+        duration = (time.perf_counter() - start) * 1000
+        logger.info(f"_GitHubActivity duration={duration}ms")
