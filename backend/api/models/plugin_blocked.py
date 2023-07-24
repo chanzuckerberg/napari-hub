@@ -17,13 +17,15 @@ class _PluginBlocked(Model):
         pass
 
     name = UnicodeAttribute(hash_key=True)
+    reason = UnicodeAttribute(null=True)
 
 
 def get_blocked_plugins() -> Dict[str, str]:
     plugins = {}
     start = time.perf_counter()
     try:
-        plugins = {plugin.name: "blocked" for plugin in _PluginBlocked.scan()}
+        plugins = {plgn.name: plgn.reason or "blocked"
+                   for plgn in _PluginBlocked.scan()}
         return plugins
     except Exception:
         logger.exception(f"Error scanning plugin-blocked")
