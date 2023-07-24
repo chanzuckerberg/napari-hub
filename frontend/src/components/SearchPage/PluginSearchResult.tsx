@@ -327,7 +327,7 @@ export function PluginSearchResult({
         </div>
 
         {/* Plugin metadata */}
-        <ul className="mt-sds-l screen-600:m-0 space-y-1 text-sm col-span-2 screen-495:col-span-1 screen-1425:col-span-2">
+        <ul className="mt-sds-l screen-600:m-0 space-y-1 text-sm col-span-2 screen-495:col-span-1">
           <SkeletonLoader
             className="h-full"
             render={() =>
