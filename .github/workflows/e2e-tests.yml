@@ -148,6 +148,17 @@ jobs:
           BROWSER: ${{ matrix.browser }}
         run: yarn e2e:ci --shard ${{ matrix.shardCurrent }}/${{ matrix.shardTotal }}
 
+      - name: Notify Slack on Test Failure
+        if: ${{ failure() }}
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          payload: |
+            {
+              "text": "E2E tests have failed for commit: ${{ github.sha }}. Check the test results <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|here>."
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_NAPARI_HUB_WORKFLOW_NOTIFY }}
+
       - name: Upload artifacts
         if: ${{ failure() }}
         uses: actions/upload-artifact@v3.1.1
