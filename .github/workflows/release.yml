@@ -35,4 +35,4 @@ jobs:
               "text": "${{ github.ref_name }} of napari-hub.org has been released. See the <https://github.com/${{ github.repository }}/releases/tag/${{ github.ref_name }}|release notes> for more information."
             }
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_NAPARI_HUB_WORKFLOW_NOTIFY }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_PROJ_SCI_IMAGING_NAPARI_HUB }}
