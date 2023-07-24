@@ -42,7 +42,7 @@ div.complexFilter {
   // https://v4.mui.com/customization/components/#overriding-styles-with-classes
   :global {
     .MuiChip-root {
-      background: theme('colors.hub-gray.100') !important;
+      background: theme('colors.hub-primary.200') !important;
 
       // &:hover {
       //   background: theme('colors.hub-gray.200') !important;

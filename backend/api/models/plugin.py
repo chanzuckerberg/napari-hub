@@ -106,9 +106,9 @@ def get_plugin(name: str, version: str = None) -> Dict[str, Any]:
     try:
         if version:
             kwargs["range_key_condition"] = _Plugin.version == version
-            results = [plugin for plugin in _Plugin.query(**kwargs)]
+            results = _query_table(kwargs)
         else:
-            results = _Plugin.latest_plugin_index.query(**kwargs)
+            results = _query_index(kwargs)
 
         plugins = [plugin for plugin in results]
         if not plugins:
@@ -130,11 +130,11 @@ def get_excluded_plugins() -> Dict[str, str]:
 
 
 def get_latest_version(name: str) -> Optional[str]:
-    response = _Plugin.latest_plugin_index.query(
-        hash_key=name,
-        attributes_to_get=["name", "version", "release_date"]
-    )
-    plugins = [plugin for plugin in response]
+    result = _query_index({
+        "hash_key": name,
+        "attributes_to_get": ["name", "version", "release_date"],
+    })
+    plugins = [plugin for plugin in result]
     if not plugins:
         return None
     plugin = sorted(plugins, key=lambda p: p.release_date, reverse=True)[0]
@@ -163,6 +163,30 @@ def _scan_index(
         duration = (time.perf_counter() - start) * 1000
         count = len(plugins)
         logger.info(f"type={type(index)} count={count} duration={duration}ms")
+
+
+def _query_index(kwargs: dict):
+    start = time.perf_counter()
+    try:
+        return _Plugin.latest_plugin_index.query(**kwargs)
+    except Exception:
+        logger.exception(f"Error querying latest_plugin_index kwargs={kwargs}")
+        return []
+    finally:
+        duration = (time.perf_counter() - start) * 1000
+        logger.info(f"latest_plugin kwargs={kwargs} duration={duration}ms")
+
+
+def _query_table(kwargs: dict):
+    start = time.perf_counter()
+    try:
+        return _Plugin.query(**kwargs)
+    except Exception:
+        logger.exception(f"Error querying table kwargs={kwargs}")
+        return []
+    finally:
+        duration = (time.perf_counter() - start) * 1000
+        logger.info(f"kwargs={kwargs} duration={duration}ms")
 
 
 def _to_plugin_version_dict(iterator: Iterator[_Plugin]) -> Dict[str, str]:

@@ -137,9 +137,9 @@ function BaseCategoryChip(
         className,
 
         isActive && [
-          'bg-hub-primary-100',
-          'hover:bg-hub-primary-200',
-          'focus:bg-hub-primary-200',
+          'bg-hub-primary-200',
+          'hover:bg-hub-primary-300',
+          'focus:bg-hub-primary-300',
         ],
 
         !isActive && [

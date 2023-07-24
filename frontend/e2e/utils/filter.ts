@@ -8,6 +8,7 @@
 import { expect, Page } from '@playwright/test';
 
 import { RESULTS_PER_PAGE } from '@/constants/search';
+import { PluginAuthor, PluginIndexData } from '@/types';
 import { formatNumber } from '@/utils';
 
 import { PluginFilter } from '../types/filter';
@@ -22,24 +23,19 @@ import {
 } from './constants';
 import { parseItem } from './fixture';
 import { getByHasText, getMetadata } from './selectors';
-import { getQueryParameterValues, maybeExpand } from './utils';
+import { getQueryParameterValues } from './utils';
 
 const sortOrders: Record<string, string> = {
   'Recently updated': 'recentlyUpdated',
   'Plugin name': 'pluginName',
   Newest: 'newest',
 };
-// eslint-disable-next-line @typescript-eslint/naming-convention
-interface authorsInterface {
-  name: string;
-  email: string;
-}
 
 export function containsAllElements(sourceArr: string[], targetArr: string[]) {
   return sourceArr.every((i) => targetArr.includes(i));
 }
 
-export function getAuthorNames(authorsObj: authorsInterface[]) {
+export function getAuthorNames(authorsObj: PluginAuthor[]) {
   const result: string[] = [];
   const data = parseItem(authorsObj);
   for (const author of data) {
@@ -52,12 +48,21 @@ export async function filterPlugins(
   page: Page,
   pluginFilter: PluginFilter,
   sortBy = 'Recently updated',
-  width?: number,
+  width = 0,
 ): Promise<void> {
   // sorting order
 
-  await maybeExpand(page, width);
+  if (width < 875) {
+    await page.locator('[data-title="SORT BY: Recently Updated"]').click();
+    await page.locator('[data-title="Filter by category"]').click();
+    await page.locator('[data-title="Filter by requirement"]').click();
+  }
+
   if (sortBy !== 'Recently updated') {
+    if (width >= 875) {
+      await page.locator('[data-testid=sortDropdown]').click();
+    }
+
     await page
       .locator(`[data-sort-type="${sortOrders[sortBy]}"]:visible`)
       .click();
@@ -148,7 +153,7 @@ export async function verifyFilterResults(
     let i = 0;
     for (const plugin of await page.getByTestId(SEARCH_RESULT).all()) {
       const dataIndex = (pageNumber - 1) * RESULTS_PER_PAGE + i;
-      const data = parseItem(expectedData[dataIndex]);
+      const data: PluginIndexData = parseItem(expectedData[dataIndex]);
       // plugin display name
       // todo: uncomment after new test id gets deployed to the environment
       // expect(
@@ -174,18 +179,24 @@ export async function verifyFilterResults(
       // check all authors displayed
       expect(containsAllElements(fixtureAuthors, pluginAuthors)).toBeTruthy();
 
-      // total installs
+      // first released
       expect(await plugin.locator(getMetadata('h4')).nth(0).textContent()).toBe(
-        'Total installs',
+        'First released',
       );
-      expect(
-        await plugin.locator(getMetadata('span')).nth(0).textContent(),
-      ).toBe(formatNumber(data.total_installs));
 
       // plugin last update
       expect(await plugin.locator(getMetadata('h4')).nth(1).textContent()).toBe(
         'Last updated',
       );
+
+      // total installs
+      expect(await plugin.locator(getMetadata('h4')).nth(2).textContent()).toBe(
+        'Installs',
+      );
+      expect(
+        await plugin.locator(getMetadata('span')).nth(2).textContent(),
+      ).toBe(formatNumber(data.total_installs));
+
       // todo: this test is failing for one plugin where the app display 2021-05-03 as 2021-05-04
       // const updateDateStr: string = data.release_date.substring(0, 10);
       // expect(
@@ -194,7 +205,7 @@ export async function verifyFilterResults(
 
       // plugin types
       const pluginTypeText: string =
-        (await plugin.locator(getMetadata('span')).nth(2).textContent()) || '';
+        (await plugin.locator(getMetadata('span')).nth(3).textContent()) || '';
 
       if (pluginTypeText === 'information not submitted') {
         // No plugin to verify
@@ -204,7 +215,7 @@ export async function verifyFilterResults(
         // some local test data do not have plugin types
         if (fixturePluginTypes !== undefined) {
           expect(
-            await plugin.locator(getMetadata('h4')).nth(2).textContent(),
+            await plugin.locator(getMetadata('h4')).nth(3).textContent(),
           ).toBe('Plugin type');
           pluginTypes.forEach((pluginType) => {
             expect(fixturePluginTypes).toContain(
@@ -228,11 +239,8 @@ export async function verifyFilterResults(
 
         for (const fixtureWorkflowStep of fixtureWorkflowSteps) {
           expect(
-            (
-              await plugin
-                .getByText(fixtureWorkflowStep as string)
-                .allInnerTexts()
-            ).length,
+            (await plugin.getByText(fixtureWorkflowStep).allInnerTexts())
+              .length,
           ).toBeGreaterThan(0);
         }
       }

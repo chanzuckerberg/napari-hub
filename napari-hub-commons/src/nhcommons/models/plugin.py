@@ -1,10 +1,13 @@
 import logging
 import time
-from typing import Any, Dict
+from typing import Any, Dict, List, Callable, Optional
 
 from pynamodb.attributes import (UnicodeAttribute, ListAttribute, MapAttribute)
 from pynamodb.indexes import GlobalSecondaryIndex, AllProjection
+from pynamodb.pagination import ResultIterator
+
 from .helper import (set_ddb_metadata, get_stack_name, PynamoWrapper)
+from ..utils.adapter_helpers import GithubClientHelper
 
 logger = logging.getLogger(__name__)
 
@@ -41,18 +44,17 @@ class _Plugin(PynamoWrapper):
 
 
 def get_latest_plugins() -> Dict[str, str]:
-    latest_plugins = {}
-    start = time.perf_counter()
-    try:
-        response = _Plugin.latest_plugin_index.scan(
-            attributes_to_get=["name", "version"]
-        )
-        latest_plugins = {plugin.name: plugin.version for plugin in response}
-        return latest_plugins
-    finally:
-        duration = (time.perf_counter() - start) * 1000
-        count = len(latest_plugins)
-        logger.info(f"latest plugins count={count} duration={duration}ms")
+    return _scan_latest_plugins_index(
+        attributes=["name", "version"],
+        mapper=lambda result: {plugin.name: plugin.version for plugin in result}
+    )
+
+
+def get_plugin_name_by_repo() -> Dict[str, str]:
+    return _scan_latest_plugins_index(
+        attributes=["name", "code_repository"],
+        mapper=_to_plugin_name_by_repo
+    )
 
 
 def put_plugin(name: str, version: str, record: Dict[str, Any]) -> None:
@@ -76,3 +78,29 @@ def put_plugin(name: str, version: str, record: Dict[str, Any]) -> None:
     finally:
         duration = (time.perf_counter() - start) * 1000
         logger.info(f"plugin={name} version={version} duration={duration}ms")
+
+
+def _scan_latest_plugins_index(
+        attributes: List[str],
+        mapper: Callable[[ResultIterator[_Plugin]], Dict[str, Any]]
+) -> Dict[str, Any]:
+    result = {}
+    start = time.perf_counter()
+    try:
+        results = _Plugin.latest_plugin_index.scan(attributes_to_get=attributes)
+        result = mapper(results)
+        return result
+    finally:
+        duration = (time.perf_counter() - start) * 1000
+        count = len(result)
+        logger.info(f"latest plugins count={count} duration={duration}ms")
+
+
+def _to_plugin_name_by_repo(results: ResultIterator[_Plugin]) -> Dict[str, str]:
+    return {_to_repo(plugin): plugin.name for plugin in results if _to_repo(plugin)}
+
+
+def _to_repo(plugin: _Plugin) -> Optional[str]:
+    if not plugin.code_repository:
+        return None
+    return GithubClientHelper.replace_github_url(plugin.code_repository, "")

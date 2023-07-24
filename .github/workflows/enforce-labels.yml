@@ -1,0 +1,31 @@
+# Workflow for enforcing labels for on main branch PRs
+
+name: Enforce Release Labels
+
+on:
+  pull_request_target:
+    types:
+      - opened
+      - synchronize
+      - labeled
+      - unlabeled
+      - ready_for_review
+    branches:
+      - main
+
+jobs:
+  checkLabels:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+
+      - name: Check for labels
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const checkLabels = require('./.github/check-labels.js');
+            checkLabels({github, context, core});

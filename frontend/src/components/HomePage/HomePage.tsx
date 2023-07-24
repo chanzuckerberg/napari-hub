@@ -17,7 +17,7 @@ export function HomePage() {
       <SearchSection
         title={t('homePage:discoverPlugins')}
         subtitle={
-          <Link className="underline" href="/plugins">
+          <Link className="underline mb-1" href="/plugins">
             {t('homePage:browseAll')}
           </Link>
         }

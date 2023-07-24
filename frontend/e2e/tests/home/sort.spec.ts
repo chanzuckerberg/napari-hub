@@ -8,7 +8,9 @@ const TEST_AUTHORS = AUTHORS[ENV.toUpperCase()];
 
 test.describe('Plugin sorting tests', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto(`${process.env.BASEURL as string}`, { timeout: 60000 });
+    await page.goto(`${process.env.BASEURL as string}/plugins`, {
+      timeout: 60000,
+    });
   });
   test(`should sort plugins by name`, async ({ page, viewport }) => {
     const authors = TEST_AUTHORS[0];

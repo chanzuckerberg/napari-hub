@@ -246,7 +246,7 @@ export function PluginSearchResult({
         )}
         ref={containerRef}
       >
-        <div className="screen-1425:col-span-2 flex flex-col justify-between">
+        <div className="col-span-2 screen-495:col-span-1 screen-1425:col-span-2 flex flex-col justify-between">
           {/* Wrapper div to group plugin name and summary  */}
           <div>
             {/* Plugin name */}
@@ -270,7 +270,7 @@ export function PluginSearchResult({
 
             {isNpe2Enabled && (
               <span
-                className="mt-sds-m screen-495:mt-sds-l text-[0.6875rem]"
+                className="mt-sds-m screen-495:mt-3 text-[0.6875rem]"
                 data-testid="searchResultName"
               >
                 <SkeletonLoader
@@ -282,9 +282,7 @@ export function PluginSearchResult({
 
             {/* Plugin summary */}
             <p
-              className={clsx(
-                isNpe2Enabled ? 'mt-sds-xl screen-495:mt-sds-xl ' : 'mt-sds-s',
-              )}
+              className={clsx(isNpe2Enabled ? 'mt-3' : 'mt-sds-s')}
               data-testid="searchResultSummary"
             >
               <SkeletonLoader
@@ -297,7 +295,7 @@ export function PluginSearchResult({
           </div>
 
           {/* Plugin authors */}
-          <ul className="mt-sds-xl text-xs">
+          <ul className="mt-3 text-xs">
             <SkeletonLoader
               render={() =>
                 isArray(plugin.authors) &&
@@ -329,7 +327,7 @@ export function PluginSearchResult({
         </div>
 
         {/* Plugin metadata */}
-        <ul className="mt-sds-l screen-600:m-0 space-y-1 text-sm">
+        <ul className="mt-sds-l screen-600:m-0 space-y-1 text-sm col-span-2 screen-495:col-span-1">
           <SkeletonLoader
             className="h-full"
             render={() =>

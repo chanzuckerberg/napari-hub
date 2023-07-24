@@ -125,6 +125,8 @@ export function SearchBar({
           // Change placeholder color
           'placeholder-gray-500',
 
+          'text-sds-body-s screen-495:text-sds-body-m',
+
           /*
             Inputs have a default width defined by the browser, so we have to
             set this explicitly to make the input flexible:
