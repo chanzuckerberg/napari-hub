@@ -13,7 +13,7 @@ const config: PlaywrightTestConfig = {
   globalSetup: './globalSetup',
   outputDir: '../report',
   fullyParallel: true,
-  retries: 3,
+  retries: 1,
   reporter: [
     ['list'],
     [
