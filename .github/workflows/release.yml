@@ -1,0 +1,38 @@
+# This workflow runs on every release to leave a comment on all PRs included in the release and to notify slack of the release.
+name: Release Test & Notify
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - "v*"
+
+jobs:
+  pr-release-comment:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Comment on PRs
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const commentOnPRs = require('./.github/pr-release-comment');
+          commentOnPRs({github, context, core});
+
+  slack-notify:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Notify Slack of Release
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          payload: |
+            {
+              "text": "${{ github.ref_name }} of napari-hub.org has been released. See the <https://github.com/${{ github.repository }}/releases/tag/${{ github.ref_name }}|release notes> for more information."
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_NAPARI_HUB_WORKFLOW_NOTIFY }}
