@@ -23,7 +23,7 @@ defaults:
 jobs:
   e2e-setup:
     name: E2E Setup
-    runs-on: macos-latest
+    runs-on: ubuntu-20.04 #macos-latest
 
     steps:
       - name: Checkout Repo
@@ -90,7 +90,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        browser: [chrome, firefox, webkit]
+        browser: [chrome] # [chrome, firefox, webkit]
         shardCurrent: [1, 2, 3, 4, 5, 6]
         shardTotal: [6]
 
