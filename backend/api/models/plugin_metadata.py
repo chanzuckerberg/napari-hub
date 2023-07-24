@@ -27,7 +27,7 @@ class _PluginMetadata(Model):
 
 
 def get_manifest(name: str, version: str) -> Dict[str, Any]:
-    version_type = f'{version}:DISTRIBUTION'
+    version_type = f"{version}:DISTRIBUTION"
     start = time.perf_counter()
     try:
         result = _PluginMetadata.get(

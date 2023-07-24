@@ -389,6 +389,7 @@ resource aws_lambda_event_source_mapping data_workflow_plugin_metadata_event_sou
   function_name     = module.data_workflows_lambda.function_name
   batch_size        = 100
   starting_position = "LATEST"
+  maximum_batching_window_in_seconds  = 60
 }
 
 module api_gateway_proxy_stage {
