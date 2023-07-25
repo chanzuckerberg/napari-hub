@@ -12,6 +12,7 @@ const config: PlaywrightTestConfig = {
   },
   globalSetup: './globalSetup',
   fullyParallel: true,
+  retries: 1,
   outputDir: '../report',
   reporter: [
     ['list'],
@@ -83,7 +84,7 @@ const config: PlaywrightTestConfig = {
   timeout: 60 * 1000,
   use: {
     actionTimeout: 20000,
-    baseURL: 'http://localhost:8080',
+    baseURL: 'https://staging.napari-hub.org/',
     screenshot: 'only-on-failure',
     trace: 'on',
     video: 'on',
