@@ -36,11 +36,9 @@ def create_dynamo_table(aws_credentials, dynamo_env_variables):
         # reinitializing to override properties with mock environ value
         pynamo_ddb_model = set_ddb_metadata(table_name, pynamo_ddb_model)
         pynamo_ddb_model.create_table()
-        return boto3\
-            .resource("dynamodb",
-                      region_name=AWS_REGION,
-                      endpoint_url=LOCAL_DYNAMO_HOST) \
-            .Table(f"{STACK_NAME}-{table_name}")
+        return boto3.resource(
+            "dynamodb", region_name=AWS_REGION, endpoint_url=LOCAL_DYNAMO_HOST
+        ).Table(f"{STACK_NAME}-{table_name}")
 
     return _create_dynamo_table
 
@@ -70,8 +68,10 @@ def verify_table_data():
                 if len(diff_items) != 1:
                     continue
                 diff = diff_items.pop()
-                if diff[0] == "last_updated_timestamp" and \
-                        start_time <= diff[1] <= end_time:
+                if (
+                    diff[0] == "last_updated_timestamp"
+                    and start_time <= diff[1] <= end_time
+                ):
                     return True
             return False
 

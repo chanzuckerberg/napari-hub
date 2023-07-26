@@ -9,19 +9,16 @@ from nhcommons.utils import get_current_timestamp
 
 
 class PynamoWrapper(Model):
-
-    last_updated_timestamp = NumberAttribute(
-        default_for_new=get_current_timestamp
-    )
+    last_updated_timestamp = NumberAttribute(default_for_new=get_current_timestamp)
 
 
 def get_stack_name() -> str:
     return os.getenv("STACK_NAME", "local")
 
 
-def set_ddb_metadata(table_name: str,
-                     dynamo_model_cls: Optional[PynamoWrapper] = None)\
-        -> Union[PynamoWrapper, partial]:
+def set_ddb_metadata(
+    table_name: str, dynamo_model_cls: Optional[PynamoWrapper] = None
+) -> Union[PynamoWrapper, partial]:
     """
     Sets up the Meta class of dynamo model with required values
     :returns Union[PynamoWrapper, functools.partial]: if all parameters exists

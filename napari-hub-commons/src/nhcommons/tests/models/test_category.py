@@ -13,16 +13,18 @@ def get_version_hash(hash_input: dict):
     return f"{TEST_VERSION}:{hash_value}"
 
 
-def generate_category(name: str,
-                      dimension: str,
-                      label: str,
-                      hierarchy: List[str],
-                      is_input: bool):
+def generate_category(
+    name: str, dimension: str, label: str, hierarchy: List[str], is_input: bool
+):
     return {
         "name": name if is_input else name.lower().replace(" ", "-"),
-        "version_hash": get_version_hash({
-            "dimension": dimension, "label": label, "hierarchy": hierarchy,
-        }),
+        "version_hash": get_version_hash(
+            {
+                "dimension": dimension,
+                "label": label,
+                "hierarchy": hierarchy,
+            }
+        ),
         "version": TEST_VERSION,
         "formatted_name": name,
         "dimension": dimension,
@@ -37,18 +39,14 @@ def generate_category_list(is_input: bool):
             name="Confocal Fluorescence Microscopy",
             dimension="Image modality",
             label="Fluorescence microscopy",
-            hierarchy=[
-                "Fluorescence microscopy", "Confocal fluorescence microscopy"
-            ],
+            hierarchy=["Fluorescence microscopy", "Confocal fluorescence microscopy"],
             is_input=is_input,
         ),
         generate_category(
             name="Confocal Fluorescence Microscopy",
             dimension="Image modality",
             label="Confocal microscopy",
-            hierarchy=[
-                "Confocal microscopy", "Confocal fluorescence microscopy"
-            ],
+            hierarchy=["Confocal microscopy", "Confocal fluorescence microscopy"],
             is_input=is_input,
         ),
         generate_category(
@@ -62,7 +60,6 @@ def generate_category_list(is_input: bool):
 
 
 class TestCategory:
-
     @pytest.fixture()
     def category_table(self, create_dynamo_table):
         with mock_dynamodb():
@@ -73,15 +70,18 @@ class TestCategory:
 
         verify_table_data(generate_category_list(False), category_table)
 
-    @pytest.mark.parametrize("excluded_field", [
-        "dimension",
-        "formatted_name",
-        "hierarchy",
-        "label",
-        "name",
-        "version",
-        "version_hash",
-    ])
+    @pytest.mark.parametrize(
+        "excluded_field",
+        [
+            "dimension",
+            "formatted_name",
+            "hierarchy",
+            "label",
+            "name",
+            "version",
+            "version_hash",
+        ],
+    )
     def test_batch_write_for_invalid_data(self, excluded_field, category_table):
         input_data = {
             "name": "confocal-fluorescence-microscopy",

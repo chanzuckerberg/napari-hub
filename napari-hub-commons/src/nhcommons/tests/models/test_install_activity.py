@@ -16,11 +16,13 @@ def get_granularity_fields(granularity: str, timestamp: datetime) -> [str, str]:
     return f"DAY:{timestamp.strftime('%Y%M%d')}", None
 
 
-def generate_install_activity(name: str,
-                              granularity: str,
-                              install_count: int,
-                              is_input: bool,
-                              timestamp: datetime = None) -> dict:
+def generate_install_activity(
+    name: str,
+    granularity: str,
+    install_count: int,
+    is_input: bool,
+    timestamp: datetime = None,
+) -> dict:
     type_key = "granularity" if is_input else "type"
     type_timestamp, is_total = get_granularity_fields(granularity, timestamp)
     install_activity_item = {
@@ -37,8 +39,9 @@ def generate_install_activity(name: str,
 
 
 def get_relative_timestamp(**args) -> datetime:
-    return (datetime.now() - relativedelta(**args))\
-        .replace(hour=0, minute=0, second=0, microsecond=0)
+    return (datetime.now() - relativedelta(**args)).replace(
+        hour=0, minute=0, second=0, microsecond=0
+    )
 
 
 def generate_install_activity_list(is_input: bool) -> List[Dict[str, Any]]:
@@ -67,7 +70,6 @@ def generate_install_activity_list(is_input: bool) -> List[Dict[str, Any]]:
 
 
 class TestInstallActivity:
-
     @pytest.fixture()
     def table(self, create_dynamo_table):
         with mock_dynamodb():
@@ -78,13 +80,11 @@ class TestInstallActivity:
     def test_batch_write(self, table, verify_table_data):
         install_activity.batch_write(generate_install_activity_list(True))
 
-        verify_table_data(
-            generate_install_activity_list(False), table
-        )
+        verify_table_data(generate_install_activity_list(False), table)
 
-    @pytest.mark.parametrize("excluded_field", [
-        "plugin_name", "type_timestamp", "granularity"
-    ])
+    @pytest.mark.parametrize(
+        "excluded_field", ["plugin_name", "type_timestamp", "granularity"]
+    )
     def test_batch_write_for_invalid_data(self, excluded_field, table):
         input_data = {
             "plugin_name": "Foo",

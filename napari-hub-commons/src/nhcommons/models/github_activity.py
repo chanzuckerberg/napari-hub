@@ -1,9 +1,9 @@
 import logging
 import time
-from typing import (Dict, Any, List)
+from typing import Dict, Any, List
 
-from pynamodb.attributes import (UnicodeAttribute, NumberAttribute)
-from nhcommons.models.helper import (set_ddb_metadata, PynamoWrapper)
+from pynamodb.attributes import UnicodeAttribute, NumberAttribute
+from nhcommons.models.helper import set_ddb_metadata, PynamoWrapper
 
 logger = logging.getLogger(__name__)
 

@@ -2,11 +2,11 @@ import logging
 import time
 from typing import Any, Dict, List, Callable, Optional
 
-from pynamodb.attributes import (UnicodeAttribute, ListAttribute, MapAttribute)
+from pynamodb.attributes import UnicodeAttribute, ListAttribute, MapAttribute
 from pynamodb.indexes import GlobalSecondaryIndex, AllProjection
 from pynamodb.pagination import ResultIterator
 
-from .helper import (set_ddb_metadata, get_stack_name, PynamoWrapper)
+from .helper import set_ddb_metadata, get_stack_name, PynamoWrapper
 from ..utils.adapter_helpers import GithubClientHelper
 
 logger = logging.getLogger(__name__)
@@ -16,6 +16,7 @@ class _LatestPluginIndex(GlobalSecondaryIndex):
     class Meta:
         index_name = f"{get_stack_name()}-latest-plugins"
         projection = AllProjection()
+
     name = UnicodeAttribute(hash_key=True)
     is_latest = UnicodeAttribute(range_key=True)
 
@@ -46,14 +47,13 @@ class _Plugin(PynamoWrapper):
 def get_latest_plugins() -> Dict[str, str]:
     return _scan_latest_plugins_index(
         attributes=["name", "version"],
-        mapper=lambda result: {plugin.name: plugin.version for plugin in result}
+        mapper=lambda result: {plugin.name: plugin.version for plugin in result},
     )
 
 
 def get_plugin_name_by_repo() -> Dict[str, str]:
     return _scan_latest_plugins_index(
-        attributes=["name", "code_repository"],
-        mapper=_to_plugin_name_by_repo
+        attributes=["name", "code_repository"], mapper=_to_plugin_name_by_repo
     )
 
 
@@ -72,7 +72,7 @@ def put_plugin(name: str, version: str, record: Dict[str, Any]) -> None:
             release_date=record.get("release_date"),
             visibility=record.get("visibility"),
             is_latest=record.get("is_latest"),
-            excluded=record.get("excluded")
+            excluded=record.get("excluded"),
         )
         plugin.save()
     finally:
@@ -81,8 +81,7 @@ def put_plugin(name: str, version: str, record: Dict[str, Any]) -> None:
 
 
 def _scan_latest_plugins_index(
-        attributes: List[str],
-        mapper: Callable[[ResultIterator[_Plugin]], Dict[str, Any]]
+    attributes: List[str], mapper: Callable[[ResultIterator[_Plugin]], Dict[str, Any]]
 ) -> Dict[str, Any]:
     result = {}
     start = time.perf_counter()

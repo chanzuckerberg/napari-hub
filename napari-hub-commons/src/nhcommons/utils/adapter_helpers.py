@@ -28,8 +28,9 @@ class GithubClientHelper:
     def get_license(self) -> Optional[str]:
         try:
             api_url = self._to_api_github_url()
-            response = get_request(f"{api_url}/license?ref={self._branch}",
-                                   auth=self._auth).json()
+            response = get_request(
+                f"{api_url}/license?ref={self._branch}", auth=self._auth
+            ).json()
             spdx_id = response.get("license", {}).get("spdx_id")
             if spdx_id != "NOASSERTION":
                 return spdx_id
@@ -38,8 +39,9 @@ class GithubClientHelper:
             logging.error(f"Unable to fetch license for {self._repo_url}")
         return None
 
-    def get_first_valid_file(self, paths: List[str], file_format: str = "") \
-            -> Optional[str]:
+    def get_first_valid_file(
+        self, paths: List[str], file_format: str = ""
+    ) -> Optional[str]:
         for file_path in paths:
             file = self.get_file(file_path, file_format)
             if file:
@@ -85,7 +87,6 @@ class GithubClientHelper:
 
 
 class CitationHelper:
-
     def __init__(self, citation_str):
         self._citation_str = citation_str
 
@@ -98,10 +99,10 @@ class CitationHelper:
         try:
             citation = Citation(cffstr=self._citation_str)
             return {
-                'citation': self._citation_str,
-                'RIS': citation.as_ris(),
-                'BibTex': citation.as_bibtex(),
-                'APA': citation.as_apalike()
+                "citation": self._citation_str,
+                "RIS": citation.as_ris(),
+                "BibTex": citation.as_bibtex(),
+                "APA": citation.as_apalike(),
             }
         except Exception as e:
             logging.exception(e)
@@ -115,8 +116,12 @@ class CitationHelper:
         citation_yaml = self._read_yaml()
         authors = []
         for entry in citation_yaml.get("authors", []):
-            if "given-names" in entry and "family-names" in entry and \
-                    entry["given-names"] and entry["family-names"]:
+            if (
+                "given-names" in entry
+                and "family-names" in entry
+                and entry["given-names"]
+                and entry["family-names"]
+            ):
                 name = entry["given-names"] + " " + entry["family-names"]
                 authors.append({"name": name})
             elif "name" in entry and entry["name"]:
