@@ -3,11 +3,8 @@ import time
 from datetime import datetime
 from enum import Enum, auto
 from typing import Union, Optional
-import os
 
-from pynamodb.models import Model
-from pynamodb.attributes import UnicodeAttribute, NumberAttribute
-from nhcommons.utils.time import get_current_timestamp
+from nhcommons.models.github_activity import batch_write
 from utils.utils import (
     date_to_utc_timestamp_in_millis, datetime_to_utc_timestamp_in_millis
 )
@@ -86,33 +83,6 @@ class GitHubActivityType(Enum):
                 """
 
 
-class GitHubActivity(Model):
-    class Meta:
-        host = os.getenv('LOCAL_DYNAMO_HOST')
-        region = os.getenv('AWS_REGION', 'us-west-2')
-        table_name = f"{os.getenv('STACK_NAME', 'local')}-github-activity"
-
-    plugin_name = UnicodeAttribute(hash_key=True)
-    type_identifier = UnicodeAttribute(range_key=True)
-    granularity = UnicodeAttribute(attr_name='type')
-    timestamp = NumberAttribute(null=True)
-    commit_count = NumberAttribute(null=True)
-    repo = UnicodeAttribute()
-    last_updated_timestamp = NumberAttribute(default_for_new=get_current_timestamp)
-
-    def __eq__(self, other):
-        if isinstance(other, GitHubActivity):
-            return (
-                    self.plugin_name == other.plugin_name and
-                    self.type_identifier == other.type_identifier and
-                    self.granularity == other.granularity and
-                    self.timestamp == other.timestamp and
-                    self.commit_count == other.commit_count and
-                    self.repo == other.repo
-            )
-        return False
-
-
 def transform_and_write_to_dynamo(data: dict[str, list],
                                   activity_type: GitHubActivityType,
                                   plugin_name_by_repo: dict[str, str]) -> None:
@@ -127,10 +97,8 @@ def transform_and_write_to_dynamo(data: dict[str, list],
     granularity = activity_type.name
     logger.info(f"Starting for github-activity type={granularity}")
 
-    batch = GitHubActivity.batch_write()
-
+    batch = []
     start = time.perf_counter()
-    count = 0
 
     for repo, github_activities in data.items():
         plugin_name = plugin_name_by_repo.get(repo)
@@ -139,20 +107,20 @@ def transform_and_write_to_dynamo(data: dict[str, list],
             continue
         for activity in github_activities:
             timestamp = activity.get("timestamp")
-            commit_count = activity.get("count")
-            item = GitHubActivity(
-                plugin_name.lower(),
-                activity_type.format_to_type_identifier(repo, timestamp),
-                granularity=granularity,
-                timestamp=activity_type.format_to_timestamp(timestamp),
-                commit_count=commit_count,
-                repo=repo
+            type_identifier = activity_type.format_to_type_identifier(
+                repo, timestamp
             )
-            batch.save(item)
-            count += 1
+            item = {
+                "plugin_name": plugin_name.lower(),
+                "type_identifier": type_identifier,
+                "granularity": granularity,
+                "timestamp": activity_type.format_to_timestamp(timestamp),
+                "commit_count": activity.get("count"),
+                "repo": repo,
+            }
+            batch.append(item)
 
-    batch.commit()
+    batch_write(batch)
     duration = (time.perf_counter() - start) * 1000
-
     logger.info(f"Completed processing for github-activity type={granularity} "
-                f"count={count} timeTaken={duration}ms")
+                f"count={len(batch)} timeTaken={duration}ms")

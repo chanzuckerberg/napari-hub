@@ -5,8 +5,9 @@ from unittest.mock import Mock
 import pytest
 from dateutil.relativedelta import relativedelta
 
+import activity
 from activity.github_activity_model import (
-    GitHubActivity, GitHubActivityType, transform_and_write_to_dynamo
+    GitHubActivityType, transform_and_write_to_dynamo
 )
 
 REPO1 = "demo/FOO"
@@ -35,7 +36,7 @@ def generate_expected(data, granularity, type_id, ts_formatter):
                 "repo": repo,
             }
 
-            expected.append(GitHubActivity(**item))
+            expected.append(item)
     return expected
 
 
@@ -62,7 +63,8 @@ def get_subquery(activity_type) -> str:
         return f"repo IN ({','.join(filters)})"
 
     filters = [
-        f"repo = '{repo}' AND TO_TIMESTAMP(commit_author_date) >= TO_TIMESTAMP('{ts}')"
+        f"repo = '{repo}' AND TO_TIMESTAMP(commit_author_date) >= " \
+        f"TO_TIMESTAMP('{ts}')"
         for repo, ts in FORMATTED_PLUGIN_BY_TS.items()
     ]
     return " OR ".join(filters)
@@ -118,23 +120,15 @@ def test_github_activity_type(
 
 class TestGitHubActivityModels:
 
-    @pytest.fixture(autouse=True)
-    def _setup_method(self, monkeypatch):
-        self._batch_write_mock = Mock()
+    @pytest.fixture
+    def mock_batch_write(self, monkeypatch):
+        mock_batch_write = Mock()
         monkeypatch.setattr(
-            GitHubActivity, "batch_write", lambda: self._batch_write_mock
+            activity.github_activity_model, "batch_write", mock_batch_write
         )
+        return mock_batch_write
 
-    def _verify(self, expected):
-        _batch_write_save_mock = self._batch_write_mock.save
-
-        assert _batch_write_save_mock.call_count == len(expected)
-        for item in expected:
-            _batch_write_save_mock.assert_any_call(item)
-
-        self._batch_write_mock.commit.assert_called_once_with()
-
-    def test_transform_to_dynamo_records_for_latest(self):
+    def test_transform_to_dynamo_records_for_latest(self, mock_batch_write):
         data = {
             "demo/FOO": [{"timestamp": get_relative_timestamp(days=30)}],
             "org1/baz": [{"timestamp": get_relative_timestamp(days=1)}],
@@ -147,19 +141,19 @@ class TestGitHubActivityModels:
 
         data.pop("org1/baz")
         expected = generate_expected(data, "LATEST", "LATEST:{repo}", ts_format)
-        self._verify(expected)
+        mock_batch_write.assert_called_once_with(expected)
 
-    def test_transform_to_dynamo_records_for_month(self):
+    def test_transform_to_dynamo_records_for_month(self, mock_batch_write):
         data = {
             "demo/FOO": [
-                {'timestamp': get_relative_timestamp(months=24), 'count': 2},
-                {'timestamp': get_relative_timestamp(months=13), 'count': 3}
+                {"timestamp": get_relative_timestamp(months=24), "count": 2},
+                {"timestamp": get_relative_timestamp(months=13), "count": 3}
             ],
             "org1/baz": [
-                {'timestamp': get_relative_timestamp(months=15), 'count': 8},
-                {'timestamp': get_relative_timestamp(months=14), 'count': 7},
-                {'timestamp': get_relative_timestamp(months=12), 'count': 8},
-                {'timestamp': get_relative_timestamp(months=11), 'count': 7}
+                {"timestamp": get_relative_timestamp(months=15), "count": 8},
+                {"timestamp": get_relative_timestamp(months=14), "count": 7},
+                {"timestamp": get_relative_timestamp(months=12), "count": 8},
+                {"timestamp": get_relative_timestamp(months=11), "count": 7}
             ],
         }
 
@@ -171,9 +165,9 @@ class TestGitHubActivityModels:
         expected = generate_expected(
             data, "MONTH", "MONTH:{ts:%Y%m}:{repo}", ts_day_format
         )
-        self._verify(expected)
+        mock_batch_write.assert_called_once_with(expected)
 
-    def test_transform_to_dynamo_records_for_total(self):
+    def test_transform_to_dynamo_records_for_total(self, mock_batch_write):
         data = {
             "demo/FOO": [{"count": 13}],
             "org1/baz": [{"count": 23}],
@@ -188,4 +182,4 @@ class TestGitHubActivityModels:
         expected = generate_expected(
             data, "TOTAL", "TOTAL:{repo}", lambda ts: None
         )
-        self._verify(expected)
+        mock_batch_write.assert_called_once_with(expected)

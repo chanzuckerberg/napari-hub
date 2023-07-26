@@ -1,3 +1,5 @@
+import logging
+import time
 from typing import Any, Dict, List
 
 from pynamodb.attributes import UnicodeAttribute, ListAttribute
@@ -5,19 +7,47 @@ from slugify import slugify
 
 from nhcommons.models.helper import set_ddb_metadata, PynamoWrapper
 
+logger = logging.getLogger(__name__)
 
-@set_ddb_metadata('category')
+
+@set_ddb_metadata("category")
 class _Category(PynamoWrapper):
     class Meta:
         pass
 
     name = UnicodeAttribute(hash_key=True)
     version_hash = UnicodeAttribute(range_key=True)
-    version = UnicodeAttribute()
-    formatted_name = UnicodeAttribute()
     dimension = UnicodeAttribute()
+    formatted_name = UnicodeAttribute()
     hierarchy = ListAttribute()  # List[str]
     label = UnicodeAttribute()
+    version = UnicodeAttribute()
+
+    @staticmethod
+    def from_dict(data: Dict[str, Any]):
+        return _Category(
+            name=slugify(data["name"]),
+            version_hash=data["version_hash"],
+            dimension=data["dimension"],
+            formatted_name=data["formatted_name"],
+            hierarchy=data["hierarchy"],
+            label=data["label"],
+            version=data["version"],
+        )
+
+
+def batch_write(records: List[Dict]) -> None:
+    start = time.perf_counter()
+    try:
+        batch = _Category.batch_write()
+
+        for record in records:
+            batch.save(_Category.from_dict(record))
+
+        batch.commit()
+    finally:
+        duration = (time.perf_counter() - start) * 1000
+        logger.info(f"_Category duration={duration}ms")
 
 
 def get_category(category: str, version: str) -> List[Dict[str, Any]]:

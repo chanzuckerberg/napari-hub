@@ -23,7 +23,7 @@ def _put_item(
 class TestPlugin:
 
     @pytest.fixture()
-    def plugin_table(self, create_dynamo_table):
+    def table(self, create_dynamo_table):
         with mock_dynamodb():
             yield create_dynamo_table(plugin._Plugin, "plugin")
 
@@ -43,34 +43,34 @@ class TestPlugin:
              {"Foo": "1.1", "baz": "0.3", "napari-demo": "0.1", "hap": "6.0"})
         ]
     )
-    def test_get_latest_plugins(self, plugin_table, data, expected):
+    def test_get_latest_plugins(self, table, data, expected):
         for name, version, is_latest, visibility in data:
-            _put_item(plugin_table, name, version, is_latest, visibility)
+            _put_item(table, name, version, is_latest, visibility)
 
         actual = plugin.get_latest_plugins()
         assert actual == expected
 
     @pytest.mark.parametrize(
         "data, expected", [
-            ([("Foo", "0.8", False, "https://github.com/org1/Foo", "PUBLIC")], {}),
-            ([("Foo", "0.8", False, "https://github.com/org1/Foo", "HIDDEN")], {}),
-            ([("Foo", "0.8", False, "https://github.com/org1/Foo", "BLOCKED")], {}),
-            ([("Foo", "0.8", False, "https://github.com/org1/Foo", "DISABLED")], {}),
-            ([("Foo", "0.8", True, None, "PUBLIC")], {}),
-            ([("Foo", "0.8", True, None, "HIDDEN")], {}),
-            ([("Foo", "0.8", True, None, "BLOCKED")], {}),
-            ([("Foo", "0.8", True, None, "DISABLED")], {}),
-            ([("Foo", "1.1", True, "https://github.com/org1/foorepo", "PUBLIC")], {"org1/foorepo": "Foo"}),
-            ([("Foo", "1.1", True, "https://github.com/org1/foorepo", "HIDDEN")], {"org1/foorepo": "Foo"}),
-            ([("Foo", "1.1", True, "https://github.com/org1/foorepo", "BLOCKED")], {"org1/foorepo": "Foo"}),
-            ([("Foo", "1.1", True, "https://github.com/org1/foorepo", "DISABLED")], {"org1/foorepo": "Foo"}),
-            ([("Foo", "1.1", True, "https://custome.com/org1/foorepo", "HIDDEN")], {"https://custome.com/org1/foorepo": "Foo"})
+            ([("Foo", "0.8", False, "PUBLIC", "https://github.com/org1/Foo")], {}),
+            ([("Foo", "0.8", False, "HIDDEN", "https://github.com/org1/Foo")], {}),
+            ([("Foo", "0.8", False, "BLOCKED", "https://github.com/org1/Foo")], {}),
+            ([("Foo", "0.8", False, "DISABLED", "https://github.com/org1/Foo")], {}),
+            ([("Foo", "0.8", True, "PUBLIC", None)], {}),
+            ([("Foo", "0.8", True, "HIDDEN", None)], {}),
+            ([("Foo", "0.8", True, "BLOCKED", None)], {}),
+            ([("Foo", "0.8", True, "DISABLED", None)], {}),
+            ([("Foo", "1.1", True, "PUBLIC", "https://github.com/org1/foorepo")], {"org1/foorepo": "Foo"}),
+            ([("Foo", "1.1", True, "HIDDEN", "https://github.com/org1/foorepo")], {"org1/foorepo": "Foo"}),
+            ([("Foo", "1.1", True, "BLOCKED", "https://github.com/org1/foorepo")], {"org1/foorepo": "Foo"}),
+            ([("Foo", "1.1", True, "DISABLED", "https://github.com/org1/foorepo")], {"org1/foorepo": "Foo"}),
+            ([("Foo", "1.1", True, "HIDDEN", "https://custome.com/org1/foorepo")], {"https://custome.com/org1/foorepo": "Foo"})
         ]
     )
-    def test_get_plugin_name_by_repo(self, plugin_table, data, expected):
-        for name, version, is_latest, visibility, code_repo in data:
+    def test_get_plugin_name_by_repo(self, table, data, expected):
+        for name, version, is_latest, code_repo, visibility in data:
             _put_item(
-                plugin_table, name, version, is_latest, code_repo, visibility
+                table, name, version, is_latest, code_repo, visibility
             )
 
         actual = plugin.get_plugin_name_by_repo()

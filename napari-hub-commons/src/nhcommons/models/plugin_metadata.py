@@ -1,22 +1,17 @@
-
 import logging
 import time
-from typing import Any, Dict, List, Optional, Set, Union
-
+from typing import (Any, Dict, List, Optional, Set, Union)
 from pynamodb.attributes import (
-    BooleanAttribute,
-    MapAttribute,
-    UnicodeAttribute,
+    BooleanAttribute, MapAttribute, UnicodeAttribute
 )
 from pynamodb.pagination import ResultIterator
-
 from .helper import set_ddb_metadata, PynamoWrapper
 from .plugin_utils import PluginMetadataType
 
 logger = logging.getLogger(__name__)
 
 
-@set_ddb_metadata('plugin-metadata')
+@set_ddb_metadata("plugin-metadata")
 class _PluginMetadata(PynamoWrapper):
     class Meta:
         pass
@@ -62,7 +57,7 @@ def put_plugin_metadata(plugin: str,
 
 
 def get_existing_types(plugin: str, version: str) -> Set[PluginMetadataType]:
-    results = _query(name=plugin, version=version, projection=['type'])
+    results = _query(name=plugin, version=version, projection=["type"])
     existing_types = set()
     for result in results:
         try:
@@ -84,7 +79,7 @@ def _query(
 
     start = time.perf_counter()
     try:
-        condition = _PluginMetadata.version_type.startswith(f'{version}:')
+        condition = _PluginMetadata.version_type.startswith(f"{version}:")
         return _PluginMetadata.query(hash_key=name,
                                      range_key_condition=condition,
                                      attributes_to_get=projection)

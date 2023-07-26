@@ -1,3 +1,5 @@
+import time
+
 import boto3
 import moto.dynamodb.urls
 import pytest
@@ -9,7 +11,7 @@ AWS_REGION = "us-east-2"
 STACK_NAME = "testing-stack"
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope="module")
 def aws_credentials():
     monkeypatch = pytest.MonkeyPatch()
     monkeypatch.setenv("AWS_ACCESS_KEY_ID", "testing")
@@ -19,7 +21,7 @@ def aws_credentials():
     monkeypatch.setenv("AWS_DEFAULT_REGION", "us-east-1")
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope="module")
 def dynamo_env_variables():
     moto.dynamodb.urls.url_bases.append(LOCAL_DYNAMO_HOST)
     monkeypatch = pytest.MonkeyPatch()
@@ -41,3 +43,38 @@ def create_dynamo_table(aws_credentials, dynamo_env_variables):
             .Table(f"{STACK_NAME}-{table_name}")
 
     return _create_dynamo_table
+
+
+@pytest.fixture
+def verify_table_data():
+    start_time = round(time.time() * 1000)
+
+    def _verify(expected_list, table):
+        actual_list = table.scan()["Items"]
+        end_time = round(time.time() * 1000)
+        assert len(actual_list) == len(expected_list)
+
+        def generate_set(input_map: dict) -> set:
+            result = set()
+            for item in input_map.items():
+                if type(item[1]) == list:
+                    result.add((item[0], "-".join(item[1])))
+                else:
+                    result.add(item)
+            return result
+
+        def is_match(expected) -> bool:
+            expected_items = generate_set(expected)
+            for actual in actual_list:
+                diff_items = generate_set(actual) - expected_items
+                if len(diff_items) != 1:
+                    continue
+                diff = diff_items.pop()
+                if diff[0] == "last_updated_timestamp" and \
+                        start_time <= diff[1] <= end_time:
+                    return True
+            return False
+
+        assert all([is_match(expected) for expected in expected_list])
+
+    return _verify

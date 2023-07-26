@@ -2,9 +2,9 @@ import os
 import time
 import logging
 
-from categories.category_model import CategoryModel
 from categories.utils import hash_category
-from slugify import slugify
+
+from nhcommons.models.category import batch_write
 from utils.env import get_required_env
 from utils.s3 import S3Client
 
@@ -36,7 +36,7 @@ def seed_s3_categories_workflow(version: str, categories_path: str):
 
     LOGGER.info(
         f"Seeding {version} category data from S3 "
-        f"prefix={STACK_NAME} s3_path={categories_path} bucket={bucket} table={CategoryModel.Meta.table_name}"
+        f"prefix={STACK_NAME} s3_path={categories_path} bucket={bucket}"
     )
 
     client = S3Client(
@@ -45,25 +45,23 @@ def seed_s3_categories_workflow(version: str, categories_path: str):
     )
     data = client.load_json_from_s3(categories_path)
 
-    batch = CategoryModel.batch_write()
+    batch = []
     start = time.perf_counter()
-    count = 0
 
     for name, categories in data.items():
         for category in categories:
-            item = CategoryModel(
-                name=slugify(name),
-                version_hash=f"{version}:{hash_category(category)}",
-                version=version,
-                formatted_name=name,
-                dimension=category.get("dimension", ""),
-                hierarchy=category.get("hierarchy", []),
-                label=category.get("label", ""),
-            )
-            batch.save(item)
-            count += 1
+            batch.append({
+                "name": name,
+                "version_hash": f"{version}:{hash_category(category)}",
+                "version": version,
+                "formatted_name": name,
+                "dimension": category.get("dimension", ""),
+                "hierarchy": category.get("hierarchy", []),
+                "label": category.get("label", ""),
+            })
 
-    batch.commit()
+    batch_write(batch)
     duration = (time.perf_counter() - start) * 1000
 
-    LOGGER.info(f"Finished seeding category data count={count} duration={duration}ms")
+    LOGGER.info(f"Finished seeding category data count={len(batch)} "
+                f"duration={duration}ms")

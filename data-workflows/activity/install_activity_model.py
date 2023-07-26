@@ -3,11 +3,8 @@ import time
 from datetime import datetime
 from enum import Enum, auto
 from typing import List, Union
-import os
 
-from pynamodb.models import Model
-from pynamodb.attributes import UnicodeAttribute, NumberAttribute
-from nhcommons.utils.time import get_current_timestamp
+from nhcommons.models.install_activity import batch_write
 from utils.utils import datetime_to_utc_timestamp_in_millis
 
 logger = logging.getLogger(__name__)
@@ -38,54 +35,29 @@ class InstallActivityType(Enum):
         return f"DATE_TRUNC('{self.name}', timestamp)"
 
 
-class InstallActivity(Model):
-    class Meta:
-        host = os.getenv('LOCAL_DYNAMO_HOST')
-        region = os.getenv('AWS_REGION')
-        table_name = f'{os.getenv("STACK_NAME")}-install-activity'
-
-    plugin_name = UnicodeAttribute(hash_key=True)
-    type_timestamp = UnicodeAttribute(range_key=True)
-    granularity = UnicodeAttribute(attr_name='type')
-    timestamp = NumberAttribute(null=True)
-    is_total = UnicodeAttribute(null=True)
-    install_count = NumberAttribute()
-    last_updated_timestamp = NumberAttribute(default_for_new=get_current_timestamp)
-
-    def __eq__(self, other):
-        if isinstance(other, InstallActivity):
-            return ((self.plugin_name, self.type_timestamp, self.granularity,
-                     self.timestamp, self.install_count, self.is_total) ==
-                    (other.plugin_name, other.type_timestamp, other.granularity,
-                     other.timestamp, other.install_count, other.is_total))
-        return False
-
-
 def transform_and_write_to_dynamo(data: dict[str, List],
                                   activity_type: InstallActivityType) -> None:
     granularity = activity_type.name
     logger.info(f"Starting for install-activity type={granularity}")
-    batch = InstallActivity.batch_write()
-    count = 0
     is_total = "true" if activity_type is InstallActivityType.TOTAL else None
+    batch = []
+
     start = time.perf_counter()
     for plugin_name, install_activities in data.items():
         for activity in install_activities:
             timestamp = activity["timestamp"]
+            type_timestamp = activity_type.format_to_type_timestamp(timestamp)
+            item = {
+                "plugin_name": plugin_name.lower(),
+                "type_timestamp": type_timestamp,
+                "granularity": activity_type.name,
+                "timestamp": activity_type.format_to_timestamp(timestamp),
+                "install_count": activity["count"],
+                "is_total": is_total,
+            }
+            batch.append(item)
 
-            item = InstallActivity(
-                plugin_name=plugin_name.lower(),
-                type_timestamp=activity_type.format_to_type_timestamp(timestamp),
-                granularity=granularity,
-                timestamp=activity_type.format_to_timestamp(timestamp),
-                install_count=activity["count"],
-                is_total=is_total,
-            )
-            batch.save(item)
-            count += 1
-
-    batch.commit()
+    batch_write(batch)
     duration = (time.perf_counter() - start) * 1000
-
     logger.info(f"Completed processing for install-activity type={granularity} "
-                f"count={count} timeTaken={duration}ms")
+                f"count={len(batch)} timeTaken={duration}ms")

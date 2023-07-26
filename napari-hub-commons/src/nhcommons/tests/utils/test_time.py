@@ -1,13 +1,11 @@
 import time
 
-from nhcommons import utils
+from nhcommons.utils import get_current_timestamp
 
 
-class TestTimeUtils:
+def test_get_current_time():
+    start = round(time.time() * 1000)
+    actual = get_current_timestamp()
+    end = round(time.time() * 1000)
 
-    def test_get_current_time(self):
-        start = round(time.time() * 1000)
-        actual = utils.time.get_current_timestamp()
-        end = round(time.time() * 1000)
-
-        assert start <= actual <= end
+    assert start <= actual <= end

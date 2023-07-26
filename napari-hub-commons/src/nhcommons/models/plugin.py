@@ -2,11 +2,7 @@ import logging
 import time
 from typing import Any, Dict, List, Callable, Optional
 
-from pynamodb.attributes import (
-    UnicodeAttribute,
-    ListAttribute,
-    MapAttribute
-)
+from pynamodb.attributes import (UnicodeAttribute, ListAttribute, MapAttribute)
 from pynamodb.indexes import GlobalSecondaryIndex, AllProjection
 from pynamodb.pagination import ResultIterator
 

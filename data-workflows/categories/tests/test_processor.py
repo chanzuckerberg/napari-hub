@@ -3,36 +3,34 @@ import boto3
 import json
 import pytest
 
-from categories.category_model import CategoryModel
+import categories
 from categories.utils import hash_category
-from conftest import create_dynamo_table
-from moto import mock_dynamodb, mock_s3
+from moto import mock_s3
 from unittest.mock import Mock
-
+from categories.processor import seed_s3_categories_workflow
 
 TEST_BUCKET = "test-bucket"
-TEST_STACK_NAME = "None"
 TEST_BUCKET_PATH = "test-path"
 TEST_CATEGORY_PATH = "category/EDAM-BIOIMAGING/alpha06.json"
-TEST_CATEGORY_VERSION = "EDAM-BIOIMAGING:alpha06"
+TEST_VERSION = "EDAM-BIOIMAGING:alpha06"
 TEST_CATEGORY_DATA = json.dumps(
     {
         "Foo": [
             {
                 "dimension": "dimension1",
-                "label": "label",
+                "label": "label1",
                 "hierarchy": ["1", "2", "3"],
             },
             {
                 "dimension": "dimension2",
-                "label": "label",
+                "label": "label2",
                 "hierarchy": ["1", "2"],
             },
         ],
         "Foo Bar": [
             {
                 "dimension": "dimension1",
-                "label": "label",
+                "label": "label3",
                 "hierarchy": ["1", "2"],
             },
         ],
@@ -41,36 +39,23 @@ TEST_CATEGORY_DATA = json.dumps(
 
 
 def _get_version_hash(category: Dict[str, Any]):
-    hash = hash_category(category)
-    return f"{TEST_CATEGORY_VERSION}:{hash}"
-
-
-class BatchWriteMock:
-    def __init__(self, commit=Mock(), save=Mock()):
-        self.commit = commit
-        self.save = save
+    return f"{TEST_VERSION}:{hash_category(category)}"
 
 
 @mock_s3
-class TestPluginManifest:
+class TestCategoryProcessor:
     @pytest.fixture
-    def setup_env_variables(self, monkeypatch):
+    def env_variables(self, monkeypatch):
         monkeypatch.setenv("BUCKET", TEST_BUCKET)
         monkeypatch.setenv("BUCKET_PATH", TEST_BUCKET_PATH)
-        monkeypatch.setenv("STACK_NAME", TEST_STACK_NAME)
 
-    @pytest.fixture()
-    def categories_table(self, aws_credentials, setup_env_variables):
-        from categories.category_model import CategoryModel
-
-        with mock_dynamodb():
-            yield create_dynamo_table(CategoryModel, "category")
-
-    def _set_up_mock_batch_write(self, monkeypatch, commit=Mock(), save=Mock()):
-        self._mock_batch_write = BatchWriteMock(commit=commit, save=save)
+    @pytest.fixture
+    def mock_batch_write(self, monkeypatch):
+        mock_batch_write = Mock()
         monkeypatch.setattr(
-            CategoryModel, "batch_write", lambda: self._mock_batch_write
+            categories.processor, "batch_write", mock_batch_write
         )
+        return mock_batch_write
 
     def _set_up_s3(self, bucket_name=TEST_BUCKET):
         self._s3 = boto3.resource("s3")
@@ -83,111 +68,70 @@ class TestPluginManifest:
             Body=bytes(TEST_CATEGORY_DATA, "utf-8")
         )
 
+    @classmethod
+    def generate_expected(cls, name, dimension, label, hierarchy):
+        return {
+            "name": name,
+            "version_hash": _get_version_hash({
+                "dimension": dimension, "label": label, "hierarchy": hierarchy,
+            }),
+            "version": TEST_VERSION,
+            "formatted_name": name,
+            "dimension": dimension,
+            "label": label,
+            "hierarchy": hierarchy,
+        }
+
     def test_write_category_data(
-        self,
-        aws_credentials,
-        setup_env_variables,
-        categories_table,
+            self, mock_batch_write, aws_credentials, env_variables
     ):
         self._set_up_s3()
         self._seed_data()
 
-        import categories.processor
-        from categories.category_model import CategoryModel
+        seed_s3_categories_workflow(TEST_VERSION, TEST_CATEGORY_PATH)
 
-        categories.processor.seed_s3_categories_workflow(
-            TEST_CATEGORY_VERSION, TEST_CATEGORY_PATH
-        )
-
-        data = list(CategoryModel.scan())
-        assert data == [
-            CategoryModel(
-                name="foo",
-                version_hash=_get_version_hash(
-                    {
-                        "dimension": "dimension1",
-                        "label": "label",
-                        "hierarchy": ["1", "2", "3"],
-                    }
-                ),
-                version=TEST_CATEGORY_VERSION,
-                formatted_name="Foo",
-                dimension="dimension1",
-                label="label",
-                hierarchy=["1", "2", "3"],
-            ),
-            CategoryModel(
-                name="foo",
-                version_hash=_get_version_hash(
-                    {
-                        "dimension": "dimension2",
-                        "label": "label",
-                        "hierarchy": ["1", "2"],
-                    }
-                ),
-                version=TEST_CATEGORY_VERSION,
-                formatted_name="Foo",
-                dimension="dimension2",
-                label="label",
-                hierarchy=["1", "2"],
-            ),
-            CategoryModel(
-                name="foo-bar",
-                version=TEST_CATEGORY_VERSION,
-                version_hash=_get_version_hash(
-                    {
-                        "dimension": "dimension1",
-                        "label": "label",
-                        "hierarchy": ["1", "2"],
-                    }
-                ),
-                formatted_name="Foo Bar",
-                dimension="dimension1",
-                label="label",
-                hierarchy=["1", "2"],
-            ),
+        expected_list = [
+            self.generate_expected("Foo", "dimension1", "label1", ["1", "2", "3"]),
+            self.generate_expected("Foo", "dimension2", "label2", ["1", "2"]),
+            self.generate_expected("Foo Bar", "dimension1", "label3", ["1", "2"]),
         ]
+        mock_batch_write.assert_called_once_with(expected_list)
 
-    def test_write_category_data_missing_params(self):
-        import categories.processor
-
+    def test_write_category_data_missing_version(self, mock_batch_write):
         with pytest.raises(ValueError):
-            categories.processor.seed_s3_categories_workflow("", TEST_CATEGORY_PATH)
+            seed_s3_categories_workflow("", TEST_CATEGORY_PATH)
 
+        mock_batch_write.assert_not_called()
+
+    def test_write_category_data_missing_path(self, mock_batch_write):
         with pytest.raises(ValueError):
-            categories.processor.seed_s3_categories_workflow(TEST_CATEGORY_VERSION, "")
+            seed_s3_categories_workflow(TEST_VERSION, "")
 
-    def test_write_category_data_missing_required_env(self):
-        import categories.processor
+        mock_batch_write.assert_not_called()
 
+    def test_write_category_data_missing_required_env(self, mock_batch_write):
         with pytest.raises(ValueError):
-            categories.processor.seed_s3_categories_workflow(
-                TEST_CATEGORY_VERSION, TEST_CATEGORY_PATH
-            )
+            seed_s3_categories_workflow(TEST_VERSION, TEST_CATEGORY_PATH)
+
+        mock_batch_write.assert_not_called()
 
     def test_write_category_data_s3_load_error(
-        self, aws_credentials, setup_env_variables, categories_table, monkeypatch
+            self, mock_batch_write, aws_credentials, env_variables
     ):
         self._set_up_s3()
-        self._set_up_mock_batch_write(monkeypatch)
 
-        import categories.processor
+        seed_s3_categories_workflow(TEST_VERSION, TEST_CATEGORY_PATH)
 
-        categories.processor.seed_s3_categories_workflow(
-            TEST_CATEGORY_VERSION, TEST_CATEGORY_PATH
-        )
-
-        self._mock_batch_write.save.assert_not_called()
+        mock_batch_write.assert_called_once_with([])
 
     def test_write_category_data_batch_write_error(
-        self, aws_credentials, setup_env_variables, categories_table, monkeypatch
+            self, aws_credentials, env_variables, monkeypatch
     ):
         self._set_up_s3()
-        self._set_up_mock_batch_write(monkeypatch, commit=Mock(side_effect=Exception()))
-
-        import categories.processor
+        self._seed_data()
+        monkeypatch.setattr(
+            categories.processor, "batch_write", Mock(side_effect=Exception())
+        )
 
         with pytest.raises(Exception):
-            categories.processor.seed_s3_categories_workflow(
-                TEST_CATEGORY_VERSION, TEST_CATEGORY_PATH
-            )
+            seed_s3_categories_workflow(TEST_VERSION, TEST_CATEGORY_PATH)
