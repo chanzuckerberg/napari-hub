@@ -3,7 +3,7 @@ from typing import Any, Optional
 from nhcommons.models import plugin_metadata
 from nhcommons.models.plugin import put_plugin
 from nhcommons.models.plugin_utils import PluginMetadataType, PluginVisibility
-from nhcommons.models.plugins_blocked import get_all_blocked_plugins
+from nhcommons.models.plugin_blocked import get_all_blocked_plugins
 from plugin.manifest import get_formatted_manifest
 
 PLUGIN_FIELDS = {

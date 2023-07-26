@@ -9,6 +9,7 @@ class _PluginBlocked(PynamoWrapper):
         pass
 
     name = UnicodeAttribute(hash_key=True)
+    reason = UnicodeAttribute(null=True)
 
 
 def get_all_blocked_plugins() -> Set[str]:

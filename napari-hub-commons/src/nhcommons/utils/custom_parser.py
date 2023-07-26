@@ -10,8 +10,6 @@ def render_description(description: str) -> str:
     :return: rendered description html text
     """
     if description:
-        html = markdown(description)
-        soup = BeautifulSoup(html, "html.parser")
-        return soup.get_text()
+        return BeautifulSoup(markdown(description), "html.parser").get_text()
 
     return ""
