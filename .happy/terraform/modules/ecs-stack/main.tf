@@ -542,6 +542,10 @@ data aws_iam_policy_document backend_policy {
 
 data aws_iam_policy_document data_workflows_policy {
   statement {
+    actions = ["s3:GetObject",]
+    resources = ["${local.data_bucket_arn}/*"]
+  }
+  statement {
     actions = [
       "dynamodb:BatchWriteItem",
       "dynamodb:GetItem",
