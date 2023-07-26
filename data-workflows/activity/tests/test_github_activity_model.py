@@ -7,7 +7,8 @@ from dateutil.relativedelta import relativedelta
 
 import activity
 from activity.github_activity_model import (
-    GitHubActivityType, transform_and_write_to_dynamo
+    GitHubActivityType,
+    transform_and_write_to_dynamo,
 )
 
 REPO1 = "demo/FOO"
@@ -63,7 +64,7 @@ def get_subquery(activity_type) -> str:
         return f"repo IN ({','.join(filters)})"
 
     filters = [
-        f"repo = '{repo}' AND TO_TIMESTAMP(commit_author_date) >= " \
+        f"repo = '{repo}' AND TO_TIMESTAMP(commit_author_date) >= "
         f"TO_TIMESTAMP('{ts}')"
         for repo, ts in FORMATTED_PLUGIN_BY_TS.items()
     ]
@@ -71,34 +72,33 @@ def get_subquery(activity_type) -> str:
 
 
 @pytest.mark.parametrize(
-    "activity_type, timestamp, type_id, projection, group_by", [
+    "activity_type, timestamp, type_id, projection, group_by",
+    [
         (
-                GitHubActivityType.LATEST,
-                1679394260000,
-                f"LATEST:{REPO1}",
-                "TO_TIMESTAMP(MAX(commit_author_date)) AS latest_commit",
-                "name",
+            GitHubActivityType.LATEST,
+            1679394260000,
+            f"LATEST:{REPO1}",
+            "TO_TIMESTAMP(MAX(commit_author_date)) AS latest_commit",
+            "name",
         ),
         (
-                GitHubActivityType.MONTH,
-                1679356800000,
-                f"MONTH:202303:{REPO1}",
-                "DATE_TRUNC('month', TO_DATE(commit_author_date)) AS month, "
-                "COUNT(*) AS commit_count",
-                "name, month",
+            GitHubActivityType.MONTH,
+            1679356800000,
+            f"MONTH:202303:{REPO1}",
+            "DATE_TRUNC('month', TO_DATE(commit_author_date)) AS month, "
+            "COUNT(*) AS commit_count",
+            "name, month",
         ),
         (
-                GitHubActivityType.TOTAL,
-                None,
-                f"TOTAL:{REPO1}",
-                "COUNT(*) AS commit_count",
-                "name",
-        )
-    ]
+            GitHubActivityType.TOTAL,
+            None,
+            f"TOTAL:{REPO1}",
+            "COUNT(*) AS commit_count",
+            "name",
+        ),
+    ],
 )
-def test_github_activity_type(
-        activity_type, timestamp, type_id, projection, group_by
-):
+def test_github_activity_type(activity_type, timestamp, type_id, projection, group_by):
     input_ts = datetime.strptime("03/21/2023 10:24:20", "%m/%d/%Y %H:%M:%S")
     assert activity_type.format_to_timestamp(input_ts) == timestamp
     assert activity_type.format_to_type_identifier(REPO1, input_ts) == type_id
@@ -119,7 +119,6 @@ def test_github_activity_type(
 
 
 class TestGitHubActivityModels:
-
     @pytest.fixture
     def mock_batch_write(self, monkeypatch):
         mock_batch_write = Mock()
@@ -135,9 +134,7 @@ class TestGitHubActivityModels:
             "org2/bar": [{"timestamp": get_relative_timestamp(days=23)}],
         }
 
-        transform_and_write_to_dynamo(
-            data, GitHubActivityType.LATEST, PLUGIN_BY_REPO
-        )
+        transform_and_write_to_dynamo(data, GitHubActivityType.LATEST, PLUGIN_BY_REPO)
 
         data.pop("org1/baz")
         expected = generate_expected(data, "LATEST", "LATEST:{repo}", ts_format)
@@ -147,19 +144,17 @@ class TestGitHubActivityModels:
         data = {
             "demo/FOO": [
                 {"timestamp": get_relative_timestamp(months=24), "count": 2},
-                {"timestamp": get_relative_timestamp(months=13), "count": 3}
+                {"timestamp": get_relative_timestamp(months=13), "count": 3},
             ],
             "org1/baz": [
                 {"timestamp": get_relative_timestamp(months=15), "count": 8},
                 {"timestamp": get_relative_timestamp(months=14), "count": 7},
                 {"timestamp": get_relative_timestamp(months=12), "count": 8},
-                {"timestamp": get_relative_timestamp(months=11), "count": 7}
+                {"timestamp": get_relative_timestamp(months=11), "count": 7},
             ],
         }
 
-        transform_and_write_to_dynamo(
-            data, GitHubActivityType.MONTH, PLUGIN_BY_REPO
-        )
+        transform_and_write_to_dynamo(data, GitHubActivityType.MONTH, PLUGIN_BY_REPO)
 
         data.pop("org1/baz")
         expected = generate_expected(
@@ -174,12 +169,8 @@ class TestGitHubActivityModels:
             "org2/bar": [{"count": 65}],
         }
 
-        transform_and_write_to_dynamo(
-            data, GitHubActivityType.TOTAL, PLUGIN_BY_REPO
-        )
+        transform_and_write_to_dynamo(data, GitHubActivityType.TOTAL, PLUGIN_BY_REPO)
 
         data.pop("org1/baz")
-        expected = generate_expected(
-            data, "TOTAL", "TOTAL:{repo}", lambda ts: None
-        )
+        expected = generate_expected(data, "TOTAL", "TOTAL:{repo}", lambda ts: None)
         mock_batch_write.assert_called_once_with(expected)

@@ -16,7 +16,8 @@ logger = logging.getLogger(__name__)
 
 EVENT_TYPE_BY_PROCESSOR = {
     "activity": lambda event: activity.processor.update_activity(),
-    "seed-s3-categories": lambda event: categories.processor.seed_s3_categories_workflow(
+    "seed-s3-categories": lambda
+        event: categories.processor.seed_s3_categories_workflow(
         event.get("version"), event.get("categories_path")
     ),
     "plugin": lambda event: plugin.processor.update_plugin(),
@@ -38,7 +39,7 @@ def _get_plugin_version(dynamodb_dict: dict) -> tuple:
     keys = dynamodb_dict.get("Keys", {})
     name = keys.get("name", {}).get("S")
     version_type = keys.get("version_type", {}).get("S")
-    version = version_type[0:version_type.rfind(":")]
+    version = version_type[0: version_type.rfind(":")]
     return name, version
 
 
