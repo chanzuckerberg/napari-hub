@@ -253,6 +253,8 @@ module plugin_blocked_dynamodb_table {
   autoscaling_enabled = var.env == "dev" ? false : true
   create_table        = true
   tags                = var.tags
+  stream_enabled      = true
+  stream_view_type    = "KEYS_ONLY"
 }
 
 module backend_lambda {
@@ -600,7 +602,9 @@ data aws_iam_policy_document data_workflows_policy {
       "dynamodb:GetRecords",
       "dynamodb:ListStreams",
     ]
-    resources = [module.plugin_metadata_dynamodb_table.stream_arn]
+    resources = [
+      module.plugin_metadata_dynamodb_table.stream_arn,
+    ]
   }
 }
 
