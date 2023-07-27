@@ -48,8 +48,8 @@ type ServerSidePropsHandlerProps<P> = P &
     featureFlags?: FeatureFlagMap;
   };
 
-// Expire feature flags after 10 minutes
-const FLAG_CACHE_TTL = 1000 * 60 * 10;
+// Expire feature flags after 5 minutes
+const FLAG_CACHE_TTL = 1000 * 60 * 5;
 const FLAG_CACHE = new TTLCache<FeatureFlagMap>(FLAG_CACHE_TTL);
 const FLAG_CACHE_KEY = 'featureFlags';
 
