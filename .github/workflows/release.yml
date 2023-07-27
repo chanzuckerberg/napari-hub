@@ -1,12 +1,12 @@
-name: PR Release Comment
+name: Release Notify
 
 on:
   push:
     tags:
-      - '*'
+      - "v*"
 
 jobs:
-  comment:
+  pr-release-comment:
     runs-on: ubuntu-latest
 
     steps:
@@ -19,3 +19,4 @@ jobs:
         script: |
           const commentOnPRs = require('./.github/pr-release-comment');
           commentOnPRs({github, context, core});
+
