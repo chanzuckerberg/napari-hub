@@ -1,9 +1,7 @@
 import logging
 import time
-from typing import (Any, Dict, List, Optional, Set, Union)
-from pynamodb.attributes import (
-    BooleanAttribute, MapAttribute, UnicodeAttribute
-)
+from typing import Any, Dict, List, Optional, Set, Union
+from pynamodb.attributes import BooleanAttribute, MapAttribute, UnicodeAttribute
 from pynamodb.pagination import ResultIterator
 from .helper import set_ddb_metadata, PynamoWrapper
 from .plugin_utils import PluginMetadataType
@@ -34,11 +32,13 @@ class _PluginMetadata(PynamoWrapper):
         }
 
 
-def put_plugin_metadata(plugin: str,
-                        version: str,
-                        plugin_metadata_type: PluginMetadataType,
-                        is_latest: bool = False,
-                        data: Dict = None) -> None:
+def put_plugin_metadata(
+    plugin: str,
+    version: str,
+    plugin_metadata_type: PluginMetadataType,
+    is_latest: bool = False,
+    data: Dict = None,
+) -> None:
     start = time.perf_counter()
     version_type = plugin_metadata_type.to_version_type(version)
     try:
@@ -52,8 +52,9 @@ def put_plugin_metadata(plugin: str,
         ).save()
     finally:
         duration = (time.perf_counter() - start) * 1000
-        logger.info(f"plugin={plugin} version_type={version_type} "
-                    f"duration={duration}ms")
+        logger.info(
+            f"plugin={plugin} version_type={version_type} " f"duration={duration}ms"
+        )
 
 
 def get_existing_types(plugin: str, version: str) -> Set[PluginMetadataType]:
@@ -72,7 +73,7 @@ def query(plugin: str, version: str) -> List[Dict[str, Any]]:
 
 
 def _query(
-        name: str, version: str, projection: Optional[List[str]] = None
+    name: str, version: str, projection: Optional[List[str]] = None
 ) -> Union[ResultIterator[_PluginMetadata], List]:
     if not name or not version:
         return []
@@ -80,9 +81,9 @@ def _query(
     start = time.perf_counter()
     try:
         condition = _PluginMetadata.version_type.startswith(f"{version}:")
-        return _PluginMetadata.query(hash_key=name,
-                                     range_key_condition=condition,
-                                     attributes_to_get=projection)
+        return _PluginMetadata.query(
+            hash_key=name, range_key_condition=condition, attributes_to_get=projection
+        )
     finally:
         duration = (time.perf_counter() - start) * 1000
         logger.info(f"plugin={name} version={version} duration={duration}ms")

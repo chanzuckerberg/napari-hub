@@ -10,9 +10,9 @@ from .request_adapter import get_request
 
 _NAME_PATTERN = re.compile('class="package-snippet__name">(.+)</span>')
 _VERSION_PATTERN = re.compile('class="package-snippet__version">(.+)</span>')
-_BASE_URL = 'https://pypi.org'
-_SEARCH_URL = f'/search/'
-_PLUGIN_DATA_URL = '/pypi/{plugin}/json'
+_BASE_URL = "https://pypi.org"
+_SEARCH_URL = f"/search/"
+_PLUGIN_DATA_URL = "/pypi/{plugin}/json"
 
 logger = logging.getLogger(__name__)
 
@@ -25,10 +25,10 @@ def get_all_plugins() -> Dict[str, str]:
     logger.info("Getting all napari plugins from PYPI")
     packages = {}
     page = 1
-    params = {'o': '-created', 'c': 'Framework :: napari'}
+    params = {"o": "-created", "c": "Framework :: napari"}
     while True:
         try:
-            params['page'] = page
+            params["page"] = page
             response = _get_pypi_response(_SEARCH_URL, params=params)
             html = response.text
             names = _NAME_PATTERN.findall(html)
@@ -62,8 +62,9 @@ def get_plugin_pypi_metadata(plugin: str, version: str) -> Dict[str, Any]:
         return {}
 
 
-def _get_pypi_response(path: str, params: Optional[Dict[str, Any]] = None) \
-        -> requests.Response:
+def _get_pypi_response(
+    path: str, params: Optional[Dict[str, Any]] = None
+) -> requests.Response:
     url = _BASE_URL + path
     return get_request(url, params=params)
 
@@ -85,16 +86,15 @@ def _get_authors(raw_name: str) -> List[Dict[str, str]]:
     :param raw_name: author name string
     :return: List of authors
     """
-    regexp = r'&|,|\sand\s'
+    regexp = r"&|,|\sand\s"
     author_names = re.split(regexp, raw_name)
-    author_names = [name.strip() for name in author_names if
-                    name is not None]
-    return [{'name': name} for name in author_names if name]
+    author_names = [name.strip() for name in author_names if name is not None]
+    return [{"name": name} for name in author_names if name]
 
 
 def _get_release_date(release: List[Dict[str, Any]]) -> str:
     if len(release) == 0:
-        return ''
+        return ""
     release_date = release[0].get("upload_time_iso_8601")
     return release_date or ""
 
@@ -139,10 +139,10 @@ def _to_plugin_pypi_metadata(plugin: Dict, version: str) -> Dict[str, Any]:
         "version": version,
         "first_released": min(
             release[0]["upload_time_iso_8601"]
-            for _, release in releases.items() if _get_release_date(release)
+            for _, release in releases.items()
+            if _get_release_date(release)
         ),
         "development_status": _filter_prefix(classifiers, "Development Status"),
-
         # below are plugin details
         "requirements": info.get("requires_dist", []),
         "project_site": info.get("home_page", ""),

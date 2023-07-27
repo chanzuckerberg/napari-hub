@@ -1,20 +1,37 @@
+import logging
 from typing import Any, Optional
 
 from nhcommons.models import plugin_metadata
-from nhcommons.models.plugin import put_plugin
+from nhcommons.models.plugin import put_plugin, get_latest_version
 from nhcommons.models.plugin_utils import PluginMetadataType, PluginVisibility
 from nhcommons.models.plugins_blocked import get_all_blocked_plugins
 from plugin.manifest import get_formatted_manifest
 
 PLUGIN_FIELDS = {
-    "authors", "code_repository", "display_name", "first_released",
-    "release_date", "summary",
+    "authors",
+    "code_repository",
+    "display_name",
+    "first_released",
+    "release_date",
+    "summary",
 }
+
+logger = logging.getLogger(__name__)
+
+
+def _get_latest_version(plugin: str, version: Optional[str]):
+    return version if version else get_latest_version(plugin)
 
 
 def aggregate_plugins(updated_plugins: set[tuple[str, str]]) -> None:
     blocked_plugins = get_all_blocked_plugins()
     for plugin, version in updated_plugins:
+        version = _get_latest_version(plugin, version)
+        if not version:
+            logger.warning(
+                f"Unable to resolve version for plugin={plugin} version={version}"
+            )
+            continue
         metadata_by_type = _get_metadata_by_type(plugin, version)
         if PluginMetadataType.METADATA not in metadata_by_type:
             continue
@@ -23,25 +40,23 @@ def aggregate_plugins(updated_plugins: set[tuple[str, str]]) -> None:
         if not aggregate:
             continue
 
-        record = _generate_record(
-            plugin, metadata_by_type, aggregate, blocked_plugins
-        )
+        record = _generate_record(plugin, metadata_by_type, aggregate, blocked_plugins)
         put_plugin(plugin, version, record)
 
 
 def _get_data_from_metadata(
-        metadata_by_type: dict[PluginMetadataType, dict],
-        plugin_metadata_type: PluginMetadataType,
-        default_value: Optional[dict]
+    metadata_by_type: dict[PluginMetadataType, dict],
+    plugin_metadata_type: PluginMetadataType,
+    default_value: Optional[dict],
 ) -> Optional[dict[str, Any]]:
     if plugin_metadata_type not in metadata_by_type:
         return default_value
     return metadata_by_type.get(plugin_metadata_type).get("data")
 
 
-def _generate_aggregate(metadata_by_type: dict[PluginMetadataType, dict],
-                        plugin: str,
-                        version: str) -> dict[str, Any]:
+def _generate_aggregate(
+    metadata_by_type: dict[PluginMetadataType, dict], plugin: str, version: str
+) -> dict[str, Any]:
     metadata = _get_data_from_metadata(
         metadata_by_type, PluginMetadataType.METADATA, {}
     )
@@ -52,16 +67,16 @@ def _generate_aggregate(metadata_by_type: dict[PluginMetadataType, dict],
     return {**metadata, **distribution}
 
 
-def _get_metadata_by_type(plugin: str, version: str) -> \
-        dict[PluginMetadataType, dict]:
-    return {record["type"]: record
-            for record in plugin_metadata.query(plugin, version)}
+def _get_metadata_by_type(plugin: str, version: str) -> dict[PluginMetadataType, dict]:
+    return {record["type"]: record for record in plugin_metadata.query(plugin, version)}
 
 
-def _generate_record(plugin: str,
-                     metadata_by_type: dict[PluginMetadataType, dict],
-                     aggregate: dict[str, Any],
-                     blocked_plugins: set[str]) -> dict[str, Any]:
+def _generate_record(
+    plugin: str,
+    metadata_by_type: dict[PluginMetadataType, dict],
+    aggregate: dict[str, Any],
+    blocked_plugins: set[str],
+) -> dict[str, Any]:
     plugin_record = {"data": aggregate}
     for field in PLUGIN_FIELDS:
         value = aggregate.get(field)
@@ -72,7 +87,7 @@ def _generate_record(plugin: str,
     plugin_record["visibility"] = visibility.name
 
     if metadata_by_type.get(PluginMetadataType.PYPI, {}).get("is_latest"):
-        plugin_record["is_latest"] = 'true'
+        plugin_record["is_latest"] = "true"
         if visibility != PluginVisibility.PUBLIC:
             plugin_record["excluded"] = visibility.name
 
