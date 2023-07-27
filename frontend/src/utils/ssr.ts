@@ -17,6 +17,8 @@ import {
   getFeatureFlags,
 } from '@/store/featureFlags';
 
+import { TTLCache } from './ttl-cache';
+
 /**
  * Common locales that are included on every page
  */
@@ -46,6 +48,11 @@ type ServerSidePropsHandlerProps<P> = P &
     featureFlags?: FeatureFlagMap;
   };
 
+// Expire feature flags after 5 minutes
+const FLAG_CACHE_TTL = 1000 * 60 * 5;
+const FLAG_CACHE = new TTLCache<FeatureFlagMap>(FLAG_CACHE_TTL);
+const FLAG_CACHE_KEY = 'featureFlags';
+
 /**
  * Wrapper over `getServerSideProps()` that includes data required for every SSR page.
  */
@@ -67,7 +74,9 @@ export function getServerSidePropsHandler<
 
     const featureFlags = E2E
       ? getEnabledFeatureFlags(...FEATURE_FLAG_LIST)
-      : await getFeatureFlags(req.url ?? '/');
+      : await FLAG_CACHE.get(FLAG_CACHE_KEY, () =>
+          getFeatureFlags(req.url ?? '/'),
+        );
 
     // Assign to feature flag store so that server code can use the state.
     Object.assign(featureFlagsStore, featureFlags);
