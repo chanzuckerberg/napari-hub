@@ -394,6 +394,12 @@ resource aws_lambda_event_source_mapping data_workflow_plugin_metadata_event_sou
   maximum_batching_window_in_seconds  = 60
 }
 
+resource aws_lambda_event_source_mapping data_workflow_plugin_blocked_event_source_mapping {
+  event_source_arn  = module.plugin_blocked_dynamodb_table.stream_arn
+  function_name     = module.data_workflows_lambda.function_name
+  starting_position = "LATEST"
+}
+
 module api_gateway_proxy_stage {
   source               = "../api-gateway-proxy-stage"
   lambda_function_name = local.backend_function_name
@@ -603,6 +609,7 @@ data aws_iam_policy_document data_workflows_policy {
       "dynamodb:ListStreams",
     ]
     resources = [
+      module.plugin_blocked_dynamodb_table.stream_arn,
       module.plugin_metadata_dynamodb_table.stream_arn,
     ]
   }
