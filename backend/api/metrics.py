@@ -1,16 +1,18 @@
+import logging
 from typing import Dict, Any
 
 from api.models.plugin import get_plugin
 from api.models import install_activity, github_activity
 
+logger = logging.getLogger(__name__)
 
-def get_metrics_for_plugin(plugin: str, limit: str,) -> Dict[str, Any]:
+
+def get_metrics_for_plugin(plugin: str, limit: str) -> Dict[str, Any]:
     """
-    Fetches plugin metrics from s3 or dynamo based on the in_test variable
-    :return dict[str, Any]: A map with entries for usage and maintenance
-
-    :params str plugin: Name of the plugin for which usage data needs to be fetched.
-    :params str limit_str: Number of records to be fetched for timeline. Defaults to 0
+    Fetches plugin metrics from dynamo
+    :return Dict[str, Any]: A dict with entries for usage and maintenance
+    :params str plugin: Plugin name for which metrics needs to be fetched.
+    :params str limit_str: Number of timeline records to be fetched. Defaults to 0
     for invalid number.
     """
     repo = _get_repo_from_plugin(plugin)
@@ -37,11 +39,10 @@ def _get_repo_from_plugin(plugin):
 
 def _get_usage_data(plugin: str, limit: int) -> Dict[str, Any]:
     """
-    Fetches plugin usage_data from s3 or dynamo based on the in_test variable
-    :returns (dict[str, Any]): A dict with the structure
-    {'timeline': List, 'stats': dict[str, int]}
+    Fetches plugin usage_data from dynamo.
+    :returns Dict[str, Any]: A dict with entries for timeline and stats.
     :params str plugin: Name of the plugin in lowercase.
-    :params int limit: Sets the number of records to be fetched for timeline.
+    :params int limit: The number of records to be fetched for timeline.
     """
     return {
         "timeline": install_activity.get_timeline(plugin, limit) if limit else [],
@@ -54,11 +55,11 @@ def _get_usage_data(plugin: str, limit: int) -> Dict[str, Any]:
 
 def _get_maintenance_data(plugin: str, repo: Any, limit: int) -> Dict[str, Any]:
     """
-    Fetches plugin maintenance_data from s3 or dynamo based on the in_test variable
-    :returns (dict[str, Any]): A dict with the structure {'timeline': List, 'stats': Dict[str, int]}
+    Fetches plugin maintenance_data from dynamo.
+    :returns Dict[str, Any]: A dict with entries for timeline and stats.
     :params str plugin: Name of the plugin in lowercase.
-    :params repo: Parameter used if use_dynamo_for_maintenance is true
-    :params int limit: Sets the number of records to be fetched for timeline.
+    :params repo: Name of the repo associated to the plugin.
+    :params int limit: The number of records to be fetched for timeline.
     """
     return {
         "timeline": github_activity.get_timeline(plugin, repo, limit) if limit else [],
