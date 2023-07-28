@@ -68,6 +68,3 @@ def cache(content: Union[dict, list, IO[bytes]], key: str, mime: str = None):
 def _get_complete_path(path):
     return os.path.join(bucket_path, path)
 
-
-def write_data(data: str, path: str):
-    s3_client.put_object(Body=data, Bucket=bucket, Key=_get_complete_path(path))

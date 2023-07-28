@@ -1,6 +1,6 @@
 import pytest
 
-from api import model
+from api import metrics
 from api._tests.test_fixtures import generate_commits_timeline, generate_installs_timeline
 
 PLUGIN_NAME = 'StrIng-1'
@@ -47,16 +47,15 @@ class TestMetricModel:
          generate_installs_timeline(start_range=-3), '3', MOCK_PLUGIN_OBJ)])
     def test_metrics_api_using_dynamo(self, monkeypatch, maintenance_timeline, latest_commit,
                                       total_commits, total_installs, recent_installs, usage_timeline, limit, get_plugin):
-        monkeypatch.setattr(model, 'get_plugin', self._validate_args_return_value(get_plugin))
-        monkeypatch.setattr(model.github_activity, 'get_total_commits', self._validate_args_return_value(total_commits))
-        monkeypatch.setattr(model.github_activity, 'get_latest_commit', self._validate_args_return_value(latest_commit))
-        monkeypatch.setattr(model.github_activity, 'get_timeline', self._validate_args_return_value(maintenance_timeline))
-        monkeypatch.setattr(model.install_activity, 'get_total_installs', self._validate_args_return_value(total_installs))
-        monkeypatch.setattr(model.install_activity, 'get_recent_installs', self._validate_args_return_value(recent_installs))
-        monkeypatch.setattr(model.install_activity, 'get_timeline', self._validate_args_return_value(usage_timeline))
+        monkeypatch.setattr(metrics, 'get_plugin', self._validate_args_return_value(get_plugin))
+        monkeypatch.setattr(metrics.github_activity, 'get_total_commits', self._validate_args_return_value(total_commits))
+        monkeypatch.setattr(metrics.github_activity, 'get_latest_commit', self._validate_args_return_value(latest_commit))
+        monkeypatch.setattr(metrics.github_activity, 'get_timeline', self._validate_args_return_value(maintenance_timeline))
+        monkeypatch.setattr(metrics.install_activity, 'get_total_installs', self._validate_args_return_value(total_installs))
+        monkeypatch.setattr(metrics.install_activity, 'get_recent_installs', self._validate_args_return_value(recent_installs))
+        monkeypatch.setattr(metrics.install_activity, 'get_timeline', self._validate_args_return_value(usage_timeline))
 
-        from api.model import get_metrics_for_plugin
-        actual = get_metrics_for_plugin(PLUGIN_NAME, limit)
+        actual = metrics.get_metrics_for_plugin(PLUGIN_NAME, limit)
 
         expected = generate_expected_metrics(
             total_installs=total_installs, installs_in_last_30_days=recent_installs, usage_timeline=usage_timeline,

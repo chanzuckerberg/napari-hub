@@ -12,9 +12,9 @@ from api.plugin_collections import get_collections, get_collection
 from api.custom_wsgi import script_path_middleware
 from api.model import (
     get_public_plugins, get_index, get_plugin, get_excluded_plugins,
-    update_cache, move_artifact_to_s3, get_manifest, update_activity_data,
-    get_metrics_for_plugin
+    update_cache, move_artifact_to_s3, get_manifest
 )
+from api.metrics import get_metrics_for_plugin
 from api.models import category as categories
 from api.shield import get_shield
 from utils.utils import send_alert, reformat_ssh_key_to_pem_bytes
@@ -145,12 +145,6 @@ def get_categories(version: str) -> Response:
 @app.route('/categories/<category>/versions/<version>')
 def get_category(category: str, version: str) -> Response:
     return jsonify(categories.get_category(category, version))
-
-
-@app.route('/activity/update', methods=['POST'])
-def update_activity() -> Response:
-    update_activity_data()
-    return app.make_response(("Complete", 204))
 
 
 @app.route("/metrics/<plugin>")
