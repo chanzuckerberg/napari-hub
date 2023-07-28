@@ -17,9 +17,7 @@ from api.models import (
 )
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata
-from api.s3 import (
-    get_cache, cache, write_data, get_latest_commit, get_commit_activity
-)
+from api.s3 import get_cache, cache, write_data
 from utils.utils import (
     render_description,
     send_alert,
@@ -650,60 +648,49 @@ def _get_usage_data(plugin: str, limit: int) -> Dict[str, Any]:
     :params int limit: Sets the number of records to be fetched for timeline.
     """
     return {
-        'timeline': install_activity.get_timeline(plugin, limit) if limit else [],
-        'stats': {
-            'total_installs': install_activity.get_total_installs(plugin),
-            'installs_in_last_30_days': install_activity.get_recent_installs(plugin, 30)
+        "timeline": install_activity.get_timeline(plugin, limit) if limit else [],
+        "stats": {
+            "total_installs": install_activity.get_total_installs(plugin),
+            "installs_in_last_30_days": install_activity.get_recent_installs(plugin, 30)
         },
     }
 
 
-def _get_maintenance_data(plugin: str, repo: Any, limit: int, use_dynamo_for_maintenance: bool) -> Dict[str, Any]:
+def _get_maintenance_data(plugin: str, repo: Any, limit: int) -> Dict[str, Any]:
     """
     Fetches plugin maintenance_data from s3 or dynamo based on the in_test variable
     :returns (dict[str, Any]): A dict with the structure {'timeline': List, 'stats': Dict[str, int]}
     :params str plugin: Name of the plugin in lowercase.
     :params repo: Parameter used if use_dynamo_for_maintenance is true
     :params int limit: Sets the number of records to be fetched for timeline.
-    :params bool use_dynamo_for_maintenance: Fetch GitHub data from dynamo if True, else fetch from s3.
     """
-    if use_dynamo_for_maintenance:
-        maintenance_timeline = github_activity.get_maintenance_timeline(plugin, repo, limit) if limit else []
-
-        maintenance_stats = {
-            'total_commits': github_activity.get_total_commits(plugin, repo),
-            'latest_commit_timestamp': github_activity.get_latest_commit(plugin, repo),
-        }
-    else:
-        data = get_commit_activity(plugin)
-        maintenance_stats = {
-            'total_commits': sum([commit_obj['commits'] for commit_obj in data]),
-            'latest_commit_timestamp': get_latest_commit(plugin),
-        }
-        maintenance_timeline = _process_maintenance_timeline(data, limit) if limit else []
-
-    return {'timeline': maintenance_timeline, 'stats': maintenance_stats, }
+    return {
+        "timeline": github_activity.get_timeline(plugin, repo, limit) if limit else [],
+        "stats": {
+            "total_commits": github_activity.get_total_commits(plugin, repo),
+            "latest_commit_timestamp": github_activity.get_latest_commit(plugin, repo),
+        },
+    }
 
 
-def get_metrics_for_plugin(plugin: str,
-                           limit: str,
-                           use_dynamo_for_maintenance: bool) -> Dict[str, Any]:
+def get_metrics_for_plugin(plugin: str, limit: str,) -> Dict[str, Any]:
     """
     Fetches plugin metrics from s3 or dynamo based on the in_test variable
     :return dict[str, Any]: A map with entries for usage and maintenance
 
-    :params str plugin: Name of the plugin in lowercase for which usage data needs to be fetched.
-    :params str limit_str: Number of records to be fetched for timeline. Defaults to 0 for invalid number.
-    :params bool use_dynamo_for_maintenance: Fetch data from dynamo if True else fetch from s3. (default= False)
+    :params str plugin: Name of the plugin in lowercase for which usage data needs to be
+    fetched.
+    :params str limit_str: Number of records to be fetched for timeline. Defaults to 0
+    for invalid number.
     """
-    repo = _get_repo_from_plugin(plugin) if use_dynamo_for_maintenance else None
+    repo = _get_repo_from_plugin(plugin)
     plugin = plugin.lower()
     month_delta = 0
 
-    if limit.isdigit() and limit != '0':
+    if limit.isdigit() and limit != "0":
         month_delta = max(int(limit), 0)
 
     return {
-        'usage': _get_usage_data(plugin, month_delta),
-        'maintenance': _get_maintenance_data(plugin, repo, month_delta, use_dynamo_for_maintenance),
+        "usage": _get_usage_data(plugin, month_delta),
+        "maintenance": _get_maintenance_data(plugin, repo, month_delta),
     }

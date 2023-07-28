@@ -62,7 +62,7 @@ def get_latest_commit(plugin: str, repo: str) -> Any:
         logging.info(f'get_latest_commit for plugin={plugin} repo={repo} time_taken={(time.perf_counter() - start) * 1000}ms')
 
 
-def get_maintenance_timeline(plugin: str, repo: str, month_delta: int) -> List[Dict[str, int]]:
+def get_timeline(plugin: str, repo: str, month_delta: int) -> List[Dict[str, int]]:
     """
     Fetches plugin commit count at a month level granularity from dynamo in the previous month_delta months.
     :returns List[Dict[str, int]]: Entries for the month_delta months

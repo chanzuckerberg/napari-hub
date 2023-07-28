@@ -1,12 +1,11 @@
 import io
 import json
-import logging
 import mimetypes
 import os
 import os.path
 import time
 from datetime import datetime
-from typing import Union, IO, List, Dict, Any
+from typing import Union, IO, List, Dict
 
 import boto3
 from botocore.client import Config
@@ -72,29 +71,3 @@ def _get_complete_path(path):
 
 def write_data(data: str, path: str):
     s3_client.put_object(Body=data, Bucket=bucket, Key=_get_complete_path(path))
-
-
-def _get_from_s3(path):
-    return s3_client.get_object(Bucket=bucket, Key=_get_complete_path(path))['Body'].read().decode('utf-8')
-
-
-def _load_json_from_s3(path: str) -> Dict:
-    """
-    Load activity dashboard .json file from s3
-
-    :param path: path to file in s3
-    :return: dictionary that consists of path-specific data for activity_dashboard backend endpoints
-    """
-    try:
-        return json.loads(_get_from_s3(path))
-    except Exception as e:
-        logging.error(e)
-        return {}
-
-
-def get_latest_commit(plugin: str) -> Any:
-    return _load_json_from_s3("activity_dashboard_data/latest_commits.json").get(plugin)
-
-
-def get_commit_activity(plugin: str) -> List:
-    return _load_json_from_s3("activity_dashboard_data/commit_activity.json").get(plugin, [])

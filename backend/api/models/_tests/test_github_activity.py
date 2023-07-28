@@ -1,6 +1,4 @@
-import datetime
-
-import pandas as pd
+from datetime import date, datetime, timezone
 import pytest
 from dateutil.relativedelta import relativedelta
 from moto import mock_dynamodb
@@ -72,12 +70,12 @@ class TestGitHubActivity:
         ([(to_commits(i), i) for i in range(0, 7, 2)], 4, generate_commits_timeline(-4, to_value=to_commits)),
     ])
     def test_get_maintenance_timeline(self, github_activity_table, data, month_delta, expected):
-        start = datetime.date.today().replace(day=1)
+        start = datetime.combine(date.today(), datetime.min.time()).replace(day=1, tzinfo=timezone.utc)
         for count, period in data:
-            timestamp = pd.Timestamp(start - relativedelta(months=period))
+            timestamp = (start - relativedelta(months=period))
             self._put_item(github_activity_table, 'MONTH', timestamp, count)
 
-        actual = github_activity.get_maintenance_timeline(PLUGIN_NAME, REPO_NAME, month_delta)
+        actual = github_activity.get_timeline(PLUGIN_NAME, REPO_NAME, month_delta)
 
         assert actual == expected
 
