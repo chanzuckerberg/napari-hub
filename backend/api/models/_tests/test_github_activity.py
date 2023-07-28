@@ -1,4 +1,3 @@
-from datetime import date, datetime, timezone
 import pytest
 from dateutil.relativedelta import relativedelta
 from moto import mock_dynamodb
@@ -26,7 +25,7 @@ def to_commits(i):
 class TestGitHubActivity:
 
     @pytest.fixture()
-    def github_activity_table(self, aws_credentials, dynamo_env_variables):
+    def table(self, aws_credentials, dynamo_env_variables):
         with mock_dynamodb():
             yield create_dynamo_table(github_activity._GitHubActivityModel, 'github-activity')
 
@@ -56,9 +55,9 @@ class TestGitHubActivity:
             ([('bar', REPO_NAME, 123456789)], None),
             ([(PLUGIN_NAME, REPO_NAME, 123456789)], 123456789),
         ])
-    def test_get_latest_commit(self, github_activity_table, data, expected):
+    def test_get_latest_commit(self, table, data, expected):
         for plugin, repo, timestamp in data:
-            self._put_item(github_activity_table, 'LATEST', timestamp, None, plugin=plugin, repo=repo)
+            self._put_item(table, 'LATEST', timestamp, None, plugin=plugin, repo=repo)
 
         actual = github_activity.get_latest_commit(PLUGIN_NAME, REPO_NAME)
 
@@ -69,11 +68,13 @@ class TestGitHubActivity:
         ([], 1, generate_commits_timeline(-1, to_value=lambda i: 0)),
         ([(to_commits(i), i) for i in range(0, 7, 2)], 4, generate_commits_timeline(-4, to_value=to_commits)),
     ])
-    def test_get_maintenance_timeline(self, github_activity_table, data, month_delta, expected):
-        start = datetime.combine(date.today(), datetime.min.time()).replace(day=1, tzinfo=timezone.utc)
+    def test_get_maintenance_timeline(
+            self, table, data, month_delta, expected, date_utc_today
+    ):
+        start = date_utc_today.replace(day=1)
         for count, period in data:
             timestamp = (start - relativedelta(months=period))
-            self._put_item(github_activity_table, 'MONTH', timestamp, count)
+            self._put_item(table, 'MONTH', timestamp, count)
 
         actual = github_activity.get_timeline(PLUGIN_NAME, REPO_NAME, month_delta)
 
@@ -87,9 +88,9 @@ class TestGitHubActivity:
             ([('bar', REPO_NAME, 100)], 0),
             ([(PLUGIN_NAME, REPO_NAME, 100)], 100),
         ])
-    def test_get_total_commits(self, github_activity_table, data, expected):
+    def test_get_total_commits(self, table, data, expected):
         for plugin, repo, count in data:
-            self._put_item(github_activity_table, 'TOTAL', None, count, plugin=plugin, repo=repo)
+            self._put_item(table, 'TOTAL', None, count, plugin=plugin, repo=repo)
 
         actual = github_activity.get_total_commits(plugin=PLUGIN_NAME, repo=REPO_NAME)
 
