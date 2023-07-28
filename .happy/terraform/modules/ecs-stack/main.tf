@@ -437,18 +437,6 @@ resource "aws_cloudwatch_event_rule" "activity_rule" {
   tags                = var.tags
 }
 
-resource "aws_cloudwatch_event_target" "activity_target" {
-    rule = aws_cloudwatch_event_rule.activity_rule.name
-    arn = module.backend_lambda.function_arn
-    input_transformer {
-        input_template = jsonencode({
-          path = "/activity/update",
-          httpMethod = "POST",
-          headers = {"X-API-Key": random_uuid.api_key.result}
-        })
-    }
-}
-
 resource aws_cloudwatch_event_target activity_target_sqs {
     rule = aws_cloudwatch_event_rule.activity_rule.name
     arn = aws_sqs_queue.data_workflows_queue.arn
@@ -467,10 +455,6 @@ locals {
       service    = "events"
       source_arn = aws_cloudwatch_event_rule.update_rule.arn
     },
-    AllowExecutionFromCloudWatchForActivity = {
-      service    = "events"
-      source_arn = aws_cloudwatch_event_rule.activity_rule.arn
-    }
   }
 }
 
