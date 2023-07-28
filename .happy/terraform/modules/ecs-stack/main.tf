@@ -285,8 +285,6 @@ module backend_lambda {
     "DD_SERVICE" = local.custom_stack_name
     "API_URL" = var.env == "dev" ? module.api_gateway_proxy_stage.invoke_url : ""
     "PLUGINS_LAMBDA_NAME" = local.plugins_function_name
-    "SNOWFLAKE_USER" = local.snowflake_user
-    "SNOWFLAKE_PASSWORD" = local.snowflake_password
     "API_KEY" = random_uuid.api_key.result
     "STACK_NAME" = local.custom_stack_name
   }
