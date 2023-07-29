@@ -157,7 +157,7 @@ def get_plugin_metrics(plugin: str) -> Response:
     :query_params limit: Number of months to be fetched for timeline. (default=12).
     """
     return jsonify(get_metrics_for_plugin(
-        plugin=plugin, limit=request.args.get("limit", "12"),
+        name=plugin, limit=request.args.get("limit", "12"),
     ))
 
 
