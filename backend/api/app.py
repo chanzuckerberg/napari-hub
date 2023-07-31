@@ -12,9 +12,9 @@ from api.plugin_collections import get_collections, get_collection
 from api.custom_wsgi import script_path_middleware
 from api.model import (
     get_public_plugins, get_index, get_plugin, get_excluded_plugins,
-    update_cache, move_artifact_to_s3, get_manifest, update_activity_data,
-    get_metrics_for_plugin
+    update_cache, move_artifact_to_s3, get_manifest
 )
+from api.metrics import get_metrics_for_plugin
 from api.models import category as categories
 from api.shield import get_shield
 from utils.utils import send_alert, reformat_ssh_key_to_pem_bytes
@@ -147,27 +147,17 @@ def get_category(category: str, version: str) -> Response:
     return jsonify(categories.get_category(category, version))
 
 
-@app.route('/activity/update', methods=['POST'])
-def update_activity() -> Response:
-    update_activity_data()
-    return app.make_response(("Complete", 204))
-
-
-@app.route('/metrics/<plugin>')
+@app.route("/metrics/<plugin>")
 def get_plugin_metrics(plugin: str) -> Response:
     """
     Fetches plugin metrics for usage, and maintenance
     :return Response: A json object with entries for usage, and maintenance
 
-    :params str plugin: Name of the plugin in lowercase for which usage data needs to be fetched.
+    :params str plugin: Name of the plugin for which usage data needs to be fetched.
     :query_params limit: Number of months to be fetched for timeline. (default=12).
-    :query_params use_dynamo_metric_maintenance: Fetch maintenance data from dynamo if True else fetch from s3.
-                  (default=False)
     """
     return jsonify(get_metrics_for_plugin(
-        plugin=plugin,
-        limit=request.args.get('limit', '12'),
-        use_dynamo_for_maintenance=_is_query_param_true('use_dynamo_metric_maintenance'),
+        name=plugin, limit=request.args.get("limit", "12"),
     ))
 
 

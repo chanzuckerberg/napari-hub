@@ -1,3 +1,5 @@
+from datetime import datetime, date, timezone
+
 import boto3
 import moto.dynamodb.urls
 import pytest
@@ -27,6 +29,12 @@ def dynamo_env_variables():
     monkeypatch.setenv("LOCAL_DYNAMO_HOST", LOCAL_DYNAMO_HOST)
     monkeypatch.setenv("AWS_REGION", AWS_REGION)
     monkeypatch.setenv("STACK_NAME", STACK_NAME)
+
+
+@pytest.fixture
+def date_utc_today() -> datetime:
+    today = datetime.combine(date.today(), datetime.min.time())
+    return today.replace(tzinfo=timezone.utc)
 
 
 def create_dynamo_table(pynamo_ddb_model: Model, table_name: str):
