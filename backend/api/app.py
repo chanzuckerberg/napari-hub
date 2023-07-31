@@ -49,7 +49,7 @@ logger = logging.getLogger()
 FORMAT = "%(asctime)s [%(levelname)s] %(name)s %(module)s %(funcName)s %(message)s"
 logging.basicConfig(format=FORMAT)
 logger.setLevel(logging.DEBUG if os.getenv('IS_DEBUG') else logging.INFO)
-
+DEFAULT_CATEGORY = 'EDAM-BIOIMAGING:alpha06'
 
 @app.route("/")
 def index():
@@ -65,8 +65,7 @@ def swagger():
 
 @app.route("/plugins/index")
 def plugin_index() -> Response:
-    use_dynamo_plugins = _is_query_param_true("use_dynamo_plugin")
-    return jsonify(get_index(use_dynamo=use_dynamo_plugins))
+    return jsonify(get_index())
 
 
 @app.route('/update', methods=['POST'])
@@ -77,33 +76,26 @@ def update() -> Response:
 
 @app.route("/plugins")
 def plugins() -> Response:
-    use_dynamo_plugins = _is_query_param_true("use_dynamo_plugin")
-    return jsonify(get_public_plugins(use_dynamo=use_dynamo_plugins))
+    return jsonify(get_public_plugins())
 
 
 @app.route("/plugins/<plugin>", defaults={"version": None})
 @app.route("/plugins/<plugin>/versions/<version>")
 def versioned_plugin(plugin: str, version: str = None) -> Response:
-    use_dynamo_plugins = _is_query_param_true("use_dynamo_plugin")
-    return jsonify(get_plugin(plugin, version, use_dynamo_plugins))
+    return jsonify(get_plugin(plugin, version))
 
 
 @app.route("/plugin/home/sections/<sections>")
 def plugin_home_page_sections(sections: str = "") -> Response:
-    use_dynamo_plugins = _is_query_param_true("use_dynamo_plugin")
     unique_sections = set(sections.split(","))
     limit = int(request.args.get("limit", "3"))
-    plugins_by_sections = get_plugin_sections(
-        unique_sections, use_dynamo_plugins, limit
-    )
-    return jsonify(plugins_by_sections)
+    return jsonify(get_plugin_sections(unique_sections, limit))
 
 
 @app.route("/manifest/<plugin>", defaults={"version": None})
 @app.route("/manifest/<plugin>/versions/<version>")
 def plugin_manifest(plugin: str, version: str = None) -> Response:
-    use_dynamo_plugins = _is_query_param_true("use_dynamo_plugin")
-    manifest = get_manifest(plugin, version, use_dynamo_plugins)
+    manifest = get_manifest(plugin, version)
 
     if not manifest:
         return app.make_response(("Plugin does not exist", 404))
@@ -126,22 +118,20 @@ def plugin_manifest(plugin: str, version: str = None) -> Response:
 
 @app.route("/shields/<plugin>")
 def shield(plugin: str) -> Response:
-    use_dynamo_plugins = _is_query_param_true("use_dynamo_plugin")
-    return jsonify(get_shield(plugin, use_dynamo_plugins))
+    return jsonify(get_shield(plugin))
 
 
 @app.route("/plugins/excluded")
 def get_exclusion_list() -> Response:
-    use_dynamo_plugins = _is_query_param_true("use_dynamo_plugin")
-    return jsonify(get_excluded_plugins(use_dynamo_plugins))
+    return jsonify(get_excluded_plugins())
 
 
-@app.route('/categories', defaults={'version': os.getenv('category_version', 'EDAM-BIOIMAGING:alpha06')})
+@app.route('/categories', defaults={'version': os.getenv('category_version', DEFAULT_CATEGORY)})
 def get_categories(version: str) -> Response:
     return jsonify(categories.get_all_categories(version))
 
 
-@app.route('/categories/<category>', defaults={'version': os.getenv('category_version', 'EDAM-BIOIMAGING:alpha06')})
+@app.route('/categories/<category>', defaults={'version': os.getenv('category_version', DEFAULT_CATEGORY)})
 @app.route('/categories/<category>/versions/<version>')
 def get_category(category: str, version: str) -> Response:
     return jsonify(categories.get_category(category, version))
@@ -216,11 +206,6 @@ def add_header(response):
     logger.info(f'{request.method} {request.full_path} {response.status}')
     response.headers['Access-Control-Allow-Origin'] = '*'
     return response
-
-
-def _is_query_param_true(param_name: str):
-    value = request.args.get(param_name)
-    return value and value.lower() == "true"
 
 
 if __name__ == '__main__':

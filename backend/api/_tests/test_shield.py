@@ -29,10 +29,10 @@ class TestShield(unittest.TestCase):
 
     @patch.object(shield, "get_plugin", return_value={"version": "0.0.1"})
     def test_get_shield_use_dynamo(self, mock_get_valid_plugins):
-        result = shield.get_shield("package1", True)
+        result = shield.get_shield("package1")
         validate(result, "package1")
 
     @patch.object(shield, "get_plugin", return_value=None)
     def test_get_shield_for_non_plugin_use_dynamo(self, mock_get_valid_plugins):
-        result = shield.get_shield("not-a-package", True)
+        result = shield.get_shield("not-a-package")
         validate(result, "plugin not found")

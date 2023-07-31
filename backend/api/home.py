@@ -92,16 +92,14 @@ def _has_no_valid_sections(sections: Set):
     return set(get_handler_by_section_name().keys()).isdisjoint(sections)
 
 
-def get_plugin_sections(
-        sections: Set[str], use_dynamo: bool, limit: int = 3
-) -> Dict[str, Dict]:
+def get_plugin_sections(sections: Set[str], limit: int = 3) -> Dict[str, Dict]:
     if _has_no_valid_sections(sections):
         logger.warning("No processing as there are no valid sections")
         return {}
     response = {}
 
     plugins_encountered = set()
-    index = get_index(use_dynamo)
+    index = get_index()
     for name, handler in get_handler_by_section_name().items():
         if name in sections:
             response[name] = handler(index, limit, plugins_encountered)

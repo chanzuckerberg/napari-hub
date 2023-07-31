@@ -77,7 +77,7 @@ class TestHomepage:
 
     @pytest.mark.parametrize("use_dynamo", [True, False])
     def test_invalid_section_names(self, use_dynamo, mock_get_index):
-        assert {} == home.get_plugin_sections({"foo"}, use_dynamo)
+        assert {} == home.get_plugin_sections({"foo"})
         mock_get_index.assert_not_called()
 
     @pytest.mark.parametrize("section, use_dynamo, key", [
@@ -91,7 +91,7 @@ class TestHomepage:
     def test_valid_section_names(
             self, section, use_dynamo, key, index_data, mock_get_index
     ):
-        actual = home.get_plugin_sections({section}, use_dynamo)
+        actual = home.get_plugin_sections({section})
 
         plugins = sorted(
             index_data, key=lambda item: item.get(key), reverse=True
@@ -124,7 +124,7 @@ class TestHomepage:
     ):
         mock_date_time.now.return_value = datetime(2023, 7, 25, 17, minute, 55)
 
-        actual = home.get_plugin_sections({"plugin_types"}, use_dynamo)
+        actual = home.get_plugin_sections({"plugin_types"})
 
         plugins = filter(lambda item: item.get("name") in expected, index_data)
         expected_result = {

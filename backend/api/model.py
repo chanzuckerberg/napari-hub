@@ -38,17 +38,12 @@ index_subset = {'name', 'summary', 'description_text', 'description_content_type
                 'total_installs', }
 
 
-def get_public_plugins(use_dynamo: bool = False) -> Dict[str, str]:
+def get_public_plugins() -> Dict[str, str]:
     """
     Get the dictionary of public plugins and versions.
-    :param use_dynamo: flag to identify if data source is dynamo
     :return: dict of public plugins and their versions
     """
-    if use_dynamo:
-        return plugin_model.get_latest_by_visibility()
-
-    public_plugins = get_cache("cache/public-plugins.json")
-    return public_plugins if public_plugins else {}
+    return plugin_model.get_latest_by_visibility()
 
 
 def get_hidden_plugins(use_dynamo: bool = False) -> Dict[str, str]:
@@ -71,31 +66,18 @@ def get_valid_plugins(use_dynamo: bool = False) -> Dict[str, str]:
     :return: dict of valid plugins and their versions
     """
     return {
-        **get_hidden_plugins(use_dynamo), **get_public_plugins(use_dynamo)
+        **get_hidden_plugins(use_dynamo), **get_public_plugins()
     }
 
 
-def get_plugin(name: str, version: str = None, use_dynamo: bool = False) -> dict:
+def get_plugin(name: str, version: str = None) -> dict:
     """
-    Get plugin and manifest metadata for a particular plugin,
-    get latest if version is None.
+    Get data for a particular plugin, get the latest if version None.
     :param name: name of the plugin to get
     :param version: version of the plugin
-    :param use_dynamo: flag to identify if data source is dynamo
     :return: plugin metadata dictionary
     """
-    if use_dynamo:
-        return plugin_model.get_plugin(name, version)
-
-    plugins = get_valid_plugins()
-    if name not in plugins:
-        return {}
-    elif version is None:
-        version = plugins[name]
-    metadata = get_cache(f"cache/{name}/{version}.json")
-    manifest_metadata = get_frontend_manifest_metadata(name, version)
-    metadata.update(manifest_metadata)
-    return metadata if metadata else {}
+    return plugin_model.get_plugin(name, version)
 
 
 def get_frontend_manifest_metadata(plugin, version):
@@ -124,7 +106,8 @@ def discover_manifest(plugin: str, version: str = None):
     """
     client = boto3.client('lambda')
     lambda_event = {'plugin': plugin, 'version': version}
-    # this lambda invocation will call `napari-hub/plugins/get_plugin_manifest/generate_manifest`
+    # this lambda invocation will call
+    # `napari-hub/plugins/get_plugin_manifest/generate_manifest`
     client.invoke(
         FunctionName=os.environ.get('PLUGINS_LAMBDA_NAME'),
         InvocationType='Event',
@@ -132,27 +115,18 @@ def discover_manifest(plugin: str, version: str = None):
     )
 
 
-def get_manifest(name: str, version: str = None, use_dynamo: bool = False) -> dict:
+def get_manifest(name: str, version: str = None) -> dict:
     """
-    Get plugin manifest file for a particular plugin, get latest if version is None.
+    Get plugin manifest file for a particular plugin, get the latest if version is None.
     :param name: name of the plugin to get
     :param version: version of the plugin manifest
-    :param use_dynamo: flag to identify if data source is dynamo
     :return: plugin manifest dictionary.
     """
-    if use_dynamo:
-        if not version:
-            version = plugin_model.get_latest_version(name)
-        if not version:
-            return {}
-        manifest_metadata = plugin_metadata_model.get_manifest(name, version)
-    else:
-        plugins = get_valid_plugins()
-        if name not in plugins:
-            return {}
-        elif version is None:
-            version = plugins[name]
-        manifest_metadata = get_cache(f'cache/{name}/{version}-manifest.json')
+    if not version:
+        version = plugin_model.get_latest_version(name)
+    if not version:
+        return {}
+    manifest_metadata = plugin_metadata_model.get_manifest(name, version)
 
     # manifest_metadata being None indicates manifest is not cached and needs processing
     if manifest_metadata is None:
@@ -170,21 +144,16 @@ def get_manifest(name: str, version: str = None, use_dynamo: bool = False) -> di
     return manifest_metadata
 
 
-def get_index(use_dynamo: bool = False) -> List[Dict[str, Any]]:
+def get_index() -> List[Dict[str, Any]]:
     """
     Get the index page related metadata for all plugins.
-    :param use_dynamo: flag to identify if data source is dynamo
     :return: dict for index page metadata
     """
-    if use_dynamo:
-        plugins = plugin_model.get_index()
-        total_installs = install_activity.get_total_installs_by_plugins()
-        for item in plugins:
-            item["total_installs"] = total_installs.get(item["name"], 0)
-        return plugins
-
-    index = get_cache("cache/index.json")
-    return index if index else {}
+    plugins = plugin_model.get_index()
+    total_installs = install_activity.get_total_installs_by_plugins()
+    for item in plugins:
+        item["total_installs"] = total_installs.get(item["name"], 0)
+    return plugins
 
 
 def slice_metadata_to_index_columns(plugins_metadata: List[dict]) -> List[dict]:
@@ -197,20 +166,15 @@ def slice_metadata_to_index_columns(plugins_metadata: List[dict]) -> List[dict]:
             for plugin_metadata in plugins_metadata]
 
 
-def get_excluded_plugins(use_dynamo: bool = False) -> Dict[str, str]:
+def get_excluded_plugins() -> Dict[str, str]:
     """
     Get the excluded plugins.
-    :param use_dynamo: flag to identify if data source is dynamo
     :return: dict for excluded plugins and their exclusion status
     """
-    if use_dynamo:
-        return {
-            **plugin_model.get_excluded_plugins(),
-            **plugin_blocked.get_blocked_plugins()
-        }
-
-    excluded_plugins = get_cache("excluded_plugins.json")
-    return excluded_plugins if excluded_plugins else {}
+    return {
+        **plugin_model.get_excluded_plugins(),
+        **plugin_blocked.get_blocked_plugins()
+    }
 
 
 def build_manifest_metadata(plugin: str, version: str) -> Tuple[str, dict]:
