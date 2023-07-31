@@ -1,10 +1,8 @@
 import logging
 from typing import Any, Optional
 
-from nhcommons.models import plugin_metadata
-from nhcommons.models.plugin import put_plugin, get_latest_version
 from nhcommons.models.plugin_utils import PluginMetadataType, PluginVisibility
-from nhcommons.models.plugins_blocked import get_all_blocked_plugins
+from nhcommons.models import plugins_blocked, plugin, plugin_metadata
 from plugin.manifest import get_formatted_manifest
 
 PLUGIN_FIELDS = {
@@ -19,29 +17,29 @@ PLUGIN_FIELDS = {
 logger = logging.getLogger(__name__)
 
 
-def _get_latest_version(plugin: str, version: Optional[str]):
-    return version if version else get_latest_version(plugin)
-
-
-def aggregate_plugins(updated_plugins: set[tuple[str, str]]) -> None:
-    blocked_plugins = get_all_blocked_plugins()
-    for plugin, version in updated_plugins:
-        version = _get_latest_version(plugin, version)
+def aggregate_plugins(updated_plugins: set[tuple[str, Optional[str]]]) -> None:
+    blocked_plugins = plugins_blocked.get_all_blocked_plugins()
+    for name, version in updated_plugins:
+        version = _get_latest_version(name, version)
         if not version:
             logger.warning(
-                f"Unable to resolve version for plugin={plugin} version={version}"
+                f"Unable to resolve version for plugin={name} version={version}"
             )
             continue
-        metadata_by_type = _get_metadata_by_type(plugin, version)
+        metadata_by_type = _get_metadata_by_type(name, version)
         if PluginMetadataType.METADATA not in metadata_by_type:
             continue
 
-        aggregate = _generate_aggregate(metadata_by_type, plugin, version)
+        aggregate = _generate_aggregate(metadata_by_type, name, version)
         if not aggregate:
             continue
 
-        record = _generate_record(plugin, metadata_by_type, aggregate, blocked_plugins)
-        put_plugin(plugin, version, record)
+        record = _generate_record(name, metadata_by_type, aggregate, blocked_plugins)
+        plugin.put_plugin(name, version, record)
+
+
+def _get_latest_version(name: str, version: Optional[str]):
+    return version if version else plugin.get_latest_version(name)
 
 
 def _get_data_from_metadata(
@@ -51,11 +49,11 @@ def _get_data_from_metadata(
 ) -> Optional[dict[str, Any]]:
     if plugin_metadata_type not in metadata_by_type:
         return default_value
-    return metadata_by_type.get(plugin_metadata_type).get("data")
+    return metadata_by_type.get(plugin_metadata_type).get("data", default_value)
 
 
 def _generate_aggregate(
-    metadata_by_type: dict[PluginMetadataType, dict], plugin: str, version: str
+    metadata_by_type: dict[PluginMetadataType, dict], name: str, version: str
 ) -> dict[str, Any]:
     metadata = _get_data_from_metadata(
         metadata_by_type, PluginMetadataType.METADATA, {}
@@ -63,16 +61,16 @@ def _generate_aggregate(
     manifest = _get_data_from_metadata(
         metadata_by_type, PluginMetadataType.DISTRIBUTION, None
     )
-    distribution = get_formatted_manifest(manifest, plugin, version)
-    return {**metadata, **distribution}
+    formatted_manifest = get_formatted_manifest(manifest, name, version)
+    return {**metadata, **formatted_manifest}
 
 
-def _get_metadata_by_type(plugin: str, version: str) -> dict[PluginMetadataType, dict]:
-    return {record["type"]: record for record in plugin_metadata.query(plugin, version)}
+def _get_metadata_by_type(name: str, version: str) -> dict[PluginMetadataType, dict]:
+    return {record["type"]: record for record in plugin_metadata.query(name, version)}
 
 
 def _generate_record(
-    plugin: str,
+    name: str,
     metadata_by_type: dict[PluginMetadataType, dict],
     aggregate: dict[str, Any],
     blocked_plugins: set[str],
@@ -83,7 +81,7 @@ def _generate_record(
         if value:
             plugin_record[field] = value
 
-    visibility = _get_visibility(plugin, aggregate, blocked_plugins)
+    visibility = _get_visibility(name, aggregate, blocked_plugins)
     plugin_record["visibility"] = visibility.name
 
     if metadata_by_type.get(PluginMetadataType.PYPI, {}).get("is_latest"):
@@ -94,11 +92,9 @@ def _generate_record(
     return plugin_record
 
 
-def _get_visibility(plugin, aggregate, blocked_plugins) -> PluginVisibility:
-    if plugin in blocked_plugins:
+def _get_visibility(name, aggregate, blocked_plugins) -> PluginVisibility:
+    if name in blocked_plugins:
         return PluginVisibility.BLOCKED
-    elif not aggregate:
-        return PluginVisibility.INVALID
 
     visibility = aggregate.get("visibility", "").upper()
     if visibility in PluginVisibility:
