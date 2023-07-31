@@ -1,5 +1,5 @@
-import os
 import time
+from typing import Dict, List
 
 from api.models.helper import set_ddb_metadata
 from collections import defaultdict
@@ -43,7 +43,7 @@ def _get_category_from_model(category):
     }
 
 
-def get_category(name: str, version: str):
+def get_category(name: str, version: str) -> List[Dict]:
     """
     Gets the category data for a particular category and EDAM version.
     """
@@ -61,7 +61,7 @@ def get_category(name: str, version: str):
     return category
 
 
-def get_all_categories(version: str):
+def get_all_categories(version: str) -> Dict[str, List]:
     """
     Gets all available category mappings from a particular EDAM version.
     """

@@ -1,5 +1,5 @@
 import yaml
-from api.model import get_plugin
+from api.models import plugin as plugin_model
 from utils.github import get_file
 import logging
 
@@ -71,7 +71,7 @@ def get_plugin_data(collection_plugins):
     """Return plugin-specific data for each plugin specified in a collection."""
     for collection_plugin in collection_plugins:
         plugin_name = collection_plugin["name"]
-        plugin = get_plugin(plugin_name)
+        plugin = plugin_model.get_plugin(plugin_name, None)
         # Only include plugins that are set to public
         if plugin and plugin.get("visibility", "public") == "public":
             collection_plugin["summary"] = plugin.get("summary", "")

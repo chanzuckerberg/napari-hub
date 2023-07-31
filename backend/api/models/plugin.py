@@ -87,15 +87,6 @@ def get_index() -> List[Dict[str, Any]]:
     )
 
 
-def get_hidden_plugins() -> Dict[str, str]:
-    return _scan_index(
-        index=_Plugin.excluded_plugin_index,
-        attributes_to_get=["name", "version"],
-        filter_conditions=_Plugin.excluded.is_in("HIDDEN"),
-        mapper=_to_plugin_version_dict
-    )
-
-
 def get_plugin(name: str, version: str = None) -> Dict[str, Any]:
     visibility = ["PUBLIC", "HIDDEN"]
     kwargs = {
