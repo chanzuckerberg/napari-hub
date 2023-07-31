@@ -1,12 +1,11 @@
-import pandas as pd
 from dateutil.relativedelta import relativedelta
-from datetime import datetime
+from datetime import datetime, date, timezone
 
-BASE = datetime.today().date().replace(day=1)
+BASE = datetime.combine(date.today(), datetime.min.time()).replace(day=1, tzinfo=timezone.utc)
 
 
 def _to_timestamp(i):
-    return int(pd.Timestamp(BASE + relativedelta(months=i)).timestamp()) * 1000
+    return int((BASE + relativedelta(months=i)).timestamp()) * 1000
 
 
 def _generate_timeline(start_range, value_key, to_value, timestamp_key='timestamp'):
