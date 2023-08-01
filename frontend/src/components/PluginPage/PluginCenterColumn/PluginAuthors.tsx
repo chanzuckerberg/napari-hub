@@ -1,11 +1,13 @@
 import { Link } from '@/components/Link';
 import { SkeletonLoader } from '@/components/SkeletonLoader';
 import { usePluginMetadata } from '@/context/plugin';
+import { useIsFeatureFlagEnabled } from '@/store/featureFlags';
 
 import styles from './PluginAuthors.module.scss';
 
 export function PluginAuthors() {
   const metadata = usePluginMetadata();
+  const isHomePageRedesign = useIsFeatureFlagEnabled('homePageRedesign');
 
   return (
     <SkeletonLoader
@@ -16,7 +18,9 @@ export function PluginAuthors() {
             <li className="inline" key={author}>
               <Link
                 className="underline text-[11px] screen-495:text-[14px] font-semibold"
-                href={`/?authors=${author.replaceAll(' ', '+')}`}
+                href={`${
+                  isHomePageRedesign ? '/plugins' : '/'
+                }?authors=${author.replaceAll(' ', '+')}`}
               >
                 {author}
               </Link>
