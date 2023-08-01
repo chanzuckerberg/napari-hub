@@ -6,13 +6,12 @@ from typing import Tuple, Dict, List, Callable, Any
 from zipfile import ZipFile
 from io import BytesIO
 from collections import defaultdict
-from models import category as category_model
-
 from api.models import (
     install_activity,
     plugin as plugin_model,
     plugin_blocked,
-    plugin_metadata as plugin_metadata_model
+    plugin_metadata as plugin_metadata_model,
+    category as category_model
 )
 from utils.github import get_github_metadata, get_artifact
 from utils.pypi import query_pypi, get_plugin_pypi_metadata

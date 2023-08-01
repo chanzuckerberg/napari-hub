@@ -75,21 +75,17 @@ class TestHomepage:
             }
         ]
 
-    @pytest.mark.parametrize("use_dynamo", [True, False])
-    def test_invalid_section_names(self, use_dynamo, mock_get_index):
+    def test_invalid_section_names(self, mock_get_index):
         assert {} == home.get_plugin_sections({"foo"})
         mock_get_index.assert_not_called()
 
-    @pytest.mark.parametrize("section, use_dynamo, key", [
-        ("newest", True, "first_released"),
-        ("newest", False, "first_released"),
-        ("recently_updated", True, "release_date"),
-        ("recently_updated", False, "release_date"),
-        ("top_installed", True, "total_installs"),
-        ("top_installed", False, "total_installs"),
+    @pytest.mark.parametrize("section, key", [
+        ("newest", "first_released"),
+        ("recently_updated", "release_date"),
+        ("top_installed", "total_installs"),
     ])
     def test_valid_section_names(
-            self, section, use_dynamo, key, index_data, mock_get_index
+            self, section, key, index_data, mock_get_index
     ):
         actual = home.get_plugin_sections({section})
 
@@ -98,23 +94,18 @@ class TestHomepage:
         )[0:3]
         expected = {section: {"plugins": filter_plugins(plugins)}}
         assert expected == actual
-        mock_get_index.assert_called_with(use_dynamo)
+        mock_get_index.assert_called_with()
 
     @pytest.mark.parametrize(
-        "use_dynamo, plugin_type, minute, expected", [
-            (True, "reader", 1, ["plugin-1", "plugin-4"]),
-            (False, "reader", 42, ["plugin-1", "plugin-4"]),
-            (True, "sample_data", 27, ["plugin-2", "plugin-3"]),
-            (False, "sample_data", 8, ["plugin-2", "plugin-3"]),
-            (True, "widget", 13, ["plugin-3", "plugin-4"]),
-            (False, "widget", 34, ["plugin-3", "plugin-4"]),
-            (True, "writer", 19, ["plugin-1", "plugin-2"]),
-            (False, "writer", 58, ["plugin-1", "plugin-2"]),
+        "plugin_type, minute, expected", [
+            ("reader", 1, ["plugin-1", "plugin-4"]),
+            ("sample_data", 27, ["plugin-2", "plugin-3"]),
+            ("widget", 13, ["plugin-3", "plugin-4"]),
+            ("writer", 58, ["plugin-1", "plugin-2"]),
         ]
     )
     def test_valid_plugin_types_section(
             self,
-            use_dynamo,
             plugin_type,
             minute,
             expected,
@@ -137,4 +128,4 @@ class TestHomepage:
             actual["plugin_types"]["plugins"], key=get_name
         )
         assert expected_result == actual
-        mock_get_index.assert_called_with(use_dynamo)
+        mock_get_index.assert_called_once()
