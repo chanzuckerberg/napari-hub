@@ -35,7 +35,7 @@ export const MEATADATA_PLUGIN_TYPE = 'metadata-pluginType';
 export const MEATADATA_PYTHON_VERSION = 'metadata-pythonVersion';
 export const METADATA_OPERATING_SYSTEM = 'metadata-operatingSystems';
 export const METADATA_REQUIREMENTS = 'metadata-requirements';
-export const AUTHOR = 'a[href*="/?authors"]';
+export const AUTHOR = 'a[href*="/plugins?authors"]';
 export const CONT = 'Contributing¶';
 export const CONTRIBUTING_HEADER = 'Contributing¶';
 export const LICENSE_HEADER = 'License¶';
