@@ -1,15 +1,15 @@
 import logging
 from concurrent import futures
+from typing import Optional
 
 from plugin.lambda_adapter import LambdaAdapter
 from nhcommons.models.plugin_utils import PluginMetadataType
 from nhcommons.utils import pypi_adapter
 
-from nhcommons.models.plugin_metadata import (
-    put_plugin_metadata, get_existing_types
-)
+from nhcommons.models.plugin_metadata import put_plugin_metadata, get_existing_types
 from nhcommons.models.plugin import get_latest_plugins
 from plugin.metadata import get_formatted_metadata
+from utils import zulip
 
 logger = logging.getLogger(__name__)
 
@@ -27,36 +27,45 @@ def update_plugin() -> None:
 
     # update for new version of plugins
     with futures.ThreadPoolExecutor(max_workers=32) as executor:
-        update_futures = [executor.submit(_update_for_new_plugin, name, version)
-                          for name, version in new_plugins.items()]
+        update_futures = [
+            executor.submit(
+                _update_for_new_plugin, name, version, dynamo_latest_plugins.get(name)
+            )
+            for name, version in new_plugins.items()
+        ]
 
-    futures.wait(update_futures, return_when='ALL_COMPLETED')
+    futures.wait(update_futures, return_when="ALL_COMPLETED")
 
     # update for removed plugins and existing older version of plugins
     for name, version in dynamo_latest_plugins.items():
-        if pypi_latest_plugins.get(name) != version:
+        pypi_plugin_version = pypi_latest_plugins.get(name)
+        if pypi_plugin_version != version:
             logger.info(f"Updating old plugin={name} version={version}")
             put_plugin_metadata(
                 plugin=name,
                 version=version,
-                plugin_metadata_type=PluginMetadataType.PYPI
+                plugin_metadata_type=PluginMetadataType.PYPI,
             )
+            if pypi_plugin_version is None:
+                zulip.plugin_no_longer_on_hub(name)
 
 
-def _update_for_new_plugin(name: str, version: str) -> None:
+def _update_for_new_plugin(name: str, version: str, old_version: Optional[str]) -> None:
     logger.info(f"Update for new plugin={name} version={version}")
-    put_plugin_metadata(plugin=name,
-                        version=version,
-                        is_latest=True,
-                        plugin_metadata_type=PluginMetadataType.PYPI)
+    put_plugin_metadata(
+        plugin=name,
+        version=version,
+        is_latest=True,
+        plugin_metadata_type=PluginMetadataType.PYPI,
+    )
     cached_plugins = get_existing_types(name, version)
-    _build_plugin_metadata(name, version, cached_plugins)
+    _build_plugin_metadata(name, version, cached_plugins, old_version)
     _build_plugin_manifest(name, version, cached_plugins)
 
 
-def _build_plugin_manifest(plugin: str,
-                           version: str,
-                           cache: set[PluginMetadataType]) -> None:
+def _build_plugin_manifest(
+    plugin: str, version: str, cache: set[PluginMetadataType]
+) -> None:
     """
     Build plugin manifest if one is not already available.
     Invokes plugins lambda to generate manifest & write to cache.
@@ -71,9 +80,12 @@ def _build_plugin_manifest(plugin: str,
     LambdaAdapter().invoke(plugin, version)
 
 
-def _build_plugin_metadata(plugin: str,
-                           version: str,
-                           cache: set[PluginMetadataType]) -> None:
+def _build_plugin_metadata(
+    plugin: str,
+    version: str,
+    cache: set[PluginMetadataType],
+    old_version: Optional[str],
+) -> None:
     """
     Build plugin metadata from multiple sources if one is not already available.
     :param plugin: name of the plugin to get
@@ -87,7 +99,13 @@ def _build_plugin_metadata(plugin: str,
     if not data:
         return
 
-    put_plugin_metadata(plugin=plugin,
-                        version=version,
-                        plugin_metadata_type=PluginMetadataType.METADATA,
-                        data=data)
+    put_plugin_metadata(
+        plugin=plugin,
+        version=version,
+        plugin_metadata_type=PluginMetadataType.METADATA,
+        data=data,
+    )
+    if old_version:
+        zulip.plugin_updated_on_hub(plugin, version, data.get("code_repository"))
+    else:
+        zulip.new_plugin_on_hub(plugin, version, data.get("code_repository"))
