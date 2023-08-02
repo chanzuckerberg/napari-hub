@@ -70,8 +70,7 @@ def get_manifest(name: str, version: str = None) -> dict:
     :param version: version of the plugin manifest
     :return: plugin manifest dictionary.
     """
-    if not version:
-        version = plugin_model.get_latest_version(name)
+    version = version or plugin_model.get_latest_version(name)
     if not version:
         return {}
     manifest_metadata = plugin_metadata_model.get_manifest(name, version)
@@ -100,7 +99,7 @@ def get_index() -> List[Dict[str, Any]]:
     plugins = plugin_model.get_index()
     total_installs = install_activity.get_total_installs_by_plugins()
     for item in plugins:
-        item["total_installs"] = total_installs.get(item["name"], 0)
+        item["total_installs"] = total_installs.get(item["name"].lower(), 0)
     return plugins
 
 

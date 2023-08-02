@@ -15,12 +15,12 @@ logger = logging.getLogger(__name__)
 
 
 def get_plugin_sections(sections: Set[str], limit: int = 3) -> Dict[str, Dict]:
+    response = {}
+    plugins_encountered = set()
     if _has_no_valid_sections(sections):
         logger.warning("No processing as there are no valid sections")
-        return {}
-    response = {}
+        return response
 
-    plugins_encountered = set()
     index = get_index()
     for name, handler in _get_handler_by_section_name().items():
         if name in sections:

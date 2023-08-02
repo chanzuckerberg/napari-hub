@@ -11,11 +11,11 @@ def validate(result, message):
 class TestShield:
 
     def test_get_shield_valid_plugin(self, monkeypatch):
-        monkeypatch.setattr(shield, "get_plugin", lambda _: {"version": "0.0.1"})
+        monkeypatch.setattr(shield.plugin, "get_plugin", lambda _: {"version": "0.0.1"})
         result = shield.get_shield("package1")
         validate(result, "package1")
 
     def test_get_shield_for_non_plugin(self, monkeypatch):
-        monkeypatch.setattr(shield, "get_plugin", lambda _: None)
+        monkeypatch.setattr(shield.plugin, "get_plugin", lambda _: None)
         result = shield.get_shield("not-a-package")
         validate(result, "plugin not found")
