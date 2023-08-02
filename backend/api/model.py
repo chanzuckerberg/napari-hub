@@ -24,7 +24,6 @@ from utils.utils import (
     parse_manifest
 )
 from utils.datadog import report_metrics
-from api.zulip import notify_new_packages
 import boto3
 import logging
 
@@ -302,12 +301,10 @@ def update_cache():
             del (plugins_metadata[plugin])
 
     if visibility_plugins['public']:
-        existing_public_plugins = get_public_plugins()
         cache(excluded_plugins, 'excluded_plugins.json')
         cache(visibility_plugins['public'], 'cache/public-plugins.json')
         cache(visibility_plugins['hidden'], 'cache/hidden-plugins.json')
         cache(generate_index(plugins_metadata), 'cache/index.json')
-        notify_new_packages(existing_public_plugins, visibility_plugins['public'], plugins_metadata)
         report_metrics('napari_hub.plugins.count', len(visibility_plugins['public']), ['visibility:public'])
         report_metrics('napari_hub.plugins.count', len(visibility_plugins['hidden']), ['visibility:hidden'])
         report_metrics('napari_hub.plugins.excluded', len(excluded_plugins))
