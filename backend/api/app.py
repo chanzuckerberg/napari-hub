@@ -191,11 +191,13 @@ def handle_exception(e) -> Response:
 
 @app.errorhandler(exceptions.Unauthorized)
 def handle_permission_exception(e) -> Response:
+    logger.error(f"Unauthorized Access to endpoint {request.method} {request.endpoint}")
     return app.make_response(("Unauthorized Access", 401))
 
 
 @app.errorhandler(Exception)
 def handle_exception(e) -> Response:
+    logger.error(f"An unexpected error has occurred in napari hub: {e}", e)
     send_alert(f"An unexpected error has occurred in napari hub: {e}")
     return app.make_response(("Internal Server Error", 500))
 

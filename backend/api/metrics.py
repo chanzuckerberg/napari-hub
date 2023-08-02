@@ -52,7 +52,7 @@ def _get_usage_data(name: str, limit: int) -> Dict[str, Any]:
     }
 
 
-def _get_maintenance_data(name: str, repo: Any, limit: int) -> Dict[str, Any]:
+def _get_maintenance_data(name: str, repo: Optional[str], limit: int) -> Dict[str, Any]:
     """
     Fetches plugin maintenance_data from dynamo.
     :returns Dict[str, Any]: A dict with entries for timeline and stats.
