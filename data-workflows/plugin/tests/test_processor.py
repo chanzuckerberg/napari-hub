@@ -10,8 +10,10 @@ import nhcommons.models.plugin as nh_plugin
 import nhcommons.models.plugin_metadata as nh_plugin_metadata
 import nhcommons.utils.pypi_adapter as nh_pypi_adapter
 import plugin.processor as processor
+from utils import zulip
 
-DATA = {"name": "foo-demo-1", "author": "hub-team"}
+REPO = "https://github.com/chanzuckerberg/foo-demo-1"
+DATA = {"name": "foo-demo-1", "author": "hub-team", "code_repository": REPO}
 PLUGIN = "foo"
 OLD_VERSION = "3.5.6"
 VERSION = "3.5.7"
@@ -66,6 +68,12 @@ class TestProcessor:
         monkeypatch.setattr(processor, "LambdaAdapter", mock)
         return mock
 
+    @pytest.fixture
+    def mock_zulip(self, monkeypatch) -> Mock:
+        mock = Mock(spec=zulip)
+        monkeypatch.setattr(processor, "zulip", mock)
+        return mock
+
     @pytest.fixture(autouse=True)
     def setup(
         self,
@@ -75,6 +83,7 @@ class TestProcessor:
         mock_get_existing_types,
         mock_get_formatted_metadata,
         mock_lambda_adapter,
+        mock_zulip,
     ) -> None:
         self._get_latest_plugins = mock_get_latest_plugins
         self._get_all_plugins = mock_get_all_plugins
@@ -82,6 +91,7 @@ class TestProcessor:
         self._get_existing_types = mock_get_existing_types
         self._get_formatted_metadata = mock_get_formatted_metadata
         self._lambda_adapter = mock_lambda_adapter
+        self._zulip = mock_zulip
 
     @pytest.fixture
     def verify_calls(self, verify_call):
@@ -126,6 +136,7 @@ class TestProcessor:
         processor.update_plugin()
 
         verify_calls()
+        self._zulip.assert_not_called()
 
     def test_stale_plugin_in_dynamo(self, verify_calls):
         self._dynamo_latest_plugins = {PLUGIN: VERSION, "bar": "2.4.6"}
@@ -135,6 +146,8 @@ class TestProcessor:
         processor.update_plugin()
 
         verify_calls(put_pm_calls=put_pm_calls)
+        assert len(self._zulip.method_calls) == 1
+        self._zulip.plugin_no_longer_on_hub.assert_called_once_with(PLUGIN)
 
     @pytest.mark.parametrize(
         "existing_types, put_pm_data, formatted_metadata",
@@ -178,6 +191,11 @@ class TestProcessor:
             lambda_invoked=PMType.DISTRIBUTION not in existing_types,
             put_pm_calls=put_plugin_metadata_calls,
         )
+        if PMType.METADATA not in existing_types and put_pm_data:
+            assert len(self._zulip.method_calls) == 1
+            self._zulip.new_plugin_on_hub.assert_called_once_with(PLUGIN, VERSION, REPO)
+        else:
+            self._zulip.assert_not_called()
 
     @pytest.mark.parametrize(
         "existing_types, put_pm_data, formatted_metadata",
@@ -220,6 +238,13 @@ class TestProcessor:
             lambda_invoked=PMType.DISTRIBUTION not in existing_types,
             put_pm_calls=put_pm_calls,
         )
+        if PMType.METADATA not in existing_types and put_pm_data:
+            assert len(self._zulip.method_calls) == 1
+            self._zulip.plugin_updated_on_hub.assert_called_once_with(
+                PLUGIN, VERSION, REPO
+            )
+        else:
+            self._zulip.assert_not_called()
 
 
 def _create_put_pm_call(pm_type, data=None, is_latest=False, version=VERSION) -> call:

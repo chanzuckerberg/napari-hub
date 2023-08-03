@@ -276,7 +276,6 @@ module backend_lambda {
     "BUCKET_PATH" = var.env == "dev" ? local.custom_stack_name : ""
     "GOOGLE_APPLICATION_CREDENTIALS" = "./credentials.json"
     "SLACK_URL" = local.slack_url
-    "ZULIP_CREDENTIALS" = local.zulip_credentials
     "GITHUB_CLIENT_ID" = local.github_client_id
     "GITHUB_CLIENT_SECRET" = local.github_client_secret
     "GITHUBAPP_ID" = local.github_app_id
@@ -344,6 +343,7 @@ module data_workflows_lambda {
     "GITHUB_CLIENT_ID"      = local.github_client_id
     "GITHUB_CLIENT_SECRET"  = local.github_client_secret
     "PLUGINS_LAMBDA_NAME"   = local.plugins_function_name
+    "ZULIP_CREDENTIALS"     = local.zulip_credentials
   }
 
   log_retention_in_days   = local.log_retention_period
