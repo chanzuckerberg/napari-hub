@@ -5,15 +5,29 @@ from api.model import get_index
 from random import sample
 from datetime import datetime
 
-
 DEFAULT_FIELDS = {
     "authors", "display_name", "first_released", "name", "release_date",
     "summary", "total_installs",
 }
 PLUGIN_TYPES = ["reader", "sample_data", "widget", "writer"]
 
-
 logger = logging.getLogger(__name__)
+
+
+def get_plugin_sections(sections: Set[str], limit: int = 3) -> Dict[str, Dict]:
+    response = {}
+    plugins_encountered = set()
+    if _has_no_valid_sections(sections):
+        logger.warning("No processing as there are no valid sections")
+        return response
+
+    index = get_index()
+    for name, handler in _get_handler_by_section_name().items():
+        if name in sections:
+            response[name] = handler(index, limit, plugins_encountered)
+            logger.info(f"fetched data for {name} section")
+
+    return response
 
 
 def _filtered(data: Dict) -> Dict:
@@ -79,7 +93,7 @@ def _get_top_installed_plugins(
     return _get_plugins_by_sort(index, limit, "total_installs", 0, exclude)
 
 
-def get_handler_by_section_name() -> Dict[str, Callable]:
+def _get_handler_by_section_name() -> Dict[str, Callable]:
     return {
         "plugin_types": _get_plugins_by_type,
         "newest": _get_newest_plugins,
@@ -89,22 +103,4 @@ def get_handler_by_section_name() -> Dict[str, Callable]:
 
 
 def _has_no_valid_sections(sections: Set):
-    return set(get_handler_by_section_name().keys()).isdisjoint(sections)
-
-
-def get_plugin_sections(
-        sections: Set[str], use_dynamo: bool, limit: int = 3
-) -> Dict[str, Dict]:
-    if _has_no_valid_sections(sections):
-        logger.warning("No processing as there are no valid sections")
-        return {}
-    response = {}
-
-    plugins_encountered = set()
-    index = get_index(use_dynamo)
-    for name, handler in get_handler_by_section_name().items():
-        if name in sections:
-            response[name] = handler(index, limit, plugins_encountered)
-            logger.info(f"fetched data for {name} section")
-
-    return response
+    return set(_get_handler_by_section_name().keys()).isdisjoint(sections)

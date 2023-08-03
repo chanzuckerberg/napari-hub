@@ -198,16 +198,6 @@ class TestPlugin:
 
         assert actual == []
 
-    def test_get_hidden_plugins_with_data(self, plugin_table, data):
-        self._put_items(plugin_table, data)
-
-        actual = plugin.get_hidden_plugins()
-        assert actual == {"plugin-2": "1.0.0"}
-
-    def test_get_hidden_plugins_without_data(self, plugin_table):
-        actual = plugin.get_hidden_plugins()
-        assert actual == {}
-
     @pytest.mark.parametrize("name, version, has_data, fixture_name", [
         ("plugin-1", "2.2", True, "plugin1_data2_2"),
         ("plugin-1", "2.4", False, None),

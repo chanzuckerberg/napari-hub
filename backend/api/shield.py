@@ -1,13 +1,11 @@
-from api.model import get_valid_plugins
-from api.models.plugin import get_plugin
+from api.models import plugin
 
 
-def get_shield(name: str, use_dynamo: bool = False) -> dict:
+def get_shield(name: str) -> dict:
     """
     Generate shield json for napari plugin.
     If the package is not a valid plugin, display 'plugin not found' instead.
     :param name: name of the plugin
-    :param use_dynamo: flag to identify if data source is dynamo
     :return: shield json used in shields.io.
     """
     shield_schema = {
@@ -38,10 +36,6 @@ def get_shield(name: str, use_dynamo: bool = False) -> dict:
         "schemaVersion": 1,
         "style": "flat-square"
     }
-    if use_dynamo:
-        plugin = get_plugin(name)
-    else:
-        plugin = get_valid_plugins().get(name)
-
-    shield_schema["message"] = name if plugin else "plugin not found"
+    plugin_data = plugin.get_plugin(name)
+    shield_schema["message"] = name if plugin_data else "plugin not found"
     return shield_schema
