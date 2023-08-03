@@ -1,43 +1,11 @@
 import json
 import re
-from typing import Dict
 
 import requests
 from requests import HTTPError
-from requests.utils import requote_uri
 
 from utils.github import get_github_repo_url
 from utils.utils import get_attribute, filter_prefix
-
-
-def query_pypi() -> Dict[str, str]:
-    """
-    Query pypi to get all plugins.
-
-    :return: all plugin names and latest version
-    """
-    packages = {}
-    page = 1
-    name_pattern = re.compile('class="package-snippet__name">(.+)</span>')
-    version_pattern = re.compile(
-        'class="package-snippet__version">(.+)</span>')
-    url = requote_uri(f"https://pypi.org/search/?q=&o=-created&c=Framework :: napari&page=")
-    while True:
-        try:
-            response = requests.get(f'{url}{page}')
-            if response.status_code != requests.codes.ok:
-                response.raise_for_status()
-            html = response.text
-            names = name_pattern.findall(html)
-            versions = version_pattern.findall(html)
-            if len(names) != len(versions):
-                return {}
-            for name, version in zip(names, versions):
-                packages[name] = version
-            page += 1
-        except HTTPError:
-            break
-    return packages
 
 
 def get_plugin_pypi_metadata(plugin: str, version: str) -> dict:
@@ -48,8 +16,8 @@ def get_plugin_pypi_metadata(plugin: str, version: str) -> dict:
     :param version: version of the plugin
     :return: metadata dict for the plugin, empty if not found
     """
-    # versioned url https://pypi.org/pypi/{plugin}/{version}/json does not track history anymore.
-    # see https://github.com/chanzuckerberg/napari-hub/issues/598
+    # versioned url https://pypi.org/pypi/{plugin}/{version}/json does not track history
+    # anymore. see https://github.com/chanzuckerberg/napari-hub/issues/598
     url = f"https://pypi.org/pypi/{plugin}/json"
 
     try:

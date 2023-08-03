@@ -1,6 +1,5 @@
 import requests
 from requests.exceptions import HTTPError
-import json
 
 
 class FakeResponse:
@@ -20,35 +19,6 @@ class FakeResponse:
 
     def raise_for_status(self):
         raise HTTPError
-
-
-plugin_list = """
-<li>
-  <a class="package-snippet" href="/project/brainreg-segment/">
-    <h3 class="package-snippet__title">
-      <span class="package-snippet__name">package1</span>
-      <span class="package-snippet__version">0.2.7</span>
-      <span class="package-snippet__released"><time datetime="2021-04-26T13:17:17+0000" data-controller="localized-time" data-localized-time-relative="true" data-localized-time-show-time="false">
-  Apr 26, 2021
-</time></span>
-    </h3>
-    <p class="package-snippet__description">test package 1</p>
-  </a>
-</li>
-
-              <li>
-  <a class="package-snippet" href="/project/napari-mri/">
-    <h3 class="package-snippet__title">
-      <span class="package-snippet__name">package2</span>
-      <span class="package-snippet__version">0.1.0</span>
-      <span class="package-snippet__released"><time datetime="2021-03-21T06:12:30+0000" data-controller="localized-time" data-localized-time-relative="true" data-localized-time-show-time="false">
-  Mar 21, 2021
-</time></span>
-    </h3>
-    <p class="package-snippet__description">test package 2</p>
-  </a>
-  </li>
-"""
 
 plugin = """
 {"info":{"author":"Test Author","author_email":"test@test.com",

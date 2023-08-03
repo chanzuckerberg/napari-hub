@@ -2,8 +2,6 @@ import os
 import re
 import requests
 from typing import List, Dict, Optional
-from bs4 import BeautifulSoup
-from markdown import markdown
 from requests import HTTPError
 
 # Environment variable set through ecs stack terraform module
@@ -58,21 +56,6 @@ def filter_prefix(str_list: List[str], prefix: str) -> list:
     return [string for string in str_list if string.startswith(prefix)]
 
 
-def render_description(description: str) -> str:
-    """
-    Render description with beautiful soup to generate html format description text.
-
-    :param description: raw description to render
-    :return: rendered description html text
-    """
-    if description != '':
-        html = markdown(description)
-        soup = BeautifulSoup(html, 'html.parser')
-        return soup.get_text()
-
-    return ''
-
-
 def send_alert(message: str):
     """
     Send alert to slack with a message.
@@ -103,45 +86,7 @@ def reformat_ssh_key_to_pem_bytes(ssh_key_str: str) -> bytes:
 
 
 def get_category_mapping(category: str, mappings: Dict[str, List]) -> List[Dict]:
-    """
-    Get category mappings
-
-    Parameters
-    ----------
-    category : str
-        name of the category to map
-    mappings: dict
-        mappings to use for lookups, if None, use cached mapping
-
-    Returns
-    -------
-    match : list of matched category
-        list of mapped label, dimension and hierarchy, where hierarchy is from most abstract to most specific.
-        for example, Manual segmentation is mapped to the following list:
-        [
-            {
-                "label": "Image Segmentation",
-                "dimension": "Operation",
-                "hierarchy": [
-                    "Image segmentation",
-                    "Manual segmentation"
-                ]
-            },
-            {
-                "label": "Image annotation",
-                "dimension": "Operation",
-                "hierarchy": [
-                    "Image annotation",
-                    "Dense image annotation",
-                    "Manual segmentation"
-                ]
-            }
-        ]
-    """
-    if category not in mappings:
-        return []
-    else:
-        return mappings[category]
+    return mappings.get(category, [])
 
 
 def parse_manifest(manifest: Optional[dict] = None):

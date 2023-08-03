@@ -2,26 +2,16 @@ import unittest
 from unittest.mock import patch
 
 from requests import HTTPError
-from backend.utils.pypi import format_plugin
 
-from utils.pypi import query_pypi, get_plugin_pypi_metadata
+from utils.pypi import get_plugin_pypi_metadata
 from utils.test_utils import (
-    FakeResponse, plugin, plugin_list,
-    split_comma_correct_result, split_comma_plugin, 
+    FakeResponse, plugin,split_comma_correct_result, split_comma_plugin,
     split_and_correct_result, split_and_plugin, split_ampersand_correct_result, 
     split_ampersand_plugin, empty_split_plugin, empty_split_correct_result
     ) 
 
-class TestPypi(unittest.TestCase):
 
-    @patch(
-        'requests.get', return_value=FakeResponse(data=plugin_list)
-    )
-    def test_query_pypi(self, mock_get):
-        result = query_pypi()
-        assert len(result) == 2
-        assert result['package1'] == "0.2.7"
-        assert result['package2'] == "0.1.0"
+class TestPypi(unittest.TestCase):
 
     @patch(
         'requests.get', return_value=FakeResponse(data=plugin)
