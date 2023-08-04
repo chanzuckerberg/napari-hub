@@ -1,7 +1,11 @@
 import { SearchSortType } from '@/store/search/constants';
 import { FilterKey, FilterType } from '@/store/search/search.store';
 
-import { AccordionTitle } from './utils';
+export enum AccordionTitle {
+  FilterByRequirement = 'Filter by requirement',
+  FilterByCategory = 'Filter by category',
+  Sort = 'Sort',
+}
 
 export const getByHasText = (type: string, text: string): string =>
   `${type}:has-text("${text}")`;
@@ -9,6 +13,7 @@ export const getMetadata = (attribute: string): string =>
   `[data-testid="searchResultMetadata"] >> ${attribute}`;
 export const getByTestID = (id: string): string => `[data-testid="${id}"]`;
 export const getByID = (id: string): string => `[id="${id}"]`;
+
 enum CommonSelectors {
   appBarHome = '[data-testid=appBarHome]:visible',
   plugins = 'a[href="/plugins"]:visible',
@@ -57,6 +62,10 @@ export const selectors = {
 
     getFilterButton(filterKey: FilterKey) {
       return `[data-testid=pluginFilter][data-filter=${filterKey}]:visible`;
+    },
+
+    getFilterOption(filterKey: FilterKey, option: string) {
+      return `[role=tooltip] [data-filter=${filterKey}] ~ [role=presentation] [role=option]:has-text("${option}")`;
     },
 
     getChips(filterKey: FilterKey) {

@@ -1,22 +1,21 @@
 import { expect, test } from '@playwright/test';
 
-import { SearchQueryParams, SearchSortType } from '@/store/search/constants';
-
-import { searchPlugins } from '../../utils/search';
-import { selectors } from '../../utils/selectors';
+import { AccordionTitle } from '@/e2e/types/filter';
+import { openSearchPageWithQuery } from '@/e2e/utils/search';
+import { selectors } from '@/e2e/utils/selectors';
 import {
-  AccordionTitle,
   getQueryParameterValues,
   getSearchUrl,
   getTestURL,
   maybeOpenAccordion,
-} from '../../utils/utils';
+} from '@/e2e/utils/utils';
+import { SearchQueryParams, SearchSortType } from '@/store/search/constants';
 
 test.describe('Plugin search', () => {
   test('should update URL parameter when entering query', async ({ page }) => {
     const query = 'video';
     await page.goto(getSearchUrl(), { timeout: 60000 });
-    await searchPlugins(page, query);
+    await openSearchPageWithQuery(page, query);
     expect(getQueryParameterValues(page, SearchQueryParams.Search)).toContain(
       query,
     );
@@ -27,9 +26,9 @@ test.describe('Plugin search', () => {
 
   test('should render search results for query', async ({ page }) => {
     await page.goto(getSearchUrl(), { timeout: 60000 });
-    await searchPlugins(page, 'video');
-    await expect(page.locator(selectors.search.result)).toContainText(
-      'napari_video',
+    await openSearchPageWithQuery(page, 'video');
+    await expect(page.locator(selectors.search.result).first()).toContainText(
+      'video',
     );
   });
 
@@ -39,7 +38,7 @@ test.describe('Plugin search', () => {
     await page.goto(getSearchUrl([SearchQueryParams.Search, 'video']), {
       timeout: 60000,
     });
-    await expect(page.locator(selectors.search.result)).toHaveText(
+    await expect(page.locator(selectors.search.result).first()).toHaveText(
       'napari_video',
     );
   });
@@ -52,7 +51,7 @@ test.describe('Plugin search', () => {
     });
     await page.click(selectors.search.clearQueryButton);
     await expect(page.locator(selectors.search.result).first()).not.toHaveText(
-      'napari_video',
+      'video',
     );
   });
 
@@ -72,15 +71,15 @@ test.describe('Plugin search', () => {
     await page.click(selectors.common.plugins);
     await page.waitForURL('/plugins');
     await expect(page.locator(selectors.search.result).first()).not.toHaveText(
-      'napari_video',
+      'video',
     );
   });
 
   test('should redirect to search page when searching from another page', async ({
     page,
   }) => {
-    await page.goto(getTestURL('/about'), { timeout: 60000 });
-    await searchPlugins(page, 'video');
+    await page.goto(getTestURL('/about').href, { timeout: 60000 });
+    await openSearchPageWithQuery(page, 'video');
 
     const expectedUrl = getSearchUrl(
       [SearchQueryParams.Search, 'video'],
@@ -89,7 +88,7 @@ test.describe('Plugin search', () => {
     expect(page.url()).toContain(expectedUrl);
     await page.waitForTimeout(500);
     await expect(page.locator(selectors.search.result).first()).toContainText(
-      'napari_video',
+      'video',
     );
   });
 
@@ -128,7 +127,7 @@ test.describe('Plugin search', () => {
         page.locator(selectors.sort.sortDropdown).first(),
       ).toContainText('Recently Updated');
 
-      await searchPlugins(page, 'video');
+      await openSearchPageWithQuery(page, 'video');
       await page.click(selectors.sort.sortDropdown);
       await expect(
         page.locator(selectors.sort.sortDropdown).first(),
@@ -139,7 +138,7 @@ test.describe('Plugin search', () => {
         'Recently Updated',
       );
 
-      await searchPlugins(page, 'video');
+      await openSearchPageWithQuery(page, 'video');
       await maybeOpenAccordion(page, AccordionTitle.Sort, viewport?.width);
       await expect(page.locator(selectors.sort.selected).first()).toHaveText(
         'Relevance',
@@ -164,17 +163,17 @@ test.describe('Plugin search', () => {
     });
     await expect(
       page.locator(selectors.search.resultSummary).first(),
-    ).toContainText(query);
+    ).toContainText(query, { ignoreCase: true });
   });
 
   test('should show result with match in author name', async ({ page }) => {
-    const query = 'test';
+    const query = 'nicholas';
     await page.goto(getSearchUrl([SearchQueryParams.Search, query]), {
       timeout: 60000,
     });
     await expect(
       page.locator(selectors.search.resultAuthor).first(),
-    ).toContainText('Test Author');
+    ).toContainText('Nicholas Sofroniew');
   });
 
   test('should show result using fuzzy matching', async ({ page }) => {
@@ -182,8 +181,8 @@ test.describe('Plugin search', () => {
     await page.goto(getSearchUrl([SearchQueryParams.Search, query]), {
       timeout: 60000,
     });
-    await expect(page.locator(selectors.search.resultSummary)).toContainText(
-      'animation',
-    );
+    await expect(
+      page.locator(selectors.search.resultSummary).first(),
+    ).toContainText(/animate|animation/);
   });
 });

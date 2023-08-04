@@ -17,3 +17,7 @@ export interface LinkInfo {
    */
   title: string;
 }
+
+export type PickKeysForType<T, U> = keyof {
+  [K in keyof T as T[K] extends U ? K : never]: T[K];
+};

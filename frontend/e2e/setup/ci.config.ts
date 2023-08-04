@@ -2,6 +2,8 @@ import { devices, PlaywrightTestConfig } from '@playwright/test';
 import dotenv from 'dotenv';
 import path from 'path';
 
+import { getTestURL } from '../utils/utils';
+
 dotenv.config({
   path: path.resolve(__dirname, '../../', '.env'),
 });
@@ -10,7 +12,6 @@ const config: PlaywrightTestConfig = {
   expect: {
     timeout: 3000,
   },
-  globalSetup: './globalSetup',
   fullyParallel: true,
   outputDir: '../report',
   reporter: [
@@ -83,7 +84,7 @@ const config: PlaywrightTestConfig = {
   timeout: 60 * 1000,
   use: {
     actionTimeout: 20000,
-    baseURL: 'http://localhost:8080',
+    baseURL: getTestURL().href,
     screenshot: 'only-on-failure',
     trace: 'on',
     video: 'on',

@@ -14,6 +14,7 @@
     "noUnusedParameters": true,
     "paths": {
       "@/*": ["./src/*"],
+      "@/e2e/*": ["./e2e/*"],
       "@/i18n/*": ["./i18n/*"],
       "@/next-i18next.config": ["./next-i18next.config.js"]
     },
