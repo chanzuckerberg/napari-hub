@@ -6,7 +6,7 @@ on:
     branches:
       - main
     tags:
-      - "v*"
+      - 'v*'
 
 # https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services
 permissions:
@@ -30,19 +30,19 @@ jobs:
         with:
           registry: ${{ secrets.ECR_REPO }}
       - name: Set up docker build environment
-        run: | 
+        run: |
           echo DOCKER_TAG=${GITHUB_REF_NAME} >> $GITHUB_ENV
       - name: Deploy Changes to Prod
         uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.7.4
         env:
           ENV: prod
         with:
-          stack-name: "prod"
-          create-tag: "true"
+          stack-name: 'prod'
+          create-tag: 'true'
           tag: ${{ env.DOCKER_TAG }}
           tfe-token: ${{ secrets.TFE_TOKEN }}
-          env: "prod"
-          operation: "create-or-update"
+          env: 'prod'
+          operation: 'create-or-update'
   staging:
     name: deploy to staging
     runs-on: ubuntu-latest
@@ -67,12 +67,12 @@ jobs:
         env:
           ENV: staging
         with:
-          stack-name: "staging"
-          create-tag: "true"
+          stack-name: 'staging'
+          create-tag: 'true'
           tag: ${{ env.DOCKER_TAG }}
           tfe-token: ${{ secrets.TFE_TOKEN }}
-          env: "staging"
-          operation: "create-or-update"
+          env: 'staging'
+          operation: 'create-or-update'
 
   lighthouse-ci:
     runs-on: ubuntu-latest
@@ -81,7 +81,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 20.5.x
       - run: npm install -g @lhci/cli@0.11.x
       - name: Run Lighthouse
         run: lhci autorun --collect.url=https://www.napari-hub.org/ --output-dir=./.lighthouseci --upload.artifacts.ignoreFailure=true
@@ -91,4 +91,3 @@ jobs:
         with:
           name: lighthouse-reports
           path: ./.lighthouseci/
-
