@@ -8,6 +8,10 @@ dotenv.config({
   path: path.resolve(__dirname, '../../', '.env'),
 });
 
+const baseURL = getTestURL().href;
+// eslint-disable-next-line no-console
+console.log(`Running CI E2E tests for env=${process.env.ENV} url=${baseURL}`);
+
 const config: PlaywrightTestConfig = {
   expect: {
     timeout: 3000,
@@ -83,8 +87,8 @@ const config: PlaywrightTestConfig = {
   testDir: '../tests',
   timeout: 60 * 1000,
   use: {
+    baseURL,
     actionTimeout: 20000,
-    baseURL: getTestURL().href,
     screenshot: 'only-on-failure',
     trace: 'on',
     video: 'on',

@@ -1,6 +1,6 @@
+const path = require('path');
 const axios = require('axios');
 const fs = require('fs-extra');
-const path = require('path');
 
 async function fetchOsiLicenseData() {
   const {
@@ -22,11 +22,8 @@ function getBaseURL() {
     return 'https://api.napari-hub.org';
   }
 
-  if (ENV === 'staging') {
-    return 'https://api.staging.napari-hub.org';
-  }
-
-  return 'http://localhost:8081';
+  // Use staging for local and staging testing
+  return 'https://api.staging.napari-hub.org';
 }
 
 async function fetchFixtureData() {
