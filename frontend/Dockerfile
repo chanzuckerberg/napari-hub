@@ -1,5 +1,5 @@
 # Build image
-FROM node:16-alpine AS builder
+FROM node:20.5-alpine AS builder
 
 WORKDIR /app
 
@@ -17,7 +17,7 @@ RUN echo "ZIYANG TRYING TO READ ${ENV}"
 RUN yarn build
 
 # Application image
-FROM node:16-alpine
+FROM node:20.5-alpine
 
 WORKDIR /app
 
