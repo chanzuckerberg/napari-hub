@@ -41,7 +41,7 @@
     "// Fetch fixture data for prod e2e tests": "",
     "e2e:prod:fixtures": "ENV=prod node scripts/fetch-e2e-fixtures",
     "// Runs e2e in CI environment": "",
-    "e2e:ci": "ENV=local DEBUG=pw:api playwright test -c ./e2e/setup/ci.config.ts",
+    "e2e:ci": "DEBUG=pw:api playwright test -c ./e2e/setup/ci.config.ts",
     "// Runs recently generated playwright report": "",
     "e2e:report": "playwright show-report",
     "// Runs postinstall script to setup husky on `yarn install`": "",
