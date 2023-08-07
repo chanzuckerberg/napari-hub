@@ -193,7 +193,7 @@ def _index_list_mapper(
 ) -> Callable[[Iterator[_Plugin]], List[Dict[str, Any]]]:
     def _to_dict(item: _Plugin, data: Dict) -> Dict:
         result = {key: data[key] for key in fields if key in data}
-        result["visibility"] = item.visibility
+        result["visibility"] = item.visibility.lower()
         return result
 
     def _mapper(plugins: Iterator[_Plugin]):

@@ -72,8 +72,8 @@ def plugin_index() -> Response:
 
 
 @app.route("/plugins/index/all")
-def plugin_index() -> Response:
-    return jsonify(get_index({"PUBLIC", "HIDDEN"}, False))
+def plugin_index_all() -> Response:
+    return jsonify(get_index(None, False))
 
 
 @app.route("/plugins")

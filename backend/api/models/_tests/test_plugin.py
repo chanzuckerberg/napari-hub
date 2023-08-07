@@ -195,17 +195,23 @@ class TestPlugin:
         assert actual == expected
 
     @pytest.mark.parametrize("visibility, expected_fixtures", [
-        ({"PUBLIC"}, [("plugin1_v2_3_data", "PUBLIC"), ("plugin4_v5_8_data", "PUBLIC")]),
-        ({"HIDDEN"}, [("plugin2_v0_5_data", "HIDDEN"), ("plugin2_v1_0_0_data", "HIDDEN")]),
-        ({"DISABLED"}, [("plugin3_v1_6_data", "DISABLED")]),
+        (
+                {"PUBLIC"},
+                [("plugin1_v2_3_data", "public"), ("plugin4_v5_8_data", "public")],
+        ),
+        (
+                {"HIDDEN"},
+                [("plugin2_v0_5_data", "hidden"), ("plugin2_v1_0_0_data", "hidden")],
+        ),
+        ({"DISABLED"}, [("plugin3_v1_6_data", "disabled")]),
         (
                 None,
                 [
-                    ("plugin1_v2_3_data", "PUBLIC"),
-                    ("plugin2_v0_5_data", "HIDDEN"),
-                    ("plugin2_v1_0_0_data", "HIDDEN"),
-                    ("plugin3_v1_6_data", "DISABLED"),
-                    ("plugin4_v5_8_data", "PUBLIC"),
+                    ("plugin1_v2_3_data", "public"),
+                    ("plugin2_v0_5_data", "hidden"),
+                    ("plugin2_v1_0_0_data", "hidden"),
+                    ("plugin3_v1_6_data", "disabled"),
+                    ("plugin4_v5_8_data", "public"),
                 ]
         ),
     ])
