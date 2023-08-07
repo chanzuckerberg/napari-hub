@@ -94,7 +94,7 @@ class TestHomepage:
         )[0:3]
         expected = {section: {"plugins": filter_plugins(plugins)}}
         assert expected == actual
-        mock_get_index.assert_called_with()
+        mock_get_index.assert_called_with({"PUBLIC"}, True)
 
     @pytest.mark.parametrize(
         "plugin_type, minute, expected", [
@@ -128,4 +128,4 @@ class TestHomepage:
             actual["plugin_types"]["plugins"], key=get_name
         )
         assert expected_result == actual
-        mock_get_index.assert_called_once()
+        mock_get_index.assert_called_once_with({"PUBLIC"}, True)
