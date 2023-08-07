@@ -142,9 +142,6 @@ jobs:
           path: frontend/.next
           key: local-build-${{ hashFiles('**/next.config.js') }}-${{ hashFiles('frontend/src') }}-${{ hashFiles('**/yarn.lock') }}
 
-      - name: Start mock server on port 8081
-        run: yarn dev:api &
-
       - name: Start server on port 8080
         run: yarn start &
         env:
@@ -161,6 +158,7 @@ jobs:
         env:
           CI: true
           BROWSER: ${{ matrix.browser }}
+          ENV: local
         run: yarn e2e:ci --shard ${{ matrix.shardCurrent }}/${{ matrix.shardTotal }}
 
       - name: Upload artifacts
