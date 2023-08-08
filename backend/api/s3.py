@@ -3,15 +3,12 @@ import json
 import mimetypes
 import os
 import os.path
-import time
 from datetime import datetime
-from typing import Union, IO, List, Dict
+from typing import Union, IO
 
 import boto3
 from botocore.client import Config
-from botocore.exceptions import ClientError
 from utils.utils import send_alert
-from utils.time import print_perf_duration
 
 # Environment variable set through ecs stack terraform module
 bucket = os.environ.get('BUCKET')
@@ -19,23 +16,6 @@ bucket_path = os.environ.get('BUCKET_PATH', '')
 endpoint_url = os.environ.get('BOTO_ENDPOINT_URL', None)
 
 s3_client = boto3.client("s3", endpoint_url=endpoint_url, config=Config(max_pool_connections=50))
-
-
-def get_cache(key: str) -> Union[Dict, List, None]:
-    """
-    Get the cached json file or manifest file for a given key if exists, None otherwise.
-
-    :param key: key to the cache to get
-    :return: file content for the key if exists, None otherwise
-    """
-    try:
-        start = time.perf_counter()
-        result = json.loads(s3_client.get_object(Bucket=bucket, Key=os.path.join(bucket_path, key))['Body'].read())
-        print_perf_duration(start, f"get_cache({key})")
-        return result
-    except ClientError:
-        print(f"Not cached: {key}")
-        return None
 
 
 def cache(content: Union[dict, list, IO[bytes]], key: str, mime: str = None):
@@ -64,7 +44,4 @@ def cache(content: Union[dict, list, IO[bytes]], key: str, mime: str = None):
             s3_client.upload_fileobj(Fileobj=stream, Bucket=bucket,
                                      Key=os.path.join(bucket_path, key), ExtraArgs=extra_args)
 
-
-def _get_complete_path(path):
-    return os.path.join(bucket_path, path)
 

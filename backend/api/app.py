@@ -13,7 +13,6 @@ from api.custom_wsgi import script_path_middleware
 from api.model import (
     get_index,
     get_excluded_plugins,
-    update_cache,
     move_artifact_to_s3,
     get_manifest,
 )
@@ -70,12 +69,6 @@ def swagger():
 @app.route("/plugins/index")
 def plugin_index() -> Response:
     return jsonify(get_index())
-
-
-@app.route("/update", methods=["POST"])
-def update() -> Response:
-    update_cache()
-    return app.make_response(("Complete", 204))
 
 
 @app.route("/plugins")

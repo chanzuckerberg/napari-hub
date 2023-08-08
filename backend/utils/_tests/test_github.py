@@ -1,9 +1,9 @@
 import unittest
 from unittest.mock import patch
-import requests
-from backend.utils.github import get_citation_author, get_github_metadata
-
-from utils.github import get_github_repo_url, get_license, get_citations
+from utils.github import (
+    get_github_repo_url, get_license, get_citations, get_citation_author,
+    get_github_metadata
+)
 from utils.test_utils import (
     FakeResponse, license_response, no_license_response, citation_string, 
     config_yaml, config_yaml_authors_result, citations_authors_result,
