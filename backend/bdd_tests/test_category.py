@@ -1,43 +1,45 @@
-from pytest_bdd import given, scenarios, then, parsers
-from test_utils import call_api, valid_str
+from typing import Any, Callable, Dict, Set
+import pytest
+from pytest_bdd import scenarios, then, parsers
 
-scenarios('category.feature')
-
-
-@given('we call categories api')
-def call_all_categories(context):
-    call_api(context, '/categories')
+scenarios("category.feature")
 
 
-@given(parsers.parse('we call categories api for {category} with version {version}'))
-def call_category_with_version(category, version, context):
-    context['category_name'] = category
-    call_api(context, f'/categories/{category}/versions/{version}')
+@pytest.fixture
+def valid_dimensions() -> Set[str]:
+    return {"Supported data", "Image modality", "Workflow step"}
 
 
-@given(parsers.parse('we call categories api for {category}'))
-def call_category_without_version(context, category):
-    context['category_name'] = category
-    call_api(context, f'/categories/{category}')
+@pytest.fixture
+def validate_category(
+        valid_dimensions: Set[str], valid_str: Callable[[str], bool]
+) -> Callable[[Dict[str, Any], str], None]:
+    def _validate_category(category: [Dict[str, Any]], name: str) -> None:
+        for item in category:
+            assert item["dimension"] in valid_dimensions
+            assert isinstance(item["hierarchy"], list) and len(item["hierarchy"]) > 0
+            assert item["hierarchy"][-1] == name
+            assert valid_str(item["label"])
+    return _validate_category
 
 
-def _validate_category(category, name):
-    for item in category:
-        assert item['dimension'] in {'Supported data', 'Image modality', 'Workflow step'}
-        assert isinstance(item['hierarchy'], list) and len(item['hierarchy']) > 0
-        assert item['hierarchy'][-1] == name
-        assert valid_str(item['label'])
+@then(parsers.parse("it will have valid category response for {category_name}"))
+def verify_plugin_response_valid(
+        context: Dict[str, Any],
+        category_name: str,
+        validate_category: Callable[[Dict[str, Any], str], None]
+) -> None:
+    validate_category(context["response"].json(), category_name)
 
 
-@then('it will have valid category response')
-def verify_plugin_response_valid(context):
-    response = context['response'].json()
-    _validate_category(response, context['category_name'])
-
-
-@then('it will have valid all categories response')
-def verify_plugin_response_valid(context):
-    response = context['response'].json()
-    assert len(response) > 125, f'count of categories is lesser than expected {len(response)}'
+@then("it will have valid all categories response")
+def verify_plugin_response_valid(
+        context: Dict[str, Any],
+        validate_category: Callable[[Dict[str, Any], str], None]
+) -> None:
+    response = context["response"].json()
+    assert (
+        len(response) > 125
+    ), f"count of categories is lesser than expected {len(response)}"
     for name, category in response.items():
-        _validate_category(category, name)
+        validate_category(category, name)

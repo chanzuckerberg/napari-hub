@@ -1,8 +1,9 @@
 import json
+from typing import Callable, Any, Dict, List, Set
 
-from pytest_bdd import given, scenarios, then, parsers
+import pytest
+from pytest_bdd import scenarios, then, parsers
 from parse_type import TypeBuilder
-from test_utils import call_api, valid_str
 
 required_plugin_keys = {
     "authors",
@@ -37,34 +38,56 @@ list_str_parser = TypeBuilder.with_many(lambda text: text, listsep=",")
 scenarios("plugin.feature")
 
 
-@given(parsers.cfparse("we call /plugins api for {name} version {version}"))
-def call_plugin_with_version(name, version, context):
-    endpoint_version = f"/versions/{version}" if version != "None" else ""
-    call_api(context, f"/plugins/{name}{endpoint_version}")
+@pytest.fixture
+def validate_plugin(
+        valid_str: Callable[[str], bool]
+) -> Callable[[Dict[str, Any], Set[str]], None]:
+    def _validate_plugin(plugin_data: Dict[str, Any], required_keys: Set[str]):
+        assert plugin_data != {}, f"actual response {json.dumps(plugin_data)}"
+        if valid_str(plugin_data["display_name"]):
+            plugin_name = plugin_data["display_name"]
+        else:
+            plugin_name = plugin_data["name"]
+        assert valid_str(plugin_name), f"No name available for plugin {plugin_data}"
 
+        actual_plugin_types = set(plugin_data.get("plugin_types", []))
+        assert actual_plugin_types.issubset(
+            valid_plugin_types
+        ), f"plugin_types contains unexpected value {actual_plugin_types}"
 
-@given(parsers.cfparse("we call {endpoint} api"))
-def call_plugins_index(context, endpoint):
-    call_api(context, endpoint)
+        authors = plugin_data.get("authors", [])
+        for author in authors:
+            assert "name" in author
+
+        for key in required_keys:
+            assert (
+                key in plugin_data
+            ), f"key: {key} not in response for plugin {plugin_name}"
+    return _validate_plugin
 
 
 @then("it will have valid plugin response")
-def verify_plugin_response_valid(context):
-    _validate_plugin(context["response"].json(), required_plugin_keys)
+def verify_plugin_response_valid(
+        context: Dict[str, Any],
+        validate_plugin: Callable[[Dict[str, Any], Set[str]], None]
+) -> None:
+    validate_plugin(context["response"].json(), required_plugin_keys)
 
 
 @then("it will have valid plugins in response")
-def verify_plugins_in_response_valid(context):
+def verify_plugins_in_response_valid(
+        context: Dict[str, Any],
+        validate_plugin: Callable[[Dict[str, Any], Set[str]], None]
+) -> None:
     for plugin in context["response"].json():
-        _validate_plugin(plugin, required_plugin_keys)
+        validate_plugin(plugin, required_plugin_keys)
 
 
 @then(parsers.cfparse("it will have min plugins of {expected:d}"))
-def verify_public_plugins_defaults(context, expected):
+def verify_public_plugins_defaults(context: Dict[str, Any], expected: int) -> None:
     response = context["response"].json()
-    assert (
-        len(response) > expected
-    ), f"count of public plugins is lesser than expected {len(response)}"
+    assert len(response) > expected, f"count of public plugins is lesser than " \
+                                     f"expected {len(response)}"
 
 
 @then(
@@ -73,22 +96,24 @@ def verify_public_plugins_defaults(context, expected):
         extra_types={"list_str": list_str_parser}
     )
 )
-def verify_public_plugins_detailed(context, visibilities):
+def verify_public_plugins_detailed(
+        context: Dict[str, Any],
+        validate_plugin: Callable[[Dict[str, Any], Set[str]], None],
+        visibilities: List[str]
+) -> None:
     expected_visibility = set(visibilities)
     for plugin in context["response"].json():
         visibility = plugin.get("visibility", "").lower()
-        assert (
-            visibility in expected_visibility
-        ), f"{plugin.get('name')} has unexpected visibility: {visibility}"
-        _validate_plugin(plugin, required_public_plugin_keys)
+        assert visibility in expected_visibility, f"{plugin.get('name')} has " \
+                                                  f"unexpected visibility: {visibility}"
+        validate_plugin(plugin, required_public_plugin_keys)
 
 
 @then("it will have total_installs field")
-def verify_public_plugins_detailed(context):
+def verify_public_plugins_detailed(context: Dict[str, Any]) -> None:
     for plugin in context["response"].json():
-        assert 0 <= plugin.get(
-            "total_installs", -1
-        ), f"invalid total_installs for { plugin.get('name')}"
+        assert 0 <= plugin.get("total_installs", -1), f"invalid total_installs " \
+                                                      f"for {plugin.get('name')}"
 
 
 @then(
@@ -97,38 +122,9 @@ def verify_public_plugins_detailed(context):
         extra_types={"list_str": list_str_parser},
     )
 )
-def verify_public_plugins_detailed(context, field_names):
+def verify_public_plugins_detailed(
+        context: Dict[str, Any], field_names: List[str]
+) -> None:
     for plugin in context["response"].json():
         for field in field_names:
             assert field not in plugin, f"unexpected {field} field in plugin response"
-
-
-@then("it will have only return plugins with excluded type")
-def verify_excluded_plugin_response(context):
-    response = context["response"].json()
-    valid_types = {"blocked", "disabled", "hidden", "invalid"}
-    for key, val in response.items():
-        assert val.lower() in valid_types, f"{key} has unknown exclusion type {val}"
-
-
-def _validate_plugin(plugin_data, required_keys):
-    assert plugin_data != {}, f"actual response {json.dumps(plugin_data)}"
-    if valid_str(plugin_data["display_name"]):
-        plugin_name = plugin_data["display_name"]
-    else:
-        plugin_name = plugin_data["name"]
-    assert valid_str(plugin_name), f"No name available for plugin {plugin_data}"
-
-    actual_plugin_types = set(plugin_data.get("plugin_types", []))
-    assert actual_plugin_types.issubset(
-        valid_plugin_types
-    ), f"plugin_types contains unexpected value {actual_plugin_types}"
-
-    authors = plugin_data.get("authors", [])
-    for author in authors:
-        assert "name" in author
-
-    for key in required_keys:
-        assert (
-            key in plugin_data
-        ), f"key: {key} not in response for plugin {plugin_name}"
