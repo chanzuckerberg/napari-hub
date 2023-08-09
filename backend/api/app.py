@@ -68,7 +68,12 @@ def swagger():
 
 @app.route("/plugins/index")
 def plugin_index() -> Response:
-    return jsonify(get_index())
+    return jsonify(get_index({"PUBLIC"}, True))
+
+
+@app.route("/plugins/index/all")
+def plugin_index_all() -> Response:
+    return jsonify(get_index(None, False))
 
 
 @app.route("/plugins")

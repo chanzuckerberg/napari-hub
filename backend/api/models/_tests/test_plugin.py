@@ -13,7 +13,7 @@ class TestPlugin:
             yield create_dynamo_table(plugin._Plugin, "plugin")
 
     @pytest.fixture()
-    def plugin1_data2_2(self):
+    def plugin1_v2_2_data(self):
         return {
             "authors": [{"name": "Napari Hub"}],
             "code_repository": "https://github.com/naparihub/plugin-1",
@@ -37,13 +37,25 @@ class TestPlugin:
         }
 
     @pytest.fixture()
-    def plugin1_data2_3(self, plugin1_data2_2):
-        plugin1_data2_2["version"] = "2.3"
-        plugin1_data2_2["release_date"] = "2022-02-31T17:59:24.494345Z"
-        return plugin1_data2_2
+    def plugin1_v2_3_data(self, plugin1_v2_2_data):
+        plugin1_v2_2_data["version"] = "2.3"
+        plugin1_v2_2_data["release_date"] = "2022-02-31T17:59:24.494345Z"
+        return plugin1_v2_2_data
 
     @pytest.fixture()
-    def plugin4_data(self):
+    def plugin2_v0_5_data(self):
+        return {"name": "plugin2", "version": "0.5", "release_date": "2025-04-03"}
+
+    @pytest.fixture()
+    def plugin2_v1_0_0_data(self):
+        return {"name": "plugin2", "version": "1.0.0", "release_date": "2025-05-03"}
+
+    @pytest.fixture()
+    def plugin3_v1_6_data(self):
+        return {"name": "plugin3", "version": "1.6", "release_date": "2022-06-01"}
+
+    @pytest.fixture()
+    def plugin4_v5_8_data(self):
         return {
             "authors": "creator-3",
             "category": ["categories for plugin-4"],
@@ -68,35 +80,28 @@ class TestPlugin:
         }
 
     @pytest.fixture()
-    def plugin2_data0_5(self):
-        return {"foo": "bar", "release_date": "2025-04-03"}
-
-    @pytest.fixture()
-    def plugin2_data1_0_0(self):
-        return {"test": "baz", "release_date": "2025-05-03"}
-
-    @pytest.fixture()
     def data(
             self,
-            plugin1_data2_2,
-            plugin1_data2_3,
-            plugin2_data0_5,
-            plugin2_data1_0_0,
-            plugin4_data
+            plugin1_v2_2_data,
+            plugin1_v2_3_data,
+            plugin2_v0_5_data,
+            plugin2_v1_0_0_data,
+            plugin3_v1_6_data,
+            plugin4_v5_8_data
     ):
         return [
             {
                 "name": "plugin-1",
                 "version": "2.2",
                 "visibility": "PUBLIC",
-                "data": plugin1_data2_2,
+                "data": plugin1_v2_2_data,
             },
             {
                 "name": "plugin-1",
                 "version": "2.3",
                 "visibility": "PUBLIC",
                 "is_latest": "true",
-                "data": plugin1_data2_3,
+                "data": plugin1_v2_3_data,
             },
             {
                 "name": "plugin-2",
@@ -104,7 +109,7 @@ class TestPlugin:
                 "visibility": "HIDDEN",
                 "excluded": "HIDDEN",
                 "is_latest": "true",
-                "data": plugin2_data0_5,
+                "data": plugin2_v0_5_data,
             },
             {
                 "name": "plugin-2",
@@ -112,7 +117,7 @@ class TestPlugin:
                 "visibility": "HIDDEN",
                 "excluded": "HIDDEN",
                 "is_latest": "true",
-                "data": plugin2_data1_0_0,
+                "data": plugin2_v1_0_0_data,
             },
             {
                 "name": "plugin-3",
@@ -126,13 +131,14 @@ class TestPlugin:
                 "visibility": "DISABLED",
                 "excluded": "DISABLED",
                 "is_latest": "true",
+                "data": plugin3_v1_6_data
             },
             {
                 "name": "plugin-4",
                 "version": "5.0",
                 "visibility": "PUBLIC",
                 "is_latest": "true",
-                "data": plugin4_data,
+                "data": plugin4_v5_8_data,
             },
         ]
 
@@ -141,6 +147,13 @@ class TestPlugin:
         def _get_fixture(name):
             return request.getfixturevalue(name) if name else {}
         return _get_fixture
+
+    @pytest.fixture()
+    def sorter(self):
+        def _sorter(data):
+            return sorted(data, key=lambda item: item["name"])
+
+        return _sorter
 
     @classmethod
     def _put_items(cls, table, data):
@@ -159,7 +172,7 @@ class TestPlugin:
         assert actual == {"plugin-1": "2.3", "plugin-4": "5.0"}
 
     @pytest.mark.parametrize("visibility", [
-        ("PUBLIC", "HIDDEN", "DISABLED"),
+        "PUBLIC", "HIDDEN", "DISABLED",
     ])
     def test_get_latest_by_visibility_by_visibility_without_data(
             self, plugin_table, visibility
@@ -181,27 +194,47 @@ class TestPlugin:
         actual = plugin.get_latest_by_visibility(visibility)
         assert actual == expected
 
+    @pytest.mark.parametrize("visibility, expected_fixtures", [
+        (
+                {"PUBLIC"},
+                [("plugin1_v2_3_data", "public"), ("plugin4_v5_8_data", "public")],
+        ),
+        (
+                {"HIDDEN"},
+                [("plugin2_v0_5_data", "hidden"), ("plugin2_v1_0_0_data", "hidden")],
+        ),
+        ({"DISABLED"}, [("plugin3_v1_6_data", "disabled")]),
+        (
+                None,
+                [
+                    ("plugin1_v2_3_data", "public"),
+                    ("plugin2_v0_5_data", "hidden"),
+                    ("plugin2_v1_0_0_data", "hidden"),
+                    ("plugin3_v1_6_data", "disabled"),
+                    ("plugin4_v5_8_data", "public"),
+                ]
+        ),
+    ])
     def test_get_index_with_data(
-            self, plugin_table, data, plugin1_data2_3, plugin4_data
+            self, visibility, expected_fixtures, plugin_table, data, get_fixture, sorter
     ):
         self._put_items(plugin_table, data)
 
-        actual = plugin.get_index()
+        actual = plugin.get_index(visibility)
 
-        expected = [plugin1_data2_3, plugin4_data]
-        sorted(actual, key=lambda item: item["name"])
-        sorted(expected, key=lambda item: item["name"])
-        assert actual == expected
+        expected = [{**get_fixture(name), **{"visibility": visibility}}
+                    for name, visibility in expected_fixtures]
+        assert sorter(expected) == sorter(actual)
 
     def test_get_index_without_data(self, plugin_table):
-        actual = plugin.get_index()
+        actual = plugin.get_index({"PUBLIC"})
 
         assert actual == []
 
     @pytest.mark.parametrize("name, version, has_data, fixture_name", [
-        ("plugin-1", "2.2", True, "plugin1_data2_2"),
+        ("plugin-1", "2.2", True, "plugin1_v2_2_data"),
         ("plugin-1", "2.4", False, None),
-        ("plugin-2", "0.5", True, "plugin2_data0_5"),
+        ("plugin-2", "0.5", True, "plugin2_v0_5_data"),
         ("plugin-8", "2.2", False, None),
     ])
     def test_get_plugin_with_version(
@@ -222,8 +255,8 @@ class TestPlugin:
         assert actual == expected
 
     @pytest.mark.parametrize("name, has_data, fixture_name", [
-        ("plugin-1", True, "plugin1_data2_2"),
-        ("plugin-2", True, "plugin2_data1_0_0"),
+        ("plugin-1", True, "plugin1_v2_2_data"),
+        ("plugin-2", True, "plugin2_v1_0_0_data"),
         ("plugin-8",  False, None),
     ])
     def test_get_plugin_without_version(

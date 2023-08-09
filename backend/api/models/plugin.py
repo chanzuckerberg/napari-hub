@@ -1,7 +1,7 @@
 import logging
 import os
 import time
-from typing import Optional, Callable, Iterator, Any, TypeVar, Dict, List
+from typing import Optional, Callable, Iterator, Any, TypeVar, Dict, List, Set
 
 from pynamodb.attributes import (
     UnicodeAttribute, ListAttribute, MapAttribute, NumberAttribute
@@ -73,25 +73,24 @@ def get_latest_by_visibility(visibility: str = "PUBLIC") -> Dict[str, str]:
     return _scan_index(
         index=_Plugin.latest_plugin_index,
         attributes_to_get=["name", "version"],
-        filter_conditions=_Plugin.visibility == visibility,
+        filter_conditions=_to_visibility_condition({visibility}),
         mapper=_to_plugin_version_dict
     )
 
 
-def get_index() -> List[Dict[str, Any]]:
+def get_index(visibility: Set[str]) -> List[Dict[str, Any]]:
     return _scan_index(
         index=_Plugin.latest_plugin_index,
-        attributes_to_get=["name", "version", "data"],
-        filter_conditions=_Plugin.visibility == "PUBLIC",
-        mapper=_index_list_mapper
+        attributes_to_get=["name", "version", "data", "visibility"],
+        filter_conditions=_to_visibility_condition(visibility),
+        mapper=_index_list_mapper(INDEX_SUBSET)
     )
 
 
 def get_plugin(name: str, version: str = None) -> Dict[str, Any]:
-    visibility = ["PUBLIC", "HIDDEN"]
     kwargs = {
         "attributes_to_get": ["data", "release_date"],
-        "filter_condition": _LatestPluginIndex.visibility.is_in(*visibility),
+        "filter_condition": _to_visibility_condition({"PUBLIC", "HIDDEN"}),
         "hash_key": name
     }
     try:
@@ -101,12 +100,8 @@ def get_plugin(name: str, version: str = None) -> Dict[str, Any]:
         else:
             results = _query_index(kwargs)
 
-        plugins = [plugin for plugin in results]
-        if not plugins:
-            return {}
-
-        plugin = sorted(plugins, key=lambda p: p.release_date, reverse=True)[0]
-        return plugin.data.as_dict() if plugin.data else {}
+        plugin = _get_latest_version_plugin([plugin for plugin in results])
+        return plugin.data.as_dict() if plugin and plugin.data else {}
     except Exception:
         logger.exception(f"failed kwargs={kwargs}")
         return {}
@@ -125,11 +120,8 @@ def get_latest_version(name: str) -> Optional[str]:
         "hash_key": name,
         "attributes_to_get": ["name", "version", "release_date"],
     })
-    plugins = [plugin for plugin in result]
-    if not plugins:
-        return None
-    plugin = sorted(plugins, key=lambda p: p.release_date, reverse=True)[0]
-    return plugin.version
+    plugin = _get_latest_version_plugin([plugin for plugin in result])
+    return plugin.version if plugin else None
 
 
 def _scan_index(
@@ -143,7 +135,7 @@ def _scan_index(
     try:
         response = index.scan(
             attributes_to_get=attributes_to_get,
-            filter_condition=filter_conditions
+            filter_condition=filter_conditions,
         )
         plugins = mapper(response)
         return plugins
@@ -180,10 +172,34 @@ def _query_table(kwargs: dict):
         logger.info(f"kwargs={kwargs} duration={duration}ms")
 
 
+def _to_visibility_condition(visibility: Set[str]) -> Optional[Condition]:
+    if not visibility:
+        return None
+    return _Plugin.visibility.is_in(*{val.upper() for val in visibility})
+
+
+def _get_latest_version_plugin(plugins: List[_Plugin]) -> Optional[_Plugin]:
+    if not plugins:
+        return None
+    return sorted(plugins, key=lambda p: p.release_date, reverse=True)[0]
+
+
 def _to_plugin_version_dict(iterator: Iterator[_Plugin]) -> Dict[str, str]:
     return {plugin.name: plugin.version for plugin in iterator}
 
 
-def _index_list_mapper(plugins: Iterator[_Plugin]) -> List[Dict[str, Any]]:
-    return [{key: data[key] for key in INDEX_SUBSET if key in data}
-            for item in plugins if item.data and (data := item.data.as_dict())]
+def _index_list_mapper(
+        fields: Set[str]
+) -> Callable[[Iterator[_Plugin]], List[Dict[str, Any]]]:
+    def _to_dict(item: _Plugin, data: Dict) -> Dict:
+        result = {key: data[key] for key in fields if key in data}
+        result["visibility"] = item.visibility.lower()
+        return result
+
+    def _mapper(plugins: Iterator[_Plugin]):
+        return [
+            _to_dict(item, data)
+            for item in plugins if item.data and (data := item.data.as_dict())
+        ]
+
+    return _mapper

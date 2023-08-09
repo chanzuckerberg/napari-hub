@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Dict, List, Any
+from typing import Dict, List, Any, Set, Optional
 from zipfile import ZipFile
 from io import BytesIO
 from api.models import (
@@ -41,15 +41,20 @@ def get_manifest(name: str, version: str = None) -> dict:
     return manifest_metadata
 
 
-def get_index() -> List[Dict[str, Any]]:
+def get_index(
+        visibility: Optional[Set[str]], include_total_installs: bool
+) -> List[Dict[str, Any]]:
     """
     Get the index page related metadata for all plugins.
+    :params visibility: visibilities to filter results by
+    :params include_total_installs: include total_installs in result
     :return: dict for index page metadata
     """
-    plugins = plugin_model.get_index()
-    total_installs = install_activity.get_total_installs_by_plugins()
-    for item in plugins:
-        item["total_installs"] = total_installs.get(item["name"].lower(), 0)
+    plugins = plugin_model.get_index(visibility)
+    if include_total_installs:
+        total_installs = install_activity.get_total_installs_by_plugins()
+        for item in plugins:
+            item["total_installs"] = total_installs.get(item["name"].lower(), 0)
     return plugins
 
 

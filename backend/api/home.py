@@ -21,7 +21,7 @@ def get_plugin_sections(sections: Set[str], limit: int = 3) -> Dict[str, Dict]:
         logger.warning("No processing as there are no valid sections")
         return response
 
-    index = get_index()
+    index = get_index({"PUBLIC"}, True)
     for name, handler in _get_handler_by_section_name().items():
         if name in sections:
             response[name] = handler(index, limit, plugins_encountered)
