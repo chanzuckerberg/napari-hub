@@ -10,12 +10,7 @@ from flask_githubapp.core import GitHubApp
 from api.home import get_plugin_sections
 from api.plugin_collections import get_collections, get_collection
 from api.custom_wsgi import script_path_middleware
-from api.model import (
-    get_index,
-    get_excluded_plugins,
-    move_artifact_to_s3,
-    get_manifest,
-)
+from api.model import get_index, move_artifact_to_s3, get_manifest
 from api.metrics import get_metrics_for_plugin
 from api.models import (category as categories, plugin as plugin_model)
 from api.shield import get_shield
@@ -76,11 +71,6 @@ def plugin_index_all() -> Response:
     return jsonify(get_index(None, False))
 
 
-@app.route("/plugins")
-def plugins() -> Response:
-    return jsonify(plugin_model.get_latest_by_visibility())
-
-
 @app.route("/plugins/<plugin>", defaults={"version": None})
 @app.route("/plugins/<plugin>/versions/<version>")
 def versioned_plugin(plugin: str, version: str = None) -> Response:
@@ -125,11 +115,6 @@ def plugin_manifest(plugin: str, version: str = None) -> Response:
 @app.route("/shields/<plugin>")
 def shield(plugin: str) -> Response:
     return jsonify(get_shield(plugin))
-
-
-@app.route("/plugins/excluded")
-def get_exclusion_list() -> Response:
-    return jsonify(get_excluded_plugins())
 
 
 @app.route(

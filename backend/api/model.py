@@ -5,7 +5,6 @@ from io import BytesIO
 from api.models import (
     install_activity,
     plugin as plugin_model,
-    plugin_blocked,
     plugin_metadata as plugin_metadata_model,
 )
 from utils.github import get_artifact
@@ -56,17 +55,6 @@ def get_index(
         for item in plugins:
             item["total_installs"] = total_installs.get(item["name"].lower(), 0)
     return plugins
-
-
-def get_excluded_plugins() -> Dict[str, str]:
-    """
-    Get the excluded plugins.
-    :return: dict for excluded plugins and their exclusion status
-    """
-    return {
-        **plugin_model.get_excluded_plugins(),
-        **plugin_blocked.get_blocked_plugins()
-    }
 
 
 def move_artifact_to_s3(payload, client):
