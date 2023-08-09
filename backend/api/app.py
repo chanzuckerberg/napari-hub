@@ -178,11 +178,7 @@ def collection(collection: str) -> Response:
 def handle_exception(e) -> Response:
     links = [rule.rule for rule in app.url_map.iter_rules()
              if 'GET' in rule.methods and
-             any((rule.rule.startswith("/plugins"),
-                  rule.rule.startswith("/shields"),
-                  rule.rule.startswith("/categories"),
-                  rule.rule.startswith("/collections"),
-                  rule.rule.startswith("/metrics")))
+             any((rule.rule.startswith("/plugins"), rule.rule.startswith("/shields")))
              ]
     links.sort()
     links = "\n".join(links)
