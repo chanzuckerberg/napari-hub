@@ -1,4 +1,2 @@
-boto3==1.26.77
 npe2
-numpy
-pynamodb==5.4.1
+./../napari-hub-commons

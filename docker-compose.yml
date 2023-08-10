@@ -84,7 +84,8 @@ services:
   plugins:
     image: '${DOCKER_REPO}napari-hub-dev-plugins'
     build:
-      context: plugins
+      context: .
+      dockerfile: plugins/Dockerfile
       cache_from:
         - '${DOCKER_REPO}napari-hub-dev-plugins:${STACK_NAME}'
       args:
