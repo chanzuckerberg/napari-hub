@@ -309,8 +309,6 @@ module plugins_lambda {
   }
 
   environment = {
-    "BUCKET" = local.data_bucket_name
-    "BUCKET_PATH" = var.env == "dev" ? local.custom_stack_name : ""
     "STACK_NAME" = local.custom_stack_name
   }
 
@@ -598,23 +596,6 @@ data aws_iam_policy_document data_workflows_policy {
 }
 
 data aws_iam_policy_document plugins_policy {
-  statement {
-    actions = [
-      "s3:PutObject",
-      "s3:GetObject",
-    ]
-
-    resources = ["${local.data_bucket_arn}/*"]
-  }
-
-  statement {
-    actions = [
-      "s3:ListBucket",
-    ]
-
-    resources = [local.data_bucket_arn]
-  }
-
   statement {
     actions = [
       "dynamodb:GetItem",
