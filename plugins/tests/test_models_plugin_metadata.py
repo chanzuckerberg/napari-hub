@@ -1,4 +1,5 @@
 import time
+from typing import Callable
 
 import pytest
 from moto import mock_dynamodb
@@ -11,14 +12,14 @@ DATA_JSON = {"plugin": PLUGIN, "version": VERSION, "foo": "bar"}
 class TestPluginMetadata:
 
     @pytest.fixture(autouse=True)
-    def setup(self, setup_dynamo):
+    def setup(self, setup_dynamo: Callable) -> None:
         with mock_dynamodb():
             self._table = setup_dynamo()
             yield 
 
     @pytest.fixture
-    def verify(self, verify_plugin_item):
-        def _verify(start_time=None, last_updated_ts=None):
+    def verify(self, verify_plugin_item: Callable):
+        def _verify(start_time: int = None, last_updated_ts: int = None) -> None:
             actual = verify_plugin_item(
                 table=self._table,
                 name=PLUGIN,
@@ -29,7 +30,7 @@ class TestPluginMetadata:
             assert DATA_JSON == actual
         return _verify
 
-    def test_write_manifest_data_success(self, verify):
+    def test_write_manifest_data_success(self, verify: Callable):
         start_time = round(time.time() * 1000)
 
         from models.plugin_metadata import write_manifest_data
@@ -42,8 +43,10 @@ class TestPluginMetadata:
             from models.plugin_metadata import write_manifest_data
             write_manifest_data(None, None, DATA_JSON)
 
-    def test_is_manifest_exists_with_data(self, create_and_put_item, verify):
-        item = create_and_put_item(PLUGIN, VERSION, DATA_JSON, True)
+    def test_is_manifest_exists_with_data(
+            self, create_item: Callable, verify: Callable
+    ):
+        item = create_item(PLUGIN, VERSION, DATA_JSON, True)
         self._table.put_item(Item=item)
 
         from models.plugin_metadata import is_manifest_exists

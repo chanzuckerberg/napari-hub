@@ -16,21 +16,26 @@ VALID_VERSION = "v0.1.0"
 @mock_dynamodb
 class TestPluginManifest:
     @pytest.fixture(autouse=True)
-    def setup(self, setup_dynamo) -> None:
+    def setup(self, setup_dynamo: Callable) -> None:
         with mock_dynamodb():
             self._table = setup_dynamo()
             yield
 
     @pytest.fixture
-    def put_item(self, create_and_put_item) -> Callable[[Dict], int]:
+    def put_item(self, create_item: Callable) -> Callable[[Dict], int]:
         def _put_item(data: Dict):
-            item = create_and_put_item(TEST_PLUGIN, TEST_VERSION, data, True)
+            item = create_item(TEST_PLUGIN, TEST_VERSION, data, True)
             self._table.put_item(Item=item)
             return item["last_updated_timestamp"]
 
         return _put_item
 
-    def test_discovery_manifest_exists(self, monkeypatch, put_item, verify_plugin_item):
+    def test_discovery_manifest_exists(
+            self,
+            monkeypatch: pytest.MonkeyPatch,
+            put_item: Callable[[Dict], int],
+            verify_plugin_item: Callable
+    ):
         data = {"foo": "bar"}
         last_updated_ts = put_item(data)
 
@@ -54,7 +59,7 @@ class TestPluginManifest:
 
             generate_manifest(TEST_INPUT, None)
 
-    def test_discovery_failure(self, verify_plugin_item):
+    def test_discovery_failure(self, verify_plugin_item: Callable):
         """Test discovery failure results in error written to manifest file."""
         start_time = round(time.time() * 1000)
         from get_plugin_manifest import generate_manifest
@@ -67,7 +72,7 @@ class TestPluginManifest:
         )
         assert expected_data == actual
 
-    def test_discovery_success(self, verify_plugin_item):
+    def test_discovery_success(self, verify_plugin_item: Callable):
         """Test that valid manifest is correctly written to file."""
         start_time = round(time.time() * 1000)
         from get_plugin_manifest import generate_manifest

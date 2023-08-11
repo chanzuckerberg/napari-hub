@@ -1,5 +1,5 @@
 import time
-from typing import Callable
+from typing import Callable, Dict, Any, Optional
 
 import boto3
 import moto.dynamodb.urls
@@ -11,7 +11,7 @@ STACK_NAME = "test-stack"
 
 
 @pytest.fixture(autouse=True)
-def aws_credentials(monkeypatch):
+def aws_credentials(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("AWS_ACCESS_KEY_ID", "testing")
     monkeypatch.setenv("AWS_SECRET_ACCESS_KEY", "testing")
     monkeypatch.setenv("AWS_SECURITY_TOKEN", "testing")
@@ -19,7 +19,7 @@ def aws_credentials(monkeypatch):
 
 
 @pytest.fixture(autouse=True)
-def env_variables(monkeypatch):
+def env_variables(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("LOCAL_DYNAMO_HOST", LOCAL_DYNAMO_HOST)
     monkeypatch.setenv("AWS_REGION", AWS_REGION)
     monkeypatch.setenv("STACK_NAME", STACK_NAME)
@@ -27,13 +27,13 @@ def env_variables(monkeypatch):
 
 # Dynamo helper functions
 @pytest.fixture(scope="package", autouse=True)
-def setup_local_dynamo():
+def setup_local_dynamo() -> None:
     moto.dynamodb.urls.url_bases.append(LOCAL_DYNAMO_HOST)
 
 
 @pytest.fixture
-def setup_dynamo():
-    def _setup():
+def setup_dynamo() -> Callable[[], Any]:
+    def _setup() -> Any:
         from nhcommons.models.plugin_metadata import _PluginMetadata
         _PluginMetadata.create_table()
         return boto3.resource(
@@ -43,8 +43,10 @@ def setup_dynamo():
 
 
 @pytest.fixture
-def create_and_put_item():
-    def _create_item(plugin, version, data, include_last_updated_ts):
+def create_item() -> Callable[[str, str, Optional[Dict], bool], Dict[str, Any]]:
+    def _create_item(
+            plugin: str, version: str, data: Optional[Dict], is_last_updated_ts: bool
+    ) -> Dict[str, Any]:
         item = {
             "name": plugin,
             "version_type": f"{version}:DISTRIBUTION",
@@ -52,21 +54,25 @@ def create_and_put_item():
             "type": "DISTRIBUTION",
             "data": data,
         }
-        if include_last_updated_ts:
+        if is_last_updated_ts:
             item["last_updated_timestamp"] = round(time.time() * 1000)
         return item
     return _create_item
 
 
 @pytest.fixture
-def verify_plugin_item(create_and_put_item) -> Callable:
+def verify_plugin_item(create_item: Callable) -> Callable:
     def _verify_plugin_item(
-            table, name, version, start_time=None, last_updated_ts=None
-    ) -> None:
+            table: Any,
+            name: str,
+            version: str,
+            start_time: int = None,
+            last_updated_ts: int = None,
+    ) -> Dict[str, Any]:
         actual = table.get_item(
             Key={"name": name, "version_type": f"{version}:DISTRIBUTION"}
         )["Item"]
-        expected_item = create_and_put_item(name, version, None, False)
+        expected_item = create_item(name, version, None, False)
         expected_item.pop("data")
         for key, value in expected_item.items():
             assert actual.get(key) == value
