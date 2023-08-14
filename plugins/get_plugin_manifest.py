@@ -5,9 +5,13 @@ from models import plugin_metadata
 
 
 def _setup_logging():
-    logger = logging.getLogger()
-    logger.setLevel(logging.INFO)
-    return logger
+    logging.basicConfig(
+        level="INFO",
+        style="{",
+        format="[{levelname}] {asctime} {threadName} {name}.{funcName} {message}",
+        force=True,
+    )
+    return logging.getLogger(__name__)
 
 
 def generate_manifest(event, context):
