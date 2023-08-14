@@ -2,15 +2,20 @@ import { devices, PlaywrightTestConfig } from '@playwright/test';
 import dotenv from 'dotenv';
 import path from 'path';
 
+import { getTestURL } from '../utils/utils';
+
 dotenv.config({
   path: path.resolve(__dirname, '../../', '.env'),
 });
+
+const baseURL = getTestURL().href;
+// eslint-disable-next-line no-console
+console.log(`Running CI E2E tests for env=${process.env.ENV} url=${baseURL}`);
 
 const config: PlaywrightTestConfig = {
   expect: {
     timeout: 3000,
   },
-  globalSetup: './globalSetup',
   fullyParallel: true,
   outputDir: '../report',
   reporter: [
@@ -82,8 +87,8 @@ const config: PlaywrightTestConfig = {
   testDir: '../tests',
   timeout: 60 * 1000,
   use: {
+    baseURL,
     actionTimeout: 20000,
-    baseURL: 'http://localhost:8080',
     screenshot: 'only-on-failure',
     trace: 'on',
     video: 'on',

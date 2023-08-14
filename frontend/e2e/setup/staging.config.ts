@@ -10,7 +10,6 @@ const config: PlaywrightTestConfig = {
   expect: {
     timeout: 3000,
   },
-  globalSetup: './globalSetup',
   outputDir: '../report',
   fullyParallel: true,
   reporter: [

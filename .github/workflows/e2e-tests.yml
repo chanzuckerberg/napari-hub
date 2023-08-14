@@ -65,19 +65,28 @@ jobs:
         # if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: npx playwright install --with-deps
 
-      - name: Cache prod build
+      - name: Setting up local build cache
         uses: actions/cache@v3
-        id: prod-build-cache
         with:
           path: frontend/.next
-          key: prod-build-${{ hashFiles('**/next.config.js') }}-${{ hashFiles('frontend/src') }}-${{ hashFiles('**/yarn.lock') }}
+          key: local-build-${{ hashFiles('**/next.config.js') }}-${{ hashFiles('frontend/src') }}-${{ hashFiles('**/yarn.lock') }}
 
-      - name: Build for production
+      - name: Build frontend for local testing
         # if: steps.prod-build-cache.outputs.cache-hit != 'true'
         run: yarn build
 
+      - name: Setting up fixture cache
+        uses: actions/cache@v3
+        with:
+          path: frontend/e2e/fixtures
+          key: local-e2e-fixtures
+
+      - name: Fetch fixture data
+        env:
+          ENV: local
+        run: node scripts/fetch-e2e-fixtures
+
   e2e:
-    # name: E2E tests ${{ matrix.browser }}
     name: E2E tests ${{ matrix.browser }} ${{ matrix.shardCurrent }} / ${{ matrix.shardTotal }}
     runs-on: ubuntu-latest
     needs: e2e-setup
@@ -127,25 +136,28 @@ jobs:
             ~/.cache/ms-playwright
           key: playwright-${{ hashFiles('**/yarn.lock') }}
 
-      - name: Load cached prod build
+      - name: Load cached local build
         uses: actions/cache@v3
-        id: prod-build-cache
         with:
           path: frontend/.next
-          key: prod-build-${{ hashFiles('**/next.config.js') }}-${{ hashFiles('frontend/src') }}-${{ hashFiles('**/yarn.lock') }}
-
-      - name: Start mock server on port 8081
-        run: yarn dev:api &
+          key: local-build-${{ hashFiles('**/next.config.js') }}-${{ hashFiles('frontend/src') }}-${{ hashFiles('**/yarn.lock') }}
 
       - name: Start server on port 8080
         run: yarn start &
         env:
+          API_URL: https://api.staging.napari-hub.org
           E2E: true
+
+      - name: Load fixtures cache
+        uses: actions/cache@v3
+        with:
+          path: frontend/e2e/fixtures
+          key: local-e2e-fixtures
 
       - name: Run E2E Tests
         env:
-          CI: true
           BROWSER: ${{ matrix.browser }}
+          ENV: local
         run: yarn e2e:ci --shard ${{ matrix.shardCurrent }}/${{ matrix.shardTotal }}
 
       - name: Upload artifacts

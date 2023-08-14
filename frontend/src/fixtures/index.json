@@ -28,7 +28,8 @@
         "Fluorescence microscopy",
         "Magnetic resonance imaging",
         "Electron microscopy",
-        "Multimodal imaging"
+        "Multimodal imaging",
+        "Bright-field microscopy"
       ],
       "Workflow step": [
         "Image registration",
@@ -71,25 +72,18 @@
       "citation": "cff-version: 1.2.0\nmessage: \"Spaghetti taco cookie cake macaron souffle I am content.\"\nauthors:\n- family-names: \"Ziyang\"\n  given-names: \"Liu\"\ntitle: \"A napari demo plugin\"\nversion: 0.0.2\ndate-released: 2021-04-26\nurl: \"https://github.com/potating-potato/napari-demo\"\n"
     },
     "plugin_types": ["reader", "writer"],
-    "writer_file_extensions": [
-      "czi",
-      "jpg",
-      "pdf",
-      "png",
-      "psd",
-      "tiff",
-      "xcar",
-      "zarr"
-    ],
+    "writer_file_extensions": [".mrcs", ".mrc", ".st", ".star", ".zarr"],
     "reader_file_extensions": [
-      "czi",
-      "jpg",
-      "pdf",
-      "png",
-      "psd",
-      "tiff",
-      "xcar",
-      "zarr"
+      "*.zarr",
+      "*.cbox",
+      "*.em",
+      "*.box",
+      "*.mrcs",
+      "*.tbl",
+      "*.st",
+      "*.star",
+      "*.mrc",
+      "*.npy"
     ],
     "writer_save_layers": ["image", "points", "shapes"],
     "total_installs": 27267
@@ -602,7 +596,23 @@
     "description_content_type": "text/markdown",
     "authors": [
       {
-        "name": "Nicholas Sofroniew, Alister Burt, Guillaume Witz, Faris Abouakil, Talley Lambert",
+        "name": "Nicholas Sofroniew",
+        "email": ""
+      },
+      {
+        "name": "Alister Burt",
+        "email": ""
+      },
+      {
+        "name": "Guillaume Witz",
+        "email": ""
+      },
+      {
+        "name": "Faris Abouakil",
+        "email": ""
+      },
+      {
+        "name": "Talley Lambert",
         "email": ""
       }
     ],
