@@ -93,7 +93,7 @@ def _get_authors(raw_name: str) -> List[Dict[str, str]]:
 
 
 def _get_release_date(release: List[Dict[str, Any]]) -> str:
-    if len(release) == 0:
+    if not release:
         return ""
     release_date = release[0].get("upload_time_iso_8601")
     return release_date or ""
@@ -102,6 +102,18 @@ def _get_release_date(release: List[Dict[str, Any]]) -> str:
 def _get_default_if_none(json_obj: Dict, key: str, default: Any = "") -> Any:
     value = json_obj.get(key)
     return value if value else default
+
+
+def _get_first_release_date(releases: Dict) -> str:
+    try:
+        return min(
+            release[0]["upload_time_iso_8601"]
+            for release in releases.values()
+            if _get_release_date(release)
+        )
+    except ValueError:
+        logger.warning("No releases included in response")
+        return ""
 
 
 def _to_plugin_pypi_metadata(plugin: Dict, version: str) -> Dict[str, Any]:
@@ -137,11 +149,7 @@ def _to_plugin_pypi_metadata(plugin: Dict, version: str) -> Dict[str, Any]:
         "operating_system": _filter_prefix(classifiers, "Operating System"),
         "release_date": _get_release_date(releases.get(version, [])),
         "version": version,
-        "first_released": min(
-            release[0]["upload_time_iso_8601"]
-            for _, release in releases.items()
-            if _get_release_date(release)
-        ),
+        "first_released": _get_first_release_date(releases),
         "development_status": _filter_prefix(classifiers, "Development Status"),
         # below are plugin details
         "requirements": info.get("requires_dist", []),
