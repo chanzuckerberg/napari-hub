@@ -66,7 +66,9 @@ class TestPluginManifest:
 
         generate_manifest(TEST_INPUT, None)
 
-        expected_data = {"error": "HTTP Error 404: Not Found"}
+        error_message = ("Could not interpret 'test-plugin' as a PYPI package name "
+                         "or URL to a wheel or source distribution/zip file.")
+        expected_data = {"error": error_message}
         actual = verify_plugin_item(
             self._table, TEST_PLUGIN, TEST_VERSION, start_time=start_time
         )
