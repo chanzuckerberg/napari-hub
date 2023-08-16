@@ -10,9 +10,11 @@ import { TotalCommits } from './TotalCommits';
 
 export function ActivityMaintenanceSection() {
   const [t] = useTranslation(['activity']);
-  const { plugin } = usePluginState();
+  const { plugin, repo } = usePluginState();
 
-  const hasRepo = !!plugin?.code_repository?.includes('github');
+  const hasRepo = !!(
+    plugin?.code_repository?.includes('github') && repo.createdAt
+  );
 
   return (
     <ActivitySection
