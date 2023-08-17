@@ -3,6 +3,7 @@ import { EmptyState } from 'src/components/ActivityDashboard/EmptyState';
 
 import { ActivitySection } from '@/components/ActivityDashboard/ActivitySection';
 import { usePluginState } from '@/context/plugin';
+import { usePluginMetrics } from '@/hooks';
 
 import { MonthlyCommits } from './MonthlyCommits';
 import { RecentCommit } from './RecentCommit';
@@ -11,9 +12,13 @@ import { TotalCommits } from './TotalCommits';
 export function ActivityMaintenanceSection() {
   const [t] = useTranslation(['activity']);
   const { plugin, repo } = usePluginState();
+  const { data: metrics } = usePluginMetrics(plugin?.name);
+  const stats = metrics?.maintenance.stats;
 
   const hasRepo = !!(
-    plugin?.code_repository?.includes('github') && repo.createdAt
+    plugin?.code_repository?.includes('github') &&
+    repo.createdAt &&
+    stats?.latest_commit_timestamp
   );
 
   return (
