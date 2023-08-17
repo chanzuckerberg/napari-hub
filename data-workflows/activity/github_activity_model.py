@@ -68,20 +68,16 @@ class GitHubActivityType(Enum):
 
     def _create_subquery(self, plugins_by_earliest_ts: dict[str, datetime]) -> str:
         if self is GitHubActivityType.MONTH:
-            plugins = " OR ".join(
+            return " OR ".join(
                 [
                     f"repo = '{name}' AND TO_TIMESTAMP(commit_author_date) >= "
                     f"{TIMESTAMP_FORMAT.format(ts.replace(day=1))}"
                     for name, ts in plugins_by_earliest_ts.items()
                 ]
             )
-            timestamp_criteria = (
-                "TO_TIMESTAMP(commit_author_date) > "
-                "(SELECT DATEADD('month', -14, GETDATE()))"
-            )
-            return f"({plugins}) AND {timestamp_criteria}"
+
         plugins = [f"'{plugin}'" for plugin in plugins_by_earliest_ts.keys()]
-        return f"(repo IN ({','.join(plugins)}))"
+        return f"repo IN ({','.join(plugins)})"
 
     def get_query(self, plugins_by_earliest_ts: dict[str, datetime]) -> str:
         return f"""
@@ -92,7 +88,7 @@ class GitHubActivityType(Enum):
                     imaging.github.commits
                 WHERE 
                     repo_type = 'plugin'
-                    AND {self._create_subquery(plugins_by_earliest_ts)}
+                    AND ({self._create_subquery(plugins_by_earliest_ts)})
                 GROUP BY {self.query_sorting}
                 ORDER BY {self.query_sorting}
                 """

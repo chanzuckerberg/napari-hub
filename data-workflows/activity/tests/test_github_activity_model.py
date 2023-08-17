@@ -66,23 +66,19 @@ def remove_whitespace(formatted_str: str) -> str:
 def get_subquery(activity_type) -> str:
     if activity_type != GitHubActivityType.MONTH:
         filters = [f"'{repo}'" for repo in FORMATTED_PLUGIN_BY_TS.keys()]
-        return f"(repo IN ({','.join(filters)}))"
+        return f"repo IN ({','.join(filters)})"
 
-    filters = " OR ".join(
+    return " OR ".join(
         [
             f"repo = '{repo}' AND TO_TIMESTAMP(commit_author_date) >= "
             f"TO_TIMESTAMP('{ts}')"
             for repo, ts in FORMATTED_PLUGIN_BY_TS.items()
         ]
     )
-    return (
-        f"({filters}) AND TO_TIMESTAMP(commit_author_date) > "
-        f"(SELECT DATEADD('month', -14, GETDATE()))"
-    )
 
 
 @pytest.mark.parametrize(
-    "activity_type, timestamp, type_id, projection, group_by",
+    "activity_type, timestamp, type_id, projection, group_by, expiry",
     [
         (
             GitHubActivityType.LATEST,
@@ -90,6 +86,7 @@ def get_subquery(activity_type) -> str:
             f"LATEST:{REPO1}",
             "TO_TIMESTAMP(MAX(commit_author_date)) AS latest_commit",
             "name",
+            None,
         ),
         (
             GitHubActivityType.MONTH,
@@ -98,6 +95,7 @@ def get_subquery(activity_type) -> str:
             "DATE_TRUNC('month', TO_DATE(commit_author_date)) AS month, "
             "COUNT(*) AS commit_count",
             "name, month",
+            1716312260,
         ),
         (
             GitHubActivityType.TOTAL,
@@ -105,10 +103,13 @@ def get_subquery(activity_type) -> str:
             f"TOTAL:{REPO1}",
             "COUNT(*) AS commit_count",
             "name",
+            None,
         ),
     ],
 )
-def test_github_activity_type(activity_type, timestamp, type_id, projection, group_by):
+def test_github_activity_type(
+    activity_type, timestamp, type_id, projection, group_by, expiry
+):
     input_ts = datetime.strptime("03/21/2023 10:24:20", "%m/%d/%Y %H:%M:%S")
     assert activity_type.format_to_timestamp(input_ts) == timestamp
     assert activity_type.format_to_type_identifier(REPO1, input_ts) == type_id
@@ -120,12 +121,13 @@ def test_github_activity_type(activity_type, timestamp, type_id, projection, gro
             imaging.github.commits
         WHERE 
             repo_type = 'plugin'
-            AND {get_subquery(activity_type)}
+            AND ({get_subquery(activity_type)})
         GROUP BY {group_by}
         ORDER BY {group_by}
     """
     actual = activity_type.get_query(PLUGIN_BY_EARLIEST_TS)
     assert remove_whitespace(actual) == remove_whitespace(expected_query)
+    assert activity_type.to_expiry(input_ts) == expiry
 
 
 class TestGitHubActivityModels:

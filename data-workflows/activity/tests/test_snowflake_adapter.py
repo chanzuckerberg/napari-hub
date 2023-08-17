@@ -422,8 +422,7 @@ class TestSnowflakeAdapter:
         subquery = (
             "(repo = 'foo' AND TO_TIMESTAMP(commit_author_date) >= TO_TIMESTAMP('2021-03-01 00:00:00') OR "
             "repo = 'bar' AND TO_TIMESTAMP(commit_author_date) >= TO_TIMESTAMP('2022-07-01 00:00:00') OR "
-            "repo = 'baz' AND TO_TIMESTAMP(commit_author_date) >= TO_TIMESTAMP('2023-06-01 00:00:00')) AND "
-            "TO_TIMESTAMP(commit_author_date) > (SELECT DATEADD('month', -14, GETDATE()))"
+            "repo = 'baz' AND TO_TIMESTAMP(commit_author_date) >= TO_TIMESTAMP('2023-06-01 00:00:00'))"
         )
         query = get_plugins_commit_count_since_timestamp_query(
             "DATE_TRUNC('month', TO_DATE(commit_author_date)) AS month, COUNT(*) AS commit_count",
