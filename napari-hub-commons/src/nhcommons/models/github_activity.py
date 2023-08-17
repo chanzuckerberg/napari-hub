@@ -1,9 +1,9 @@
 import logging
 import time
-from typing import (Dict, Any, List)
+from typing import Dict, Any, List
 
-from pynamodb.attributes import (UnicodeAttribute, NumberAttribute)
-from nhcommons.models.helper import (set_ddb_metadata, PynamoWrapper)
+from pynamodb.attributes import UnicodeAttribute, NumberAttribute
+from nhcommons.models.helper import set_ddb_metadata, PynamoWrapper
 
 logger = logging.getLogger(__name__)
 
@@ -19,6 +19,7 @@ class _GitHubActivity(PynamoWrapper):
     granularity = UnicodeAttribute(attr_name="type")
     repo = UnicodeAttribute()
     timestamp = NumberAttribute(null=True)
+    expiry = NumberAttribute(null=True)
 
     @staticmethod
     def from_dict(data: Dict[str, Any]):
@@ -29,6 +30,7 @@ class _GitHubActivity(PynamoWrapper):
             granularity=data["granularity"],
             repo=data["repo"],
             timestamp=data.get("timestamp"),
+            expiry=data.get("expiry"),
         )
 
 
