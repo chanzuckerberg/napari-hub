@@ -149,6 +149,8 @@ module github_dynamodb_table {
                             type = "S"
                           }
                         ]
+  ttl_enabled         = true
+  ttl_attribute_name  = "expiry"
   autoscaling_enabled = var.env == "dev" ? false : true
   create_table        = true
   tags                = var.tags
