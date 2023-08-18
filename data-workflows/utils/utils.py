@@ -8,9 +8,8 @@ from .env import get_required_env
 LAST_UPDATED_TIMESTAMP_KEY = "last_activity_fetched_timestamp"
 
 
-def date_to_utc_timestamp_in_millis(timestamp: date) -> int:
-    timestamp_datetime = datetime(timestamp.year, timestamp.month, timestamp.day)
-    return datetime_to_utc_timestamp_in_millis(timestamp_datetime)
+def to_datetime(timestamp: date) -> datetime:
+    return datetime(timestamp.year, timestamp.month, timestamp.day)
 
 
 def datetime_to_utc_timestamp_in_millis(timestamp: datetime) -> int:
