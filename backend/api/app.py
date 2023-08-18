@@ -84,7 +84,10 @@ def plugins() -> Response:
 @app.route("/plugins/<plugin>", defaults={"version": None})
 @app.route("/plugins/<plugin>/versions/<version>")
 def versioned_plugin(plugin: str, version: str = None) -> Response:
-    return jsonify(plugin_model.get_plugin(plugin, version))
+    plugin = plugin_model.get_plugin(plugin, version)
+    if not plugin:
+        return app.make_response(("Plugin does not exist", 404))
+    return jsonify(plugin)
 
 
 @app.route("/plugin/home/sections/<sections>")
