@@ -46,7 +46,7 @@ def ts_day_format(date):
 
 
 def expiry_format(*args, **kwargs):
-    formatted_date = datetime.combine(args[0], time.min)
+    formatted_date = datetime.combine(args[0], time.min, timezone.utc)
     return int((formatted_date + relativedelta(**kwargs)).timestamp())
 
 

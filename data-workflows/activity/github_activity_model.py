@@ -1,6 +1,6 @@
 import logging
 import time
-from datetime import date, datetime
+from datetime import date, datetime, time as dt_time
 from enum import Enum, auto
 from typing import Callable, Optional
 
@@ -68,17 +68,18 @@ class GitHubActivityType(Enum):
         return self.expiry_formatter(timestamp)
 
     def _create_subquery(self, plugins_by_earliest_ts: dict[str, datetime]) -> str:
-        if self is GitHubActivityType.MONTH:
-            return " OR ".join(
-                [
-                    f"repo = '{name}' AND TO_TIMESTAMP(commit_author_date) >= "
-                    f"{TIMESTAMP_FORMAT.format(ts.replace(day=1))}"
-                    for name, ts in plugins_by_earliest_ts.items()
-                ]
-            )
-
         plugins = [f"'{plugin}'" for plugin in plugins_by_earliest_ts.keys()]
-        return f"repo IN ({','.join(plugins)})"
+        plugins_subquery = f"repo IN ({','.join(plugins)})"
+
+        if self is not GitHubActivityType.MONTH:
+            return plugins_subquery
+
+        earliest_date = (date.today() - relativedelta(months=14)).replace(day=1)
+        timestamp = datetime.combine(earliest_date, dt_time.min)
+        return (
+            f"{plugins_subquery} AND "
+            f"TO_TIMESTAMP(commit_author_date) >= {TIMESTAMP_FORMAT.format(timestamp)}"
+        )
 
     def get_query(self, plugins_by_earliest_ts: dict[str, datetime]) -> str:
         return f"""

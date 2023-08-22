@@ -1,8 +1,9 @@
 import re
-from datetime import datetime, date
+from datetime import datetime, date, time
 from typing import Optional, Callable, Union
 
 import pytest
+from dateutil.relativedelta import relativedelta
 
 from activity.github_activity_model import GitHubActivityType
 
@@ -35,16 +36,14 @@ def get_maintenance_subquery(
     plugin_by_earliest_ts: dict[str, datetime]
 ) -> Callable[[GitHubActivityType], str]:
     def _get_maintenance_subquery(activity_type: GitHubActivityType) -> str:
+        filters = [f"'{repo}'" for repo in plugin_by_earliest_ts.keys()]
         if activity_type != GitHubActivityType.MONTH:
-            filters = [f"'{repo}'" for repo in plugin_by_earliest_ts.keys()]
             return f"repo IN ({','.join(filters)})"
 
-        return " OR ".join(
-            [
-                f"repo = '{repo}' AND TO_TIMESTAMP(commit_author_date) >= "
-                f"TO_TIMESTAMP('{ts.replace(day=1)}')"
-                for repo, ts in plugin_by_earliest_ts.items()
-            ]
+        ts = datetime.combine(datetime.now() - relativedelta(months=14), time.min)
+        return (
+            f"repo IN ({','.join(filters)}) AND TO_TIMESTAMP(commit_author_date) >= "
+            f"TO_TIMESTAMP('{ts.replace(day=1)}')"
         )
 
     return _get_maintenance_subquery
@@ -110,14 +109,14 @@ def test_github_activity_type_query_generation(
             get_input_ts().date(),
             1679356800000,
             f"MONTH:202303:{REPO}",
-            1716274800,
+            1716249600,
         ),
         (
             GitHubActivityType.MONTH,
             get_input_ts(),
             1679356800000,
             f"MONTH:202303:{REPO}",
-            1716274800,
+            1716249600,
         ),
         (GitHubActivityType.TOTAL, None, None, f"TOTAL:{REPO}", None),
         (GitHubActivityType.TOTAL, get_input_ts().date(), None, f"TOTAL:{REPO}", None),

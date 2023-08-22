@@ -1,5 +1,5 @@
 import pytest
-from datetime import datetime, timezone
+from datetime import datetime, timezone, time
 from dateutil.relativedelta import relativedelta
 
 from activity.github_activity_model import GitHubActivityType
@@ -212,10 +212,13 @@ class TestGithubSnowflakeAdapter:
         )
 
         assert expected == actual
+
+        timestamp = datetime.combine(
+            datetime.now() - relativedelta(months=14), time.min
+        ).replace(day=1)
         subquery = (
-            "(repo = 'foo' AND TO_TIMESTAMP(commit_author_date) >= TO_TIMESTAMP('2021-03-01 00:00:00') OR "
-            "repo = 'bar' AND TO_TIMESTAMP(commit_author_date) >= TO_TIMESTAMP('2022-07-01 00:00:00') OR "
-            "repo = 'baz' AND TO_TIMESTAMP(commit_author_date) >= TO_TIMESTAMP('2023-06-01 00:00:00'))"
+            "(repo IN ('foo','bar','baz') AND TO_TIMESTAMP(commit_author_date)"
+            f" >= TO_TIMESTAMP('{timestamp}'))"
         )
         query = get_plugins_commit_count_since_timestamp_query(
             "DATE_TRUNC('month', TO_DATE(commit_author_date)) AS month, COUNT(*) AS commit_count",

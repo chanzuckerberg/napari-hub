@@ -254,5 +254,4 @@ def _execute_query(schema: str, query: str) -> Iterable[SnowflakeCursor]:
 def _mapped_query_results(
     query: str, schema: str, accumulator: Any, accumulator_updater: Callable
 ) -> Any:
-    cursor = _execute_query(schema, query)
-    return reduce(accumulator_updater, cursor, accumulator)
+    return reduce(accumulator_updater, _execute_query(schema, query), accumulator)
