@@ -8,7 +8,7 @@ from pynamodb.attributes import (
 )
 from pynamodb.expressions.condition import Condition
 from pynamodb.indexes import (
-    GlobalSecondaryIndex, AllProjection, IncludeProjection
+    GlobalSecondaryIndex, AllProjection
 )
 from pynamodb.models import Model
 
@@ -36,15 +36,6 @@ class _LatestPluginIndex(GlobalSecondaryIndex):
     visibility = UnicodeAttribute(null=True)
 
 
-class _ExcludedPluginIndex(GlobalSecondaryIndex):
-    class Meta:
-        index_name = f"{os.getenv('STACK_NAME')}-excluded-plugins"
-        projection = IncludeProjection(["last_updated_timestamp", "is_latest"])
-
-    name = UnicodeAttribute(hash_key=True)
-    excluded = UnicodeAttribute(range_key=True)
-
-
 @set_ddb_metadata("plugin")
 class _Plugin(Model):
     class Meta:
@@ -66,16 +57,6 @@ class _Plugin(Model):
     visibility = UnicodeAttribute(null=True)
 
     latest_plugin_index = _LatestPluginIndex()
-    excluded_plugin_index = _ExcludedPluginIndex()
-
-
-def get_latest_by_visibility(visibility: str = "PUBLIC") -> Dict[str, str]:
-    return _scan_index(
-        index=_Plugin.latest_plugin_index,
-        attributes_to_get=["name", "version"],
-        filter_conditions=_to_visibility_condition({visibility}),
-        mapper=_to_plugin_version_dict
-    )
 
 
 def get_index(visibility: Set[str]) -> List[Dict[str, Any]]:
@@ -105,14 +86,6 @@ def get_plugin(name: str, version: str = None) -> Dict[str, Any]:
     except Exception:
         logger.exception(f"failed kwargs={kwargs}")
         return {}
-
-
-def get_excluded_plugins() -> Dict[str, str]:
-    return _scan_index(
-        index=_Plugin.excluded_plugin_index,
-        attributes_to_get=["name", "excluded"],
-        mapper=lambda iterator: {p.name: p.excluded.lower() for p in iterator}
-    )
 
 
 def get_latest_version(name: str) -> Optional[str]:
@@ -182,10 +155,6 @@ def _get_latest_version_plugin(plugins: List[_Plugin]) -> Optional[_Plugin]:
     if not plugins:
         return None
     return sorted(plugins, key=lambda p: p.release_date, reverse=True)[0]
-
-
-def _to_plugin_version_dict(iterator: Iterator[_Plugin]) -> Dict[str, str]:
-    return {plugin.name: plugin.version for plugin in iterator}
 
 
 def _index_list_mapper(

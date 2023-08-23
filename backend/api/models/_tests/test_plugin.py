@@ -162,38 +162,6 @@ class TestPlugin:
                 item["release_date"] = item["data"]["release_date"]
             table.put_item(Item=item)
 
-    def test_get_latest_by_visibility_default_visibility(
-            self, plugin_table, data
-    ):
-        self._put_items(plugin_table, data)
-
-        actual = plugin.get_latest_by_visibility()
-
-        assert actual == {"plugin-1": "2.3", "plugin-4": "5.0"}
-
-    @pytest.mark.parametrize("visibility", [
-        "PUBLIC", "HIDDEN", "DISABLED",
-    ])
-    def test_get_latest_by_visibility_by_visibility_without_data(
-            self, plugin_table, visibility
-    ):
-        actual = plugin.get_latest_by_visibility(visibility)
-
-        assert actual == {}
-
-    @pytest.mark.parametrize("visibility, expected", [
-        ("PUBLIC", {"plugin-1": "2.3", "plugin-4": "5.0"}),
-        ("HIDDEN", {"plugin-2": "1.0.0"}),
-        ("DISABLED", {"plugin-3": "1.6"}),
-    ])
-    def test_get_latest_by_visibility_by_visibility_with_data(
-            self, plugin_table, data, visibility, expected
-    ):
-        self._put_items(plugin_table, data)
-
-        actual = plugin.get_latest_by_visibility(visibility)
-        assert actual == expected
-
     @pytest.mark.parametrize("visibility, expected_fixtures", [
         (
                 {"PUBLIC"},
@@ -268,13 +236,6 @@ class TestPlugin:
 
         expected = get_fixture(fixture_name)
         assert actual == expected
-
-    def test_get_excluded_plugins(self, plugin_table, data):
-        self._put_items(plugin_table, data)
-
-        actual = plugin.get_excluded_plugins()
-
-        assert actual == {"plugin-2": "hidden", "plugin-3": "disabled"}
 
     @pytest.mark.parametrize("name, expected", [
         ("plugin-1", "2.3"),

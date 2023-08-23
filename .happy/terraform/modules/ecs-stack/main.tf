@@ -98,9 +98,6 @@ module frontend_service {
   wait_for_steady_state = local.wait_for_steady_state
 }
 
-resource "random_uuid" "api_key" {
-}
-
 module install_dynamodb_table {
   source              = "../dynamo"
   table_name          = "${local.custom_stack_name}-install-activity"
@@ -286,7 +283,6 @@ module backend_lambda {
     "DD_SERVICE" = local.custom_stack_name
     "API_URL" = var.env == "dev" ? module.api_gateway_proxy_stage.invoke_url : ""
     "PLUGINS_LAMBDA_NAME" = local.plugins_function_name
-    "API_KEY" = random_uuid.api_key.result
     "STACK_NAME" = local.custom_stack_name
   }
 
@@ -417,18 +413,6 @@ resource "aws_cloudwatch_event_rule" "update_rule" {
   tags                = var.tags
 }
 
-resource aws_cloudwatch_event_target update_target {
-    rule = aws_cloudwatch_event_rule.update_rule.name
-    arn = module.backend_lambda.function_arn
-    input_transformer {
-        input_template = jsonencode({
-          path = "/update",
-          httpMethod = "POST",
-          headers = {"X-API-Key": random_uuid.api_key.result}
-        })
-    }
-}
-
 resource aws_cloudwatch_event_target plugin_target_sqs {
     rule = aws_cloudwatch_event_rule.update_rule.name
     arn = aws_sqs_queue.data_workflows_queue.arn
@@ -458,11 +442,7 @@ locals {
     LambdaPermission = {
       service    = "apigateway"
       source_arn = "${local.execution_arn}*"
-    },
-    AllowExecutionFromCloudWatchForPlugin = {
-      service    = "events"
-      source_arn = aws_cloudwatch_event_rule.update_rule.arn
-    },
+    }
   }
 }
 
@@ -504,7 +484,6 @@ data aws_iam_policy_document backend_policy {
       module.category_dynamodb_table.table_arn,
       module.plugin_metadata_dynamodb_table.table_arn,
       module.plugin_dynamodb_table.table_arn,
-      module.plugin_blocked_dynamodb_table.table_arn,
       "${module.plugin_dynamodb_table.table_arn}/index/*",
     ]
   }
