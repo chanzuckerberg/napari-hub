@@ -74,10 +74,6 @@ def send_alert(message: str):
             print("Unable to send alert")
 
 
-def get_category_mapping(category: str, mappings: Dict[str, List]) -> List[Dict]:
-    return mappings.get(category, [])
-
-
 def parse_manifest(manifest: Optional[dict] = None):
     """
     Convert raw manifest into dictionary of npe2 attributes.

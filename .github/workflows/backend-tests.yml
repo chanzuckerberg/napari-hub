@@ -50,4 +50,4 @@ jobs:
       - name: Run unit tests
         working-directory: backend
         run : |
-          python -m pytest utils api preview
+          python -m pytest utils api
