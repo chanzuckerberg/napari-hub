@@ -3,43 +3,24 @@ import os
 
 from werkzeug import exceptions
 from apig_wsgi import make_lambda_handler
-from werkzeug.middleware.dispatcher import DispatcherMiddleware
 from flask import Flask, Response, jsonify, render_template, request
-from flask_githubapp.core import GitHubApp
 
 from api.home import get_plugin_sections
 from api.plugin_collections import get_collections, get_collection
 from api.custom_wsgi import script_path_middleware
-from api.model import get_index, move_artifact_to_s3, get_manifest
+from api.model import get_index, get_manifest
 from api.metrics import get_metrics_for_plugin
 from api.models import (category as categories, plugin as plugin_model)
 from api.shield import get_shield
-from utils.utils import send_alert, reformat_ssh_key_to_pem_bytes
-
-GITHUB_APP_ID = os.getenv("GITHUBAPP_ID")
-GITHUB_APP_KEY = os.getenv("GITHUBAPP_KEY")
-GITHUB_APP_SECRET = os.getenv("GITHUBAPP_SECRET")
+from utils.utils import send_alert
 
 app = Flask(__name__)
 app.config["JSONIFY_PRETTYPRINT_REGULAR"] = True
 app.url_map.redirect_defaults = False
-preview_app = Flask("Preview")
 
 if os.getenv("DD_ENV") == "dev":
     app.wsgi_app = script_path_middleware(f'/{os.getenv("DD_SERVICE")}')(app.wsgi_app)
 
-
-if GITHUB_APP_ID and GITHUB_APP_KEY and GITHUB_APP_SECRET:
-    preview_app.config["GITHUBAPP_ID"] = int(GITHUB_APP_ID)
-    preview_app.config["GITHUBAPP_KEY"] = reformat_ssh_key_to_pem_bytes(GITHUB_APP_KEY)
-    preview_app.config["GITHUBAPP_SECRET"] = GITHUB_APP_SECRET
-    app.wsgi_app = DispatcherMiddleware(app.wsgi_app, {"/preview": preview_app})
-else:
-    preview_app.config["GITHUBAPP_ID"] = 0
-    preview_app.config["GITHUBAPP_KEY"] = None
-    preview_app.config["GITHUBAPP_SECRET"] = False
-
-github_app = GitHubApp(preview_app)
 handler = make_lambda_handler(app.wsgi_app)
 
 logger = logging.getLogger()
@@ -190,11 +171,6 @@ def handle_exception(e) -> Response:
     logger.error(f"An unexpected error has occurred in napari hub: {e}", e)
     send_alert(f"An unexpected error has occurred in napari hub: {e}")
     return app.make_response(("Internal Server Error", 500))
-
-
-@github_app.on("workflow_run.completed")
-def preview():
-    move_artifact_to_s3(github_app.payload, github_app.installation_client)
 
 
 @app.before_request

@@ -192,22 +192,6 @@ def get_citations(citation_str: str) -> Union[Dict[str, str], None]:
         return None
 
 
-def get_artifact(url: str, token: str) -> Union[IO[bytes], None]:
-    preview_auth = HTTPBearerAuth(token)
-    response = requests.get(url, auth=preview_auth)
-    if response.status_code != requests.codes.ok:
-        return None
-
-    download_urls = json.loads(response.text.strip()).get("artifacts", [])
-    for download_url in download_urls:
-        if download_url.get("name") == "preview-page" and 'archive_download_url' in download_url:
-            response = requests.get(download_url['archive_download_url'], stream=True, auth=preview_auth)
-            if response.status_code != requests.codes.ok:
-                return None
-            return response.raw
-    return None
-
-
 def get_citation_author(citation_str: str) -> Union[List[Dict[str, str]], None]:
     """
     Parse author information from citation.

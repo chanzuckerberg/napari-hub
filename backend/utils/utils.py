@@ -74,17 +74,6 @@ def send_alert(message: str):
             print("Unable to send alert")
 
 
-def reformat_ssh_key_to_pem_bytes(ssh_key_str: str) -> bytes:
-    """
-    reformat the ssh key string to pem format bytes for github client.
-
-    :param ssh_key_str: utf-8 string without header and footer for the github app rsa private key
-    :return: pem formatted private key in bytes with header and footer
-    """
-    chunked = '\n'.join(ssh_key_str[i:i + 64] for i in range(0, len(ssh_key_str), 64))
-    return f"-----BEGIN RSA PRIVATE KEY-----\n{chunked}\n-----END RSA PRIVATE KEY-----\n".encode("utf-8")
-
-
 def get_category_mapping(category: str, mappings: Dict[str, List]) -> List[Dict]:
     return mappings.get(category, [])
 
