@@ -2,8 +2,79 @@
   eslint-disable
     @typescript-eslint/no-explicit-any,
     @typescript-eslint/no-unsafe-argument,
+    max-classes-per-file,
     no-console,
 */
+
+import axios from 'axios';
+
+import { BROWSER, SERVER } from '@/constants/env';
+import { LogApiResponse, LogEntry, LogLevel } from '@/types/logging';
+
+const SEND_LOGS_TO_SERVER_WINDOW = 500;
+
+/**
+ * Class for sending logs to the Next.js server from the browser in batches.
+ * This works by maintaining a queue of logs that are sent to the server for
+ * logging on the server side. This class has no effect on the server since it
+ * creates an interval only if `window` is defined.
+ */
+class BrowserToServerLogger {
+  logQueue: LogEntry[] = [];
+
+  isSendingLogs = false;
+
+  constructor() {
+    if (BROWSER) {
+      window.setInterval(() => this.sendLogs(), SEND_LOGS_TO_SERVER_WINDOW);
+    }
+  }
+
+  /**
+   * Adds new entries for logging on the server.
+   * @param logs Log entries to add
+   */
+  addLogs(...logs: LogEntry[]) {
+    this.logQueue.push(...logs);
+  }
+
+  /**
+   * Send logs stored in the log queue to the server.
+   */
+  private async sendLogs() {
+    if (this.logQueue.length === 0 || this.isSendingLogs) {
+      return;
+    }
+
+    this.isSendingLogs = true;
+
+    try {
+      const response = await axios.post('/api/logs', {
+        logs: this.logQueue,
+      });
+
+      const data = response.data as LogApiResponse;
+
+      if (data.status === 'ok') {
+        this.logQueue = [];
+      } else {
+        throw new Error(data.error);
+      }
+    } catch (err) {
+      const error = err instanceof Error ? err.message : String(err);
+
+      this.logQueue.push({
+        level: LogLevel.Error,
+        messages: ['Error sending logs to server', `error=${error}`],
+      });
+    } finally {
+      this.isSendingLogs = false;
+    }
+  }
+}
+
+// Create singleton on browser so that all loggers share the same queue.
+const browserToServerLogger = new BrowserToServerLogger();
 
 /**
  * Class for logging messages at different levels. This allows us to format log
@@ -23,36 +94,62 @@ export class Logger {
 
   log(...messages: any[]): void {
     if (process.env.NODE_ENV !== 'production') {
-      console.log(...this.formatMessages(messages));
+      this.logMessages(LogLevel.Log, messages);
     }
+
+    browserToServerLogger.addLogs(this.getLogEntries(LogLevel.Log, messages));
   }
 
   debug(...messages: any[]): void {
     if (process.env.NODE_ENV !== 'production') {
-      console.debug(...this.formatMessages(messages));
+      this.logMessages(LogLevel.Debug, messages);
     }
+
+    browserToServerLogger.addLogs(this.getLogEntries(LogLevel.Debug, messages));
   }
 
   error(...messages: any[]): void {
-    console.error(...this.formatMessages(messages));
+    this.logMessages(LogLevel.Error, messages);
+    browserToServerLogger.addLogs(this.getLogEntries(LogLevel.Error, messages));
   }
 
   info(...messages: any[]): void {
-    console.info(...this.formatMessages(messages));
+    this.logMessages(LogLevel.Info, messages);
+    browserToServerLogger.addLogs(this.getLogEntries(LogLevel.Info, messages));
   }
 
   warn(...messages: any[]): void {
-    console.warn(...this.formatMessages(messages));
+    this.logMessages(LogLevel.Warn, messages);
+    browserToServerLogger.addLogs(this.getLogEntries(LogLevel.Warn, messages));
   }
 
   trace(...messages: any[]): void {
-    console.trace(...this.formatMessages(messages));
+    this.logMessages(LogLevel.Trace, messages);
+    browserToServerLogger.addLogs(this.getLogEntries(LogLevel.Trace, messages));
+  }
+
+  private logMessages(level: LogLevel, messages: any[]): void {
+    console[level](...this.formatMessages(messages));
   }
 
   private formatMessages(messages: any[]): any[] {
     const date = new Date();
-    return [`[${date.toISOString()}]`, this.name && `[${this.name}]`]
+
+    return [
+      `date=${date.toISOString()}`,
+      this.name && `file=${this.name}`,
+      `type=${SERVER ? 'server' : 'client'}`,
+      `node_env=${process.env.NODE_ENV}`,
+      `env=${process.env.ENV}`,
+    ]
       .filter(Boolean)
       .concat(messages);
+  }
+
+  private getLogEntries(level: LogLevel, messages: any[]): LogEntry {
+    return {
+      level,
+      messages: this.formatMessages(messages),
+    };
   }
 }
