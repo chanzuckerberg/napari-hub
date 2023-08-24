@@ -98,6 +98,9 @@ module frontend_service {
   wait_for_steady_state = local.wait_for_steady_state
 }
 
+resource "random_uuid" "api_key" {
+}
+
 module install_dynamodb_table {
   source              = "../dynamo"
   table_name          = "${local.custom_stack_name}-install-activity"
