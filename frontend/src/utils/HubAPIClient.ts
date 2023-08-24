@@ -119,7 +119,7 @@ class HubAPIClient {
       });
 
       if (SERVER) {
-        logger.info(`${method} ${url} status=${status}`);
+        logger.info(`method=${method} url=${url} status=${status}`);
       }
 
       return data;
@@ -127,10 +127,10 @@ class HubAPIClient {
       if (SERVER && axios.isAxiosError(err)) {
         logger.error(
           [
-            method,
-            path,
+            `method=${method}`,
+            `url=${path}`,
             err.response?.status ? `status=${err.response.status}` : '',
-            `message="${err.message}"`,
+            `error="${err.message}"`,
           ]
             .filter(Boolean)
             .join(' '),
