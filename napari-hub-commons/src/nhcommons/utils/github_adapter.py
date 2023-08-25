@@ -9,13 +9,6 @@ from ..models.plugin_utils import PluginVisibility
 _URL_PATTERN = re.compile("^https://github\\.com/([^/]+)/([^/]+)")
 _DEFAULT_DESCRIPTION = "The developer has not yet provided a napari-hub " \
                        "specific description."
-_PROJECT_URL_NAMES = {
-    'Project Site': 'project_site',
-    'Documentation': 'documentation',
-    'User Support': 'support',
-    'Report Issues': 'report_issues',
-    'Twitter': 'twitter'
-}
 _VISIBILITY_SET = {'public', 'disabled', 'hidden'}
 _HUB_CONFIG_KEYS = {'summary', 'authors', 'labels', 'visibility'}
 
@@ -93,12 +86,4 @@ def get_github_metadata(repo_url: str, branch: str = 'HEAD') -> Dict:
                       key in config}
         github_metadata.update(hub_config)
 
-        project_urls = config.get('project_urls', {})
-        github_metadata.update({
-            hub_name: project_urls[yaml_name]
-            for yaml_name, hub_name in _PROJECT_URL_NAMES.items()
-            if yaml_name in project_urls
-        })
-
     return github_metadata
-
