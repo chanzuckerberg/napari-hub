@@ -167,21 +167,21 @@ class TestGithub(unittest.TestCase):
     @patch('os.getenv', return_value=False)
     def test_get_github_metadata_with_config_override(self, mock_requests_get, mock_os_get):
         """
-        Test that get_github_metadata populates authors field with correct information from only config.yml when citation and config.yml exists
+        Test that get_github_metadata populates authors field with correct information from citation when citation and config.yml exists
         os.getenv is mocked to prevent test failure in remote branches
         """
         metadata = get_github_metadata("https://github.com")
-        assert metadata["authors"] == config_yaml_authors_result
+        assert metadata["authors"] == citations_authors_result
 
     @patch('requests.get', side_effect=mocked_requests_get_config)
     @patch('os.getenv', return_value=False)
     def test_get_github_metadata_with_config(self, mock_requests_get, mock_os_get):
         """
-        Test that get_github_metadata populates authors field with correct information from only config.yml when config.yml exists
+        Test that get_github_metadata does not read authors from config.yml
         os.getenv is mocked to prevent test failure in remote branches
         """
         metadata = get_github_metadata("https://github.com")
-        assert metadata["authors"] == config_yaml_authors_result
+        assert "authors" not in metadata
 
     @patch('requests.get', side_effect=mocked_requests_get_citation_no_auth_name)
     @patch('os.getenv', return_value=False)
