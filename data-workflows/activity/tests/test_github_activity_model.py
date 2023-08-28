@@ -15,7 +15,9 @@ REPO2 = "org2/bar"
 PLUGIN_BY_REPO = {REPO1: "foo", REPO2: "bar"}
 
 
-def generate_expected(data, granularity, type_id, ts_formatter, *, include_expiry=False):
+def generate_expected(
+    data, granularity, type_id, ts_formatter, *, include_expiry=False
+):
     expected = []
 
     for repo, values in data.items():
@@ -92,7 +94,7 @@ class TestGitHubActivityModels:
         transform_and_write_to_dynamo(data, GitHubActivityType.MONTH, PLUGIN_BY_REPO)
 
         expected = generate_expected(
-            data, "MONTH", "MONTH:{ts:%Y%m}:{repo}", ts_day_format, True
+            data, "MONTH", "MONTH:{ts:%Y%m}:{repo}", ts_day_format, include_expiry=True
         )
         mock_batch_write.assert_called_once_with(expected)
 

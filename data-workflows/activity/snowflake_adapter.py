@@ -60,7 +60,7 @@ def get_plugins_install_count_since_timestamp(
             """
     LOGGER.info(f"Fetching data for granularity={install_activity_type.name}")
     return _mapped_query_results(
-        query, "PYPI", {}, _cursor_to_plugin_activity_mapper([])
+        query, "PYPI", {}, _get_cursor_to_plugin_activity_mapper([])
     )
 
 
@@ -107,7 +107,7 @@ def get_plugins_commit_count_since_timestamp(
         accumulator_updater = _cursor_to_plugin_github_activity_latest_mapper
     elif github_activity_type is GitHubActivityType.MONTH:
         default_value = generate_months_default_value(14)
-        accumulator_updater = _cursor_to_plugin_activity_mapper(default_value)
+        accumulator_updater = _get_cursor_to_plugin_activity_mapper(default_value)
     else:
         accumulator_updater = _cursor_to_plugin_github_activity_total_mapper
     LOGGER.info(f"Fetching data for granularity={github_activity_type.name}")
@@ -173,7 +173,7 @@ def _cursor_to_timestamp_by_name_mapper(
     return accumulator
 
 
-def _cursor_to_plugin_activity_mapper(
+def _get_cursor_to_plugin_activity_mapper(
     default_val: List,
 ) -> Callable[[dict[str, List], Any], dict[str, List]]:
     def _mapper(accumulator: dict[str, List], cursor: Any) -> dict[str, List]:
