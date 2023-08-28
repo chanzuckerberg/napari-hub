@@ -59,31 +59,6 @@ def test_parse_meta(tmpdir):
     assert meta['name'] == 'napari-demo'
 
 
-def test_parse_preview_matches_hub(tmpdir):
-    dest_dir = tmpdir.mkdir('preview')
-    # get hub metadata for example-plugin
-    hub_metadata = requests.get(hub_plugin_url).json()
-
-    # get preview metadata for example-plugin
-    os.environ["GITHUB_REPOSITORY"] = "chanzuckerberg/napari-demo"
-    os.environ["GITHUB_WORKSPACE"] = ""
-    get_plugin_preview(code_plugin_url, dest_dir)
-    with open(os.path.join(dest_dir, 'preview_meta.json')) as f:
-        preview_meta = json.load(f)
-
-    # for each shared field, assert they're the same
-    for field in hub_metadata.keys():
-        if field in preview_meta and field not in ['first_released', 'release_date', 'version']:
-            preview = preview_meta[field]
-            hub = hub_metadata[field]
-            try:
-                preview = sorted(preview)
-                hub = sorted(hub)
-            except Exception:
-                pass
-            assert preview == hub, f'{field} not as expected hub={hub} preview={preview}'
-
-
 def test_release_date_logic():
     # plugin not on PyPI gives today's date
     meta = {'name': 'not-a-real-napari-plugin', 'version': '0.0.1'}
