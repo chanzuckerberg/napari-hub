@@ -50,6 +50,7 @@ class TestMetadata:
     @pytest.fixture
     def github_metadata(self) -> dict:
         return {
+            "author": "Justin Kiggins",
             "name": "Napari Demo",
             "visibility": "public",
             "description": DESCRIPTION,
