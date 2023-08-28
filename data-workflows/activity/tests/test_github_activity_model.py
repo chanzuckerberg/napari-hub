@@ -15,7 +15,7 @@ REPO2 = "org2/bar"
 PLUGIN_BY_REPO = {REPO1: "foo", REPO2: "bar"}
 
 
-def generate_expected(data, granularity, type_id, ts_formatter, include_expiry=False):
+def generate_expected(data, granularity, type_id, ts_formatter, *, include_expiry=False):
     expected = []
 
     for repo, values in data.items():
