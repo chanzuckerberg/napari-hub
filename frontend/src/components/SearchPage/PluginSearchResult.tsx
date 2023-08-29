@@ -339,7 +339,7 @@ export function PluginSearchResult({
                   key={`${item.label}-${item.value}`}
                   className="grid grid-cols-[auto,1fr]"
                 >
-                  <h4 className="inline whitespace-nowrap">{item.label}</h4>
+                  <h4 className="inline whitespace-nowrap">{item.label}: </h4>
                   <span
                     className={clsx(
                       'ml-sds-xxs',
