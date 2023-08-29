@@ -94,9 +94,13 @@ export function testFilters({
 
     const pluginNames = await getResultsByName(page);
     await Promise.all(
-      pluginNames.map((pluginName) =>
-        testPlugin(values, pluginMap[pluginName]),
-      ),
+      pluginNames.map((pluginName) => {
+        if (!pluginMap[pluginName]) {
+          throw new Error(`Plugin not found in fixture: ${pluginName}`);
+        }
+
+        return testPlugin(values, pluginMap[pluginName]);
+      }),
     );
   });
 }
