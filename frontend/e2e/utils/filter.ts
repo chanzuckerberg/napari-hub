@@ -63,6 +63,11 @@ export function testFilters({
     expect(
       _.intersection(currentValues, _.get(plugin, metadataKey) as unknown[])
         .length,
+      `${JSON.stringify(currentValues)} should be in ${JSON.stringify(
+        _.get(plugin, metadataKey),
+      )} for ${plugin.name} and plugin['${metadataKey}'] => ${JSON.stringify(
+        _.get(plugin, metadataKey),
+      )}`,
     ).toBeGreaterThan(0);
   },
   values,
