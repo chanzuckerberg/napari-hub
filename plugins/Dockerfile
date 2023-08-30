@@ -6,7 +6,7 @@ RUN yum install -y mesa-libGL
 
 COPY ./napari-hub-commons ../napari-hub-commons
 COPY ./plugins/requirements.txt .
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 COPY ./plugins/ .
 
