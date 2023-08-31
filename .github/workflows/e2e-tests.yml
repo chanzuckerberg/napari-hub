@@ -8,11 +8,13 @@ on:
     branches:
       - main
     paths:
+      - .github/workflows/e2e-tests.yml
       - 'frontend/**'
   pull_request:
     branches:
       - '**'
     paths:
+      - .github/workflows/e2e-tests.yml
       - 'frontend/**'
 
 defaults:
