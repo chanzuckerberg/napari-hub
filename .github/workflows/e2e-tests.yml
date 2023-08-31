@@ -79,7 +79,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: frontend/e2e/fixtures
-          key: e2e-fixtures-${{ github.run_id }}
+          key: e2e-fixtures-${{ github.run_id }}-${{ github.run_attempt }}
 
       - name: Fetch fixture data
         env:
@@ -152,7 +152,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: frontend/e2e/fixtures
-          key: e2e-fixtures-${{ github.run_id }}
+          key: e2e-fixtures-${{ github.run_id }}-${{ github.run_attempt }}
 
       - name: Run E2E Tests
         env:
