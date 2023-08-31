@@ -2,7 +2,7 @@ FROM public.ecr.aws/lambda/python:3.9
 
 ENV NPE2_NOCACHE = 1
 
-RUN yum install -y mesa-libGL
+RUN yum install -y mesa-libGL && yum clean all
 
 COPY ./napari-hub-commons ../napari-hub-commons
 COPY ./plugins/requirements.txt .
