@@ -90,7 +90,7 @@ def plugin_metadata_valid() -> Dict[str, Any]:
     }
 
 
-def default_pypi_data(info_fields: dict[str, Any], release: Optional[ReleasesType]):
+def default_pypi_data(info_fields: Dict[str, Any], release: Optional[ReleasesType]):
     info_data = {
         "project_urls": {},
         "version": "1.9.8"
@@ -106,7 +106,7 @@ def default_pypi_data(info_fields: dict[str, Any], release: Optional[ReleasesTyp
     })
 
 
-def plugin_metadata_default(fields: dict[str, Any] = None, release_date: str = ""):
+def plugin_metadata_default(fields: Dict[str, Any] = None, release_date: str = ""):
     default_response = {
         "name": "",
         "summary": "",
