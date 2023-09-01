@@ -78,24 +78,6 @@ export function usePageMetadata(
       keywords: [...COMMON_KEYWORDS],
     },
 
-    collections: {
-      regex: /^\/collections$/,
-      keywords: [...COMMON_KEYWORDS, 'collections', 'search'],
-      description: t('common:seo.collections.description'),
-      title: t('common:seo.collections.title'),
-    },
-
-    collection: {
-      regex: /^\/collections\/.*$/,
-      keywords: [
-        ...COMMON_KEYWORDS,
-        'collections',
-        'find',
-        'curated',
-        'community',
-      ],
-    },
-
     home: {
       regex: /^\/$/,
       keywords: [

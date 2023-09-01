@@ -1,6 +1,5 @@
 // TODO Fix absolute import for jest tests
 import activity from '../../i18n/en/activity.json';
-import collections from '../../i18n/en/collections.json';
 import common from '../../i18n/en/common.json';
 import footer from '../../i18n/en/footer.json';
 import homePage from '../../i18n/en/homePage.json';
@@ -16,7 +15,6 @@ import preview from '../../i18n/en/preview.json';
  */
 export const I18nResources = {
   activity,
-  collections,
   common,
   footer,
   homePage,
