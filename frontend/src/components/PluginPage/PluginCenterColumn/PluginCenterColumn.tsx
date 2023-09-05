@@ -3,7 +3,6 @@ import { useRef } from 'react';
 
 import { PluginTabs } from '@/components/PluginPage/PluginTabs';
 import { usePreviewClickAway } from '@/hooks/usePreviewClickAway';
-import { useIsFeatureFlagEnabled } from '@/store/featureFlags';
 
 import { PluginActions } from './PluginActions';
 import { PluginAuthors } from './PluginAuthors';
@@ -14,9 +13,8 @@ import { PluginViewProjectDataLink } from './PluginViewProjectDataLink';
 
 export function PluginCenterColumn() {
   const containerRef = useRef<HTMLElement>(null);
-  const isNpe2Enabled = useIsFeatureFlagEnabled('npe2');
 
-  usePreviewClickAway(isNpe2Enabled ? 'metadata-displayName' : 'metadata-name');
+  usePreviewClickAway('metadata-displayName');
   usePreviewClickAway('metadata-summary');
   usePreviewClickAway('metadata-description');
 

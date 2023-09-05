@@ -2,7 +2,6 @@ import { isArray, isEmpty, isString } from 'lodash';
 import { useTranslation } from 'next-i18next';
 
 import { MetadataId, MetadataKeys, usePluginMetadata } from '@/context/plugin';
-import { useIsFeatureFlagEnabled } from '@/store/featureFlags';
 import { I18nPreviewSection } from '@/types/i18n';
 
 export interface MetadataSectionField {
@@ -20,7 +19,6 @@ export interface MetadataSection {
 export function useMetadataSections(): MetadataSection[] {
   const metadata = usePluginMetadata();
   const [t] = useTranslation(['preview']);
-  const isNpe2Enabled = useIsFeatureFlagEnabled('npe2');
 
   function getFields(...keys: MetadataKeys[]) {
     return keys.map((key) => {
@@ -75,12 +73,7 @@ export function useMetadataSections(): MetadataSection[] {
   return getSections(
     {
       section: t('preview:sections.describeWhat'),
-      fields: [
-        isNpe2Enabled ? 'displayName' : 'name',
-        'summary',
-        'description',
-        'authors',
-      ],
+      fields: ['displayName', 'summary', 'description', 'authors'],
     },
 
     {

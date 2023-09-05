@@ -17,7 +17,6 @@ import {
   usePluginMetadata,
   usePluginState,
 } from '@/context/plugin';
-import { useIsFeatureFlagEnabled } from '@/store/featureFlags';
 import { PluginType } from '@/types';
 
 import { MetadataListMetadataItem } from '../MetadataList/MetadataListMetadataItem';
@@ -132,7 +131,6 @@ export function PluginMetadata({
   enableScrollID,
 }: PluginMetadataProps) {
   const metadata = usePluginMetadata();
-  const isNpe2Enabled = useIsFeatureFlagEnabled('npe2');
 
   function renderItemList(
     key: PickMetadataKeys<string | string[]>,
@@ -216,25 +214,21 @@ export function PluginMetadata({
             <>
               {renderItemList('supportedData', { highlight: false })}
 
-              {isNpe2Enabled && (
+              {renderItemList('pluginType', { highlight: false })}
+
+              {metadata.pluginType.value.includes(PluginType.Reader) &&
+                renderItemList('readerFileExtensions', {
+                  highlight: false,
+                  inlineList: true,
+                })}
+
+              {metadata.pluginType.value.includes(PluginType.Writer) && (
                 <>
-                  {renderItemList('pluginType', { highlight: false })}
-
-                  {metadata.pluginType.value.includes(PluginType.Reader) &&
-                    renderItemList('readerFileExtensions', {
-                      highlight: false,
-                      inlineList: true,
-                    })}
-
-                  {metadata.pluginType.value.includes(PluginType.Writer) && (
-                    <>
-                      {renderItemList('writerFileExtensions', {
-                        highlight: false,
-                        inlineList: true,
-                      })}
-                      {renderItemList('writerSaveLayers', { highlight: false })}
-                    </>
-                  )}
+                  {renderItemList('writerFileExtensions', {
+                    highlight: false,
+                    inlineList: true,
+                  })}
+                  {renderItemList('writerSaveLayers', { highlight: false })}
                 </>
               )}
             </>

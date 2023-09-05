@@ -10,18 +10,12 @@ import { Link } from '@/components/Link';
 import { SkeletonLoader } from '@/components/SkeletonLoader';
 import { TextHighlighter } from '@/components/TextHighlighter';
 import { useLoadingState } from '@/context/loading';
-import { useIsFeatureFlagEnabled } from '@/store/featureFlags';
 import { useSearchStore } from '@/store/search/context';
 import { FilterCategoryKeys } from '@/store/search/search.store';
 import { SearchResultMatch } from '@/store/search/search.types';
 import { HubDimension, PluginIndexData } from '@/types';
 import { I18nKeys, I18nPluginDataLabel } from '@/types/i18n';
-import {
-  createUrl,
-  formatDate,
-  formatNumber,
-  formatOperatingSystem,
-} from '@/utils';
+import { createUrl, formatDate, formatNumber } from '@/utils';
 
 import styles from './PluginSearchResult.module.scss';
 
@@ -120,7 +114,6 @@ export function PluginSearchResult({
   const [isHoveringOverChip, setIsHoveringOverChip] = useState(false);
   const [debouncedIsHoveringOverChip] = useDebounce(isHoveringOverChip, 100);
   const containerRef = useRef<HTMLElement>(null);
-  const isNpe2Enabled = useIsFeatureFlagEnabled('npe2');
 
   const { searchStore } = useSearchStore();
   const snap = useSnapshot(searchStore);
@@ -167,10 +160,7 @@ export function PluginSearchResult({
         label: t('pluginData:labels.installs'),
         value: formatNumber(plugin.total_installs, i18n.language),
       },
-    );
-
-    if (isNpe2Enabled) {
-      metadataItems.push({
+      {
         label: t('pluginData:labels.pluginType'),
         value: isArray(plugin.plugin_types)
           ? plugin.plugin_types
@@ -181,27 +171,8 @@ export function PluginSearchResult({
               )
               .join(', ')
           : '',
-      });
-    } else {
-      metadataItems.push(
-        {
-          label: t('pluginData:labels.license'),
-          value: plugin.license,
-        },
-
-        {
-          label: t('pluginData:labels.pythonVersion'),
-          value: plugin.python_version,
-        },
-
-        {
-          label: t('pluginData:labels.operatingSystem'),
-          value: isArray(plugin.operating_system)
-            ? plugin.operating_system.map(formatOperatingSystem).join(', ')
-            : '',
-        },
-      );
-    }
+      },
+    );
   }
 
   const isSearching = !isEmpty(matches);
@@ -242,10 +213,9 @@ export function PluginSearchResult({
               <SkeletonLoader
                 render={() =>
                   renderText(
-                    (isNpe2Enabled ? plugin.display_name : undefined) ||
-                      plugin.name,
+                    plugin.display_name || plugin.name,
 
-                    isNpe2Enabled && plugin.display_name
+                    plugin.display_name
                       ? matches.display_name?.match
                       : matches.name?.match,
                   )
@@ -253,23 +223,18 @@ export function PluginSearchResult({
               />
             </h3>
 
-            {isNpe2Enabled && (
-              <span
-                className="mt-sds-m screen-495:mt-3 text-[0.6875rem]"
-                data-testid="searchResultName"
-              >
-                <SkeletonLoader
-                  className="h-12"
-                  render={() => renderText(plugin.name, matches.name?.match)}
-                />
-              </span>
-            )}
+            <span
+              className="mt-sds-m screen-495:mt-3 text-[0.6875rem]"
+              data-testid="searchResultName"
+            >
+              <SkeletonLoader
+                className="h-12"
+                render={() => renderText(plugin.name, matches.name?.match)}
+              />
+            </span>
 
             {/* Plugin summary */}
-            <p
-              className={clsx(isNpe2Enabled ? 'mt-3' : 'mt-sds-s')}
-              data-testid="searchResultSummary"
-            >
+            <p className="mt-3" data-testid="searchResultSummary">
               <SkeletonLoader
                 className="h-12"
                 render={() =>
