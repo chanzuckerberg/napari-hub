@@ -7,13 +7,11 @@ Feature: plugins
 
   Scenario: valid plugin api with invalid version
     Given we call /plugins/napari-demo/versions/1.2.5 api
-    Then response status is 200
-    And it will have empty map as response
+    Then response status is 404
 
   Scenario: invalid plugin api with version
     Given we call /plugins/foo/versions/0.1 api
-    Then response status is 200
-    And it will have empty map as response
+    Then response status is 404
 
   Scenario: valid plugin api without version
     Given we call /plugins/napari-demo api
@@ -22,8 +20,7 @@ Feature: plugins
 
   Scenario: invalid plugin api without version
     Given we call /plugins/foo api
-    Then response status is 200
-    And it will have empty map as response
+    Then response status is 404
 
   Scenario: get all public plugins
     Given we call /plugins/index api
