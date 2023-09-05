@@ -19,7 +19,6 @@ export interface FeatureFlag<
 
 export const FEATURE_FLAG_LIST = [
   'activityDashboard',
-  'activityDashboardMaintenance',
   'banner',
   'categoryFilters',
   'npe2',

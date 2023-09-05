@@ -5,7 +5,6 @@ import { Text } from '@/components/Text';
 import { PREVIEW } from '@/constants/env';
 import { usePluginState } from '@/context/plugin';
 import { usePluginMetrics } from '@/hooks';
-import { useIsFeatureFlagEnabled } from '@/store/featureFlags';
 
 import { ActivityMaintenanceSection } from './ActivityMaintenanceSection';
 import { ActivityUsageSection } from './ActivityUsageSection';
@@ -15,9 +14,6 @@ export function ActivityDashboard() {
   const { plugin } = usePluginState();
   const { data: metrics, isLoading } = usePluginMetrics(
     PREVIEW ? undefined : plugin?.name,
-  );
-  const isMaintenanceVisible = useIsFeatureFlagEnabled(
-    'activityDashboardMaintenance',
   );
 
   const isEmpty = useMemo(() => {
@@ -50,7 +46,7 @@ export function ActivityDashboard() {
       ) : (
         <>
           <ActivityUsageSection />
-          {isMaintenanceVisible && <ActivityMaintenanceSection />}
+          <ActivityMaintenanceSection />
 
           <Text variant="bodyS">
             <I18n i18nKey="activity:learnMore" />
