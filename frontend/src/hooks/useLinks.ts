@@ -104,9 +104,5 @@ export function useLinks() {
       title: t('common:plugins'),
       link: isHomePageRedesign ? '/plugins' : '/',
     },
-    COLLECTIONS: {
-      title: t('common:collections'),
-      link: '/collections',
-    },
   });
 }

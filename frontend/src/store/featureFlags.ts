@@ -22,7 +22,6 @@ export const FEATURE_FLAG_LIST = [
   'activityDashboardMaintenance',
   'banner',
   'categoryFilters',
-  'collections',
   'npe2',
   's3ToDynamoMigration',
   'homePageRedesign',
@@ -51,7 +50,6 @@ export const FEATURE_FLAGS = FEATURE_FLAG_LIST.reduce(
 export const PREVIEW_ENABLED_FEATURES: FeatureFlagKey[] = [
   'activityDashboard',
   'categoryFilters',
-  'collections',
   'npe2',
 ];
 

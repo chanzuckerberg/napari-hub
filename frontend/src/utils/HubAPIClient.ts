@@ -12,13 +12,10 @@ import {
   PluginSectionsResponse,
   PluginSectionType,
 } from '@/types';
-import { CollectionData, CollectionIndexData } from '@/types/collections';
 
 import { Logger } from './logger';
 import { getFullPathFromAxios } from './url';
 import {
-  validateCollectionData,
-  validateCollectionIndexData,
   validateMetricsData,
   validatePluginData,
   validatePluginIndexData,
@@ -168,16 +165,6 @@ class HubAPIClient {
     }
 
     return validatePluginData(data);
-  }
-
-  async getCollectionsIndex(): Promise<CollectionIndexData[]> {
-    const data = await this.sendRequest<CollectionIndexData[]>('/collections');
-    return data.map(validateCollectionIndexData);
-  }
-
-  async getCollection(name: string): Promise<CollectionData> {
-    const data = await this.sendRequest<CollectionData>(`/collections/${name}`);
-    return validateCollectionData(data);
   }
 
   async getPluginMetrics(name: string): Promise<PluginMetrics> {

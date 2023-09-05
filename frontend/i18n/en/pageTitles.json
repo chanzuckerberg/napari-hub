@@ -2,10 +2,8 @@
   "base": "napari hub",
   "home": "$t(base) - Image Analysis Plugins for napari",
   "preview": "preview",
-  "collections": "napari Plugin Collections for Image Analysis - $t(base)",
   "by": "by",
   "loading": "loading",
-  "collection": "$t(base) Plugin Collection",
   "plugin": "napari Plugin",
   "plugins": "napari Plugins",
   "sitemap": "Sitemap - napari hub"
