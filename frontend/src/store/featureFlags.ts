@@ -17,11 +17,7 @@ export interface FeatureFlag<
   config?: C | null;
 }
 
-export const FEATURE_FLAG_LIST = [
-  'banner',
-  'categoryFilters',
-  'npe2',
-] as const;
+export const FEATURE_FLAG_LIST = ['banner', 'npe2'] as const;
 
 export type FeatureFlagKey = typeof FEATURE_FLAG_LIST[number];
 export type FeatureFlagMap = Record<FeatureFlagKey, FeatureFlag>;
@@ -43,10 +39,7 @@ export const FEATURE_FLAGS = FEATURE_FLAG_LIST.reduce(
  * building the preview page. This will be possible once we move preview pages
  * server side.
  */
-export const PREVIEW_ENABLED_FEATURES: FeatureFlagKey[] = [
-  'categoryFilters',
-  'npe2',
-];
+export const PREVIEW_ENABLED_FEATURES: FeatureFlagKey[] = ['npe2'];
 
 /**
  * Get feature flag map with specified flag keys enabled
