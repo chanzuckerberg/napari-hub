@@ -7,7 +7,7 @@ if (process.env.MOCK_SERVER === 'false') {
 
 const cors = require('cors');
 const express = require('express');
-const { set, pick, get, sample, shuffle } = require('lodash');
+const { set, get, sample, shuffle } = require('lodash');
 
 const napariPlugin = require('./src/fixtures/plugin.json');
 const pluginIndex = require('./src/fixtures/index.json');
