@@ -17,7 +17,6 @@ export function PluginSearchControls() {
   );
 
   const isNpe2Enabled = useIsFeatureFlagEnabled('npe2');
-  const isHomePageRedesign = useIsFeatureFlagEnabled('homePageRedesign');
   const isScreen875 = useMediaQuery({ minWidth: 'screen-875' });
 
   const requirementFilters: FilterKey[] = ['supportedData'];
@@ -48,13 +47,6 @@ export function PluginSearchControls() {
       )}
     >
       <AnimateSharedLayout>
-        {!isHomePageRedesign && (
-          <>
-            <PluginSortByForm />
-            {divider}
-          </>
-        )}
-
         <motion.div layout>
           <PluginFilterByForm
             filterType="category"
@@ -71,7 +63,7 @@ export function PluginSearchControls() {
           />
         </motion.div>
 
-        {isHomePageRedesign && !isScreen875 && <PluginSortByForm />}
+        {!isScreen875 && <PluginSortByForm />}
       </AnimateSharedLayout>
     </aside>
   );

@@ -121,7 +121,6 @@ export function PluginSearchResult({
   const [debouncedIsHoveringOverChip] = useDebounce(isHoveringOverChip, 100);
   const containerRef = useRef<HTMLElement>(null);
   const isNpe2Enabled = useIsFeatureFlagEnabled('npe2');
-  const isHomePageRedesignEnabled = useIsFeatureFlagEnabled('homePageRedesign');
 
   const { searchStore } = useSearchStore();
   const snap = useSnapshot(searchStore);
@@ -155,34 +154,20 @@ export function PluginSearchResult({
   const metadataItems: MetadataItem[] = [];
 
   if (!isLoading) {
-    if (isHomePageRedesignEnabled) {
-      metadataItems.push(
-        {
-          label: t('pluginData:labels.firstReleased'),
-          value: formatDate(plugin.first_released),
-        },
-        {
-          label: t('pluginData:labels.releaseDate'),
-          value: formatDate(plugin.release_date),
-        },
-        {
-          label: t('pluginData:labels.installs'),
-          value: formatNumber(plugin.total_installs, i18n.language),
-        },
-      );
-    } else {
-      metadataItems.push(
-        {
-          label: t('pluginData:labels.totalInstalls'),
-          value: formatNumber(plugin.total_installs, i18n.language),
-        },
-
-        {
-          label: t('pluginData:labels.releaseDate'),
-          value: formatDate(plugin.release_date),
-        },
-      );
-    }
+    metadataItems.push(
+      {
+        label: t('pluginData:labels.firstReleased'),
+        value: formatDate(plugin.first_released),
+      },
+      {
+        label: t('pluginData:labels.releaseDate'),
+        value: formatDate(plugin.release_date),
+      },
+      {
+        label: t('pluginData:labels.installs'),
+        value: formatNumber(plugin.total_installs, i18n.language),
+      },
+    );
 
     if (isNpe2Enabled) {
       metadataItems.push({

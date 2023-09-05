@@ -1,8 +1,6 @@
 import { NextRouter } from 'next/router';
 import { useMemo } from 'react';
 
-import { useIsFeatureFlagEnabled } from '@/store/featureFlags';
-
 type UrlType = string | NextRouter;
 
 function getPathname(url: UrlType) {
@@ -14,8 +12,6 @@ function getPathname(url: UrlType) {
 }
 
 export function usePageUtils() {
-  const isHomePageRedesign = useIsFeatureFlagEnabled('homePageRedesign');
-
   return useMemo(
     () => ({
       isHomePage(url: UrlType): boolean {
@@ -23,7 +19,7 @@ export function usePageUtils() {
       },
 
       isSearchPage(url: UrlType): boolean {
-        return getPathname(url) === (isHomePageRedesign ? '/plugins' : '/');
+        return getPathname(url) === '/plugins';
       },
 
       isPluginPage(url: UrlType): boolean {
@@ -34,6 +30,6 @@ export function usePageUtils() {
         return getPathname(url).endsWith('/sitemap');
       },
     }),
-    [isHomePageRedesign],
+    [],
   );
 }

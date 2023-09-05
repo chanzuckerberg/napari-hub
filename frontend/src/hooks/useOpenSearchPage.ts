@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router';
 import { useCallback } from 'react';
 
-import { useIsFeatureFlagEnabled } from '@/store/featureFlags';
 import { SearchQueryParams, SearchSortType } from '@/store/search/constants';
 import { useSearchStore } from '@/store/search/context';
 
@@ -12,7 +11,6 @@ import { useSearchStore } from '@/store/search/context';
 export function useOpenSearchPage() {
   const router = useRouter();
   const { searchStore } = useSearchStore();
-  const isHomePageRedesign = useIsFeatureFlagEnabled('homePageRedesign');
 
   return useCallback(
     async (query: string) => {
@@ -21,7 +19,7 @@ export function useOpenSearchPage() {
       searchStore.search.query = query;
 
       const url = {
-        pathname: isHomePageRedesign ? '/plugins' : '/',
+        pathname: '/plugins',
         query: {
           // Params will be encoded automatically by Next.js.
           [SearchQueryParams.Search]: query,
@@ -30,6 +28,6 @@ export function useOpenSearchPage() {
       };
       await router.push(url);
     },
-    [isHomePageRedesign, router, searchStore.search],
+    [router, searchStore.search],
   );
 }

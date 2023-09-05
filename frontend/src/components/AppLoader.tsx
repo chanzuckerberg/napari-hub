@@ -5,10 +5,8 @@ import { SitemapPage } from '@/components/SitemapPage';
 import { DEFAULT_PLUGIN_DATA, DEFAULT_REPO_DATA } from '@/constants/plugin';
 import { LoadingStateProvider } from '@/context/loading';
 import { usePageUtils } from '@/hooks/usePageUtils';
-import SearchPageV1 from '@/pages/index';
-import SearchPageV2 from '@/pages/plugins';
+import SearchPage from '@/pages/plugins';
 import PluginPage from '@/pages/plugins/[name]';
-import { useIsFeatureFlagEnabled } from '@/store/featureFlags';
 import { PluginHomePageData, PluginType } from '@/types';
 
 import { HomePage, HomePageProvider } from './HomePage';
@@ -21,11 +19,10 @@ interface Props {
  * Renders the appropriate loader component for a specific page.
  */
 export function AppLoader({ nextUrl }: Props) {
-  const isHomePageRedesign = useIsFeatureFlagEnabled('homePageRedesign');
   const pageUtils = usePageUtils();
 
   let homePageLoader: ReactNode;
-  if (isHomePageRedesign && pageUtils.isHomePage(nextUrl)) {
+  if (pageUtils.isHomePage(nextUrl)) {
     const plugins = Array(3)
       .fill(null)
       .map(() => DEFAULT_PLUGIN_DATA as unknown as PluginHomePageData);
@@ -51,13 +48,9 @@ export function AppLoader({ nextUrl }: Props) {
 
   const searchPageLoader = pageUtils.isSearchPage(nextUrl) && (
     <LoadingStateProvider loading key="/">
-      {isHomePageRedesign ? (
-        <Layout key="/plugins">
-          <SearchPageV2 />
-        </Layout>
-      ) : (
-        <SearchPageV1 index={[]} licenses={[]} />
-      )}
+      <Layout key="/plugins">
+        <SearchPage />
+      </Layout>
     </LoadingStateProvider>
   );
 

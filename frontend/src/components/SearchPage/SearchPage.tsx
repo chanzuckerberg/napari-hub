@@ -2,13 +2,8 @@ import { throttle } from 'lodash';
 import { useEffect } from 'react';
 import { snapshot, useSnapshot } from 'valtio';
 
-import { AppBarLanding } from '@/components/AppBar';
-import { Banner } from '@/components/Banner';
 import { ColumnLayout } from '@/components/ColumnLayout';
-import { Footer } from '@/components/Footer';
 import { Pagination } from '@/components/Pagination';
-import { SignupForm } from '@/components/SignupForm';
-import { useIsFeatureFlagEnabled } from '@/store/featureFlags';
 import { loadingStore } from '@/store/loading';
 import { useSearchStore } from '@/store/search/context';
 import { scrollToSearchBar } from '@/utils';
@@ -79,17 +74,8 @@ export function SearchPage() {
     return () => document.removeEventListener('scroll', scrollHandler);
   }, []);
 
-  const isHomePageRedesign = useIsFeatureFlagEnabled('homePageRedesign');
-
   return (
     <div className="flex flex-col">
-      {!isHomePageRedesign && (
-        <>
-          <Banner />
-          <AppBarLanding />
-        </>
-      )}
-
       <PluginSearchBarSection />
 
       <div className="flex-grow min-h-screen">
@@ -107,13 +93,6 @@ export function SearchPage() {
       </div>
 
       <SearchPagination />
-
-      {!isHomePageRedesign && (
-        <>
-          <SignupForm variant="home" />
-          <Footer />
-        </>
-      )}
     </div>
   );
 }

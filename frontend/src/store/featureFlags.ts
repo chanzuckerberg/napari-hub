@@ -24,7 +24,6 @@ export const FEATURE_FLAG_LIST = [
   'categoryFilters',
   'npe2',
   's3ToDynamoMigration',
-  'homePageRedesign',
 ] as const;
 
 export type FeatureFlagKey = typeof FEATURE_FLAG_LIST[number];
