@@ -1,15 +1,9 @@
-from datetime import datetime
 from typing import Dict, List, Any, Set, Optional
-from zipfile import ZipFile
-from io import BytesIO
 from api.models import (
     install_activity,
     plugin as plugin_model,
     plugin_metadata as plugin_metadata_model,
 )
-from utils.github import get_artifact
-from api.s3 import cache
-from utils.utils import get_attribute
 
 
 def get_manifest(name: str, version: str = None) -> dict:
@@ -55,51 +49,3 @@ def get_index(
         for item in plugins:
             item["total_installs"] = total_installs.get(item["name"].lower(), 0)
     return plugins
-
-
-def move_artifact_to_s3(payload, client):
-    """
-    move preview page build artifact zip to public s3.
-
-    :param payload: json body from the github webhook
-    :param client: installation client to query GitHub API
-    """
-    owner = get_attribute(payload, ['repository', 'owner', 'login'])
-    repo = get_attribute(payload, ["repository", "name"])
-    pull_request_number = get_attribute(payload, ['workflow_run', 'pull_requests', 0, 'number'])
-    if not pull_request_number:
-        github_repo = client.repository(owner, repo)
-        head_owner = get_attribute(payload, ['workflow_run', 'head_repository', 'owner', 'login'])
-        head_branch = get_attribute(payload, ['workflow_run', 'head_branch'])
-        pull_requests = list(github_repo.pull_requests(head=f'{head_owner}:{head_branch}'))
-        if len(pull_requests) == 1:
-            pull_request_number = pull_requests[0].number
-        else:
-            return
-
-    artifact_url = get_attribute(payload, ["workflow_run", "artifacts_url"])
-    curr_clock = datetime.utcnow().isoformat()
-    if artifact_url:
-        artifact = get_artifact(artifact_url, client.session.auth.token)
-        if artifact:
-            zipfile = ZipFile(BytesIO(artifact.read()))
-            for name in zipfile.namelist():
-                with zipfile.open(name) as file:
-                    if name == "index.html":
-                        cache(file, f'preview/{owner}/{repo}/{pull_request_number}', "text/html")
-                    else:
-                        cache(file, f'preview/{owner}/{repo}/{pull_request_number}/{name}')
-
-            pull_request = client.pull_request(owner, repo, pull_request_number)
-            text = 'Preview page for your plugin is ready here:'
-            comment_found = False
-            for comment in pull_request.issue_comments():
-                if text in comment.body and comment.user.login == 'napari-hub[bot]':
-                    comment_found = True
-                    comment.edit(text + f'\nhttps://preview.napari-hub.org/{owner}/{repo}/{pull_request_number}'
-                                        f'\n_Updated: {curr_clock}_')
-                    break
-            if not comment_found:
-                pull_request.create_comment(
-                    text + f'\nhttps://preview.napari-hub.org/{owner}/{repo}/{pull_request_number}'
-                           f'\n_Created: {curr_clock}_')
