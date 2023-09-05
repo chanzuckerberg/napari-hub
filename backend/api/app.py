@@ -6,7 +6,6 @@ from apig_wsgi import make_lambda_handler
 from flask import Flask, Response, jsonify, render_template, request
 
 from api.home import get_plugin_sections
-from api.plugin_collections import get_collections, get_collection
 from api.custom_wsgi import script_path_middleware
 from api.model import get_index, get_manifest
 from api.metrics import get_metrics_for_plugin
@@ -133,19 +132,6 @@ def get_plugin_metrics(plugin: str) -> Response:
             limit=request.args.get("limit", "12"),
         )
     )
-
-
-@app.route("/collections")
-def collections() -> Response:
-    return get_collections()
-
-
-@app.route("/collections/<collection>")
-def collection(collection: str) -> Response:
-    data = get_collection(collection)
-    if not data:
-        return app.make_response(("Collection does not exist", 404))
-    return data
 
 
 @app.errorhandler(404)
