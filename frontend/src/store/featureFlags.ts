@@ -18,7 +18,6 @@ export interface FeatureFlag<
 }
 
 export const FEATURE_FLAG_LIST = [
-  'activityDashboard',
   'banner',
   'categoryFilters',
   'npe2',
@@ -46,7 +45,6 @@ export const FEATURE_FLAGS = FEATURE_FLAG_LIST.reduce(
  * server side.
  */
 export const PREVIEW_ENABLED_FEATURES: FeatureFlagKey[] = [
-  'activityDashboard',
   'categoryFilters',
   'npe2',
 ];

@@ -1,7 +1,6 @@
 import clsx from 'clsx';
 import { useRef } from 'react';
 
-import { PluginPageContent } from '@/components/PluginPage/PluginPageContent';
 import { PluginTabs } from '@/components/PluginPage/PluginTabs';
 import { usePreviewClickAway } from '@/hooks/usePreviewClickAway';
 import { useIsFeatureFlagEnabled } from '@/store/featureFlags';
@@ -16,8 +15,6 @@ import { PluginViewProjectDataLink } from './PluginViewProjectDataLink';
 export function PluginCenterColumn() {
   const containerRef = useRef<HTMLElement>(null);
   const isNpe2Enabled = useIsFeatureFlagEnabled('npe2');
-  const isActivityDashboardEnabled =
-    useIsFeatureFlagEnabled('activityDashboard');
 
   usePreviewClickAway(isNpe2Enabled ? 'metadata-displayName' : 'metadata-name');
   usePreviewClickAway('metadata-summary');
@@ -40,11 +37,7 @@ export function PluginCenterColumn() {
       <PluginActions />
       <PluginViewProjectDataLink />
 
-      {isActivityDashboardEnabled ? (
-        <PluginTabs containerRef={containerRef} />
-      ) : (
-        <PluginPageContent />
-      )}
+      <PluginTabs containerRef={containerRef} />
     </article>
   );
 }
