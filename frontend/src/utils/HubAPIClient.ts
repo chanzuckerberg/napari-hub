@@ -1,10 +1,8 @@
 /* eslint-disable max-classes-per-file */
 
 import axios, { AxiosRequestConfig } from 'axios';
-import { snapshot } from 'valtio';
 
 import { BROWSER, PROD, SERVER, STAGING } from '@/constants/env';
-import { featureFlagsStore } from '@/store/featureFlags';
 import {
   PluginData,
   PluginIndexData,
@@ -68,20 +66,6 @@ function isHubAPIErrorResponse(
   return !!(data as HubAPIErrorResponse).errorType;
 }
 
-interface DynamoConfig {
-  METRICS_USAGE_MIGRATION: boolean;
-  METRICS_MAINTENANCE_MIGRATION: boolean;
-  CATEGORY_MIGRATION: boolean;
-  PLUGIN_MIGRATION: boolean;
-}
-
-const DEFAULT_DYNAMO_CONFIG: DynamoConfig = {
-  METRICS_USAGE_MIGRATION: false,
-  METRICS_MAINTENANCE_MIGRATION: false,
-  CATEGORY_MIGRATION: false,
-  PLUGIN_MIGRATION: false,
-};
-
 /**
  * Class for interacting with the hub API. Each function makes a request to the
  * hub API and runs client-side data validation on the data to ensure
@@ -96,14 +80,6 @@ class HubAPIClient {
           Host: API_URL_HOST,
         },
   });
-
-  private get dynamoConfig() {
-    return (
-      (snapshot(featureFlagsStore).s3ToDynamoMigration.config as unknown as
-        | DynamoConfig
-        | undefined) ?? DEFAULT_DYNAMO_CONFIG
-    );
-  }
 
   private async sendRequest<T>(url: string, config?: AxiosRequestConfig<T>) {
     const method = config?.method ?? 'GET';
@@ -139,11 +115,7 @@ class HubAPIClient {
   }
 
   async getPluginIndex(): Promise<PluginIndexData[]> {
-    const data = await this.sendRequest<PluginIndexData[]>('/plugins/index', {
-      params: {
-        use_dynamo_plugin: this.dynamoConfig.PLUGIN_MIGRATION,
-      },
-    });
+    const data = await this.sendRequest<PluginIndexData[]>('/plugins/index');
 
     return data
       .map((plugin) => validatePluginIndexData(plugin))
@@ -153,11 +125,6 @@ class HubAPIClient {
   async getPlugin(name: string): Promise<PluginData> {
     const data = await this.sendRequest<PluginData | HubAPIErrorResponse>(
       `/plugins/${name}`,
-      {
-        params: {
-          use_dynamo_plugin: this.dynamoConfig.PLUGIN_MIGRATION,
-        },
-      },
     );
 
     if (isHubAPIErrorResponse(data)) {
@@ -168,13 +135,7 @@ class HubAPIClient {
   }
 
   async getPluginMetrics(name: string): Promise<PluginMetrics> {
-    const data = await this.sendRequest<PluginMetrics>(`/metrics/${name}`, {
-      params: {
-        use_dynamo_metric_usage: this.dynamoConfig.METRICS_USAGE_MIGRATION,
-        use_dynamo_metric_maintenance:
-          this.dynamoConfig.METRICS_MAINTENANCE_MIGRATION,
-      },
-    });
+    const data = await this.sendRequest<PluginMetrics>(`/metrics/${name}`, {});
     return validateMetricsData(data);
   }
 

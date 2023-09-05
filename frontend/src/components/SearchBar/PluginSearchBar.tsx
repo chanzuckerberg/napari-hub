@@ -2,7 +2,6 @@ import { useSnapshot } from 'valtio';
 
 import { BEGINNING_PAGE } from '@/constants/search';
 import { useOpenSearchPage } from '@/hooks/useOpenSearchPage';
-import { useIsFeatureFlagEnabled } from '@/store/featureFlags';
 import { resetLoadingState } from '@/store/loading';
 import { DEFAULT_SORT_TYPE, SearchSortType } from '@/store/search/constants';
 import { useSearchStore } from '@/store/search/context';
@@ -29,7 +28,6 @@ export function PluginSearchBar(props: Props) {
   const state = useSnapshot(searchStore);
   const { query } = state.search;
   const openSearchPage = useOpenSearchPage();
-  const isHomePageRedesign = useIsFeatureFlagEnabled('homePageRedesign');
 
   /**
    * Performs a search query on form submission. If the user is on the search
@@ -40,7 +38,7 @@ export function PluginSearchBar(props: Props) {
     // Reset loading state when navigating to the search page.
     resetLoadingState();
 
-    if (window.location.pathname === (isHomePageRedesign ? '/plugins' : '/')) {
+    if (window.location.pathname === '/plugins') {
       if (searchQuery) {
         scrollToSearchBar({ behavior: 'smooth' });
         searchStore.search.query = searchQuery;

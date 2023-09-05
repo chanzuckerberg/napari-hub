@@ -26,11 +26,8 @@ async function renderSiteMap(filteredPages: RegExp[]): Promise<string> {
  * of the URL.
  */
 export const getServerSideProps = getServerSidePropsHandler({
-  async getProps({ res }, features) {
+  async getProps({ res }) {
     const filteredPages: RegExp[] = [];
-    if (features.homePageRedesign.value !== 'on') {
-      filteredPages.push(/\/plugins$/);
-    }
 
     const sitemapXml = await renderSiteMap(filteredPages);
 

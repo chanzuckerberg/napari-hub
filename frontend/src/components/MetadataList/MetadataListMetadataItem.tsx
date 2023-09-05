@@ -6,7 +6,6 @@ import { useQuery } from 'react-query';
 
 import { Link } from '@/components/Link';
 import { MetadataKeys } from '@/context/plugin';
-import { useIsFeatureFlagEnabled } from '@/store/featureFlags';
 import { SUPPORTED_PYTHON_VERSIONS } from '@/store/search/filter.store';
 import { PARAM_KEY_MAP, PARAM_VALUE_MAP } from '@/store/search/queryParameters';
 import { SpdxLicenseResponse } from '@/store/search/types';
@@ -154,16 +153,12 @@ export function MetadataListMetadataItem({
     return result;
   }, [isOsiApproved, metadataKey, value]);
 
-  const isHomePageRedesign = useIsFeatureFlagEnabled('homePageRedesign');
   const url = useMemo(() => {
     const paramKey = PARAM_KEY_MAP[metadataKey] ?? metadataKey;
     return (
-      filterValue &&
-      `${
-        isHomePageRedesign ? '/plugins' : '/'
-      }?${paramKey}=${encodeURIComponent(filterValue)}`
+      filterValue && `/plugins?${paramKey}=${encodeURIComponent(filterValue)}`
     );
-  }, [filterValue, isHomePageRedesign, metadataKey]);
+  }, [filterValue, metadataKey]);
 
   return (
     <MetadataListTextItem>
