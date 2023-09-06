@@ -157,7 +157,7 @@ jobs:
 
       - name: Fetch fixture data
         env:
-          ENV: local
+          ENV: prod
         run: node scripts/fetch-e2e-fixtures
 
   prod-e2e:
