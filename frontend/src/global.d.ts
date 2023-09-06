@@ -3,8 +3,13 @@ declare namespace NodeJS {
     readonly API_URL_HOST: string;
     readonly API_URL: string;
     readonly BASE_PATH: string;
-    readonly ENV: 'local' | 'dev' | 'staging' | 'prod';
+    readonly CLOUDWATCH_RUM_APP_ID?: string;
+    readonly CLOUDWATCH_RUM_APP_NAME?: string;
+    readonly CLOUDWATCH_RUM_CONFIG?: string;
+    readonly CLOUDWATCH_RUM_IDENTITY_POOL_ID?: string;
+    readonly CLOUDWATCH_RUM_ROLE_ARN?: string;
     readonly E2E: 'true' | 'false';
+    readonly ENV: 'local' | 'dev' | 'staging' | 'prod';
     readonly FRONTEND_URL: string;
     readonly GITHUB_CLIENT_ID: string;
     readonly GITHUB_CLIENT_SECRET: string;
