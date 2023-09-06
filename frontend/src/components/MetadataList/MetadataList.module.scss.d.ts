@@ -3,7 +3,6 @@ export type Styles = {
   inline: string;
   linkItem: string;
   list: string;
-  preview: string;
   textItem: string;
 };
 

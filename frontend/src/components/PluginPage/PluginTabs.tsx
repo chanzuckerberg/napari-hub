@@ -7,7 +7,6 @@ import { useSnapshot } from 'valtio';
 
 import { CategoryChipContainer } from '@/components/CategoryChip';
 import { Markdown } from '@/components/Markdown';
-import { MetadataHighlighter } from '@/components/MetadataHighlighter';
 import { SkeletonLoader } from '@/components/SkeletonLoader';
 import { TabData, Tabs } from '@/components/Tabs';
 import { useLoadingState } from '@/context/loading';
@@ -62,8 +61,7 @@ interface Props {
 }
 
 export function PluginTabs({ containerRef }: Props) {
-  const { plugin, isEmptyDescription } = usePluginState();
-  const [t] = useTranslation(['pluginPage', 'preview']);
+  const { plugin } = usePluginState();
   const { activeTab } = useSnapshot(pluginTabsStore);
   const hasPluginMetadataScroll = useMediaQuery({ maxWidth: 'screen-1425' });
   const plausible = usePlausible();
@@ -86,9 +84,8 @@ export function PluginTabs({ containerRef }: Props) {
             'gap-sds-m screen-495:gap-sds-l',
           )}
         >
-          <SkeletonLoader
-            render={() =>
-              plugin?.category_hierarchy &&
+          <SkeletonLoader>
+            {plugin?.category_hierarchy &&
               isObject(plugin.category_hierarchy) &&
               Object.entries(plugin.category_hierarchy)
                 .filter(
@@ -103,25 +100,15 @@ export function PluginTabs({ containerRef }: Props) {
                     containerRef={containerRef}
                     pluginName={plugin.name ?? ''}
                   />
-                ))
-            }
-          />
+                ))}
+          </SkeletonLoader>
         </div>
 
-        <SkeletonLoader
-          className="h-[600px] mb-sds-xxl"
-          render={() => (
-            <MetadataHighlighter
-              metadataId="metadata-description"
-              className="flex items-center justify-between mb-sds-xxl"
-              highlight={isEmptyDescription}
-            >
-              <Markdown disableHeader placeholder={isEmptyDescription}>
-                {plugin?.description || t('preview:emptyDescription')}
-              </Markdown>
-            </MetadataHighlighter>
-          )}
-        />
+        <SkeletonLoader className="h-[600px] mb-sds-xxl">
+          <div className="flex items-center justify-between mb-sds-xxl">
+            <Markdown disableHeader>{plugin?.description || ''}</Markdown>
+          </div>
+        </SkeletonLoader>
 
         <PluginMetadata
           enableScrollID={hasPluginMetadataScroll}

@@ -159,7 +159,6 @@ export function SupportInfoBase({ className, inline }: SupportInfoBaseProps) {
       )}
     >
       <MetadataList
-        id="metadata-authors"
         label={metadata.authors.label}
         empty={isEmpty(metadata.authors.value)}
         inline={inline}
@@ -172,19 +171,14 @@ export function SupportInfoBase({ className, inline }: SupportInfoBaseProps) {
       </MetadataList>
 
       <MetadataList label={t('common:learnMore')} inline={inline}>
-        {learnMoreItems.map(({ text, id, ...linkProps }) => (
-          <MetadataListLinkItem
-            key={linkProps.href + text}
-            id={id}
-            {...linkProps}
-          >
+        {learnMoreItems.map(({ text, ...linkProps }) => (
+          <MetadataListLinkItem key={linkProps.href + text} {...linkProps}>
             {text}
           </MetadataListLinkItem>
         ))}
       </MetadataList>
 
       <MetadataList
-        id="metadata-sourceCode"
         label={metadata.sourceCode.label}
         empty={!metadata.sourceCode.value}
         inline={inline}
