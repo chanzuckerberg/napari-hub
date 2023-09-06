@@ -96,7 +96,8 @@ jobs:
   prod-e2e-setup:
     name: Production E2E Tests Setup
     runs-on: ubuntu-latest
-    needs: prod # Needs the production deploy to happen first before E2E tests can be ran
+    # TODO: Remove this before PR
+    #needs: prod # Needs the production deploy to happen first before E2E tests can be ran
 
     steps:
       - name: Checkout Repo
