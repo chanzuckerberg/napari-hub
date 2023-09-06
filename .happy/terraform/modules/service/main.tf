@@ -75,11 +75,11 @@ resource aws_ecs_task_definition task_definition {
       },
       {
         "name": "CLOUDWATCH_RUM_APP_NAME",
-        "value": ${var.cloudwatch_rum_config.app_name}""
+        "value": "${var.cloudwatch_rum_config.app_name}"
       },
       {
         "name": "CLOUDWATCH_RUM_IDENTITY_POOL_ID",
-        "value": ${var.cloudwatch_rum_config.identity_pool_id}""
+        "value": "${var.cloudwatch_rum_config.identity_pool_id}"
       },
       {
         "name": "CLOUDWATCH_RUM_ROLE_ARN",
