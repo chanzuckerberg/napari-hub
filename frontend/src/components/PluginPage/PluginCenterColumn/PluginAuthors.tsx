@@ -16,7 +16,7 @@ export function PluginAuthors() {
             <li className="inline" key={author}>
               <Link
                 className="underline text-[11px] screen-495:text-[14px] font-semibold"
-                href={`$plugins?authors=${author.replaceAll(' ', '+')}`}
+                href={`/plugins?authors=${author.replaceAll(' ', '+')}`}
               >
                 {author}
               </Link>
