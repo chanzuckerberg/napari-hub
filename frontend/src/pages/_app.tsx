@@ -61,9 +61,7 @@ function App({ Component, pageProps }: AppProps) {
         // The plugin page has plugin specific content that needs to be added
         // to the Page Metadata, so skip adding it here in `_app.tsx` so that
         // the data can be fetched by the plugin page.
-        !/\/preview|plugins|(collections\/.*)/.exec(router.pathname) && (
-          <PageMetadata />
-        )
+        !/\/plugins|(collections\/.*)/.exec(router.pathname) && <PageMetadata />
       }
 
       <Head>
@@ -76,9 +74,7 @@ function App({ Component, pageProps }: AppProps) {
           Disable indexing for non-production deployments.
           https://developers.google.com/search/docs/advanced/crawling/block-indexing
         */}
-        {(!PROD || process.env.PREVIEW) && (
-          <meta name="robots" content="noindex" />
-        )}
+        {!PROD && <meta name="robots" content="noindex" />}
       </Head>
 
       <Script
