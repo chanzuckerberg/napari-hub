@@ -5,7 +5,6 @@ declare namespace NodeJS {
     readonly BASE_PATH: string;
     readonly CLOUDWATCH_RUM_APP_ID?: string;
     readonly CLOUDWATCH_RUM_APP_NAME?: string;
-    readonly CLOUDWATCH_RUM_CONFIG?: string;
     readonly CLOUDWATCH_RUM_IDENTITY_POOL_ID?: string;
     readonly CLOUDWATCH_RUM_ROLE_ARN?: string;
     readonly E2E: 'true' | 'false';
