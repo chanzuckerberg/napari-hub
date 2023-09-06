@@ -68,6 +68,22 @@ resource aws_ecs_task_definition task_definition {
       {
         "name": "SPLIT_IO_SERVER_KEY",
         "value": "${var.split_io_server_key}"
+      },
+      {
+        "name": "CLOUDWATCH_RUM_APP_ID",
+        "value": "${var.cloudwatch_rum_config.app_id}"
+      },
+      {
+        "name": "CLOUDWATCH_RUM_APP_NAME",
+        "value": "${var.cloudwatch_rum_config.app_name}"
+      },
+      {
+        "name": "CLOUDWATCH_RUM_IDENTITY_POOL_ID",
+        "value": "${var.cloudwatch_rum_config.identity_pool_id}"
+      },
+      {
+        "name": "CLOUDWATCH_RUM_ROLE_ARN",
+        "value": "${var.cloudwatch_rum_config.role_arn}"
       }
     ],
     "portMappings": [

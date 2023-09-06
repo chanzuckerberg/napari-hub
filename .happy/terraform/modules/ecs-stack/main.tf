@@ -52,6 +52,7 @@ locals {
   snowflake_user = try(local.secret["snowflake"]["user"], "")
   snowflake_password = try(local.secret["snowflake"]["password"], "")
   split_io_server_key = try(local.secret["split.io"]["server_key"], "")
+  cloudwatch_rum_config = try(local.secret["cloudwatch_rum"], {})
 
   frontend_url = var.frontend_url != "" ? var.frontend_url: try(join("", ["https://", module.frontend_dns.dns_prefix, ".", local.external_dns]), var.frontend_url)
   backend_function_name = "${local.custom_stack_name}-backend"
@@ -94,6 +95,7 @@ module frontend_service {
   split_io_server_key = local.split_io_server_key
   frontend_url      = local.frontend_url
   tags              = var.tags
+  cloudwatch_rum_config = local.cloudwatch_rum_config
 
   wait_for_steady_state = local.wait_for_steady_state
 }
