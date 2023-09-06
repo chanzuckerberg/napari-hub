@@ -17,6 +17,7 @@ import {
   getFeatureFlags,
 } from '@/store/featureFlags';
 
+import { CloudwatchRumConfig, getAwsRumConfig } from './rum';
 import { TTLCache } from './ttl-cache';
 
 /**
@@ -45,6 +46,7 @@ function isPropsResult<P>(
 
 type ServerSidePropsHandlerProps<P> = P &
   Partial<SSRConfig> & {
+    awsRumConfig?: CloudwatchRumConfig;
     featureFlags?: FeatureFlagMap;
   };
 
@@ -89,6 +91,7 @@ export function getServerSidePropsHandler<
       props: {
         ...(isPropsResult(extraProps) ? extraProps.props : undefined),
         ...translationProps,
+        awsRumConfig: getAwsRumConfig(),
         featureFlags,
       } as ServerSidePropsHandlerProps<P>,
     };
