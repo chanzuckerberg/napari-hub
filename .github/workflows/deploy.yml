@@ -4,9 +4,10 @@ name: Deploy Changes to Cluster
 on:
   push:
     branches:
-      - main
-    tags:
-      - 'v*'
+      #- main
+      - 'joshua/**' # TODO: Remove before PR
+    # tags:
+    #   - 'v*'
 
 # https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services
 permissions:
