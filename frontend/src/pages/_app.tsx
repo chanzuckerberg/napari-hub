@@ -14,6 +14,7 @@ import { useRouter } from 'next/router';
 import Script from 'next/script';
 import { appWithTranslation } from 'next-i18next';
 import { ComponentType, ReactNode } from 'react';
+import { DehydratedState } from 'react-query';
 import { useSnapshot } from 'valtio';
 
 import { ApplicationProvider } from '@/components/ApplicationProvider';
@@ -21,23 +22,30 @@ import { AppLoader } from '@/components/AppLoader';
 import { Layout } from '@/components/Layout';
 import { PageMetadata } from '@/components/PageMetadata';
 import { PROD } from '@/constants/env';
+import { AwsRumProvider } from '@/context/awsRum';
 import { usePageTransitions } from '@/hooks';
 import { FeatureFlagMap, useInitFeatureFlags } from '@/store/featureFlags';
 import { hubspotStore } from '@/store/hubspot';
 import { pageTransitionsStore } from '@/store/pageTransitions';
+import { CloudwatchRumConfig } from '@/utils/rum';
 
 type GetLayoutComponent = ComponentType & {
   getLayout?(page: ReactNode): ReactNode;
 };
 
-function App({ Component, pageProps }: AppProps) {
+interface AppSSRProps {
+  awsRumConfig?: CloudwatchRumConfig;
+  dehydratedState?: DehydratedState;
+  featureFlags?: FeatureFlagMap;
+}
+
+function App({ Component, pageProps }: AppProps<AppSSRProps>) {
   usePageTransitions();
   const { loading, nextUrl } = useSnapshot(pageTransitionsStore);
 
   const router = useRouter();
 
-  const featureFlags = pageProps.featureFlags as FeatureFlagMap | undefined;
-  useInitFeatureFlags(featureFlags);
+  useInitFeatureFlags(pageProps.featureFlags);
 
   /**
    * Render using custom layout if component exports one:
@@ -88,9 +96,11 @@ function App({ Component, pageProps }: AppProps) {
         src="//js.hsforms.net/forms/v2.js?pre=1"
       />
 
-      <ApplicationProvider dehydratedState={pageProps.dehydratedState}>
-        {page}
-      </ApplicationProvider>
+      <AwsRumProvider config={pageProps.awsRumConfig}>
+        <ApplicationProvider dehydratedState={pageProps.dehydratedState}>
+          {page}
+        </ApplicationProvider>
+      </AwsRumProvider>
     </>
   );
 }
