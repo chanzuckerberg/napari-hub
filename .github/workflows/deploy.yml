@@ -17,6 +17,8 @@ permissions:
 env:
   FIXTURES_CACHE_KEY: e2e-fixtures-${{ github.run_id }}-${{ github.run_attempt }}
 
+
+
 jobs:
   prod:
     name: deploy to production
@@ -98,6 +100,9 @@ jobs:
 
   prod-e2e-setup:
     name: Production E2E Tests Setup
+    defaults:
+      run:
+        working-directory: frontend/
     runs-on: ubuntu-latest
     # TODO: Remove this before PR
     #needs: prod # Needs the production deploy to happen first before E2E tests can be ran
@@ -162,6 +167,9 @@ jobs:
 
   prod-e2e:
     name: E2E tests ${{ matrix.browser }} ${{ matrix.shardCurrent }} / ${{ matrix.shardTotal }}
+    defaults:
+      run:
+        working-directory: frontend/
     runs-on: ubuntu-latest
     needs: prod-e2e-setup
 
