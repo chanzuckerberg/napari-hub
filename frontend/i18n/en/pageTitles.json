@@ -1,7 +1,6 @@
 {
   "base": "napari hub",
   "home": "$t(base) - Image Analysis Plugins for napari",
-  "preview": "preview",
   "by": "by",
   "loading": "loading",
   "plugin": "napari Plugin",

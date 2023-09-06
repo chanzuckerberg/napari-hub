@@ -22,9 +22,6 @@ const HUB_URL_IGNORE_PATTERNS = [
   // Plugin pages
   /\/plugins\/\[name\]/,
 
-  // Plugin preview page
-  /\/preview/,
-
   // Error pages
   /\/404|500/,
 

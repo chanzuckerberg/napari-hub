@@ -17,7 +17,7 @@ export function Layout({ children }: Props) {
   return (
     <div className="flex flex-col min-h-screen">
       <Banner />
-      {!process.env.PREVIEW && <AppBar />}
+      <AppBar />
 
       <main className="flex flex-col flex-grow">{children}</main>
       <SignupForm variant={isSearchPage ? 'search' : 'default'} />

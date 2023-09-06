@@ -2,7 +2,6 @@ import { useMemo } from 'react';
 
 import { I18n } from '@/components/I18n';
 import { Text } from '@/components/Text';
-import { PREVIEW } from '@/constants/env';
 import { usePluginState } from '@/context/plugin';
 import { usePluginMetrics } from '@/hooks';
 
@@ -12,9 +11,7 @@ import { EmptyState } from './EmptyState';
 
 export function ActivityDashboard() {
   const { plugin } = usePluginState();
-  const { data: metrics, isLoading } = usePluginMetrics(
-    PREVIEW ? undefined : plugin?.name,
-  );
+  const { data: metrics, isLoading } = usePluginMetrics(plugin?.name);
 
   const isEmpty = useMemo(() => {
     if (isLoading) {
@@ -37,11 +34,7 @@ export function ActivityDashboard() {
     <div>
       {isEmpty ? (
         <EmptyState className="h-[75px] screen-495:h-[125px]">
-          <I18n
-            i18nKey={
-              PREVIEW ? 'activity:noData.preview' : 'activity:noData.allData'
-            }
-          />
+          <I18n i18nKey="activity:noData.allData" />
         </EmptyState>
       ) : (
         <>

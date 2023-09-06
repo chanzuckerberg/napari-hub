@@ -37,8 +37,7 @@
     },
 
     "pluginName": {
-      "label": "Plugin name",
-      "preview": "Name"
+      "label": "Plugin name"
     },
 
     "pythonVersion": {
@@ -47,13 +46,11 @@
     },
 
     "summary": {
-      "label": "Brief description",
-      "preview": "Summary"
+      "label": "Brief description"
     },
 
     "supportSite": {
-      "label": "Support site",
-      "preview": "Support"
+      "label": "Support site"
     }
   },
 

@@ -2,7 +2,6 @@ import clsx from 'clsx';
 import { useRef } from 'react';
 
 import { PluginTabs } from '@/components/PluginPage/PluginTabs';
-import { usePreviewClickAway } from '@/hooks/usePreviewClickAway';
 
 import { PluginActions } from './PluginActions';
 import { PluginAuthors } from './PluginAuthors';
@@ -13,10 +12,6 @@ import { PluginViewProjectDataLink } from './PluginViewProjectDataLink';
 
 export function PluginCenterColumn() {
   const containerRef = useRef<HTMLElement>(null);
-
-  usePreviewClickAway('metadata-displayName');
-  usePreviewClickAway('metadata-summary');
-  usePreviewClickAway('metadata-description');
 
   return (
     <article

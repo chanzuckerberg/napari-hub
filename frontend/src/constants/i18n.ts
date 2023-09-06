@@ -7,7 +7,6 @@ import pageTitles from '../../i18n/en/pageTitles.json';
 import pluginData from '../../i18n/en/pluginData.json';
 import pluginPage from '../../i18n/en/pluginPage.json';
 import pluginsPage from '../../i18n/en/pluginsPage.json';
-import preview from '../../i18n/en/preview.json';
 
 /**
  * Dictionary of all i18n resources. This is used for generating type
@@ -22,5 +21,4 @@ export const I18nResources = {
   pluginData,
   pluginPage,
   pluginsPage,
-  preview,
 };

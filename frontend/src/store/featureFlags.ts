@@ -32,13 +32,6 @@ export const FEATURE_FLAGS = FEATURE_FLAG_LIST.reduce(
 );
 
 /**
- * Feature flags to enable in preview environment.
- *
- * TODO Cleanup when removing preview page code
- */
-export const PREVIEW_ENABLED_FEATURES: FeatureFlagKey[] = [];
-
-/**
  * Get feature flag map with specified flag keys enabled
  */
 export function getEnabledFeatureFlags(...enabledList: FeatureFlagKey[]) {
