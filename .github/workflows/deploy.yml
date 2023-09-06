@@ -8,11 +8,14 @@ on:
       - 'joshua/**' # TODO: Remove before PR
     # tags:
     #   - 'v*'
-
+ 
 # https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services
 permissions:
   id-token: write
   contents: read
+
+env:
+  FIXTURES_CACHE_KEY: e2e-fixtures-${{ github.run_id }}-${{ github.run_attempt }}
 
 jobs:
   prod:
