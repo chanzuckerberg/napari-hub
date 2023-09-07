@@ -115,7 +115,10 @@ function updateQueryParameters({
   searchStore: PluginSearchStore;
 }) {
   const url = new URL(window.location.href);
-  const params = searchStore.getSearchParams({ initialLoad });
+  const params = searchStore.getSearchParams({
+    initialLoad,
+    path: url.pathname + url.search,
+  });
 
   url.search = params.toString();
   if (window.location.href !== url.href) {

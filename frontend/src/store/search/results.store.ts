@@ -33,6 +33,7 @@ function getPaginationResults(results: SearchResult[], page: number) {
 
 export function getResultsStore(
   searchStore: PluginSearchStore,
+  path: string,
 ): PluginSearchResultStore {
   return derive({
     results: (get) => {
@@ -66,7 +67,7 @@ export function getResultsStore(
       const totalPlugins = results.length;
       const totalPages = Math.ceil(totalPlugins / RESULTS_PER_PAGE);
 
-      const params = state.getSearchParams();
+      const params = state.getSearchParams({ path });
       params.delete(SearchQueryParams.Search);
       const enabledState: Record<string, string[]> = {};
 

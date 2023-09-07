@@ -7,6 +7,7 @@ import { subscribeKey } from 'valtio/utils';
 
 import { BEGINNING_PAGE } from '@/constants/search';
 import { PluginIndexData } from '@/types';
+import { createUrl } from '@/utils';
 
 import { DEFAULT_SORT_TYPE, SearchQueryParams } from './constants';
 import { FuseSearchEngine } from './engines';
@@ -75,8 +76,12 @@ export class PluginSearchStore implements Resettable {
 
   getSearchParams({
     initialLoad,
-  }: { initialLoad?: boolean } = {}): URLSearchParams {
-    const url = new URL(window.location.href);
+    path,
+  }: {
+    initialLoad?: boolean;
+    path: string;
+  }): URLSearchParams {
+    const url = createUrl(path);
     const params = url.searchParams;
     // Draft parameter object to store updated parameter values.
     const nextParams = new URLSearchParams();
