@@ -318,7 +318,7 @@ module frontend_error_alarm {
   create_metric_alarm = var.alarms_enabled
   datapoints_to_alarm = 1
   evaluation_periods  = 2
-  metric_name         = local.backend_api_500_log_metric_name
+  metric_name         = local.frontend_error_name
   namespace           = local.metrics_namespace
   period              = local.period
   statistic           = "Sum"
