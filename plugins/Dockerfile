@@ -1,11 +1,13 @@
-FROM public.ecr.aws/lambda/python:3.8
+FROM public.ecr.aws/lambda/python:3.9
 
 ENV NPE2_NOCACHE = 1
 
-RUN ["yum", "install", "-y", "mesa-libGL"]
+RUN yum install -y mesa-libGL && yum clean all
 
-COPY requirements.txt .
-RUN ["pip", "install", "-r", "requirements.txt"]
+COPY ./napari-hub-commons ../napari-hub-commons
+COPY ./plugins/requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . .
+COPY ./plugins/ .
+
 CMD ["get_plugin_manifest.generate_manifest"]

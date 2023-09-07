@@ -8,16 +8,21 @@ on:
     branches:
       - main
     paths:
+      - .github/workflows/e2e-tests.yml
       - 'frontend/**'
   pull_request:
     branches:
       - '**'
     paths:
+      - .github/workflows/e2e-tests.yml
       - 'frontend/**'
 
 defaults:
   run:
     working-directory: frontend/
+
+env:
+  FIXTURES_CACHE_KEY: e2e-fixtures-${{ github.run_id }}-${{ github.run_attempt }}
 
 jobs:
   e2e-setup:
@@ -79,7 +84,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: frontend/e2e/fixtures
-          key: local-e2e-fixtures
+          key: ${{ env.FIXTURES_CACHE_KEY }}
 
       - name: Fetch fixture data
         env:
@@ -152,7 +157,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: frontend/e2e/fixtures
-          key: local-e2e-fixtures
+          key: ${{ env.FIXTURES_CACHE_KEY }}
 
       - name: Run E2E Tests
         env:

@@ -52,6 +52,7 @@ locals {
   snowflake_user = try(local.secret["snowflake"]["user"], "")
   snowflake_password = try(local.secret["snowflake"]["password"], "")
   split_io_server_key = try(local.secret["split.io"]["server_key"], "")
+  cloudwatch_rum_config = try(local.secret["cloudwatch_rum"], {})
 
   frontend_url = var.frontend_url != "" ? var.frontend_url: try(join("", ["https://", module.frontend_dns.dns_prefix, ".", local.external_dns]), var.frontend_url)
   backend_function_name = "${local.custom_stack_name}-backend"
@@ -94,6 +95,7 @@ module frontend_service {
   split_io_server_key = local.split_io_server_key
   frontend_url      = local.frontend_url
   tags              = var.tags
+  cloudwatch_rum_config = local.cloudwatch_rum_config
 
   wait_for_steady_state = local.wait_for_steady_state
 }
@@ -146,6 +148,8 @@ module github_dynamodb_table {
                             type = "S"
                           }
                         ]
+  ttl_enabled         = true
+  ttl_attribute_name  = "expiry"
   autoscaling_enabled = var.env == "dev" ? false : true
   create_table        = true
   tags                = var.tags
@@ -305,8 +309,6 @@ module plugins_lambda {
   }
 
   environment = {
-    "BUCKET" = local.data_bucket_name
-    "BUCKET_PATH" = var.env == "dev" ? local.custom_stack_name : ""
     "STACK_NAME" = local.custom_stack_name
   }
 
@@ -579,24 +581,7 @@ data aws_iam_policy_document data_workflows_policy {
 data aws_iam_policy_document plugins_policy {
   statement {
     actions = [
-      "s3:PutObject",
-      "s3:GetObject",
-    ]
-
-    resources = ["${local.data_bucket_arn}/*"]
-  }
-
-  statement {
-    actions = [
-      "s3:ListBucket",
-    ]
-
-    resources = [local.data_bucket_arn]
-  }
-
-  statement {
-    actions = [
-      "dynamodb:GetItem",
+      "dynamodb:Query",
       "dynamodb:PutItem",
     ]
     resources = [module.plugin_metadata_dynamodb_table.table_arn]

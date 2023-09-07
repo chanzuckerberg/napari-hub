@@ -22,29 +22,25 @@ interface Props {
 }
 
 export const getServerSideProps = getServerSidePropsHandler<Props>({
-  async getProps({ req }, featureFlags) {
+  async getProps() {
     const props: Props = {
       status: 200,
     };
 
-    if (!req.url || featureFlags.homePageRedesign.value !== 'on') {
-      props.status = 404;
-    } else {
-      try {
-        const index = await hubAPI.getPluginIndex();
-        const {
-          data: { licenses },
-        } = await spdxLicenseDataAPI.get<SpdxLicenseResponse>('');
+    try {
+      const index = await hubAPI.getPluginIndex();
+      const {
+        data: { licenses },
+      } = await spdxLicenseDataAPI.get<SpdxLicenseResponse>('');
 
-        Object.assign(props, { index, licenses });
-      } catch (err) {
-        if (axios.isAxiosError(err)) {
-          props.error = err.message;
-        }
+      Object.assign(props, { index, licenses });
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        props.error = err.message;
+      }
 
-        if (err instanceof z.ZodError) {
-          props.error = getZodErrorMessage(err);
-        }
+      if (err instanceof z.ZodError) {
+        props.error = getZodErrorMessage(err);
       }
     }
 

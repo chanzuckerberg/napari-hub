@@ -6,45 +6,26 @@ import { z } from 'zod';
 
 import { ErrorMessage } from '@/components/ErrorMessage';
 import { HomePage, HomePageProvider } from '@/components/HomePage';
-import { SearchPage } from '@/components/SearchPage';
-import { SearchStoreProvider } from '@/store/search/context';
-import { SpdxLicenseData, SpdxLicenseResponse } from '@/store/search/types';
-import {
-  PluginIndexData,
-  PluginSectionsResponse,
-  PluginSectionType,
-} from '@/types';
+import { PluginSectionsResponse, PluginSectionType } from '@/types';
 import { hubAPI } from '@/utils/HubAPIClient';
-import { spdxLicenseDataAPI } from '@/utils/spdx';
 import { getServerSidePropsHandler } from '@/utils/ssr';
 import { getZodErrorMessage } from '@/utils/validate';
 
 interface Props {
   error?: string;
-  index?: PluginIndexData[];
-  licenses?: SpdxLicenseData[];
   pluginSections?: PluginSectionsResponse;
 }
 
 export const getServerSideProps = getServerSidePropsHandler<Props>({
-  async getProps(_, featureFlags) {
+  async getProps() {
     const props: Props = {};
 
     try {
-      if (featureFlags.homePageRedesign.value === 'on') {
-        props.pluginSections = await hubAPI.getPluginSections([
-          PluginSectionType.pluginType,
-          PluginSectionType.newest,
-          PluginSectionType.recentlyUpdated,
-        ]);
-      } else {
-        const index = await hubAPI.getPluginIndex();
-        const {
-          data: { licenses },
-        } = await spdxLicenseDataAPI.get<SpdxLicenseResponse>('');
-
-        Object.assign(props, { index, licenses });
-      }
+      props.pluginSections = await hubAPI.getPluginSections([
+        PluginSectionType.pluginType,
+        PluginSectionType.newest,
+        PluginSectionType.recentlyUpdated,
+      ]);
     } catch (err) {
       if (axios.isAxiosError(err)) {
         props.error = err.message;
@@ -59,12 +40,7 @@ export const getServerSideProps = getServerSidePropsHandler<Props>({
   },
 });
 
-export default function Home({
-  error,
-  index,
-  licenses,
-  pluginSections,
-}: Props) {
+export default function Home({ error, pluginSections }: Props) {
   const [t] = useTranslation(['pageTitles', 'homePage']);
 
   return (
@@ -75,12 +51,6 @@ export default function Home({
 
       {error && (
         <ErrorMessage error={error}>{t('homePage:fetchError')}</ErrorMessage>
-      )}
-
-      {index && licenses && (
-        <SearchStoreProvider index={index} licenses={licenses}>
-          <SearchPage />
-        </SearchStoreProvider>
       )}
 
       {pluginSections && (

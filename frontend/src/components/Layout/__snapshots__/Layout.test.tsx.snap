@@ -33,12 +33,6 @@ exports[`<Layout /> should match snapshot 1`] = `
             >
               Plugins
             </a>
-            <a
-              class="ml-sds-xl"
-              href="/collections"
-            >
-              Collections
-            </a>
           </div>
         </nav>
       </div>

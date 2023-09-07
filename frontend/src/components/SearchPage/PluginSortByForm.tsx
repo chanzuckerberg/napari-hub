@@ -9,25 +9,8 @@ import { useSnapshot } from 'valtio';
 
 import { Accordion } from '@/components/Accordion';
 import { SORT_LABELS, SORT_OPTIONS } from '@/constants/search';
-import { useIsFeatureFlagEnabled } from '@/store/featureFlags';
 import { SearchSortType } from '@/store/search/constants';
 import { useSearchStore } from '@/store/search/context';
-import { I18nKeys } from '@/types/i18n';
-
-const DEFAULT_SORT_BY_RADIO_ORDER: SearchSortType[] = [
-  SearchSortType.TotalInstalls,
-  SearchSortType.ReleaseDate,
-  SearchSortType.FirstReleased,
-  SearchSortType.PluginName,
-];
-
-const SORT_BY_LABELS: Record<SearchSortType, I18nKeys<'homePage'>> = {
-  [SearchSortType.Relevance]: 'homePage:sort.relevance',
-  [SearchSortType.FirstReleased]: 'homePage:newest',
-  [SearchSortType.ReleaseDate]: 'homePage:recentlyUpdated',
-  [SearchSortType.PluginName]: 'homePage:sort.pluginName',
-  [SearchSortType.TotalInstalls]: 'homePage:sort.totalInstalls',
-};
 
 /**
  * Component for the radio form for selecting the plugin sort type.
@@ -37,20 +20,15 @@ function SortForm() {
   const state = useSnapshot(searchStore);
   const isSearching = state.search.query;
   const [t] = useTranslation(['homePage', 'pluginsPage']);
-  const isHomePageRedesign = useIsFeatureFlagEnabled('homePageRedesign');
 
   const radios: SearchSortType[] = [];
-  const options = isHomePageRedesign
-    ? SORT_OPTIONS
-    : DEFAULT_SORT_BY_RADIO_ORDER;
-  const labels = isHomePageRedesign ? SORT_LABELS : SORT_BY_LABELS;
 
   // Add relevance sort type if user is searching fro a plugin.
   if (isSearching) {
     radios.push(SearchSortType.Relevance);
   }
 
-  radios.push(...options);
+  radios.push(...SORT_OPTIONS);
 
   return (
     <FormControl component="fieldset">
@@ -94,7 +72,7 @@ function SortForm() {
                   color="default"
                 />
               }
-              label={t(labels[sortType]) as string}
+              label={t(SORT_LABELS[sortType]) as string}
             />
           </motion.div>
         ))}
@@ -111,7 +89,6 @@ function SortForm() {
 export function PluginSortByForm() {
   const [t] = useTranslation(['homePage', 'pluginsPage']);
   const form = <SortForm />;
-  const isHomePageRedesign = useIsFeatureFlagEnabled('homePageRedesign');
   const { searchStore } = useSearchStore();
   const state = useSnapshot(searchStore);
 
@@ -119,14 +96,9 @@ export function PluginSortByForm() {
     <>
       <div className="screen-875:hidden">
         <Accordion
-          titleClassName={clsx(!isHomePageRedesign && 'uppercase')}
-          title={
-            isHomePageRedesign
-              ? `${t('pluginsPage:sortByMobile', {
-                  sortType: t(SORT_LABELS[state.sort]),
-                })}`
-              : t('homePage:sort.title')
-          }
+          title={`${t('pluginsPage:sortByMobile', {
+            sortType: t(SORT_LABELS[state.sort]),
+          })}`}
         >
           {form}
         </Accordion>

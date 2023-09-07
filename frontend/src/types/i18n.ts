@@ -57,11 +57,6 @@ export type I18nPluginDataLabel =
       label: string;
 
       /**
-       * Label used for preview page.
-       */
-      preview?: string;
-
-      /**
        * Shorter version of the regular label.
        */
       short?: string;
@@ -71,11 +66,6 @@ export type I18nPluginDataLabel =
        */
       lower?: string;
     };
-
-export interface I18nPreviewSection {
-  description: string;
-  title: string;
-}
 
 /**
  * Helper type for getting a union of all i18n keys for a specific namespace.
