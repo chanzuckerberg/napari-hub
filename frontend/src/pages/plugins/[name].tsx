@@ -1,4 +1,3 @@
-import { AxiosError } from 'axios';
 import Head from 'next/head';
 import { useTranslation } from 'next-i18next';
 import { ParsedUrlQuery } from 'node:querystring';
@@ -28,10 +27,6 @@ interface BaseProps {
 }
 
 type Props = FetchRepoDataResult & BaseProps;
-
-function isAxiosError(error: unknown): error is AxiosError {
-  return !!(error as AxiosError).isAxiosError;
-}
 
 const logger = new Logger('pages/plugins/[name].tsx');
 

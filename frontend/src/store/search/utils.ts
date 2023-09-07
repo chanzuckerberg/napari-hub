@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import { PluginSearchStore } from './search.store';
+import type { PluginSearchStore } from './search.store';
 
 export const PARAM_KEY_MAP: Record<string, string | undefined> = {
   operatingSystems: 'operatingSystem',
