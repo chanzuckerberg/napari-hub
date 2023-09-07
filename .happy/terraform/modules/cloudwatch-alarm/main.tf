@@ -88,7 +88,7 @@ resource aws_cloudwatch_log_metric_filter data_workflows_plugin_update_successfu
 resource aws_cloudwatch_log_metric_filter frontend_error {
   name            = "${var.stack_name}-frontend-error"
   log_group_name  = var.frontend_log_group_name
-  pattern         = "\"level\":\"error\""
+  pattern         = "{ $.level = \"error\" }"
   count           = var.metrics_enabled ? 1 : 0
 
   metric_transformation {
