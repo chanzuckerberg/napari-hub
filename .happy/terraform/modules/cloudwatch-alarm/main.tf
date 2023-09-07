@@ -301,6 +301,10 @@ module frontend_uncaught_error_alarm {
           period      = local.period
           stat        = "Sum"
           unit        = "Count"
+
+          dimensions = {
+            application_name = var.frontend_rum_app_name
+          }
       }]
     }
   ]
