@@ -685,4 +685,5 @@ module alarm_and_monitoring {
   data_workflows_lambda_log_group_name = module.data_workflows_lambda.cloudwatch_log_group_name
   plugins_lambda_function_name = module.plugins_lambda.function_name
   tags = var.tags
+  frontend_log_group_name = frontend_service.cloudwatch_log_group_name
 }

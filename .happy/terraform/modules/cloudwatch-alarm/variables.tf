@@ -48,3 +48,8 @@ variable stack_name {
 variable tags {
     type      = map(string)
 }
+
+variable frontend_log_group_name {
+  type        = string
+  description = "Log group name for frontend"
+}
