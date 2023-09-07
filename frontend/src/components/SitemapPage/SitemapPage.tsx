@@ -5,7 +5,6 @@ import { useEffect } from 'react';
 import { Link } from '@/components/Link';
 import { Text } from '@/components/Text';
 import { useLoadingState } from '@/context/loading';
-import { useIsFeatureFlagEnabled } from '@/store/featureFlags';
 import { I18nKeys } from '@/types/i18n';
 import { SitemapCategory, SitemapEntry } from '@/types/sitemap';
 
@@ -18,11 +17,9 @@ import { useCategorizedSitemapEntries } from './useCategorizedSitemapEntries';
  * bring users to their associated page.
  */
 function useCategoryToPathMap(): Record<SitemapCategory, string> {
-  const isHomePageRedesign = useIsFeatureFlagEnabled('homePageRedesign');
-
   return {
     [SitemapCategory.Home]: '/',
-    [SitemapCategory.Plugin]: isHomePageRedesign ? '/plugins' : '/',
+    [SitemapCategory.Plugin]: '/plugins',
     [SitemapCategory.Collection]: '/collections',
   };
 }

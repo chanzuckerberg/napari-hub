@@ -1,5 +1,4 @@
 import logging
-import os
 from typing import Dict, List, Optional
 
 import yaml
@@ -28,8 +27,9 @@ class GithubClientHelper:
     def get_license(self) -> Optional[str]:
         try:
             api_url = self._to_api_github_url()
-            response = get_request(f"{api_url}/license?ref={self._branch}",
-                                   auth=self._auth).json()
+            response = get_request(
+                f"{api_url}/license?ref={self._branch}", auth=self._auth
+            ).json()
             spdx_id = response.get("license", {}).get("spdx_id")
             if spdx_id != "NOASSERTION":
                 return spdx_id
@@ -53,15 +53,6 @@ class GithubClientHelper:
         :param file_format: format to return if specified
         :return: file context for the file to download
         """
-        local_workspace = os.getenv("GITHUB_WORKSPACE")
-        if local_workspace:
-            # read files locally since github action already checked it out
-            if os.path.exists(os.path.join(local_workspace, file)):
-                with open(os.path.join(local_workspace, file)) as f:
-                    return f.read()
-            else:
-                return None
-
         api_url = self._to_api_github_url(use_raw_content=True)
         if self._branch and file:
             api_url = f"{api_url}/{self._branch}/{file}"
@@ -98,10 +89,10 @@ class CitationHelper:
         try:
             citation = Citation(cffstr=self._citation_str)
             return {
-                'citation': self._citation_str,
-                'RIS': citation.as_ris(),
-                'BibTex': citation.as_bibtex(),
-                'APA': citation.as_apalike()
+                "citation": self._citation_str,
+                "RIS": citation.as_ris(),
+                "BibTex": citation.as_bibtex(),
+                "APA": citation.as_apalike(),
             }
         except Exception as e:
             logging.exception(e)

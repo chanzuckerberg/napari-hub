@@ -1,7 +1,6 @@
 import { throttle } from 'lodash';
 import { useEffect } from 'react';
 
-import { AppBarPreview } from '@/components/AppBar';
 import { ColumnLayout } from '@/components/ColumnLayout';
 import { useLoadingState } from '@/context/loading';
 
@@ -36,8 +35,6 @@ export function PluginPage() {
 
   return (
     <div className="flex flex-col flex-grow justify-center">
-      {process.env.PREVIEW && <AppBarPreview />}
-
       <ColumnLayout
         className="p-sds-xl  screen-495:p-12 screen-875:px-0"
         data-testid="pluginDetails"

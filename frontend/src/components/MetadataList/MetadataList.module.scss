@@ -26,8 +26,4 @@
       }
     }
   }
-
-  &.preview .linkItem.empty:not(:first-child) {
-    @apply mt-sds-xxs;
-  }
 }

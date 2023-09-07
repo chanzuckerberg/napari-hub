@@ -7,7 +7,6 @@ import { SkeletonLoader } from '@/components/SkeletonLoader';
 import { RESULTS_PER_PAGE } from '@/constants/search';
 import { useLoadingState } from '@/context/loading';
 import { useMediaQuery } from '@/hooks';
-import { useIsFeatureFlagEnabled } from '@/store/featureFlags';
 import { loadingStore } from '@/store/loading';
 import { useSearchStore } from '@/store/search/context';
 import { SearchResult } from '@/store/search/search.types';
@@ -79,9 +78,8 @@ function SearchResultItems() {
 }
 
 export function PluginSearchResultList() {
-  const isHomePageRedesign = useIsFeatureFlagEnabled('homePageRedesign');
   const isScreen875 = useMediaQuery({ minWidth: 'screen-875' });
-  const isSortVisible = isScreen875 && isHomePageRedesign;
+  const isSortVisible = isScreen875;
 
   return (
     <section className="col-span-2 screen-1425:col-span-3 space-y-sds-xl ">

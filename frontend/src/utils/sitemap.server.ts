@@ -19,14 +19,8 @@ const HUB_URL_IGNORE_PATTERNS = [
   // sitemap.xml and robots.txt files
   /\/sitemap\.xml|robots\.txt/,
 
-  // Collections pages
-  /\/collections\/\[symbol\]/,
-
   // Plugin pages
   /\/plugins\/\[name\]/,
-
-  // Plugin preview page
-  /\/preview/,
 
   // Error pages
   /\/404|500/,
@@ -92,41 +86,12 @@ async function getPluginEntries(): Promise<SitemapEntry[]> {
   return [];
 }
 
-/**
- * @returns A list of all hub collection sitemap entries.
- */
-async function getCollectionEntries(): Promise<SitemapEntry[]> {
-  try {
-    const data = await hubAPI.getCollectionsIndex();
-
-    return data.map((collection) => {
-      const url = `/collections/${collection.symbol}`;
-
-      return {
-        url,
-        name: collection.title,
-        type: SitemapCategory.Collection,
-      };
-    });
-  } catch (err) {
-    logger.error('Unable to fetch collection list:', err);
-  }
-
-  return [];
-}
-
 export async function getSitemapEntries({
   hostname,
 }: {
   hostname?: string;
 } = {}): Promise<SitemapEntry[]> {
-  return (
-    await Promise.all([
-      getHubEntries(),
-      getPluginEntries(),
-      getCollectionEntries(),
-    ])
-  )
+  return (await Promise.all([getHubEntries(), getPluginEntries()]))
     .flat()
     .map((entry) => ({
       ...entry,

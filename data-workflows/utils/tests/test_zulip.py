@@ -6,7 +6,7 @@ from requests import HTTPError
 from requests.auth import HTTPBasicAuth
 
 import nhcommons.utils.request_adapter
-from nhcommons.tests.utils.test_pypi_adapter import MockResponse
+from nhcommons.tests.utils.test_fixtures import MockResponse
 from utils import zulip
 
 PLUGIN = "foo"

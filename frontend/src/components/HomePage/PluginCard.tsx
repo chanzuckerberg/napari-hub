@@ -130,7 +130,7 @@ export function PluginCard({
             </p>
 
             {metadataToShow?.map((key) => (
-              <div key={key}>
+              <div className="flex items-center gap-1" key={key}>
                 <Text element="span" variant="bodyS">
                   {t(I18N_KEY_MAP[key] as I18nKeys<'pluginData'>) as string}:
                 </Text>

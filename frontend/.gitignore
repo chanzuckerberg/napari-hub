@@ -130,8 +130,6 @@ temp/
 
 # End of https://www.toptal.com/developers/gitignore/api/node
 
-# Preview page build
-preview/
 .vercel
 
 test-results/

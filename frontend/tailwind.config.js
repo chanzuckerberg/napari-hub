@@ -48,11 +48,6 @@ module.exports = {
         'napari-hover': colors.hover,
         'napari-error': colors.error,
         'napari-gray': colors.gray,
-        'napari-preview-gray': colors.previewGray,
-        'napari-preview-orange': colors.previewOrange,
-        'napari-preview-orange-overlay': colors.previewOrangeOverlay,
-        'napari-preview-orange-overlay-active':
-          colors.previewOrangeOverlayActive,
 
         'hub-gray': {
           100: '#f7f7f7',

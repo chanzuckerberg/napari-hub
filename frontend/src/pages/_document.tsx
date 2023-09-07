@@ -1,5 +1,4 @@
 import ServerStyleSheets from '@mui/styles/ServerStyleSheets';
-import clsx from 'clsx';
 import Document, {
   DocumentContext,
   Head,
@@ -37,10 +36,8 @@ export default class HubDocument extends Document {
   }
 
   render() {
-    const isPreview = !!process.env.PREVIEW;
-
     return (
-      <Html id="napari-hub" className={clsx(isPreview && 'preview')} lang="en">
+      <Html id="napari-hub" lang="en">
         <Head>
           <meta name="theme-color" content={theme.palette.primary.main} />
           <link

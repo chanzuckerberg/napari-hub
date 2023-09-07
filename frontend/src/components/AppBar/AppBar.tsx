@@ -7,7 +7,6 @@ import { useSnapshot } from 'valtio';
 
 import { Menu } from '@/components/icons';
 import { MenuPopover } from '@/components/MenuPopover';
-import { useIsFeatureFlagEnabled } from '@/store/featureFlags';
 import { pageTransitionsStore } from '@/store/pageTransitions';
 import { createUrl } from '@/utils';
 
@@ -24,7 +23,6 @@ export function AppBar() {
   const links = useAppBarLinks();
   const [t] = useTranslation(['common']);
 
-  const isHomePageRedesign = useIsFeatureFlagEnabled('homePageRedesign');
   const router = useRouter();
   const { nextUrl } = useSnapshot(pageTransitionsStore);
 
@@ -84,7 +82,7 @@ export function AppBar() {
             'screen-875:col-span-2 screen-1150:col-span-3',
           )}
         >
-          {isHomePageRedesign && !isPluginsPage && <PluginSearchBar />}
+          {!isPluginsPage && <PluginSearchBar />}
 
           {/* Menu button */}
           <div

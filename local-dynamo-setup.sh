@@ -77,6 +77,35 @@ create_if_not_exists() {
 }
 
 
+load_data() {
+  max_items=25
+  starting_token_param=""
+  total_count=0
+  while : ; do
+    data=$(aws dynamodb scan --table-name "$remote_dynamo_prefix-$1" \
+      --profile "$AWS_PROFILE" --max-items $max_items $starting_token_param 2>&1)
+    items=$(printf '%s' $data | jq --arg local "$local_dynamo_prefix-$1" \
+      '[.Items | {PutRequest: {Item: .[]}}] | {($local): .}')
+
+    batch_write_resp=$(aws dynamodb batch-write-item \
+      --endpoint-url "$endpoint_url" --request-items "$items")
+
+    unprocessed_items="$(echo $batch_write_resp | jq '.UnprocessedItems')"
+    if [ "$unprocessed_items" != "{}" ]; then
+      echo "unprocessed_items: $unprocessed_items"
+    fi
+    count=$(printf '%s' $data | jq '.Items | length')
+    total_count=$((total_count + count))
+    echo "Records written: $total_count"
+
+    next_token=$(printf '%s' $data | jq '.NextToken')
+
+    [ "$next_token" != "null" ] || break
+    starting_token_param="--starting-token $next_token"
+  done
+}
+
+
 current_aws_access_key=$AWS_ACCESS_KEY_ID
 current_aws_secret_key=$AWS_SECRET_ACCESS_KEY
 current_aws_default_region=$AWS_DEFAULT_REGION
@@ -125,6 +154,10 @@ fi
 # Create tables that don't exist from source for table names passed as arguments
 for table in "$@"; do
   create_if_not_exists "$table"
+  read -p "Load data from $remote_dynamo_prefix $table to local (y/n): " load_data
+  if [ "$load_data" = "y" ]; then
+    load_data "$table"
+  fi
 done
 
 reset_updated_env_variables

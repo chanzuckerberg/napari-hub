@@ -3,16 +3,11 @@ from typing import Any, Dict, List, Optional, Tuple
 
 import pytest
 import requests
+
+from nhcommons.tests.utils.test_fixtures import MockResponse
 from nhcommons.utils import pypi_adapter
 
 ReleasesType = List[Dict[str, str]]
-
-
-class MockResponse(requests.Response):
-    def __init__(self, status_code: int = 200, content: str = ""):
-        super().__init__()
-        self.status_code = status_code
-        self._content = content.encode("UTF-8")
 
 
 def plugins() -> List[Tuple[str, str]]:
@@ -24,7 +19,7 @@ def plugins() -> List[Tuple[str, str]]:
 def valid_pypi_data() -> str:
     return json.dumps({
         "info": {
-            "author": "foo & bar|baz, napari hub team and test and   &",
+            "author": "foo & bar|baz, napari hub team and yand test and   &",
             "author_email": "team@napari-hub.org",
             "classifiers": [
                 "Development Status :: 4 - Beta",
@@ -73,7 +68,7 @@ def plugin_metadata_valid() -> Dict[str, Any]:
             {'name': 'foo'},
             {'name': 'bar|baz'},
             {'name': 'napari hub team'},
-            {'name': 'test'},
+            {'name': 'yand test'},
         ],
         "license": "BSD-3",
         "python_version": ">=3.7",
@@ -95,12 +90,15 @@ def plugin_metadata_valid() -> Dict[str, Any]:
     }
 
 
-def default_pypi_data(release: Optional[ReleasesType] = None):
+def default_pypi_data(info_fields: Dict[str, Any], release: Optional[ReleasesType]):
+    info_data = {
+        "project_urls": {},
+        "version": "1.9.8"
+    }
+    if info_fields:
+        info_data.update(info_fields)
     return json.dumps({
-        "info": {
-            "project_urls": {},
-            "version": "1.9.8",
-        },
+        "info": info_data,
         "releases": {
             "1.0.0": [{"upload_time_iso_8601":  "2022-09-14T22:03:09.779012Z"}],
             "1.9.8": release
@@ -108,8 +106,8 @@ def default_pypi_data(release: Optional[ReleasesType] = None):
     })
 
 
-def plugin_metadata_default(release_date: str = ""):
-    return {
+def plugin_metadata_default(fields: Dict[str, Any] = None, release_date: str = ""):
+    default_response = {
         "name": "",
         "summary": "",
         "description": "",
@@ -130,6 +128,9 @@ def plugin_metadata_default(release_date: str = ""):
         "twitter": "",
         "code_repository": None,
     }
+    if fields:
+        default_response.update(fields)
+    return default_response
 
 
 class TestPypiAdapter:
@@ -160,7 +161,9 @@ class TestPypiAdapter:
         elif args[0] == "https://pypi.org/pypi/napari-demo/json":
             return MockResponse(content=valid_pypi_data())
         elif args[0] == "https://pypi.org/pypi/default-demo/json":
-            return MockResponse(content=default_pypi_data(self._release))
+            return MockResponse(
+                content=default_pypi_data(self._info_fields, self._release)
+            )
         return MockResponse(status_code=requests.codes.not_found)
 
     @pytest.mark.parametrize("is_valid, expected", [
@@ -171,17 +174,32 @@ class TestPypiAdapter:
         self._version_field = "package-snippet__version" if is_valid else "foo"
         assert expected == pypi_adapter.get_all_plugins()
 
-    @pytest.mark.parametrize("plugin, version, expected", [
-            ("foo", "0.1", {}),
-            ("napari-demo", "0.1", {}),
-            ("napari-demo", "0.2.3", plugin_metadata_valid()),
-            ("default-demo", "1.9.8", plugin_metadata_default()),
-    ])
-    def test_get_plugin_metadata(self,
-                                 plugin: str,
-                                 version: str,
-                                 expected: Dict[str, Any]):
+    @pytest.mark.parametrize(
+        "plugin, version, extra_fields, expected",
+        [
+            ("foo", "0.1", {}, {}),
+            ("napari-demo", "0.1", {}, {}),
+            ("napari-demo", "0.2.3", {}, plugin_metadata_valid()),
+            ("default-demo", "1.9.8", {}, plugin_metadata_default()),
+            (
+                "default-demo",
+                "1.9.8",
+                {"author": " and,,,&& and ,,and,,&&&and "},
+                plugin_metadata_default(
+                    fields={"authors": [{"name": "and"}, {"name": "and"}, {"name": "and"}]}
+                )
+            ),
+        ]
+    )
+    def test_get_plugin_metadata(
+        self,
+        plugin: str,
+        version: str,
+        extra_fields: Dict[str, Any],
+        expected: Dict[str, Any],
+    ):
         self._release = []
+        self._info_fields = extra_fields
         actual = pypi_adapter.get_plugin_pypi_metadata(plugin, version)
         assert expected == actual
 
@@ -193,9 +211,10 @@ class TestPypiAdapter:
             ([{}], ""),
             ([], ""),
     ])
-    def test_get_plugin_metadata_release_date(self,
-                                              release: ReleasesType,
-                                              release_date: str):
+    def test_get_plugin_metadata_release_date(
+            self, release: ReleasesType, release_date: str
+    ):
         self._release = release
+        self._info_fields = {}
         actual = pypi_adapter.get_plugin_pypi_metadata("default-demo", "1.9.8")
-        assert plugin_metadata_default(release_date) == actual
+        assert plugin_metadata_default(release_date=release_date) == actual
