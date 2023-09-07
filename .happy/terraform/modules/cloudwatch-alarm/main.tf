@@ -283,7 +283,7 @@ module frontend_uncaught_error_alarm {
   alarm_actions = [local.alarm_sns_arn]
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = 1
-  threshold           = 1
+  threshold           = 0
   datapoints_to_alarm = 1
   metric_query = [
     {
@@ -321,7 +321,7 @@ module frontend_error_alarm {
   comparison_operator = "GreaterThanOrEqualToThreshold"
   create_metric_alarm = var.alarms_enabled
   datapoints_to_alarm = 1
-  evaluation_periods  = 2
+  evaluation_periods  = 1
   metric_name         = local.frontend_error_name
   namespace           = local.metrics_namespace
   period              = local.period
