@@ -277,38 +277,23 @@ module frontend_uncaught_error_alarm {
   source  = "terraform-aws-modules/cloudwatch/aws//modules/metric-alarm"
   version = "3.3.0"
 
-  create_metric_alarm = var.alarms_enabled
-  alarm_name          = "${var.stack_name}-frontend-uncaught-error-alarm"
+  alarm_actions       = [local.alarm_sns_arn]
   alarm_description   = "Errors that are not caught by any error handling on the frontend"
-  alarm_actions = [local.alarm_sns_arn]
+  alarm_name          = "${var.stack_name}-frontend-uncaught-error-alarm"
   comparison_operator = "GreaterThanOrEqualToThreshold"
-  evaluation_periods  = 1
-  threshold           = 0
+  create_metric_alarm = var.alarms_enabled
   datapoints_to_alarm = 1
-  metric_query = [
-    {
-      id          = "error_sum"
-      return_data = true
-      expression  = "SUM(METRICS())"
-      label       = "Total Error Count"
-    },
+  evaluation_periods  = 1
+  metric_name         = "JsErrorCount"
+  namespace           = "AWS/RUM"
+  period              = local.period
+  statistic           = "Sum"
+  tags                = var.tags
+  threshold           = 0
 
-    {
-      id     = "frontend_uncaught_error"
-      metric = [{
-          namespace   = "AWS/RUM"
-          metric_name = "JsErrorCount"
-          period      = local.period
-          stat        = "Sum"
-          unit        = "Count"
-
-          dimensions = {
-            application_name = var.frontend_rum_app_name
-          }
-      }]
-    }
-  ]
-  tags = var.tags
+  dimensions = {
+    application_name = var.frontend_rum_app_name
+  }
 }
 
 module frontend_error_alarm {
@@ -327,5 +312,5 @@ module frontend_error_alarm {
   period              = local.period
   statistic           = "Sum"
   tags                = var.tags
-  threshold           = 2
+  threshold           = 0
 }
