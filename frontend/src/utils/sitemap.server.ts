@@ -9,6 +9,8 @@ import { createUrl, Logger } from '@/utils';
 import { hubAPI } from '@/utils/HubAPIClient';
 import { getBuildManifest, getPreRenderManifest } from '@/utils/next';
 
+import { getErrorMessage } from './error';
+
 const logger = new Logger('sitemap.ts');
 
 // URLs to exclude from the sitemap.xml file.
@@ -55,7 +57,10 @@ function getHubEntries(): SitemapEntry[] {
 
     return entries;
   } catch (err) {
-    logger.error('Unable to read Next.js build manifest:', err);
+    logger.error({
+      message: 'Unable to read Next.js build manifest',
+      error: getErrorMessage(err),
+    });
   }
 
   return [];
@@ -80,7 +85,10 @@ async function getPluginEntries(): Promise<SitemapEntry[]> {
       };
     });
   } catch (err) {
-    logger.error('Unable to fetch plugin list:', err);
+    logger.error({
+      message: 'Unable to fetch plugin list:',
+      error: getErrorMessage(err),
+    });
   }
 
   return [];

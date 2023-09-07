@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 
-import { isObject, set } from 'lodash';
+import { set } from 'lodash';
 import { snapshot, subscribe } from 'valtio';
 
 import { BEGINNING_PAGE, RESULTS_PER_PAGE } from '@/constants/search';
@@ -9,50 +9,7 @@ import { createUrl, replaceUrlState } from '@/utils';
 import { SearchQueryParams, SearchSortType } from './constants';
 import { PluginSearchResultStore } from './results.store';
 import type { PluginSearchStore } from './search.store';
-
-export const PARAM_KEY_MAP: Record<string, string | undefined> = {
-  operatingSystems: 'operatingSystem',
-  pythonVersion: 'python',
-};
-
-export const PARAM_VALUE_MAP: Record<string, string | undefined> = {
-  openSource: 'oss',
-};
-
-interface ForEachFilterParamCallbackOptions {
-  filterKey: string;
-  key: string;
-  state: unknown;
-  stateKey: string;
-  value: string;
-}
-
-/**
- * Utility function for iterating through all filter states with relevant data.
- * This includes the state keys, parameter names / values, and the state value.
- *
- * @param callback The callback to call :)
- */
-function forEachFilterParam(
-  searchStore: PluginSearchStore,
-  callback: (options: ForEachFilterParamCallbackOptions) => void,
-) {
-  for (const [filterKey, store] of Object.entries(searchStore.filters)) {
-    if (isObject(store)) {
-      for (const [stateKey, state] of Object.entries(store)) {
-        const key = PARAM_KEY_MAP[filterKey] ?? filterKey;
-        const value = PARAM_VALUE_MAP[stateKey] ?? stateKey;
-        callback({
-          state: state as boolean,
-          filterKey,
-          key,
-          stateKey,
-          value,
-        });
-      }
-    }
-  }
-}
+import { forEachFilterParam } from './utils';
 
 /**
  * Parses the URL query parameters for initial state. This should only happen
@@ -150,58 +107,17 @@ export function initStateFromQueryParameters(
  *
  * @param initialLoad Whether this is the first time the page is loading.
  */
-function updateQueryParameters(
-  searchStore: PluginSearchStore,
-  initialLoad?: boolean,
-) {
+function updateQueryParameters({
+  initialLoad,
+  searchStore,
+}: {
+  initialLoad?: boolean;
+  searchStore: PluginSearchStore;
+}) {
   const url = new URL(window.location.href);
-  const params = url.searchParams;
-  // Draft parameter object to store updated parameter values.
-  const nextParams = new URLSearchParams();
+  const params = searchStore.getSearchParams({ initialLoad });
 
-  // Set of parameters that should not transfer to the draft parameter object.
-  // This is necessary so that the URL maintains non state related parameters in
-  // the URL.
-  const blockedParams = new Set([
-    ...Object.values(SearchQueryParams),
-    ...Object.keys(searchStore.filters).map((key) => PARAM_KEY_MAP[key] ?? key),
-  ]);
-
-  for (const key of params.keys()) {
-    if (!blockedParams.has(key)) {
-      for (const value of params.getAll(key)) {
-        nextParams.append(key, value);
-      }
-    }
-  }
-
-  // Search query
-  const { query } = searchStore.search;
-  if (query) {
-    nextParams.set(SearchQueryParams.Search, query);
-  }
-
-  // Sort type
-  // Don't set sort type on initial load unless a value is already specified.
-  if (!initialLoad || params.get(SearchQueryParams.Sort)) {
-    const { sort } = searchStore;
-    nextParams.set(SearchQueryParams.Sort, sort);
-  }
-
-  // Filters
-  forEachFilterParam(searchStore, ({ key, value, state }) => {
-    if (typeof state === 'boolean' && state) {
-      nextParams.append(key, value);
-    }
-  });
-
-  // Current page.
-  // Don't set query parameter on initial load unless a value is already specified.
-  if (!initialLoad || params.get(SearchQueryParams.Page)) {
-    nextParams.set(SearchQueryParams.Page, String(searchStore.page));
-  }
-
-  url.search = nextParams.toString();
+  url.search = params.toString();
   if (window.location.href !== url.href) {
     replaceUrlState(url);
   }
@@ -216,11 +132,10 @@ function updateQueryParameters(
 export function startQueryParameterListener(
   searchStore: PluginSearchStore,
 ): () => void {
-  updateQueryParameters(searchStore, true);
+  updateQueryParameters({ searchStore, initialLoad: true });
 
-  const unsubscribe = subscribe(
-    searchStore,
-    updateQueryParameters.bind(null, searchStore, false),
+  const unsubscribe = subscribe(searchStore, () =>
+    updateQueryParameters({ searchStore }),
   );
   return unsubscribe;
 }

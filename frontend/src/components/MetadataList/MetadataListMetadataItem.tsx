@@ -10,6 +10,8 @@ import { SUPPORTED_PYTHON_VERSIONS } from '@/store/search/filter.store';
 import { PARAM_KEY_MAP, PARAM_VALUE_MAP } from '@/store/search/queryParameters';
 import { SpdxLicenseResponse } from '@/store/search/types';
 import { PluginType, PluginWriterSaveLayer } from '@/types';
+import { Logger } from '@/utils';
+import { getErrorMessage } from '@/utils/error';
 import { spdxLicenseDataAPI } from '@/utils/spdx';
 
 import styles from './MetadataList.module.scss';
@@ -100,6 +102,8 @@ const METADATA_FILTER_LINKS = new Set<MetadataLinkKeys>([
   'writerSaveLayers',
 ]);
 
+const logger = new Logger('MetadataListMetadataItem.ts');
+
 /**
  * Component for rendering a metadata value.
  */
@@ -117,7 +121,16 @@ export function MetadataListMetadataItem({
       const { data } = await spdxLicenseDataAPI.get<SpdxLicenseResponse>('');
       return data.licenses;
     },
-    { enabled: metadataKey === 'license' },
+    {
+      enabled: metadataKey === 'license',
+      onError(err) {
+        logger.error({
+          message:
+            'Error fetching spdx license data for MetadataListMetadataItem',
+          error: getErrorMessage(err),
+        });
+      },
+    },
   );
 
   const isOsiApproved = useMemo(

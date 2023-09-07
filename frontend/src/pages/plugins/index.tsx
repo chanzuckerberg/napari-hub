@@ -1,7 +1,5 @@
-import axios from 'axios';
 import Head from 'next/head';
 import { useTranslation } from 'next-i18next';
-import { z } from 'zod';
 
 import { ErrorMessage } from '@/components/ErrorMessage';
 import { NotFoundPage } from '@/components/NotFoundPage';
@@ -9,10 +7,11 @@ import { SearchPage } from '@/components/SearchPage';
 import { SearchStoreProvider } from '@/store/search/context';
 import { SpdxLicenseData, SpdxLicenseResponse } from '@/store/search/types';
 import { PluginIndexData } from '@/types';
+import { Logger } from '@/utils';
+import { getErrorMessage } from '@/utils/error';
 import { hubAPI } from '@/utils/HubAPIClient';
 import { spdxLicenseDataAPI } from '@/utils/spdx';
 import { getServerSidePropsHandler } from '@/utils/ssr';
-import { getZodErrorMessage } from '@/utils/validate';
 
 interface Props {
   error?: string;
@@ -20,6 +19,8 @@ interface Props {
   licenses?: SpdxLicenseData[];
   status?: number;
 }
+
+const logger = new Logger('pages/plugins/index.tsx');
 
 export const getServerSideProps = getServerSidePropsHandler<Props>({
   async getProps() {
@@ -29,19 +30,28 @@ export const getServerSideProps = getServerSidePropsHandler<Props>({
 
     try {
       const index = await hubAPI.getPluginIndex();
+      props.index = index;
+    } catch (err) {
+      props.error = getErrorMessage(err);
+
+      logger.error({
+        message: 'Failed to plugin index',
+        error: props.error,
+      });
+    }
+
+    try {
       const {
         data: { licenses },
       } = await spdxLicenseDataAPI.get<SpdxLicenseResponse>('');
-
-      Object.assign(props, { index, licenses });
+      props.licenses = licenses;
     } catch (err) {
-      if (axios.isAxiosError(err)) {
-        props.error = err.message;
-      }
+      props.error = getErrorMessage(err);
 
-      if (err instanceof z.ZodError) {
-        props.error = getZodErrorMessage(err);
-      }
+      logger.error({
+        message: 'Failed to fetch spdx license data',
+        error: props.error,
+      });
     }
 
     return { props };

@@ -1,20 +1,21 @@
-import axios from 'axios';
 import Head from 'next/head';
 import { useTranslation } from 'next-i18next';
 import { ReactNode } from 'react';
-import { z } from 'zod';
 
 import { ErrorMessage } from '@/components/ErrorMessage';
 import { HomePage, HomePageProvider } from '@/components/HomePage';
 import { PluginSectionsResponse, PluginSectionType } from '@/types';
+import { Logger } from '@/utils';
+import { getErrorMessage } from '@/utils/error';
 import { hubAPI } from '@/utils/HubAPIClient';
 import { getServerSidePropsHandler } from '@/utils/ssr';
-import { getZodErrorMessage } from '@/utils/validate';
 
 interface Props {
   error?: string;
   pluginSections?: PluginSectionsResponse;
 }
+
+const logger = new Logger('pages/index.ts');
 
 export const getServerSideProps = getServerSidePropsHandler<Props>({
   async getProps() {
@@ -27,13 +28,12 @@ export const getServerSideProps = getServerSidePropsHandler<Props>({
         PluginSectionType.recentlyUpdated,
       ]);
     } catch (err) {
-      if (axios.isAxiosError(err)) {
-        props.error = err.message;
-      }
+      props.error = getErrorMessage(err);
 
-      if (err instanceof z.ZodError) {
-        props.error = getZodErrorMessage(err);
-      }
+      logger.error({
+        message: 'Failed to fetch plugin sections',
+        error: props.error,
+      });
     }
 
     return { props };
