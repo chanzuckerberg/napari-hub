@@ -221,11 +221,11 @@ jobs:
             ~/.cache/ms-playwright
           key: playwright-${{ hashFiles('**/yarn.lock') }}
 
-      - name: Load cached local build
+      - name: Load fixtures cache
         uses: actions/cache@v3
         with:
-          path: frontend/.next
-          key: local-build-${{ hashFiles('**/next.config.js') }}-${{ hashFiles('frontend/src') }}-${{ hashFiles('**/yarn.lock') }}
+          path: frontend/e2e/fixtures
+          key: ${{ env.FIXTURES_CACHE_KEY }}
 
       - name: Run E2E Tests
         env:
