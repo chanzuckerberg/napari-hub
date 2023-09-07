@@ -4,10 +4,9 @@ name: Deploy Changes to Cluster
 on:
   push:
     branches:
-      #- main
-      - 'joshua/**' # TODO: Remove before PR
-    # tags:
-    #   - 'v*'
+      - main
+    tags:
+      - 'v*'
  
 # https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services
 permissions:
@@ -16,8 +15,6 @@ permissions:
 
 env:
   FIXTURES_CACHE_KEY: e2e-fixtures-${{ github.run_id }}-${{ github.run_attempt }}
-
-
 
 jobs:
   prod:
@@ -104,8 +101,7 @@ jobs:
       run:
         working-directory: frontend/
     runs-on: ubuntu-latest
-    # TODO: Remove this before PR
-    #needs: prod # Needs the production deploy to happen first before E2E tests can be ran
+    needs: prod # Needs the production deploy to happen first before E2E tests can be ran
 
     steps:
       - name: Checkout Repo
@@ -186,8 +182,8 @@ jobs:
         shardTotal: [5]
 
     steps:
-      # - name: 25 minutes wait # Wait 25 mins before running E2E tests to let deployment changes on AWS propigate
-      #   run: sleep 1500 # Sleep time in seconds (25 minutes * 60 seconds = 1500 seconds)
+      - name: 25 minutes wait # Wait 25 mins before running E2E tests to let deployment changes on AWS propigate
+        run: sleep 1500 # Sleep time in seconds (25 minutes * 60 seconds = 1500 seconds)
       
       - name: Checkout Repo
         uses: actions/checkout@v3
