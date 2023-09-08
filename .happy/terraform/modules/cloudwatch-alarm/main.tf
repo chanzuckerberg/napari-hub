@@ -115,14 +115,14 @@ module backend_api_500_alarm {
   alarm_description   = "API returning 500s"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   create_metric_alarm = var.alarms_enabled
-  datapoints_to_alarm = 1
-  evaluation_periods  = 2
+  datapoints_to_alarm = 2
+  evaluation_periods  = 3
   metric_name         = local.backend_api_500_log_metric_name
   namespace           = local.metrics_namespace
   period              = local.period
   statistic           = "Sum"
   tags                = var.tags
-  threshold           = 2
+  threshold           = 1
 }
 
 module data_workflow_plugins_missing_update_alarm {
@@ -174,9 +174,9 @@ module backend_lambda_errors_alarm {
   alarm_description   = "Errors in backend lambda execution"
   alarm_actions = [local.alarm_sns_arn]
   comparison_operator = "GreaterThanOrEqualToThreshold"
-  evaluation_periods  = 1
-  threshold           = 2
-  datapoints_to_alarm = 1
+  evaluation_periods  = 3
+  threshold           = 1
+  datapoints_to_alarm = 2
   metric_query = [{
     id = "error_sum"
 
@@ -286,10 +286,10 @@ module frontend_uncaught_error_alarm {
   evaluation_periods  = 1
   metric_name         = "JsErrorCount"
   namespace           = "AWS/RUM"
-  period              = local.period
+  period              = 60
   statistic           = "Sum"
   tags                = var.tags
-  threshold           = 0
+  threshold           = 1
 
   dimensions = {
     application_name = var.frontend_rum_app_name
@@ -305,12 +305,12 @@ module frontend_error_alarm {
   alarm_name          = "${var.stack_name}-frontend-error-alarm"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   create_metric_alarm = var.alarms_enabled
-  datapoints_to_alarm = 1
-  evaluation_periods  = 1
+  datapoints_to_alarm = 2
+  evaluation_periods  = 3
   metric_name         = local.frontend_error_name
   namespace           = local.metrics_namespace
-  period              = local.period
+  period              = 60
   statistic           = "Sum"
   tags                = var.tags
-  threshold           = 0
+  threshold           = 1
 }
