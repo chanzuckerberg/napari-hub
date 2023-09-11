@@ -86,7 +86,7 @@ async function getPluginEntries(): Promise<SitemapEntry[]> {
     });
   } catch (err) {
     logger.error({
-      message: 'Unable to fetch plugin list:',
+      message: 'Unable to fetch plugin list',
       error: getErrorMessage(err),
     });
   }

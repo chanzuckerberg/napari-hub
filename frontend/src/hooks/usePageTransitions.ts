@@ -64,7 +64,7 @@ export function usePageTransitions() {
 
     const onError = (error: Error, url: string, event: RouteEvent) => {
       logger.error({
-        message: 'Error loading route:',
+        message: 'Error loading route',
         error: getErrorMessage(error),
       });
 

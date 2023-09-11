@@ -31,7 +31,7 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
     res.end();
   } catch (err) {
     logger.error({
-      message: 'Unable to fetch plugin list:',
+      message: 'Unable to fetch plugin list',
       error: getErrorMessage(err),
     });
   }
