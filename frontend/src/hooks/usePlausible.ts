@@ -84,7 +84,11 @@ export function usePlausible() {
     event: E,
     ...payload: Events[E][]
   ) {
-    logger.debug('Plausible event:', { event, payload });
+    logger.debug({
+      message: 'Plausible event',
+      event,
+      payload,
+    });
 
     plausible(event, {
       props: payload[0],

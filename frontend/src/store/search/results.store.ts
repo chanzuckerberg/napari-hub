@@ -3,6 +3,7 @@ import { derive } from 'valtio/utils';
 import { RESULTS_PER_PAGE } from '@/constants/search';
 import { Logger, measureExecution } from '@/utils';
 
+import { SearchQueryParams } from './constants';
 import type { PluginSearchStore } from './search.store';
 import { SearchResult } from './search.types';
 import { sortResults } from './sorters';
@@ -32,6 +33,7 @@ function getPaginationResults(results: SearchResult[], page: number) {
 
 export function getResultsStore(
   searchStore: PluginSearchStore,
+  path: string,
 ): PluginSearchResultStore {
   return derive({
     results: (get) => {
@@ -39,6 +41,7 @@ export function getResultsStore(
       const { query, index } = state.search;
 
       let results: SearchResult[];
+      let searchDuration = '0 ms';
 
       // Return full list of plugins if the engine or query aren't defined.
       if (!query) {
@@ -54,13 +57,8 @@ export function getResultsStore(
           searchStore.search.search(),
         );
 
-        logger.debug('plugin search:', {
-          query,
-          result,
-          duration,
-        });
-
         results = result;
+        searchDuration = duration;
       }
 
       results = state.filters.filterResults(results);
@@ -68,6 +66,25 @@ export function getResultsStore(
 
       const totalPlugins = results.length;
       const totalPages = Math.ceil(totalPlugins / RESULTS_PER_PAGE);
+
+      const params = state.getSearchParams({ path });
+      params.delete(SearchQueryParams.Search);
+      const enabledState: Record<string, string[]> = {};
+
+      for (const key of params.keys()) {
+        enabledState[key] = params.getAll(key);
+      }
+
+      logger.debug({
+        message: 'plugin search',
+        // only show existence of query since we don't want to log query in case
+        // of user accidentally pasting PII.
+        hasQuery: !!query,
+        enabledState,
+        searchDuration,
+        totalPages,
+        totalPlugins,
+      });
 
       return {
         totalPlugins,

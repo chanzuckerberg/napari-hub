@@ -7,12 +7,14 @@ import { subscribeKey } from 'valtio/utils';
 
 import { BEGINNING_PAGE } from '@/constants/search';
 import { PluginIndexData } from '@/types';
+import { createUrl } from '@/utils';
 
-import { DEFAULT_SORT_TYPE } from './constants';
+import { DEFAULT_SORT_TYPE, SearchQueryParams } from './constants';
 import { FuseSearchEngine } from './engines';
 import { SearchFilterStore } from './filter.store';
 import { SearchEngine, SearchResult } from './search.types';
 import { Resettable } from './types';
+import { forEachFilterParam, PARAM_KEY_MAP } from './utils';
 
 export class SearchEngineStore implements Resettable {
   engine: SearchEngine;
@@ -70,6 +72,62 @@ export class PluginSearchStore implements Resettable {
     ]);
 
     return unsubscribe;
+  }
+
+  getSearchParams({
+    initialLoad,
+    path,
+  }: {
+    initialLoad?: boolean;
+    path: string;
+  }): URLSearchParams {
+    const url = createUrl(path);
+    const params = url.searchParams;
+    // Draft parameter object to store updated parameter values.
+    const nextParams = new URLSearchParams();
+
+    // Set of parameters that should not transfer to the draft parameter object.
+    // This is necessary so that the URL maintains non state related parameters in
+    // the URL.
+    const blockedParams = new Set([
+      ...Object.values(SearchQueryParams),
+      ...Object.keys(this.filters).map((key) => PARAM_KEY_MAP[key] ?? key),
+    ]);
+
+    for (const key of params.keys()) {
+      if (!blockedParams.has(key)) {
+        for (const value of params.getAll(key)) {
+          nextParams.append(key, value);
+        }
+      }
+    }
+
+    // Search query
+    const { query } = this.search;
+    if (query) {
+      nextParams.set(SearchQueryParams.Search, query);
+    }
+
+    // Sort type
+    // Don't set sort type on initial load unless a value is already specified.
+    if (!initialLoad || params.get(SearchQueryParams.Sort)) {
+      nextParams.set(SearchQueryParams.Sort, this.sort);
+    }
+
+    // Filters
+    forEachFilterParam(this, ({ key, value, state }) => {
+      if (typeof state === 'boolean' && state) {
+        nextParams.append(key, value);
+      }
+    });
+
+    // Current page.
+    // Don't set query parameter on initial load unless a value is already specified.
+    if (!initialLoad || params.get(SearchQueryParams.Page)) {
+      nextParams.set(SearchQueryParams.Page, String(this.page));
+    }
+
+    return nextParams;
   }
 }
 

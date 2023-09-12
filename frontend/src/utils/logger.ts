@@ -1,10 +1,8 @@
-/*
-  eslint-disable
-    @typescript-eslint/no-explicit-any,
-    @typescript-eslint/no-unsafe-argument,
-    max-classes-per-file,
-    no-console,
-*/
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable max-classes-per-file */
+/* eslint-disable no-console */
 
 import axios from 'axios';
 
@@ -129,27 +127,29 @@ export class Logger {
   }
 
   private logMessages(level: LogLevel, messages: any[]): void {
-    console[level](...this.formatMessages(messages));
+    console[level](...this.formatMessages(level, messages));
   }
 
-  private formatMessages(messages: any[]): any[] {
+  private formatMessages(level: LogLevel, messages: any[]): any[] {
     const date = new Date();
 
-    return [
-      `date=${date.toISOString()}`,
-      this.name && `file=${this.name}`,
-      `type=${SERVER ? 'server' : 'client'}`,
-      `node_env=${process.env.NODE_ENV}`,
-      `env=${process.env.ENV}`,
-    ]
-      .filter(Boolean)
-      .concat(messages);
+    return messages.map((message) =>
+      JSON.stringify({
+        level,
+        date: date.toISOString(),
+        type: SERVER ? 'server' : 'client',
+        node_env: process.env.NODE_ENV,
+        env: process.env.ENV,
+        ...(this.name && { name: this.name }),
+        ...message,
+      }),
+    );
   }
 
   private getLogEntries(level: LogLevel, messages: any[]): LogEntry {
     return {
       level,
-      messages: this.formatMessages(messages),
+      messages: this.formatMessages(level, messages),
     };
   }
 }
