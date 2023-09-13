@@ -12,5 +12,4 @@ datadog-lambda==3.60.0
 build==0.8.0
 pyOpenSSL==23.2.0
 pynamodb==5.4.1
-python-slugify==8.0.1
 ./../napari-hub-commons

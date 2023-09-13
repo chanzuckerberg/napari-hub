@@ -9,7 +9,8 @@ from api.home import get_plugin_sections
 from api.custom_wsgi import script_path_middleware
 from api.model import get_index, get_manifest
 from api.metrics import get_metrics_for_plugin
-from api.models import (category as categories, plugin as plugin_model)
+from api.models import (plugin as plugin_model)
+from nhcommons.models import (category as categories)
 from api.shield import get_shield
 from utils.utils import send_alert
 

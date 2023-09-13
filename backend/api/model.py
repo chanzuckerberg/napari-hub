@@ -1,9 +1,16 @@
 from typing import Dict, List, Any, Set, Optional
-from api.models import (
-    install_activity,
-    plugin as plugin_model,
+from api.models import (install_activity)
+from nhcommons.models import (
     plugin_metadata as plugin_metadata_model,
+    plugin as plugin_model,
 )
+
+
+def _get_manifest_metadata(name: str, version: str) -> Optional[dict]:
+    result = plugin_metadata_model.query(
+        plugin=name, version_type=f"{version}:DISTRIBUTION"
+    )
+    return result[0].get("data", {}) if result else None
 
 
 def get_manifest(name: str, version: str = None) -> dict:
@@ -16,7 +23,7 @@ def get_manifest(name: str, version: str = None) -> dict:
     version = version or plugin_model.get_latest_version(name)
     if not version:
         return {}
-    manifest_metadata = plugin_metadata_model.get_manifest(name, version)
+    manifest_metadata = _get_manifest_metadata(name, version)
 
     # manifest_metadata being None indicates manifest is not cached and needs processing
     if manifest_metadata is None:

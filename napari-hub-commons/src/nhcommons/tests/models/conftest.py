@@ -1,3 +1,4 @@
+import json
 import time
 
 import boto3
@@ -57,8 +58,8 @@ def verify_table_data():
         def generate_set(input_map: dict) -> set:
             result = set()
             for item in input_map.items():
-                if type(item[1]) == list:
-                    result.add((item[0], "-".join(item[1])))
+                if type(item[1]) == dict or type(item[1]) == list:
+                    result.add((item[0], json.dumps(item[1])))
                 else:
                     result.add(item)
             return result
