@@ -1,6 +1,6 @@
 from typing import Dict, List, Any, Set, Optional
-from api.models import (install_activity)
 from nhcommons.models import (
+    install_activity,
     plugin_metadata as plugin_metadata_model,
     plugin as plugin_model,
 )

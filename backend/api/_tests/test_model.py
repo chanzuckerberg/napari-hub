@@ -3,8 +3,7 @@ from unittest.mock import Mock
 
 import pytest
 
-from api.models import install_activity
-from nhcommons.models import plugin
+from nhcommons.models import plugin, install_activity
 from api import model
 
 

@@ -1,9 +1,7 @@
-import logging
 from typing import Dict, Any, Optional
 
-from api.models import install_activity, github_activity, plugin
-
-logger = logging.getLogger(__name__)
+from api.models import github_activity, plugin
+from nhcommons.models import install_activity
 
 
 def get_metrics_for_plugin(name: str, limit: str) -> Dict[str, Any]:
