@@ -82,22 +82,10 @@ def get_timeline(plugin: str, repo: str, month_delta: int) -> List[Dict[str, int
     :param str repo: Name of the GitHub repo.
     :param int month_delta: Number of months in timeline.
     """
-    type_identifier_format = f"MONTH:{{timestamp:%Y%m}}:{repo}"
-    start_date = datetime.today().replace(day=1) - relativedelta(months=1)
-    end_date = start_date - relativedelta(months=month_delta - 1)
-    condition = _GitHubActivity.type_identifier.between(
-        type_identifier_format.format(timestamp=end_date),
-        type_identifier_format.format(timestamp=start_date)
+    results = _query_for_timeline(plugin, repo, month_delta)
+    start_datetime = datetime.combine(
+        get_first_of_last_month(), datetime.min.time(), timezone.utc
     )
-
-    query_params = {
-        "hash_key": plugin.lower(),
-        "range_key_condition": condition,
-        "filter_condition": _GitHubActivity.repo == repo
-    }
-    results = {row.timestamp: row.commit_count for row in _query_table(query_params)}
-
-    start_datetime = datetime.combine(start_date, datetime.min.time(), timezone.utc)
     dates = [
         int((start_datetime - relativedelta(months=i)).timestamp()) * 1000
         for i in range(month_delta - 1, -1, -1)
@@ -105,6 +93,29 @@ def get_timeline(plugin: str, repo: str, month_delta: int) -> List[Dict[str, int
     return list(
         map(lambda ts: {"timestamp": ts, "commits": results.get(ts, 0)}, dates)
     )
+
+
+def get_first_of_last_month():
+    return datetime.today().replace(day=1) - relativedelta(months=1)
+
+
+def _query_for_timeline(plugin: str, repo: str, month_delta: int) -> Dict[int, int]:
+    if not repo:
+        logger.info(f"Skipping timeline query for {plugin} as repo={repo}")
+        return {}
+    type_identifier_format = f"MONTH:{{timestamp:%Y%m}}:{repo}"
+    start_date = get_first_of_last_month()
+    end_date = start_date - relativedelta(months=month_delta - 1)
+    condition = _GitHubActivity.type_identifier.between(
+        type_identifier_format.format(timestamp=end_date),
+        type_identifier_format.format(timestamp=start_date)
+    )
+    query_params = {
+        "hash_key": plugin.lower(),
+        "range_key_condition": condition,
+        "filter_condition": _GitHubActivity.repo == repo
+    }
+    return {row.timestamp: row.commit_count for row in _query_table(query_params)}
 
 
 def _get_item(plugin: str, type_identifier: str) -> Optional[_GitHubActivity]:

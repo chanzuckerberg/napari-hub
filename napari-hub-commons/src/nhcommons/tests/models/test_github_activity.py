@@ -141,9 +141,11 @@ class TestGithubActivity:
         ("Plugin-1", "Foo/Bar", 0, {}),
         ("Plugin-1", "foo/bar", 0, {}),
         ("Plugin-1", "Foo/Bar", 12, {4: 10, 9: 20}),
+        ("Plugin-1", None, 12, {}),
         ("Plugin-1", "foo/bar", 12, {}),
         ("Plugin-7", "Foo/Bar", 12, {}),
         ("Plugin-7", "Bar/Baz", 12, {}),
+        ("Plugin-7", None, 12, {}),
     ])
     def test_get_timeline(
             self, seed_data, generate_timeline, plugin_name, repo, month_delta, expected

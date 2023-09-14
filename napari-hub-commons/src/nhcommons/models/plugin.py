@@ -56,11 +56,11 @@ _INDEX_SUBSET = {
 }
 
 
-def get_index(visibility: Optional[Set[PluginVisibility]]) -> List[Dict[str, Any]]:
+def get_index(visibility_filter: Optional[Set[PluginVisibility]]) -> List[Dict[str, Any]]:
     return _scan_latest_plugins_index(
         attributes=["name", "version", "data", "visibility"],
         mapper=_index_list_mapper(),
-        filter_conditions=_to_visibility_condition(visibility),
+        filter_conditions=_to_visibility_condition(visibility_filter),
     )
 
 

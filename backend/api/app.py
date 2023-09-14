@@ -11,6 +11,7 @@ from api.model import get_index, get_manifest, get_plugin
 from api.metrics import get_metrics_for_plugin
 from nhcommons.models import (category as categories)
 from api.shield import get_shield
+from nhcommons.models.plugin_utils import PluginVisibility
 from utils.utils import send_alert
 
 app = Flask(__name__)
@@ -43,12 +44,15 @@ def swagger():
 
 @app.route("/plugins/index")
 def plugin_index() -> Response:
-    return jsonify(get_index({"PUBLIC"}, True))
+    index = get_index(
+        include_total_installs=True, visibility_filter={PluginVisibility.PUBLIC}
+    )
+    return jsonify(index)
 
 
 @app.route("/plugins/index/all")
 def plugin_index_all() -> Response:
-    return jsonify(get_index(None, False))
+    return jsonify(get_index())
 
 
 @app.route("/plugins/<plugin>", defaults={"version": None})
