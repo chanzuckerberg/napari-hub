@@ -7,9 +7,8 @@ from flask import Flask, Response, jsonify, render_template, request
 
 from api.home import get_plugin_sections
 from api.custom_wsgi import script_path_middleware
-from api.model import get_index, get_manifest
+from api.model import get_index, get_manifest, get_plugin
 from api.metrics import get_metrics_for_plugin
-from api.models import (plugin as plugin_model)
 from nhcommons.models import (category as categories)
 from api.shield import get_shield
 from utils.utils import send_alert
@@ -55,7 +54,7 @@ def plugin_index_all() -> Response:
 @app.route("/plugins/<plugin>", defaults={"version": None})
 @app.route("/plugins/<plugin>/versions/<version>")
 def versioned_plugin(plugin: str, version: str = None) -> Response:
-    plugin = plugin_model.get_plugin(plugin, version)
+    plugin = get_plugin(plugin, version)
     if not plugin:
         return app.make_response(("Plugin does not exist", 404))
     return jsonify(plugin)

@@ -1,7 +1,7 @@
 from typing import Dict, Any, Optional
 
-from api.models import github_activity, plugin
-from nhcommons.models import install_activity
+from api.model import get_plugin
+from nhcommons.models import github_activity, install_activity
 
 
 def get_metrics_for_plugin(name: str, limit: str) -> Dict[str, Any]:
@@ -26,7 +26,7 @@ def get_metrics_for_plugin(name: str, limit: str) -> Dict[str, Any]:
 
 
 def _get_repo_from_plugin(name: str) -> Optional[str]:
-    plugin_metadata = plugin.get_plugin(name)
+    plugin_metadata = get_plugin(name)
     if plugin_metadata:
         repo_url = plugin_metadata.get("code_repository")
         if repo_url:

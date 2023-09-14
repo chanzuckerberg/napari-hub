@@ -4,6 +4,7 @@ from nhcommons.models import (
     plugin_metadata as plugin_metadata_model,
     plugin as plugin_model,
 )
+from nhcommons.models.plugin_utils import PluginVisibility
 
 
 def _get_manifest_metadata(name: str, version: str) -> Optional[dict]:
@@ -56,3 +57,11 @@ def get_index(
         for item in plugins:
             item["total_installs"] = total_installs.get(item["name"].lower(), 0)
     return plugins
+
+
+def get_plugin(name: str, version: str = None) -> Dict[str, Any]:
+    visibilities = {PluginVisibility.PUBLIC, PluginVisibility.HIDDEN}
+    if version:
+        return plugin_model.get_plugin_by_version(name, version, visibilities)
+    else:
+        return plugin_model.get_latest_plugin(name, visibilities)
