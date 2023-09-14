@@ -6,7 +6,7 @@ from typing import Any, Dict, List
 from pynamodb.attributes import UnicodeAttribute, ListAttribute
 from slugify import slugify
 
-from nhcommons.models.helper import set_ddb_metadata, PynamoWrapper
+from nhcommons.models.pynamo_helper import set_ddb_metadata, PynamoWrapper
 
 logger = logging.getLogger(__name__)
 

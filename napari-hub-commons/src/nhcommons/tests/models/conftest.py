@@ -8,7 +8,7 @@ import moto.dynamodb.urls
 import pytest
 from dateutil.relativedelta import relativedelta
 
-from nhcommons.models.helper import set_ddb_metadata, PynamoWrapper
+from nhcommons.models.pynamo_helper import set_ddb_metadata, PynamoWrapper
 
 LOCAL_DYNAMO_HOST = "http://localhost:1234"
 AWS_REGION = "us-east-2"

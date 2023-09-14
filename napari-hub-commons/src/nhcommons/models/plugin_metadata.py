@@ -3,7 +3,7 @@ import time
 from typing import Any, Dict, List, Optional, Set, Union
 from pynamodb.attributes import BooleanAttribute, MapAttribute, UnicodeAttribute
 from pynamodb.pagination import ResultIterator
-from .helper import set_ddb_metadata, PynamoWrapper
+from .pynamo_helper import set_ddb_metadata, PynamoWrapper
 from .plugin_utils import PluginMetadataType
 
 logger = logging.getLogger(__name__)

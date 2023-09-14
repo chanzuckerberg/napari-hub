@@ -7,7 +7,7 @@ from pynamodb.expressions.condition import Condition
 from pynamodb.indexes import GlobalSecondaryIndex, AllProjection
 from pynamodb.pagination import ResultIterator
 
-from .helper import set_ddb_metadata, get_stack_name, PynamoWrapper
+from .pynamo_helper import set_ddb_metadata, get_stack_name, PynamoWrapper
 from .plugin_utils import PluginVisibility
 from ..utils.adapter_helpers import GithubClientHelper
 

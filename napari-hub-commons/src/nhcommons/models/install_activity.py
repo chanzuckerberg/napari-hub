@@ -9,7 +9,7 @@ from dateutil.relativedelta import relativedelta
 from pynamodb.attributes import (UnicodeAttribute, NumberAttribute)
 from pynamodb.indexes import GlobalSecondaryIndex, IncludeProjection
 
-from nhcommons.models.helper import (set_ddb_metadata, PynamoWrapper)
+from nhcommons.models.pynamo_helper import (set_ddb_metadata, PynamoWrapper)
 
 logger = logging.getLogger(__name__)
 
