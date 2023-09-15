@@ -14,6 +14,16 @@ PLUGIN_TYPES_BY_KEY = {
     "widgets": "widget",
     "writers": "writer",
 }
+ONTOLOGY_VERSION = 'EDAM-BIOIMAGING:alpha06'
+MANIFEST_EDAM_MAPPING = {
+    'Annotation': ['Annotation'], # Operation
+    'Dataset': ['Image'], # Data
+    'Image_Processing': ['Image Processing'], # Operation
+    'Measurement': ['Image Characteristics'], # Data
+    'Segmentation': ['Image Segmentation'], # Operation > Image Processing
+    'Transformations': ['Geometric Transformation', 'Morphological Operation'], # Operation > Image Processing
+    'Visualization': ['Visualization'] # Operation
+}
 
 
 def get_formatted_manifest(data: Optional[dict[str, Any]],
@@ -50,6 +60,22 @@ def _get_raw_manifest(manifest_data: Optional[dict[str, Any]],
 
     return manifest_data
 
+def _map_categories(manifest_categories):
+    """Maps raw manifest categories to the appropriate EDAM ontology term.
+
+    Any categories that don't map to an EDAM term are discarded.
+
+    :param manifest_categories: categories read from the manifest
+    """
+    labels = {
+        'ontology': ONTOLOGY_VERSION,
+        'terms': []
+    }
+    for category in manifest_categories:
+        if category in MANIFEST_EDAM_MAPPING:
+            labels['terms'].append(MANIFEST_EDAM_MAPPING[category])
+    return labels
+
 
 def _parse_manifest(manifest: Optional[dict[str, Any]]) -> dict[str, Any]:
     """
@@ -62,12 +88,16 @@ def _parse_manifest(manifest: Optional[dict[str, Any]]) -> dict[str, Any]:
         "reader_file_extensions": [],
         "writer_file_extensions": [],
         "writer_save_layers": [],
+        "labels": {},
     }
     if manifest is None:
         return result
 
     result["display_name"] = manifest.get("display_name", "")
     result["npe2"] = not manifest.get("npe1_shim", False)
+    raw_categories = manifest.get("labels", {})
+    if raw_categories:
+        result['labels'] = _map_categories(raw_categories)
     if "contributions" in manifest:
         contributions = manifest["contributions"]
         if contributions.get("readers"):
