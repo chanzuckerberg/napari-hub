@@ -77,8 +77,8 @@ def query(
 
 def _query(
         name: str,
-        version: str = None,
-        version_type: str = None,
+        version: Optional[str] = None,
+        version_type: Optional[str] = None,
         projection: Optional[List[str]] = None
 ) -> Union[ResultIterator[_PluginMetadata], List]:
     if not name or (not version and not version_type):

@@ -61,7 +61,7 @@ def verify_table_data():
         def generate_set(input_map: dict) -> set:
             result = set()
             for item in input_map.items():
-                if type(item[1]) == dict or type(item[1]) == list:
+                if isinstance(item[1], (dict, list)):
                     result.add((item[0], json.dumps(item[1])))
                 else:
                     result.add(item)
