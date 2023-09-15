@@ -44,10 +44,10 @@ def swagger():
 
 @app.route("/plugins/index")
 def plugin_index() -> Response:
-    index = get_index(
-        include_total_installs=True, visibility_filter={PluginVisibility.PUBLIC}
+    result = get_index(
+        visibility_filter={PluginVisibility.PUBLIC}, include_total_installs=True
     )
-    return jsonify(index)
+    return jsonify(result)
 
 
 @app.route("/plugins/index/all")

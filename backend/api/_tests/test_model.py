@@ -93,7 +93,7 @@ class TestModel:
             mock_total_installs: Mock,
             request: pytest.FixtureRequest,
     ):
-        actual = model.get_index(include_total_installs, visibility)
+        actual = model.get_index(visibility, include_total_installs)
 
         assert request.getfixturevalue(expected) == actual
         mock_get_index.assert_called_with(visibility)

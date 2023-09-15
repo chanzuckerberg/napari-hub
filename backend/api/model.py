@@ -43,15 +43,15 @@ def get_manifest(name: str, version: str = None) -> dict:
 
 
 def get_index(
-        include_total_installs: bool = False,
-        visibility_filter: Optional[Set[PluginVisibility]] = None
+        visibility_filter: Optional[Set[PluginVisibility]] = None,
+        include_total_installs: bool = False
 ) -> List[Dict[str, Any]]:
     """
     Get the index page related metadata for all plugins.
-    :params visibility: visibilities to filter results by, if None all plugins are
-    returned
+    :params visibility_filter: visibilities to filter results by, if None all plugins
     :params include_total_installs: include total_installs in result
-    :return: dict for index page metadata
+    are returned
+    :return: List for index page metadata
     """
     plugins = plugin_model.get_index(visibility_filter)
     if include_total_installs:

@@ -24,7 +24,8 @@ def get_plugin_sections(sections: Set[str], limit: int = 3) -> Dict[str, Dict]:
         return response
 
     index = get_index(
-        include_total_installs=True, visibility_filter={PluginVisibility.PUBLIC}
+        visibility_filter={PluginVisibility.PUBLIC},
+        include_total_installs=True
     )
     for name, handler in _get_handler_by_section_name().items():
         if name in sections:
