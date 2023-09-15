@@ -1,7 +1,7 @@
 import logging
 import os
 import time
-from datetime import date, datetime, timezone
+from datetime import date
 from functools import reduce
 from typing import (Dict, Any, List, Iterator)
 
@@ -9,6 +9,9 @@ from dateutil.relativedelta import relativedelta
 from pynamodb.attributes import (UnicodeAttribute, NumberAttribute)
 from pynamodb.indexes import GlobalSecondaryIndex, IncludeProjection
 
+from nhcommons.models.activity_helper import (
+    build_timeline_query_parameters, process_timeline_results
+)
 from nhcommons.models.pynamo_helper import (set_ddb_metadata, PynamoWrapper)
 
 logger = logging.getLogger(__name__)
@@ -112,23 +115,14 @@ def get_timeline(plugin: str, month_delta: int) -> List[Dict[str, int]]:
     :param str plugin: Name of the plugin in lowercase.
     :param int month_delta: Number of months in timeline.
     """
-    type_timestamp_format = "MONTH:{0:%Y%m}"
-    start_date = datetime.today().replace(day=1) - relativedelta(months=1)
-    end_date = start_date - relativedelta(months=month_delta - 1)
-    condition = _InstallActivity.type_timestamp.between(
-        type_timestamp_format.format(end_date), type_timestamp_format.format(start_date)
+    query_params = build_timeline_query_parameters(
+        plugin,
+        f"MONTH:{{timestamp:%Y%m}}",
+        month_delta,
+        _InstallActivity.type_timestamp
     )
-    query_params = {"hash_key": plugin.lower(), "range_key_condition": condition}
     results = {row.timestamp: row.install_count for row in _query_table(query_params)}
-
-    start_datetime = datetime.combine(start_date, datetime.min.time(), timezone.utc)
-    dates = [
-        int((start_datetime - relativedelta(months=i)).timestamp()) * 1000
-        for i in range(month_delta - 1, -1, -1)
-    ]
-    return list(
-        map(lambda ts: {"timestamp": ts, "installs": results.get(ts, 0)}, dates)
-    )
+    return process_timeline_results(results, month_delta, "installs")
 
 
 def get_total_installs_by_plugins() -> Dict[str, int]:

@@ -1,11 +1,11 @@
 import logging
 import time
 
-from datetime import datetime, timezone
-from dateutil.relativedelta import relativedelta
 from typing import Dict, Any, List, Optional, Iterator
-
 from pynamodb.attributes import UnicodeAttribute, NumberAttribute
+from nhcommons.models.activity_helper import (
+    build_timeline_query_parameters, process_timeline_results
+)
 from nhcommons.models.pynamo_helper import set_ddb_metadata, PynamoWrapper
 
 logger = logging.getLogger(__name__)
@@ -83,38 +83,20 @@ def get_timeline(plugin: str, repo: str, month_delta: int) -> List[Dict[str, int
     :param int month_delta: Number of months in timeline.
     """
     results = _query_for_timeline(plugin, repo, month_delta)
-    start_datetime = datetime.combine(
-        get_first_of_last_month(), datetime.min.time(), timezone.utc
-    )
-    dates = [
-        int((start_datetime - relativedelta(months=i)).timestamp()) * 1000
-        for i in range(month_delta - 1, -1, -1)
-    ]
-    return list(
-        map(lambda ts: {"timestamp": ts, "commits": results.get(ts, 0)}, dates)
-    )
-
-
-def get_first_of_last_month():
-    return datetime.today().replace(day=1) - relativedelta(months=1)
+    return process_timeline_results(results, month_delta, "commits")
 
 
 def _query_for_timeline(plugin: str, repo: str, month_delta: int) -> Dict[int, int]:
     if not repo:
         logger.info(f"Skipping timeline query for {plugin} as repo={repo}")
         return {}
-    type_identifier_format = f"MONTH:{{timestamp:%Y%m}}:{repo}"
-    start_date = get_first_of_last_month()
-    end_date = start_date - relativedelta(months=month_delta - 1)
-    condition = _GitHubActivity.type_identifier.between(
-        type_identifier_format.format(timestamp=end_date),
-        type_identifier_format.format(timestamp=start_date)
+    query_params = build_timeline_query_parameters(
+        plugin,
+        f"MONTH:{{timestamp:%Y%m}}:{repo}",
+        month_delta,
+        _GitHubActivity.type_identifier
     )
-    query_params = {
-        "hash_key": plugin.lower(),
-        "range_key_condition": condition,
-        "filter_condition": _GitHubActivity.repo == repo
-    }
+    query_params["filter_condition"] = _GitHubActivity.repo == repo
     return {row.timestamp: row.commit_count for row in _query_table(query_params)}
 
 

@@ -14,6 +14,7 @@ def type_identifier() -> Dict[str, str]:
         "LATEST": "LATEST:{repo}",
     }
 
+
 def generate_github_activity(
     name: str,
     granularity: str,
