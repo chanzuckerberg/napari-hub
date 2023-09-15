@@ -49,6 +49,7 @@ class TestManifest:
             "reader_file_extensions": [],
             "writer_file_extensions": [],
             "writer_save_layers": [],
+            "labels": {}
         }
 
     @pytest.mark.parametrize("input, result", [
@@ -58,6 +59,8 @@ class TestManifest:
         ({"npe1_shim": True}, {"npe2": False}),
         ({"npe1_shim": False}, {"npe2": True}),
         ({"display_name": "foo"}, {"display_name": "foo", "npe2": True}),
+        ({"categories": ['not-mapped']}, {"labels": {}}),
+        ({"categories": ['Dataset', 'other']}, {"labels": {"ontology": 'EDAM-BIOIMAGING:alpha06', "terms": ['Image']}}),
         ({"contributions": generate_contributions(reader=True)},
          {"npe2": True,
           "plugin_types": ["reader"],

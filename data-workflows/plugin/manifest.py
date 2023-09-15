@@ -67,13 +67,16 @@ def _map_categories(manifest_categories):
 
     :param manifest_categories: categories read from the manifest
     """
-    labels = {
-        'ontology': ONTOLOGY_VERSION,
-        'terms': []
-    }
+    labels = {}
+    terms = []
     for category in manifest_categories:
         if category in MANIFEST_EDAM_MAPPING:
-            labels['terms'].append(MANIFEST_EDAM_MAPPING[category])
+            terms.append(MANIFEST_EDAM_MAPPING[category])
+    if terms:
+        labels = {
+            'ontology': ONTOLOGY_VERSION,
+            'terms': terms
+        }
     return labels
 
 
