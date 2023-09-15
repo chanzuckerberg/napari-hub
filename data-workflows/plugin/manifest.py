@@ -62,12 +62,14 @@ def _parse_manifest(manifest: Optional[dict[str, Any]]) -> dict[str, Any]:
         "reader_file_extensions": [],
         "writer_file_extensions": [],
         "writer_save_layers": [],
+        "visibility": "public"
     }
     if manifest is None:
         return result
 
     result["display_name"] = manifest.get("display_name", "")
     result["npe2"] = not manifest.get("npe1_shim", False)
+    result["visibility"] = manifest.get("visibility", "public")
     if "contributions" in manifest:
         contributions = manifest["contributions"]
         if contributions.get("readers"):

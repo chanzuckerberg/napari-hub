@@ -4,7 +4,6 @@ from typing import Dict, Optional
 import yaml
 
 from .adapter_helpers import GithubClientHelper, CitationHelper
-from ..models.plugin_utils import PluginVisibility
 
 _URL_PATTERN = re.compile("^https://github\\.com/([^/]+)/([^/]+)")
 _DEFAULT_DESCRIPTION = "The developer has not yet provided a napari-hub " \
@@ -16,8 +15,7 @@ _PROJECT_URL_NAMES = {
     'Report Issues': 'report_issues',
     'Twitter': 'twitter'
 }
-_VISIBILITY_SET = {'public', 'disabled', 'hidden'}
-_HUB_CONFIG_KEYS = {'summary', 'authors', 'labels', 'visibility'}
+_HUB_CONFIG_KEYS = {'summary', 'authors', 'labels'}
 
 
 def is_valid_repo_url(url: str) -> bool:
@@ -75,8 +73,6 @@ def get_github_metadata(repo_url: str, branch: str = 'HEAD') -> Dict:
         # update github metadata author info
         if authors:
             github_metadata.update({"authors": authors})
-    if github_metadata.get('visibility') not in PluginVisibility:
-        github_metadata['visibility'] = PluginVisibility.PUBLIC.name.lower()
 
     yaml_file = github_helper.get_first_valid_file(
         [".napari-hub/config.yml", ".napari/config.yml"]
