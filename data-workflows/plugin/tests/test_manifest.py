@@ -49,6 +49,7 @@ class TestManifest:
             "reader_file_extensions": [],
             "writer_file_extensions": [],
             "writer_save_layers": [],
+            "visibility": "public"
         }
 
     @pytest.mark.parametrize("input, result", [
@@ -57,6 +58,9 @@ class TestManifest:
         ({"error": "some error"}, {}),
         ({"npe1_shim": True}, {"npe2": False}),
         ({"npe1_shim": False}, {"npe2": True}),
+        ({"visibility": ""}, {"visibility": "public"}),
+        ({"visibility": "public"}, {"visibility": "public"}),
+        ({"visibility": "hidden"}, {"visibility": "hidden"}),
         ({"display_name": "foo"}, {"display_name": "foo", "npe2": True}),
         ({"contributions": generate_contributions(reader=True)},
          {"npe2": True,
