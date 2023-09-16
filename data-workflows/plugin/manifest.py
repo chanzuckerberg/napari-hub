@@ -98,7 +98,7 @@ def _parse_manifest(manifest: Optional[dict[str, Any]]) -> dict[str, Any]:
 
     result["display_name"] = manifest.get("display_name", "")
     result["npe2"] = not manifest.get("npe1_shim", False)
-    raw_categories = manifest.get("labels", {})
+    raw_categories = manifest.get("categories", {})
     if raw_categories:
         result['labels'] = _map_categories(raw_categories)
     if "contributions" in manifest:
