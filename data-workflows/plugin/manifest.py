@@ -71,7 +71,7 @@ def _map_categories(manifest_categories):
     terms = []
     for category in manifest_categories:
         if category in MANIFEST_EDAM_MAPPING:
-            terms.append(MANIFEST_EDAM_MAPPING[category])
+            terms.extend(MANIFEST_EDAM_MAPPING[category])
     if terms:
         labels = {
             'ontology': ONTOLOGY_VERSION,
