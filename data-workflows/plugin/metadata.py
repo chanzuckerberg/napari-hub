@@ -49,6 +49,7 @@ def _generate_metadata(pypi_metadata: dict) -> dict:
     return pypi_metadata
 
 
+# move to nhcommons
 def _process_for_categories(labels: dict, version: str) -> (dict, dict):
     categories = defaultdict(list)
     category_hierarchy = defaultdict(list)

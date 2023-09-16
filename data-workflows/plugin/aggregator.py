@@ -62,6 +62,7 @@ def _generate_aggregate(
         metadata_by_type, PluginMetadataType.DISTRIBUTION, None
     )
     formatted_manifest = get_formatted_manifest(manifest, name, version)
+    # add merged categories
     return {**metadata, **formatted_manifest}
 
 
