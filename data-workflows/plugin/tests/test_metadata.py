@@ -2,6 +2,8 @@ from unittest.mock import Mock, call
 
 import pytest
 
+from nhcommons.utils import categories
+
 from plugin import metadata
 from plugin.metadata import get_formatted_metadata
 
@@ -90,9 +92,9 @@ class TestMetadata:
             metadata, "render_description", self._mock_render_desc
         )
         self._mock_get_category = Mock(
-            side_effect=category_responses(), spec=metadata.get_category
+            side_effect=category_responses(), spec=categories.get_category
         )
-        monkeypatch.setattr(metadata, "get_category", self._mock_get_category)
+        monkeypatch.setattr(categories, "get_category", self._mock_get_category)
 
     @pytest.fixture
     def verify_calls(self, verify_call):
