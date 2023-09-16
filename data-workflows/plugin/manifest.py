@@ -2,6 +2,8 @@ import logging
 import re
 from typing import Any, Optional
 
+from nhcommons.utils.categories import process_for_categories
+
 logger = logging.getLogger(__name__)
 
 VALID_LAYERS = ["image", "labels", "points", "shapes", "surface", "tracks",
@@ -61,23 +63,23 @@ def _get_raw_manifest(manifest_data: Optional[dict[str, Any]],
     return manifest_data
 
 def _map_categories(manifest_categories):
-    """Maps raw manifest categories to the appropriate EDAM ontology term.
+    """Maps raw manifest categories to the appropriate EDAM ontology.
 
     Any categories that don't map to an EDAM term are discarded.
 
     :param manifest_categories: categories read from the manifest
     """
-    labels = {}
     terms = []
     for category in manifest_categories:
         if category in MANIFEST_EDAM_MAPPING:
             terms.extend(MANIFEST_EDAM_MAPPING[category])
-    if terms:
-        labels = {
-            'ontology': ONTOLOGY_VERSION,
-            'terms': terms
-        }
-    return labels
+    labels = {
+        'ontology': ONTOLOGY_VERSION,
+        'terms': terms
+    }
+    categories, hierarchy = process_for_categories(labels, ONTOLOGY_VERSION)
+
+    return categories, hierarchy
 
 
 def _parse_manifest(manifest: Optional[dict[str, Any]]) -> dict[str, Any]:
@@ -91,7 +93,8 @@ def _parse_manifest(manifest: Optional[dict[str, Any]]) -> dict[str, Any]:
         "reader_file_extensions": [],
         "writer_file_extensions": [],
         "writer_save_layers": [],
-        "labels": {},
+        "category": {},
+        "category_hierarchy": {}
     }
     if manifest is None:
         return result
@@ -100,7 +103,7 @@ def _parse_manifest(manifest: Optional[dict[str, Any]]) -> dict[str, Any]:
     result["npe2"] = not manifest.get("npe1_shim", False)
     raw_categories = manifest.get("categories", {})
     if raw_categories:
-        result['labels'] = _map_categories(raw_categories)
+        result["category"], result["category_hierarchy"] = _map_categories(raw_categories)
     if "contributions" in manifest:
         contributions = manifest["contributions"]
         if contributions.get("readers"):
