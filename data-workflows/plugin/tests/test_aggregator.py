@@ -296,19 +296,21 @@ class TestAggregator:
                 {"visibility": "HIDDEN", "another-field": "data"},
                 {"visibility": "HIDDEN", "another-field": "data"},
             ),
+            # failing
             (
                 PLUGIN,
                 None,
                 {"type": PMType.PYPI, "is_latest": "true"},
-                {"visibility": "DISABLED"},
-                {"is_latest": "true", "visibility": "DISABLED", "excluded": "DISABLED"},
+                {"visibility": "HIDDEN"},
+                {"is_latest": "true", "visibility": "DISABLED", "excluded": "HIDDEN"},
             ),
+            # failing
             (
                 PLUGIN,
                 None,
                 {"type": PMType.PYPI},
-                {"visibility": "DISABLED", "diff-field-name": "value 2"},
-                {"visibility": "DISABLED", "diff-field-name": "value 2"},
+                {"visibility": "HIDDEN", "diff-field-name": "value 2"},
+                {"visibility": "HIDDEN", "diff-field-name": "value 2"},
             ),
             (
                 BLOCKED_PLUGIN,
