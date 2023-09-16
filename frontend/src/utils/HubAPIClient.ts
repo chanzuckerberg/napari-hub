@@ -92,22 +92,25 @@ class HubAPIClient {
       });
 
       if (SERVER) {
-        logger.info(`method=${method} url=${url} status=${status}`);
+        logger.info({
+          path,
+          method,
+          url,
+          status,
+        });
       }
 
       return data;
     } catch (err) {
-      if (SERVER && axios.isAxiosError(err)) {
-        logger.error(
-          [
-            `method=${method}`,
-            `url=${path}`,
-            err.response?.status ? `status=${err.response.status}` : '',
-            `error="${err.message}"`,
-          ]
-            .filter(Boolean)
-            .join(' '),
-        );
+      if (axios.isAxiosError(err)) {
+        logger.error({
+          message: 'Error sending request',
+          error: err.message,
+          method,
+          path,
+          url,
+          ...(err.response?.status ? { status: err.response.status } : {}),
+        });
       }
 
       throw err;

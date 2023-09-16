@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react';
 import { loadingStore } from '@/store/loading';
 import { pageTransitionsStore } from '@/store/pageTransitions';
 import { Logger } from '@/utils';
+import { getErrorMessage } from '@/utils/error';
 
 import { usePageUtils } from './usePageUtils';
 
@@ -62,7 +63,11 @@ export function usePageTransitions() {
     }
 
     const onError = (error: Error, url: string, event: RouteEvent) => {
-      logger.error('Error loading route:', error);
+      logger.error({
+        message: 'Error loading route',
+        error: getErrorMessage(error),
+      });
+
       onFinishLoading(url, event);
     };
 

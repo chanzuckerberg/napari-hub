@@ -1,6 +1,7 @@
 import { GetServerSideProps } from 'next';
 
 import { Logger } from '@/utils';
+import { getErrorMessage } from '@/utils/error';
 
 const logger = new Logger('robots.txt.ts');
 
@@ -29,7 +30,10 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
     res.write(robotsTxt);
     res.end();
   } catch (err) {
-    logger.error('Unable to fetch plugin list:', err);
+    logger.error({
+      message: 'Unable to fetch plugin list',
+      error: getErrorMessage(err),
+    });
   }
 
   return { props: {} };

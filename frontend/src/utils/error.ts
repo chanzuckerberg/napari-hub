@@ -1,5 +1,18 @@
 import axios from 'axios';
-import { NextApiResponse } from 'next';
+import { z } from 'zod';
+
+/**
+ * Get human friendly version of zod error message that describes what
+ * properties are failing and what types are expected.
+ */
+function getZodErrorMessage(error: z.ZodError) {
+  return [
+    'Received invalid data:',
+    ...error.issues.map(
+      (issue) => `  ${issue.path.join('.')}: ${issue.message}`,
+    ),
+  ].join('\n');
+}
 
 export function getErrorMessage(error: unknown): string {
   if (axios.isAxiosError(error)) {
@@ -10,17 +23,9 @@ export function getErrorMessage(error: unknown): string {
     return error.message;
   }
 
-  return String(error);
-}
-
-export async function apiErrorWrapper(
-  res: NextApiResponse,
-  callback: () => Promise<void>,
-) {
-  try {
-    await callback();
-  } catch (err) {
-    const status = axios.isAxiosError(err) ? err.response?.status : null;
-    res.status(status ?? 500).send(getErrorMessage(err));
+  if (error instanceof z.ZodError) {
+    return getZodErrorMessage(error);
   }
+
+  return String(error);
 }

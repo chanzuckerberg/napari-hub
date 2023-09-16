@@ -85,10 +85,25 @@ resource aws_cloudwatch_log_metric_filter data_workflows_plugin_update_successfu
   }
 }
 
+resource aws_cloudwatch_log_metric_filter frontend_error {
+  name            = "${var.stack_name}-frontend-error"
+  log_group_name  = var.frontend_log_group_name
+  pattern         = "{ $.level = \"error\" && $.error != %404% }"
+  count           = var.metrics_enabled ? 1 : 0
+
+  metric_transformation {
+    name      = "${var.stack_name}-frontend-error"
+    namespace = local.metrics_namespace
+    value     = "1"
+    unit      = "Count"
+  }
+}
+
 locals {
   backend_api_500_log_metric_name = var.metrics_enabled ? aws_cloudwatch_log_metric_filter.backend_api_500_log_metric[0].name : "backend_api_500_log_metric"
   data_workflows_metrics_update_successful_name = var.metrics_enabled ? aws_cloudwatch_log_metric_filter.data_workflows_metrics_update_successful[0].name : "data_workflows_metrics_update_successful"
   data_workflows_plugin_update_successful_name = var.metrics_enabled ? aws_cloudwatch_log_metric_filter.data_workflows_plugin_update_successful[0].name : "data_workflows_plugin_update_successful"
+  frontend_error_name = var.metrics_enabled ? aws_cloudwatch_log_metric_filter.frontend_error[0].name : "frontend_error"
 }
 
 module backend_api_500_alarm {
@@ -100,14 +115,14 @@ module backend_api_500_alarm {
   alarm_description   = "API returning 500s"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   create_metric_alarm = var.alarms_enabled
-  datapoints_to_alarm = 1
-  evaluation_periods  = 2
+  datapoints_to_alarm = 2
+  evaluation_periods  = 3
   metric_name         = local.backend_api_500_log_metric_name
   namespace           = local.metrics_namespace
   period              = local.period
   statistic           = "Sum"
   tags                = var.tags
-  threshold           = 2
+  threshold           = 1
 }
 
 module data_workflow_plugins_missing_update_alarm {
@@ -159,9 +174,9 @@ module backend_lambda_errors_alarm {
   alarm_description   = "Errors in backend lambda execution"
   alarm_actions = [local.alarm_sns_arn]
   comparison_operator = "GreaterThanOrEqualToThreshold"
-  evaluation_periods  = 1
-  threshold           = 2
-  datapoints_to_alarm = 1
+  evaluation_periods  = 3
+  threshold           = 1
+  datapoints_to_alarm = 2
   metric_query = [{
     id = "error_sum"
 
@@ -256,4 +271,46 @@ module plugin_lambda_errors_alarm {
     }]
     }]
   tags = var.tags
+}
+
+module frontend_uncaught_error_alarm {
+  source  = "terraform-aws-modules/cloudwatch/aws//modules/metric-alarm"
+  version = "3.3.0"
+
+  alarm_actions       = [local.alarm_sns_arn]
+  alarm_description   = "Errors that are not caught by any error handling on the frontend"
+  alarm_name          = "${var.stack_name}-frontend-uncaught-error-alarm"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  create_metric_alarm = var.alarms_enabled
+  datapoints_to_alarm = 1
+  evaluation_periods  = 1
+  metric_name         = "JsErrorCount"
+  namespace           = "AWS/RUM"
+  period              = 60
+  statistic           = "Sum"
+  tags                = var.tags
+  threshold           = 1
+
+  dimensions = {
+    application_name = var.frontend_rum_app_name
+  }
+}
+
+module frontend_error_alarm {
+  source  = "terraform-aws-modules/cloudwatch/aws//modules/metric-alarm"
+  version = "3.3.0"
+
+  alarm_actions       = [local.alarm_sns_arn]
+  alarm_description   = "Errors that happen on the frontend that are handled by some form of error handling"
+  alarm_name          = "${var.stack_name}-frontend-error-alarm"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  create_metric_alarm = var.alarms_enabled
+  datapoints_to_alarm = 2
+  evaluation_periods  = 3
+  metric_name         = local.frontend_error_name
+  namespace           = local.metrics_namespace
+  period              = 60
+  statistic           = "Sum"
+  tags                = var.tags
+  threshold           = 1
 }
