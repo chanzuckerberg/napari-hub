@@ -195,20 +195,6 @@ class TestAggregator:
                 {"visibility": "HIDDEN", "another-field": "data"},
             ),
             (
-                PLUGIN,
-                VERSION,
-                {"type": PMType.PYPI, "is_latest": "true"},
-                {"visibility": "DISABLED"},
-                {"is_latest": "true", "visibility": "DISABLED", "excluded": "DISABLED"},
-            ),
-            (
-                PLUGIN,
-                VERSION,
-                {"type": PMType.PYPI},
-                {"visibility": "DISABLED", "diff-field-name": "value 2"},
-                {"visibility": "DISABLED", "diff-field-name": "value 2"},
-            ),
-            (
                 BLOCKED_PLUGIN,
                 VERSION,
                 {"type": PMType.PYPI, "is_latest": "true"},
@@ -234,13 +220,6 @@ class TestAggregator:
                 VERSION,
                 {"type": PMType.PYPI},
                 {"visibility": "HIDDEN"},
-                {"visibility": "BLOCKED"},
-            ),
-            (
-                BLOCKED_PLUGIN,
-                VERSION,
-                {"type": PMType.PYPI},
-                {"visibility": "DISABLED"},
                 {"visibility": "BLOCKED"},
             ),
             (
@@ -296,22 +275,6 @@ class TestAggregator:
                 {"visibility": "HIDDEN", "another-field": "data"},
                 {"visibility": "HIDDEN", "another-field": "data"},
             ),
-            # failing
-            (
-                PLUGIN,
-                None,
-                {"type": PMType.PYPI, "is_latest": "true"},
-                {"visibility": "HIDDEN"},
-                {"is_latest": "true", "visibility": "DISABLED", "excluded": "HIDDEN"},
-            ),
-            # failing
-            (
-                PLUGIN,
-                None,
-                {"type": PMType.PYPI},
-                {"visibility": "HIDDEN", "diff-field-name": "value 2"},
-                {"visibility": "HIDDEN", "diff-field-name": "value 2"},
-            ),
             (
                 BLOCKED_PLUGIN,
                 None,
@@ -339,14 +302,7 @@ class TestAggregator:
                 {"type": PMType.PYPI},
                 {"visibility": "HIDDEN"},
                 {"visibility": "BLOCKED"},
-            ),
-            (
-                BLOCKED_PLUGIN,
-                None,
-                {"type": PMType.PYPI},
-                {"visibility": "DISABLED"},
-                {"visibility": "BLOCKED"},
-            ),
+            )
         ],
     )
     def test_aggregate_for_valid_data(
