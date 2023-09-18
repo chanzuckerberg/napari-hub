@@ -18,13 +18,12 @@ PLUGIN_TYPES_BY_KEY = {
 }
 ONTOLOGY_VERSION = 'EDAM-BIOIMAGING:alpha06'
 MANIFEST_EDAM_MAPPING = {
-    'Annotation': ['Annotation'], # Operation
-    'Dataset': ['Image'], # Data
+    'Annotation': ['Image Annotation'], # Operation
     'Image_Processing': ['Image Processing'], # Operation
     'Measurement': ['Image Characteristics'], # Data
     'Segmentation': ['Image Segmentation'], # Operation > Image Processing
     'Transformations': ['Geometric Transformation', 'Morphological Operation'], # Operation > Image Processing
-    'Visualization': ['Visualization'] # Operation
+    'Visualization': ['Visualisation'] # Operation
 }
 
 

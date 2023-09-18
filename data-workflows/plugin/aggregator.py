@@ -63,6 +63,11 @@ def _generate_aggregate(
     )
     formatted_manifest = get_formatted_manifest(manifest, name, version)
     # add merged categories
+    merged_category, merged_heirarchy = _merge_metadata_manifest_categories(metadata, formatted_manifest)
+    metadata['category'] = merged_category
+    metadata['category_hierarchy'] = merged_heirarchy
+    del formatted_manifest['category']
+    del formatted_manifest['category_hierarchy']
     return {**metadata, **formatted_manifest}
 
 
@@ -102,3 +107,33 @@ def _get_visibility(name, aggregate, blocked_plugins) -> PluginVisibility:
         return PluginVisibility[visibility]
 
     return PluginVisibility.PUBLIC
+
+def _merge_metadata_manifest_categories(metadata, manifest):
+    """Merge categories and hierarchy in PyPI and manifest.
+
+    Keeps union of keys and values present in both dictionaries.
+    """
+    meta_category = metadata.get('category', {})
+    man_category = manifest.get('category', {})
+    meta_category_hierarchy = metadata.get('category_hierarchy', {})
+    man_category_hierarchy = manifest.get('category_hierarchy', {})
+    
+    merged_category = {}
+    merged_keys = set(meta_category.keys()).union(set(man_category.keys()))
+    for key in merged_keys:
+        # unify both lists of terms
+        merged_labels = list(set(meta_category.get(key, [])).union(set(man_category.get(key, []))))
+        merged_category[key] = merged_labels
+
+    merged_hierarchy = {}
+    merged_keys = list(set(meta_category_hierarchy.keys()).union(set(man_category_hierarchy.keys())))
+    for key in merged_keys:
+        man_hierarchy = man_category_hierarchy.get(key, [])
+        meta_hierarchy = meta_category_hierarchy.get(key, [])
+        # the lowest level of the hierarchy will be the comparison key for removing duplicates
+        meta_leaves = [hi_list[-1] for hi_list in meta_hierarchy]
+        # only keep manifest hierarchies we don't already have
+        man_filtered = list(filter(lambda hi_list: hi_list[-1] not in meta_leaves, man_hierarchy))
+        meta_hierarchy.extend(man_filtered)
+        merged_hierarchy[key] = meta_hierarchy
+    return merged_category, merged_hierarchy
