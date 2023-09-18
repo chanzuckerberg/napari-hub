@@ -399,7 +399,7 @@ class TestAggregator:
             self._put_plugin.assert_not_called()
 
 
-@pytest.mark.parameterize(
+@pytest.mark.parametrize(
         ('meta_category', 'meta_heirarchy', 'manifest_category', 'manifest_hierarchy', 'expected_category', 'expected_hierarchy'),
         ({}, {}, {}, {}, {}, {}),
         ({'Workflow step': ['Image segmentation']}, {'Workflow step': [['Image segmentation']]}, {}, {}, {'Workflow step': ['Image segmentation']}, {'Workflow step': [['Image segmentation']]}),
