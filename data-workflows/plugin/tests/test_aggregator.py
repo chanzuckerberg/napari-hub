@@ -400,10 +400,12 @@ class TestAggregator:
 
 
 @pytest.mark.parametrize(
-        ('meta_category', 'meta_heirarchy', 'manifest_category', 'manifest_hierarchy', 'expected_category', 'expected_hierarchy'),
-        ({}, {}, {}, {}, {}, {}),
-        ({'Workflow step': ['Image segmentation']}, {'Workflow step': [['Image segmentation']]}, {}, {}, {'Workflow step': ['Image segmentation']}, {'Workflow step': [['Image segmentation']]}),
-        ({}, {}, {'Workflow step': ['Image segmentation']}, {'Workflow step': [['Image segmentation']]}, {'Workflow step': ['Image segmentation']}, {'Workflow step': [['Image segmentation']]})
+        "meta_category, meta_heirarchy, manifest_category, manifest_hierarchy, expected_category, expected_hierarchy",
+        [
+            ({}, {}, {}, {}, {}, {}),
+            ({'Workflow step': ['Image segmentation']}, {'Workflow step': [['Image segmentation']]}, {}, {}, {'Workflow step': ['Image segmentation']}, {'Workflow step': [['Image segmentation']]}),
+            ({}, {}, {'Workflow step': ['Image segmentation']}, {'Workflow step': [['Image segmentation']]}, {'Workflow step': ['Image segmentation']}, {'Workflow step': [['Image segmentation']]})
+        ]
 )
 def test_category_merge(meta_category, meta_hierarchy, manifest_category, manifest_hierarchy, expected_category, expected_hierarchy):
     mock_meta = {'category': meta_category, 'category_hierarchy': meta_hierarchy}
