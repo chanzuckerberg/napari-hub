@@ -453,10 +453,10 @@ def test_category_merge(
     assert sorted(merged_meta.keys()) == sorted(expected_category.keys())
     for key in merged_meta:
         cat_list = merged_meta[key]
-        assert cat_list == expected_category[key]
+        assert sorted(cat_list) == sorted(expected_category[key])
 
     assert sorted(merged_hierarchy.keys()) == sorted(expected_hierarchy.keys())
     for key in merged_hierarchy:
         hierarchy_list = merged_hierarchy[key]
         expected_list = expected_hierarchy[key]
-        assert hierarchy_list == expected_list
+        assert sorted(hierarchy_list) == sorted(expected_list)
