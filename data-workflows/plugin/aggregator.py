@@ -64,8 +64,9 @@ def _generate_aggregate(
     formatted_manifest = get_formatted_manifest(manifest, name, version)
     # add merged categories
     merged_category, merged_heirarchy = _merge_metadata_manifest_categories(metadata, formatted_manifest)
-    metadata['category'] = merged_category
-    metadata['category_hierarchy'] = merged_heirarchy
+    if len(merged_category):
+        metadata['category'] = merged_category
+        metadata['category_hierarchy'] = merged_heirarchy
     if 'category' in formatted_manifest:
         del formatted_manifest['category']
         del formatted_manifest['category_hierarchy']
