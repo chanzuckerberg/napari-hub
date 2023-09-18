@@ -400,18 +400,56 @@ class TestAggregator:
 
 
 @pytest.mark.parametrize(
-        "meta_category, meta_hierarchy, manifest_category, manifest_hierarchy, expected_category, expected_hierarchy",
-        [
-            ({}, {}, {}, {}, {}, {}),
-            ({'Workflow step': ['Image segmentation']}, {'Workflow step': [['Image segmentation']]}, {}, {}, {'Workflow step': ['Image segmentation']}, {'Workflow step': [['Image segmentation']]}),
-            ({}, {}, {'Workflow step': ['Image segmentation']}, {'Workflow step': [['Image segmentation']]}, {'Workflow step': ['Image segmentation']}, {'Workflow step': [['Image segmentation']]})
-        ]
+    "meta_category, meta_hierarchy, manifest_category, manifest_hierarchy, expected_category, expected_hierarchy",
+    [
+        ({}, {}, {}, {}, {}, {}),
+        (
+            {"Workflow step": ["Image segmentation"]},
+            {"Workflow step": [["Image segmentation"]]},
+            {},
+            {},
+            {"Workflow step": ["Image segmentation"]},
+            {"Workflow step": [["Image segmentation"]]},
+        ),
+        (
+            {},
+            {},
+            {"Workflow step": ["Image segmentation"]},
+            {"Workflow step": [["Image segmentation"]]},
+            {"Workflow step": ["Image segmentation"]},
+            {"Workflow step": [["Image segmentation"]]},
+        ),
+        (
+            {"Data": ["2D", "3D"], "Modality": ["HeLa"]},
+            {"Data": [["2D", "3D", ]], "Modality": [["Fluo", "HeLa"]]},
+            {"Modality": ["Fluo"]},
+            {"Modality": [["Fluo", ]]},
+            # Data and Modality are both there
+            {"Data": ["2D", "3D"], "Modality": ["Fluo", "HeLa"]},
+            # ["Fluo"] & ["Fluo", "HeLa"] have different leaves & are both there
+            {"Data": [["2D", "3D", ]], "Modality": [["Fluo"], ["Fluo", "HeLa"]]},
+        )
+    ],
 )
-def test_category_merge(meta_category, meta_hierarchy, manifest_category, manifest_hierarchy, expected_category, expected_hierarchy):
-    mock_meta = {'category': meta_category, 'category_hierarchy': meta_hierarchy}
-    mock_manifest = {'category': manifest_category, 'category_hierarchy': manifest_hierarchy}
+def test_category_merge(
+    meta_category,
+    meta_hierarchy,
+    manifest_category,
+    manifest_hierarchy,
+    expected_category,
+    expected_hierarchy,
+):
+    mock_meta = {"category": meta_category, "category_hierarchy": meta_hierarchy}
+    mock_manifest = {
+        "category": manifest_category,
+        "category_hierarchy": manifest_hierarchy,
+    }
 
-    merged_meta, merged_hierarchy = _merge_metadata_manifest_categories(mock_meta, mock_manifest)
+    meta_result = _merge_metadata_manifest_categories(
+        mock_meta, mock_manifest
+    )
+    merged_meta = meta_result['category']
+    merged_hierarchy = meta_result['category_hierarchy']
     assert sorted(merged_meta.keys()) == sorted(expected_category.keys())
     for key in merged_meta:
         cat_list = merged_meta[key]

@@ -62,15 +62,8 @@ def _generate_aggregate(
         metadata_by_type, PluginMetadataType.DISTRIBUTION, None
     )
     formatted_manifest = get_formatted_manifest(manifest, name, version)
-    # add merged categories
-    merged_category, merged_heirarchy = _merge_metadata_manifest_categories(metadata, formatted_manifest)
-    if len(merged_category):
-        metadata['category'] = merged_category
-        metadata['category_hierarchy'] = merged_heirarchy
-    if 'category' in formatted_manifest:
-        del formatted_manifest['category']
-        del formatted_manifest['category_hierarchy']
-    return {**metadata, **formatted_manifest}
+    metadata_with_categories = _merge_metadata_manifest_categories(metadata, formatted_manifest)
+    return {**metadata_with_categories, **formatted_manifest}
 
 
 def _get_metadata_by_type(name: str, version: str) -> dict[PluginMetadataType, dict]:
@@ -138,4 +131,11 @@ def _merge_metadata_manifest_categories(metadata, manifest):
         man_filtered = list(filter(lambda hi_list: hi_list[-1] not in meta_leaves, man_hierarchy))
         meta_hierarchy.extend(man_filtered)
         merged_hierarchy[key] = meta_hierarchy
-    return merged_category, merged_hierarchy
+    
+    if len(merged_category):
+        metadata['category'] = merged_category
+        metadata['category_hierarchy'] = merged_hierarchy
+    if 'category' in manifest:
+        del manifest['category']
+        del manifest['category_hierarchy']
+    return metadata
