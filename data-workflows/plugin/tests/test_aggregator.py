@@ -400,7 +400,7 @@ class TestAggregator:
 
 
 @pytest.mark.parametrize(
-        "meta_category, meta_heirarchy, manifest_category, manifest_hierarchy, expected_category, expected_hierarchy",
+        "meta_category, meta_hierarchy, manifest_category, manifest_hierarchy, expected_category, expected_hierarchy",
         [
             ({}, {}, {}, {}, {}, {}),
             ({'Workflow step': ['Image segmentation']}, {'Workflow step': [['Image segmentation']]}, {}, {}, {'Workflow step': ['Image segmentation']}, {'Workflow step': [['Image segmentation']]}),
