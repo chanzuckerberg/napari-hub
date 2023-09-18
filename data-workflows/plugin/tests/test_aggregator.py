@@ -4,6 +4,7 @@ import pytest
 
 from nhcommons.models.plugin_utils import PluginMetadataType as PMType
 from plugin import aggregator
+from plugin.aggregator import _merge_metadata_manifest_categories
 
 PLUGIN = "plugin-1"
 VERSION = "2.34"
@@ -396,3 +397,26 @@ class TestAggregator:
             self._put_plugin.assert_called_once_with(name, actual_version, record)
         else:
             self._put_plugin.assert_not_called()
+
+
+@pytest.mark.parameterize(
+        ('meta_category', 'meta_heirarchy', 'manifest_category', 'manifest_hierarchy', 'expected_category', 'expected_hierarchy'),
+        ({}, {}, {}, {}, {}, {}),
+        ({'Workflow step': ['Image segmentation']}, {'Workflow step': [['Image segmentation']]}, {}, {}, {'Workflow step': ['Image segmentation']}, {'Workflow step': [['Image segmentation']]}),
+        ({}, {}, {'Workflow step': ['Image segmentation']}, {'Workflow step': [['Image segmentation']]}, {'Workflow step': ['Image segmentation']}, {'Workflow step': [['Image segmentation']]})
+)
+def test_category_merge(meta_category, meta_hierarchy, manifest_category, manifest_hierarchy, expected_category, expected_hierarchy):
+    mock_meta = {'category': meta_category, 'category_hierarchy': meta_hierarchy}
+    mock_manifest = {'category': manifest_category, 'category_hierarchy': manifest_hierarchy}
+
+    merged_meta, merged_hierarchy = _merge_metadata_manifest_categories(mock_meta, mock_manifest)
+    assert sorted(merged_meta.keys()) == sorted(expected_category.keys())
+    for key in merged_meta:
+        cat_list = merged_meta[key]
+        assert cat_list == expected_category[key]
+
+    assert sorted(merged_hierarchy.keys()) == sorted(expected_hierarchy.keys())
+    for key in merged_hierarchy:
+        hierarchy_list = merged_hierarchy[key]
+        expected_list = expected_hierarchy[key]
+        assert hierarchy_list == expected_list
