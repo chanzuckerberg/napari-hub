@@ -45,9 +45,9 @@ class TestCategories:
             "terms, expected_categories, expected_hierarchy",
             [
                 ([], {}, {}),
-                (["other", "Img reg1"], {"Wrkflw": ["Img reg1"]}, {"Wrkflw": [["Img reg1"], ]}),
-                (["2D", "Img reg2"], {"Wrkflw": ["Img reg2"], "Data": ["2D"]}, {"Wrkflw": [["Img reg", "Affine reg"], ], "Data": [["2D"]]})
-
+                (["Img reg1"], {"Wrkflw": ["Img reg1"]}, {"Wrkflw": [["Img reg1"], ]}),
+                (["Img reg1", "2D"], {"Wrkflw": ["Img reg1"], "Data": ["2D"]}, {"Wrkflw": [["Img reg1"], ], "Data": [["2D"]]})
+                (["foo", "bar", "buzz", "Img reg2"], {"Wrfklw": ["Img reg2"]}, {"Wrkflw": [["Img reg", "Affine reg"], ]})
             ]
     )
     def test_process_for_categories(self, terms, expected_categories, expected_hierarchy):
