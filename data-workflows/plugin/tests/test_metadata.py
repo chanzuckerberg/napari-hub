@@ -2,9 +2,8 @@ from unittest.mock import Mock, call
 
 import pytest
 
-from nhcommons.utils import categories
 
-from plugin import metadata
+from plugin import metadata, categories
 from plugin.metadata import get_formatted_metadata
 
 PLUGIN = "napari-demo"

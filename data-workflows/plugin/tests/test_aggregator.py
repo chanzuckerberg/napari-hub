@@ -4,7 +4,6 @@ import pytest
 
 from nhcommons.models.plugin_utils import PluginMetadataType as PMType
 from plugin import aggregator
-from plugin.aggregator import _merge_metadata_manifest_categories
 
 PLUGIN = "plugin-1"
 VERSION = "2.34"
@@ -399,84 +398,3 @@ class TestAggregator:
             self._put_plugin.assert_not_called()
 
 
-@pytest.mark.parametrize(
-    "meta_category, meta_hierarchy, manifest_category, manifest_hierarchy, expected_category, expected_hierarchy",
-    [
-        ({}, {}, {}, {}, {}, {}),
-        (
-            {"Workflow step": ["Image segmentation"]},
-            {"Workflow step": [["Image segmentation"]]},
-            {},
-            {},
-            {"Workflow step": ["Image segmentation"]},
-            {"Workflow step": [["Image segmentation"]]},
-        ),
-        (
-            {},
-            {},
-            {"Workflow step": ["Image segmentation"]},
-            {"Workflow step": [["Image segmentation"]]},
-            {"Workflow step": ["Image segmentation"]},
-            {"Workflow step": [["Image segmentation"]]},
-        ),
-        (
-            {"Data": ["2D", "3D"], "Modality": ["HeLa"]},
-            {
-                "Data": [
-                    [
-                        "2D",
-                        "3D",
-                    ]
-                ],
-                "Modality": [["Fluo", "HeLa"]],
-            },
-            {"Modality": ["Fluo"]},
-            {
-                "Modality": [
-                    [
-                        "Fluo",
-                    ]
-                ]
-            },
-            # Data and Modality are both there
-            {"Data": ["2D", "3D"], "Modality": ["Fluo", "HeLa"]},
-            # ["Fluo"] & ["Fluo", "HeLa"] have different leaves & are both there
-            {
-                "Data": [
-                    [
-                        "2D",
-                        "3D",
-                    ]
-                ],
-                "Modality": [["Fluo"], ["Fluo", "HeLa"]],
-            },
-        ),
-    ],
-)
-def test_category_merge(
-    meta_category,
-    meta_hierarchy,
-    manifest_category,
-    manifest_hierarchy,
-    expected_category,
-    expected_hierarchy,
-):
-    mock_meta = {"category": meta_category, "category_hierarchy": meta_hierarchy}
-    mock_manifest = {
-        "category": manifest_category,
-        "category_hierarchy": manifest_hierarchy,
-    }
-
-    meta_result = _merge_metadata_manifest_categories(mock_meta, mock_manifest)
-    merged_meta = meta_result["category"]
-    merged_hierarchy = meta_result["category_hierarchy"]
-    assert sorted(merged_meta.keys()) == sorted(expected_category.keys())
-    for key in merged_meta:
-        cat_list = merged_meta[key]
-        assert sorted(cat_list) == sorted(expected_category[key])
-
-    assert sorted(merged_hierarchy.keys()) == sorted(expected_hierarchy.keys())
-    for key in merged_hierarchy:
-        hierarchy_list = merged_hierarchy[key]
-        expected_list = expected_hierarchy[key]
-        assert sorted(hierarchy_list) == sorted(expected_list)
