@@ -421,14 +421,36 @@ class TestAggregator:
         ),
         (
             {"Data": ["2D", "3D"], "Modality": ["HeLa"]},
-            {"Data": [["2D", "3D", ]], "Modality": [["Fluo", "HeLa"]]},
+            {
+                "Data": [
+                    [
+                        "2D",
+                        "3D",
+                    ]
+                ],
+                "Modality": [["Fluo", "HeLa"]],
+            },
             {"Modality": ["Fluo"]},
-            {"Modality": [["Fluo", ]]},
+            {
+                "Modality": [
+                    [
+                        "Fluo",
+                    ]
+                ]
+            },
             # Data and Modality are both there
             {"Data": ["2D", "3D"], "Modality": ["Fluo", "HeLa"]},
             # ["Fluo"] & ["Fluo", "HeLa"] have different leaves & are both there
-            {"Data": [["2D", "3D", ]], "Modality": [["Fluo"], ["Fluo", "HeLa"]]},
-        )
+            {
+                "Data": [
+                    [
+                        "2D",
+                        "3D",
+                    ]
+                ],
+                "Modality": [["Fluo"], ["Fluo", "HeLa"]],
+            },
+        ),
     ],
 )
 def test_category_merge(
@@ -445,11 +467,9 @@ def test_category_merge(
         "category_hierarchy": manifest_hierarchy,
     }
 
-    meta_result = _merge_metadata_manifest_categories(
-        mock_meta, mock_manifest
-    )
-    merged_meta = meta_result['category']
-    merged_hierarchy = meta_result['category_hierarchy']
+    meta_result = _merge_metadata_manifest_categories(mock_meta, mock_manifest)
+    merged_meta = meta_result["category"]
+    merged_hierarchy = meta_result["category_hierarchy"]
     assert sorted(merged_meta.keys()) == sorted(expected_category.keys())
     for key in merged_meta:
         cat_list = merged_meta[key]

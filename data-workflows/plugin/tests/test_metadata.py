@@ -23,13 +23,18 @@ def category_responses():
     return [
         [{"dimension": "Wrkflw", "hierarchy": ["Img reg"], "label": "Img reg1"}],
         [{"dimension": "Data", "hierarchy": ["2D image"], "label": "2D"}],
-        [{"dimension": "Wrkflw", "hierarchy": ["Img reg", "Affine reg"], "label": "Img reg2"}],
-        []
+        [
+            {
+                "dimension": "Wrkflw",
+                "hierarchy": ["Img reg", "Affine reg"],
+                "label": "Img reg2",
+            }
+        ],
+        [],
     ]
 
 
 class TestMetadata:
-
     @pytest.fixture
     def expected(self) -> dict:
         return {
@@ -40,13 +45,23 @@ class TestMetadata:
             "description": DESCRIPTION,
             "description_text": RENDERED_DESCRIPTION,
             "category": {
-                "Data": ["2D", ],
-                "Wrkflw": ["Img reg1", "Img reg2", ]
+                "Data": [
+                    "2D",
+                ],
+                "Wrkflw": [
+                    "Img reg1",
+                    "Img reg2",
+                ],
             },
             "category_hierarchy": {
-                "Data": [["2D"], ],
-                "Wrkflw": [["Img reg1"], ["Img reg2", "Affine reg"], ],
-            }
+                "Data": [
+                    ["2D"],
+                ],
+                "Wrkflw": [
+                    ["Img reg1"],
+                    ["Img reg2", "Affine reg"],
+                ],
+            },
         }
 
     @pytest.fixture
@@ -55,10 +70,7 @@ class TestMetadata:
             "name": "Napari Demo",
             "visibility": "public",
             "description": DESCRIPTION,
-            "labels": {
-                "ontology": ONTOLOGY,
-                "terms": category_terms()
-            }
+            "labels": {"ontology": ONTOLOGY, "terms": category_terms()},
         }
 
     @pytest.fixture
@@ -72,25 +84,17 @@ class TestMetadata:
     @pytest.fixture(autouse=True)
     def setup(self, monkeypatch) -> None:
         self._mock_pypi_data = Mock(
-            side_effect=self._get_pypi_response,
-            spec=metadata.get_plugin_pypi_metadata
+            side_effect=self._get_pypi_response, spec=metadata.get_plugin_pypi_metadata
         )
-        monkeypatch.setattr(
-            metadata, "get_plugin_pypi_metadata", self._mock_pypi_data
-        )
+        monkeypatch.setattr(metadata, "get_plugin_pypi_metadata", self._mock_pypi_data)
         self._mock_github_data = Mock(
-            side_effect=self._get_github_response,
-            spec=metadata.get_github_metadata
+            side_effect=self._get_github_response, spec=metadata.get_github_metadata
         )
-        monkeypatch.setattr(
-            metadata, "get_github_metadata", self._mock_github_data
-        )
+        monkeypatch.setattr(metadata, "get_github_metadata", self._mock_github_data)
         self._mock_render_desc = Mock(
             return_value=RENDERED_DESCRIPTION, spec=metadata.render_description
         )
-        monkeypatch.setattr(
-            metadata, "render_description", self._mock_render_desc
-        )
+        monkeypatch.setattr(metadata, "render_description", self._mock_render_desc)
         self._mock_get_category = Mock(
             side_effect=category_responses(), spec=categories.get_category
         )
@@ -98,15 +102,20 @@ class TestMetadata:
 
     @pytest.fixture
     def verify_calls(self, verify_call):
-        def _verify_calls(github_metadata_called: bool = False,
-                          render_desc_called: bool = False,
-                          get_category_called: bool = False) -> None:
+        def _verify_calls(
+            github_metadata_called: bool = False,
+            render_desc_called: bool = False,
+            get_category_called: bool = False,
+        ) -> None:
             verify_call(True, self._mock_pypi_data, [call(PLUGIN, VERSION)])
-            verify_call(github_metadata_called, self._mock_github_data, [call(GITHUB_REPO)])
+            verify_call(
+                github_metadata_called, self._mock_github_data, [call(GITHUB_REPO)]
+            )
             verify_call(render_desc_called, self._mock_render_desc, [call(DESCRIPTION)])
 
             category_calls = [call(term, ONTOLOGY) for term in category_terms()]
             verify_call(get_category_called, self._mock_get_category, category_calls)
+
         return _verify_calls
 
     def test_get_metadata_none_from_pypi(self, verify_calls) -> None:
@@ -117,7 +126,7 @@ class TestMetadata:
         verify_calls()
 
     def test_get_metadata_none_code_repository_from_pypi(
-            self, pypi_metadata: dict, verify_calls
+        self, pypi_metadata: dict, verify_calls
     ) -> None:
         self._plugin_pypi_metadata_response = pypi_metadata
         pypi_metadata["code_repository"] = None
@@ -128,7 +137,7 @@ class TestMetadata:
         verify_calls()
 
     def test_get_metadata_non_github_code_repository_from_pypi(
-            self, pypi_metadata: dict, verify_calls
+        self, pypi_metadata: dict, verify_calls
     ) -> None:
         self._plugin_pypi_metadata_response = pypi_metadata
         pypi_metadata["code_repository"] = "https://bb.com/czi/napari-demo"
@@ -139,7 +148,7 @@ class TestMetadata:
         verify_calls()
 
     def test_get_metadata_valid_code_repository_from_pypi(
-            self, github_metadata: dict, pypi_metadata: dict, expected: dict, verify_calls
+        self, github_metadata: dict, pypi_metadata: dict, expected: dict, verify_calls
     ) -> None:
         del github_metadata["description"]
         del github_metadata["labels"]
@@ -156,7 +165,7 @@ class TestMetadata:
         verify_calls(github_metadata_called=True)
 
     def test_get_metadata_when_labels_has_no_ontology(
-            self, github_metadata: dict, pypi_metadata: dict, expected: dict, verify_calls
+        self, github_metadata: dict, pypi_metadata: dict, expected: dict, verify_calls
     ) -> None:
         del github_metadata["description"]
         del github_metadata["labels"]["ontology"]
@@ -173,7 +182,7 @@ class TestMetadata:
         verify_calls(github_metadata_called=True)
 
     def test_get_metadata_with_description(
-            self, github_metadata: dict, pypi_metadata: dict, expected: dict, verify_calls
+        self, github_metadata: dict, pypi_metadata: dict, expected: dict, verify_calls
     ) -> None:
         self._plugin_pypi_metadata_response = pypi_metadata
         self._github_metadata_response = github_metadata
@@ -187,7 +196,7 @@ class TestMetadata:
         verify_calls(github_metadata_called=True, render_desc_called=True)
 
     def test_get_metadata_with_labels(
-            self, github_metadata: dict, pypi_metadata: dict, expected: dict, verify_calls
+        self, github_metadata: dict, pypi_metadata: dict, expected: dict, verify_calls
     ) -> None:
         self._plugin_pypi_metadata_response = pypi_metadata
         self._github_metadata_response = github_metadata
@@ -201,7 +210,7 @@ class TestMetadata:
         verify_calls(github_metadata_called=True, get_category_called=True)
 
     def test_get_metadata_with_description_and_labels(
-            self, github_metadata: dict, pypi_metadata: dict, expected: dict, verify_calls
+        self, github_metadata: dict, pypi_metadata: dict, expected: dict, verify_calls
     ) -> None:
         self._plugin_pypi_metadata_response = pypi_metadata
         self._github_metadata_response = github_metadata
@@ -212,7 +221,7 @@ class TestMetadata:
         verify_calls(
             github_metadata_called=True,
             render_desc_called=True,
-            get_category_called=True
+            get_category_called=True,
         )
 
     def _get_pypi_response(self, _, __) -> dict:

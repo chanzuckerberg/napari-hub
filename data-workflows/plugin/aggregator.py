@@ -62,7 +62,9 @@ def _generate_aggregate(
         metadata_by_type, PluginMetadataType.DISTRIBUTION, None
     )
     formatted_manifest = get_formatted_manifest(manifest, name, version)
-    metadata_with_categories = _merge_metadata_manifest_categories(metadata, formatted_manifest)
+    metadata_with_categories = _merge_metadata_manifest_categories(
+        metadata, formatted_manifest
+    )
     return {**metadata_with_categories, **formatted_manifest}
 
 
@@ -103,39 +105,50 @@ def _get_visibility(name, aggregate, blocked_plugins) -> PluginVisibility:
 
     return PluginVisibility.PUBLIC
 
-def _merge_metadata_manifest_categories(metadata, manifest):
+
+def _merge_metadata_manifest_categories(
+    metadata: dict[str, Any], manifest: dict[str, Any]
+):
     """Merge categories and hierarchy in PyPI and manifest.
 
     Keeps union of keys and values present in both dictionaries.
     """
-    meta_category = metadata.get('category', {})
-    man_category = manifest.get('category', {})
-    meta_category_hierarchy = metadata.get('category_hierarchy', {})
-    man_category_hierarchy = manifest.get('category_hierarchy', {})
-    
+    meta_category = metadata.get("category", {})
+    man_category = manifest.get("category", {})
+    meta_category_hierarchy = metadata.get("category_hierarchy", {})
+    man_category_hierarchy = manifest.get("category_hierarchy", {})
+
+    if not man_category:
+        return meta_category, meta_category_hierarchy
+
     merged_category = {}
     merged_keys = set(meta_category.keys()).union(set(man_category.keys()))
     for key in merged_keys:
         # unify both lists of terms
-        merged_labels = list(set(meta_category.get(key, [])).union(set(man_category.get(key, []))))
+        merged_labels = list(
+            set(meta_category.get(key, [])).union(set(man_category.get(key, [])))
+        )
         merged_category[key] = merged_labels
 
     merged_hierarchy = {}
-    merged_keys = list(set(meta_category_hierarchy.keys()).union(set(man_category_hierarchy.keys())))
+    merged_keys = list(
+        set(meta_category_hierarchy.keys()).union(set(man_category_hierarchy.keys()))
+    )
     for key in merged_keys:
         man_hierarchy = man_category_hierarchy.get(key, [])
         meta_hierarchy = meta_category_hierarchy.get(key, [])
         # the lowest level of the hierarchy will be the comparison key for removing duplicates
-        meta_leaves = [hi_list[-1] for hi_list in meta_hierarchy]
+        meta_leaves = set([hi_list[-1] for hi_list in meta_hierarchy])
         # only keep manifest hierarchies we don't already have
-        man_filtered = list(filter(lambda hi_list: hi_list[-1] not in meta_leaves, man_hierarchy))
-        meta_hierarchy.extend(man_filtered)
-        merged_hierarchy[key] = meta_hierarchy
-    
+        man_filtered = list(
+            filter(lambda hi_list: hi_list[-1] not in meta_leaves, man_hierarchy)
+        )
+        merged_hierarchy[key] = meta_hierarchy + man_filtered
+
     if len(merged_category):
-        metadata['category'] = merged_category
-        metadata['category_hierarchy'] = merged_hierarchy
-    if 'category' in manifest:
-        del manifest['category']
-        del manifest['category_hierarchy']
+        metadata["category"] = merged_category
+        metadata["category_hierarchy"] = merged_hierarchy
+    if "category" in manifest:
+        del manifest["category"]
+        del manifest["category_hierarchy"]
     return metadata

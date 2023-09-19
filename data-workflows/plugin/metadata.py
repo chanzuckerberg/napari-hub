@@ -4,9 +4,7 @@ from typing import Optional
 
 from nhcommons.utils.categories import process_for_categories
 from nhcommons.utils.custom_parser import render_description
-from nhcommons.utils.github_adapter import (
-    get_github_metadata, is_valid_repo_url
-)
+from nhcommons.utils.github_adapter import get_github_metadata, is_valid_repo_url
 from nhcommons.utils.pypi_adapter import get_plugin_pypi_metadata
 
 logger = logging.getLogger(__name__)

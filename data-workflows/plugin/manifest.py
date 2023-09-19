@@ -6,8 +6,7 @@ from nhcommons.utils.categories import process_for_categories
 
 logger = logging.getLogger(__name__)
 
-VALID_LAYERS = ["image", "labels", "points", "shapes", "surface", "tracks",
-                "vectors"]
+VALID_LAYERS = ["image", "labels", "points", "shapes", "surface", "tracks", "vectors"]
 VALID_LAYER_REGEX = rf'({"|".join(VALID_LAYERS)}).*'
 PLUGIN_TYPES_BY_KEY = {
     "readers": "reader",
@@ -16,20 +15,23 @@ PLUGIN_TYPES_BY_KEY = {
     "widgets": "widget",
     "writers": "writer",
 }
-ONTOLOGY_VERSION = 'EDAM-BIOIMAGING:alpha06'
+ONTOLOGY_VERSION = "EDAM-BIOIMAGING:alpha06"
 MANIFEST_EDAM_MAPPING = {
-    'Annotation': ['Image Annotation'], # Operation
-    'Image_Processing': ['Image Processing'], # Operation
-    'Measurement': ['Image Characteristics'], # Data
-    'Segmentation': ['Image Segmentation'], # Operation > Image Processing
-    'Transformations': ['Geometric Transformation', 'Morphological Operation'], # Operation > Image Processing
-    'Visualization': ['Visualisation'] # Operation
+    "Annotation": ["Image Annotation"],  # Operation
+    "Image_Processing": ["Image Processing"],  # Operation
+    "Measurement": ["Image Characteristics"],  # Data
+    "Segmentation": ["Image Segmentation"],  # Operation > Image Processing
+    "Transformations": [
+        "Geometric Transformation",
+        "Morphological Operation",
+    ],  # Operation > Image Processing
+    "Visualization": ["Visualisation"],  # Operation
 }
 
 
-def get_formatted_manifest(data: Optional[dict[str, Any]],
-                           plugin: str,
-                           version: str) -> dict[str, Any]:
+def get_formatted_manifest(
+    data: Optional[dict[str, Any]], plugin: str, version: str
+) -> dict[str, Any]:
     """Parse fetched data if not None into frontend fields
     When `error` is in the returned metadata, we return default values.
     :param data: data fetched from plugin_metadata table for type=DISTRIBUTION
@@ -41,17 +43,19 @@ def get_formatted_manifest(data: Optional[dict[str, Any]],
     return _parse_manifest(raw_metadata)
 
 
-def _get_raw_manifest(manifest_data: Optional[dict[str, Any]],
-                      plugin: str,
-                      version: str) -> Optional[dict[str, Any]]:
+def _get_raw_manifest(
+    manifest_data: Optional[dict[str, Any]], plugin: str, version: str
+) -> Optional[dict[str, Any]]:
     if manifest_data is None:
         logger.warning(f"{plugin}-{version} manifest not yet processed")
         return None
 
     # empty dict indicates some lambda error in processing e.g. timed out
     elif manifest_data == {}:
-        logger.warning(f"Processing for {plugin}-{version} manifest failed due "
-                       f"to external error")
+        logger.warning(
+            f"Processing for {plugin}-{version} manifest failed due "
+            f"to external error"
+        )
         return None
     # error written to file indicates manifest discovery failed
     elif "error" in manifest_data:
@@ -61,24 +65,22 @@ def _get_raw_manifest(manifest_data: Optional[dict[str, Any]],
 
     return manifest_data
 
-def _map_categories(manifest_categories):
+
+def _map_categories(manifest_categories: list[str]):
     """Maps raw manifest categories to the appropriate EDAM ontology.
 
     Any categories that don't map to an EDAM term are discarded.
 
     :param manifest_categories: categories read from the manifest
     """
-    terms = []
-    for category in manifest_categories:
-        if category in MANIFEST_EDAM_MAPPING:
-            terms.extend(MANIFEST_EDAM_MAPPING[category])
-    labels = {
-        'ontology': ONTOLOGY_VERSION,
-        'terms': terms
-    }
-    categories, hierarchy = process_for_categories(labels, ONTOLOGY_VERSION)
-
-    return categories, hierarchy
+    terms = [
+        term
+        for cat in manifest_categories
+        for term in MANIFEST_EDAM_MAPPING[cat]
+        if cat in MANIFEST_EDAM_MAPPING
+    ]
+    labels = {"ontology": ONTOLOGY_VERSION, "terms": terms}
+    return process_for_categories(labels, ONTOLOGY_VERSION)
 
 
 def _parse_manifest(manifest: Optional[dict[str, Any]]) -> dict[str, Any]:
@@ -93,7 +95,7 @@ def _parse_manifest(manifest: Optional[dict[str, Any]]) -> dict[str, Any]:
         "writer_file_extensions": [],
         "writer_save_layers": [],
         "category": {},
-        "category_hierarchy": {}
+        "category_hierarchy": {},
     }
     if manifest is None:
         return result
@@ -102,7 +104,9 @@ def _parse_manifest(manifest: Optional[dict[str, Any]]) -> dict[str, Any]:
     result["npe2"] = not manifest.get("npe1_shim", False)
     raw_categories = manifest.get("categories", {})
     if raw_categories:
-        result["category"], result["category_hierarchy"] = _map_categories(raw_categories)
+        result["category"], result["category_hierarchy"] = _map_categories(
+            raw_categories
+        )
     if "contributions" in manifest:
         contributions = manifest["contributions"]
         if contributions.get("readers"):
