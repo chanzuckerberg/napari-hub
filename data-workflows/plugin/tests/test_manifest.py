@@ -1,8 +1,12 @@
 from typing import Any, Optional
 
 import pytest
+from unittest.mock import Mock
 
+from plugin import categories
 from plugin.manifest import get_formatted_manifest
+from plugin.tests.utils import category_responses
+
 
 
 def generate_contributions(
@@ -46,6 +50,14 @@ def generate_contributions(
 
 
 class TestManifest:
+
+    @pytest.fixture(autouse=True)
+    def setup(self, monkeypatch) -> None:
+        self._mock_get_category = Mock(
+            side_effect=category_responses(), spec=categories.get_category
+        )
+        monkeypatch.setattr(categories, "get_category", self._mock_get_category)
+
     @pytest.fixture
     def default_result(self) -> dict[str, Any]:
         return {
