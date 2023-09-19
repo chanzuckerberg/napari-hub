@@ -46,7 +46,7 @@ class TestCategories:
             [
                 ([], {}, {}),
                 (["Img reg1"], {"Wrkflw": ["Img reg1"]}, {"Wrkflw": [["Img reg1"], ]}),
-                (["Img reg1", "2D"], {"Wrkflw": ["Img reg1"], "Data": ["2D"]}, {"Wrkflw": [["Img reg1"], ], "Data": [["2D"]]}),
+                (["Img reg1", "2D image"], {"Wrkflw": ["Img reg1"], "Data": ["2D"]}, {"Wrkflw": [["Img reg1"], ], "Data": [["2D"]]}),
                 (["foo", "bar", "buzz", "Img reg2"], {"Wrfklw": ["Img reg2"]}, {"Wrkflw": [["Img reg", "Affine reg"], ]})
             ]
     )
