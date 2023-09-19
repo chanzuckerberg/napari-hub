@@ -5,8 +5,13 @@ from unittest.mock import Mock
 
 from plugin import categories
 from plugin.manifest import get_formatted_manifest
-from plugin.tests.utils import category_responses
 
+
+def category_responses():
+    return [
+        [{"dimension": "Workflow step", "hierarchy": ["Image segmentation"], "label": "Image segmentation"}],
+        [{"dimension": "Data", "hierarchy": ["2D image"], "label": "2D"}],
+    ]
 
 
 def generate_contributions(
