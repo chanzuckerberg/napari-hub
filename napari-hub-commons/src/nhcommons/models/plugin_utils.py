@@ -21,5 +21,5 @@ class PluginVisibility(Enum, metaclass=PluginVisibilityMeta):
 
     PUBLIC = auto()
     HIDDEN = auto()
-    BLOCKED = auto() # what is this field used for?
-    INVALID = auto() # What is this field used for?
+    BLOCKED = auto()
+    INVALID = auto()
