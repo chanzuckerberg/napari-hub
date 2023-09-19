@@ -50,7 +50,7 @@ class TestCategories:
 
             ]
     )
-    def test_process_for_categories(terms, expected_categories, expected_hierarchy):
+    def test_process_for_categories(self, terms, expected_categories, expected_hierarchy):
         labels = {
             'terms': terms,
             'ontology': ONTOLOGY_VERSION
@@ -114,6 +114,7 @@ class TestCategories:
         ],
     )
     def test_category_merge(
+        self,
         meta_category,
         meta_hierarchy,
         manifest_category,
