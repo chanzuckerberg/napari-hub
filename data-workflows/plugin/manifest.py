@@ -76,8 +76,7 @@ def _map_categories(manifest_categories: list[str]):
     terms = [
         term
         for cat in manifest_categories
-        for term in MANIFEST_EDAM_MAPPING[cat]
-        if cat in MANIFEST_EDAM_MAPPING
+        for term in MANIFEST_EDAM_MAPPING.get(cat, [])
     ]
     labels = {"ontology": ONTOLOGY_VERSION, "terms": terms}
     return process_for_categories(labels, ONTOLOGY_VERSION)
