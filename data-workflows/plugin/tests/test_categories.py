@@ -69,7 +69,7 @@ class TestCategories:
             ),
             (
                 ["Img reg1", "2D image", "Img reg2"],
-                {"Wrfklw": ["Img reg 1", "Img reg2"], "Data": ["2D"]},
+                {"Wrkflw": ["Img reg 1", "Img reg2"], "Data": ["2D"]},
                 {"Wrkflw": [["Img reg1"], ["Img reg", "Affine reg"]], "Data": [["2D"]]},
             ),
         ],
