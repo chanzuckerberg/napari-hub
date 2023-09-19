@@ -42,7 +42,7 @@ class TestCategories:
         monkeypatch.setattr(categories, "get_category", self._mock_get_category)
 
     @pytest.mark.parametrize(
-            "labels, expected_categories, expected_hierarchy",
+            "terms, expected_categories, expected_hierarchy",
             [
                 ([], {}, {}),
                 (["other", "Img reg1"], {"Wrkflw": ["Img reg1"]}, {"Wrkflw": [["Img reg1"], ]}),
@@ -50,7 +50,11 @@ class TestCategories:
 
             ]
     )
-    def test_process_for_categories(labels, expected_categories, expected_hierarchy):
+    def test_process_for_categories(terms, expected_categories, expected_hierarchy):
+        labels = {
+            'terms': terms,
+            'ontology': ONTOLOGY_VERSION
+        }
         result_categories, result_hierarchy = process_for_categories(labels, ONTOLOGY_VERSION)
         assert_category_matches(result_categories, expected_categories)
         assert_hierarchy_matches(result_hierarchy, expected_hierarchy)
