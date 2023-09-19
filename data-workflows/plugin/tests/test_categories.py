@@ -6,7 +6,6 @@ from plugin import categories
 
 ONTOLOGY_VERSION = "EDAM-BIOIMAGING:alpha06"
 
-
 def category_responses():
     return [
         [{"dimension": "Wrkflw", "hierarchy": ["Img reg"], "label": "Img reg1"}],
