@@ -2,7 +2,7 @@ import logging
 import re
 from typing import Any, Optional
 
-from nhcommons.utils.categories import process_for_categories
+from plugin.categories import process_for_categories
 
 logger = logging.getLogger(__name__)
 
