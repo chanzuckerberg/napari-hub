@@ -30,7 +30,7 @@ def merge_metadata_manifest_categories(
     man_category_hierarchy = manifest.get("category_hierarchy", {})
 
     if not man_category:
-        return meta_category, meta_category_hierarchy
+        return metadata
 
     merged_category = {}
     merged_keys = set(meta_category.keys()).union(set(man_category.keys()))
