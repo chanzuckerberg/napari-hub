@@ -49,8 +49,8 @@ def get_index(
     """
     Get the index page related metadata for all plugins.
     :params visibility_filter: visibilities to filter results by, if None all plugins
-    :params include_total_installs: include total_installs in result
     are returned
+    :params include_total_installs: include total_installs in result
     :return: List for index page metadata
     """
     plugins = plugin_model.get_index(visibility_filter)
