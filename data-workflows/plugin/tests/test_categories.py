@@ -6,6 +6,7 @@ from plugin import categories
 
 ONTOLOGY_VERSION = "EDAM-BIOIMAGING:alpha06"
 
+
 def category_responses():
     return [
         [{"dimension": "Wrkflw", "hierarchy": ["Img reg"], "label": "Img reg1"}],
@@ -20,11 +21,13 @@ def category_responses():
         [],
     ]
 
+
 def assert_category_matches(categories, expected_category):
     assert sorted(categories.keys()) == sorted(expected_category.keys())
     for key in categories:
         cat_list = categories[key]
         assert sorted(cat_list) == sorted(expected_category[key])
+
 
 def assert_hierarchy_matches(hierarchy, expected_hierarchy):
     assert sorted(hierarchy.keys()) == sorted(expected_hierarchy.keys())
@@ -32,6 +35,7 @@ def assert_hierarchy_matches(hierarchy, expected_hierarchy):
         hierarchy_list = hierarchy[key]
         expected_list = expected_hierarchy[key]
         assert sorted(hierarchy_list) == sorted(expected_list)
+
 
 class TestCategories:
     @pytest.fixture(autouse=True)
@@ -42,20 +46,42 @@ class TestCategories:
         monkeypatch.setattr(categories, "get_category", self._mock_get_category)
 
     @pytest.mark.parametrize(
-            "terms, expected_categories, expected_hierarchy",
-            [
-                ([], {}, {}),
-                (["Img reg1"], {"Wrkflw": ["Img reg1"]}, {"Wrkflw": [["Img reg1"], ]}),
-                (["Img reg1", "2D image"], {"Wrkflw": ["Img reg1"], "Data": ["2D"]}, {"Wrkflw": [["Img reg1"], ], "Data": [["2D"]]}),
-                (["foo", "bar", "buzz", "Img reg2"], {"Wrfklw": ["Img reg2"]}, {"Wrkflw": [["Img reg", "Affine reg"], ]})
-            ]
+        "terms, expected_categories, expected_hierarchy",
+        [
+            ([], {}, {}),
+            (
+                ["Img reg1"],
+                {"Wrkflw": ["Img reg1"]},
+                {
+                    "Wrkflw": [
+                        ["Img reg1"],
+                    ]
+                },
+            ),
+            (
+                ["Img reg1", "2D image"],
+                {"Wrkflw": ["Img reg1"], "Data": ["2D"]},
+                {
+                    "Wrkflw": [
+                        ["Img reg1"],
+                    ],
+                    "Data": [["2D"]],
+                },
+            ),
+            (
+                ["Img reg1", "2D image", "Img reg2"],
+                {"Wrfklw": ["Img reg 1", "Img reg2"], "Data": ["2D"]},
+                {"Wrkflw": [["Img reg1"], ["Img reg", "Affine reg"]], "Data": [["2D"]]},
+            ),
+        ],
     )
-    def test_process_for_categories(self, terms, expected_categories, expected_hierarchy):
-        labels = {
-            'terms': terms,
-            'ontology': ONTOLOGY_VERSION
-        }
-        result_categories, result_hierarchy = process_for_categories(labels, ONTOLOGY_VERSION)
+    def test_process_for_categories(
+        self, terms, expected_categories, expected_hierarchy
+    ):
+        labels = {"terms": terms, "ontology": ONTOLOGY_VERSION}
+        result_categories, result_hierarchy = process_for_categories(
+            labels, ONTOLOGY_VERSION
+        )
         assert_category_matches(result_categories, expected_categories)
         assert_hierarchy_matches(result_hierarchy, expected_hierarchy)
 
@@ -133,4 +159,3 @@ class TestCategories:
         merged_hierarchy = meta_result["category_hierarchy"]
         assert_category_matches(merged_meta, expected_category)
         assert_hierarchy_matches(merged_hierarchy, expected_hierarchy)
-
