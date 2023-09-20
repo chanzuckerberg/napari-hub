@@ -8,11 +8,13 @@ on:
       - main
     paths:
       - 'data-workflows/**'
+      - 'napari-hub-commons/**'
   pull_request:
     branches:
       - '**'
     paths:
       - 'data-workflows/**'
+      - 'napari-hub-commons/**'
 
 defaults:
   run:

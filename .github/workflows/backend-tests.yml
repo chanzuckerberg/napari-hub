@@ -8,11 +8,13 @@ on:
       - main
     paths:
       - 'backend/**'
+      - 'napari-hub-commons/**'
   pull_request:
     branches:
       - '**'
     paths:
       - 'backend/**'
+      - 'napari-hub-commons/**'
 
 defaults:
   run:
