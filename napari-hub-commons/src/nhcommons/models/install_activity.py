@@ -1,10 +1,29 @@
 import logging
+import os
 import time
-from typing import (Dict, Any, List)
+from datetime import date
+from functools import reduce
+from typing import (Dict, Any, List, Iterator)
+
+from dateutil.relativedelta import relativedelta
 from pynamodb.attributes import (UnicodeAttribute, NumberAttribute)
-from nhcommons.models.helper import (set_ddb_metadata, PynamoWrapper)
+from pynamodb.indexes import GlobalSecondaryIndex, IncludeProjection
+
+from nhcommons.models.activity_helper import (
+    build_timeline_query_parameters, process_timeline_results
+)
+from nhcommons.models.pynamo_helper import (set_ddb_metadata, PynamoWrapper)
 
 logger = logging.getLogger(__name__)
+
+
+class _TotalInstallsIndex(GlobalSecondaryIndex):
+    class Meta:
+        index_name = f'{os.getenv("STACK_NAME")}-total-installs'
+        projection = IncludeProjection(["install_count", "last_updated_timestamp"])
+
+    plugin_name = UnicodeAttribute(hash_key=True)
+    is_total = UnicodeAttribute(range_key=True)
 
 
 @set_ddb_metadata("install-activity")
@@ -18,6 +37,8 @@ class _InstallActivity(PynamoWrapper):
     install_count = NumberAttribute()
     is_total = UnicodeAttribute(null=True)
     timestamp = NumberAttribute(null=True)
+
+    total_installs = _TotalInstallsIndex()
 
     @staticmethod
     def from_dict(data: Dict[str, Any]):
@@ -35,11 +56,98 @@ def batch_write(records: List[Dict]) -> None:
     start = time.perf_counter()
     try:
         batch = _InstallActivity.batch_write()
-
         for record in records:
             batch.save(_InstallActivity.from_dict(record))
-
         batch.commit()
     finally:
         duration = (time.perf_counter() - start) * 1000
         logger.info(f"_InstallActivity duration={duration}ms")
+
+
+def get_total_installs(plugin: str) -> int:
+    """
+    Gets total_installs stats from dynamo for a plugin
+    :return int: total_installs count
+
+    :param str plugin: Name of the plugin in lowercase
+    """
+    start = time.perf_counter()
+    try:
+        return _InstallActivity.get(plugin.lower(), "TOTAL:").install_count
+    except _InstallActivity.DoesNotExist:
+        logging.warning(f"No TOTAL: record found for plugin={plugin}")
+        return 0
+    finally:
+        duration = (time.perf_counter() - start) * 1000
+        logging.info(f"get_total_installs for plugin={plugin} duration={duration}ms")
+
+
+def get_recent_installs(plugin: str, day_delta: int) -> int:
+    """
+    Fetches plugin recent_install stats from dynamo.
+    :return int: sum of installs in the last day_delta timeperiod
+
+    :param str plugin: Name of the plugin in lowercase.
+    :param int day_delta: Specifies the number of days to include in the computation.
+    """
+    day_type_format = "DAY:{0:%Y%m%d}"
+    today = date.today()
+    upper = day_type_format.format(today)
+    lower = day_type_format.format(today - relativedelta(days=day_delta))
+
+    query_params = {
+        "hash_key": plugin.lower(),
+        "range_key_condition": _InstallActivity.type_timestamp.between(lower, upper)
+    }
+
+    return reduce(
+        lambda acc, count: acc + count,
+        [row.install_count for row in _query_table(query_params)],
+        0
+    )
+
+
+def get_timeline(plugin: str, month_delta: int) -> List[Dict[str, int]]:
+    """
+    Fetches plugin install at a month level granularity for last n months.
+    :returns List[Dict[str, int]]: Entries for the month_delta months
+
+    :param str plugin: Name of the plugin in lowercase.
+    :param int month_delta: Number of months in timeline.
+    """
+    query_params = build_timeline_query_parameters(
+        plugin,
+        f"MONTH:{{timestamp:%Y%m}}",
+        month_delta,
+        _InstallActivity.type_timestamp
+    )
+    results = {row.timestamp: row.install_count for row in _query_table(query_params)}
+    return process_timeline_results(results, month_delta, "installs")
+
+
+def get_total_installs_by_plugins() -> Dict[str, int]:
+    """
+    Fetches total_installs for all plugins.
+    :returns Dict[str, int]: A dict of total_installs keyed on plugin name
+    """
+    start = time.perf_counter()
+    try:
+        iterator = _InstallActivity.total_installs.scan(
+                attributes_to_get=["plugin_name", "install_count"]
+        )
+        return {item.plugin_name: item.install_count for item in iterator}
+    finally:
+        duration = (time.perf_counter() - start) * 1000
+        logging.info(f'scan duration={duration}ms')
+
+
+def _query_table(kwargs: dict) -> Iterator[_InstallActivity]:
+    start = time.perf_counter()
+    try:
+        return _InstallActivity.query(**kwargs)
+    except Exception:
+        logger.exception(f"Error querying table kwargs={kwargs}")
+        return []
+    finally:
+        duration = (time.perf_counter() - start) * 1000
+        logger.info(f"kwargs={kwargs} duration={duration}ms")

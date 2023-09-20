@@ -1,10 +1,14 @@
+import json
 import time
+from datetime import datetime, timezone
+from typing import Callable, Dict, List
 
 import boto3
 import moto.dynamodb.urls
 import pytest
+from dateutil.relativedelta import relativedelta
 
-from nhcommons.models.helper import set_ddb_metadata, PynamoWrapper
+from nhcommons.models.pynamo_helper import set_ddb_metadata, PynamoWrapper
 
 LOCAL_DYNAMO_HOST = "http://localhost:1234"
 AWS_REGION = "us-east-2"
@@ -57,8 +61,8 @@ def verify_table_data():
         def generate_set(input_map: dict) -> set:
             result = set()
             for item in input_map.items():
-                if type(item[1]) == list:
-                    result.add((item[0], "-".join(item[1])))
+                if isinstance(item[1], (dict, list)):
+                    result.add((item[0], json.dumps(item[1])))
                 else:
                     result.add(item)
             return result
@@ -78,3 +82,24 @@ def verify_table_data():
         assert all([is_match(expected) for expected in expected_list])
 
     return _verify
+
+
+@pytest.fixture
+def generate_timeline() -> Callable[[Dict, int, str], List[Dict[str, int]]]:
+    first_of_month = datetime.combine(
+        datetime.today(), datetime.min.time(), timezone.utc
+    ).replace(day=1)
+
+    def _generate(
+        values_by_ts: Dict[int, int], month_delta: int, value_key: str
+    ) -> List[Dict[str, int]]:
+        timeline = []
+        for i in range(month_delta, 0, -1):
+            ts = first_of_month - relativedelta(months=i)
+            entry = {
+                "timestamp": int(ts.timestamp()) * 1000,
+                value_key: values_by_ts.get(i, 0)
+            }
+            timeline.append(entry)
+        return timeline
+    return _generate

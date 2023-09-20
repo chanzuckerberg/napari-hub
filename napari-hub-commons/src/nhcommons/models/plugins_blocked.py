@@ -1,6 +1,6 @@
 from typing import Set
 from pynamodb.attributes import UnicodeAttribute
-from nhcommons.models.helper import set_ddb_metadata, PynamoWrapper
+from nhcommons.models.pynamo_helper import set_ddb_metadata, PynamoWrapper
 
 
 @set_ddb_metadata("plugin-blocked")
