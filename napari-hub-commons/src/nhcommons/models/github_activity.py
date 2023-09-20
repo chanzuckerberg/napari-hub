@@ -4,7 +4,8 @@ import time
 from typing import Dict, Any, List, Optional, Iterator
 from pynamodb.attributes import UnicodeAttribute, NumberAttribute
 from nhcommons.models.activity_helper import (
-    build_timeline_query_parameters, process_timeline_results
+    build_timeline_query_parameters,
+    process_timeline_results,
 )
 from nhcommons.models.pynamo_helper import set_ddb_metadata, PynamoWrapper
 
@@ -94,7 +95,7 @@ def _query_for_timeline(plugin: str, repo: str, month_delta: int) -> Dict[int, i
         plugin,
         f"MONTH:{{timestamp:%Y%m}}:{repo}",
         month_delta,
-        _GitHubActivity.type_identifier
+        _GitHubActivity.type_identifier,
     )
     query_params["filter_condition"] = _GitHubActivity.repo == repo
     return {row.timestamp: row.commit_count for row in _query_table(query_params)}
