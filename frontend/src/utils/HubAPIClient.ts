@@ -2,7 +2,7 @@
 
 import axios, { AxiosRequestConfig } from 'axios';
 
-import { BROWSER, PROD, SERVER, STAGING } from '@/constants/env';
+import { BROWSER, DEV, PROD, SERVER, STAGING } from '@/constants/env';
 import {
   PluginData,
   PluginIndexData,
@@ -31,6 +31,10 @@ const API_URL = (() => {
 
   if (STAGING) {
     return 'https://api.staging.napari-hub.org';
+  }
+
+  if (DEV) {
+    return 'https://api.dev.napari-hub.org/dev-shared';
   }
 
   return process.env.API_URL || 'http://localhost:8081';
