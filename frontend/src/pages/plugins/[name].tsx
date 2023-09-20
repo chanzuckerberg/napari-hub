@@ -59,7 +59,7 @@ export const getServerSideProps = getServerSidePropsHandler<Props, Params>({
     }
 
     const repoData = await fetchRepoData(codeRepo);
-    Object.assign(repoData, await fetchRepoData(codeRepo));
+    Object.assign(props, repoData);
 
     if (props.repoFetchError) {
       logger.error({
