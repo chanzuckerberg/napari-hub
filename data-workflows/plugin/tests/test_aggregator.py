@@ -396,5 +396,3 @@ class TestAggregator:
             self._put_plugin.assert_called_once_with(name, actual_version, record)
         else:
             self._put_plugin.assert_not_called()
-
-
