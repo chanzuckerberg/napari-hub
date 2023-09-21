@@ -1,9 +1,17 @@
 from typing import Dict, List, Any, Set, Optional
-from api.models import (
+from nhcommons.models import (
     install_activity,
-    plugin as plugin_model,
     plugin_metadata as plugin_metadata_model,
+    plugin as plugin_model,
 )
+from nhcommons.models.plugin_utils import PluginVisibility
+
+
+def _get_manifest_metadata(name: str, version: str) -> Optional[dict]:
+    result = plugin_metadata_model.query(
+        plugin=name, version_type=f"{version}:DISTRIBUTION"
+    )
+    return result[0].get("data", {}) if result else None
 
 
 def get_manifest(name: str, version: str = None) -> dict:
@@ -16,7 +24,7 @@ def get_manifest(name: str, version: str = None) -> dict:
     version = version or plugin_model.get_latest_version(name)
     if not version:
         return {}
-    manifest_metadata = plugin_metadata_model.get_manifest(name, version)
+    manifest_metadata = _get_manifest_metadata(name, version)
 
     # manifest_metadata being None indicates manifest is not cached and needs processing
     if manifest_metadata is None:
@@ -35,17 +43,27 @@ def get_manifest(name: str, version: str = None) -> dict:
 
 
 def get_index(
-        visibility: Optional[Set[str]], include_total_installs: bool
+        visibility_filter: Optional[Set[PluginVisibility]] = None,
+        include_total_installs: bool = False
 ) -> List[Dict[str, Any]]:
     """
     Get the index page related metadata for all plugins.
-    :params visibility: visibilities to filter results by
+    :params visibility_filter: visibilities to filter results by, if None all plugins
+    are returned
     :params include_total_installs: include total_installs in result
-    :return: dict for index page metadata
+    :return: List for index page metadata
     """
-    plugins = plugin_model.get_index(visibility)
+    plugins = plugin_model.get_index(visibility_filter)
     if include_total_installs:
         total_installs = install_activity.get_total_installs_by_plugins()
         for item in plugins:
             item["total_installs"] = total_installs.get(item["name"].lower(), 0)
     return plugins
+
+
+def get_plugin(name: str, version: str = None) -> Dict[str, Any]:
+    visibilities = {PluginVisibility.PUBLIC, PluginVisibility.HIDDEN}
+    if version:
+        return plugin_model.get_plugin_by_version(name, version, visibilities)
+    else:
+        return plugin_model.get_latest_plugin(name, visibilities)

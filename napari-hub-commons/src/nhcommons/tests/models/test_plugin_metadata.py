@@ -43,6 +43,10 @@ class TestPluginMetadata:
                                       "plugin-metadata")
 
     @pytest.fixture
+    def empty_list(self):
+        return []
+
+    @pytest.fixture
     def plugin_1_0_0_1(self):
         return [create_data("plugin-1", "0.0.1", "PYPI")]
 
@@ -80,12 +84,26 @@ class TestPluginMetadata:
         ]
 
     @pytest.fixture
-    def plugin_2_0_0_3(self):
-        return [
-            create_data("plugin-2", "0.0.3", "PYPI", True, None),
-            create_data("plugin-2", "0.0.3", "METADATA", data=TEST_DATA2),
-            create_data("plugin-2", "0.0.3", "DISTRIBUTION", data=TEST_DATA1),
-        ]
+    def plugin_2_0_0_3_pypi(self):
+        return [create_data("plugin-2", "0.0.3", "PYPI", True, None)]
+
+    @pytest.fixture
+    def plugin_2_0_0_3_metadata(self):
+        return [create_data("plugin-2", "0.0.3", "METADATA", data=TEST_DATA2)]
+
+    @pytest.fixture
+    def plugin_2_0_0_3_distribution(self):
+        return [create_data("plugin-2", "0.0.3", "DISTRIBUTION", data=TEST_DATA1)]
+
+    @pytest.fixture
+    def plugin_2_0_0_3(
+            self,
+            plugin_2_0_0_3_pypi,
+            plugin_2_0_0_3_metadata,
+            plugin_2_0_0_3_distribution
+    ):
+        return plugin_2_0_0_3_pypi + plugin_2_0_0_3_metadata + \
+               plugin_2_0_0_3_distribution
 
     @pytest.fixture()
     def put_item(self, table):
@@ -177,25 +195,37 @@ class TestPluginMetadata:
 
         assert actual == expected
 
-    @pytest.mark.parametrize(
-        "plugin, version", [
-            (None, None,), ("", None), (None, ""), ("", ""),
-        ]
-    )
-    def test_query_invalid_values(self, seed_data, plugin, version):
-        assert plugin_metadata.query(plugin, version) == []
+    def test_get_existing_types_invalid_type(self, put_item):
+        put_item("plugin-4", "1.0.0", "FOO")
+        assert plugin_metadata.get_existing_types("plugin-4", "1.0.0") == set()
 
     @pytest.mark.parametrize(
-        "plugin, version, expected", [
-            ("plugin-1", "0.0.1", "plugin_1_0_0_1"),
-            ("plugin-2", "0.0.1", "plugin_2_0_0_1"),
-            ("plugin-3", "0.0.1", "plugin_3_0_0_1"),
-            ("plugin-1", "0.0.2", "plugin_1_0_0_2"),
-            ("plugin-2", "0.0.2", "plugin_2_0_0_2"),
-            ("plugin-3", "0.0.2", "plugin_3_0_0_2"),
-            ("plugin-2", "0.0.3", "plugin_2_0_0_3"),
+        "plugin, version, version_type", [
+            (None, None, None), ("", None, ""), (None, "", None), ("", "", ""),
         ]
     )
-    def test_query(self, seed_data, plugin, version, expected, request):
-        actual = plugin_metadata.query(plugin, version)
+    def test_query_invalid_values(self, seed_data, plugin, version, version_type):
+        assert plugin_metadata.query(plugin, version, version_type) == []
+
+    @pytest.mark.parametrize(
+        "plugin, version, version_type, expected", [
+            ("plugin-1", "0.0.1", None, "plugin_1_0_0_1"),
+            ("plugin-1", None, "0.0.1:PYPI", "plugin_1_0_0_1"),
+            ("plugin-2", "0.0.1", None, "plugin_2_0_0_1"),
+            ("plugin-2", None, "0.0.1:METADATA", "plugin_2_0_0_1"),
+            ("plugin-3", "0.0.1", None, "plugin_3_0_0_1"),
+            ("plugin-3", None, "0.0.1:DISTRIBUTION", "plugin_3_0_0_1"),
+            ("plugin-1", "0.0.2", None, "plugin_1_0_0_2"),
+            ("plugin-2", "0.0.2", None, "plugin_2_0_0_2"),
+            ("plugin-3", "0.0.2", None, "plugin_3_0_0_2"),
+            ("plugin-2", "0.0.3", None, "plugin_2_0_0_3"),
+            ("plugin-2", None, "0.0.3:PYPI", "plugin_2_0_0_3_pypi"),
+            ("plugin-2", None, "0.0.3:METADATA", "plugin_2_0_0_3_metadata"),
+            ("plugin-2", None, "0.0.3:DISTRIBUTION", "plugin_2_0_0_3_distribution"),
+            ("plugin-4", "0.0.1", None, "empty_list"),
+            ("plugin-3", None, "0.0.2:METADATA", "empty_list"),
+        ]
+    )
+    def test_query(self, seed_data, plugin, version, version_type, expected, request):
+        actual = plugin_metadata.query(plugin, version, version_type)
         assert sort(actual) == sort(request.getfixturevalue(expected))

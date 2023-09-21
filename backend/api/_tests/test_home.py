@@ -3,6 +3,7 @@ from typing import List, Dict
 from unittest.mock import Mock
 import pytest
 from api import home
+from nhcommons.models.plugin_utils import PluginVisibility
 
 
 def filter_plugins(plugins: List[Dict]):
@@ -79,22 +80,24 @@ class TestHomepage:
         assert {} == home.get_plugin_sections({"foo"})
         mock_get_index.assert_not_called()
 
-    @pytest.mark.parametrize("section, key", [
+    @pytest.mark.parametrize("section, sort_key", [
         ("newest", "first_released"),
         ("recently_updated", "release_date"),
         ("top_installed", "total_installs"),
     ])
     def test_valid_section_names(
-            self, section, key, index_data, mock_get_index
+            self, section, sort_key, index_data, mock_get_index
     ):
         actual = home.get_plugin_sections({section})
 
         plugins = sorted(
-            index_data, key=lambda item: item.get(key), reverse=True
+            index_data, key=lambda item: item.get(sort_key), reverse=True
         )[0:3]
         expected = {section: {"plugins": filter_plugins(plugins)}}
         assert expected == actual
-        mock_get_index.assert_called_with({"PUBLIC"}, True)
+        mock_get_index.assert_called_once_with(
+            include_total_installs=True, visibility_filter={PluginVisibility.PUBLIC}
+        )
 
     @pytest.mark.parametrize(
         "plugin_type, minute, expected", [
@@ -128,4 +131,6 @@ class TestHomepage:
             actual["plugin_types"]["plugins"], key=get_name
         )
         assert expected_result == actual
-        mock_get_index.assert_called_once_with({"PUBLIC"}, True)
+        mock_get_index.assert_called_once_with(
+            include_total_installs=True, visibility_filter={PluginVisibility.PUBLIC}
+        )

@@ -3,8 +3,9 @@ from unittest.mock import Mock
 
 import pytest
 
-from api.models import plugin, install_activity
+from nhcommons.models import plugin, install_activity
 from api import model
+from nhcommons.models.plugin_utils import PluginVisibility
 
 
 class TestModel:
@@ -60,14 +61,32 @@ class TestModel:
         return result
 
     @pytest.mark.parametrize("visibility, include_total_installs, expected", [
-        ({"PUBLIC"}, True, "plugin_index_with_total_installs"),
-        ({"PUBLIC", "HIDDEN"}, True, "plugin_index_with_total_installs"),
-        ({"PUBLIC"}, False, "plugin_get_index_result"),
-        ({"PUBLIC", "HIDDEN"}, False, "plugin_get_index_result"),
+        ({PluginVisibility.PUBLIC}, True, "plugin_index_with_total_installs"),
+        (
+                {PluginVisibility.PUBLIC, PluginVisibility.HIDDEN},
+                True,
+                "plugin_index_with_total_installs"
+        ),
+        (
+                None,
+                True,
+                "plugin_index_with_total_installs"
+        ),
+        ({PluginVisibility.PUBLIC}, False, "plugin_get_index_result"),
+        (
+                {PluginVisibility.PUBLIC, PluginVisibility.HIDDEN},
+                False,
+                "plugin_get_index_result"
+        ),
+        (
+                None,
+                False,
+                "plugin_get_index_result"
+        ),
     ])
     def test_get_index_with_include_installs(
             self,
-            visibility: Optional[Set[str]],
+            visibility: Optional[Set[PluginVisibility]],
             include_total_installs: bool,
             expected: str,
             mock_get_index: Mock,
