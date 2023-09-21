@@ -19,10 +19,9 @@ ONTOLOGY_VERSION = "EDAM-BIOIMAGING:alpha06"
 MANIFEST_EDAM_MAPPING = {
     "Annotation": ["Image Annotation"],  # Operation
     "Image_Processing": ["Image Processing"],  # Operation
-    "Measurement": ["Image Characteristics"],  # Data
     "Segmentation": ["Image Segmentation"],  # Operation > Image Processing
     "Transformations": [
-        "Geometric Transformation",
+        "Geometrical Transformation",
         "Morphological Operation",
     ],  # Operation > Image Processing
     "Visualization": ["Visualisation"],  # Operation

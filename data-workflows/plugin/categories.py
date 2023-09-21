@@ -59,7 +59,8 @@ def merge_metadata_manifest_categories(
     if len(merged_category):
         metadata["category"] = merged_category
         metadata["category_hierarchy"] = merged_hierarchy
-    if "category" in manifest:
-        del manifest["category"]
-        del manifest["category_hierarchy"]
+    
+    # removing keys from manifest as they have been merged
+    del manifest["category"]
+    del manifest["category_hierarchy"]
     return metadata
