@@ -17,7 +17,7 @@ _PROJECT_URL_NAMES = {
     'Twitter': 'twitter'
 }
 _VISIBILITY_SET = {'public', 'disabled', 'hidden'}
-_HUB_CONFIG_KEYS = {'summary', 'authors', 'labels', 'visibility'}
+_HUB_CONFIG_KEYS = {'labels', 'visibility'}
 
 
 def is_valid_repo_url(url: str) -> bool:
