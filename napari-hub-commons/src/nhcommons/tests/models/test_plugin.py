@@ -116,14 +116,6 @@ class TestPlugin:
             data=plugin_data("plugin-1", "2.2"),
         )
         put_item(
-            "plugin-1",
-            "2.3",
-            visibility="DISABLED",
-            release_date="2023-04-01",
-            code_repo="https://github.com/org/Plugin1",
-            data=plugin_data("plugin-1", "2.3"),
-        )
-        put_item(
             "Plugin-2",
             "0.0.1",
             is_latest=False,
@@ -156,13 +148,6 @@ class TestPlugin:
             is_latest=False,
             code_repo="https://github.com/org/Plugin4",
             data=plugin_data("plugin-4", "0.0.1"),
-        )
-        put_item(
-            "plugin-4",
-            "1.0.0",
-            visibility="DISABLED",
-            code_repo="https://github.com/org/Plugin4",
-            data=plugin_data("plugin-4", "1.0.0"),
         )
         put_item(
             "plugin-5",
@@ -210,10 +195,8 @@ class TestPlugin:
                 set(),
                 [
                     (plugin_data("plugin-1", "2.2"), "public"),
-                    (plugin_data("plugin-1", "2.3"), "disabled"),
                     (plugin_data("Plugin-2", "1.0.0"), "public"),
                     (plugin_data("plugin-3", "1.0.0"), "hidden"),
-                    (plugin_data("plugin-4", "1.0.0"), "disabled"),
                     (plugin_data("plugin-5", "1.0.0"), "blocked"),
                 ],
             ),
@@ -225,11 +208,9 @@ class TestPlugin:
                 ],
             ),
             (
-                {pv.HIDDEN, pv.DISABLED, pv.BLOCKED},
+                {pv.HIDDEN, pv.BLOCKED},
                 [
-                    (plugin_data("plugin-1", "2.3"), "disabled"),
                     (plugin_data("plugin-3", "1.0.0"), "hidden"),
-                    (plugin_data("plugin-4", "1.0.0"), "disabled"),
                     (plugin_data("plugin-5", "1.0.0"), "blocked"),
                 ],
             ),
