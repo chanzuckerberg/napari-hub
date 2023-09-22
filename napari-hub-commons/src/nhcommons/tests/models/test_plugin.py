@@ -252,11 +252,9 @@ class TestPlugin:
             # Tests for latest plugin with specific visibility is returned
             ("plugin-1", {pv.PUBLIC}, plugin_data("plugin-1", "2.2")),
             ("plugin-1", {pv.HIDDEN}, {}),
-            ("plugin-1", {pv.DISABLED}, plugin_data("plugin-1", "2.3")),
             ("plugin-1", {pv.BLOCKED}, {}),
             ("Plugin-2", {pv.PUBLIC}, plugin_data("Plugin-2", "1.0.0")),
             ("plugin-3", {pv.HIDDEN}, plugin_data("plugin-3", "1.0.0")),
-            ("plugin-4", {pv.DISABLED}, plugin_data("plugin-4", "1.0.0")),
             ("plugin-5", {pv.BLOCKED}, plugin_data("plugin-5", "1.0.0")),
             # Tests for latest plugin with any visibility is returned
             ("plugin-1", set(), plugin_data("plugin-1", "2.3")),
@@ -267,7 +265,7 @@ class TestPlugin:
             # Tests for latest plugin with matching visibility is returned
             (
                 "plugin-1",
-                {pv.PUBLIC, pv.DISABLED},
+                {pv.PUBLIC, pv.HIDDEN},
                 plugin_data("plugin-1", "2.3"),
             ),
             # Tests when latest plugin does not have data attribute
@@ -298,12 +296,6 @@ class TestPlugin:
                 plugin_data("plugin-3", "1.0.0"),
             ),
             (
-                "plugin-4",
-                "1.0.0",
-                {pv.DISABLED},
-                plugin_data("plugin-4", "1.0.0"),
-            ),
-            (
                 "plugin-5",
                 "1.0.0",
                 {pv.BLOCKED},
@@ -326,12 +318,6 @@ class TestPlugin:
                 "plugin-3",
                 "1.0.0",
                 {v for v in pv if v != pv.HIDDEN},
-                {},
-            ),
-            (
-                "plugin-4",
-                "1.0.0",
-                {v for v in pv if v != pv.DISABLED},
                 {},
             ),
             (
