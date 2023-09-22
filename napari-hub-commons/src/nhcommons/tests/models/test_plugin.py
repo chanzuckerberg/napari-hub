@@ -205,6 +205,7 @@ class TestPlugin:
                     (plugin_data("plugin-1", "2.2"), "public"),
                     (plugin_data("Plugin-2", "1.0.0"), "public"),
                     (plugin_data("plugin-3", "1.0.0"), "hidden"),
+                    (plugin_data("plugin-4", "1.0.0"), "hidden"),
                     (plugin_data("plugin-5", "1.0.0"), "blocked"),
                 ],
             ),
@@ -263,6 +264,7 @@ class TestPlugin:
             ("plugin-1", {pv.BLOCKED}, {}),
             ("Plugin-2", {pv.PUBLIC}, plugin_data("Plugin-2", "1.0.0")),
             ("plugin-3", {pv.HIDDEN}, plugin_data("plugin-3", "1.0.0")),
+            ("plugin-4", {pv.HIDDEN}, plugin_data("plugin-4", "1.0.0")),
             ("plugin-5", {pv.BLOCKED}, plugin_data("plugin-5", "1.0.0")),
             # Tests for latest plugin with any visibility is returned
             ("plugin-1", set(), plugin_data("plugin-1", "2.2")),
