@@ -151,6 +151,13 @@ class TestPlugin:
             data=plugin_data("plugin-4", "0.0.1"),
         )
         put_item(
+            "plugin-4",
+            "1.0.0",
+            visibility="HIDDEN",
+            code_repo="https://github.com/org/Plugin4",
+            data=plugin_data("plugin-4", "1.0.0"),
+        )
+        put_item(
             "plugin-5",
             "0.0.1",
             is_latest=False,
