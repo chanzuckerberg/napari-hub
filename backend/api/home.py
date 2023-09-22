@@ -5,6 +5,8 @@ from api.model import get_index
 from random import sample
 from datetime import datetime
 
+from nhcommons.models.plugin_utils import PluginVisibility
+
 DEFAULT_FIELDS = {
     "authors", "display_name", "first_released", "name", "release_date",
     "summary", "total_installs",
@@ -21,7 +23,10 @@ def get_plugin_sections(sections: Set[str], limit: int = 3) -> Dict[str, Dict]:
         logger.warning("No processing as there are no valid sections")
         return response
 
-    index = get_index({"PUBLIC"}, True)
+    index = get_index(
+        visibility_filter={PluginVisibility.PUBLIC},
+        include_total_installs=True
+    )
     for name, handler in _get_handler_by_section_name().items():
         if name in sections:
             response[name] = handler(index, limit, plugins_encountered)

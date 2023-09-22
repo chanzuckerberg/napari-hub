@@ -1,4 +1,4 @@
-from api.models import plugin
+import api.model
 
 
 def get_shield(name: str) -> dict:
@@ -36,6 +36,6 @@ def get_shield(name: str) -> dict:
         "schemaVersion": 1,
         "style": "flat-square"
     }
-    plugin_data = plugin.get_plugin(name)
+    plugin_data = api.model.get_plugin(name)
     shield_schema["message"] = name if plugin_data else "plugin not found"
     return shield_schema

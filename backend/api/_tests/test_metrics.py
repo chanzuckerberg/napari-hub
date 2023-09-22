@@ -48,7 +48,7 @@ class TestMetricModel:
     @pytest.fixture(autouse=True)
     def get_plugin(self, monkeypatch) -> None:
         self._get_plugin = Mock(side_effect=lambda plugin: self._plugin)
-        monkeypatch.setattr(metrics.plugin, "get_plugin", self._get_plugin)
+        monkeypatch.setattr(metrics, "get_plugin", self._get_plugin)
 
     @pytest.fixture(autouse=True)
     def maintenance_mocks(self, monkeypatch) -> None:
