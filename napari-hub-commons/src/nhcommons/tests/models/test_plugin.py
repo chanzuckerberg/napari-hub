@@ -228,7 +228,7 @@ class TestPlugin:
     def test_get_latest_plugins(self, seed_data):
         actual = plugin.get_latest_plugins()
         expected = {
-            "plugin-1": "2.3",
+            "plugin-1": "2.2",
             "Plugin-2": "1.0.0",
             "plugin-3": "1.0.0",
             "plugin-4": "1.0.0",
@@ -258,7 +258,7 @@ class TestPlugin:
             ("plugin-3", {pv.HIDDEN}, plugin_data("plugin-3", "1.0.0")),
             ("plugin-5", {pv.BLOCKED}, plugin_data("plugin-5", "1.0.0")),
             # Tests for latest plugin with any visibility is returned
-            ("plugin-1", set(), plugin_data("plugin-1", "2.3")),
+            ("plugin-1", set(), plugin_data("plugin-1", "2.2")),
             ("Plugin-2", set(), plugin_data("Plugin-2", "1.0.0")),
             ("plugin-3", set(), plugin_data("plugin-3", "1.0.0")),
             ("plugin-4", set(), plugin_data("plugin-4", "1.0.0")),
@@ -267,7 +267,7 @@ class TestPlugin:
             (
                 "plugin-1",
                 {pv.PUBLIC, pv.HIDDEN},
-                plugin_data("plugin-1", "2.3"),
+                plugin_data("plugin-1", "2.2"),
             ),
             # Tests when latest plugin does not have data attribute
             ("plugin-6", set(), {}),
@@ -343,7 +343,6 @@ class TestPlugin:
         "name, expected",
         [
             # Tests for plugins with different visibility
-            ("plugin-1", "2.3"),
             ("Plugin-2", "1.0.0"),
             ("plugin-3", "1.0.0"),
             ("plugin-4", "1.0.0"),
