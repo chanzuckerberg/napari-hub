@@ -220,6 +220,7 @@ class TestPlugin:
                 {pv.HIDDEN, pv.BLOCKED},
                 [
                     (plugin_data("plugin-3", "1.0.0"), "hidden"),
+                    (plugin_data("plugin-4", "1.0.0"), "hidden"),
                     (plugin_data("plugin-5", "1.0.0"), "blocked"),
                 ],
             ),
@@ -248,7 +249,6 @@ class TestPlugin:
     def test_get_plugin_name_by_repo(self, seed_data):
         expected = {
             "https://custom.com/org1/foo": "Plugin-2",
-            "org/Plugin1": "plugin-1",
             "org/Plugin3": "plugin-3",
             "org/Plugin4": "plugin-4",
             "org/Plugin5": "plugin-5",
