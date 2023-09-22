@@ -3,16 +3,17 @@ import os
 import time
 from datetime import date
 from functools import reduce
-from typing import (Dict, Any, List, Iterator)
+from typing import Dict, Any, List, Iterator
 
 from dateutil.relativedelta import relativedelta
-from pynamodb.attributes import (UnicodeAttribute, NumberAttribute)
+from pynamodb.attributes import UnicodeAttribute, NumberAttribute
 from pynamodb.indexes import GlobalSecondaryIndex, IncludeProjection
 
 from nhcommons.models.activity_helper import (
-    build_timeline_query_parameters, process_timeline_results
+    build_timeline_query_parameters,
+    process_timeline_results,
 )
-from nhcommons.models.pynamo_helper import (set_ddb_metadata, PynamoWrapper)
+from nhcommons.models.pynamo_helper import set_ddb_metadata, PynamoWrapper
 
 logger = logging.getLogger(__name__)
 
@@ -97,13 +98,13 @@ def get_recent_installs(plugin: str, day_delta: int) -> int:
 
     query_params = {
         "hash_key": plugin.lower(),
-        "range_key_condition": _InstallActivity.type_timestamp.between(lower, upper)
+        "range_key_condition": _InstallActivity.type_timestamp.between(lower, upper),
     }
 
     return reduce(
         lambda acc, count: acc + count,
         [row.install_count for row in _query_table(query_params)],
-        0
+        0,
     )
 
 
@@ -119,7 +120,7 @@ def get_timeline(plugin: str, month_delta: int) -> List[Dict[str, int]]:
         plugin,
         f"MONTH:{{timestamp:%Y%m}}",
         month_delta,
-        _InstallActivity.type_timestamp
+        _InstallActivity.type_timestamp,
     )
     results = {row.timestamp: row.install_count for row in _query_table(query_params)}
     return process_timeline_results(results, month_delta, "installs")
@@ -133,12 +134,12 @@ def get_total_installs_by_plugins() -> Dict[str, int]:
     start = time.perf_counter()
     try:
         iterator = _InstallActivity.total_installs.scan(
-                attributes_to_get=["plugin_name", "install_count"]
+            attributes_to_get=["plugin_name", "install_count"]
         )
         return {item.plugin_name: item.install_count for item in iterator}
     finally:
         duration = (time.perf_counter() - start) * 1000
-        logging.info(f'scan duration={duration}ms')
+        logging.info(f"scan duration={duration}ms")
 
 
 def _query_table(kwargs: dict) -> Iterator[_InstallActivity]:
