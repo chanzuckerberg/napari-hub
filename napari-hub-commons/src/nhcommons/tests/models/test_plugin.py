@@ -114,6 +114,7 @@ class TestPlugin:
             "2.2",
             release_date="2023-03-01",
             data=plugin_data("plugin-1", "2.2"),
+            is_latest=True
         )
         put_item(
             "Plugin-2",
