@@ -31,10 +31,10 @@ class TestPluginManifest:
         return _put_item
 
     def test_discovery_manifest_exists(
-            self,
-            monkeypatch: pytest.MonkeyPatch,
-            put_item: Callable[[Dict], int],
-            verify_plugin_item: Callable
+        self,
+        monkeypatch: pytest.MonkeyPatch,
+        put_item: Callable[[Dict], int],
+        verify_plugin_item: Callable,
     ):
         data = {"foo": "bar"}
         last_updated_ts = put_item(data)
@@ -66,8 +66,10 @@ class TestPluginManifest:
 
         generate_manifest(TEST_INPUT, None)
 
-        error_message = ("Could not interpret 'test-plugin' as a PYPI package name "
-                         "or URL to a wheel or source distribution/zip file.")
+        error_message = (
+            "Could not interpret 'test-plugin' as a PYPI package name "
+            "or URL to a wheel or source distribution/zip file."
+        )
         expected_data = {"error": error_message}
         actual = verify_plugin_item(
             self._table, TEST_PLUGIN, TEST_VERSION, start_time=start_time

@@ -52,9 +52,7 @@ class TestCategoryProcessor:
     @pytest.fixture
     def mock_batch_write(self, monkeypatch):
         mock_batch_write = Mock()
-        monkeypatch.setattr(
-            categories.processor, "batch_write", mock_batch_write
-        )
+        monkeypatch.setattr(categories.processor, "batch_write", mock_batch_write)
         return mock_batch_write
 
     def _set_up_s3(self, bucket_name=TEST_BUCKET):
@@ -72,9 +70,13 @@ class TestCategoryProcessor:
     def generate_expected(cls, name, dimension, label, hierarchy):
         return {
             "name": name,
-            "version_hash": _get_version_hash({
-                "dimension": dimension, "label": label, "hierarchy": hierarchy,
-            }),
+            "version_hash": _get_version_hash(
+                {
+                    "dimension": dimension,
+                    "label": label,
+                    "hierarchy": hierarchy,
+                }
+            ),
             "version": TEST_VERSION,
             "formatted_name": name,
             "dimension": dimension,
@@ -83,7 +85,7 @@ class TestCategoryProcessor:
         }
 
     def test_write_category_data(
-            self, mock_batch_write, aws_credentials, env_variables
+        self, mock_batch_write, aws_credentials, env_variables
     ):
         self._set_up_s3()
         self._seed_data()
@@ -116,7 +118,7 @@ class TestCategoryProcessor:
         mock_batch_write.assert_not_called()
 
     def test_write_category_data_s3_load_error(
-            self, mock_batch_write, aws_credentials, env_variables
+        self, mock_batch_write, aws_credentials, env_variables
     ):
         self._set_up_s3()
 
@@ -125,7 +127,7 @@ class TestCategoryProcessor:
         mock_batch_write.assert_called_once_with([])
 
     def test_write_category_data_batch_write_error(
-            self, aws_credentials, env_variables, monkeypatch
+        self, aws_credentials, env_variables, monkeypatch
     ):
         self._set_up_s3()
         self._seed_data()

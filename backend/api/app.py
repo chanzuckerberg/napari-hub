@@ -9,7 +9,7 @@ from api.home import get_plugin_sections
 from api.custom_wsgi import script_path_middleware
 from api.model import get_index, get_manifest, get_plugin
 from api.metrics import get_metrics_for_plugin
-from nhcommons.models import (category as categories)
+from nhcommons.models import category as categories
 from api.shield import get_shield
 from nhcommons.models.plugin_utils import PluginVisibility
 from utils.utils import send_alert
@@ -106,7 +106,7 @@ def shield(plugin: str) -> Response:
 
 @app.route(
     "/categories",
-    defaults={"version": os.getenv("category_version", "EDAM-BIOIMAGING:alpha06")}
+    defaults={"version": os.getenv("category_version", "EDAM-BIOIMAGING:alpha06")},
 )
 def get_categories(version: str) -> Response:
     return jsonify(categories.get_all_categories(version))
@@ -140,14 +140,21 @@ def get_plugin_metrics(plugin: str) -> Response:
 
 @app.errorhandler(404)
 def handle_exception(e) -> Response:
-    links = [rule.rule for rule in app.url_map.iter_rules()
-             if 'GET' in rule.methods and
-             any((rule.rule.startswith("/plugins"), rule.rule.startswith("/shields")))
-             ]
+    links = [
+        rule.rule
+        for rule in app.url_map.iter_rules()
+        if "GET" in rule.methods
+        and any((rule.rule.startswith("/plugins"), rule.rule.startswith("/shields")))
+    ]
     links.sort()
     links = "\n".join(links)
-    return app.make_response((f"Invalid Endpoint, valid endpoints are:\n{links}", 404,
-                              {'Content-Type': 'text/plain; charset=utf-8'}))
+    return app.make_response(
+        (
+            f"Invalid Endpoint, valid endpoints are:\n{links}",
+            404,
+            {"Content-Type": "text/plain; charset=utf-8"},
+        )
+    )
 
 
 @app.errorhandler(exceptions.Unauthorized)
@@ -165,7 +172,9 @@ def handle_exception(e) -> Response:
 
 @app.before_request
 def authenticate_request():
-    if request.method == "POST" and request.headers.get("X-API-Key") != os.getenv("API_KEY"):
+    if request.method == "POST" and request.headers.get("X-API-Key") != os.getenv(
+        "API_KEY"
+    ):
         raise exceptions.Unauthorized("Invalid API key")
 
 

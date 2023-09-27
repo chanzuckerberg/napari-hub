@@ -3,7 +3,7 @@ import os
 import requests
 from requests import HTTPError
 
-slack_url = os.environ.get('SLACK_URL')
+slack_url = os.environ.get("SLACK_URL")
 logger = logging.getLogger(__name__)
 
 

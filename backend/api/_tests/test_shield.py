@@ -9,7 +9,6 @@ def validate(result, message):
 
 
 class TestShield:
-
     def test_get_shield_valid_plugin(self, monkeypatch):
         monkeypatch.setattr(model, "get_plugin", lambda _: {"version": "0.0.1"})
         result = shield.get_shield("package1")

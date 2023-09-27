@@ -25,5 +25,5 @@ def test_invoke(monkeypatch):
     client_mock.invoke.assert_called_once_with(
         FunctionName=function_name,
         InvocationType="Event",
-        Payload=json.dumps({"plugin": "foo", "version": "bar"})
+        Payload=json.dumps({"plugin": "foo", "version": "bar"}),
     )
