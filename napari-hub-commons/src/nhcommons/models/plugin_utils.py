@@ -22,6 +22,5 @@ class PluginVisibilityMeta(EnumMeta):
 class PluginVisibility(Enum, metaclass=PluginVisibilityMeta):
     PUBLIC = auto()
     HIDDEN = auto()
-    DISABLED = auto()
     BLOCKED = auto()
     INVALID = auto()

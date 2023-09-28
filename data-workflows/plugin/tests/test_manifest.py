@@ -76,6 +76,7 @@ class TestManifest:
             "reader_file_extensions": [],
             "writer_file_extensions": [],
             "writer_save_layers": [],
+            "visibility": "public",
             "category": {},
             "category_hierarchy": {},
         }
@@ -88,6 +89,8 @@ class TestManifest:
             ({"error": "some error"}, {}),
             ({"npe1_shim": True}, {"npe2": False}),
             ({"npe1_shim": False}, {"npe2": True}),
+            ({"visibility": "public"}, {"visibility": "public", "npe2": True}),
+            ({"visibility": "hidden"}, {"visibility": "hidden", "npe2": True}),
             ({"display_name": "foo"}, {"display_name": "foo", "npe2": True}),
             (
                 {"categories": ["not-mapped"]},

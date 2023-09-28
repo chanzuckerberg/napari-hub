@@ -92,6 +92,7 @@ def _parse_manifest(manifest: Optional[dict[str, Any]]) -> dict[str, Any]:
         "reader_file_extensions": [],
         "writer_file_extensions": [],
         "writer_save_layers": [],
+        "visibility": "public",
         "category": {},
         "category_hierarchy": {},
     }
@@ -100,6 +101,7 @@ def _parse_manifest(manifest: Optional[dict[str, Any]]) -> dict[str, Any]:
 
     result["display_name"] = manifest.get("display_name", "")
     result["npe2"] = not manifest.get("npe1_shim", False)
+    result["visibility"] = manifest.get("visibility", "public")
     raw_categories = manifest.get("categories", {})
     if raw_categories:
         result["category"], result["category_hierarchy"] = _map_categories(
