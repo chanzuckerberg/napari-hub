@@ -2,6 +2,8 @@ import logging
 import re
 from typing import Any, Optional
 
+from plugin.categories import process_for_categories
+
 logger = logging.getLogger(__name__)
 
 VALID_LAYERS = ["image", "labels", "points", "shapes", "surface", "tracks", "vectors"]
@@ -12,6 +14,17 @@ PLUGIN_TYPES_BY_KEY = {
     "themes": "theme",
     "widgets": "widget",
     "writers": "writer",
+}
+ONTOLOGY_VERSION = "EDAM-BIOIMAGING:alpha06"
+MANIFEST_EDAM_MAPPING = {
+    "Annotation": ["Image Annotation"],  # Operation
+    "Image_Processing": ["Image Processing"],  # Operation
+    "Segmentation": ["Image Segmentation"],  # Operation > Image Processing
+    "Transformations": [
+        "Geometrical Transformation",
+        "Morphological Operation",
+    ],  # Operation > Image Processing
+    "Visualization": ["Visualisation"],  # Operation
 }
 
 
@@ -52,6 +65,22 @@ def _get_raw_manifest(
     return manifest_data
 
 
+def _map_categories(manifest_categories: list[str]):
+    """Maps raw manifest categories to the appropriate EDAM ontology.
+
+    Any categories that don't map to an EDAM term are discarded.
+
+    :param manifest_categories: categories read from the manifest
+    """
+    terms = [
+        term
+        for cat in manifest_categories
+        for term in MANIFEST_EDAM_MAPPING.get(cat, [])
+    ]
+    labels = {"ontology": ONTOLOGY_VERSION, "terms": terms}
+    return process_for_categories(labels, ONTOLOGY_VERSION)
+
+
 def _parse_manifest(manifest: Optional[dict[str, Any]]) -> dict[str, Any]:
     """
     Convert raw manifest into dictionary of npe2 attributes.
@@ -63,12 +92,19 @@ def _parse_manifest(manifest: Optional[dict[str, Any]]) -> dict[str, Any]:
         "reader_file_extensions": [],
         "writer_file_extensions": [],
         "writer_save_layers": [],
+        "category": {},
+        "category_hierarchy": {},
     }
     if manifest is None:
         return result
 
     result["display_name"] = manifest.get("display_name", "")
     result["npe2"] = not manifest.get("npe1_shim", False)
+    raw_categories = manifest.get("categories", {})
+    if raw_categories:
+        result["category"], result["category_hierarchy"] = _map_categories(
+            raw_categories
+        )
     if "contributions" in manifest:
         contributions = manifest["contributions"]
         if contributions.get("readers"):

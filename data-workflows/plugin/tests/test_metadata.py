@@ -2,7 +2,8 @@ from unittest.mock import Mock, call
 
 import pytest
 
-from plugin import metadata
+
+from plugin import metadata, categories
 from plugin.metadata import get_formatted_metadata
 
 PLUGIN = "napari-demo"
@@ -15,7 +16,6 @@ ONTOLOGY = "EDAM-BIOIMAGING:alpha06"
 
 def category_terms():
     return ["Img reg", "2D image", "Affine reg", "Foo"]
-
 
 def category_responses():
     return [
@@ -30,7 +30,6 @@ def category_responses():
         ],
         [],
     ]
-
 
 class TestMetadata:
     @pytest.fixture
@@ -94,9 +93,9 @@ class TestMetadata:
         )
         monkeypatch.setattr(metadata, "render_description", self._mock_render_desc)
         self._mock_get_category = Mock(
-            side_effect=category_responses(), spec=metadata.get_category
+            side_effect=category_responses(), spec=categories.get_category
         )
-        monkeypatch.setattr(metadata, "get_category", self._mock_get_category)
+        monkeypatch.setattr(categories, "get_category", self._mock_get_category)
 
     @pytest.fixture
     def verify_calls(self, verify_call):

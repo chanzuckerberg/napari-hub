@@ -4,6 +4,7 @@ from typing import Any, Optional
 from nhcommons.models.plugin_utils import PluginMetadataType, PluginVisibility
 from nhcommons.models import plugins_blocked, plugin, plugin_metadata
 from plugin.manifest import get_formatted_manifest
+from plugin.categories import merge_metadata_manifest_categories
 
 PLUGIN_FIELDS = {
     "authors",
@@ -62,7 +63,10 @@ def _generate_aggregate(
         metadata_by_type, PluginMetadataType.DISTRIBUTION, None
     )
     formatted_manifest = get_formatted_manifest(manifest, name, version)
-    return {**metadata, **formatted_manifest}
+    metadata_with_categories = merge_metadata_manifest_categories(
+        metadata, formatted_manifest
+    )
+    return {**metadata_with_categories, **formatted_manifest}
 
 
 def _get_metadata_by_type(name: str, version: str) -> dict[PluginMetadataType, dict]:
