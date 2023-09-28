@@ -28,23 +28,23 @@ def get_manifest(name: str, version: str = None) -> dict:
 
     # manifest_metadata being None indicates manifest is not cached and needs processing
     if manifest_metadata is None:
-        return {'error': 'Manifest not yet processed.'}
+        return {"error": "Manifest not yet processed."}
 
     # empty dict indicates some lambda error in processing e.g. timed out
     if manifest_metadata == {}:
-        return {'error': 'Processing manifest failed due to external error.'}
+        return {"error": "Processing manifest failed due to external error."}
 
     # error written to file indicates manifest discovery failed
-    if 'error' in manifest_metadata:
-        return {'error': manifest_metadata['error']}
+    if "error" in manifest_metadata:
+        return {"error": manifest_metadata["error"]}
 
     # correct plugin manifest
     return manifest_metadata
 
 
 def get_index(
-        visibility_filter: Optional[Set[PluginVisibility]] = None,
-        include_total_installs: bool = False
+    visibility_filter: Optional[Set[PluginVisibility]] = None,
+    include_total_installs: bool = False,
 ) -> List[Dict[str, Any]]:
     """
     Get the index page related metadata for all plugins.

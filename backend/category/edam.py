@@ -29,27 +29,35 @@ def get_edam_ontology(version: str) -> Dict[str, List[str]]:
         }
     """
     version = f"_{version}" if version else version
-    url = f'https://edamontology.org/EDAM-bioimaging{version}.csv'
+    url = f"https://edamontology.org/EDAM-bioimaging{version}.csv"
     response = requests.get(url)
     if response.status_code != requests.codes.ok:
         response.raise_for_status()
 
     ontology = {
-        category['Class ID']: {
-            "label": category['Preferred Label'],
-            "parents": category['Parents'].split("|")
+        category["Class ID"]: {
+            "label": category["Preferred Label"],
+            "parents": category["Parents"].split("|"),
         }
-        for category in csv.DictReader(response.content.decode('utf-8').splitlines())
+        for category in csv.DictReader(response.content.decode("utf-8").splitlines())
     }
 
     return {
-        values['label']: [ontology[parent]['label'] for parent in values['parents'] if parent in ontology]
+        values["label"]: [
+            ontology[parent]["label"]
+            for parent in values["parents"]
+            if parent in ontology
+        ]
         for class_id, values in ontology.items()
     }
 
 
-def iterate_parent(ontology_label: str, ontology: Dict[str, List[str]],
-                   family_tree: List[str], mappings: Dict[str, Dict[str, str]]):
+def iterate_parent(
+    ontology_label: str,
+    ontology: Dict[str, List[str]],
+    family_tree: List[str],
+    mappings: Dict[str, Dict[str, str]],
+):
     """
     Iterate ontology to find matched mapping.
 
@@ -92,29 +100,35 @@ def iterate_parent(ontology_label: str, ontology: Dict[str, List[str]],
     """
     family_tree.insert(0, ontology_label)
     if ontology_label in mappings:
-        return [{
-            "label": mappings[ontology_label]["label"],
-            "dimension": mappings[ontology_label]["dimension"],
-            "hierarchy": family_tree
-        }]
+        return [
+            {
+                "label": mappings[ontology_label]["label"],
+                "dimension": mappings[ontology_label]["dimension"],
+                "hierarchy": family_tree,
+            }
+        ]
     if ontology_label not in ontology:
         return []
     all_families = []
     for token in ontology[ontology_label]:
-        all_families.extend(iterate_parent(token, ontology, family_tree.copy(), mappings))
+        all_families.extend(
+            iterate_parent(token, ontology, family_tree.copy(), mappings)
+        )
     return all_families
 
 
 if __name__ == "__main__":
     # Generate mapping json from edam ontology for a particular version
-    edam_version = 'alpha06'
+    edam_version = "alpha06"
 
     # the dimension mapping file is curated specifically for a particular version
     # the edam-alpha06 version can be found in here:
     # https://airtable.com/appWpxrq1iPzzxyFE/tblwIaRmQjEkMD1pm/viw2CboXiF0JQqxdr
-    with open(f"data/EDAM-BIOIMAGING/hub-mapping-{edam_version}.json") as hub_mapping_json, \
-            open(f"data/EDAM-BIOIMAGING/{edam_version}.json", "w") as edam_mappings_json:
-
+    with open(
+        f"data/EDAM-BIOIMAGING/hub-mapping-{edam_version}.json"
+    ) as hub_mapping_json, open(
+        f"data/EDAM-BIOIMAGING/{edam_version}.json", "w"
+    ) as edam_mappings_json:
         edam_to_hub = json.load(hub_mapping_json)
 
         # load edam terms

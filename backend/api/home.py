@@ -8,8 +8,13 @@ from datetime import datetime
 from nhcommons.models.plugin_utils import PluginVisibility
 
 DEFAULT_FIELDS = {
-    "authors", "display_name", "first_released", "name", "release_date",
-    "summary", "total_installs",
+    "authors",
+    "display_name",
+    "first_released",
+    "name",
+    "release_date",
+    "summary",
+    "total_installs",
 }
 PLUGIN_TYPES = ["reader", "sample_data", "widget", "writer"]
 
@@ -24,8 +29,7 @@ def get_plugin_sections(sections: Set[str], limit: int = 3) -> Dict[str, Dict]:
         return response
 
     index = get_index(
-        visibility_filter={PluginVisibility.PUBLIC},
-        include_total_installs=True
+        visibility_filter={PluginVisibility.PUBLIC}, include_total_installs=True
     )
     for name, handler in _get_handler_by_section_name().items():
         if name in sections:
@@ -62,11 +66,11 @@ def _get_plugins_by_type(index: List[Dict], limit: int, exclude: Set) -> Dict:
 
 
 def _get_plugins_by_sort(
-        index: List[Dict],
-        limit: int,
-        key: str,
-        default_val: Union[str, int],
-        exclude: Set[str]
+    index: List[Dict],
+    limit: int,
+    key: str,
+    default_val: Union[str, int],
+    exclude: Set[str],
 ) -> Dict[str, List]:
     index.sort(key=lambda item: item.get(key, default_val))
     upper_limit = min(limit, len(index))
@@ -86,15 +90,11 @@ def _get_newest_plugins(index: List[Dict], limit: int, exclude: Set) -> Dict:
     return _get_plugins_by_sort(index, limit, "first_released", "", exclude)
 
 
-def _get_recently_updated_plugins(
-        index: List[Dict], limit: int, exclude: Set
-) -> Dict:
+def _get_recently_updated_plugins(index: List[Dict], limit: int, exclude: Set) -> Dict:
     return _get_plugins_by_sort(index, limit, "release_date", "", exclude)
 
 
-def _get_top_installed_plugins(
-        index: List[Dict], limit: int, exclude: Set
-) -> Dict:
+def _get_top_installed_plugins(index: List[Dict], limit: int, exclude: Set) -> Dict:
     return _get_plugins_by_sort(index, limit, "total_installs", 0, exclude)
 
 

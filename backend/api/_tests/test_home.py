@@ -17,7 +17,6 @@ def get_name(plugin: Dict):
 
 
 class TestHomepage:
-
     @pytest.fixture
     def mock_get_index(self, monkeypatch, index_data):
         get_index = Mock()
@@ -73,26 +72,27 @@ class TestHomepage:
                 "summary": "A plugin named plugin 4",
                 "total_installs": 200,
                 "plugin_types": ["reader", "widget"],
-            }
+            },
         ]
 
     def test_invalid_section_names(self, mock_get_index):
         assert {} == home.get_plugin_sections({"foo"})
         mock_get_index.assert_not_called()
 
-    @pytest.mark.parametrize("section, sort_key", [
-        ("newest", "first_released"),
-        ("recently_updated", "release_date"),
-        ("top_installed", "total_installs"),
-    ])
-    def test_valid_section_names(
-            self, section, sort_key, index_data, mock_get_index
-    ):
+    @pytest.mark.parametrize(
+        "section, sort_key",
+        [
+            ("newest", "first_released"),
+            ("recently_updated", "release_date"),
+            ("top_installed", "total_installs"),
+        ],
+    )
+    def test_valid_section_names(self, section, sort_key, index_data, mock_get_index):
         actual = home.get_plugin_sections({section})
 
-        plugins = sorted(
-            index_data, key=lambda item: item.get(sort_key), reverse=True
-        )[0:3]
+        plugins = sorted(index_data, key=lambda item: item.get(sort_key), reverse=True)[
+            0:3
+        ]
         expected = {section: {"plugins": filter_plugins(plugins)}}
         assert expected == actual
         mock_get_index.assert_called_once_with(
@@ -100,21 +100,16 @@ class TestHomepage:
         )
 
     @pytest.mark.parametrize(
-        "plugin_type, minute, expected", [
+        "plugin_type, minute, expected",
+        [
             ("reader", 1, ["plugin-1", "plugin-4"]),
             ("sample_data", 27, ["plugin-2", "plugin-3"]),
             ("widget", 13, ["plugin-3", "plugin-4"]),
             ("writer", 58, ["plugin-1", "plugin-2"]),
-        ]
+        ],
     )
     def test_valid_plugin_types_section(
-            self,
-            plugin_type,
-            minute,
-            expected,
-            index_data,
-            mock_get_index,
-            mock_date_time
+        self, plugin_type, minute, expected, index_data, mock_get_index, mock_date_time
     ):
         mock_date_time.now.return_value = datetime(2023, 7, 25, 17, minute, 55)
 
