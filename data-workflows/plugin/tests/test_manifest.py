@@ -1,8 +1,23 @@
 from typing import Any, Optional
 
 import pytest
+from unittest.mock import Mock
 
+from plugin import categories
 from plugin.manifest import get_formatted_manifest
+
+
+def category_responses():
+    return [
+        [
+            {
+                "dimension": "Workflow step",
+                "hierarchy": ["Image segmentation"],
+                "label": "Image segmentation",
+            }
+        ],
+        [{"dimension": "Data", "hierarchy": ["2D image"], "label": "2D"}],
+    ]
 
 
 def generate_contributions(
@@ -46,6 +61,13 @@ def generate_contributions(
 
 
 class TestManifest:
+    @pytest.fixture(autouse=True)
+    def setup(self, monkeypatch) -> None:
+        self._mock_get_category = Mock(
+            side_effect=category_responses(), spec=categories.get_category
+        )
+        monkeypatch.setattr(categories, "get_category", self._mock_get_category)
+
     @pytest.fixture
     def default_result(self) -> dict[str, Any]:
         return {
@@ -55,6 +77,8 @@ class TestManifest:
             "writer_file_extensions": [],
             "writer_save_layers": [],
             "visibility": "public",
+            "category": {},
+            "category_hierarchy": {},
         }
 
     @pytest.mark.parametrize(
@@ -68,6 +92,18 @@ class TestManifest:
             ({"visibility": "public"}, {"visibility": "public", "npe2": True}),
             ({"visibility": "hidden"}, {"visibility": "hidden", "npe2": True}),
             ({"display_name": "foo"}, {"display_name": "foo", "npe2": True}),
+            (
+                {"categories": ["not-mapped"]},
+                {"category": {}, "category_hierarchy": {}, "npe2": True},
+            ),
+            (
+                {"categories": ["Segmentation", "other"]},
+                {
+                    "category": {"Workflow step": ["Image segmentation"]},
+                    "category_hierarchy": {"Workflow step": [["Image segmentation"]]},
+                    "npe2": True,
+                },
+            ),
             (
                 {"contributions": generate_contributions(reader=True)},
                 {
