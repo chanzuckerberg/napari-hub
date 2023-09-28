@@ -1,0 +1,13 @@
+{
+  "plugins": "Plugins",
+  "sortBy": "Sort by",
+  "sortByMobile": "SORT BY: {{sortType}}",
+
+  "sort": {
+    "relevance": "Relevance",
+    "pluginName": "Plugin Name (A-Z)",
+    "recentlyUpdated": "Recently Updated",
+    "newest": "Newest",
+    "installs": "Installs (most to least)"
+  }
+}

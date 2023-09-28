@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import { ReactNode } from 'react';
 
 import { AppBar } from '@/components/AppBar';
@@ -10,13 +11,16 @@ interface Props {
 }
 
 export function Layout({ children }: Props) {
+  const router = useRouter();
+  const isSearchPage = router.pathname === '/plugins';
+
   return (
     <div className="flex flex-col min-h-screen">
       <Banner />
-      {!process.env.PREVIEW && <AppBar />}
+      <AppBar />
 
       <main className="flex flex-col flex-grow">{children}</main>
-      <SignupForm />
+      <SignupForm variant={isSearchPage ? 'search' : 'default'} />
       <Footer />
     </div>
   );

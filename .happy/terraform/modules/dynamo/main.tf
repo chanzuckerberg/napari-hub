@@ -17,8 +17,11 @@ module dynamodb {
   autoscaling_enabled = var.autoscaling_enabled
   create_table = var.create_table
 
-  ttl_enabled = var.ttl_enabled
+  ttl_enabled         = var.ttl_enabled
   ttl_attribute_name  = var.ttl_attribute_name
+
+  stream_enabled   = var.stream_enabled
+  stream_view_type = var.stream_view_type
 
   tags = var.tags
 }

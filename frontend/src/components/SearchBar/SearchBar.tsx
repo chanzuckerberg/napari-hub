@@ -1,19 +1,13 @@
 import clsx from 'clsx';
 import { ButtonIcon } from 'czifui';
-import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
-import { HTMLProps, InputHTMLAttributes, useEffect, useState } from 'react';
+import { InputHTMLAttributes, useEffect, useState } from 'react';
 
 import { Close, Search } from '@/components/icons';
-import { createUrl, isSearchPage } from '@/utils';
 
 import styles from './SearchBar.module.scss';
 
-export interface Props
-  extends Omit<
-    HTMLProps<HTMLFormElement>,
-    'value' | 'onChange' | 'onSubmit' | 'placeholder'
-  > {
+export interface Props {
   /**
    * Manages staging state in search bar instead of using `value` directly. This
    * allows us to use the search bar in a way where the value isn't changed /
@@ -34,18 +28,18 @@ export interface Props
   /**
    * Function for updating state when the input value changes.
    */
-  onChange(value: string): void;
+  onChange?(value: string): void;
 
   /**
    * Function to call when form is submitted. This will be called for both when
    * the user submits or clears a query.
    */
-  onSubmit(value: string): void;
+  onSubmit?(value: string): void;
 
   /**
    * The value of the search query input.
    */
-  value: string;
+  value?: string;
 }
 
 /**
@@ -63,15 +57,13 @@ export interface Props
 export function SearchBar({
   large,
   inputProps,
-  value,
-  onChange,
-  onSubmit,
+  value = '',
+  onChange = () => {},
+  onSubmit = () => {},
   changeOnSubmit,
   ...props
 }: Props) {
   const [t] = useTranslation(['common']);
-  const router = useRouter();
-  const currentPathname = createUrl(router.asPath).pathname;
 
   // Local state for query. This is used to store the current entered query string.
   const [localQuery, setLocalQuery] = useState(value ?? '');
@@ -113,10 +105,7 @@ export function SearchBar({
       onSubmit={(event) => {
         event.preventDefault();
         const query = changeOnSubmit ? localQuery : value;
-
-        if (query) {
-          handleSubmit(query);
-        }
+        handleSubmit(query);
       }}
       {...props}
     >
@@ -135,6 +124,8 @@ export function SearchBar({
 
           // Change placeholder color
           'placeholder-gray-500',
+
+          'text-sds-body-s screen-495:text-sds-body-m',
 
           /*
             Inputs have a default width defined by the browser, so we have to
@@ -185,7 +176,7 @@ export function SearchBar({
         type="button"
       >
         {/* Render close button if the user submitted a query. */}
-        {value && isSearchPage(currentPathname) ? (
+        {value && changeOnSubmit ? (
           <Close className={clsx(iconClassName, styles.closeIcon)} />
         ) : (
           <Search className={iconClassName} />

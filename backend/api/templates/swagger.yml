@@ -26,37 +26,7 @@ tags:
     externalDocs:
       description: Find out more
       url: https://shields.io/
-  - name: manifest
-    description: The manifest file corresponding to npe2 for plugin
-  - name: activity
-    description: Information about activity plugin installs and stats
 paths:
-  /plugins:
-    get:
-      summary: query all public plugins (excluding hidden and disabled plugins)
-      description: napari hub allows plugin author to specify visibility for their plugins, we only show public plugins on the hub home page, hidden plugins is available through plugin page while disabled plugin is not indexed at all.
-      tags:
-        - plugins
-      responses:
-        200:
-          description: The return json is a mapping between public plugin name and their latest version
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Plugins'
-  /plugins/excluded:
-    get:
-      summary: query excluded plugins
-      description: this endpoint can be used to see what plugins that napari hub is currently not indexing and the reason for their exclusion, if you have question on a plugin's visibility, please reach out to the plugin author or team@napari-hub.org
-      tags:
-        - plugins
-      responses:
-        200:
-          description: The return json is a mapping between the excluded plugin name and exclusion status
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ExcludedPlugin'
   /plugins/{name}:
     get:
       summary: query plugin info by pypi pacakge name
@@ -132,50 +102,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Shield'
-  /manifest/{name}:
-    get:
-      summary: Get the manifest file for plugin. Schema here https://napari.org/plugins/manifest.html
-      tags:
-        - manifest
-      parameters:
-      - name: name
-        in: path
-        description: name of plugin to query
-        required: true
-        schema:
-          type: string
-        example: napari-demo
-      responses:
-        200:
-          description: The return json object is the plugin's manifest.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Manifest'
-        404:
-          description: Either the plugin name is incorrect or the manifest was not found. The latter could happen if the installation failed or if the plugin does not implement npe2 yet.
-        503:
-          description: The manifest is temporarily unavailable. Check back in 5 minutes.
-  /metrics/{name}:
-    get:
-      summary: Get an object that contains various metrics related to a plugin
-      tags:
-        - activity
-      parameters:
-        - name: name
-          in: path
-          description: name of plugin to query
-          required: true
-          schema:
-            type: string
-          example: napari-demo
-      responses:
-        200:
-          description: The return json is a map containing various metrics of a plugin.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Metrics'
 components:
   schemas:
     Categories:
@@ -196,57 +122,6 @@ components:
               type: string
           label:
             type: string
-    ExcludedPlugin:
-      type: object
-      properties:
-        <name>:
-          type: string
-    Manifest:
-      type: object
-      properties:
-        name:
-          type: string
-        display_name:
-          type: string
-        process_count:
-          type: integer
-        schema_version:
-          type: integer
-        on_activate:
-          type: string
-        on_deactivate:
-          type: string
-        contributions:
-          type: array
-          items:
-            type: string
-    Metrics:
-      type: object
-      properties:
-        activity:
-          type: object
-          properties:
-            stats:
-              type: object
-              properties:
-                installsInLast30Days:
-                  type: integer
-                totalInstalls:
-                  type: integer
-            timeline:
-              type: array
-              items:
-                type: object
-                properties:
-                  installs:
-                    type: integer
-                  timestamp:
-                    type: integer
-    Plugins:
-      type: object
-      properties:
-        name:
-          type: string
     Plugin:
       type: object
       properties:

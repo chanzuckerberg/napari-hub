@@ -50,12 +50,6 @@ export function getBuildManifest(): BuildManifest | null {
   return getManifestFile<BuildManifest>('build');
 }
 
-interface Preview {
-  previewModeId: string;
-  previewModeSigningKey: string;
-  previewModeEncryptionKey: string;
-}
-
 interface DynamicRoute {
   routeRegex: string;
   dataRoute: string;
@@ -74,7 +68,6 @@ export interface PreRenderManifest {
   routes: Record<string, Route>;
   dynamicRoutes: Record<string, DynamicRoute>;
   notFoundRoutes: unknown[];
-  preview: Preview;
 }
 
 export function getPreRenderManifest(): PreRenderManifest | null {

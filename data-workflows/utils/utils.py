@@ -1,21 +1,15 @@
 import boto3
 import json
-import time
-from datetime import date, datetime, timezone
+from datetime import date, datetime, timezone, time
 
 from .env import get_required_env
-
-
-def get_current_timestamp() -> int:
-    return round(time.time() * 1000)
 
 
 LAST_UPDATED_TIMESTAMP_KEY = "last_activity_fetched_timestamp"
 
 
-def date_to_utc_timestamp_in_millis(timestamp: date) -> int:
-    timestamp_datetime = datetime(timestamp.year, timestamp.month, timestamp.day)
-    return datetime_to_utc_timestamp_in_millis(timestamp_datetime)
+def to_datetime(timestamp: date) -> datetime:
+    return datetime.combine(timestamp, time.min, timezone.utc)
 
 
 def datetime_to_utc_timestamp_in_millis(timestamp: datetime) -> int:

@@ -1,3 +1,4 @@
+# This workflow deploys Napari Hub to staging and production and runs lighthouse-ci on the production deployment.
 name: Deploy Changes to Cluster
 
 on:
@@ -5,12 +6,15 @@ on:
     branches:
       - main
     tags:
-      - "v*"
-
+      - 'v*'
+ 
 # https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services
 permissions:
   id-token: write
   contents: read
+
+env:
+  FIXTURES_CACHE_KEY: e2e-fixtures-${{ github.run_id }}-${{ github.run_attempt }}
 
 jobs:
   prod:
@@ -23,25 +27,25 @@ jobs:
         with:
           aws-region: us-west-2
           role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
-          role-duration-seconds: 900
+          role-duration-seconds: 1200
       - name: Login to ECR
         uses: docker/login-action@v1
         with:
           registry: ${{ secrets.ECR_REPO }}
       - name: Set up docker build environment
-        run: | 
+        run: |
           echo DOCKER_TAG=${GITHUB_REF_NAME} >> $GITHUB_ENV
       - name: Deploy Changes to Prod
         uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.7.4
         env:
           ENV: prod
         with:
-          stack-name: "prod"
-          create-tag: "true"
+          stack-name: 'prod'
+          create-tag: 'true'
           tag: ${{ env.DOCKER_TAG }}
           tfe-token: ${{ secrets.TFE_TOKEN }}
-          env: "prod"
-          operation: "create-or-update"
+          env: 'prod'
+          operation: 'create-or-update'
   staging:
     name: deploy to staging
     runs-on: ubuntu-latest
@@ -52,7 +56,7 @@ jobs:
         with:
           aws-region: us-west-2
           role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
-          role-duration-seconds: 900
+          role-duration-seconds: 1200
       - name: Login to ECR
         uses: docker/login-action@v1
         with:
@@ -66,9 +70,169 @@ jobs:
         env:
           ENV: staging
         with:
-          stack-name: "staging"
-          create-tag: "true"
+          stack-name: 'staging'
+          create-tag: 'true'
           tag: ${{ env.DOCKER_TAG }}
           tfe-token: ${{ secrets.TFE_TOKEN }}
-          env: "staging"
-          operation: "create-or-update"
+          env: 'staging'
+          operation: 'create-or-update'
+
+  lighthouse-ci:
+    runs-on: ubuntu-latest
+    needs: prod
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20.5.x
+      - run: npm install -g @lhci/cli@0.11.x
+      - name: Run Lighthouse
+        run: lhci autorun --collect.url=https://www.napari-hub.org/ --output-dir=./.lighthouseci --upload.artifacts.ignoreFailure=true
+
+      - name: Upload Lighthouse reports
+        uses: actions/upload-artifact@v3
+        with:
+          name: lighthouse-reports
+          path: ./.lighthouseci/
+
+  prod-e2e-setup:
+    name: Production E2E Tests Setup
+    defaults:
+      run:
+        working-directory: frontend/
+    runs-on: ubuntu-latest
+    needs: prod # Needs the production deploy to happen first before E2E tests can be ran
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.5.x
+
+      - name: Get Yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+
+      # cache both yarn-lock and node_modules
+      - name: Setup Yarn cache
+        uses: actions/cache@v3
+        id: yarn-cache
+        with:
+          path: |
+            **/node_modules
+            ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      # --prefer-offline forces yarn to use cache if available
+      - name: Install dependencies with yarn
+        # if: steps.yarn-cache.outputs.cache-hit != 'true'
+        run: yarn install --prefer-offline --frozen-lockfile
+
+      - name: Cache playwright binaries
+        uses: actions/cache@v3
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install playwright
+        # if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps
+
+      - name: Setting up local build cache
+        uses: actions/cache@v3
+        with:
+          path: frontend/.next
+          key: local-build-${{ hashFiles('**/next.config.js') }}-${{ hashFiles('frontend/src') }}-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Setting up fixture cache
+        uses: actions/cache@v3
+        with:
+          path: frontend/e2e/fixtures
+          key: ${{ env.FIXTURES_CACHE_KEY }}
+
+      - name: Fetch fixture data
+        env:
+          ENV: prod
+        run: node scripts/fetch-e2e-fixtures
+
+  prod-e2e:
+    name: E2E tests ${{ matrix.browser }} ${{ matrix.shardCurrent }} / ${{ matrix.shardTotal }}
+    defaults:
+      run:
+        working-directory: frontend/
+    runs-on: ubuntu-latest
+    needs: prod-e2e-setup
+
+    concurrency:
+      group: ${{ github.ref }}-${{ matrix.browser }}-${{ matrix.shardCurrent }}-${{ matrix.shardTotal }}
+      cancel-in-progress: true
+
+    strategy:
+      fail-fast: false
+      matrix:
+        # browser: [chrome, firefox, safari]
+        browser: [chrome]
+        shardCurrent: [1, 2, 3, 4, 5]
+        shardTotal: [5]
+
+    steps:
+      - name: 25 minutes wait # Wait 25 mins before running E2E tests to let deployment changes on AWS propigate
+        run: sleep 1500 # Sleep time in seconds (25 minutes * 60 seconds = 1500 seconds)
+      
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.5.x
+
+      - name: Get Yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+
+      # cache both yarn-lock and node_modules
+      - name: Load yarn cache
+        uses: actions/cache@v3
+        id: yarn-cache
+        with:
+          path: |
+            **/node_modules
+            ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Load cached playwright binaries
+        uses: actions/cache@v3
+        id: playwright-cache
+        with:
+          path: |
+            ~/.cache/ms-playwright
+          key: playwright-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Load fixtures cache
+        uses: actions/cache@v3
+        with:
+          path: frontend/e2e/fixtures
+          key: ${{ env.FIXTURES_CACHE_KEY }}
+
+      - name: Run E2E Tests
+        env:
+          BROWSER: ${{ matrix.browser }}
+          ENV: prod
+        run: yarn e2e:ci --shard ${{ matrix.shardCurrent }}/${{ matrix.shardTotal }}
+
+      - name: Upload artifacts
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v3.1.1
+        with:
+          name: e2e-artifacts
+          path: frontend/e2e/report
+          retention-days: 1

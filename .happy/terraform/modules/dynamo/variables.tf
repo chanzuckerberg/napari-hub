@@ -33,6 +33,18 @@ variable range_key {
   default     = null
 }
 
+variable stream_enabled {
+  type        = bool
+  description = "Please provide if stream is enabled"
+  default     = false
+}
+
+variable stream_view_type {
+  type        = string
+  description = "Please provide the stream_view_type for table if stream enabled"
+  default     = null
+}
+
 variable table_class {
   type        = string
   description = "Please provide table_class"

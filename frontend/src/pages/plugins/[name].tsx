@@ -1,8 +1,6 @@
-import { AxiosError } from 'axios';
 import Head from 'next/head';
 import { useTranslation } from 'next-i18next';
 import { ParsedUrlQuery } from 'node:querystring';
-import { z } from 'zod';
 
 import { ErrorMessage } from '@/components/ErrorMessage';
 import { PageMetadata } from '@/components/PageMetadata';
@@ -11,10 +9,10 @@ import { DEFAULT_REPO_DATA } from '@/constants/plugin';
 import { useLoadingState } from '@/context/loading';
 import { PluginStateProvider } from '@/context/plugin';
 import { PluginData } from '@/types';
-import { createUrl, fetchRepoData, FetchRepoDataResult } from '@/utils';
+import { createUrl, fetchRepoData, FetchRepoDataResult, Logger } from '@/utils';
+import { getErrorMessage } from '@/utils/error';
 import { hubAPI } from '@/utils/HubAPIClient';
 import { getServerSidePropsHandler } from '@/utils/ssr';
-import { getZodErrorMessage } from '@/utils/validate';
 
 /**
  * Interface for parameters in URL.
@@ -30,20 +28,9 @@ interface BaseProps {
 
 type Props = FetchRepoDataResult & BaseProps;
 
-function isAxiosError(error: unknown): error is AxiosError {
-  return !!(error as AxiosError).isAxiosError;
-}
+const logger = new Logger('pages/plugins/[name].tsx');
 
 export const getServerSideProps = getServerSidePropsHandler<Props, Params>({
-  locales: [
-    'pluginData',
-    'pluginPage',
-    'activity',
-
-    // Home page namespace required for page transitions to search page from the
-    // plugin page.
-    'homePage',
-  ],
   /**
    * Fetches plugin data from the hub API. The name of the plugin is extracted
    * from the URL `/plugins/:name` and used for fetching the plugin data.
@@ -54,20 +41,32 @@ export const getServerSideProps = getServerSidePropsHandler<Props, Params>({
       repo: DEFAULT_REPO_DATA,
     };
 
+    let codeRepo = '';
+
     try {
-      const data = await hubAPI.getPlugin(name);
-      props.plugin = data;
-
-      const result = await fetchRepoData(data.code_repository);
-      Object.assign(props, result);
+      const plugin = await hubAPI.getPlugin(name);
+      codeRepo = plugin.code_repository;
+      props.plugin = plugin;
     } catch (err) {
-      if (isAxiosError(err) || err instanceof Error) {
-        props.error = err.message;
-      }
+      props.error = getErrorMessage(err);
+      logger.error({
+        message: 'Failed to fetch plugin data',
+        plugin: name,
+        error: props.error,
+      });
 
-      if (err instanceof z.ZodError) {
-        props.error = getZodErrorMessage(err);
-      }
+      return { props };
+    }
+
+    const repoData = await fetchRepoData(codeRepo);
+    Object.assign(props, repoData);
+
+    if (props.repoFetchError) {
+      logger.error({
+        message: 'Failed to fetch repo data',
+        plugin: name,
+        error: props.error,
+      });
     }
 
     return { props };

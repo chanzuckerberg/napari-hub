@@ -31,7 +31,7 @@ jobs:
         with:
           aws-region: us-west-2
           role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
-          role-duration-seconds: 900
+          role-duration-seconds: 1200
       - name: Login to ECR
         uses: docker/login-action@v1
         with:

@@ -7,10 +7,11 @@ export const SEARCH_PAGE = '/';
  * Sorting methods for search results.
  */
 export enum SearchSortType {
-  Relevance = 'relevance',
-  ReleaseDate = 'recentlyUpdated',
   FirstReleased = 'newest',
   PluginName = 'pluginName',
+  ReleaseDate = 'recentlyUpdated',
+  Relevance = 'relevance',
+  TotalInstalls = 'totalInstalls',
 }
 
 export const DEFAULT_SORT_TYPE = SearchSortType.ReleaseDate;

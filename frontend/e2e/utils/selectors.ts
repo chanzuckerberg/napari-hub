@@ -1,7 +1,11 @@
 import { SearchSortType } from '@/store/search/constants';
 import { FilterKey, FilterType } from '@/store/search/search.store';
 
-import { AccordionTitle } from './utils';
+export enum AccordionTitle {
+  FilterByRequirement = 'Filter by requirement',
+  FilterByCategory = 'Filter by category',
+  Sort = 'Sort',
+}
 
 export const getByHasText = (type: string, text: string): string =>
   `${type}:has-text("${text}")`;
@@ -9,8 +13,11 @@ export const getMetadata = (attribute: string): string =>
   `[data-testid="searchResultMetadata"] >> ${attribute}`;
 export const getByTestID = (id: string): string => `[data-testid="${id}"]`;
 export const getByID = (id: string): string => `[id="${id}"]`;
+
 enum CommonSelectors {
   appBarHome = '[data-testid=appBarHome]:visible',
+  plugins = 'a[href="/plugins"]:visible',
+  mobileMenuButton = '[data-testid="mobileMenuButtonContainer"] [data-testid=iconButton]',
 }
 
 enum SearchSelectors {
@@ -25,6 +32,7 @@ enum SearchSelectors {
 enum SortSelectors {
   selected = '[data-testid=sortByRadio][data-selected=true]:visible',
   selectedVisible = '[data-testid=sortByRadio][data-selected=true]',
+  sortDropdown = '[data-testid=sortDropdown]',
 }
 
 enum PluginSelectors {
@@ -56,6 +64,10 @@ export const selectors = {
       return `[data-testid=pluginFilter][data-filter=${filterKey}]:visible`;
     },
 
+    getFilterOption(filterKey: FilterKey, option: string) {
+      return `[role=tooltip] [data-filter=${filterKey}] ~ [role=presentation] [role=option]:has-text("${option}")`;
+    },
+
     getChips(filterKey: FilterKey) {
       return `[data-filter=${filterKey}] .MuiChip-root:visible`;
     },
@@ -74,6 +86,10 @@ export const selectors = {
 
     getRadioInput(sort: SearchSortType) {
       return `input[value=${sort}]:visible`;
+    },
+
+    getSortDropdownItem(sort: SearchSortType) {
+      return `[data-testid=sortOption][data-sort-option=${sort}]:visible`;
     },
   },
 };

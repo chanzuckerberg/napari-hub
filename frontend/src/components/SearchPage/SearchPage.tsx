@@ -2,12 +2,8 @@ import { throttle } from 'lodash';
 import { useEffect } from 'react';
 import { snapshot, useSnapshot } from 'valtio';
 
-import { AppBarLanding } from '@/components/AppBar';
-import { Banner } from '@/components/Banner';
 import { ColumnLayout } from '@/components/ColumnLayout';
-import { Footer } from '@/components/Footer';
 import { Pagination } from '@/components/Pagination';
-import { SignupForm } from '@/components/SignupForm';
 import { loadingStore } from '@/store/loading';
 import { useSearchStore } from '@/store/search/context';
 import { scrollToSearchBar } from '@/utils';
@@ -80,8 +76,6 @@ export function SearchPage() {
 
   return (
     <div className="flex flex-col">
-      <Banner />
-      <AppBarLanding />
       <PluginSearchBarSection />
 
       <div className="flex-grow min-h-screen">
@@ -99,9 +93,6 @@ export function SearchPage() {
       </div>
 
       <SearchPagination />
-
-      <SignupForm variant="home" />
-      <Footer />
     </div>
   );
 }

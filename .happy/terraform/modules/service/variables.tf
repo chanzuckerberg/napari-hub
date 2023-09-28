@@ -127,3 +127,9 @@ variable split_io_server_key {
   type        = string
   description = "Split.io server key"
 }
+
+variable "cloudwatch_rum_config" {
+  type        = map(string)
+  default     = {}
+  description = "Config for configuring Cloudwatch RUM in the browser"
+}

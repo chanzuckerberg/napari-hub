@@ -19,10 +19,6 @@ interface Props extends SSRConfig {
 
 const LOCALE_DIR = __dirname.replace('.next/server/pages', 'i18n');
 
-const isPreview = !!(
-  process.env.NODE_ENV === 'production' && process.env.PREVIEW
-);
-
 /**
  * Special Next.js function responsible for returning all possible paths that
  * can be built by this page at build time. Since we use `getStaticPaths()` to
@@ -43,7 +39,7 @@ export function getStaticPaths(): GetStaticPathsResult {
   for (const locale of supportedLocales) {
     for (const file of mdxFiles) {
       paths.push({
-        locale: isPreview ? undefined : locale,
+        locale,
         params: {
           parts: file.split('/'),
         },

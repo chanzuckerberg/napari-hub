@@ -100,11 +100,7 @@ export function useLinks() {
     },
     PLUGINS: {
       title: t('common:plugins'),
-      link: '/',
-    },
-    COLLECTIONS: {
-      title: t('common:collections'),
-      link: '/collections',
+      link: '/plugins',
     },
   });
 }

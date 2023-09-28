@@ -57,7 +57,11 @@ function BaseCategoryChip(
               className="underline"
               href={`/?${STATE_KEY_MAP[dimension] ?? ''}=${term}`}
             >
-              {t(`pluginData:category.labels.${term}` as I18nKeys<'common'>)}
+              {
+                t(
+                  `pluginData:category.labels.${term}` as I18nKeys<'common'>,
+                ) as ReactNode
+              }
             </Link>
           ) : (
             <span>{term}</span>
@@ -96,7 +100,7 @@ function BaseCategoryChip(
             )}
           >
             <span className="font-semibold text-sm">{categoryType}</span>
-            <span className="text-xs">{tooltipBody}</span>
+            <span className="text-xs">{tooltipBody as ReactNode}</span>
             <span className="text-xs italic">
               {t('pluginData:category.clickToAdd')}
             </span>
@@ -133,9 +137,9 @@ function BaseCategoryChip(
         className,
 
         isActive && [
-          'bg-hub-primary-100',
-          'hover:bg-hub-primary-200',
-          'focus:bg-hub-primary-200',
+          'bg-hub-primary-200',
+          'hover:bg-hub-primary-300',
+          'focus:bg-hub-primary-300',
         ],
 
         !isActive && [
@@ -157,7 +161,9 @@ function BaseCategoryChip(
       }}
       label={
         <div className="flex items-center space-x-sds-xxs">
-          <span className="font-semibold space-x-sds-xxs">{chipBody}</span>
+          <span className="font-semibold space-x-sds-xxs">
+            {chipBody as ReactNode}
+          </span>
           {isTapDevice ? icon : renderTooltip(icon)}
         </div>
       }

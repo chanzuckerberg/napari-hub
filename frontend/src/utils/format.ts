@@ -28,3 +28,11 @@ export function formatOperatingSystem(operatingSystem: string): string {
     operatingSystem
   );
 }
+
+export function formatNumber(value: number, language = 'en-US'): string {
+  const formatter = new Intl.NumberFormat(language, {
+    notation: 'compact',
+  });
+
+  return formatter.format(value);
+}

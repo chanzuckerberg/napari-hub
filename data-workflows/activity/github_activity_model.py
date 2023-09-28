@@ -1,130 +1,141 @@
 import logging
 import time
-from datetime import datetime
+from datetime import date, datetime, time as dt_time
 from enum import Enum, auto
-from typing import List, Union
-import os
+from typing import Callable, Optional
 
-from pynamodb.models import Model
-from pynamodb.attributes import UnicodeAttribute, NumberAttribute
+from dateutil.relativedelta import relativedelta
 
-from utils.utils import get_current_timestamp, date_to_utc_timestamp_in_millis, datetime_to_utc_timestamp_in_millis
-from plugin.helpers import _get_repo_to_plugin_dict
+from nhcommons.models.github_activity import batch_write
+from utils.utils import datetime_to_utc_timestamp_in_millis, to_datetime
 
-
-LOGGER = logging.getLogger()
+logger = logging.getLogger(__name__)
 TIMESTAMP_FORMAT = "TO_TIMESTAMP('{0:%Y-%m-%d %H:%M:%S}')"
 
 
 class GitHubActivityType(Enum):
-    def __new__(cls, timestamp_formatter, type_identifier_formatter, query_projection, query_sorting):
+    def __new__(
+        cls,
+        timestamp_formatter: Callable[[date], Optional[int]],
+        type_id_formatter: str,
+        projection: str,
+        sort: str,
+        expiry_formatter: Callable[[date], Optional[int]],
+    ):
         github_activity_type = object.__new__(cls)
         github_activity_type._value = auto()
         github_activity_type.timestamp_formatter = timestamp_formatter
-        github_activity_type.type_identifier_formatter = type_identifier_formatter
-        github_activity_type.query_projection = query_projection
-        github_activity_type.query_sorting = query_sorting
+        github_activity_type.type_identifier_formatter = type_id_formatter
+        github_activity_type.query_projection = projection
+        github_activity_type.query_sorting = sort
+        github_activity_type.expiry_formatter = expiry_formatter
         return github_activity_type
 
-    LATEST = (datetime_to_utc_timestamp_in_millis, 'LATEST:{0}',
-              'repo AS name, TO_TIMESTAMP(MAX(commit_author_date)) AS latest_commit', 'name')
-    MONTH = (date_to_utc_timestamp_in_millis, 'MONTH:{1:%Y%m}:{0}',
-             'repo AS name, DATE_TRUNC("month", TO_DATE(commit_author_date)) AS month, COUNT(*) AS commit_count',
-             'name, month')
-    TOTAL = (lambda timestamp: None, 'TOTAL:{0}', 'repo AS name, COUNT(*) AS commit_count', 'name')
+    LATEST = (
+        datetime_to_utc_timestamp_in_millis,
+        "LATEST:{repo}",
+        "TO_TIMESTAMP(MAX(commit_author_date)) AS latest_commit",
+        "name",
+        lambda timestamp: None,
+    )
+    MONTH = (
+        lambda ts: datetime_to_utc_timestamp_in_millis(to_datetime(ts)),
+        "MONTH:{timestamp:%Y%m}:{repo}",
+        "DATE_TRUNC('month', TO_DATE(commit_author_date)) AS month, "
+        "COUNT(*) AS commit_count",
+        "name, month",
+        lambda ts: int((to_datetime(ts) + relativedelta(months=14)).timestamp()),
+    )
+    TOTAL = (
+        lambda timestamp: None,
+        "TOTAL:{repo}",
+        "COUNT(*) AS commit_count",
+        "name",
+        lambda timestamp: None,
+    )
 
-    def format_to_timestamp(self, timestamp: datetime) -> Union[int, None]:
+    def format_to_timestamp(self, timestamp: Optional[date]) -> Optional[int]:
         return self.timestamp_formatter(timestamp)
 
-    def format_to_type_identifier(self, repo_name: str, identifier_timestamp: str) -> str:
-        return self.type_identifier_formatter.format(repo_name, identifier_timestamp)
+    def format_to_type_identifier(
+        self, repo_name: str, timestamp: Optional[date]
+    ) -> str:
+        return self.type_identifier_formatter.format(
+            repo=repo_name, timestamp=timestamp
+        )
+
+    def to_expiry(self, timestamp: Optional[date]) -> Optional[int]:
+        return self.expiry_formatter(timestamp)
 
     def _create_subquery(self, plugins_by_earliest_ts: dict[str, datetime]) -> str:
-        if self is GitHubActivityType.MONTH:
-            return " OR ".join(
-                [
-                    f"repo = '{name}' AND TO_TIMESTAMP(commit_author_date) >= "
-                    f"{TIMESTAMP_FORMAT.format(ts.replace(day=1))}"
-                    for name, ts in plugins_by_earliest_ts.items()
-                ]
-            )
-        return f"""repo IN ({','.join([f"'{plugin}'" for plugin in plugins_by_earliest_ts.keys()])})"""
+        plugins = [f"'{plugin}'" for plugin in plugins_by_earliest_ts.keys()]
+        plugins_subquery = f"repo IN ({','.join(plugins)})"
+
+        if self is not GitHubActivityType.MONTH:
+            return plugins_subquery
+
+        earliest_date = (date.today() - relativedelta(months=14)).replace(day=1)
+        timestamp = datetime.combine(earliest_date, dt_time.min)
+        return (
+            f"{plugins_subquery} AND "
+            f"TO_TIMESTAMP(commit_author_date) >= {TIMESTAMP_FORMAT.format(timestamp)}"
+        )
 
     def get_query(self, plugins_by_earliest_ts: dict[str, datetime]) -> str:
         return f"""
-                SELECT 
+                SELECT
+                    repo AS name,
                     {self.query_projection}
                 FROM
                     imaging.github.commits
                 WHERE 
                     repo_type = 'plugin'
-                    AND {self._create_subquery(plugins_by_earliest_ts)}
+                    AND ({self._create_subquery(plugins_by_earliest_ts)})
                 GROUP BY {self.query_sorting}
                 ORDER BY {self.query_sorting}
                 """
 
 
-class GitHubActivity(Model):
-    class Meta:
-        host = os.getenv('LOCAL_DYNAMO_HOST')
-        region = os.getenv('AWS_REGION', 'us-west-2')
-        table_name = f"{os.getenv('STACK_NAME', 'local')}-github-activity"
-
-    plugin_name = UnicodeAttribute(hash_key=True)
-    type_identifier = UnicodeAttribute(range_key=True)
-    granularity = UnicodeAttribute(attr_name='type')
-    timestamp = NumberAttribute(null=True)
-    commit_count = NumberAttribute(null=True)
-    repo = UnicodeAttribute()
-    last_updated_timestamp = NumberAttribute(default_for_new=get_current_timestamp)
-
-    def __eq__(self, other):
-        if isinstance(other, GitHubActivity):
-            return (
-                    self.plugin_name == other.plugin_name and
-                    self.type_identifier == other.type_identifier and
-                    self.granularity == other.granularity and
-                    self.timestamp == other.timestamp and
-                    self.commit_count == other.commit_count and
-                    self.repo == other.repo
-            )
-        return False
-
-
-def transform_and_write_to_dynamo(data: dict[str, List], activity_type: GitHubActivityType) -> None:
-    """Transforms plugin commit data generated by get_plugins_commit_count_since_timestamp to the expected format
-    and then writes the formatted data to the corresponding github-activity dynamo table in each environment
-    :param dict[str, list] data: plugin commit data of type dictionary in which the key is plugin name
-    of type str and the value is Github activities of type list
+def transform_and_write_to_dynamo(
+    data: dict[str, list],
+    activity_type: GitHubActivityType,
+    plugin_name_by_repo: dict[str, str],
+) -> None:
+    """Transforms data to the json of _GitHubActivity model and then batch writes the
+    formatted data to github-activity dynamo table
+    :param dict[str, list] data: plugin commit activities data keyed on plugin name
     :param GitHubActivityType activity_type:
+    :param dict[str, str] plugin_name_by_repo: dict mapping repo to plugin name
     """
-    LOGGER.info(f'Starting item creation for github-activity type={activity_type.name}')
+    granularity = activity_type.name
+    logger.info(f"Starting for github-activity type={granularity}")
 
-    batch = GitHubActivity.batch_write()
-
+    batch = []
     start = time.perf_counter()
-    count = 0
-    repo_to_plugin_dict = _get_repo_to_plugin_dict()
+
     for repo, github_activities in data.items():
-        plugin_name = repo_to_plugin_dict.get(repo)
+        plugin_name = plugin_name_by_repo.get(repo)
         if plugin_name is None:
+            logger.warning(f"Unable to find plugin name for repo={repo}")
             continue
+
         for activity in github_activities:
-            identifier_timestamp = activity.get('timestamp', '')
-            timestamp = activity.get('timestamp')
-            commit_count = activity.get('count')
-            item = GitHubActivity(
-                plugin_name,
-                activity_type.format_to_type_identifier(repo, identifier_timestamp),
-                granularity=activity_type.name,
-                timestamp=activity_type.format_to_timestamp(timestamp),
-                commit_count=commit_count,
-                repo=repo)
-            batch.save(item)
-            count += 1
+            timestamp = activity.get("timestamp")
+            type_identifier = activity_type.format_to_type_identifier(repo, timestamp)
+            item = {
+                "plugin_name": plugin_name.lower(),
+                "type_identifier": type_identifier,
+                "granularity": granularity,
+                "timestamp": activity_type.format_to_timestamp(timestamp),
+                "commit_count": activity.get("count"),
+                "repo": repo,
+                "expiry": activity_type.to_expiry(timestamp),
+            }
+            batch.append(item)
 
-    batch.commit()
+    batch_write(batch)
     duration = (time.perf_counter() - start) * 1000
-
-    LOGGER.info(f'Items github-activity type={activity_type.name} count={count}')
-    LOGGER.info(f'Transform and write to github-activity type={activity_type.name} timeTaken={duration}ms')
+    logger.info(
+        f"Completed processing for github-activity type={granularity} "
+        f"count={len(batch)} timeTaken={duration}ms"
+    )

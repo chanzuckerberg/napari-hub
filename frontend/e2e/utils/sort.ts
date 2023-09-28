@@ -1,95 +1,58 @@
-import { expect, Page } from '@playwright/test';
+import { Page, test } from '@playwright/test';
 
-import { SearchQueryParams, SearchSortType } from '@/store/search/constants';
+import { SearchSortType } from '@/store/search/constants';
+import { PluginIndexData } from '@/types';
 
-import { selectors } from './selectors';
-import {
-  AccordionTitle,
-  getQueryParameterValues,
-  getSearchUrl,
-  maybeOpenAccordion,
-  MetadataLabel,
-} from './utils';
+import { getResultsByName } from './dom';
+import { getFixture } from './fixture';
 
-export async function clickOnRadio(page: Page, selector: string) {
-  const radioInput = await page.$(selector);
-  await radioInput?.click();
-
-  // Wait for radio transition.
-  await page.waitForTimeout(500);
-}
-
-export async function testPluginSort({
+async function sortPlugins({
   page,
-  sortType,
-  preTestRadios,
-  testResults,
-  width,
+  sortBy,
+  width = 0,
 }: {
   page: Page;
-  sortType: SearchSortType;
-  preTestRadios?(): Promise<void>;
-  testResults(): Promise<void>;
+  sortBy: SearchSortType;
   width?: number;
-}) {
-  async function testSortResults() {
-    // Check that radio is selected.
-    await expect(page.locator(selectors.sort.selected)).toHaveAttribute(
-      'data-sort-type',
-      sortType,
-    );
-
-    // Check that query parameter has been set.
-    expect(getQueryParameterValues(page, SearchQueryParams.Sort)).toContain(
-      sortType,
-    );
-
-    await testResults();
+}): Promise<void> {
+  if (width < 875) {
+    await page.locator('[data-title="SORT BY: Recently Updated"]').click();
   }
 
-  async function testInitialLoad() {
-    await page.goto(getSearchUrl([SearchQueryParams.Sort, sortType]));
-    await maybeOpenAccordion(page, AccordionTitle.Sort, width);
-    await testSortResults();
+  if (sortBy !== SearchSortType.ReleaseDate) {
+    if (width >= 875) {
+      await page.locator('[data-testid=sortDropdown]').click();
+    }
+
+    await page.locator(`[data-sort-type="${sortBy}"]:visible`).click();
   }
 
-  async function testRadios() {
-    await page.goto(getSearchUrl());
-    await maybeOpenAccordion(page, AccordionTitle.Sort, width);
-    await preTestRadios?.();
-    await clickOnRadio(page, selectors.sort.getRadioInput(sortType));
-    await testSortResults();
-  }
-
-  await testInitialLoad();
-  await testRadios();
+  await page.keyboard.press('Escape');
 }
-/**
- * Returns a list of search result metadata values given the name of the value.
- *
- * @param label The metadata label to fetch from.
- * @returns The list of metadata values.
- */
-export async function getSearchResultMetadata(
-  page: Page,
-  label: MetadataLabel,
-) {
-  const result: string[] = [];
 
-  const searchResultMetadata = await page.$$(
-    '[data-testid=searchResultMetadata]',
-  );
+export function testSort({
+  name,
+  sortBy,
+  testPlugins,
+}: {
+  name: string;
+  sortBy: SearchSortType;
+  testPlugins(plugins: PluginIndexData[]): void;
+}) {
+  test(`should sort by ${name}`, async ({ page, viewport }) => {
+    await sortPlugins({
+      page,
+      sortBy,
+      width: viewport?.width,
+    });
 
-  // Collect all values for a particular metadata label.
-  await Promise.all(
-    searchResultMetadata.map(async (metadata) => {
-      const resultLabel = await metadata.getAttribute('data-label');
-      const value = await metadata.getAttribute('data-value');
+    const indexFixture = await getFixture<PluginIndexData[]>();
 
-      if (resultLabel === label && value) {
-        result.push(value);
-      }
-    }),
-  );
-  return result;
+    const pluginMap = Object.fromEntries(
+      indexFixture.map((plugin) => [plugin.name, plugin]),
+    );
+
+    const pluginNames = await getResultsByName(page);
+    testPlugins(pluginNames.map((pluginName) => pluginMap[pluginName]));
+  });
 }

@@ -1,6 +1,6 @@
 import { usePlausible as usePlausibleNext } from 'next-plausible';
 
-import { PluginTabType } from '@/types/plugin';
+import { PluginTabType, PluginType } from '@/types/plugin';
 import { Logger } from '@/utils';
 
 const logger = new Logger('usePlausible.ts');
@@ -62,6 +62,14 @@ export type Events = {
     plugin: string;
     tab: PluginTabType;
   };
+
+  'Home Plugin Section Click': {
+    column: number;
+    plugin_name: string;
+    plugin_type?: PluginType;
+    row: number;
+    section: string;
+  };
 };
 
 export type PlausibleEventKey = keyof Events;
@@ -76,7 +84,11 @@ export function usePlausible() {
     event: E,
     ...payload: Events[E][]
   ) {
-    logger.debug('Plausible event:', { event, payload });
+    logger.debug({
+      message: 'Plausible event',
+      event,
+      payload,
+    });
 
     plausible(event, {
       props: payload[0],

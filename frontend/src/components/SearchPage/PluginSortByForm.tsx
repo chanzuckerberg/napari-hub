@@ -5,25 +5,12 @@ import RadioGroup from '@mui/material/RadioGroup';
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'next-i18next';
-import type { TFuncKey } from 'react-i18next';
 import { useSnapshot } from 'valtio';
 
 import { Accordion } from '@/components/Accordion';
+import { SORT_LABELS, SORT_OPTIONS } from '@/constants/search';
 import { SearchSortType } from '@/store/search/constants';
 import { useSearchStore } from '@/store/search/context';
-
-const DEFAULT_SORT_BY_RADIO_ORDER: SearchSortType[] = [
-  SearchSortType.PluginName,
-  SearchSortType.ReleaseDate,
-  SearchSortType.FirstReleased,
-];
-
-const SORT_BY_LABELS: Record<SearchSortType, TFuncKey<'homePage'>> = {
-  [SearchSortType.Relevance]: 'sort.relevance',
-  [SearchSortType.FirstReleased]: 'sort.newest',
-  [SearchSortType.ReleaseDate]: 'sort.recentlyUpdated',
-  [SearchSortType.PluginName]: 'sort.pluginName',
-};
 
 /**
  * Component for the radio form for selecting the plugin sort type.
@@ -32,7 +19,7 @@ function SortForm() {
   const { searchStore } = useSearchStore();
   const state = useSnapshot(searchStore);
   const isSearching = state.search.query;
-  const [t] = useTranslation(['homePage']);
+  const [t] = useTranslation(['homePage', 'pluginsPage']);
 
   const radios: SearchSortType[] = [];
 
@@ -41,7 +28,7 @@ function SortForm() {
     radios.push(SearchSortType.Relevance);
   }
 
-  radios.push(...DEFAULT_SORT_BY_RADIO_ORDER);
+  radios.push(...SORT_OPTIONS);
 
   return (
     <FormControl component="fieldset">
@@ -85,7 +72,7 @@ function SortForm() {
                   color="default"
                 />
               }
-              label={t(`homePage:${SORT_BY_LABELS[sortType]}`)}
+              label={t(SORT_LABELS[sortType]) as string}
             />
           </motion.div>
         ))}
@@ -100,13 +87,19 @@ function SortForm() {
  * rendered as-is.
  */
 export function PluginSortByForm() {
-  const [t] = useTranslation(['homePage']);
+  const [t] = useTranslation(['homePage', 'pluginsPage']);
   const form = <SortForm />;
+  const { searchStore } = useSearchStore();
+  const state = useSnapshot(searchStore);
 
   return (
     <>
       <div className="screen-875:hidden">
-        <Accordion className="uppercase" title={t('homePage:sort.title')}>
+        <Accordion
+          title={`${t('pluginsPage:sortByMobile', {
+            sortType: t(SORT_LABELS[state.sort]),
+          })}`}
+        >
           {form}
         </Accordion>
       </div>

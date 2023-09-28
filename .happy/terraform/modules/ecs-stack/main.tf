@@ -52,6 +52,7 @@ locals {
   snowflake_user = try(local.secret["snowflake"]["user"], "")
   snowflake_password = try(local.secret["snowflake"]["password"], "")
   split_io_server_key = try(local.secret["split.io"]["server_key"], "")
+  cloudwatch_rum_config = try(local.secret["cloudwatch_rum"], {})
 
   frontend_url = var.frontend_url != "" ? var.frontend_url: try(join("", ["https://", module.frontend_dns.dns_prefix, ".", local.external_dns]), var.frontend_url)
   backend_function_name = "${local.custom_stack_name}-backend"
@@ -59,6 +60,7 @@ locals {
   data_workflows_function_name = "${local.custom_stack_name}-data-workflows"
 
   plugin_update_schedule = var.env == "prod" ? "rate(5 minutes)" : var.env == "staging" ? "rate(1 hour)" : "rate(1 day)"
+  log_retention_period = var.env == "prod" ? 365 : 14
 }
 
 module frontend_dns {
@@ -93,11 +95,9 @@ module frontend_service {
   split_io_server_key = local.split_io_server_key
   frontend_url      = local.frontend_url
   tags              = var.tags
+  cloudwatch_rum_config = local.cloudwatch_rum_config
 
   wait_for_steady_state = local.wait_for_steady_state
-}
-
-resource "random_uuid" "api_key" {
 }
 
 module install_dynamodb_table {
@@ -148,6 +148,8 @@ module github_dynamodb_table {
                             type = "S"
                           }
                         ]
+  ttl_enabled         = true
+  ttl_attribute_name  = "expiry"
   autoscaling_enabled = var.env == "dev" ? false : true
   create_table        = true
   tags                = var.tags
@@ -235,6 +237,8 @@ module plugin_metadata_dynamodb_table {
   autoscaling_enabled = var.env == "dev" ? false : true
   create_table        = true
   tags                = var.tags
+  stream_enabled      = true
+  stream_view_type    = "KEYS_ONLY"
 }
 
 module plugin_blocked_dynamodb_table {
@@ -250,6 +254,8 @@ module plugin_blocked_dynamodb_table {
   autoscaling_enabled = var.env == "dev" ? false : true
   create_table        = true
   tags                = var.tags
+  stream_enabled      = true
+  stream_view_type    = "KEYS_ONLY"
 }
 
 module backend_lambda {
@@ -271,7 +277,6 @@ module backend_lambda {
     "BUCKET_PATH" = var.env == "dev" ? local.custom_stack_name : ""
     "GOOGLE_APPLICATION_CREDENTIALS" = "./credentials.json"
     "SLACK_URL" = local.slack_url
-    "ZULIP_CREDENTIALS" = local.zulip_credentials
     "GITHUB_CLIENT_ID" = local.github_client_id
     "GITHUB_CLIENT_SECRET" = local.github_client_secret
     "GITHUBAPP_ID" = local.github_app_id
@@ -282,13 +287,10 @@ module backend_lambda {
     "DD_SERVICE" = local.custom_stack_name
     "API_URL" = var.env == "dev" ? module.api_gateway_proxy_stage.invoke_url : ""
     "PLUGINS_LAMBDA_NAME" = local.plugins_function_name
-    "SNOWFLAKE_USER" = local.snowflake_user
-    "SNOWFLAKE_PASSWORD" = local.snowflake_password
-    "API_KEY" = random_uuid.api_key.result
     "STACK_NAME" = local.custom_stack_name
   }
 
-  log_retention_in_days = 14
+  log_retention_in_days = local.log_retention_period
   timeout               = 300
   memory_size           = 256
 }
@@ -307,12 +309,10 @@ module plugins_lambda {
   }
 
   environment = {
-    "BUCKET" = local.data_bucket_name
-    "BUCKET_PATH" = var.env == "dev" ? local.custom_stack_name : ""
     "STACK_NAME" = local.custom_stack_name
   }
 
-  log_retention_in_days = 14
+  log_retention_in_days = local.log_retention_period
   timeout               = 150
   memory_size           = 256
   ephemeral_storage_size = 512
@@ -333,16 +333,20 @@ module data_workflows_lambda {
   }
 
   environment             = {
-    "SNOWFLAKE_PASSWORD" = local.snowflake_password
-    "SNOWFLAKE_USER"     = local.snowflake_user
-    "STACK_NAME"         = local.custom_stack_name
-    "BUCKET"             = local.data_bucket_name
-    "BUCKET_PATH"        = var.env == "dev" ? local.custom_stack_name : ""
+    "SNOWFLAKE_PASSWORD"    = local.snowflake_password
+    "SNOWFLAKE_USER"        = local.snowflake_user
+    "STACK_NAME"            = local.custom_stack_name
+    "BUCKET"                = local.data_bucket_name
+    "BUCKET_PATH"           = var.env == "dev" ? local.custom_stack_name : ""
+    "GITHUB_CLIENT_ID"      = local.github_client_id
+    "GITHUB_CLIENT_SECRET"  = local.github_client_secret
+    "PLUGINS_LAMBDA_NAME"   = local.plugins_function_name
+    "ZULIP_CREDENTIALS"     = local.zulip_credentials
   }
 
-  log_retention_in_days   = 14
+  log_retention_in_days   = local.log_retention_period
   timeout                 = 300
-  memory_size             = 256
+  memory_size             = 512
   ephemeral_storage_size  = 512
 }
 
@@ -353,7 +357,7 @@ resource aws_ssm_parameter data_workflow_config {
   tags        = var.tags
   lifecycle {
     ignore_changes = [
-      "value",
+      value,
     ]
   }
 }
@@ -372,10 +376,24 @@ resource aws_sqs_queue_policy data_workflows_queue_policy {
   policy = data.aws_iam_policy_document.data_workflows_sqs_policy.json
 }
 
-resource "aws_lambda_event_source_mapping" "data_workflow_sqs_event_source_mapping" {
+resource aws_lambda_event_source_mapping data_workflow_sqs_event_source_mapping {
   event_source_arn = aws_sqs_queue.data_workflows_queue.arn
-  function_name    = module.data_workflows_lambda.function_arn
+  function_name    = module.data_workflows_lambda.function_name
   batch_size       = 1
+}
+
+resource aws_lambda_event_source_mapping data_workflow_plugin_metadata_event_source_mapping {
+  event_source_arn  = module.plugin_metadata_dynamodb_table.stream_arn
+  function_name     = module.data_workflows_lambda.function_name
+  batch_size        = 100
+  starting_position = "LATEST"
+  maximum_batching_window_in_seconds  = 60
+}
+
+resource aws_lambda_event_source_mapping data_workflow_plugin_blocked_event_source_mapping {
+  event_source_arn  = module.plugin_blocked_dynamodb_table.stream_arn
+  function_name     = module.data_workflows_lambda.function_name
+  starting_position = "LATEST"
 }
 
 module api_gateway_proxy_stage {
@@ -397,18 +415,6 @@ resource "aws_cloudwatch_event_rule" "update_rule" {
   tags                = var.tags
 }
 
-resource aws_cloudwatch_event_target update_target {
-    rule = aws_cloudwatch_event_rule.update_rule.name
-    arn = module.backend_lambda.function_arn
-    input_transformer {
-        input_template = jsonencode({
-          path = "/update",
-          httpMethod = "POST",
-          headers = {"X-API-Key": random_uuid.api_key.result}
-        })
-    }
-}
-
 resource aws_cloudwatch_event_target plugin_target_sqs {
     rule = aws_cloudwatch_event_rule.update_rule.name
     arn = aws_sqs_queue.data_workflows_queue.arn
@@ -425,18 +431,6 @@ resource "aws_cloudwatch_event_rule" "activity_rule" {
   tags                = var.tags
 }
 
-resource "aws_cloudwatch_event_target" "activity_target" {
-    rule = aws_cloudwatch_event_rule.activity_rule.name
-    arn = module.backend_lambda.function_arn
-    input_transformer {
-        input_template = jsonencode({
-          path = "/activity/update",
-          httpMethod = "POST",
-          headers = {"X-API-Key": random_uuid.api_key.result}
-        })
-    }
-}
-
 resource aws_cloudwatch_event_target activity_target_sqs {
     rule = aws_cloudwatch_event_rule.activity_rule.name
     arn = aws_sqs_queue.data_workflows_queue.arn
@@ -450,14 +444,6 @@ locals {
     LambdaPermission = {
       service    = "apigateway"
       source_arn = "${local.execution_arn}*"
-    },
-    AllowExecutionFromCloudWatchForPlugin = {
-      service    = "events"
-      source_arn = aws_cloudwatch_event_rule.update_rule.arn
-    },
-    AllowExecutionFromCloudWatchForActivity = {
-      service    = "events"
-      source_arn = aws_cloudwatch_event_rule.activity_rule.arn
     }
   }
 }
@@ -500,7 +486,7 @@ data aws_iam_policy_document backend_policy {
       module.category_dynamodb_table.table_arn,
       module.plugin_metadata_dynamodb_table.table_arn,
       module.plugin_dynamodb_table.table_arn,
-      module.plugin_blocked_dynamodb_table.table_arn,
+      "${module.plugin_dynamodb_table.table_arn}/index/*",
     ]
   }
 
@@ -527,10 +513,7 @@ data aws_iam_policy_document backend_policy {
 
 data aws_iam_policy_document data_workflows_policy {
   statement {
-    actions = [
-      "s3:GetObject",
-    ]
-
+    actions = ["s3:GetObject",]
     resources = ["${local.data_bucket_arn}/*"]
   }
   statement {
@@ -540,13 +523,26 @@ data aws_iam_policy_document data_workflows_policy {
       "dynamodb:Query",
     ]
     resources = [
-        module.install_dynamodb_table.table_arn,
-        module.github_dynamodb_table.table_arn,
-        module.category_dynamodb_table.table_arn,
-        module.plugin_dynamodb_table.table_arn,
-        module.plugin_metadata_dynamodb_table.table_arn,
-        module.plugin_blocked_dynamodb_table.table_arn,
-        "${module.plugin_dynamodb_table.table_arn}/index/*",
+      module.install_dynamodb_table.table_arn,
+      module.github_dynamodb_table.table_arn,
+      module.category_dynamodb_table.table_arn,
+      module.plugin_dynamodb_table.table_arn,
+      module.plugin_metadata_dynamodb_table.table_arn,
+      "${module.plugin_dynamodb_table.table_arn}/index/*",
+    ]
+  }
+  statement {
+    actions = ["dynamodb:PutItem"]
+    resources = [
+      module.plugin_metadata_dynamodb_table.table_arn,
+      module.plugin_dynamodb_table.table_arn,
+    ]
+  }
+  statement {
+    actions = ["dynamodb:Scan"]
+    resources = [
+      module.plugin_dynamodb_table.table_arn,
+      module.plugin_blocked_dynamodb_table.table_arn,
     ]
   }
   statement {
@@ -564,29 +560,28 @@ data aws_iam_policy_document data_workflows_policy {
     ]
     resources = [aws_sqs_queue.data_workflows_queue.arn]
   }
+  statement {
+    actions = ["lambda:InvokeFunction"]
+    resources = [module.plugins_lambda.function_arn]
+  }
+  statement {
+    actions = [
+      "dynamodb:GetShardIterator",
+      "dynamodb:DescribeStream",
+      "dynamodb:GetRecords",
+      "dynamodb:ListStreams",
+    ]
+    resources = [
+      module.plugin_blocked_dynamodb_table.stream_arn,
+      module.plugin_metadata_dynamodb_table.stream_arn,
+    ]
+  }
 }
 
 data aws_iam_policy_document plugins_policy {
   statement {
     actions = [
-      "s3:PutObject",
-      "s3:GetObject",
-    ]
-
-    resources = ["${local.data_bucket_arn}/*"]
-  }
-
-  statement {
-    actions = [
-      "s3:ListBucket",
-    ]
-
-    resources = ["${local.data_bucket_arn}"]
-  }
-
-  statement {
-    actions = [
-      "dynamodb:GetItem",
+      "dynamodb:Query",
       "dynamodb:PutItem",
     ]
     resources = [module.plugin_metadata_dynamodb_table.table_arn]
@@ -605,7 +600,10 @@ data aws_iam_policy_document data_workflows_sqs_policy {
     condition {
       test     = "ArnLike"
       variable = "aws:SourceArn"
-      values   = [aws_cloudwatch_event_rule.activity_rule.arn]
+      values   = [
+        aws_cloudwatch_event_rule.activity_rule.arn,
+        aws_cloudwatch_event_rule.update_rule.arn,
+      ]
     }
   }
 }
@@ -669,4 +667,24 @@ resource "aws_lambda_function_event_invoke_config" "async-config" {
   function_name                = module.plugins_lambda.function_name
   maximum_event_age_in_seconds = 500
   maximum_retry_attempts       = 0
+}
+
+locals {
+  monitoring_enabled = var.env == "prod" || var.env == "staging"
+}
+
+module alarm_and_monitoring {
+  source = "../cloudwatch-alarm"
+  env = var.env
+  stack_name = local.custom_stack_name
+  metrics_enabled = local.monitoring_enabled
+  alarms_enabled = local.monitoring_enabled
+  backend_lambda_function_name = module.backend_lambda.function_name
+  backend_lambda_log_group_name = module.backend_lambda.cloudwatch_log_group_name
+  data_workflows_lambda_function_name = module.data_workflows_lambda.function_name
+  data_workflows_lambda_log_group_name = module.data_workflows_lambda.cloudwatch_log_group_name
+  plugins_lambda_function_name = module.plugins_lambda.function_name
+  tags = var.tags
+  frontend_log_group_name = module.frontend_service.cloudwatch_log_group_name
+  frontend_rum_app_name = local.cloudwatch_rum_config.app_name
 }

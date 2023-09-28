@@ -1,9 +1,24 @@
 import { Page } from '@playwright/test';
+import { AccordionTitle } from 'e2e/types/filter';
 
-import { SEARCH_PAGE, SearchQueryParams } from '@/store/search/constants';
+import { PROD, STAGING } from '@/constants/env';
+import { SearchQueryParams } from '@/store/search/constants';
 import { breakpoints } from '@/theme/breakpoints';
 
-export const TEST_URL = process.env.BASEURL || 'http://localhost:8080';
+export function getTestURL(pathname = '') {
+  let host = 'http://localhost:8080';
+
+  if (PROD) {
+    host = 'https://www.napari-hub.org';
+  }
+
+  if (STAGING) {
+    host = 'https://staging.napari-hub.org';
+  }
+
+  const url = new URL(pathname, host);
+  return url;
+}
 
 export enum MetadataLabel {
   Version = 'version',
@@ -11,17 +26,6 @@ export enum MetadataLabel {
   License = 'license',
   PythonVersion = 'Python version',
   OperatingSystem = 'operating system',
-}
-
-export enum AccordionTitle {
-  FilterByRequirement = 'Filter by requirement',
-  FilterByCategory = 'Filter by category',
-  Sort = 'Sort',
-}
-
-export function getTestURL(pathname: string) {
-  const url = new URL(pathname, TEST_URL);
-  return url.href;
 }
 
 /**
@@ -32,7 +36,7 @@ export function getTestURL(pathname: string) {
  * @returns The search URL.
  */
 export function getSearchUrl(...params: string[][]) {
-  const url = new URL(SEARCH_PAGE, TEST_URL);
+  const url = getTestURL('/plugins');
 
   for (const [key, value] of params) {
     url.searchParams.append(key, value);
@@ -69,12 +73,5 @@ export async function maybeOpenAccordion(
   if (width < breakpoints['screen-875']) {
     await page.getByRole('button', { name: title }).click();
     await page.waitForTimeout(1000);
-  }
-}
-export async function maybeExpand(page: Page, width = Infinity) {
-  if (width < breakpoints['screen-725']) {
-    await page.locator('[data-title="Sort"]').click();
-    await page.locator('[data-title="Filter by category"]').click();
-    await page.locator('[data-title="Filter by requirement"]').click();
   }
 }

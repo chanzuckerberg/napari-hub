@@ -1,16 +1,11 @@
-import { useRouter } from 'next/router';
 import { useSnapshot } from 'valtio';
 
 import { BEGINNING_PAGE } from '@/constants/search';
+import { useOpenSearchPage } from '@/hooks/useOpenSearchPage';
 import { resetLoadingState } from '@/store/loading';
-import {
-  DEFAULT_SORT_TYPE,
-  SEARCH_PAGE,
-  SearchQueryParams,
-  SearchSortType,
-} from '@/store/search/constants';
+import { DEFAULT_SORT_TYPE, SearchSortType } from '@/store/search/constants';
 import { useSearchStore } from '@/store/search/context';
-import { isSearchPage, scrollToSearchBar } from '@/utils';
+import { scrollToSearchBar } from '@/utils';
 
 import { Props as SearchBarProps, SearchBar } from './SearchBar';
 
@@ -29,10 +24,10 @@ type Props = Omit<SearchBarProps, 'value' | 'onChange' | 'onSubmit'>;
  * This makes the SearchBar component re-useable for non-search enabled pages.
  */
 export function PluginSearchBar(props: Props) {
-  const router = useRouter();
   const { searchStore } = useSearchStore();
   const state = useSnapshot(searchStore);
   const { query } = state.search;
+  const openSearchPage = useOpenSearchPage();
 
   /**
    * Performs a search query on form submission. If the user is on the search
@@ -43,7 +38,7 @@ export function PluginSearchBar(props: Props) {
     // Reset loading state when navigating to the search page.
     resetLoadingState();
 
-    if (isSearchPage(window.location.pathname)) {
+    if (window.location.pathname === '/plugins') {
       if (searchQuery) {
         scrollToSearchBar({ behavior: 'smooth' });
         searchStore.search.query = searchQuery;
@@ -56,19 +51,7 @@ export function PluginSearchBar(props: Props) {
         }
       }
     } else if (searchQuery) {
-      // Set query in global state so that the search bar shows the query while
-      // the search page is loading.
-      searchStore.search.query = searchQuery;
-
-      const url = {
-        pathname: SEARCH_PAGE,
-        query: {
-          // Params will be encoded automatically by Next.js.
-          [SearchQueryParams.Search]: searchQuery,
-          [SearchQueryParams.Sort]: SearchSortType.Relevance,
-        },
-      };
-      await router.push(url);
+      await openSearchPage(searchQuery);
     }
 
     // Reset pagination when searching with a new query.

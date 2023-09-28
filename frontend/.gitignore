@@ -130,8 +130,6 @@ temp/
 
 # End of https://www.toptal.com/developers/gitignore/api/node
 
-# Preview page build
-preview/
 .vercel
 
 test-results/
@@ -139,4 +137,5 @@ e2e/report/
 e2e/fixtures/plugins/
 e2e/fixtures/prod.json
 e2e/fixtures/staging.json
+e2e/fixtures/osi-licenses.json
 playwright-report/

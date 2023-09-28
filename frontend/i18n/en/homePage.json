@@ -1,7 +1,10 @@
 {
+  "browseAll": "Browse all",
   "browsePlugins": "Browse plugins: <count />",
+  "discoverPlugins": "Discover Plugins",
   "fetchError": "Unable to fetch plugin index",
-  "searchBar": "Search for a plugin by keyword or author",
+  "newest": "Newest",
+  "recentlyUpdated": "Recently updated",
 
   "ariaLabels": {
     "sortPlugins": "Sort plugins by"
@@ -15,11 +18,10 @@
   },
 
   "sort": {
-    "newest": "Newest",
-    "pluginName": "Plugin name",
-    "recentlyUpdated": "Recently updated",
+    "pluginName": "Alphabetical",
     "relevance": "Relevance",
-    "title": "Sort"
+    "title": "Sort",
+    "totalInstalls": "Total installs"
   },
 
   "filter": {
@@ -122,5 +124,18 @@
         "visualization": ["Visualization"]
       }
     }
+  },
+
+  "pluginTypeLabels": {
+    "reader": "Reader",
+    "sample_data": "Sample data",
+    "theme": "Theme",
+    "widget": "Widget",
+    "writer": "Writer"
+  },
+
+  "pluginSectionTitles": {
+    "pluginTypes": "{{type}} plugins",
+    "trendingInstalls": "Trending installs"
   }
 }

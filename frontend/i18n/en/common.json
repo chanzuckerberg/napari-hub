@@ -22,6 +22,7 @@
   "plausiblePrivacy": "Plausible.io Privacy Policy",
   "plugins": "Plugins",
   "privacy": "Privacy",
+  "searchBarPlaceholder": "Search for a plugin by keyword or author",
   "showMore": "Show {{count}} more",
   "sitemap": "Sitemap",
 
@@ -69,11 +70,6 @@
     "privacy": {
       "title": "Website Privacy Policy - napari hub",
       "description": "Learn about the napari hub website privacy policy including how and when we use your data."
-    },
-
-    "collections": {
-      "title": "Collections",
-      "description": "Find useful, awesome, and interesting plugins curated by the napari community for your image analysis needs."
     }
   }
 }

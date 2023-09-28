@@ -14,10 +14,8 @@ import {
   stringArraySchema,
   stringSchema,
 } from './helpers';
-import {
-  PLUGIN_INDEX_DATA_SANITIZERS,
-  pluginIndexDataSchema,
-} from './validatePluginIndexData';
+import { pluginBaseSchema } from './schemas';
+import { PLUGIN_INDEX_DATA_SANITIZERS } from './validatePluginIndexData';
 
 const hierarchrySchema = z
   .string()
@@ -41,7 +39,7 @@ const pluginCitationSchema = z.object({
   APA: z.string(),
 });
 
-const pluginDataSchema = pluginIndexDataSchema
+const pluginDataSchema = pluginBaseSchema
   .extend({
     action_repository: z.string().url().or(fallback('')),
     category_hierarchy: pluginCategoryHierarchySchema
@@ -60,7 +58,7 @@ const pluginDataSchema = pluginIndexDataSchema
   .or(fallback(DEFAULT_PLUGIN_DATA));
 
 const SANITIZERS: SanitizerMap<PluginData> = {
-  ...PLUGIN_INDEX_DATA_SANITIZERS,
+  ...(PLUGIN_INDEX_DATA_SANITIZERS as SanitizerMap<PluginData>),
 
   category_hierarchy(result) {
     if (!result.category_hierarchy) return;

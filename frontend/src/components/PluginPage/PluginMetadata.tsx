@@ -12,12 +12,10 @@ import {
 import { SkeletonLoader } from '@/components/SkeletonLoader';
 import {
   Metadata,
-  MetadataId,
   MetadataKeys,
   usePluginMetadata,
   usePluginState,
 } from '@/context/plugin';
-import { useIsFeatureFlagEnabled } from '@/store/featureFlags';
 import { PluginType } from '@/types';
 
 import { MetadataListMetadataItem } from '../MetadataList/MetadataListMetadataItem';
@@ -132,7 +130,6 @@ export function PluginMetadata({
   enableScrollID,
 }: PluginMetadataProps) {
   const metadata = usePluginMetadata();
-  const isNpe2Enabled = useIsFeatureFlagEnabled('npe2');
 
   function renderItemList(
     key: PickMetadataKeys<string | string[]>,
@@ -143,7 +140,6 @@ export function PluginMetadata({
 
     return (
       <MetadataList
-        id={`metadata-${key}` as MetadataId}
         inline={inline}
         label={label}
         empty={isEmpty(isArray(value) ? values : value)}
@@ -158,9 +154,7 @@ export function PluginMetadata({
     );
   }
 
-  const listClassName = clsx(
-    process.env.PREVIEW ? 'space-y-sds-s' : 'space-y-sds-xl ',
-  );
+  const listClassName = 'space-y-sds-xl';
   const spacingClassName = clsx(
     'space-y-sds-xl ',
     'screen-875:space-y-0',
@@ -199,7 +193,7 @@ export function PluginMetadata({
           render={() => (
             <>
               {renderItemList('version')}
-              {renderItemList('releaseDate', { highlight: false })}
+              {renderItemList('releaseDate')}
               {renderItemList('firstReleased')}
               {renderItemList('license')}
             </>
@@ -214,27 +208,17 @@ export function PluginMetadata({
           className="h-56"
           render={() => (
             <>
-              {renderItemList('supportedData', { highlight: false })}
+              {renderItemList('supportedData')}
 
-              {isNpe2Enabled && (
+              {renderItemList('pluginType')}
+
+              {metadata.pluginType.value.includes(PluginType.Reader) &&
+                renderItemList('readerFileExtensions', { inlineList: true })}
+
+              {metadata.pluginType.value.includes(PluginType.Writer) && (
                 <>
-                  {renderItemList('pluginType', { highlight: false })}
-
-                  {metadata.pluginType.value.includes(PluginType.Reader) &&
-                    renderItemList('readerFileExtensions', {
-                      highlight: false,
-                      inlineList: true,
-                    })}
-
-                  {metadata.pluginType.value.includes(PluginType.Writer) && (
-                    <>
-                      {renderItemList('writerFileExtensions', {
-                        highlight: false,
-                        inlineList: true,
-                      })}
-                      {renderItemList('writerSaveLayers', { highlight: false })}
-                    </>
-                  )}
+                  {renderItemList('writerFileExtensions', { inlineList: true })}
+                  {renderItemList('writerSaveLayers')}
                 </>
               )}
             </>

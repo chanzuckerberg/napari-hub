@@ -1,64 +1,50 @@
-import { test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
-import { AUTHORS } from '../../utils/constants';
-import { testPlugin } from '../../utils/plugin';
+import { testSort } from '@/e2e/utils/sort';
+import { getTestURL } from '@/e2e/utils/utils';
+import { SearchSortType } from '@/store/search/constants';
 
-const ENV = (process.env.NODE_ENV as string) || '';
-const TEST_AUTHORS = AUTHORS[ENV.toUpperCase()];
+function dateCompare(a: string, b: string) {
+  return new Date(a).getTime() - new Date(b).getTime();
+}
 
 test.describe('Plugin sorting tests', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto(`${process.env.BASEURL as string}`, { timeout: 60000 });
+    await page.goto(getTestURL('/plugins').href, {
+      timeout: 60000,
+    });
   });
-  test(`should sort plugins by name`, async ({ page, viewport }) => {
-    const authors = TEST_AUTHORS[0];
-    // sort by
-    const sortBy = 'Plugin name';
 
-    // filter by
-    const filterBy = {
-      label: 'Authors',
-      name: 'authors',
-      values: authors,
-      category: ['Filter by category'],
-      key: 'authors',
-    };
-    const params = [['authors', authors]];
-    await testPlugin(page, filterBy, params, sortBy, viewport?.width);
+  testSort({
+    name: 'name',
+    sortBy: SearchSortType.PluginName,
+
+    testPlugins(plugins) {
+      expect(plugins).toEqual(
+        plugins.sort((a, b) => a.name.localeCompare(b.name)),
+      );
+    },
   });
-  test(`should sort plugins by recently updated`, async ({
-    page,
-    viewport,
-  }) => {
-    const authors = TEST_AUTHORS[0];
-    // sort by
-    const sortBy = 'Recently updated';
 
-    // filter by
-    const filterBy = {
-      label: 'Authors',
-      name: 'authors',
-      values: authors,
-      category: ['Filter by category'],
-      key: 'authors',
-    };
-    const params = [['authors', authors]];
-    await testPlugin(page, filterBy, params, sortBy, viewport?.width);
+  testSort({
+    name: 'recently updated',
+    sortBy: SearchSortType.ReleaseDate,
+
+    testPlugins(plugins) {
+      expect(plugins).toEqual(
+        plugins.sort((a, b) => dateCompare(a.release_date, b.release_date)),
+      );
+    },
   });
-  test(`should sort plugins by newest`, async ({ page, viewport }) => {
-    const authors = TEST_AUTHORS[0];
-    // sort by
-    const sortBy = 'Newest';
 
-    // filter by
-    const filterBy = {
-      label: 'Authors',
-      name: 'authors',
-      values: authors,
-      category: ['Filter by category'],
-      key: 'authors',
-    };
-    const params = [['authors', authors]];
-    await testPlugin(page, filterBy, params, sortBy, viewport?.width);
+  testSort({
+    name: 'newest',
+    sortBy: SearchSortType.FirstReleased,
+
+    testPlugins(plugins) {
+      expect(plugins).toEqual(
+        plugins.sort((a, b) => dateCompare(a.first_released, b.first_released)),
+      );
+    },
   });
 });

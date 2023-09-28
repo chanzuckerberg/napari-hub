@@ -10,7 +10,6 @@ const config: PlaywrightTestConfig = {
   expect: {
     timeout: 3000,
   },
-  globalSetup: './globalSetup',
   outputDir: '../report',
   fullyParallel: true,
   reporter: [
@@ -85,7 +84,7 @@ const config: PlaywrightTestConfig = {
     actionTimeout: 0,
     baseURL: 'https://www.napari-hub.org/',
     screenshot: 'only-on-failure',
-    trace: 'on-first-retry',
+    trace: 'retain-on-failure',
     video: 'on',
   },
 };

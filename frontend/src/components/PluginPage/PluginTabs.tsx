@@ -1,4 +1,3 @@
-import Skeleton from '@mui/material/Skeleton';
 import clsx from 'clsx';
 import { isObject } from 'lodash';
 import dynamic from 'next/dynamic';
@@ -8,7 +7,6 @@ import { useSnapshot } from 'valtio';
 
 import { CategoryChipContainer } from '@/components/CategoryChip';
 import { Markdown } from '@/components/Markdown';
-import { MetadataHighlighter } from '@/components/MetadataHighlighter';
 import { SkeletonLoader } from '@/components/SkeletonLoader';
 import { TabData, Tabs } from '@/components/Tabs';
 import { useLoadingState } from '@/context/loading';
@@ -63,28 +61,17 @@ interface Props {
 }
 
 export function PluginTabs({ containerRef }: Props) {
-  const { plugin, isEmptyDescription } = usePluginState();
-  const [t] = useTranslation(['pluginPage', 'preview']);
+  const { plugin } = usePluginState();
   const { activeTab } = useSnapshot(pluginTabsStore);
-  const isLoading = useLoadingState();
   const hasPluginMetadataScroll = useMediaQuery({ maxWidth: 'screen-1425' });
   const plausible = usePlausible();
+  const isLoading = useLoadingState();
 
   // Reset plugin tab state when navigating away from page.
   useEffect(resetPluginTabs, []);
 
   const tabs = usePluginTabs();
   let tabContent: ReactNode = null;
-
-  if (isLoading) {
-    return (
-      <div className="grid grid-cols-[repeat(3,92px)] h-8 space-x-sds-m">
-        <Skeleton variant="rectangular" />
-        <Skeleton variant="rectangular" />
-        <Skeleton variant="rectangular" />
-      </div>
-    );
-  }
 
   if (activeTab === PluginTabType.Description) {
     tabContent = (
@@ -97,9 +84,8 @@ export function PluginTabs({ containerRef }: Props) {
             'gap-sds-m screen-495:gap-sds-l',
           )}
         >
-          <SkeletonLoader
-            render={() =>
-              plugin?.category_hierarchy &&
+          <SkeletonLoader>
+            {plugin?.category_hierarchy &&
               isObject(plugin.category_hierarchy) &&
               Object.entries(plugin.category_hierarchy)
                 .filter(
@@ -114,25 +100,15 @@ export function PluginTabs({ containerRef }: Props) {
                     containerRef={containerRef}
                     pluginName={plugin.name ?? ''}
                   />
-                ))
-            }
-          />
+                ))}
+          </SkeletonLoader>
         </div>
 
-        <SkeletonLoader
-          className="h-[600px] mb-sds-xxl"
-          render={() => (
-            <MetadataHighlighter
-              metadataId="metadata-description"
-              className="flex items-center justify-between mb-sds-xxl"
-              highlight={isEmptyDescription}
-            >
-              <Markdown disableHeader placeholder={isEmptyDescription}>
-                {plugin?.description || t('preview:emptyDescription')}
-              </Markdown>
-            </MetadataHighlighter>
-          )}
-        />
+        <SkeletonLoader className="h-[600px] mb-sds-xxl">
+          <div className="flex items-center justify-between mb-sds-xxl">
+            <Markdown disableHeader>{plugin?.description || ''}</Markdown>
+          </div>
+        </SkeletonLoader>
 
         <PluginMetadata
           enableScrollID={hasPluginMetadataScroll}
@@ -165,6 +141,7 @@ export function PluginTabs({ containerRef }: Props) {
           });
         }}
         underline
+        loading={isLoading}
       />
 
       {tabContent}

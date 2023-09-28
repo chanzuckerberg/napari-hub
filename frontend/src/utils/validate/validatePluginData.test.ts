@@ -2,7 +2,11 @@ import { PickByValue, SetDifference } from 'utility-types';
 
 import { PluginData, PluginIndexData } from '@/types';
 
-import { createValidatePluginTest, DELETED } from './testHelpers';
+import {
+  createValidatePluginTest,
+  DELETED,
+  getPluginData,
+} from './testHelpers';
 import { validatePluginData } from './validatePluginData';
 
 type PluginDataKeys<T> = SetDifference<
@@ -25,6 +29,7 @@ describe('validatePluginData()', () => {
   createValidatePluginTest<PluginData, PluginDataKeys<unknown>>({
     key: 'action_repository',
     validatePlugin: validatePluginData,
+    getFixtureData: getPluginData,
     validData: 'https://github.com/chanzuckerberg/napari-hub/pulls/3',
     invalidData: 42 as never,
     expectedInvalidDataResult: DELETED,
@@ -33,6 +38,7 @@ describe('validatePluginData()', () => {
   createValidatePluginTest<PluginData, PluginDataKeys<unknown>>({
     key: 'category_hierarchy',
     validatePlugin: validatePluginData,
+    getFixtureData: getPluginData,
     validData: {
       'Supported data': [['2D'], ['3D']],
       'Workflow step': [
@@ -65,6 +71,7 @@ describe('validatePluginData()', () => {
   createValidatePluginTest<PluginData, PluginDataKeys<unknown>>({
     key: 'citations',
     validatePlugin: validatePluginData,
+    getFixtureData: getPluginData,
     validData: {
       APA: 'apa',
       BibTex: 'bib',
@@ -83,6 +90,7 @@ describe('validatePluginData()', () => {
     createValidatePluginTest<PluginData, PluginDataKeys<unknown>>({
       key,
       validatePlugin: validatePluginData,
+      getFixtureData: getPluginData,
       validData: 'foobar',
       invalidData: 42 as never,
       expectedInvalidDataResult: '',
@@ -93,6 +101,7 @@ describe('validatePluginData()', () => {
     createValidatePluginTest<PluginData, PluginDataKeys<unknown>>({
       key,
       validatePlugin: validatePluginData,
+      getFixtureData: getPluginData,
       validData: ['foo', 'bar', 'foobar'],
       invalidData: ['foobar', 42, null, undefined, '', NaN] as never,
       expectedInvalidDataResult: ['foobar'],

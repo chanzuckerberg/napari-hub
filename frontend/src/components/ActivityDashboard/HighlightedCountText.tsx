@@ -16,8 +16,14 @@ export function HighlightedCountText({ count = 0, isLoading, i18nKey }: Props) {
 
   return (
     <span className="!font-medium inline-flex items-center mr-2">
-      {isLoading ? <Skeleton className="mr-2" width={32} /> : formattedInstalls}{' '}
-      {t(i18nKey, { count })}
+      <>
+        {isLoading ? (
+          <Skeleton className="mr-2" width={32} />
+        ) : (
+          formattedInstalls
+        )}{' '}
+        {t(i18nKey, { count })}
+      </>
     </span>
   );
 }

@@ -1,11 +1,22 @@
 import clsx from 'clsx';
 import { AnimateSharedLayout, motion } from 'framer-motion';
 
-import { useIsFeatureFlagEnabled } from '@/store/featureFlags';
+import { useMediaQuery } from '@/hooks';
 import { FilterKey } from '@/store/search/search.store';
 
 import { PluginFilterByForm } from './PluginFilterByForm';
 import { PluginSortByForm } from './PluginSortByForm';
+
+const REQUIREMENT_FILTERS: FilterKey[] = [
+  'supportedData',
+  'pluginType',
+  'writerFileExtensions',
+  'readerFileExtensions',
+  'authors',
+  'pythonVersion',
+  'operatingSystems',
+  'license',
+];
 
 /**
  * Renders the plugin search controls for filtering and sorting the list of plugins.
@@ -15,23 +26,7 @@ export function PluginSearchControls() {
     <motion.hr layout className="bg-black h-1 my-6 hidden screen-875:block" />
   );
 
-  const isNpe2Enabled = useIsFeatureFlagEnabled('npe2');
-  const requirementFilters: FilterKey[] = ['supportedData'];
-
-  if (isNpe2Enabled) {
-    requirementFilters.push(
-      'pluginType',
-      'writerFileExtensions',
-      'readerFileExtensions',
-    );
-  }
-
-  requirementFilters.push(
-    'authors',
-    'pythonVersion',
-    'operatingSystems',
-    'license',
-  );
+  const isScreen875 = useMediaQuery({ minWidth: 'screen-875' });
 
   return (
     <aside
@@ -44,10 +39,6 @@ export function PluginSearchControls() {
       )}
     >
       <AnimateSharedLayout>
-        <PluginSortByForm />
-
-        {divider}
-
         <motion.div layout>
           <PluginFilterByForm
             filterType="category"
@@ -60,9 +51,11 @@ export function PluginSearchControls() {
         <motion.div layout>
           <PluginFilterByForm
             filterType="requirement"
-            filters={requirementFilters}
+            filters={REQUIREMENT_FILTERS}
           />
         </motion.div>
+
+        {!isScreen875 && <PluginSortByForm />}
       </AnimateSharedLayout>
     </aside>
   );

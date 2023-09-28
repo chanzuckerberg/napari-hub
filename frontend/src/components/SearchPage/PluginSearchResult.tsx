@@ -10,13 +10,12 @@ import { Link } from '@/components/Link';
 import { SkeletonLoader } from '@/components/SkeletonLoader';
 import { TextHighlighter } from '@/components/TextHighlighter';
 import { useLoadingState } from '@/context/loading';
-import { useIsFeatureFlagEnabled } from '@/store/featureFlags';
 import { useSearchStore } from '@/store/search/context';
 import { FilterCategoryKeys } from '@/store/search/search.store';
 import { SearchResultMatch } from '@/store/search/search.types';
 import { HubDimension, PluginIndexData } from '@/types';
 import { I18nKeys, I18nPluginDataLabel } from '@/types/i18n';
-import { createUrl, formatDate, formatOperatingSystem } from '@/utils';
+import { createUrl, formatDate, formatNumber } from '@/utils';
 
 import styles from './PluginSearchResult.module.scss';
 
@@ -39,7 +38,12 @@ interface Props {
   style?: CSSProperties;
 }
 
-interface SearchResultItem {
+interface MetadataItem {
+  label: I18nPluginDataLabel;
+  value: string;
+}
+
+interface ExpandedMetadataItems {
   label: string;
   value: string;
 }
@@ -105,12 +109,11 @@ export function PluginSearchResult({
   plugin,
   style,
 }: Props) {
-  const [t] = useTranslation(['pluginData', 'homePage']);
+  const { t, i18n } = useTranslation(['pluginData', 'homePage']);
   const isLoading = useLoadingState();
   const [isHoveringOverChip, setIsHoveringOverChip] = useState(false);
   const [debouncedIsHoveringOverChip] = useDebounce(isHoveringOverChip, 100);
   const containerRef = useRef<HTMLElement>(null);
-  const isNpe2Enabled = useIsFeatureFlagEnabled('npe2');
 
   const { searchStore } = useSearchStore();
   const snap = useSnapshot(searchStore);
@@ -134,68 +137,43 @@ export function PluginSearchResult({
   const getLabel = (label: I18nPluginDataLabel) =>
     isString(label) ? label : label.label;
 
-  function getItems(
-    ...items: Array<{
-      label: I18nPluginDataLabel;
-      value: string;
-    }>
-  ): SearchResultItem[] {
+  function getItems(...items: MetadataItem[]): ExpandedMetadataItems[] {
     return items.map((item) => ({
       label: getLabel(item.label),
       value: item.value,
     }));
   }
 
-  // TODO consolidate with PluginGithubData component in PluginMetadata.tsx
-  const items = isLoading
-    ? []
-    : getItems(
-        {
-          label: t('pluginData:labels.version'),
-          value: plugin.version,
-        },
+  const metadataItems: MetadataItem[] = [];
 
-        {
-          label: t('pluginData:labels.releaseDate'),
-          value: formatDate(plugin.release_date),
-        },
-
-        ...(isNpe2Enabled
-          ? [
-              {
-                label: t('pluginData:labels.pluginType'),
-                value: isArray(plugin.plugin_types)
-                  ? plugin.plugin_types
-                      .map((pluginType) =>
-                        t(
-                          `homePage:filter.requirement.${pluginType}.label` as I18nKeys<'homePage'>,
-                        ),
-                      )
-                      .join(', ')
-                  : '',
-              },
-            ]
-          : [
-              {
-                label: t('pluginData:labels.license'),
-                value: plugin.license,
-              },
-
-              {
-                label: t('pluginData:labels.pythonVersion'),
-                value: plugin.python_version,
-              },
-
-              {
-                label: t('pluginData:labels.operatingSystem'),
-                value: isArray(plugin.operating_system)
-                  ? plugin.operating_system
-                      .map(formatOperatingSystem)
-                      .join(', ')
-                  : '',
-              },
-            ]),
-      );
+  if (!isLoading) {
+    metadataItems.push(
+      {
+        label: t('pluginData:labels.firstReleased'),
+        value: formatDate(plugin.first_released),
+      },
+      {
+        label: t('pluginData:labels.releaseDate'),
+        value: formatDate(plugin.release_date),
+      },
+      {
+        label: t('pluginData:labels.installs'),
+        value: formatNumber(plugin.total_installs, i18n.language),
+      },
+      {
+        label: t('pluginData:labels.pluginType'),
+        value: isArray(plugin.plugin_types)
+          ? plugin.plugin_types
+              .map((pluginType) =>
+                t(
+                  `homePage:filter.requirement.${pluginType}.label` as I18nKeys<'homePage'>,
+                ),
+              )
+              .join(', ')
+          : '',
+      },
+    );
+  }
 
   const isSearching = !isEmpty(matches);
 
@@ -224,7 +202,7 @@ export function PluginSearchResult({
         )}
         ref={containerRef}
       >
-        <div className="screen-1425:col-span-2 flex flex-col justify-between">
+        <div className="col-span-2 screen-495:col-span-1 screen-1425:col-span-2 flex flex-col justify-between">
           {/* Wrapper div to group plugin name and summary  */}
           <div>
             {/* Plugin name */}
@@ -235,10 +213,9 @@ export function PluginSearchResult({
               <SkeletonLoader
                 render={() =>
                   renderText(
-                    (isNpe2Enabled ? plugin.display_name : undefined) ||
-                      plugin.name,
+                    plugin.display_name || plugin.name,
 
-                    isNpe2Enabled && plugin.display_name
+                    plugin.display_name
                       ? matches.display_name?.match
                       : matches.name?.match,
                   )
@@ -246,25 +223,18 @@ export function PluginSearchResult({
               />
             </h3>
 
-            {isNpe2Enabled && (
-              <span
-                className="mt-sds-m screen-495:mt-sds-l text-[0.6875rem]"
-                data-testid="searchResultName"
-              >
-                <SkeletonLoader
-                  className="h-12"
-                  render={() => renderText(plugin.name, matches.name?.match)}
-                />
-              </span>
-            )}
+            <span
+              className="mt-sds-m screen-495:mt-3 text-[0.6875rem]"
+              data-testid="searchResultName"
+            >
+              <SkeletonLoader
+                className="h-12"
+                render={() => renderText(plugin.name, matches.name?.match)}
+              />
+            </span>
 
             {/* Plugin summary */}
-            <p
-              className={clsx(
-                isNpe2Enabled ? 'mt-sds-xl screen-495:mt-sds-xl ' : 'mt-sds-s',
-              )}
-              data-testid="searchResultSummary"
-            >
+            <p className="mt-3" data-testid="searchResultSummary">
               <SkeletonLoader
                 className="h-12"
                 render={() =>
@@ -275,7 +245,7 @@ export function PluginSearchResult({
           </div>
 
           {/* Plugin authors */}
-          <ul className="mt-sds-xl text-xs">
+          <ul className="mt-3 text-xs">
             <SkeletonLoader
               render={() =>
                 isArray(plugin.authors) &&
@@ -307,11 +277,11 @@ export function PluginSearchResult({
         </div>
 
         {/* Plugin metadata */}
-        <ul className="mt-sds-l screen-600:m-0 space-y-1 text-sm">
+        <ul className="mt-sds-l screen-600:m-0 space-y-1 text-sm col-span-2 screen-495:col-span-1">
           <SkeletonLoader
             className="h-full"
             render={() =>
-              items.map((item) => (
+              getItems(...metadataItems).map((item) => (
                 <li
                   data-testid="searchResultMetadata"
                   data-label={item.label}
@@ -319,7 +289,7 @@ export function PluginSearchResult({
                   key={`${item.label}-${item.value}`}
                   className="grid grid-cols-[auto,1fr]"
                 >
-                  <h4 className="inline whitespace-nowrap">{item.label}</h4>
+                  <h4 className="inline whitespace-nowrap">{item.label}: </h4>
                   <span
                     className={clsx(
                       'ml-sds-xxs',

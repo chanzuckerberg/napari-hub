@@ -1,10 +1,14 @@
 import clsx from 'clsx';
 import { ButtonIcon } from 'czifui';
+import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { useRef, useState } from 'react';
+import { useSnapshot } from 'valtio';
 
 import { Menu } from '@/components/icons';
 import { MenuPopover } from '@/components/MenuPopover';
+import { pageTransitionsStore } from '@/store/pageTransitions';
+import { createUrl } from '@/utils';
 
 import { PluginSearchBar } from '../SearchBar/PluginSearchBar';
 import { AppBarLinks } from './AppBarLinks';
@@ -18,6 +22,13 @@ export function AppBar() {
   const [visible, setVisible] = useState(false);
   const links = useAppBarLinks();
   const [t] = useTranslation(['common']);
+
+  const router = useRouter();
+  const { nextUrl } = useSnapshot(pageTransitionsStore);
+
+  const isPluginsPage =
+    router.pathname === '/plugins' ||
+    createUrl(nextUrl).pathname === '/plugins';
 
   return (
     <>
@@ -65,16 +76,19 @@ export function AppBar() {
             'w-full',
 
             // Align container to the right of the grid cell
-            'justify-self-end',
+            'justify-end',
 
             // Use more columns on larger screens
             'screen-875:col-span-2 screen-1150:col-span-3',
           )}
         >
-          <PluginSearchBar />
+          {!isPluginsPage && <PluginSearchBar />}
 
           {/* Menu button */}
-          <div className="ml-sds-xl flex screen-600:hidden">
+          <div
+            className="ml-sds-xl flex screen-600:hidden"
+            data-testid="mobileMenuButtonContainer"
+          >
             <ButtonIcon
               className="p-2"
               onClick={() => setVisible(true)}

@@ -81,7 +81,9 @@ export function SearchStoreProvider({
         ),
     ),
   ).current;
-  const resultsStore = useRef(getResultsStore(searchStore)).current;
+  const resultsStore = useRef(
+    getResultsStore(searchStore, router.asPath),
+  ).current;
 
   // Initialize state once on initial render. This needs to happen outside of an
   // effect so that it runs before any nested effects.

@@ -22,13 +22,6 @@ html {
     https://stackoverflow.com/questions/63965489/safari-14-min-max-clamp-not-working-with-vw-and-px-values#comment116930866_65093383
   */
   min-height: 0.0001vw;
-
-  // Scroll behavior for preview page.
-  /* stylelint-disable-next-line selector-no-qualifying-type */
-  &.preview {
-    scroll-behavior: smooth;
-    scroll-padding-top: 4rem;
-  }
 }
 
 body {
