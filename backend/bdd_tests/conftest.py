@@ -11,7 +11,7 @@ import json
 def base_url() -> str:
     base_url_by_env = {
         "staging": "https://api.staging.napari-hub.org",
-        "prod": "https://api.napari-hub.org"
+        "prod": "https://api.napari-hub.org",
     }
     prefix = os.getenv("PREFIX")
     if prefix in base_url_by_env:
@@ -39,10 +39,7 @@ def valid_str() -> Callable[[str], bool]:
 
 @given(parsers.cfparse("we call {endpoint} api"))
 def call_plugins_index(
-        context: Dict[str, Any],
-        base_url: str,
-        headers: Dict[str, str],
-        endpoint: str
+    context: Dict[str, Any], base_url: str, headers: Dict[str, str], endpoint: str
 ) -> None:
     context["response"] = requests.get(f"{base_url}{endpoint}", headers=headers)
 

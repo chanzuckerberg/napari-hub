@@ -114,42 +114,51 @@ class TestGithubActivity:
         with pytest.raises(KeyError):
             github_activity.batch_write([input_data])
 
-    @pytest.mark.parametrize("plugin_name, repo, expected", [
-        ("Plugin-1", "Foo/Bar", 15),
-        ("Plugin-1", "foo/bar", 0),
-        ("Plugin-1", "Foo/Baz", 0),
-        ("Plugin-7", "Foo/Bar", 0),
-        ("Plugin-7", "Bar/Baz", 0),
-    ])
+    @pytest.mark.parametrize(
+        "plugin_name, repo, expected",
+        [
+            ("Plugin-1", "Foo/Bar", 15),
+            ("Plugin-1", "foo/bar", 0),
+            ("Plugin-1", "Foo/Baz", 0),
+            ("Plugin-7", "Foo/Bar", 0),
+            ("Plugin-7", "Bar/Baz", 0),
+        ],
+    )
     def test_get_total_commits(self, seed_data, plugin_name, repo, expected):
         assert github_activity.get_total_commits(plugin_name, repo) == expected
 
-    @pytest.mark.parametrize("plugin_name, repo, expected", [
-        (
+    @pytest.mark.parametrize(
+        "plugin_name, repo, expected",
+        [
+            (
                 "Plugin-1",
                 "Foo/Bar",
-                int(get_relative_utc_datetime(days=3).timestamp()) * 1000
-        ),
-        ("Plugin-1", "foo/bar", None),
-        ("Plugin-1", "Foo/Baz", None),
-        ("Plugin-7", "Foo/Bar", None),
-        ("Plugin-7", "Bar/Baz", None),
-    ])
+                int(get_relative_utc_datetime(days=3).timestamp()) * 1000,
+            ),
+            ("Plugin-1", "foo/bar", None),
+            ("Plugin-1", "Foo/Baz", None),
+            ("Plugin-7", "Foo/Bar", None),
+            ("Plugin-7", "Bar/Baz", None),
+        ],
+    )
     def test_get_latest_commit(self, seed_data, plugin_name, repo, expected):
         assert github_activity.get_latest_commit(plugin_name, repo) == expected
 
-    @pytest.mark.parametrize("plugin_name, repo, month_delta, expected", [
-        ("Plugin-1", "Foo/Bar", 0, {}),
-        ("Plugin-1", "foo/bar", 0, {}),
-        ("Plugin-1", "Foo/Bar", 12, {4: 10, 9: 20}),
-        ("Plugin-1", None, 12, {}),
-        ("Plugin-1", "foo/bar", 12, {}),
-        ("Plugin-7", "Foo/Bar", 12, {}),
-        ("Plugin-7", "Bar/Baz", 12, {}),
-        ("Plugin-7", None, 12, {}),
-    ])
+    @pytest.mark.parametrize(
+        "plugin_name, repo, month_delta, expected",
+        [
+            ("Plugin-1", "Foo/Bar", 0, {}),
+            ("Plugin-1", "foo/bar", 0, {}),
+            ("Plugin-1", "Foo/Bar", 12, {4: 10, 9: 20}),
+            ("Plugin-1", None, 12, {}),
+            ("Plugin-1", "foo/bar", 12, {}),
+            ("Plugin-7", "Foo/Bar", 12, {}),
+            ("Plugin-7", "Bar/Baz", 12, {}),
+            ("Plugin-7", None, 12, {}),
+        ],
+    )
     def test_get_timeline(
-            self, seed_data, generate_timeline, plugin_name, repo, month_delta, expected
+        self, seed_data, generate_timeline, plugin_name, repo, month_delta, expected
     ):
         actual = github_activity.get_timeline(plugin_name, repo, month_delta)
         assert actual == generate_timeline(expected, month_delta, "commits")

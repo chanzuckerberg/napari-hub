@@ -10,12 +10,11 @@ DATA_JSON = {"plugin": PLUGIN, "version": VERSION, "foo": "bar"}
 
 
 class TestPluginMetadata:
-
     @pytest.fixture(autouse=True)
     def setup(self, setup_dynamo: Callable) -> None:
         with mock_dynamodb():
             self._table = setup_dynamo()
-            yield 
+            yield
 
     @pytest.fixture
     def verify(self, verify_plugin_item: Callable):
@@ -28,12 +27,14 @@ class TestPluginMetadata:
                 last_updated_ts=last_updated_ts,
             )
             assert DATA_JSON == actual
+
         return _verify
 
     def test_write_manifest_data_success(self, verify: Callable):
         start_time = round(time.time() * 1000)
 
         from models.plugin_metadata import write_manifest_data
+
         write_manifest_data(PLUGIN, VERSION, DATA_JSON)
 
         verify(start_time=start_time)
@@ -41,19 +42,22 @@ class TestPluginMetadata:
     def test_write_manifest_data_failure(self):
         with pytest.raises(Exception):
             from models.plugin_metadata import write_manifest_data
+
             write_manifest_data(None, None, DATA_JSON)
 
     def test_is_manifest_exists_with_data(
-            self, create_item: Callable, verify: Callable
+        self, create_item: Callable, verify: Callable
     ):
         item = create_item(PLUGIN, VERSION, DATA_JSON, True)
         self._table.put_item(Item=item)
 
         from models.plugin_metadata import is_manifest_exists
+
         assert is_manifest_exists(PLUGIN, VERSION)
 
         verify(last_updated_ts=item["last_updated_timestamp"])
 
     def test_is_manifest_exists_without_data(self):
         from models.plugin_metadata import is_manifest_exists
+
         assert not is_manifest_exists(PLUGIN, VERSION)

@@ -3,8 +3,13 @@ from typing import Any, Dict
 from pytest_bdd import scenarios, then, parsers
 
 default_plugin_keys = {
-    "authors", "display_name", "first_released", "name", "release_date",
-    "summary", "total_installs"
+    "authors",
+    "display_name",
+    "first_released",
+    "name",
+    "release_date",
+    "summary",
+    "total_installs",
 }
 valid_plugin_types = {"reader", "sample_data", "widget", "writer"}
 
@@ -36,7 +41,7 @@ def verify_section_response_valid(limit: int, context: Dict[str, Any]) -> None:
 
 @then(parsers.cfparse("the {section_name} section is sorted by {sort_key} field"))
 def verify_section_sort_is_valid(
-        section_name: str, sort_key: str, context: Dict[str, Any]
+    section_name: str, sort_key: str, context: Dict[str, Any]
 ) -> None:
     response = context["response"].json()
     section = response[section_name]

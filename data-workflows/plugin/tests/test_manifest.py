@@ -9,7 +9,13 @@ from plugin.manifest import get_formatted_manifest
 
 def category_responses():
     return [
-        [{"dimension": "Workflow step", "hierarchy": ["Image segmentation"], "label": "Image segmentation"}],
+        [
+            {
+                "dimension": "Workflow step",
+                "hierarchy": ["Image segmentation"],
+                "label": "Image segmentation",
+            }
+        ],
         [{"dimension": "Data", "hierarchy": ["2D image"], "label": "2D"}],
     ]
 
@@ -55,7 +61,6 @@ def generate_contributions(
 
 
 class TestManifest:
-
     @pytest.fixture(autouse=True)
     def setup(self, monkeypatch) -> None:
         self._mock_get_category = Mock(

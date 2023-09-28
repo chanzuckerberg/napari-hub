@@ -85,7 +85,6 @@ def generate_install_activity_list(is_input: bool) -> List[Dict[str, Any]]:
 
 
 class TestInstallActivity:
-
     @pytest.fixture()
     def table(self, create_dynamo_table):
         with mock_dynamodb():
@@ -104,9 +103,9 @@ class TestInstallActivity:
 
         verify_table_data(generate_install_activity_list(False), table)
 
-    @pytest.mark.parametrize("excluded_field", [
-        "plugin_name", "type_timestamp", "granularity"
-    ])
+    @pytest.mark.parametrize(
+        "excluded_field", ["plugin_name", "type_timestamp", "granularity"]
+    )
     def test_batch_write_for_invalid_data(self, excluded_field, table):
         input_data = {
             "plugin_name": "Plugin-1",
@@ -119,31 +118,37 @@ class TestInstallActivity:
         with pytest.raises(KeyError):
             install_activity.batch_write([input_data])
 
-    @pytest.mark.parametrize("plugin_name, expected", [
-        ("Plugin-1", 25),
-        ("Plugin-7", 0),
-    ])
+    @pytest.mark.parametrize(
+        "plugin_name, expected",
+        [
+            ("Plugin-1", 25),
+            ("Plugin-7", 0),
+        ],
+    )
     def test_get_total_installs(self, seed_data, plugin_name, expected):
         assert install_activity.get_total_installs(plugin_name) == expected
 
-    @pytest.mark.parametrize("plugin_name, day_delta, expected", [
-        ("Plugin-1", 10, 5),
-        ("Plugin-1", 20, 7),
-        ("Plugin-7", 30, 0),
-    ])
-    def test_get_recent_installs(
-            self, seed_data, plugin_name, day_delta, expected
-    ):
+    @pytest.mark.parametrize(
+        "plugin_name, day_delta, expected",
+        [
+            ("Plugin-1", 10, 5),
+            ("Plugin-1", 20, 7),
+            ("Plugin-7", 30, 0),
+        ],
+    )
+    def test_get_recent_installs(self, seed_data, plugin_name, day_delta, expected):
         assert install_activity.get_recent_installs(plugin_name, day_delta) == expected
 
-    @pytest.mark.parametrize("plugin_name, month_delta, expected", [
+    @pytest.mark.parametrize(
+        "plugin_name, month_delta, expected",
+        [
             ("Plugin-1", 0, {}),
             ("Plugin-7", 12, {}),
             ("Plugin-1", 12, {6: 10, 3: 5}),
-        ]
+        ],
     )
     def test_get_timeline(
-            self, seed_data, generate_timeline, plugin_name, month_delta, expected
+        self, seed_data, generate_timeline, plugin_name, month_delta, expected
     ):
         actual = install_activity.get_timeline(plugin_name, month_delta)
         assert actual == generate_timeline(expected, month_delta, "installs")

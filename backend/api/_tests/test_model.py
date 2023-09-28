@@ -9,7 +9,6 @@ from nhcommons.models.plugin_utils import PluginVisibility
 
 
 class TestModel:
-
     @pytest.fixture
     def plugin_get_index_result(self) -> List[Dict[str, Any]]:
         return [
@@ -20,9 +19,9 @@ class TestModel:
 
     @pytest.fixture
     def mock_get_index(
-            self,
-            plugin_get_index_result: List[Dict[str, Any]],
-            monkeypatch: pytest.MonkeyPatch,
+        self,
+        plugin_get_index_result: List[Dict[str, Any]],
+        monkeypatch: pytest.MonkeyPatch,
     ) -> Mock:
         mock = Mock(spec=plugin.get_index, return_value=plugin_get_index_result)
         monkeypatch.setattr(model.plugin_model, "get_index", mock)
@@ -34,13 +33,13 @@ class TestModel:
 
     @pytest.fixture
     def mock_total_installs(
-            self,
-            get_total_installs_result: Dict[str, int],
-            monkeypatch: pytest.MonkeyPatch,
+        self,
+        get_total_installs_result: Dict[str, int],
+        monkeypatch: pytest.MonkeyPatch,
     ) -> Mock:
         mock = Mock(
             spec=install_activity.get_total_installs_by_plugins,
-            return_value=get_total_installs_result
+            return_value=get_total_installs_result,
         )
         monkeypatch.setattr(
             model.install_activity, "get_total_installs_by_plugins", mock
@@ -49,10 +48,9 @@ class TestModel:
 
     @pytest.fixture
     def plugin_index_with_total_installs(
-            self,
-            plugin_get_index_result: List[Dict[str, Any]],
-            get_total_installs_result: Dict[str, int],
-
+        self,
+        plugin_get_index_result: List[Dict[str, Any]],
+        get_total_installs_result: Dict[str, int],
     ) -> List[Dict[str, Any]]:
         result = []
         for item in plugin_get_index_result:
@@ -60,38 +58,33 @@ class TestModel:
             result.append({**item, **{"total_installs": installs}})
         return result
 
-    @pytest.mark.parametrize("visibility, include_total_installs, expected", [
-        ({PluginVisibility.PUBLIC}, True, "plugin_index_with_total_installs"),
-        (
+    @pytest.mark.parametrize(
+        "visibility, include_total_installs, expected",
+        [
+            ({PluginVisibility.PUBLIC}, True, "plugin_index_with_total_installs"),
+            (
                 {PluginVisibility.PUBLIC, PluginVisibility.HIDDEN},
                 True,
-                "plugin_index_with_total_installs"
-        ),
-        (
-                None,
-                True,
-                "plugin_index_with_total_installs"
-        ),
-        ({PluginVisibility.PUBLIC}, False, "plugin_get_index_result"),
-        (
+                "plugin_index_with_total_installs",
+            ),
+            (None, True, "plugin_index_with_total_installs"),
+            ({PluginVisibility.PUBLIC}, False, "plugin_get_index_result"),
+            (
                 {PluginVisibility.PUBLIC, PluginVisibility.HIDDEN},
                 False,
-                "plugin_get_index_result"
-        ),
-        (
-                None,
-                False,
-                "plugin_get_index_result"
-        ),
-    ])
+                "plugin_get_index_result",
+            ),
+            (None, False, "plugin_get_index_result"),
+        ],
+    )
     def test_get_index_with_include_installs(
-            self,
-            visibility: Optional[Set[PluginVisibility]],
-            include_total_installs: bool,
-            expected: str,
-            mock_get_index: Mock,
-            mock_total_installs: Mock,
-            request: pytest.FixtureRequest,
+        self,
+        visibility: Optional[Set[PluginVisibility]],
+        include_total_installs: bool,
+        expected: str,
+        mock_get_index: Mock,
+        mock_total_installs: Mock,
+        request: pytest.FixtureRequest,
     ):
         actual = model.get_index(visibility, include_total_installs)
 

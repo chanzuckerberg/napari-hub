@@ -50,18 +50,21 @@ def seed_s3_categories_workflow(version: str, categories_path: str):
 
     for name, categories in data.items():
         for category in categories:
-            batch.append({
-                "name": name,
-                "version_hash": f"{version}:{hash_category(category)}",
-                "version": version,
-                "formatted_name": name,
-                "dimension": category.get("dimension", ""),
-                "hierarchy": category.get("hierarchy", []),
-                "label": category.get("label", ""),
-            })
+            batch.append(
+                {
+                    "name": name,
+                    "version_hash": f"{version}:{hash_category(category)}",
+                    "version": version,
+                    "formatted_name": name,
+                    "dimension": category.get("dimension", ""),
+                    "hierarchy": category.get("hierarchy", []),
+                    "label": category.get("label", ""),
+                }
+            )
 
     batch_write(batch)
     duration = (time.perf_counter() - start) * 1000
 
-    LOGGER.info(f"Finished seeding category data count={len(batch)} "
-                f"duration={duration}ms")
+    LOGGER.info(
+        f"Finished seeding category data count={len(batch)} " f"duration={duration}ms"
+    )

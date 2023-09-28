@@ -11,7 +11,6 @@ logger = logging.getLogger(__name__)
 
 
 class InstallActivityType(Enum):
-
     def __new__(cls, timestamp_formatter, type_timestamp_format):
         install_activity_type = object.__new__(cls)
         install_activity_type._value_ = auto()
@@ -35,8 +34,9 @@ class InstallActivityType(Enum):
         return f"DATE_TRUNC('{self.name}', timestamp)"
 
 
-def transform_and_write_to_dynamo(data: dict[str, List],
-                                  activity_type: InstallActivityType) -> None:
+def transform_and_write_to_dynamo(
+    data: dict[str, List], activity_type: InstallActivityType
+) -> None:
     granularity = activity_type.name
     logger.info(f"Starting for install-activity type={granularity}")
     is_total = "true" if activity_type is InstallActivityType.TOTAL else None
@@ -59,5 +59,7 @@ def transform_and_write_to_dynamo(data: dict[str, List],
 
     batch_write(batch)
     duration = (time.perf_counter() - start) * 1000
-    logger.info(f"Completed processing for install-activity type={granularity} "
-                f"count={len(batch)} timeTaken={duration}ms")
+    logger.info(
+        f"Completed processing for install-activity type={granularity} "
+        f"count={len(batch)} timeTaken={duration}ms"
+    )

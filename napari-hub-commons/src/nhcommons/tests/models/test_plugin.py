@@ -7,11 +7,27 @@ from nhcommons.models import plugin
 from nhcommons.models.plugin_utils import PluginVisibility as pv
 
 _INDEX_SUBSET = {
-    "authors", "category", "code_repository", "description_content_type",
-    "description_text", "development_status", "display_name", "error_message",
-    "first_released", "license", "name", "npe2", "operating_system",
-    "plugin_types", "python_version", "reader_file_extensions", "release_date",
-    "summary", "version", "writer_file_extensions", "writer_save_layers"
+    "authors",
+    "category",
+    "code_repository",
+    "description_content_type",
+    "description_text",
+    "development_status",
+    "display_name",
+    "error_message",
+    "first_released",
+    "license",
+    "name",
+    "npe2",
+    "operating_system",
+    "plugin_types",
+    "python_version",
+    "reader_file_extensions",
+    "release_date",
+    "summary",
+    "version",
+    "writer_file_extensions",
+    "writer_save_layers",
 }
 
 
@@ -47,8 +63,13 @@ def _to_index_entry(data: Dict, visibility: str):
 
 def generate_record_and_expected(data, visibility=None, is_latest=None, excluded=None):
     fields = {
-        "authors", "data", "code_repository", "display_name", "first_released",
-        "summary", "release_date"
+        "authors",
+        "data",
+        "code_repository",
+        "display_name",
+        "first_released",
+        "summary",
+        "release_date",
     }
     default_fields = {
         "first_released": "2023-01-01T12:33:40.715897Z",
@@ -404,7 +425,7 @@ class TestPlugin:
                 plugin_data("plugin-1", "1.0"),
                 is_latest=True,
                 visibility="hidden",
-                excluded="hidden"
+                excluded="hidden",
             ),
             generate_record_and_expected(
                 plugin_data("plugin-1", "1.0"), visibility="hidden"

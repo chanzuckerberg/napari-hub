@@ -32,8 +32,9 @@ MOCK_PLUGIN_BY_REPO = {"napari-demo": "chanzuckerberg/napari-demo"}
 
 class TestActivityProcessor:
     def _verify_default(self):
-        self._parameter_store.set_last_updated_timestamp \
-            .assert_called_once_with(END_TIME)
+        self._parameter_store.set_last_updated_timestamp.assert_called_once_with(
+            END_TIME
+        )
 
     @classmethod
     def _setup_snowflake_response(cls, monkeypatch, data):
@@ -70,15 +71,9 @@ class TestActivityProcessor:
 
     @pytest.fixture(autouse=True)
     def setup_method(self, monkeypatch):
-        monkeypatch.setattr(
-            nhcommons.utils, "get_current_timestamp", lambda: END_TIME
-        )
-        self._installs_mock = Mock(
-            spec=activity_iam.transform_and_write_to_dynamo
-        )
-        self._commits_mock = Mock(
-            spec=activity_gam.transform_and_write_to_dynamo
-        )
+        monkeypatch.setattr(nhcommons.utils, "get_current_timestamp", lambda: END_TIME)
+        self._installs_mock = Mock(spec=activity_iam.transform_and_write_to_dynamo)
+        self._commits_mock = Mock(spec=activity_gam.transform_and_write_to_dynamo)
         self._plugin_mock = Mock(
             spec=get_plugin_name_by_repo, return_value=MOCK_PLUGIN_BY_REPO
         )
@@ -92,9 +87,7 @@ class TestActivityProcessor:
         monkeypatch.setattr(
             activity_gam, "transform_and_write_to_dynamo", self._commits_mock
         )
-        monkeypatch.setattr(
-            processor, "get_plugin_name_by_repo", self._plugin_mock
-        )
+        monkeypatch.setattr(processor, "get_plugin_name_by_repo", self._plugin_mock)
 
         processor.update_activity()
 

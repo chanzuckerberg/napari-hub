@@ -69,17 +69,17 @@ def get_existing_types(plugin: str, version: str) -> Set[PluginMetadataType]:
 
 
 def query(
-        plugin: str, version: str = None, version_type: str = None
+    plugin: str, version: str = None, version_type: str = None
 ) -> List[Dict[str, Any]]:
     results = _query(name=plugin, version=version, version_type=version_type)
     return [result.to_dict() for result in results]
 
 
 def _query(
-        name: str,
-        version: Optional[str] = None,
-        version_type: Optional[str] = None,
-        projection: Optional[List[str]] = None
+    name: str,
+    version: Optional[str] = None,
+    version_type: Optional[str] = None,
+    projection: Optional[List[str]] = None,
 ) -> Union[ResultIterator[_PluginMetadata], List]:
     if not name or (not version and not version_type):
         return []
