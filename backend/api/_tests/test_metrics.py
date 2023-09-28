@@ -83,15 +83,40 @@ class TestMetricModel:
     @pytest.mark.parametrize(
         "limit_str, limit, plugin, repo",
         [
-            ("3", 3, MOCK_EMPTY_PLUGIN, None,),
-            ("0", 0, MOCK_PLUGIN_OBJ, REPO,),
-            ("foo", 0, MOCK_PLUGIN_OBJ, REPO,),
-            ("-5", 0, MOCK_PLUGIN_OBJ, REPO,),
-            ("3", 3, MOCK_PLUGIN_OBJ, REPO,),
+            (
+                "3",
+                3,
+                MOCK_EMPTY_PLUGIN,
+                None,
+            ),
+            (
+                "0",
+                0,
+                MOCK_PLUGIN_OBJ,
+                REPO,
+            ),
+            (
+                "foo",
+                0,
+                MOCK_PLUGIN_OBJ,
+                REPO,
+            ),
+            (
+                "-5",
+                0,
+                MOCK_PLUGIN_OBJ,
+                REPO,
+            ),
+            (
+                "3",
+                3,
+                MOCK_PLUGIN_OBJ,
+                REPO,
+            ),
         ],
     )
     def test_get_metrics_for_plugin(
-            self, limit_str: str, limit: int, plugin: Dict, repo: str
+        self, limit_str: str, limit: int, plugin: Dict, repo: str
     ):
         self._plugin = plugin
 

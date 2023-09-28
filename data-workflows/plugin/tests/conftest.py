@@ -9,4 +9,5 @@ def verify_call():
             assert calls == mock.call_args_list
         else:
             mock.assert_not_called()
+
     return _verify_call

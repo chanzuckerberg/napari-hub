@@ -4,8 +4,7 @@ from typing import Any, Optional
 
 logger = logging.getLogger(__name__)
 
-VALID_LAYERS = ["image", "labels", "points", "shapes", "surface", "tracks",
-                "vectors"]
+VALID_LAYERS = ["image", "labels", "points", "shapes", "surface", "tracks", "vectors"]
 VALID_LAYER_REGEX = rf'({"|".join(VALID_LAYERS)}).*'
 PLUGIN_TYPES_BY_KEY = {
     "readers": "reader",
@@ -16,9 +15,9 @@ PLUGIN_TYPES_BY_KEY = {
 }
 
 
-def get_formatted_manifest(data: Optional[dict[str, Any]],
-                           plugin: str,
-                           version: str) -> dict[str, Any]:
+def get_formatted_manifest(
+    data: Optional[dict[str, Any]], plugin: str, version: str
+) -> dict[str, Any]:
     """Parse fetched data if not None into frontend fields
     When `error` is in the returned metadata, we return default values.
     :param data: data fetched from plugin_metadata table for type=DISTRIBUTION
@@ -30,17 +29,19 @@ def get_formatted_manifest(data: Optional[dict[str, Any]],
     return _parse_manifest(raw_metadata)
 
 
-def _get_raw_manifest(manifest_data: Optional[dict[str, Any]],
-                      plugin: str,
-                      version: str) -> Optional[dict[str, Any]]:
+def _get_raw_manifest(
+    manifest_data: Optional[dict[str, Any]], plugin: str, version: str
+) -> Optional[dict[str, Any]]:
     if manifest_data is None:
         logger.warning(f"{plugin}-{version} manifest not yet processed")
         return None
 
     # empty dict indicates some lambda error in processing e.g. timed out
     elif manifest_data == {}:
-        logger.warning(f"Processing for {plugin}-{version} manifest failed due "
-                       f"to external error")
+        logger.warning(
+            f"Processing for {plugin}-{version} manifest failed due "
+            f"to external error"
+        )
         return None
     # error written to file indicates manifest discovery failed
     elif "error" in manifest_data:

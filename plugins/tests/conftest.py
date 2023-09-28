@@ -35,17 +35,19 @@ def setup_local_dynamo() -> None:
 def setup_dynamo() -> Callable[[], Any]:
     def _setup() -> Any:
         from nhcommons.models.plugin_metadata import _PluginMetadata
+
         _PluginMetadata.create_table()
         return boto3.resource(
             "dynamodb", region_name=AWS_REGION, endpoint_url=LOCAL_DYNAMO_HOST
         ).Table(f"{STACK_NAME}-plugin-metadata")
+
     return _setup
 
 
 @pytest.fixture
 def create_item() -> Callable[[str, str, Optional[Dict], bool], Dict[str, Any]]:
     def _create_item(
-            plugin: str, version: str, data: Optional[Dict], is_last_updated_ts: bool
+        plugin: str, version: str, data: Optional[Dict], is_last_updated_ts: bool
     ) -> Dict[str, Any]:
         item = {
             "name": plugin,
@@ -57,17 +59,18 @@ def create_item() -> Callable[[str, str, Optional[Dict], bool], Dict[str, Any]]:
         if is_last_updated_ts:
             item["last_updated_timestamp"] = round(time.time() * 1000)
         return item
+
     return _create_item
 
 
 @pytest.fixture
 def verify_plugin_item(create_item: Callable) -> Callable:
     def _verify_plugin_item(
-            table: Any,
-            name: str,
-            version: str,
-            start_time: int = None,
-            last_updated_ts: int = None,
+        table: Any,
+        name: str,
+        version: str,
+        start_time: int = None,
+        last_updated_ts: int = None,
     ) -> Dict[str, Any]:
         actual = table.get_item(
             Key={"name": name, "version_type": f"{version}:DISTRIBUTION"}
@@ -82,4 +85,5 @@ def verify_plugin_item(create_item: Callable) -> Callable:
         elif last_updated_ts:
             assert last_updated_ts == actual["last_updated_timestamp"]
         return actual.get("data")
+
     return _verify_plugin_item

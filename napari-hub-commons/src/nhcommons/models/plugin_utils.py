@@ -2,7 +2,6 @@ from enum import Enum, auto, EnumMeta
 
 
 class PluginMetadataType(Enum):
-
     DISTRIBUTION = auto()
     PYPI = auto()
     METADATA = auto()
@@ -13,12 +12,14 @@ class PluginMetadataType(Enum):
 
 class PluginVisibilityMeta(EnumMeta):
     def __contains__(cls, item):
-        return isinstance(item, cls) or \
-               isinstance(item, str) and item.upper() in cls._member_names_
+        return (
+            isinstance(item, cls)
+            or isinstance(item, str)
+            and item.upper() in cls._member_names_
+        )
 
 
 class PluginVisibility(Enum, metaclass=PluginVisibilityMeta):
-
     PUBLIC = auto()
     HIDDEN = auto()
     BLOCKED = auto()

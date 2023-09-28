@@ -59,30 +59,29 @@ class TestGithubClientHelper:
         [
             (TEXT_CONTENT, "", "", TEXT_CONTENT, ""),
             (TEXT_CONTENT, "", "json", JSON_CONTENT, ""),
-            ("{\"foo\": []", "", "", "{\"foo\": []", ""),
-            ("{\"foo\": []", "", "json", None, ""),
+            ('{"foo": []', "", "", '{"foo": []', ""),
+            ('{"foo": []', "", "json", None, ""),
             (TEXT_CONTENT, "CITATION.cff", "", TEXT_CONTENT, "/main/CITATION.cff"),
             (TEXT_CONTENT, "CITATION.cff", "json", JSON_CONTENT, "/main/CITATION.cff"),
-            ("{\"foo\": []", "CITATION.cff", "json", None, "/main/CITATION.cff"),
+            ('{"foo": []', "CITATION.cff", "json", None, "/main/CITATION.cff"),
         ],
     )
     def test_get_file(
-            self,
-            content: str,
-            file: str,
-            file_format: str,
-            expected: Optional[Union[str, dict]],
-            url_path: str,
-            get_request: Mock,
-            auth_obj: Mock,
+        self,
+        content: str,
+        file: str,
+        file_format: str,
+        expected: Optional[Union[str, dict]],
+        url_path: str,
+        get_request: Mock,
+        auth_obj: Mock,
     ):
         self._content = content
         self._expected_url = f"https://raw.githubusercontent.com/foo/bar{url_path}"
         github_client_helper = GithubClientHelper("https://github.com/foo/bar", "main")
         assert github_client_helper.get_file(file, file_format) == expected
         get_request.assert_called_once_with(
-            f"https://raw.githubusercontent.com/foo/bar{url_path}",
-            auth=auth_obj
+            f"https://raw.githubusercontent.com/foo/bar{url_path}", auth=auth_obj
         )
 
     @pytest.mark.parametrize(
@@ -94,16 +93,16 @@ class TestGithubClientHelper:
             ("file_1", "json", JSON_CONTENT, ["file_1"]),
             ("file_2", "json", JSON_CONTENT, ["file_1", "file_2"]),
             ("file_3", "json", None, ["file_1", "file_2"]),
-        ]
+        ],
     )
     def test_get_first_valid_file(
-            self,
-            valid_file: str,
-            file_format: str,
-            expected: Optional[Union[str, dict]],
-            url_paths: List[str],
-            get_request: Mock,
-            auth_obj: Mock,
+        self,
+        valid_file: str,
+        file_format: str,
+        expected: Optional[Union[str, dict]],
+        url_paths: List[str],
+        get_request: Mock,
+        auth_obj: Mock,
     ):
         request_url = "https://raw.githubusercontent.com/foo/bar/main/{path}"
         self._content = TEXT_CONTENT

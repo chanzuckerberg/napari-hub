@@ -7,7 +7,6 @@ from nhcommons.utils.adapter_helpers import CitationHelper
 
 
 class TestCitationHelper:
-
     @pytest.fixture
     def valid_citation(self):
         citation_json = {
@@ -22,7 +21,7 @@ class TestCitationHelper:
                 {
                     "affiliation": "Test Center 2",
                     "name": "The Research Software project",
-                }
+                },
             ],
             "cff-version": "1.0.3",
             "date-released": datetime.date(2019, 11, 12),
@@ -38,19 +37,25 @@ class TestCitationHelper:
 
     @pytest.fixture
     def expected_citations(self, valid_citation):
-        apa = "Fa G.N., The Research Software project (2019). " \
-              "testing (version 0.0.0). DOI: 10.0000/something.0000000 " \
-              "URL: https://example.com/example\n"
-        bibtex = "@misc{YourReferenceHere,\n" \
-                 "author = {Fa, Gi N. and The Research Software project},\n" \
-                 "doi = {10.0000/something.0000000},\nmonth = {11},\n" \
-                 "title = {testing},\nurl = {https://example.com/example},\n" \
-                 "year = {2019}\n}\n"
-        ris = "TY  - GEN\nAB  - Test\nAU  - Fa, Gi N.\n" \
-              "AU  - The Research Software project\nDA  - 2019-11-12\n" \
-              "DO  - 10.0000/something.0000000\nKW  - citation\n" \
-              "KW  - test\nKW  - cff\nKW  - CITATION.cff\nPY  - 2019\nTI  - testing\n" \
-              "UR  - https://example.com/example\nER\n"
+        apa = (
+            "Fa G.N., The Research Software project (2019). "
+            "testing (version 0.0.0). DOI: 10.0000/something.0000000 "
+            "URL: https://example.com/example\n"
+        )
+        bibtex = (
+            "@misc{YourReferenceHere,\n"
+            "author = {Fa, Gi N. and The Research Software project},\n"
+            "doi = {10.0000/something.0000000},\nmonth = {11},\n"
+            "title = {testing},\nurl = {https://example.com/example},\n"
+            "year = {2019}\n}\n"
+        )
+        ris = (
+            "TY  - GEN\nAB  - Test\nAU  - Fa, Gi N.\n"
+            "AU  - The Research Software project\nDA  - 2019-11-12\n"
+            "DO  - 10.0000/something.0000000\nKW  - citation\n"
+            "KW  - test\nKW  - cff\nKW  - CITATION.cff\nPY  - 2019\nTI  - testing\n"
+            "UR  - https://example.com/example\nER\n"
+        )
         return {
             "APA": apa,
             "BibTex": bibtex,
