@@ -15,9 +15,9 @@ class HTTPBearerAuth(requests.auth.AuthBase):
 
 def get_auth():
     # Environment variable set through ecs stack terraform module
-    github_client_id = os.getenv('GITHUB_CLIENT_ID')
-    github_client_secret = os.getenv('GITHUB_CLIENT_SECRET')
-    github_token = os.getenv('GITHUB_TOKEN')
+    github_client_id = os.getenv("GITHUB_CLIENT_ID")
+    github_client_secret = os.getenv("GITHUB_CLIENT_SECRET")
+    github_token = os.getenv("GITHUB_TOKEN")
 
     if github_token:
         return HTTPBearerAuth(github_token)

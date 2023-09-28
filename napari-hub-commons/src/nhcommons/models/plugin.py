@@ -48,15 +48,33 @@ class _Plugin(PynamoWrapper):
 
 
 _INDEX_SUBSET = {
-    "authors", "category", "code_repository", "description_content_type",
-    "description_text", "development_status", "display_name", "error_message",
-    "first_released", "license", "name", "npe2", "operating_system",
-    "plugin_types", "python_version", "reader_file_extensions", "release_date",
-    "summary", "version", "writer_file_extensions", "writer_save_layers"
+    "authors",
+    "category",
+    "code_repository",
+    "description_content_type",
+    "description_text",
+    "development_status",
+    "display_name",
+    "error_message",
+    "first_released",
+    "license",
+    "name",
+    "npe2",
+    "operating_system",
+    "plugin_types",
+    "python_version",
+    "reader_file_extensions",
+    "release_date",
+    "summary",
+    "version",
+    "writer_file_extensions",
+    "writer_save_layers",
 }
 
 
-def get_index(visibility_filter: Optional[Set[PluginVisibility]]) -> List[Dict[str, Any]]:
+def get_index(
+    visibility_filter: Optional[Set[PluginVisibility]],
+) -> List[Dict[str, Any]]:
     return _scan_latest_plugins_index(
         attributes=["name", "version", "data", "visibility"],
         mapper=_index_list_mapper(),
@@ -72,8 +90,7 @@ def get_latest_plugins() -> Dict[str, str]:
 
 
 def get_latest_plugin(
-        name: str,
-        visibilities: Optional[Set[PluginVisibility]]
+    name: str, visibilities: Optional[Set[PluginVisibility]]
 ) -> Dict[str, Any]:
     plugin = _query_for_latest_plugin(
         name, ["data", "release_date"], _to_visibility_condition(visibilities)
@@ -93,7 +110,7 @@ def get_plugin_name_by_repo() -> Dict[str, str]:
 
 
 def get_plugin_by_version(
-        name: str, version: str, visibilities: Optional[Set[PluginVisibility]]
+    name: str, version: str, visibilities: Optional[Set[PluginVisibility]]
 ) -> Dict[str, Any]:
     kwargs = {
         "attributes_to_get": ["data", "release_date"],
@@ -137,7 +154,8 @@ def _index_list_mapper() -> Callable[[Iterator[_Plugin]], List[Dict[str, Any]]]:
     def _mapper(plugins: Iterator[_Plugin]) -> List[Dict[str, Any]]:
         return [
             _to_dict(item, data)
-            for item in plugins if item.data and (data := item.data.as_dict())
+            for item in plugins
+            if item.data and (data := item.data.as_dict())
         ]
 
     return _mapper
@@ -150,9 +168,9 @@ def _get_latest(plugins: Iterator[_Plugin]) -> Optional[_Plugin]:
 
 
 def _query_for_latest_plugin(
-        name: str,
-        attributes_to_get: List[str],
-        filter_condition: Optional[Condition] = None,
+    name: str,
+    attributes_to_get: List[str],
+    filter_condition: Optional[Condition] = None,
 ) -> Optional[_Plugin]:
     kwargs = {
         "hash_key": name,
@@ -163,9 +181,9 @@ def _query_for_latest_plugin(
 
 
 def _scan_latest_plugins_index(
-        attributes: List[str],
-        mapper: Callable[[ResultIterator[_Plugin]], T],
-        filter_conditions: Optional[Condition] = None
+    attributes: List[str],
+    mapper: Callable[[ResultIterator[_Plugin]], T],
+    filter_conditions: Optional[Condition] = None,
 ) -> T:
     result = {}
     start = time.perf_counter()
@@ -192,7 +210,7 @@ def _to_repo(plugin: _Plugin) -> Optional[str]:
 
 
 def _to_visibility_condition(
-        visibilities: Optional[Set[PluginVisibility]]
+    visibilities: Optional[Set[PluginVisibility]],
 ) -> Optional[Condition]:
     if not visibilities:
         return None
