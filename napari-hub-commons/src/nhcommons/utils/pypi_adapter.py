@@ -33,8 +33,9 @@ def get_all_plugins() -> Dict[str, str]:
             html = response.text
             names = _NAME_PATTERN.findall(html)
             versions = _VERSION_PATTERN.findall(html)
+            logger.info(f"Count of plugins fetched for page={page} {len(packages)}")
             if len(names) != len(versions):
-                return {}
+                raise ValueError("Count of plugin and version don't match")
             for name, version in zip(names, versions):
                 packages[name] = version
             page += 1
