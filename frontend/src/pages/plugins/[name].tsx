@@ -8,7 +8,7 @@ import { PluginPage } from '@/components/PluginPage';
 import { DEFAULT_REPO_DATA } from '@/constants/plugin';
 import { useLoadingState } from '@/context/loading';
 import { PluginStateProvider } from '@/context/plugin';
-import { SpdxLicenseResponse } from '@/store/search/types';
+import { SpdxLicenseData, SpdxLicenseResponse } from '@/store/search/types';
 import { PluginData } from '@/types';
 import { createUrl, fetchRepoData, FetchRepoDataResult, Logger } from '@/utils';
 import { getErrorMessage } from '@/utils/error';
