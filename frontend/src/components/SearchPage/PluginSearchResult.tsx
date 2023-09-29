@@ -344,7 +344,7 @@ export function PluginSearchResult({
   );
 
   // Convert to link when loading so that user can't click on result.
-  if (isLoading) {
+  if (isLoading || !plugin.name) {
     return (
       <div className={resultClassName} style={style}>
         {renderResult()}

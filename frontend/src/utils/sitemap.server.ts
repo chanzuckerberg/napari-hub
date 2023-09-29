@@ -73,17 +73,19 @@ async function getPluginEntries(): Promise<SitemapEntry[]> {
   try {
     const data = await hubAPI.getPluginIndex();
 
-    return data.map((plugin) => {
-      const url = `/plugins/${plugin.name}`;
-      const lastmod = new Date(plugin.release_date).toISOString();
+    return data
+      .filter((plugin) => !!plugin.name)
+      .map((plugin) => {
+        const url = `/plugins/${plugin.name}`;
+        const lastmod = new Date(plugin.release_date).toISOString();
 
-      return {
-        url,
-        lastmod,
-        name: plugin.display_name ?? plugin.name,
-        type: SitemapCategory.Plugin,
-      };
-    });
+        return {
+          url,
+          lastmod,
+          name: plugin.display_name ?? plugin.name,
+          type: SitemapCategory.Plugin,
+        };
+      });
   } catch (err) {
     logger.error({
       message: 'Unable to fetch plugin list',
