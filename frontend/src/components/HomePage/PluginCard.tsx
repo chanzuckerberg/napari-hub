@@ -73,6 +73,10 @@ export function PluginCard({
   const { t } = useTranslation(['pluginData']);
   const plausible = usePlausible();
 
+  if (!plugin.name) {
+    return null;
+  }
+
   return (
     <SkeletonLoader
       className="h-full min-h-[202px] screen-495:min-h-[224px]"

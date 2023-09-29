@@ -8,10 +8,12 @@ import { PluginPage } from '@/components/PluginPage';
 import { DEFAULT_REPO_DATA } from '@/constants/plugin';
 import { useLoadingState } from '@/context/loading';
 import { PluginStateProvider } from '@/context/plugin';
+import { SpdxLicenseData, SpdxLicenseResponse } from '@/store/search/types';
 import { PluginData } from '@/types';
 import { createUrl, fetchRepoData, FetchRepoDataResult, Logger } from '@/utils';
 import { getErrorMessage } from '@/utils/error';
 import { hubAPI } from '@/utils/HubAPIClient';
+import { spdxLicenseDataAPI } from '@/utils/spdx';
 import { getServerSidePropsHandler } from '@/utils/ssr';
 
 /**
@@ -24,6 +26,7 @@ interface Params extends ParsedUrlQuery {
 interface BaseProps {
   error?: string;
   plugin?: PluginData;
+  licenses?: SpdxLicenseData[];
 }
 
 type Props = FetchRepoDataResult & BaseProps;
@@ -69,6 +72,20 @@ export const getServerSideProps = getServerSidePropsHandler<Props, Params>({
       });
     }
 
+    try {
+      const {
+        data: { licenses },
+      } = await spdxLicenseDataAPI.get<SpdxLicenseResponse>('');
+      props.licenses = licenses;
+    } catch (err) {
+      props.error = getErrorMessage(err);
+
+      logger.error({
+        message: 'Failed to fetch spdx license data',
+        error: props.error,
+      });
+    }
+
     return { props };
   },
 });
@@ -77,7 +94,13 @@ export const getServerSideProps = getServerSidePropsHandler<Props, Params>({
  * This page fetches plugin data from the hub API and renders it in the
  * PluginDetails component.
  */
-export default function Plugin({ error, plugin, repo, repoFetchError }: Props) {
+export default function Plugin({
+  error,
+  licenses,
+  plugin,
+  repo,
+  repoFetchError,
+}: Props) {
   const isLoading = useLoadingState();
   const [t] = useTranslation(['pageTitles', 'pluginPage']);
 
@@ -127,6 +150,7 @@ export default function Plugin({ error, plugin, repo, repoFetchError }: Props) {
         <>
           {plugin ? (
             <PluginStateProvider
+              licenses={licenses}
               plugin={plugin}
               repo={repo}
               repoFetchError={repoFetchError}
