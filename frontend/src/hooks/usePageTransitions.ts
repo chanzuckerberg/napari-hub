@@ -22,6 +22,10 @@ interface RouteEvent {
   shallow: boolean;
 }
 
+interface RouteError extends Error {
+  cancelled: boolean;
+}
+
 /**
  * Hook to manage page transitions effects and state.
  */
@@ -62,10 +66,13 @@ export function usePageTransitions() {
       pageTransitionsStore.loading = false;
     }
 
-    const onError = (error: Error, url: string, event: RouteEvent) => {
-      logger.error({
+    const onError = (error: RouteError, url: string, event: RouteEvent) => {
+      const level = error.cancelled ? 'info' : 'error';
+
+      logger[level]({
         message: 'Error loading route',
         error: getErrorMessage(error),
+        cancelled: error.cancelled,
       });
 
       onFinishLoading(url, event);
