@@ -2,17 +2,12 @@ import clsx from 'clsx';
 import { isString } from 'lodash';
 import { useTranslation } from 'next-i18next';
 import { ReactNode, useMemo } from 'react';
-import { useQuery } from 'react-query';
 
 import { Link } from '@/components/Link';
-import { MetadataKeys } from '@/context/plugin';
+import { MetadataKeys, usePluginState } from '@/context/plugin';
 import { SUPPORTED_PYTHON_VERSIONS } from '@/store/search/filter.store';
-import { SpdxLicenseResponse } from '@/store/search/types';
 import { PARAM_KEY_MAP, PARAM_VALUE_MAP } from '@/store/search/utils';
 import { PluginType, PluginWriterSaveLayer } from '@/types';
-import { Logger } from '@/utils';
-import { getErrorMessage } from '@/utils/error';
-import { spdxLicenseDataAPI } from '@/utils/spdx';
 
 import styles from './MetadataList.module.scss';
 import { MetadataListTextItem } from './MetadataListTextItem';
@@ -102,8 +97,6 @@ const METADATA_FILTER_LINKS = new Set<MetadataLinkKeys>([
   'writerSaveLayers',
 ]);
 
-const logger = new Logger('MetadataListMetadataItem.ts');
-
 /**
  * Component for rendering a metadata value.
  */
@@ -112,26 +105,8 @@ export function MetadataListMetadataItem({
   className,
   metadataKey,
 }: Props) {
+  const { licenses } = usePluginState();
   const valueLabel = useMetadataValueLabel(metadataKey, value);
-
-  // Fetch SDPX license data to check if current license is OSI Approved.
-  const { data: licenses } = useQuery(
-    ['spdx'],
-    async () => {
-      const { data } = await spdxLicenseDataAPI.get<SpdxLicenseResponse>('');
-      return data.licenses;
-    },
-    {
-      enabled: metadataKey === 'license',
-      onError(err) {
-        logger.error({
-          message:
-            'Error fetching spdx license data for MetadataListMetadataItem',
-          error: getErrorMessage(err),
-        });
-      },
-    },
-  );
 
   const isOsiApproved = useMemo(
     () =>

@@ -5,6 +5,7 @@ import { createContext, ReactNode, useContext } from 'react';
 import { DeepPartial } from 'utility-types';
 
 import { SUPPORTED_PYTHON_VERSIONS } from '@/store/search/filter.store';
+import { SpdxLicenseData } from '@/store/search/types';
 import {
   HubDimension,
   PluginData,
@@ -20,6 +21,7 @@ import { formatDate } from '@/utils';
  * Shared state for plugin data.
  */
 interface PluginState {
+  licenses?: SpdxLicenseData[];
   plugin?: DeepPartial<PluginData>;
   repo: PluginRepoData;
   repoFetchError?: PluginRepoFetchError;
