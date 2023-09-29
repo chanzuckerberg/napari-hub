@@ -1,0 +1,4 @@
+# Migrate nhcommons code style to Black
+a3c4aa2bdb8cc46113bcc3d3743435e6f323a052
+# Fixing formatting with black for backend, data-workflow, plugin
+192d5f44bab1cf4defa4dc152fde3dc9e25dfac9

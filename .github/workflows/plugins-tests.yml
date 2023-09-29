@@ -9,12 +9,14 @@ on:
     paths:
       - 'plugins/**'
       - 'napari-hub-commons/**'
+      - '.github/workflows/plugins-tests.yml'
   pull_request:
     branches:
       - '**'
     paths:
       - 'plugins/**'
       - 'napari-hub-commons/**'
+      - '.github/workflows/plugins-tests.yml'
 
 defaults:
   run:
@@ -23,7 +25,7 @@ defaults:
 jobs:
   # Runs pytest for backend code
   tests:
-    name: pytest
+    name: Unit test with pytest
     runs-on: ubuntu-latest
 
     steps:
@@ -54,3 +56,22 @@ jobs:
         working-directory: plugins/
         run : |
           python -m pytest .
+
+  lints:
+    name: Linting with Black
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.9"
+
+      - uses: psf/black@stable
+        with:
+          options: "--check --diff --color --verbose"
+          version: "~= 23.1.0"
+          src: "./plugins"
