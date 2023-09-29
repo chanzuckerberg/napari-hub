@@ -170,13 +170,15 @@ class TestPypiAdapter:
             )
         return MockResponse(status_code=requests.codes.not_found)
 
-    @pytest.mark.parametrize(
-        "is_valid, expected",
-        [(True, {plugin[0]: plugin[1] for plugin in plugins()}), (False, {})],
-    )
-    def test_get_all_plugins(self, is_valid: bool, expected: Dict[str, str]):
-        self._version_field = "package-snippet__version" if is_valid else "foo"
+    def test_get_all_plugins(self):
+        self._version_field = "package-snippet__version"
+        expected = {plugin[0]: plugin[1] for plugin in plugins()}
         assert expected == pypi_adapter.get_all_plugins()
+
+    def test_get_all_plugins_invalid_response(self):
+        self._version_field = "foo"
+        with pytest.raises(ValueError):
+            pypi_adapter.get_all_plugins()
 
     @pytest.mark.parametrize(
         "plugin, version, extra_fields, expected",
