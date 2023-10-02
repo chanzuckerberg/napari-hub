@@ -17,6 +17,7 @@ ONTOLOGY = "EDAM-BIOIMAGING:alpha06"
 def category_terms():
     return ["Img reg", "2D image", "Affine reg", "Foo"]
 
+
 def category_responses():
     return [
         [{"dimension": "Wrkflw", "hierarchy": ["Img reg"], "label": "Img reg1"}],
@@ -30,6 +31,7 @@ def category_responses():
         ],
         [],
     ]
+
 
 class TestMetadata:
     @pytest.fixture

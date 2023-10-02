@@ -302,7 +302,7 @@ class TestAggregator:
                 {"type": PMType.PYPI},
                 {"visibility": "HIDDEN"},
                 {"visibility": "BLOCKED"},
-            )
+            ),
         ],
     )
     def test_aggregate_for_valid_data(
