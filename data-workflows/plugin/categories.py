@@ -3,6 +3,7 @@ from typing import Any
 
 from nhcommons.models.category import get_category
 
+
 def process_for_categories(labels: dict, version: str) -> (dict, dict):
     categories = defaultdict(list)
     category_hierarchy = defaultdict(list)
@@ -59,7 +60,7 @@ def merge_metadata_manifest_categories(
     if len(merged_category):
         metadata["category"] = merged_category
         metadata["category_hierarchy"] = merged_hierarchy
-    
+
     # removing keys from manifest as they have been merged
     del manifest["category"]
     del manifest["category_hierarchy"]
