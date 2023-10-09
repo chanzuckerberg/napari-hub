@@ -107,7 +107,13 @@ class HubAPIClient {
       return data;
     } catch (err) {
       if (axios.isAxiosError(err)) {
-        logger.error({
+        const status = err.response?.status;
+        const level =
+          status !== undefined && status >= 400 && status < 500
+            ? 'warn'
+            : 'error';
+
+        logger[level]({
           message: 'Error sending request',
           error: err.message,
           method,
