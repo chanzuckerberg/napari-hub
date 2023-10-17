@@ -99,11 +99,38 @@ resource aws_cloudwatch_log_metric_filter frontend_error {
   }
 }
 
+resource aws_cloudwatch_log_metric_filter frontend_uncaught_error {
+  name            = "${var.stack_name}-frontend-uncaught-error"
+  log_group_name  = var.frontend_rum_log_group_name
+  pattern         = join(" ", [
+    "\"com.amazon.rum.js_error_event\"",
+    # Errors that occur when fetching RUM credentials. Safe to ignore because
+    # this is due to the user's network environment.
+    "-\"CWR: Failed to retrieve Cognito identity\"",
+    "-\"CWR: Failed to retrieve credentials\"",
+    # Below errors are safe to ignore because they occur intermittently and do
+    # not impact the user's abilty to use the napari hub
+    "-\"ResizeObserver loop\"",
+    "-\"Script error\"",
+    "-\"The provided `href`\"",
+    "-\"The request is not allowed by the user agent\"",
+  ])
+  count           = var.metrics_enabled ? 1 : 0
+
+  metric_transformation {
+    name      = "${var.stack_name}-frontend-uncaught-error"
+    namespace = local.metrics_namespace
+    value     = "1"
+    unit      = "Count"
+  }
+}
+
 locals {
   backend_api_500_log_metric_name = var.metrics_enabled ? aws_cloudwatch_log_metric_filter.backend_api_500_log_metric[0].name : "backend_api_500_log_metric"
   data_workflows_metrics_update_successful_name = var.metrics_enabled ? aws_cloudwatch_log_metric_filter.data_workflows_metrics_update_successful[0].name : "data_workflows_metrics_update_successful"
   data_workflows_plugin_update_successful_name = var.metrics_enabled ? aws_cloudwatch_log_metric_filter.data_workflows_plugin_update_successful[0].name : "data_workflows_plugin_update_successful"
   frontend_error_name = var.metrics_enabled ? aws_cloudwatch_log_metric_filter.frontend_error[0].name : "frontend_error"
+  frontend_uncaught_error_name = var.metrics_enabled ? aws_cloudwatch_log_metric_filter.frontend_uncaught_error[0].name : "frontend_uncaught_error"
 }
 
 module backend_api_500_alarm {
@@ -282,18 +309,14 @@ module frontend_uncaught_error_alarm {
   alarm_name          = "${var.stack_name}-frontend-uncaught-error-alarm"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   create_metric_alarm = var.alarms_enabled
-  datapoints_to_alarm = 1
-  evaluation_periods  = 1
-  metric_name         = "JsErrorCount"
-  namespace           = "AWS/RUM"
+  datapoints_to_alarm = 2
+  evaluation_periods  = 3
+  metric_name         = local.frontend_uncaught_error_name
+  namespace           = local.metrics_namespace
   period              = 60
   statistic           = "Sum"
   tags                = var.tags
   threshold           = 1
-
-  dimensions = {
-    application_name = var.frontend_rum_app_name
-  }
 }
 
 module frontend_error_alarm {

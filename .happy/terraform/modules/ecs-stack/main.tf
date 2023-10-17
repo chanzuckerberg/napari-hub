@@ -686,4 +686,5 @@ module alarm_and_monitoring {
   tags = var.tags
   frontend_log_group_name = module.frontend_service.cloudwatch_log_group_name
   frontend_rum_app_name = local.cloudwatch_rum_config.app_name
+  frontend_rum_log_group_name = local.cloudwatch_rum_config.log_group_name
 }
