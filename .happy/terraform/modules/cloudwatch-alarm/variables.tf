@@ -58,3 +58,8 @@ variable frontend_rum_app_name {
   type        = string
   description = "App name for frontend RUM monitor"
 }
+
+variable frontend_rum_log_group_name {
+  type        = string
+  description = "Log group name for frontend RUM monitor"
+}
