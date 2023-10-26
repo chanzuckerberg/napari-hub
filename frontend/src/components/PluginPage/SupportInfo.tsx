@@ -239,15 +239,17 @@ function Links({ ariaLabel, children, links }: LinksProps) {
       onClose={closeTooltip}
       title={
         <div className="flex flex-col">
-          {links.map((link) => (
-            <Link
-              className="py-sds-s px-sds-l hover:bg-hub-gray-100"
-              href={link.value}
-              key={link.value}
-            >
-              {link.label}
-            </Link>
-          ))}
+          {links
+            .filter((link) => link.value)
+            .map((link) => (
+              <Link
+                className="py-sds-s px-sds-l hover:bg-hub-gray-100"
+                href={link.value}
+                key={link.value}
+              >
+                {link.label}
+              </Link>
+            ))}
         </div>
       }
     >
