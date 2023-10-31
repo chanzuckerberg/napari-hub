@@ -105,14 +105,16 @@ resource aws_cloudwatch_log_metric_filter frontend_uncaught_error {
   pattern         = join(" ", [
     "\"com.amazon.rum.js_error_event\"",
     # Errors that occur when fetching RUM credentials. Safe to ignore because
-    # this is due to the user's network environment.
+    # this is due to the user's network environment:
+    # https://github.com/aws-observability/aws-rum-web/issues/227#issuecomment-1252712017
     "-\"CWR: Failed to retrieve Cognito identity\"",
     "-\"CWR: Failed to retrieve credentials\"",
+    "-\"CWR: Failed to retrieve Cognito OpenId token\"",
+    "-\"CWR: Failed to retrieve credentials from STS\"",
     # Below errors are safe to ignore because they occur intermittently and do
     # not impact the user's abilty to use the napari hub
     "-\"ResizeObserver loop\"",
     "-\"Script error\"",
-    "-\"The provided `href`\"",
     "-\"The request is not allowed by the user agent\"",
   ])
   count           = var.metrics_enabled ? 1 : 0
