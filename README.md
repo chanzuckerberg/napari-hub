@@ -31,7 +31,7 @@ Interested in helping us grow a thriving community of plugins for napari? There 
 
 ### Join a user research session
 
-We rely heavily on User Experience Research (UXR) to understand the needs and challenges of the bioimaging community, identify opportunities for solutions to these challenges, and get feedback on our work. Whether you’re a bench scientist, work at an imaging core, or develop computational methods, [sign up here](https://bit.ly/napari-user-research-signup) and we’ll reach out when there’s an interview, focus group, usability study, or workshop that matches your background.
+We rely heavily on User Experience Research (UXR) to understand the needs and challenges of the bioimaging community, identify opportunities for solutions to these challenges, and get feedback on our work. Whether you’re a bench scientist, work at an imaging core, or develop computational methods, [email us](mailto:kkhandwala@chanzuckerberg.com) and we’ll reach out when there’s an interview, focus group, usability study, or workshop that matches your background.
 
 ### Share your ideas
 
@@ -59,12 +59,12 @@ We're a cross-functional product team in the [Imaging program at the Chan Zucker
 - Kira Evans, Engineering ([@kne42](https://github.com/kne42))
 - Justin Kiggins, Product ([@neuromusic](https://github.com/neuromusic))
 - Justine Larsen, Engineering ([@justinelarsen](https://github.com/justinelarsen))
-- Lucy Obus, User Experience ([@LCObus](https://github.com/LCObus))
 - Kandarp Khandwala, User Experience ([@kandarpksk](https://github.com/kandarpksk))
 
-## Former Members
+## Former members
 - Ziyang Liu, Engineering ([@potating-potato](https://github.com/potating-potato))
 - Kevin Lai, Engineering ([@klai95](https://github.com/klai95))
+- Lucy Obus, User Experience ([@LCObus](https://github.com/LCObus))
 
 ## Code of Conduct
 
