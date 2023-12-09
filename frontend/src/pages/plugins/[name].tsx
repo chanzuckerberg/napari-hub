@@ -1,3 +1,4 @@
+import { inRange } from 'lodash';
 import Head from 'next/head';
 import { useTranslation } from 'next-i18next';
 import { ParsedUrlQuery } from 'node:querystring';
@@ -65,7 +66,11 @@ export const getServerSideProps = getServerSidePropsHandler<Props, Params>({
     Object.assign(props, repoData);
 
     if (props.repoFetchError) {
-      logger.error({
+      const logType = inRange(props.repoFetchError.status, 400, 500)
+        ? 'info'
+        : 'error';
+
+      logger[logType]({
         message: 'Failed to fetch repo data',
         plugin: name,
         error: props.error,
