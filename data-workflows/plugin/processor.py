@@ -2,6 +2,7 @@ import logging
 from concurrent import futures
 from typing import Optional
 
+from plugin.classifier_adapter import is_plugin_live
 from plugin.lambda_adapter import LambdaAdapter
 from nhcommons.models.plugin_utils import PluginMetadataType
 from nhcommons.utils import pypi_adapter
@@ -39,15 +40,18 @@ def update_plugin() -> None:
     # update for removed plugins and existing older version of plugins
     for name, version in dynamo_latest_plugins.items():
         pypi_plugin_version = pypi_latest_plugins.get(name)
-        if pypi_plugin_version != version:
-            logger.info(f"Updating old plugin={name} version={version}")
-            put_plugin_metadata(
-                plugin=name,
-                version=version,
-                plugin_metadata_type=PluginMetadataType.PYPI,
-            )
-            if pypi_plugin_version is None:
-                zulip.plugin_no_longer_on_hub(name)
+        if pypi_plugin_version == version or \
+                (pypi_plugin_version is None and is_plugin_live(name, version)):
+            continue
+
+        logger.info(f"Updating old plugin={name} version={version}")
+        put_plugin_metadata(
+            plugin=name,
+            version=version,
+            plugin_metadata_type=PluginMetadataType.PYPI,
+        )
+        if pypi_plugin_version is None:
+            zulip.plugin_no_longer_on_hub(name)
 
 
 def _update_for_new_plugin(name: str, version: str, old_version: Optional[str]) -> None:
