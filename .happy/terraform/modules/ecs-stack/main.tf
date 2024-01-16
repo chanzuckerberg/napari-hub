@@ -341,6 +341,7 @@ module data_workflows_lambda {
     "GITHUB_CLIENT_ID"      = local.github_client_id
     "GITHUB_CLIENT_SECRET"  = local.github_client_secret
     "PLUGINS_LAMBDA_NAME"   = local.plugins_function_name
+    "ZULIP_CREDENTIALS"     = local.zulip_credentials
   }
 
   log_retention_in_days   = local.log_retention_period
