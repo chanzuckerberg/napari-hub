@@ -69,6 +69,6 @@ jobs:
 
       - uses: psf/black@stable
         with:
-          options: "--check --diff --color --verbose"
+          options: "--check --diff --color --verbose --extend-exclude '.*/tests/.*'"
           version: "~= 23.1.0"
           src: "./data-workflows"
