@@ -48,7 +48,7 @@ class GithubClientHelper:
         return None
 
     def get_file(
-            self, file: str = "", file_format: str = ""
+        self, file: str = "", file_format: str = ""
     ) -> Optional[Union[str, dict]]:
         """
         Get file from github.
