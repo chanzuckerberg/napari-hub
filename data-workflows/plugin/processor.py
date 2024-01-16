@@ -40,8 +40,9 @@ def update_plugin() -> None:
     # update for removed plugins and existing older version of plugins
     for name, version in dynamo_latest_plugins.items():
         pypi_plugin_version = pypi_latest_plugins.get(name)
-        if pypi_plugin_version == version or \
-                (pypi_plugin_version is None and is_plugin_live(name, version)):
+        if pypi_plugin_version == version or (
+            pypi_plugin_version is None and is_plugin_live(name, version)
+        ):
             continue
 
         logger.info(f"Updating old plugin={name} version={version}")

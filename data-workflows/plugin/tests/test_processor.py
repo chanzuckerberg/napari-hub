@@ -115,7 +115,7 @@ class TestProcessor:
             get_formatted_metadata_called: bool = False,
             lambda_invoked: bool = False,
             put_pm_calls: list = None,
-            classifier_adapter_not_called: bool = True
+            classifier_adapter_not_called: bool = True,
         ) -> None:
             verify_call(True, self._get_latest_plugins, empty_call_list)
             verify_call(True, self._get_all_plugins, empty_call_list)
