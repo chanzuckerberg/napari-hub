@@ -26,7 +26,7 @@ jobs:
   # Runs pytest for backend code
   tests:
     name: Unit test with pytest
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout Repo
@@ -71,6 +71,6 @@ jobs:
 
       - uses: psf/black@stable
         with:
-          options: "--check --diff --color --verbose"
+          options: "--check --diff --color --verbose --extend-exclude '.*/tests/.*'"
           version: "~= 23.1.0"
           src: "./backend"

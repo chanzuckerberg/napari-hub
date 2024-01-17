@@ -9,7 +9,7 @@ _URL_PATTERN = re.compile("^https://github\\.com/([^/]+)/([^/]+)")
 _DEFAULT_DESCRIPTION = (
     "The developer has not yet provided a napari-hub " "specific description."
 )
-_HUB_CONFIG_KEYS = {'labels'}
+_HUB_CONFIG_KEYS = {"labels"}
 
 
 def is_valid_repo_url(url: str) -> bool:
