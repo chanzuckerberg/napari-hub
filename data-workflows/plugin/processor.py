@@ -43,8 +43,10 @@ def update_plugin() -> None:
         if pypi_plugin_version == version:
             continue
         if pypi_plugin_version is None and is_plugin_active(name, version):
-            logger.info(f"Skipping marking plugin={name} version={version} stale as "
-                        f"the plugin is still active in npe2api")
+            logger.info(
+                f"Skipping marking plugin={name} version={version} stale as the "
+                f"plugin is still active in npe2api"
+            )
             continue
 
         logger.info(f"Updating old plugin={name} version={version}")
