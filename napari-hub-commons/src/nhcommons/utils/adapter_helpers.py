@@ -63,7 +63,7 @@ class GithubClientHelper:
             response = get_request(api_url, auth=self._auth)
             return response.json() if file_format == "json" else response.text
         except (HTTPError, JSONDecodeError):
-            logger.error(f"Encountered error fetching {api_url}")
+            logger.error(f"Encountered error fetching {api_url}", exc_info=True)
             return None
 
     @classmethod

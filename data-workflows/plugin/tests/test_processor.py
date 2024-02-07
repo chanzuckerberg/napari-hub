@@ -75,7 +75,7 @@ class TestProcessor:
             side_effect=lambda _, __: self._is_plugin_live,
             spec=plugin.classifier_adapter,
         )
-        monkeypatch.setattr(processor, "is_plugin_live", mock)
+        monkeypatch.setattr(processor, "is_plugin_active", mock)
         return mock
 
     @pytest.fixture

@@ -2,7 +2,7 @@ import logging
 from concurrent import futures
 from typing import Optional
 
-from plugin.classifier_adapter import is_plugin_live
+from plugin.classifier_adapter import is_plugin_active
 from plugin.lambda_adapter import LambdaAdapter
 from nhcommons.models.plugin_utils import PluginMetadataType
 from nhcommons.utils import pypi_adapter
@@ -40,9 +40,11 @@ def update_plugin() -> None:
     # update for removed plugins and existing older version of plugins
     for name, version in dynamo_latest_plugins.items():
         pypi_plugin_version = pypi_latest_plugins.get(name)
-        if pypi_plugin_version == version or (
-            pypi_plugin_version is None and is_plugin_live(name, version)
-        ):
+        if pypi_plugin_version == version:
+            continue
+        if pypi_plugin_version is None and is_plugin_active(name, version):
+            logger.info(f"Skipping marking plugin={name} version={version} stale as "
+                        f"the plugin is still active in npe2api")
             continue
 
         logger.info(f"Updating old plugin={name} version={version}")

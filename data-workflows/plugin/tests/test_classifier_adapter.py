@@ -5,7 +5,6 @@ import pytest
 import nhcommons.utils.adapter_helpers
 import plugin.classifier_adapter
 
-
 REPOSITORY = "https://github.com/napari/npe2api"
 FILE_NAME = "public/classifiers.json"
 
@@ -33,31 +32,27 @@ class TestClassifierAdapter:
 
     def test_handle_valid_query_data(self):
         self._classifier_json = {"active": {"foo": ["1.0.0", "1.0.1", "1.0.2"]}}
-        assert True == plugin.classifier_adapter.is_plugin_live("foo", "1.0.2")
-        assert False == plugin.classifier_adapter.is_plugin_live("foo", "1.0.4")
-        assert False == plugin.classifier_adapter.is_plugin_live("bar", "1.0.4")
+        assert True == plugin.classifier_adapter.is_plugin_active("foo", "1.0.2")
+        assert False == plugin.classifier_adapter.is_plugin_active("foo", "0.0.9")
+        assert False == plugin.classifier_adapter.is_plugin_active("bar", "1.0.4")
         self._github_client_helper_call.assert_called_once_with(REPOSITORY)
         self._github_client_helper.get_file.assert_called_once_with(FILE_NAME, "json")
 
     def test_handle_invalid_query_data(self):
         self._classifier_json = {"inactive": []}
-        assert False == plugin.classifier_adapter.is_plugin_live("foo", "1.0.2")
-        assert False == plugin.classifier_adapter.is_plugin_live("bar", "1.0.2")
+        assert False == plugin.classifier_adapter.is_plugin_active("foo", "1.0.2")
+        assert False == plugin.classifier_adapter.is_plugin_active("bar", "1.0.2")
         self._github_client_helper_call.assert_called_once_with(REPOSITORY)
         self._github_client_helper.get_file.assert_called_once_with(FILE_NAME, "json")
 
-    def test_is_plugin_live_caching(self):
+    @pytest.mark.parametrize("init_classifier_json", [None, {}])
+    def test_is_plugin_live_does_not_cache_error(self, init_classifier_json):
+        # When the classifier json is not a dict with values, _get_recent_query_data()
+        # should throw a RuntimeError
+        self._classifier_json = init_classifier_json
+        assert True == plugin.classifier_adapter.is_plugin_active("foo", "1.0.2")
         self._classifier_json = {"active": {"foo": ["1.0.0", "1.0.1", "1.0.2"]}}
-        assert True == plugin.classifier_adapter.is_plugin_live("foo", "1.0.2")
-        assert False == plugin.classifier_adapter.is_plugin_live("foo", "1.0.4")
-        self._github_client_helper_call.assert_called_once_with(REPOSITORY)
-        self._github_client_helper.get_file.assert_called_once_with(FILE_NAME, "json")
-
-    def test_is_plugin_live_does_not_cache_error(self):
-        self._classifier_json = None
-        assert True == plugin.classifier_adapter.is_plugin_live("foo", "1.0.2")
-        self._classifier_json = {"active": {"foo": ["1.0.0", "1.0.1", "1.0.2"]}}
-        assert True == plugin.classifier_adapter.is_plugin_live("foo", "1.0.2")
+        assert True == plugin.classifier_adapter.is_plugin_active("foo", "1.0.2")
         self._github_client_helper_call.assert_has_calls(
             [call(REPOSITORY), call(REPOSITORY)]
         )

@@ -18,11 +18,11 @@ def _get_recent_query_data() -> dict:
     return data
 
 
-def is_plugin_live(name: str, version: str) -> bool:
+def is_plugin_active(name: str, version: str) -> bool:
     try:
         recent_query_update = _get_recent_query_data()
         active_versions = set(recent_query_update.get("active", {}).get(name, []))
         return version in active_versions
     except RuntimeError:
-        LOGGER.warning(f"Returning {name} {version} is live due to RuntimeError")
+        LOGGER.warning(f"Returning {name} {version} is active due to RuntimeError")
         return True
