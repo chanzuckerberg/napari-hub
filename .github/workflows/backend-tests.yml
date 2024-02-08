@@ -26,7 +26,7 @@ jobs:
   # Runs pytest for backend code
   tests:
     name: Unit test with pytest
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repo
@@ -47,6 +47,7 @@ jobs:
       - name: Install dependencies
         # need npe2 here to test preview page
         run: |
+          sudo apt install libffi7
           pip install --upgrade pip
           pip install -r requirements.txt
           pip install -r test-requirements.txt
