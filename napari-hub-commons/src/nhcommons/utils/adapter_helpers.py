@@ -1,5 +1,5 @@
 import logging
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Union
 
 import yaml
 from cffconvert import Citation
@@ -47,7 +47,9 @@ class GithubClientHelper:
                 return file
         return None
 
-    def get_file(self, file: str = "", file_format: str = "") -> Optional[str]:
+    def get_file(
+        self, file: str = "", file_format: str = ""
+    ) -> Optional[Union[str, dict]]:
         """
         Get file from github.
         :param file: filename to get if specified
@@ -61,7 +63,7 @@ class GithubClientHelper:
             response = get_request(api_url, auth=self._auth)
             return response.json() if file_format == "json" else response.text
         except (HTTPError, JSONDecodeError):
-            logger.error(f"Encountered error fetching {api_url}")
+            logger.error(f"Encountered error fetching {api_url}", exc_info=True)
             return None
 
     @classmethod
