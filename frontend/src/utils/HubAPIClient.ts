@@ -92,7 +92,7 @@ const INITIAL_RETRY_DELAY_MS = 1000;
  * hub API and runs client-side data validation on the data to ensure
  * consistency with static typing and reduce the chance of errors occurring.
  */
-class HubAPIClient {
+export class HubAPIClient {
   private api = axios.create({
     baseURL: API_URL,
     headers: BROWSER
