@@ -9,12 +9,12 @@ import { PluginPage } from '@/components/PluginPage';
 import { DEFAULT_REPO_DATA } from '@/constants/plugin';
 import { useLoadingState } from '@/context/loading';
 import { PluginStateProvider } from '@/context/plugin';
-import { SpdxLicenseData, SpdxLicenseResponse } from '@/store/search/types';
+import { SpdxLicenseData } from '@/store/search/types';
 import { PluginData } from '@/types';
 import { createUrl, fetchRepoData, FetchRepoDataResult, Logger } from '@/utils';
 import { getErrorMessage } from '@/utils/error';
 import { hubAPI } from '@/utils/HubAPIClient';
-import { spdxLicenseDataAPI } from '@/utils/spdx';
+import { getSpdxProps } from '@/utils/spdx';
 import { getServerSidePropsHandler } from '@/utils/ssr';
 
 /**
@@ -77,19 +77,8 @@ export const getServerSideProps = getServerSidePropsHandler<Props, Params>({
       });
     }
 
-    try {
-      const {
-        data: { licenses },
-      } = await spdxLicenseDataAPI.get<SpdxLicenseResponse>('');
-      props.licenses = licenses;
-    } catch (err) {
-      props.error = getErrorMessage(err);
-
-      logger.error({
-        message: 'Failed to fetch spdx license data',
-        error: props.error,
-      });
-    }
+    const spdxProps = await getSpdxProps(logger);
+    Object.assign(props, spdxProps);
 
     return { props };
   },
