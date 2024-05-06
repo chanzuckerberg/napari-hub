@@ -116,6 +116,8 @@ resource aws_cloudwatch_log_metric_filter frontend_uncaught_error {
     "-\"ResizeObserver loop\"",
     "-\"Script error\"",
     "-\"The request is not allowed by the user agent\"",
+    # Error from adblocker
+    "Cannot redefine property: googletag"
   ])
   count           = var.metrics_enabled ? 1 : 0
 
