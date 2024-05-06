@@ -12,8 +12,8 @@ import {
   PluginSectionType,
 } from '@/types';
 
+import { retryAxios } from './async';
 import { Logger } from './logger';
-import { sleep } from './sleep';
 import { getFullPathFromAxios } from './url';
 import {
   validateMetricsData,
@@ -73,21 +73,6 @@ function isHubAPIErrorResponse(
 }
 
 /**
- * Max number of times to retry fetching a request.
- */
-const MAX_RETRIES = 3;
-
-/**
- * Backoff factory for increasing the delay when re-fetching requests.
- */
-const RETRY_BACKOFF_FACTOR = 2;
-
-/**
- * Initial delay before retrying a request in milliseconds.
- */
-const INITIAL_RETRY_DELAY_MS = 1000;
-
-/**
  * Class for interacting with the hub API. Each function makes a request to the
  * hub API and runs client-side data validation on the data to ensure
  * consistency with static typing and reduce the chance of errors occurring.
@@ -103,66 +88,24 @@ export class HubAPIClient {
   });
 
   private async sendRequest<T>(url: string, config?: AxiosRequestConfig<T>) {
-    const method = config?.method ?? 'GET';
-    const path = getFullPathFromAxios(url, config);
-    let retryDelay = INITIAL_RETRY_DELAY_MS;
+    const { data, status } = await retryAxios<T>({
+      instance: this.api,
+      url,
+      ...config,
+    });
 
-    for (let retry = 0; retry < MAX_RETRIES; retry += 1) {
-      try {
-        const { data, status } = await this.api.request<T>({
-          url,
-          params: {
-            ...config?.params,
-            retryCount: retry,
-          } as Record<string, unknown>,
-          ...config,
-        });
-
-        if (SERVER) {
-          logger.info({
-            path,
-            method,
-            url,
-            status,
-          });
-        }
-
-        return data;
-      } catch (err) {
-        const isRetrying = retry < MAX_RETRIES - 1;
-
-        if (axios.isAxiosError(err)) {
-          const status = err.response?.status;
-          const level =
-            isRetrying ||
-            (status !== undefined && status >= 400 && status < 500)
-              ? 'warn'
-              : 'error';
-
-          logger[level]({
-            message: 'Error sending request',
-            error: err.message,
-            method,
-            path,
-            url,
-            isRetrying,
-            retry,
-            ...(err.response?.status ? { status: err.response.status } : {}),
-          });
-        }
-
-        if (isRetrying) {
-          await sleep(retryDelay);
-          retryDelay *= RETRY_BACKOFF_FACTOR;
-        } else {
-          throw err;
-        }
-      }
+    if (SERVER) {
+      const method = config?.method ?? 'GET';
+      const path = getFullPathFromAxios(url, config);
+      logger.info({
+        path,
+        method,
+        url,
+        status,
+      });
     }
 
-    // This edge case should never happen but is required by TypeScript to
-    // prevent a compile error.
-    throw new Error('failed to request data');
+    return data;
   }
 
   async getPluginIndex(): Promise<PluginIndexData[]> {
