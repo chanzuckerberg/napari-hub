@@ -13,26 +13,22 @@ export const spdxLicenseDataAPI = axios.create({
     'https://raw.githubusercontent.com/spdx/license-list-data/master/json/licenses.json',
 });
 
-interface PropsResult {
-  licenses?: SpdxLicenseData[];
-  error?: string;
-}
-
-export async function getSpdxProps(logger?: Logger) {
-  const props: PropsResult = {};
-
+export async function getSpdxProps(
+  logger?: Logger,
+): Promise<SpdxLicenseData[]> {
   try {
     const {
       data: { licenses },
-    } = await retryAxios<SpdxLicenseResponse>();
-    props.licenses = licenses;
+    } = await retryAxios<SpdxLicenseResponse>({ instance: spdxLicenseDataAPI });
+
+    return licenses;
   } catch (err) {
-    props.error = getErrorMessage(err);
+    const error = getErrorMessage(err);
     logger?.error({
       message: 'Failed to fetch spdx license data',
-      error: props.error,
+      error,
     });
-  }
 
-  return props;
+    return [];
+  }
 }

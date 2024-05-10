@@ -79,7 +79,7 @@ export async function retryAxios<T>({
   config,
   instance = axios,
   logger,
-  url = '/',
+  url = '',
   ...options
 }: AsyncAxiosRetryOptions<T> = {}) {
   const method = config?.method ?? 'GET';

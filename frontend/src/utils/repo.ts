@@ -11,7 +11,7 @@ import { PluginRepoData, PluginRepoFetchError } from '@/types';
 const REPO_REGEX = /(?:git@|https:\/\/)(github).com[/:](.*)(?:.git)?/;
 
 export interface FetchRepoDataResult {
-  repo: PluginRepoData;
+  repo?: PluginRepoData;
   repoFetchError?: PluginRepoFetchError;
 }
 

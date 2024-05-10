@@ -10,7 +10,7 @@ import { PluginIndexData } from '@/types';
 import { Logger } from '@/utils';
 import { getErrorMessage } from '@/utils/error';
 import { hubAPI } from '@/utils/HubAPIClient';
-import { getSpdxProps } from '@/utils/spdx';
+import { getSpdxProps as getSpdxLicenses } from '@/utils/spdx';
 import { getServerSidePropsHandler } from '@/utils/ssr';
 
 interface Props {
@@ -24,26 +24,30 @@ const logger = new Logger('pages/plugins/index.tsx');
 
 export const getServerSideProps = getServerSidePropsHandler<Props>({
   async getProps() {
-    const props: Props = {
-      status: 200,
-    };
+    let index: PluginIndexData[];
 
     try {
-      const index = await hubAPI.getPluginIndex();
-      props.index = index;
+      index = await hubAPI.getPluginIndex();
     } catch (err) {
-      props.error = getErrorMessage(err);
+      const error = getErrorMessage(err);
 
       logger.error({
         message: 'Failed to plugin index',
-        error: props.error,
+        error,
       });
+
+      return { props: { error } };
     }
 
-    const spdxProps = await getSpdxProps(logger);
-    Object.assign(props, spdxProps);
+    const licenses = await getSpdxLicenses(logger);
 
-    return { props };
+    return {
+      props: {
+        index,
+        licenses,
+        status: 200,
+      },
+    };
   },
 });
 

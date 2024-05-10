@@ -41,46 +41,49 @@ export const getServerSideProps = getServerSidePropsHandler<Props, Params>({
    */
   async getProps({ params }) {
     const name = String(params?.name);
-    const props: Props = {
-      repo: DEFAULT_REPO_DATA,
-    };
-
     let codeRepo = '';
+    let plugin: PluginData | undefined;
 
     try {
-      const plugin = await hubAPI.getPlugin(name);
+      plugin = await hubAPI.getPlugin(name);
       codeRepo = plugin.code_repository;
-      props.plugin = plugin;
     } catch (err) {
-      props.error = getErrorMessage(err);
+      const error = getErrorMessage(err);
       logger.error({
         message: 'Failed to fetch plugin data',
         plugin: name,
-        error: props.error,
+        error,
       });
 
-      return { props };
+      return {
+        props: { error },
+      };
     }
 
     const repoData = await fetchRepoData(codeRepo);
-    Object.assign(props, repoData);
 
-    if (props.repoFetchError) {
-      const logType = inRange(props.repoFetchError.status, 400, 500)
+    if (repoData.repoFetchError) {
+      const logType = inRange(repoData.repoFetchError.status, 400, 500)
         ? 'info'
         : 'error';
 
       logger[logType]({
         message: 'Failed to fetch repo data',
         plugin: name,
-        error: props.error,
+        error: repoData.repoFetchError,
       });
     }
 
-    const spdxProps = await getSpdxProps(logger);
-    Object.assign(props, spdxProps);
+    const licenses = await getSpdxProps(logger);
 
-    return { props };
+    return {
+      props: {
+        plugin,
+        licenses,
+        repo: DEFAULT_REPO_DATA,
+        ...repoData,
+      },
+    };
   },
 });
 
