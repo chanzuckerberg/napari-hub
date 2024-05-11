@@ -5,12 +5,12 @@ import { ErrorMessage } from '@/components/ErrorMessage';
 import { NotFoundPage } from '@/components/NotFoundPage';
 import { SearchPage } from '@/components/SearchPage';
 import { SearchStoreProvider } from '@/store/search/context';
-import { SpdxLicenseData, SpdxLicenseResponse } from '@/store/search/types';
+import { SpdxLicenseData } from '@/store/search/types';
 import { PluginIndexData } from '@/types';
 import { Logger } from '@/utils';
 import { getErrorMessage } from '@/utils/error';
 import { hubAPI } from '@/utils/HubAPIClient';
-import { spdxLicenseDataAPI } from '@/utils/spdx';
+import { getSpdxProps as getSpdxLicenses } from '@/utils/spdx';
 import { getServerSidePropsHandler } from '@/utils/ssr';
 
 interface Props {
@@ -24,37 +24,30 @@ const logger = new Logger('pages/plugins/index.tsx');
 
 export const getServerSideProps = getServerSidePropsHandler<Props>({
   async getProps() {
-    const props: Props = {
-      status: 200,
-    };
+    let index: PluginIndexData[];
 
     try {
-      const index = await hubAPI.getPluginIndex();
-      props.index = index;
+      index = await hubAPI.getPluginIndex();
     } catch (err) {
-      props.error = getErrorMessage(err);
+      const error = getErrorMessage(err);
 
       logger.error({
         message: 'Failed to plugin index',
-        error: props.error,
+        error,
       });
+
+      return { props: { error } };
     }
 
-    try {
-      const {
-        data: { licenses },
-      } = await spdxLicenseDataAPI.get<SpdxLicenseResponse>('');
-      props.licenses = licenses;
-    } catch (err) {
-      props.error = getErrorMessage(err);
+    const licenses = await getSpdxLicenses(logger);
 
-      logger.error({
-        message: 'Failed to fetch spdx license data',
-        error: props.error,
-      });
-    }
-
-    return { props };
+    return {
+      props: {
+        index,
+        licenses,
+        status: 200,
+      },
+    };
   },
 });
 

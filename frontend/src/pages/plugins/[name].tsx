@@ -9,12 +9,12 @@ import { PluginPage } from '@/components/PluginPage';
 import { DEFAULT_REPO_DATA } from '@/constants/plugin';
 import { useLoadingState } from '@/context/loading';
 import { PluginStateProvider } from '@/context/plugin';
-import { SpdxLicenseData, SpdxLicenseResponse } from '@/store/search/types';
+import { SpdxLicenseData } from '@/store/search/types';
 import { PluginData } from '@/types';
 import { createUrl, fetchRepoData, FetchRepoDataResult, Logger } from '@/utils';
 import { getErrorMessage } from '@/utils/error';
 import { hubAPI } from '@/utils/HubAPIClient';
-import { spdxLicenseDataAPI } from '@/utils/spdx';
+import { getSpdxProps } from '@/utils/spdx';
 import { getServerSidePropsHandler } from '@/utils/ssr';
 
 /**
@@ -41,57 +41,49 @@ export const getServerSideProps = getServerSidePropsHandler<Props, Params>({
    */
   async getProps({ params }) {
     const name = String(params?.name);
-    const props: Props = {
-      repo: DEFAULT_REPO_DATA,
-    };
-
     let codeRepo = '';
+    let plugin: PluginData | undefined;
 
     try {
-      const plugin = await hubAPI.getPlugin(name);
+      plugin = await hubAPI.getPlugin(name);
       codeRepo = plugin.code_repository;
-      props.plugin = plugin;
     } catch (err) {
-      props.error = getErrorMessage(err);
+      const error = getErrorMessage(err);
       logger.error({
         message: 'Failed to fetch plugin data',
         plugin: name,
-        error: props.error,
+        error,
       });
 
-      return { props };
+      return {
+        props: { error },
+      };
     }
 
     const repoData = await fetchRepoData(codeRepo);
-    Object.assign(props, repoData);
 
-    if (props.repoFetchError) {
-      const logType = inRange(props.repoFetchError.status, 400, 500)
+    if (repoData.repoFetchError) {
+      const logType = inRange(repoData.repoFetchError.status, 400, 500)
         ? 'info'
         : 'error';
 
       logger[logType]({
         message: 'Failed to fetch repo data',
         plugin: name,
-        error: props.error,
+        error: repoData.repoFetchError,
       });
     }
 
-    try {
-      const {
-        data: { licenses },
-      } = await spdxLicenseDataAPI.get<SpdxLicenseResponse>('');
-      props.licenses = licenses;
-    } catch (err) {
-      props.error = getErrorMessage(err);
+    const licenses = await getSpdxProps(logger);
 
-      logger.error({
-        message: 'Failed to fetch spdx license data',
-        error: props.error,
-      });
-    }
-
-    return { props };
+    return {
+      props: {
+        plugin,
+        licenses,
+        repo: DEFAULT_REPO_DATA,
+        ...repoData,
+      },
+    };
   },
 });
 
@@ -157,7 +149,7 @@ export default function Plugin({
             <PluginStateProvider
               licenses={licenses}
               plugin={plugin}
-              repo={repo}
+              repo={repo ?? DEFAULT_REPO_DATA}
               repoFetchError={repoFetchError}
             >
               <PluginPage />
