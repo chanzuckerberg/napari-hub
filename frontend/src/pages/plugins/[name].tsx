@@ -149,7 +149,7 @@ export default function Plugin({
             <PluginStateProvider
               licenses={licenses}
               plugin={plugin}
-              repo={repo}
+              repo={repo ?? DEFAULT_REPO_DATA}
               repoFetchError={repoFetchError}
             >
               <PluginPage />
