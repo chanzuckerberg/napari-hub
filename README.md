@@ -2,7 +2,7 @@
 
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/chanzuckerberg/napari-hub)](https://github.com/chanzuckerberg/napari-hub/releases/latest)
 [![frontend tests status](https://github.com/chanzuckerberg/napari-hub/actions/workflows/frontend-tests.yml/badge.svg)](https://github.com/chanzuckerberg/napari-hub/actions/workflows/frontend-tests.yml?query=branch%3Amain)
-[![backend tests status](https://github.com/chanzuckerberg/napari-hub/actions/workflows/backend-tests.yml/badge.svg)](https://github.com/chanzuckerberg/napari-hub/actions/workflows/backend-tests.yml?query=branch%3Amain)
+[![backend tests status here](https://github.com/chanzuckerberg/napari-hub/actions/workflows/backend-tests.yml/badge.svg)](https://github.com/chanzuckerberg/napari-hub/actions/workflows/backend-tests.yml?query=branch%3Amain)
 
 
 The [napari hub](https://www.napari-hub.org) lets [napari](https://napari.org) users find community-built plugins that solve their analysis needs.  It hosts a growing ecosystem of plugins for segmentation, tracking, detection, registration, file loading, and more.
