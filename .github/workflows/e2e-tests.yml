@@ -27,7 +27,7 @@ env:
 jobs:
   e2e-setup:
     name: E2E Setup
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout Repo
@@ -93,7 +93,7 @@ jobs:
 
   e2e:
     name: E2E tests ${{ matrix.browser }} ${{ matrix.shardCurrent }} / ${{ matrix.shardTotal }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs: e2e-setup
 
     concurrency:

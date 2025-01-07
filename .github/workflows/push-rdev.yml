@@ -23,7 +23,7 @@ env:
 jobs:
   create-update-dev:
     name: deploy dev branch
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     if: github.repository == 'chanzuckerberg/napari-hub'
     steps:
       - name: Configure AWS Credentials
@@ -76,7 +76,7 @@ jobs:
 
   # Runs behave tests for backend code
   bdd-tests:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs: create-update-dev
     if: ${{ github.event_name == 'push' }}
 
