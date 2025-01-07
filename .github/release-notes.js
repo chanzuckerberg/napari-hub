@@ -24,7 +24,7 @@ async function getCommitsSinceLastRelease(exec) {
         stdout(data) {
           const hash = data.toString()
 
-          if (hash) {
+          if (hash && !config.ignoreCommits.includes(hash)) {
             hashes.push(hash)
           }
         },
