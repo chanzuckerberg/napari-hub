@@ -18,13 +18,13 @@ async function getCommitsSinceLastRelease(exec) {
 
   await exec.exec(
     'git',
-    ['log', '--pretty=format:"%h"', `${LATEST_RELEASE}..${TARGET_BRANCH}`],
+    ['log', '--pretty=format:"%H"', `${LATEST_RELEASE}..${TARGET_BRANCH}`],
     {
       listeners: {
         stdout(data) {
           const hash = data.toString()
 
-          if (hash && !config.ignoreCommits.includes(hash)) {
+          if (hash) {
             hashes.push(hash)
           }
         },
@@ -36,6 +36,7 @@ async function getCommitsSinceLastRelease(exec) {
     .flatMap(hash => hash.split('\n'))
     .filter(Boolean)
     .map(hash => hash.replaceAll('"', ''))
+    .filter(hash => !config.ignoreCommits.includes(hash))
 }
 
 /**
