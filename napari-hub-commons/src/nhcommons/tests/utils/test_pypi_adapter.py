@@ -137,31 +137,9 @@ class TestPypiAdapter:
     def setup_method(self, monkeypatch):
         monkeypatch.setattr(requests, "get", self._mocked_requests_get)
 
-    def _generate_html_data(self, plugin_version_list: List[Tuple[str, str]]):
-        data = [
-            f"""
-                <div>
-                    <span class="package-snippet__name">{plugin[0]}</span>
-                    <span class="{self._version_field}">{plugin[1]}</span>
-                </div>
-            """
-            for plugin in plugin_version_list
-        ]
-        return "<br>".join(data)
-
     def _mocked_requests_get(self, *args, **kwargs):
-        if args[0] == "https://pypi.org/search/":
-            params = kwargs.get("params", {})
-            page = params.get("page", 1000)
-            if (
-                params
-                and len(params) == 3
-                and params.get("o") == "-created"
-                and params.get("c") == "Framework :: napari"
-                and page < 3
-            ):
-                data = plugins()[:2] if page == 1 else plugins()[2:]
-                return MockResponse(content=self._generate_html_data(data))
+        if args[0] == "https://api.napari.org/api/plugins":
+            return MockResponse(content=json.dumps({name: version for name, version in plugins()}))
         elif args[0] == "https://pypi.org/pypi/napari-demo/json":
             return MockResponse(content=valid_pypi_data())
         elif args[0] == "https://pypi.org/pypi/default-demo/json":
@@ -171,14 +149,8 @@ class TestPypiAdapter:
         return MockResponse(status_code=requests.codes.not_found)
 
     def test_get_all_plugins(self):
-        self._version_field = "package-snippet__version"
         expected = {plugin[0]: plugin[1] for plugin in plugins()}
         assert expected == pypi_adapter.get_all_plugins()
-
-    def test_get_all_plugins_invalid_response(self):
-        self._version_field = "foo"
-        with pytest.raises(ValueError):
-            pypi_adapter.get_all_plugins()
 
     @pytest.mark.parametrize(
         "plugin, version, extra_fields, expected",
