@@ -40,4 +40,11 @@ module.exports = {
       labels: [],
     },
   ],
+
+  /**
+   * Ignore specific commits that cause problems with the release notes workflow.
+   */
+  ignoreCommits: [
+    "e5b0a312ddb1d508b2d14b4c101b894f2a4c7356", // committed without PR
+  ],
 }
