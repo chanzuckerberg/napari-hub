@@ -19,7 +19,7 @@ env:
 jobs:
   prod:
     name: deploy to production
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     if: github.repository == 'chanzuckerberg/napari-hub' && startsWith(github.ref, 'refs/tags/v')
     steps:
       - name: Configure AWS Credentials
@@ -48,7 +48,7 @@ jobs:
           operation: 'create-or-update'
 
   lighthouse-ci:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs: prod
     steps:
       - uses: actions/checkout@v3
@@ -70,7 +70,7 @@ jobs:
     defaults:
       run:
         working-directory: frontend/
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs: prod # Needs the production deploy to happen first before E2E tests can be ran
 
     steps:
@@ -136,7 +136,7 @@ jobs:
     defaults:
       run:
         working-directory: frontend/
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs: prod-e2e-setup
 
     concurrency:

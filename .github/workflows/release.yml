@@ -8,7 +8,7 @@ on:
 
 jobs:
   pr-release-comment:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
     - name: Checkout
@@ -22,7 +22,7 @@ jobs:
           commentOnPRs({github, context, core});
 
   slack-notify:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Notify Slack of Release

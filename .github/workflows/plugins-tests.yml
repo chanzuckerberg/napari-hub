@@ -26,7 +26,7 @@ jobs:
   # Runs pytest for backend code
   tests:
     name: Unit test with pytest
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout Repo
@@ -59,7 +59,7 @@ jobs:
 
   lints:
     name: Linting with Black
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout Repo
