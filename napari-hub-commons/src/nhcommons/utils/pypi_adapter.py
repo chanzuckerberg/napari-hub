@@ -11,36 +11,24 @@ from .request_adapter import get_request
 _NAME_PATTERN = re.compile('class="package-snippet__name">(.+)</span>')
 _VERSION_PATTERN = re.compile('class="package-snippet__version">(.+)</span>')
 _BASE_URL = "https://pypi.org"
-_SEARCH_URL = f"/search/"
 _PLUGIN_DATA_URL = "/pypi/{plugin}/json"
+_NPE2API_URL = "https://api.napari.org/api"
 
 logger = logging.getLogger(__name__)
 
 
 def get_all_plugins() -> Dict[str, str]:
     """
-    Query pypi to get all plugins.
+    Query npe2api to get all plugins.
+
+    Now we use the npe2api to get the list of plugins, which uses the public BigQuery pypi metadata
+    as a source of truth.
+
+    The previous implementation was broken by anti-scraping changes to PyPI.
     :returns: all plugin names and latest version
     """
-    logger.info("Getting all napari plugins from PYPI")
-    packages = {}
-    page = 1
-    params = {"o": "-created", "c": "Framework :: napari"}
-    while True:
-        try:
-            params["page"] = page
-            response = _get_pypi_response(_SEARCH_URL, params=params)
-            html = response.text
-            names = _NAME_PATTERN.findall(html)
-            versions = _VERSION_PATTERN.findall(html)
-            logger.info(f"Count of plugins fetched for page={page} {len(packages)}")
-            if len(names) != len(versions):
-                raise ValueError("Count of plugin and version don't match")
-            for name, version in zip(names, versions):
-                packages[name] = version
-            page += 1
-        except HTTPError:
-            break
+    logger.info("Getting all napari plugins from npe2api")
+    packages = get_request(_NPE2API_URL + "/plugins").json()
     logger.info(f"Total number of napari plugins fetched={len(packages)}")
     return packages
 
