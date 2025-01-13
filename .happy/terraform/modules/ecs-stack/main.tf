@@ -59,7 +59,7 @@ locals {
   plugins_function_name = "${local.custom_stack_name}-plugins"
   data_workflows_function_name = "${local.custom_stack_name}-data-workflows"
 
-  plugin_update_schedule = var.env == "prod" ? "rate(5 minutes)" : var.env == "staging" ? "rate(1 hour)" : "rate(1 day)"
+  plugin_update_schedule = var.env == "prod" ? "rate(1 hour)" : var.env == "staging" ? "rate(1 hour)" : "rate(1 day)"
   log_retention_period = var.env == "prod" ? 365 : 14
 }
 
