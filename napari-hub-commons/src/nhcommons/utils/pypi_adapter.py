@@ -41,10 +41,7 @@ def get_all_plugins() -> Dict[str, str]:
     logger.info("Getting all napari plugins from npe2api")
     packages = get_request(_NPE2API_URL + "/plugins").json()
     logger.info(f"Total number of napari plugins fetched={len(packages)}")
-    return {
-        normalize(name): version
-        for name, version in packages.items()
-    }
+    return {normalize(name): version for name, version in packages.items()}
 
 
 def get_plugin_pypi_metadata(plugin: str, version: str) -> Dict[str, Any]:

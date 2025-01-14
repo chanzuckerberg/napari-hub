@@ -139,7 +139,9 @@ class TestPypiAdapter:
 
     def _mocked_requests_get(self, *args, **kwargs):
         if args[0] == "https://api.napari.org/api/plugins":
-            return MockResponse(content=json.dumps({name: version for name, version in plugins()}))
+            return MockResponse(
+                content=json.dumps({name: version for name, version in plugins()})
+            )
         elif args[0] == "https://pypi.org/pypi/napari-demo/json":
             return MockResponse(content=valid_pypi_data())
         elif args[0] == "https://pypi.org/pypi/default-demo/json":
@@ -150,8 +152,7 @@ class TestPypiAdapter:
 
     def test_get_all_plugins(self):
         expected = {
-            pypi_adapter.normalize(plugin[0]): plugin[1]
-            for plugin in plugins()
+            pypi_adapter.normalize(plugin[0]): plugin[1] for plugin in plugins()
         }
         assert expected == pypi_adapter.get_all_plugins()
 
