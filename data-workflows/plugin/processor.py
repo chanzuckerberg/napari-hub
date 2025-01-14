@@ -42,10 +42,11 @@ def update_plugin() -> None:
         pypi_plugin_version = pypi_latest_plugins.get(name)
         if pypi_plugin_version == version:
             continue
+
         if pypi_plugin_version is None and is_plugin_active(name, version):
             logger.info(
                 f"Skipping marking plugin={name} version={version} stale as the "
-                f"plugin is still active in npe2api"
+                "plugin is still active in npe2api"
             )
             continue
 
@@ -55,8 +56,16 @@ def update_plugin() -> None:
             version=version,
             plugin_metadata_type=PluginMetadataType.PYPI,
         )
+
         if pypi_plugin_version is None:
-            zulip.plugin_no_longer_on_hub(name)
+            logger.info(f"Plugin no longer on hub: plugin={name}")
+            if name == pypi_adapter.pypi_name_normalize(name):
+                zulip.plugin_no_longer_on_hub(name)
+            else:
+                logger.info(
+                    f"Skipping zulip removal notification plugin={name}, "
+                    "name is not normalized, so likely a duplicate plugin."
+                )
 
 
 def _update_for_new_plugin(name: str, version: str, old_version: Optional[str]) -> None:
