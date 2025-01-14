@@ -37,8 +37,24 @@ def update_plugin() -> None:
 
     futures.wait(update_futures, return_when="ALL_COMPLETED")
 
+    def _mark_version_stale(name, version) -> None:
+        logger.info(f"Updating old plugin={name} version={version}")
+        put_plugin_metadata(
+            plugin=name,
+            version=version,
+            plugin_metadata_type=PluginMetadataType.PYPI,
+        )
+
     # update for removed plugins and existing older version of plugins
     for name, version in dynamo_latest_plugins.items():
+        if name != (normalized := pypi_adapter.normalize(name)):
+            logger.info(
+                f"Found non-normalized name, will be removed plugin={name} "
+                f"(normalized={normalized})"
+            )
+            _mark_version_stale(name, version)
+            continue
+
         pypi_plugin_version = pypi_latest_plugins.get(name)
         if pypi_plugin_version == version:
             continue
@@ -50,22 +66,11 @@ def update_plugin() -> None:
             )
             continue
 
-        logger.info(f"Updating old plugin={name} version={version}")
-        put_plugin_metadata(
-            plugin=name,
-            version=version,
-            plugin_metadata_type=PluginMetadataType.PYPI,
-        )
+        _mark_version_stale(name, version)
 
         if pypi_plugin_version is None:
-            logger.info(f"Plugin no longer on hub: plugin={name}")
-            if name == pypi_adapter.pypi_name_normalize(name):
-                zulip.plugin_no_longer_on_hub(name)
-            else:
-                logger.info(
-                    f"Skipping zulip removal notification plugin={name}, "
-                    "name is not normalized, so likely a duplicate plugin."
-                )
+            logger.info(f"Plugin={name} will be removed from hub")
+            zulip.plugin_no_longer_on_hub(name)
 
 
 def _update_for_new_plugin(name: str, version: str, old_version: Optional[str]) -> None:

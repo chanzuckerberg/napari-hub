@@ -17,7 +17,7 @@ _NPE2API_URL = "https://api.napari.org/api"
 logger = logging.getLogger(__name__)
 
 
-def pypi_name_normalize(name: str) -> str:
+def normalize(name: str) -> str:
     """
     Normalize the plugin name to lowercase and replace special characters with hyphen.
 
@@ -42,7 +42,7 @@ def get_all_plugins() -> Dict[str, str]:
     packages = get_request(_NPE2API_URL + "/plugins").json()
     logger.info(f"Total number of napari plugins fetched={len(packages)}")
     return {
-        pypi_name_normalize(name): version
+        normalize(name): version
         for name, version in packages.items()
     }
 

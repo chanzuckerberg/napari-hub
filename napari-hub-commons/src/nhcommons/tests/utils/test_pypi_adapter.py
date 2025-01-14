@@ -149,7 +149,10 @@ class TestPypiAdapter:
         return MockResponse(status_code=requests.codes.not_found)
 
     def test_get_all_plugins(self):
-        expected = {plugin[0]: plugin[1] for plugin in plugins()}
+        expected = {
+            pypi_adapter.normalize(plugin[0]): plugin[1]
+            for plugin in plugins()
+        }
         assert expected == pypi_adapter.get_all_plugins()
 
     @pytest.mark.parametrize(
