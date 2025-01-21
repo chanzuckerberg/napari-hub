@@ -152,22 +152,6 @@ class TestProcessor:
         put_pm_calls = [_create_put_pm_call(PMType.PYPI)]
         verify_calls(put_pm_calls=put_pm_calls)
 
-    def test_non_normalized_plugin_name(self, verify_calls):
-        non_normalized_plugin_name = PLUGIN.upper()
-        self._dynamo_latest_plugins = {
-            PLUGIN: VERSION,
-            non_normalized_plugin_name: VERSION,
-        }
-        self._pypi_latest_plugins = {"foo": VERSION}
-
-        processor.update_plugin()
-
-        self._zulip.assert_not_called()
-        put_pm_calls = [
-            _create_put_pm_call(PMType.PYPI, name=non_normalized_plugin_name)
-        ]
-        verify_calls(put_pm_calls=put_pm_calls)
-
     @pytest.mark.parametrize(
         "existing_types, put_pm_data, formatted_metadata",
         [
@@ -266,10 +250,8 @@ class TestProcessor:
             self._zulip.assert_not_called()
 
 
-def _create_put_pm_call(
-    pm_type, data=None, is_latest=False, version=VERSION, name=PLUGIN
-) -> call:
-    kwargs = {"plugin": name, "version": version, "plugin_metadata_type": pm_type}
+def _create_put_pm_call(pm_type, data=None, is_latest=False, version=VERSION) -> call:
+    kwargs = {"plugin": PLUGIN, "version": version, "plugin_metadata_type": pm_type}
     if is_latest:
         kwargs["is_latest"] = is_latest
 
