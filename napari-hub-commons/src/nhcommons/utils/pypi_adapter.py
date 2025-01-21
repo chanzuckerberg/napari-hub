@@ -17,15 +17,6 @@ _NPE2API_URL = "https://api.napari.org/api"
 logger = logging.getLogger(__name__)
 
 
-def normalize(name: str) -> str:
-    """
-    Normalize the plugin name to lowercase and replace special characters with hyphen.
-
-    https://packaging.python.org/en/latest/specifications/name-normalization/#name-normalization
-    """
-    return re.sub(r"[-_.]+", "-", name).lower()
-
-
 def get_all_plugins() -> Dict[str, str]:
     """
     Query npe2api to get all plugins.
@@ -33,15 +24,13 @@ def get_all_plugins() -> Dict[str, str]:
     Now we use the npe2api to get the list of plugins, which uses the public BigQuery pypi metadata
     as a source of truth.
 
-    This also normalizes the plugins names to match PyPI.
-
     The previous implementation was broken by anti-scraping changes to PyPI.
     :returns: all plugin names and latest version
     """
     logger.info("Getting all napari plugins from npe2api")
     packages = get_request(_NPE2API_URL + "/plugins").json()
     logger.info(f"Total number of napari plugins fetched={len(packages)}")
-    return {normalize(name): version for name, version in packages.items()}
+    return packages
 
 
 def get_plugin_pypi_metadata(plugin: str, version: str) -> Dict[str, Any]:
