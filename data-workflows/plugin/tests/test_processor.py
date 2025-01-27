@@ -3,7 +3,6 @@ from unittest.mock import Mock, call
 import pytest
 
 import plugin.lambda_adapter
-import plugin.classifier_adapter
 import plugin.metadata
 from nhcommons.models.plugin_utils import PluginMetadataType as PMType
 
@@ -70,15 +69,6 @@ class TestProcessor:
         return mock
 
     @pytest.fixture
-    def mock_classifier_adapter(self, monkeypatch) -> Mock:
-        mock = Mock(
-            side_effect=lambda _, __: self._is_plugin_live,
-            spec=plugin.classifier_adapter,
-        )
-        monkeypatch.setattr(processor, "is_plugin_active", mock)
-        return mock
-
-    @pytest.fixture
     def mock_zulip(self, monkeypatch) -> Mock:
         mock = Mock(spec=zulip)
         monkeypatch.setattr(processor, "zulip", mock)
@@ -93,7 +83,6 @@ class TestProcessor:
         mock_get_existing_types,
         mock_get_formatted_metadata,
         mock_lambda_adapter,
-        mock_classifier_adapter,
         mock_zulip,
     ) -> None:
         self._get_latest_plugins = mock_get_latest_plugins
@@ -102,7 +91,6 @@ class TestProcessor:
         self._get_existing_types = mock_get_existing_types
         self._get_formatted_metadata = mock_get_formatted_metadata
         self._lambda_adapter = mock_lambda_adapter
-        self._classifier_adapter = mock_classifier_adapter
         self._zulip = mock_zulip
 
     @pytest.fixture
@@ -115,7 +103,6 @@ class TestProcessor:
             get_formatted_metadata_called: bool = False,
             lambda_invoked: bool = False,
             put_pm_calls: list = None,
-            classifier_adapter_not_called: bool = True,
         ) -> None:
             verify_call(True, self._get_latest_plugins, empty_call_list)
             verify_call(True, self._get_all_plugins, empty_call_list)
@@ -138,8 +125,6 @@ class TestProcessor:
                     default_call_list
                     == self._lambda_adapter.return_value.invoke.call_args_list
                 )
-            if classifier_adapter_not_called:
-                self._classifier_adapter.assert_not_called()
 
         return _verify_calls
 
@@ -153,27 +138,19 @@ class TestProcessor:
         verify_calls()
         self._zulip.assert_not_called()
 
-    @pytest.mark.parametrize("is_plugin_live", [False, True])
     def test_stale_plugin_in_dynamo(
         self,
-        is_plugin_live,
         verify_calls,
     ):
         self._dynamo_latest_plugins = {PLUGIN: VERSION, "bar": "2.4.6"}
         self._pypi_latest_plugins = {"bar": "2.4.6"}
-        self._is_plugin_live = is_plugin_live
 
         processor.update_plugin()
 
-        if is_plugin_live:
-            assert len(self._zulip.method_calls) == 0
-            put_pm_calls = []
-        else:
-            assert len(self._zulip.method_calls) == 1
-            self._zulip.plugin_no_longer_on_hub.assert_called_once_with(PLUGIN)
-            put_pm_calls = [_create_put_pm_call(PMType.PYPI)]
-        verify_calls(put_pm_calls=put_pm_calls, classifier_adapter_not_called=False)
-        self._classifier_adapter.assert_called_once_with(PLUGIN, VERSION)
+        assert len(self._zulip.method_calls) == 1
+        self._zulip.plugin_no_longer_on_hub.assert_called_once_with(PLUGIN)
+        put_pm_calls = [_create_put_pm_call(PMType.PYPI)]
+        verify_calls(put_pm_calls=put_pm_calls)
 
     @pytest.mark.parametrize(
         "existing_types, put_pm_data, formatted_metadata",

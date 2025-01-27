@@ -2,7 +2,6 @@ import logging
 from concurrent import futures
 from typing import Optional
 
-from plugin.classifier_adapter import is_plugin_active
 from plugin.lambda_adapter import LambdaAdapter
 from nhcommons.models.plugin_utils import PluginMetadataType
 from nhcommons.utils import pypi_adapter
@@ -42,12 +41,6 @@ def update_plugin() -> None:
         pypi_plugin_version = pypi_latest_plugins.get(name)
         if pypi_plugin_version == version:
             continue
-        if pypi_plugin_version is None and is_plugin_active(name, version):
-            logger.info(
-                f"Skipping marking plugin={name} version={version} stale as the "
-                f"plugin is still active in npe2api"
-            )
-            continue
 
         logger.info(f"Updating old plugin={name} version={version}")
         put_plugin_metadata(
@@ -55,6 +48,7 @@ def update_plugin() -> None:
             version=version,
             plugin_metadata_type=PluginMetadataType.PYPI,
         )
+
         if pypi_plugin_version is None:
             zulip.plugin_no_longer_on_hub(name)
 
