@@ -36,7 +36,7 @@ const API_URL = (() => {
   }
 
   if (DEV) {
-    return 'https://api.dev.napari-hub.org/dev-shared';
+    return 'https://api.dev.napari-hub.org/dev-shared2';
   }
 
   return process.env.API_URL || 'http://localhost:8081';
