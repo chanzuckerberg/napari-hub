@@ -1,4 +1,4 @@
 pytest-bdd==6.1.1
-requests==2.31.0
+requests==2.32.4
 python-dateutil==2.8.2
 pytest==7.2.2
