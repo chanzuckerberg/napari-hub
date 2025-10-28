@@ -1,5 +1,5 @@
-The napari hub is transitioning to a community-run implementation due to launch in June 2025.
-Since October 1, 2024, this repository is no longer actively maintained and will not be updated. 
+The napari hub has transitioned to a community-run implementation launched in June 2025.
+Since October 1, 2024, this repository is no longer actively maintained and will not be updated.
 New plugins and plugin updates will continue to be listed on https://napari-hub.org/
 
 # napari hub
